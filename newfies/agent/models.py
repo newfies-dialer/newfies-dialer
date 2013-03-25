@@ -17,15 +17,15 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from common.language_field import LanguageField
 from django_countries import CountryField
-from user_profile.models import UserProfile
+#from user_profile.models import UserProfile
 
 
-class AgentProfile(models.Model):
+class Agent(User):
+
     """This defines extra features for the agent profile
 
     **Attributes**:
 
-        * ``accountcode`` - Account name.
         * ``address`` -
         * ``city`` -
         * ``state`` -
@@ -43,9 +43,11 @@ class AgentProfile(models.Model):
 
         * ``user`` - Foreign key relationship to the User model.
 
-    **Name of DB table**: agent_profile
+    **Name of DB table**: agent
     """
-    user = models.OneToOneField(User)
+    is_agent = models.BooleanField(default=True,
+        verbose_name=_('Designates whether the user is an agent.'))
+
     address = models.CharField(blank=True, null=True,
                                max_length=200, verbose_name=_('address'))
     city = models.CharField(max_length=120, blank=True, null=True,
@@ -66,30 +68,12 @@ class AgentProfile(models.Model):
     language = LanguageField(blank=True, null=True, verbose_name=_('language'))
     note = models.CharField(max_length=250, blank=True, null=True,
                             verbose_name=_('note'))
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
-    manager = models.ForeignKey(UserProfile,
-        verbose_name=_('Manager'), null=True, blank=True)
-    is_agent = models.BooleanField(default=True,
-        verbose_name=_('Designates whether the user is an agent.'))
 
     class Meta:
         permissions = (
             ("view_queue", _('can see Queue')),
         )
-        db_table = 'agent_profile'
-        verbose_name = _("agent profile")
-        verbose_name_plural = _("agents profile")
-
-    def __unicode__(self):
-        return u"%s" % str(self.user)
-
-
-class Agent(User):
-    """Agents"""
-
-    class Meta:
-        proxy = True
+        proxy = False
         app_label = 'auth'
         verbose_name = _('agent')
         verbose_name_plural = _('agents')

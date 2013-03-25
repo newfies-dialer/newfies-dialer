@@ -92,7 +92,13 @@ class UserProfile(models.Model):
 
 
 class Manager(User):
-    """Managers"""
+    """
+    Manager are user that have access to the Customer/Manager interface.
+    They don't have access to the admin.
+    Manager, create surveys, phonebooks, they also create and run campaign.
+    They are the actually user of the system.
+    They also can create Agents which will receive the calls.
+    """
 
     class Meta:
         proxy = True
@@ -104,9 +110,21 @@ class Manager(User):
             ("manager", _('can see Manager interface')),
         )
 
+    def save(self, **kwargs):
+        if not self.pk:
+            self.is_staff = 0
+            self.is_superuser = 0
+        super(Staff, self).save(**kwargs)
+
 
 class Staff(User):
-    """Admin - Super User"""
+    """Admin - Super User
+    Staff are user that have access to the admin interface with restriction.
+    They can apply few changes on the admin UI based on their permission.
+    It's important to configure well their permission.
+    A staff members can for instance access to overall reporting, or review
+    call queues status.
+    """
 
     class Meta:
         proxy = True

@@ -110,17 +110,6 @@ class Manager(User):
         )
 
 
-# class Agent(User):
-
-#     class Meta:
-#         proxy = True
-#         app_label = 'auth'
-#         verbose_name = _('agent')
-#         verbose_name_plural = _('agents')
-
-#         permissions = (
-#             ("agent", _('can see Agent interface')),
-#         )
 
 
 class Staff(User):

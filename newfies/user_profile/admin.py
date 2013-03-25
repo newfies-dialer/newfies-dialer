@@ -33,7 +33,7 @@ class StaffAdmin(UserAdmin):
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)
-        qs = qs.filter(Q(is_staff=True) | Q(is_superuser=True))
+        qs = qs.filter(Q(is_superuser=True))
         return qs
 
 
@@ -76,7 +76,7 @@ class ManagerAdmin(StaffAdmin):
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)
-        qs = qs.exclude(Q(is_staff=True) | Q(is_superuser=True))
+        qs = qs.exclude(Q(is_staff=False) | Q(is_superuser=True))
         return qs
 
 admin.site.unregister(User)

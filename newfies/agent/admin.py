@@ -17,11 +17,11 @@ from django.contrib.auth.admin import UserAdmin
 #from django.contrib.auth.models import User
 from django.db.models import Q
 #from django.utils.translation import ugettext_lazy as _
-from agent.models import Agent
+from agent.models import AgentProfile, Agent
 
 
-class AgentInline(admin.StackedInline):
-    model = Agent
+class AgentProfileInline(admin.StackedInline):
+    model = AgentProfile
 
 
 class AgentAdmin(UserAdmin):
@@ -42,14 +42,14 @@ class AgentAdmin(UserAdmin):
     #     }),
     # )
 
-    inlines = [AgentInline]
+    inlines = [AgentProfileInline]
 
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)
-        #qs = qs.filter(Q(is_staff=True) | Q(is_superuser=True))
+        qs = qs.filter(is_staff=False, is_superuser=False)
         return qs
 
 

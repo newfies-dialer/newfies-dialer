@@ -20,7 +20,7 @@ from django_countries import CountryField
 from user_profile.models import UserProfile
 
 
-class Agent(models.Model):
+class AgentProfile(models.Model):
     """This defines extra features for the user
 
     **Attributes**:
@@ -80,9 +80,21 @@ class Agent(models.Model):
         permissions = (
             ("view_queue", _('can see Queue')),
         )
-        db_table = 'agent'
-        verbose_name = _("agent")
-        verbose_name_plural = _("agents")
+        db_table = 'agent_profile'
+        verbose_name = _("agent profile")
+        verbose_name_plural = _("agents profile")
 
     def __unicode__(self):
         return u"%s" % str(self.user)
+
+
+class Agent(User):
+
+    class Meta:
+        proxy = True
+        app_label = 'auth'
+        verbose_name = _('agent')
+        verbose_name_plural = _('agents')
+        permissions = (
+            ("agent", _('can see Agent interface')),
+        )

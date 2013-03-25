@@ -64,7 +64,7 @@ class CustomIndexDashboard(Dashboard):
             children=[
                 modules.AppList(
                     title=_('user').capitalize(),
-                    models=('django.contrib.*', 'user_profile.*', ),
+                    models=('django.contrib.*', 'user_profile.*', 'agent.*',),
                 ),
                 modules.AppList(
                     _('task manager').title(),

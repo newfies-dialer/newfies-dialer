@@ -31,48 +31,20 @@ class StaffAdmin(UserAdmin):
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')
 
+    list_filter = []
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)
         qs = qs.filter(Q(is_superuser=True))
         return qs
 
 
-# class AgentAdmin(UserAdmin):
-#     inlines = [UserProfileInline]
-
-#     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
-#                     'is_active', 'is_superuser', 'last_login')
-
-#     def queryset(self, request):
-#         qs = super(UserAdmin, self).queryset(request)
-#         qs = qs.filter(Q(is_staff=False) & Q(is_superuser=False))
-#         ##TODO: We might want something like this : & Q(user_profile__is_agent=True)
-#         return qs
-
-
 class ManagerAdmin(StaffAdmin):
-
-    # fieldsets = (
-    #     ('', {
-    #         'fields': ('username', 'password', ),
-    #     }),
-    #     (_('Personal info'), {
-    #         #'classes': ('collapse',),
-    #         'fields': ('first_name', 'last_name', 'email', )
-    #     }),
-    #     (_('Permission'), {
-    #         'fields': ('is_active', )
-    #     }),
-    #     (_('Important dates'), {
-    #         'fields': ('last_login', 'date_joined', )
-    #     }),
-    # )
-
     inlines = [
         UserProfileInline,
     ]
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')
+    list_filter = []
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)

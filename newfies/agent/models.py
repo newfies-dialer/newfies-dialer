@@ -21,7 +21,7 @@ from user_profile.models import UserProfile
 
 
 class AgentProfile(models.Model):
-    """This defines extra features for the user
+    """This defines extra features for the agent profile
 
     **Attributes**:
 
@@ -42,13 +42,8 @@ class AgentProfile(models.Model):
     **Relationships**:
 
         * ``user`` - Foreign key relationship to the User model.
-        * ``userprofile_gateway`` - ManyToMany
-        * ``userprofile_voipservergroup`` - ManyToMany
-        * ``dialersetting`` - Foreign key relationship to the DialerSetting \
-        model.
 
-    **Name of DB table**: user_profile
-
+    **Name of DB table**: agent_profile
     """
     user = models.OneToOneField(User)
     address = models.CharField(blank=True, null=True,
@@ -89,6 +84,7 @@ class AgentProfile(models.Model):
 
 
 class Agent(User):
+    """Agents"""
 
     class Meta:
         proxy = True

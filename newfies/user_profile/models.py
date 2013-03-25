@@ -73,17 +73,11 @@ class UserProfile(models.Model):
     note = models.CharField(max_length=250, blank=True, null=True,
                             verbose_name=_('note'))
     accountcode = models.PositiveIntegerField(null=True, blank=True)
-    #voip_gateway = models.ForeignKey(Gateway, verbose_name='VoIP Gateway',
-    #                            help_text=_("Select VoIP Gateway"))
     userprofile_gateway = models.ManyToManyField(Gateway, verbose_name=_('gateway'))
     dialersetting = models.ForeignKey(DialerSetting,
                       verbose_name=_('dialer settings'), null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-    # is_agent = models.BooleanField(default=False,
-    #     verbose_name=_('Designates whether the user is an agent.'))
-    # manager = models.ForeignKey('self',
-    #                   verbose_name=_('Manager'), null=True, blank=True)
 
     class Meta:
         permissions = (
@@ -98,6 +92,7 @@ class UserProfile(models.Model):
 
 
 class Manager(User):
+    """Managers"""
 
     class Meta:
         proxy = True
@@ -110,9 +105,8 @@ class Manager(User):
         )
 
 
-
-
 class Staff(User):
+    """Admin - Super User"""
 
     class Meta:
         proxy = True

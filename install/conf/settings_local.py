@@ -84,6 +84,8 @@ API_ALLOWED_IP = [
     #'SERVER_IP',
 ]
 
+ALLOWED_HOSTS = ['SERVER_IP']
+
 #LOGGING
 #=======
 LOGGING = {

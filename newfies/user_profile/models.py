@@ -80,7 +80,6 @@ class UserProfile(models.Model):
                       verbose_name=_('dialer settings'), null=True, blank=True)
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
-
     # is_agent = models.BooleanField(default=False,
     #     verbose_name=_('Designates whether the user is an agent.'))
     # manager = models.ForeignKey('self',

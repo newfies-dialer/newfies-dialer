@@ -27,7 +27,7 @@ class ManagerProfileInline(admin.StackedInline):
 
 
 class StaffAdmin(UserAdmin):
-    inlines = [UserProfileInline]
+    inlines = [ManagerProfileInline]
 
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')

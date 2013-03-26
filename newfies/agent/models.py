@@ -85,9 +85,54 @@ class Agent(User):
             ("agent", _('can see Agent interface')),
         )
 """
+class Profile_abstract(models.Model):
+    """This defines the Survey template
+
+    **Attributes**:
+
+        * ``name`` - survey name.
+        * ``description`` - description about the survey.
+
+    **Relationships**:
+
+        * ``user`` - Foreign key relationship to the User model.\
+        Each survey is assigned to a User
+
+    **Name of DB table**: survey
+    """
+    user = models.OneToOneField(User)
+    address = models.CharField(blank=True, null=True,
+                               max_length=200, verbose_name=_('address'))
+    city = models.CharField(max_length=120, blank=True, null=True,
+                            verbose_name=_('city'))
+    state = models.CharField(max_length=120, blank=True, null=True,
+                             verbose_name=_('state'))
+    country = CountryField(blank=True, null=True, verbose_name=_('country'))
+    zip_code = models.CharField(max_length=120, blank=True, null=True,
+                                verbose_name=_('zip code'))
+    phone_no = models.CharField(max_length=90, blank=True, null=True,
+                                verbose_name=_('phone number'))
+    fax = models.CharField(max_length=90, blank=True, null=True,
+                           verbose_name=_('fax Number'))
+    company_name = models.CharField(max_length=90, blank=True, null=True,
+                                    verbose_name=_('company name'))
+    company_website = models.URLField(max_length=90, blank=True, null=True,
+                                      verbose_name=_('company website'))
+    language = LanguageField(blank=True, null=True, verbose_name=_('language'))
+    note = models.CharField(max_length=250, blank=True, null=True,
+                            verbose_name=_('note'))
+    accountcode = models.PositiveIntegerField(null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+    def __unicode__(self):
+            return u"%s" % self.name
 
 
-class AgentProfile(models.Model):
+class AgentProfile(Profile_abstract):
     """This defines extra features for the user
 
     **Attributes**:
@@ -117,35 +162,11 @@ class AgentProfile(models.Model):
     **Name of DB table**: user_profile
 
     """
-    user = models.OneToOneField(User)
+
     is_agent = models.BooleanField(default=True,
         verbose_name=_('Designates whether the user is an agent.'))
     manager = models.ForeignKey(Manager, verbose_name=_("manager"), blank=True, null=True,
         help_text=_("select manager"), related_name="manager")
-
-    address = models.CharField(blank=True, null=True,
-                               max_length=200, verbose_name=_('address'))
-    city = models.CharField(max_length=120, blank=True, null=True,
-                            verbose_name=_('city'))
-    state = models.CharField(max_length=120, blank=True, null=True,
-                             verbose_name=_('state'))
-    country = CountryField(blank=True, null=True, verbose_name=_('country'))
-    zip_code = models.CharField(max_length=120, blank=True, null=True,
-                                verbose_name=_('zip code'))
-    phone_no = models.CharField(max_length=90, blank=True, null=True,
-                                verbose_name=_('phone number'))
-    fax = models.CharField(max_length=90, blank=True, null=True,
-                           verbose_name=_('fax Number'))
-    company_name = models.CharField(max_length=90, blank=True, null=True,
-                                    verbose_name=_('company name'))
-    company_website = models.URLField(max_length=90, blank=True, null=True,
-                                      verbose_name=_('company website'))
-    language = LanguageField(blank=True, null=True, verbose_name=_('language'))
-    note = models.CharField(max_length=250, blank=True, null=True,
-                            verbose_name=_('note'))
-    accountcode = models.PositiveIntegerField(null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         permissions = (
@@ -179,7 +200,7 @@ class Agent(User):
         super(Agent, self).save(**kwargs)
 
 
-class ManagerProfile(models.Model):
+class ManagerProfile(Profile_abstract):
     """This defines extra features for the user
 
     **Attributes**:
@@ -209,33 +230,9 @@ class ManagerProfile(models.Model):
     **Name of DB table**: user_profile
 
     """
-    user = models.OneToOneField(User)
-    address = models.CharField(blank=True, null=True,
-                               max_length=200, verbose_name=_('address'))
-    city = models.CharField(max_length=120, blank=True, null=True,
-                            verbose_name=_('city'))
-    state = models.CharField(max_length=120, blank=True, null=True,
-                             verbose_name=_('state'))
-    country = CountryField(blank=True, null=True, verbose_name=_('country'))
-    zip_code = models.CharField(max_length=120, blank=True, null=True,
-                                verbose_name=_('zip code'))
-    phone_no = models.CharField(max_length=90, blank=True, null=True,
-                                verbose_name=_('phone number'))
-    fax = models.CharField(max_length=90, blank=True, null=True,
-                           verbose_name=_('fax Number'))
-    company_name = models.CharField(max_length=90, blank=True, null=True,
-                                    verbose_name=_('company name'))
-    company_website = models.URLField(max_length=90, blank=True, null=True,
-                                      verbose_name=_('company website'))
-    language = LanguageField(blank=True, null=True, verbose_name=_('language'))
-    note = models.CharField(max_length=250, blank=True, null=True,
-                            verbose_name=_('note'))
-    accountcode = models.PositiveIntegerField(null=True, blank=True)
     userprofile_gateway = models.ManyToManyField(Gateway, verbose_name=_('gateway'), null=True, blank=True)
     dialersetting = models.ForeignKey(DialerSetting,
                       verbose_name=_('dialer settings'), null=True, blank=True)
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
         db_table = 'manager_profile'

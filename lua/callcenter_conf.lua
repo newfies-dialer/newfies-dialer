@@ -52,7 +52,7 @@ callcenter = [[
       </settings>
 
       <queues>
-        <queue name="mysupport@default">
+        <queue name="mysupport44@default">
           <param name="strategy" value="longest-idle-agent"/>
           <param name="moh-sound" value="$${hold_music}"/>
           <!--<param name="record-template" value="$${base_dir}/recordings/${strftime(%Y-%m-%d-%H-%M-%S)}.${destination_number}.${caller_id_number}.${uuid}.wav"/>-->

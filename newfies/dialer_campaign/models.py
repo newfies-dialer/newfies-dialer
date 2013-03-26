@@ -27,7 +27,6 @@ from dialer_contact.constants import CONTACT_STATUS
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from audiofield.models import AudioFile
-from user_profile.models import UserProfile
 from dnc.models import DNC
 from datetime import datetime
 from common.intermediate_model_base_class import Model
@@ -327,6 +326,7 @@ class Campaign(Model):
 
     def get_active_max_frequency(self):
         """Get the active max frequency"""
+        from user_profile.models import UserProfile
         try:
             obj_userprofile = self.user.get_profile()
         except UserProfile.DoesNotExist:
@@ -340,6 +340,7 @@ class Campaign(Model):
 
     def get_active_callmaxduration(self):
         """Get the active call max duration"""
+        from user_profile.models import UserProfile
         try:
             obj_userprofile = self.user.get_profile()
         except UserProfile.DoesNotExist:

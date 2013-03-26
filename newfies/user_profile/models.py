@@ -21,7 +21,51 @@ from dialer_gateway.models import Gateway
 from dialer_settings.models import DialerSetting
 
 
-class UserProfile(models.Model):
+class Profile_abstract(models.Model):
+    """This defines the Survey template
+
+    **Attributes**:
+
+        * ``name`` - survey name.
+        * ``description`` - description about the survey.
+
+    **Relationships**:
+
+        * ``user`` - Foreign key relationship to the User model.\
+        Each survey is assigned to a User
+
+    **Name of DB table**: survey
+    """
+    user = models.OneToOneField(User)
+    address = models.CharField(blank=True, null=True,
+                               max_length=200, verbose_name=_('address'))
+    city = models.CharField(max_length=120, blank=True, null=True,
+                            verbose_name=_('city'))
+    state = models.CharField(max_length=120, blank=True, null=True,
+                             verbose_name=_('state'))
+    country = CountryField(blank=True, null=True, verbose_name=_('country'))
+    zip_code = models.CharField(max_length=120, blank=True, null=True,
+                                verbose_name=_('zip code'))
+    phone_no = models.CharField(max_length=90, blank=True, null=True,
+                                verbose_name=_('phone number'))
+    fax = models.CharField(max_length=90, blank=True, null=True,
+                           verbose_name=_('fax Number'))
+    company_name = models.CharField(max_length=90, blank=True, null=True,
+                                    verbose_name=_('company name'))
+    company_website = models.URLField(max_length=90, blank=True, null=True,
+                                      verbose_name=_('company website'))
+    language = LanguageField(blank=True, null=True, verbose_name=_('language'))
+    note = models.CharField(max_length=250, blank=True, null=True,
+                            verbose_name=_('note'))
+    accountcode = models.PositiveIntegerField(null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        abstract = True
+
+
+class UserProfile(Profile_abstract):
     """This defines extra features for the user
 
     **Attributes**:
@@ -51,35 +95,9 @@ class UserProfile(models.Model):
     **Name of DB table**: user_profile
 
     """
-    user = models.OneToOneField(User, related_name="user")
-    address = models.CharField(blank=True, null=True,
-                               max_length=200, verbose_name=_('address'))
-    city = models.CharField(max_length=120, blank=True, null=True,
-                            verbose_name=_('city'))
-    state = models.CharField(max_length=120, blank=True, null=True,
-                             verbose_name=_('state'))
-    country = CountryField(blank=True, null=True, verbose_name=_('country'))
-    zip_code = models.CharField(max_length=120, blank=True, null=True,
-                                verbose_name=_('zip code'))
-    phone_no = models.CharField(max_length=90, blank=True, null=True,
-                                verbose_name=_('phone number'))
-    fax = models.CharField(max_length=90, blank=True, null=True,
-                           verbose_name=_('fax Number'))
-    company_name = models.CharField(max_length=90, blank=True, null=True,
-                                    verbose_name=_('company name'))
-    company_website = models.URLField(max_length=90, blank=True, null=True,
-                                      verbose_name=_('company website'))
-    language = LanguageField(blank=True, null=True, verbose_name=_('language'))
-    note = models.CharField(max_length=250, blank=True, null=True,
-                            verbose_name=_('note'))
-    accountcode = models.PositiveIntegerField(null=True, blank=True)
-    userprofile_gateway = models.ManyToManyField(Gateway, verbose_name=_('gateway'),
-        related_name="user_gateway")
-    dialersetting = models.ForeignKey(DialerSetting,
-                      verbose_name=_('dialer settings'), null=True, blank=True,
-                      related_name="user_dialersetting")
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
+    userprofile_gateway = models.ManyToManyField(Gateway, verbose_name=_('gateway'))
+    dialersetting = models.ForeignKey(DialerSetting, verbose_name=_('dialer settings'),
+        null=True, blank=True)
 
     class Meta:
         permissions = (
@@ -91,7 +109,6 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return u"%s" % str(self.user)
-
 
 
 class Manager(User):

@@ -67,7 +67,7 @@ class Agent(User):
     language = LanguageField(blank=True, null=True, verbose_name=_('language'))
     note = models.CharField(max_length=250, blank=True, null=True,
                             verbose_name=_('note'))
-    manager = models.ForeignKey(Manager, verbose_name=_("manager"),
+    manager = models.ForeignKey(Manager, verbose_name=_("manager"), blank=True, null=True,
         help_text=_("select manager"))
 
     class Meta:

@@ -443,11 +443,6 @@ function FSMCall:next_node()
             callerid = self.db.campaign_info.callerid
             originate_timeout = self.db.campaign_info.calltimeout
             leg_timeout = self.db.campaign_info.calltimeout
-            session:setVariable("hangup_after_bridge", "false")
-            session:setVariable("continue_on_fail", "true")
-            session:setVariable("origination_caller_id_number", callerid)
-            session:setVariable("origination_caller_id_name", callerid)
-            session:setVariable("leg_timeout", leg_timeout)
 
             --dialstr = 'sofia/default/'..phonenumber..'@'..self.outbound_gateway;
             if string.find(phonenumber, "/") then

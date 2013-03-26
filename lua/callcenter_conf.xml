@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<document type="freeswitch/xml">
+  <section name="configuration" description="Callcenter For FreeSwitch">
+
+
+    <configuration name="callcenter.conf" description="CallCenter">
+      <settings>
+        <param name="odbc-dsn" value="odbc://freeswitch"/>
+      </settings>
+
+      <queues>
+        <queue name="mysupport45@default">
+          <param name="strategy" value="longest-idle-agent"/>
+          <param name="moh-sound" value="$${hold_music}"/>
+          <!--<param name="record-template" value="$${base_dir}/recordings/${strftime(%Y-%m-%d-%H-%M-%S)}.${destination_number}.${caller_id_number}.${uuid}.wav"/>-->
+          <param name="time-base-score" value="system"/>
+          <param name="max-wait-time" value="0"/>
+          <param name="max-wait-time-with-no-agent" value="0"/>
+          <param name="max-wait-time-with-no-agent-time-reached" value="5"/>
+          <param name="tier-rules-apply" value="false"/>
+          <param name="tier-rule-wait-second" value="300"/>
+          <param name="tier-rule-wait-multiply-level" value="true"/>
+          <param name="tier-rule-no-agent-no-wait" value="false"/>
+          <param name="discard-abandoned-after" value="60"/>
+          <param name="abandoned-resume-allowed" value="false"/>
+        </queue>
+
+        <queue name="mysupport100@default">
+          <param name="strategy" value="longest-idle-agent"/>
+          <param name="moh-sound" value="$${hold_music}"/>
+          <!--<param name="record-template" value="$${base_dir}/recordings/${strftime(%Y-%m-%d-%H-%M-%S)}.${destination_number}.${caller_id_number}.${uuid}.wav"/>-->
+          <param name="time-base-score" value="system"/>
+          <param name="max-wait-time" value="0"/>
+          <param name="max-wait-time-with-no-agent" value="0"/>
+          <param name="max-wait-time-with-no-agent-time-reached" value="5"/>
+          <param name="tier-rules-apply" value="false"/>
+          <param name="tier-rule-wait-second" value="300"/>
+          <param name="tier-rule-wait-multiply-level" value="true"/>
+          <param name="tier-rule-no-agent-no-wait" value="false"/>
+          <param name="discard-abandoned-after" value="60"/>
+          <param name="abandoned-resume-allowed" value="false"/>
+        </queue>
+      </queues>
+
+      <agents>
+        <agent name="areski@default" type="callback" contact="[call_timeout=10]user/areski@$${domain}" status="Logged Out" max-no-answer="3" wrap-up-time="10" reject-delay-time="10" busy-delay-time="60" />
+        <agent name="kiki5@default" type="callback" contact="[call_timeout=10]user/areski@$${domain}" status="Logged Out" max-no-answer="3" wrap-up-time="10" reject-delay-time="10" busy-delay-time="60" />
+        <agent name="moya@default" type="callback" contact="[call_timeout=10]user/areski@$${domain}" status="Logged Out" max-no-answer="3" wrap-up-time="10" reject-delay-time="10" busy-delay-time="60" />
+      </agents>
+
+      <tiers>
+        <!-- If no level or position is provided, they will default to 1.  You should do this to keep db value on restart. -->
+        <!-- <tier agent="1000@default" queue="support@default" level="1" position="1"/> -->
+        <tier agent="areski@default" queue="mysupport11@default" level="1" position="1"/>
+      </tiers>
+
+    </configuration>
+
+
+  </section>
+</document>

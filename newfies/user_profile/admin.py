@@ -16,18 +16,14 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.db.models import Q
-from user_profile.models import UserProfile, Manager, Staff#, ManagerProfile
-from agent.models import ManagerProfile
+from user_profile.models import UserProfile, Manager, Staff
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
 
-class ManagerProfileInline(admin.StackedInline):
-    model = ManagerProfile
-
 
 class StaffAdmin(UserAdmin):
-    inlines = [ManagerProfileInline]
+    inlines = [UserProfileInline]
 
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')
@@ -41,7 +37,7 @@ class StaffAdmin(UserAdmin):
 
 class ManagerAdmin(UserAdmin):
     inlines = [
-        ManagerProfileInline,
+        UserProfileInline,
     ]
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')

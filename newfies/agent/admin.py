@@ -20,14 +20,6 @@ from django.utils.translation import ugettext as _
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
 from django import forms
 
-def manager_list():
-    manager_list = []
-    list = User.objects.values_list('id', 'username')\
-        .filter(is_staff=True, is_superuser=False, is_active=True).order_by('id')
-    for l in list:
-        manager_list.append((l[0], l[1]))
-    return manager_list
-
 
 
 class AgentCreationForm(UserCreationForm):
@@ -40,8 +32,6 @@ class AgentCreationForm(UserCreationForm):
 class AgentChangeForm(UserChangeForm):
     """AgentChangeForm"""
     is_agent = forms.BooleanField()
-    manager = forms.ChoiceField(label=_("manager"),
-        choices=manager_list())
 
     class Meta:
         model = Agent

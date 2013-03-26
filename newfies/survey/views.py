@@ -579,7 +579,6 @@ def section_script_play(request, id):
                 (settings.MEDIA_ROOT, script_hexdigest)
             audio_file_path = file_path + '.wav'
             text_file_path = file_path + '.txt'
-            print(audio_file_path)
 
             if not os.path.isfile(audio_file_path):
                 #Write text to file

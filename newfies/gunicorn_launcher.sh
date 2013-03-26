@@ -1,6 +1,6 @@
 #!/bin/bash
 set -e
-LOGFILE=/var/log/gunicorn/newfies_dialer.log
+LOGFILE=/var/log/newfies/gunicorn_newfies_dialer.log
 LOGDIR=$(dirname $LOGFILE)
 
 # The number of workers is number of worker processes that will serve requests.

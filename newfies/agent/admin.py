@@ -18,8 +18,10 @@ from django.contrib.auth.models import User
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext as _
 from django.contrib.auth.forms import UserChangeForm, UserCreationForm
-from agent.models import Agent
+from django.db.models import Q
+from agent.models import Agent, AgentProfile
 from user_profile.models import Manager
+
 
 def manager_list():
     manager_list = []
@@ -30,24 +32,23 @@ def manager_list():
     return manager_list
 
 
-
+"""
 class AgentCreationForm(UserCreationForm):
-    """AgentCreationForm"""
     class Meta:
         model = Agent
         fields = ("username", "password1", "password2")
 
 
 class AgentChangeForm(UserChangeForm):
-    """AgentChangeForm"""
     is_agent = forms.BooleanField()
     manager = forms.ChoiceField(label=_("manager"),
         choices=manager_list())
 
     class Meta:
         model = Agent
+"""
 
-
+"""
 class AgentAdmin(UserAdmin):
     form = AgentChangeForm
     add_form = AgentCreationForm
@@ -60,6 +61,23 @@ class AgentAdmin(UserAdmin):
         (_('Important dates'), {'fields': ('last_login', 'date_joined')}),
     )
     list_filter = []
+"""
 
+class AgentProfileInline(admin.StackedInline):
+    model = AgentProfile
+
+
+class AgentAdmin(UserAdmin):
+    inlines = [
+        AgentProfileInline,
+    ]
+    list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
+                    'is_active', 'is_superuser', 'last_login')
+    list_filter = []
+
+    def queryset(self, request):
+        qs = super(UserAdmin, self).queryset(request)
+        qs = qs.filter(is_staff=False, is_superuser=False)
+        return qs
 
 admin.site.register(Agent, AgentAdmin)

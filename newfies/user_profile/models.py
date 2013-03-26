@@ -51,7 +51,7 @@ class UserProfile(models.Model):
     **Name of DB table**: user_profile
 
     """
-    user = models.OneToOneField(User)
+    user = models.OneToOneField(User, related_name="user")
     address = models.CharField(blank=True, null=True,
                                max_length=200, verbose_name=_('address'))
     city = models.CharField(max_length=120, blank=True, null=True,
@@ -73,9 +73,11 @@ class UserProfile(models.Model):
     note = models.CharField(max_length=250, blank=True, null=True,
                             verbose_name=_('note'))
     accountcode = models.PositiveIntegerField(null=True, blank=True)
-    userprofile_gateway = models.ManyToManyField(Gateway, verbose_name=_('gateway'))
+    userprofile_gateway = models.ManyToManyField(Gateway, verbose_name=_('gateway'),
+        related_name="user_gateway")
     dialersetting = models.ForeignKey(DialerSetting,
-                      verbose_name=_('dialer settings'), null=True, blank=True)
+                      verbose_name=_('dialer settings'), null=True, blank=True,
+                      related_name="user_dialersetting")
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -89,6 +91,7 @@ class UserProfile(models.Model):
 
     def __unicode__(self):
         return u"%s" % str(self.user)
+
 
 
 class Manager(User):
@@ -137,3 +140,5 @@ class Staff(User):
             self.is_staff = 1
             self.is_superuser = 1
         super(Staff, self).save(**kwargs)
+
+

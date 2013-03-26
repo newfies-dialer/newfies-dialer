@@ -33,6 +33,7 @@ from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
+from agent.models import AgentProfile
 from common.common_functions import current_view
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -82,6 +83,12 @@ def login_view(request):
                 if user.is_active:
                     login(request, user)
                     request.session['has_notified'] = False
+
+                    # Sample agent redirect
+                    if not user.is_staff and not user.is_superuser:
+                        print AgentProfile.objects.get(user=user)
+
+
                     # Redirect to a success page (dashboard).
                     return HttpResponseRedirect('/dashboard/')
                 else:

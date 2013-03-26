@@ -16,11 +16,14 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.db.models import Q
-from user_profile.models import UserProfile, Manager, Staff
-
+from user_profile.models import UserProfile, Manager, Staff#, ManagerProfile
+from agent.models import ManagerProfile
 
 class UserProfileInline(admin.StackedInline):
     model = UserProfile
+
+class ManagerProfileInline(admin.StackedInline):
+    model = ManagerProfile
 
 
 class StaffAdmin(UserAdmin):
@@ -36,9 +39,9 @@ class StaffAdmin(UserAdmin):
         return qs
 
 
-class ManagerAdmin(StaffAdmin):
+class ManagerAdmin(UserAdmin):
     inlines = [
-        UserProfileInline,
+        ManagerProfileInline,
     ]
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')
@@ -46,7 +49,7 @@ class ManagerAdmin(StaffAdmin):
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)
-        qs = qs.exclude(Q(is_staff=False) | Q(is_superuser=True))
+        qs = qs.filter(is_staff=True, is_superuser=False)
         return qs
 
 admin.site.unregister(User)

@@ -17,11 +17,10 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from common.language_field import LanguageField
 from django_countries import CountryField
-#from user_profile.models import UserProfile
+from user_profile.models import Manager
 
 
 class Agent(User):
-
     """This defines extra features for the agent profile
 
     **Attributes**:
@@ -68,6 +67,8 @@ class Agent(User):
     language = LanguageField(blank=True, null=True, verbose_name=_('language'))
     note = models.CharField(max_length=250, blank=True, null=True,
                             verbose_name=_('note'))
+    manager = models.OneToOneField(User, verbose_name=_("manager"),
+        help_text=_("select manager"))
 
     class Meta:
         permissions = (

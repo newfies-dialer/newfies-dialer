@@ -16,9 +16,7 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.db.models import Q
-#from django.utils.translation import ugettext_lazy as _
 from user_profile.models import UserProfile, Manager, Staff
-#from user_profile.models import Agent
 
 
 class UserProfileInline(admin.StackedInline):
@@ -53,5 +51,4 @@ class ManagerAdmin(StaffAdmin):
 
 admin.site.unregister(User)
 admin.site.register(Staff, StaffAdmin)
-#admin.site.register(Agent, AgentAdmin)
 admin.site.register(Manager, ManagerAdmin)

@@ -112,9 +112,9 @@ class Manager(User):
 
     def save(self, **kwargs):
         if not self.pk:
-            self.is_staff = 0
+            self.is_staff = 1
             self.is_superuser = 0
-        super(Staff, self).save(**kwargs)
+        super(Manager, self).save(**kwargs)
 
 
 class Staff(User):

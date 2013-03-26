@@ -410,6 +410,7 @@ func_install_frontend(){
     touch /var/log/newfies/newfies-django.log
     touch /var/log/newfies/newfies-django-db.log
     touch /var/log/newfies/err-apache-newfies.log
+    touch /var/log/newfies/gunicorn_newfies_dialer.log
     chown -R $NEWFIES_USER:$NEWFIES_USER /var/log/newfies
 
     python manage.py syncdb --noinput

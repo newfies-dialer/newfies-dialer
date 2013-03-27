@@ -82,7 +82,7 @@ class DNCContact(models.Model):
 
     class Meta:
         permissions = (
-            ("view_dnc_contact", _('can see dnc contact')),
+            ("view_dnccontact", _('can see dnc contact')),
         )
         db_table = "dnc_contact"
         verbose_name = _("DNC contact")

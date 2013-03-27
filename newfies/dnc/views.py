@@ -214,7 +214,7 @@ def dnc_change(request, object_id):
                               context_instance=RequestContext(request))
 
 
-@permission_required('dnc.view_dnc_contact', login_url='/')
+@permission_required('dnc.view_dnccontact', login_url='/')
 @login_required
 def dnc_contact_list(request):
     """DNC Contact list for the logged in user
@@ -325,7 +325,7 @@ def dnc_contact_list(request):
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
 
-@permission_required('dnc.add_dnc_contact', login_url='/')
+@permission_required('dnc.add_dnccontact', login_url='/')
 @login_required
 def dnc_contact_add(request):
     """Add a new dnc contact into the selected dnc for the logged in user
@@ -368,7 +368,7 @@ def dnc_contact_add(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('dnc.delete_dnc_contact', login_url='/')
+@permission_required('dnc.delete_dnccontact', login_url='/')
 @login_required
 def dnc_contact_del(request, object_id):
     """Delete dnc contact for the logged in user
@@ -408,7 +408,7 @@ def dnc_contact_del(request, object_id):
     return HttpResponseRedirect('/dnc_contact/')
 
 
-@permission_required('dnc.change_dnc_contact', login_url='/')
+@permission_required('dnc.change_dnccontact', login_url='/')
 @login_required
 def dnc_contact_change(request, object_id):
     """Update/Delete dnc contact for the logged in user

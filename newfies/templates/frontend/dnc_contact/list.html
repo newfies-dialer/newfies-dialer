@@ -84,13 +84,12 @@ function delete_button()
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <!--<li><a href="#" onclick="import_button()">{% trans "import"|title %}</a></li>-->
-                {% if perms.dnc.delete_dnc_contact %}
+                {% if perms.dnc.delete_dnccontact %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
             </ul>
         </div>
-        {% if perms.dnc.add_dnc_contact %}
+        {% if perms.dnc.add_dnccontact %}
             <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}
     </div>

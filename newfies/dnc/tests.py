@@ -23,7 +23,8 @@ from common.utils import BaseAuthenticatedClient
 
 
 class DNCAdminView(BaseAuthenticatedClient):
-    """Test cases for DNC list, DNC Contact Admin Interface.
+    """
+    Test cases for DNC list, DNC Contact Admin Interface.
     """
 
     def test_admin_dnc_view_list(self):
@@ -213,7 +214,9 @@ class DNCCustomerView(BaseAuthenticatedClient):
 
 
 class DNCModel(TestCase):
-    """Test DNC model"""
+    """
+    Test DNC model
+    """
 
     fixtures = ['auth_user.json']
 

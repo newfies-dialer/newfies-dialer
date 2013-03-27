@@ -54,7 +54,7 @@
           </li>
           {% endif %}
 
-          {% if perms.dnc.view_dnc_list or perms.dnc.view_dnc_contact %}
+          {% if perms.dnc.view_dnc_list or perms.dnc.view_dnccontact %}
           <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{% trans "do not call"|capfirst %}">{% trans "dnc"|upper %} <b class="caret"></b></a>
               {% if perms.dnc.view_dnc_list %}
@@ -63,7 +63,7 @@
                       <li {% if 'dnc' in module %}class="active"{% endif %}><a href="/dnc/">{% trans "dnc"|upper %} {% trans "list"|title %}</a></li>
                     {% endif %}
 
-                    {% if perms.dnc.view_dnc_contact %}
+                    {% if perms.dnc.view_dnccontact %}
                       <li {% if 'dnc_contact' in module  %}class="active"{% endif %}><a href="/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts" %}</a></li>
                     {% endif %}
                   </ul>

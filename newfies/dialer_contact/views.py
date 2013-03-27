@@ -600,7 +600,7 @@ def contact_import(request):
                         email=row[3],
                         description=row[4],
                         status=int(row[5]),
-                        address=int(row[6]),
+                        address=row[6],
                         city=row[7],
                         state=row[8],
                         country=row[9],

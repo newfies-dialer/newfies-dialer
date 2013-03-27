@@ -76,8 +76,8 @@ class ContactForm(ModelForm):
     class Meta:
         model = Contact
         fields = ['phonebook', 'contact', 'status', 'last_name', 'first_name',
-                  'email', 'country', 'city', 'additional_vars',
-                  'description']
+                  'email', 'address', 'city', 'state', 'country', 'unit_number',
+                  'additional_vars', 'description']
         widgets = {
             'additional_vars': Textarea(attrs={'cols': 23, 'rows': 3}),
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),

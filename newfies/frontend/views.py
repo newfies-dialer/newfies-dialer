@@ -87,7 +87,7 @@ def login_view(request):
                     # Agent redirect
                     if not user.is_staff and not user.is_superuser:
                         try:
-                            print AgentProfile.objects.get(user=user, is_agent=True)
+                            AgentProfile.objects.get(user=user, is_agent=True)
                             return HttpResponseRedirect('/agent_dashboard/')
                         except:
                             errorlogin = _('Login user is not agent')

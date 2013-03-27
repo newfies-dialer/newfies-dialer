@@ -139,8 +139,10 @@
                             <span class="label label-warning">{{ notice_count }}</span>
                         </a>
                     </li>
+                    {% if user.is_staff or user.is_superuser %}
                     <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">
                         {% trans "account limits"|capfirst %}</a></li>
+                    {% endif %}
                     <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-5">
                         {% trans "change language"|capfirst %}</a>
                     </li>

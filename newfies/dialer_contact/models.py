@@ -95,9 +95,14 @@ class Contact(Model):
     first_name = models.CharField(max_length=120, blank=True, null=True,
                                   verbose_name=_('first name'))
     email = models.EmailField(blank=True, null=True, verbose_name=_('email'))
-    country = CountryField(blank=True, null=True, verbose_name=_('country'))
+    address = models.TextField(null=True, blank=True,
+                               verbose_name=_("address"))
     city = models.CharField(max_length=120, blank=True, null=True,
                             verbose_name=_('city'))
+    state = models.CharField(max_length=120, blank=True, null=True,
+                             verbose_name=_('state'))
+    country = CountryField(blank=True, null=True, verbose_name=_('country'))
+    unit_number = models.IntegerField(verbose_name=_("unit number"), blank=True, null=True)
     additional_vars = jsonfield.JSONField(null=True, blank=True,
                                           verbose_name=_('additional parameters (JSON)'),
                                           help_text=_("enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"))

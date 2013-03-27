@@ -26,15 +26,23 @@ class Profile_abstract(models.Model):
 
     **Attributes**:
 
-        * ``name`` - survey name.
-        * ``description`` - description about the survey.
+        * ``accountcode`` - Account name.
+        * ``address`` -
+        * ``city`` -
+        * ``state`` -
+        * ``address`` -
+        * ``country`` -
+        * ``zip_code`` -
+        * ``phone_no`` -
+        * ``fax`` -
+        * ``company_name`` -
+        * ``company_website`` -
+        * ``language`` -
+        * ``note`` -
 
     **Relationships**:
 
-        * ``user`` - Foreign key relationship to the User model.\
-        Each survey is assigned to a User
-
-    **Name of DB table**: survey
+        * ``user`` - Foreign key relationship to the User model.
     """
     user = models.OneToOneField(User)
     address = models.CharField(blank=True, null=True,
@@ -68,32 +76,13 @@ class Profile_abstract(models.Model):
 class UserProfile(Profile_abstract):
     """This defines extra features for the user
 
-    **Attributes**:
-
-        * ``accountcode`` - Account name.
-        * ``address`` -
-        * ``city`` -
-        * ``state`` -
-        * ``address`` -
-        * ``country`` -
-        * ``zip_code`` -
-        * ``phone_no`` -
-        * ``fax`` -
-        * ``company_name`` -
-        * ``company_website`` -
-        * ``language`` -
-        * ``note`` -
-
     **Relationships**:
 
-        * ``user`` - Foreign key relationship to the User model.
         * ``userprofile_gateway`` - ManyToMany
-        * ``userprofile_voipservergroup`` - ManyToMany
         * ``dialersetting`` - Foreign key relationship to the DialerSetting \
         model.
 
     **Name of DB table**: user_profile
-
     """
     userprofile_gateway = models.ManyToManyField(Gateway, verbose_name=_('gateway'))
     dialersetting = models.ForeignKey(DialerSetting, verbose_name=_('dialer settings'),

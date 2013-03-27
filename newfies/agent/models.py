@@ -25,30 +25,13 @@ class AgentProfile(Profile_abstract):
 
     **Attributes**:
 
-        * ``accountcode`` - Account name.
-        * ``address`` -
-        * ``city`` -
-        * ``state`` -
-        * ``address`` -
-        * ``country`` -
-        * ``zip_code`` -
-        * ``phone_no`` -
-        * ``fax`` -
-        * ``company_name`` -
-        * ``company_website`` -
-        * ``language`` -
-        * ``note`` -
+        * ``is_agent`` - Designates whether the user is an agent
 
     **Relationships**:
 
-        * ``user`` - Foreign key relationship to the User model.
-        * ``userprofile_gateway`` - ManyToMany
-        * ``userprofile_voipservergroup`` - ManyToMany
-        * ``dialersetting`` - Foreign key relationship to the DialerSetting \
-        model.
+        * ``manager`` - Foreign key relationship to the manager model.
 
-    **Name of DB table**: user_profile
-
+    **Name of DB table**: agent_profile
     """
     is_agent = models.BooleanField(default=True,
         verbose_name=_('Designates whether the user is an agent.'))
@@ -65,7 +48,11 @@ class AgentProfile(Profile_abstract):
 
 
 class Agent(User):
-    """Agent"""
+    """Agent
+
+    Agents are user that have access to the Agent interface.
+    They don't have access to the admin/manager.
+    """
 
     class Meta:
         proxy = True

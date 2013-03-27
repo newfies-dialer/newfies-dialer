@@ -270,7 +270,7 @@
                             {% if section.type == SECTION_TYPE.CALL_TRANSFER %}
                                 <div class="span8">
                                     {% if section.phonenumber %}
-                                        {% trans "phone number"|title %} : {{ section.phonenumber }} <br/>
+                                        <b>{% trans "Phone Number / SIP URI" %} :</b> {{ section.phonenumber }} <br/>
                                     {% endif %}
                                 </div>
                             {% endif %}

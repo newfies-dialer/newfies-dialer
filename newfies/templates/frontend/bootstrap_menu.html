@@ -60,7 +60,7 @@
               {% if perms.dnc.view_dnc_list %}
                   <ul class="dropdown-menu">
                     {% if perms.dnc.view_dnc_list %}
-                      <li {% if 'dnc' in module %}class="active"{% endif %}><a href="/dnc/">{% trans "dnc"|upper %} {% trans "list"|title %}</a></li>
+                      <li {% if 'dnc_list' in module %}class="active"{% endif %}><a href="/dnc_list/">{% trans "dnc"|upper %} {% trans "list"|title %}</a></li>
                     {% endif %}
 
                     {% if perms.dnc.view_dnccontact %}

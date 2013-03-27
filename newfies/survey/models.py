@@ -231,7 +231,7 @@ class Section_abstract(Sortable):
     #Call Transfer
     phonenumber = models.CharField(max_length=50,
                                    null=True, blank=True,
-                                   verbose_name=_("phone number"))
+                                   verbose_name=_("Phone Number / SIP URI"))
     #Conference Room
     conference = models.CharField(max_length=50,
                                   null=True, blank=True,

@@ -18,18 +18,13 @@ from django.http import HttpResponseRedirect, HttpResponse, \
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-from django.db.models import Q
-from django.db.models import Count
 from dnc.models import DNC, DNCContact
 from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
-from dialer_campaign.function_def import check_dialer_setting,\
-    dialer_setting_limit, user_dialer_setting_msg, type_field_chk
-from frontend_notification.views import frontend_send_notification
-from common.common_functions import striplist, current_view,\
+from dialer_campaign.function_def import user_dialer_setting_msg, \
+    type_field_chk
+from common.common_functions import current_view,\
     get_pagination_vars
-import csv
-import json
 
 
 @permission_required('dnc.view_dnc_list', login_url='/')
@@ -97,7 +92,7 @@ def dnc_add(request):
             obj.save()
             request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}
-            return HttpResponseRedirect('/dnc/')
+            return HttpResponseRedirect('/dnc_list/')
     template = 'frontend/dnc_list/change.html'
     data = {
         'module': current_view(request),
@@ -107,6 +102,7 @@ def dnc_add(request):
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
 
 @login_required
 def get_dnc_contact_count(request):
@@ -170,7 +166,7 @@ def dnc_del(request, object_id):
         except:
             raise Http404
 
-    return HttpResponseRedirect('/dnc/')
+    return HttpResponseRedirect('/dnc_list/')
 
 
 @permission_required('dnc.change_dnc', login_url='/')
@@ -265,7 +261,7 @@ def dnc_contact_list(request):
             post_var_with_page = 1
             phone_number = request.session.get('session_phone_number')
             dnc = request.session.get('session_dnc')
-            form = ContactSearchForm(request.user, initial={'phone_number': phone_number,
+            form = DNCContactSearchForm(request.user, initial={'phone_number': phone_number,
                                                             'dnc': dnc})
         else:
             post_var_with_page = 1
@@ -325,6 +321,7 @@ def dnc_contact_list(request):
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
 
+
 @permission_required('dnc.add_dnccontact', login_url='/')
 @login_required
 def dnc_contact_add(request):
@@ -355,6 +352,7 @@ def dnc_contact_add(request):
                 error_msg = _('"%(name)s" cannot be added.') %\
                     {'name': request.POST['phone_number']}
 
+    #FIXME: dnc_count not used
     dnc_count = DNC.objects.filter(user=request.user).count()
     template = 'frontend/dnc_contact/change.html'
     data = {

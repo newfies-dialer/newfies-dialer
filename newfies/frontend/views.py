@@ -84,13 +84,17 @@ def login_view(request):
                     login(request, user)
                     request.session['has_notified'] = False
 
-                    # Sample agent redirect
+                    # Agent redirect
                     if not user.is_staff and not user.is_superuser:
-                        print AgentProfile.objects.get(user=user)
-
-
-                    # Redirect to a success page (dashboard).
-                    return HttpResponseRedirect('/dashboard/')
+                        try:
+                            print AgentProfile.objects.get(user=user, is_agent=True)
+                            return HttpResponseRedirect('/agent_dashboard/')
+                        except:
+                            errorlogin = _('Login user is not agent')
+                    else:
+                        # Manager / superuser
+                        # Redirect to a success page (dashboard).
+                        return HttpResponseRedirect('/dashboard/')
                 else:
                     # Return a 'disabled account' error message
                     errorlogin = _('disabled account')

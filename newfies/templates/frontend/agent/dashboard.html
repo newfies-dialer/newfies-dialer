@@ -1,0 +1,20 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+
+{% block title %}
+    {% trans 'agent dashboard'|title %}
+{% endblock %}
+
+{% block extra_header %}
+{% endblock %}
+
+{% block content_header %}
+    <h1>{% trans "agent dashboard"|title %} <small>{% trans "realtime call status"|capfirst %}</small></h1>
+{% endblock %}
+
+{% block content %}
+<div id="label" align="center">
+
+
+</div>
+{% endblock %}

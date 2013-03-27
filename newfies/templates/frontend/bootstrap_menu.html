@@ -16,7 +16,7 @@
 
       <div class="nav-collapse">
 
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and user.is_staff or user.is_superuser %}
         <ul class="nav">
 
           {% if perms.dialer_campaign.view_dashboard %}

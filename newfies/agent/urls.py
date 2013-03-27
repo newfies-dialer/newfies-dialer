@@ -11,3 +11,9 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.conf.urls import patterns
+
+
+urlpatterns = patterns('agent.views',
+    (r'^agent_dashboard/$', 'agent_dashboard'),
+)

@@ -39,6 +39,9 @@ class AgentProfile(Profile_abstract):
         help_text=_("select manager"), related_name="manager")
 
     class Meta:
+        permissions = (
+            ("view_agent_dashboard", _('can see Agent dashboard')),
+        )
         db_table = 'agent_profile'
         verbose_name = _("agent profile")
         verbose_name_plural = _("agent profiles")

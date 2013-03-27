@@ -72,3 +72,14 @@ class Agent(User):
             self.is_staff = 0
             self.is_superuser = 0
         super(Agent, self).save(**kwargs)
+
+    def manager_name(self):
+        """This will show manager name for each agent"""
+        try:
+            name = AgentProfile.objects.get(user_id=self.id).manager
+        except:
+            name = ''
+
+        return name
+    manager_name.allow_tags = True
+    manager_name.short_description = _('manager')

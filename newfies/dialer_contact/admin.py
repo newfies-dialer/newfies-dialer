@@ -147,7 +147,8 @@ class ContactAdmin(admin.ModelAdmin):
                 #  7     - city
                 #  8     - state
                 #  9     - country
-                #  10     - additional_vars
+                # 10     - unit_number
+                # 11     - additional_vars
                 # To count total rows of CSV file
                 records = csv.reader(
                     request.FILES['csv_file'], delimiter='|', quotechar='"')
@@ -172,9 +173,9 @@ class ContactAdmin(admin.ModelAdmin):
                         type_error_import_list.append(row)
                         break
 
-                    row_10= ''
-                    if row[10]:
-                        row_10 = json.loads(row[10])
+                    row_11 = ''
+                    if row[11]:
+                        row_11 = json.loads(row[11])
 
                     bulk_record.append(
                         Contact(
@@ -189,7 +190,8 @@ class ContactAdmin(admin.ModelAdmin):
                             city=row[7],
                             state=row[8],
                             country=row[9],
-                            additional_vars=row_10)
+                            unit_number=row[10],
+                            additional_vars=row_11)
                     )
 
                     contact_cnt = contact_cnt + 1

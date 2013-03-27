@@ -559,7 +559,8 @@ def contact_import(request):
             #  7     - city
             #  8     - country
             #  9     - country
-            # 10     - additional_vars
+            # 10     - unit_number
+            # 11     - additional_vars
             # To count total rows of CSV file
             records = csv.reader(request.FILES['csv_file'],
                                  delimiter='|', quotechar='"')
@@ -583,12 +584,12 @@ def contact_import(request):
                     type_error_import_list.append(row)
                     break
 
-                row_10 = ''
-                if row[10]:
+                row_11 = ''
+                if row[11]:
                     try:
-                        row_10 = json.loads(row[10])
+                        row_11 = json.loads(row[11])
                     except:
-                        row_10 = ''
+                        row_11 = ''
 
                 bulk_record.append(
                     Contact(
@@ -603,7 +604,8 @@ def contact_import(request):
                         city=row[7],
                         state=row[8],
                         country=row[9],
-                        additional_vars=row_10)
+                        unit_number=row[10],
+                        additional_vars=row_11)
                 )
 
                 contact_cnt = contact_cnt + 1

@@ -42,11 +42,11 @@ class DNC(models.Model):
 
     class Meta:
         permissions = (
-            ("view_dnc_list", _('can see DNC list')),
+            ("view_dnc_list", _('can see Do Not Call list')),
         )
         db_table = "dnc_list"
-        verbose_name = _("DNC list")
-        verbose_name_plural = _("DNC lists")
+        verbose_name = _("Do Not Call list")
+        verbose_name_plural = _("Do Not Call lists")
 
     def dnc_contacts_count(self):
         """This will return a count of the contacts in the dnc"""
@@ -70,7 +70,7 @@ class DNCContact(models.Model):
     **Name of DB table**: dnc_contact
     """
     dnc = models.ForeignKey(DNC, null=True, blank=True,
-                    verbose_name=_("DNC List"))
+                    verbose_name=_("Do Not Call List"))
     phone_number = models.CharField(max_length=120, db_index=True, null=True, blank=True,
         verbose_name=_("phone number"))
 
@@ -82,9 +82,9 @@ class DNCContact(models.Model):
 
     class Meta:
         permissions = (
-            ("view_dnccontact", _('can see dnc contact')),
+            ("view_dnccontact", _('can see Do Not Call contact')),
         )
         db_table = "dnc_contact"
-        verbose_name = _("DNC contact")
-        verbose_name_plural = _("DNC contacts")
+        verbose_name = _("Do Not Call contact")
+        verbose_name_plural = _("Do Not Call contacts")
         unique_together = ['dnc', 'phone_number']

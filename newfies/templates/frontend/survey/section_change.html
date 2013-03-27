@@ -240,7 +240,7 @@
                     {% if form.type.value|convert_to_int == SECTION_TYPE.CALL_TRANSFER %}
                         <div class="row">
                             <div class="span2">
-                                <label class="control-label" for="{{ form.phonenumber.auto_id }}">{{ form.phonenumber.label|title }}</label>
+                                <label class="control-label" for="{{ form.phonenumber.auto_id }}">{{ form.phonenumber.label }}</label>
                             </div>
                             <div class="span3 clearfix{% if form.phonenumber.errors %} control-group error{% endif %}">
                                 <div class="input">

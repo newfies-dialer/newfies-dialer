@@ -29,7 +29,7 @@ class SearchForm(forms.Form):
 
 class FileImport(forms.Form):
     """General Form : CSV file upload"""
-    csv_file = forms.FileField(label=_('upload CSV file using the pipe "|" as the field delimiter, e.g. 1234567890|surname|forename|email@somewhere.com|test-contact|1|address|city|state|US|unit|{"age":"32","title":"doctor"}'),
+    csv_file = forms.FileField(label=_('upload CSV file using the pipe "|" as the field delimiter, e.g. 1234567890|surname|forename|email@somewhere.com|test-contact|1|address|city|state|US|unit|{"age":"32","title":"doctor"}|'),
             required=True, error_messages={'required': 'please upload a CSV File'})
 
     def clean_csv_file(self):

@@ -102,7 +102,8 @@ class Contact(Model):
     state = models.CharField(max_length=120, blank=True, null=True,
                              verbose_name=_('state'))
     country = CountryField(blank=True, null=True, verbose_name=_('country'))
-    unit_number = models.IntegerField(verbose_name=_("unit number"), blank=True, null=True)
+    unit_number = models.CharField(max_length=50, blank=True, null=True,
+                                   verbose_name=_("unit number"))
     additional_vars = jsonfield.JSONField(null=True, blank=True,
                                           verbose_name=_('additional parameters (JSON)'),
                                           help_text=_("enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"))

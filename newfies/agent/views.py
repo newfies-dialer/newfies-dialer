@@ -18,11 +18,12 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 
 from agent.models import AgentProfile
 from agent.constants import AGENT_COLUMN_NAME
 from agent.forms import AgentChangeDetailExtendForm
+from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
 from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import current_view, get_pagination_vars
@@ -162,5 +163,47 @@ def agent_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('agent.add_agent', login_url='/')
+@login_required
+def agent_add(request):
+    """Add new Agent for the logged in manager
+
+    **Attributes**:
+
+        * ``form`` - UserCreationForm
+        * ``template`` - frontend/agent/change.html
+
+    **Logic Description**:
+
+        * Add a new agent which will belong to the logged in manager
+          via the UserCreationForm & get redirected to the agent list
+    """
+    form = UserCreationForm()
+    if request.method == 'POST':
+        form = UserCreationForm(request.POST)
+        if form.is_valid():
+            new_agent = form.save()
+
+            # Add Agent profile
+            AgentProfile.objects.create(
+                user=new_agent,
+                manager=Manager.objects.get(username=request.user),
+                is_agent=True
+            )
+
+            request.session["msg"] = _('"%(name)s" added as agent.') %\
+                {'name': request.POST['username']}
+            return HttpResponseRedirect('/agent/')
+    template = 'frontend/agent/change.html'
+    data = {
+        'module': current_view(request),
+        'form': form,
+        'action': 'add',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

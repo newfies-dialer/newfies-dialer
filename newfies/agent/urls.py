@@ -19,7 +19,7 @@ urlpatterns = patterns('agent.views',
     (r'^agent_detail_change/$', 'agent_detail_change'),
 
     (r'^agent/$', 'agent_list'),
-    #(r'^agent/add/$', 'agent_add'),
+    (r'^agent/add/$', 'agent_add'),
     #(r'^agent/contact_count/$', 'get_agent_count'),
     #(r'^agent/del/(.+)/$', 'agent_del'),
     #(r'^agent/(.+)/$', 'agent_change'),

@@ -56,7 +56,6 @@ class Agent(User):
     Agents are user that have access to the Agent interface.
     They don't have access to the admin/manager.
     """
-
     class Meta:
         proxy = True
         app_label = 'auth'

@@ -217,7 +217,7 @@ func_install_frontend(){
 
     apt-get update
     apt-get -y remove apache2.2-common apache2
-    apt-get install --reinstall language-pack-en
+    apt-get -y install --reinstall language-pack-en
 
     apt-get -y install python-setuptools python-dev build-essential
     apt-get -y install nginx supervisor

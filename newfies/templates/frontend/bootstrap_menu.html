@@ -131,9 +131,15 @@
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                    <li  {% if action == "tabs-1" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-1">
-                        {% trans "account settings"|capfirst %}</a>
-                    </li>
+                    {% if user.is_staff or user.is_superuser %}
+                      <li  {% if action == "tabs-1" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-1">
+                          {% trans "account settings"|capfirst %}</a>
+                      </li>
+                    {% else %}
+                      <li  {% if action == "tabs-1" %}class="active"{% endif %}><a href="/agent_detail_change/?action=tabs-1">
+                            {% trans "account settings"|capfirst %}</a>
+                        </li>
+                    {% endif %}
                     <li>
                         <a href="/user_notification/">{% trans "notifications"|title %}
                             <span class="label label-warning">{{ notice_count }}</span>
@@ -143,9 +149,17 @@
                     <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">
                         {% trans "account limits"|capfirst %}</a></li>
                     {% endif %}
-                    <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-5">
-                        {% trans "change language"|capfirst %}</a>
-                    </li>
+
+                    {% if user.is_staff or user.is_superuser %}
+                      <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-5">
+                          {% trans "change language"|capfirst %}</a>
+                      </li>
+                    {% else %}
+                      <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/agent_detail_change/?action=tabs-5">
+                          {% trans "change language"|capfirst %}</a>
+                      </li>
+                    {% endif %}
+
                     <li class="divider"></li>
                     {% if perms.user_profile.view_api_explorer %}
                         <li><a href="/api-explorer/"> {% trans "API Explorer" %}</a></li>

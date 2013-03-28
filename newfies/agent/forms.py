@@ -35,3 +35,17 @@ class AgentProfileForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(AgentProfileForm, self).__init__(*args, **kwargs)
         self.fields['manager'].choices = manager_list()
+
+
+class AgentChangeDetailExtendForm(ModelForm):
+    """A form used to change the detail of a user in the Agent UI."""
+    class Meta:
+        model = AgentProfile
+        fields = ["address", "city", "state", "country", "zip_code",
+                  "phone_no", "fax", "company_name", "company_website",
+                  "language", "note"]
+
+    def __init__(self, user, *args, **kwargs):
+        self.user = user
+        super(AgentChangeDetailExtendForm, self).__init__(*args, **kwargs)
+

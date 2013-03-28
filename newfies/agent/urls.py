@@ -16,4 +16,5 @@ from django.conf.urls import patterns
 
 urlpatterns = patterns('agent.views',
     (r'^agent_dashboard/$', 'agent_dashboard'),
+    (r'^agent_detail_change/$', 'agent_detail_change'),
 )

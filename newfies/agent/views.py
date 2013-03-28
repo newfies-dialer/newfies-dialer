@@ -19,6 +19,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
+from django.contrib.auth.models import Permission
 
 from agent.models import AgentProfile
 from agent.constants import AGENT_COLUMN_NAME
@@ -29,7 +30,7 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import current_view, get_pagination_vars
 
 
-@permission_required('agent.view_agent_dashboard', login_url='/')
+@permission_required('auth.view_agent_dashboard', login_url='/')
 @login_required
 def agent_dashboard(request):
     """
@@ -167,7 +168,7 @@ def agent_list(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('agent.add_agent', login_url='/')
+@permission_required('auth.add_agent', login_url='/')
 @login_required
 def agent_add(request):
     """Add new Agent for the logged in manager
@@ -188,15 +189,13 @@ def agent_add(request):
         if form.is_valid():
             new_agent = form.save()
 
-            # Add Agent profile
             AgentProfile.objects.create(
                 user=new_agent,
                 manager=Manager.objects.get(username=request.user),
                 is_agent=True
             )
-
-            # Add agent's default permission
-            new_agent.user_permissions.add('view_agent_dashboard')
+            permission = Permission.objects.get(codename='view_agent_dashboard')
+            new_agent.user_permissions.add(permission)
 
             request.session["msg"] = _('"%(name)s" added as agent.') %\
                 {'name': request.POST['username']}

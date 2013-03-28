@@ -14,6 +14,7 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
+from django.contrib.auth.models import User
 from agent.models import AgentProfile
 from agent.function_def import manager_list
 
@@ -39,4 +40,3 @@ class AgentChangeDetailExtendForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(AgentChangeDetailExtendForm, self).__init__(*args, **kwargs)
-

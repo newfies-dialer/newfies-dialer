@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from common.language_field import LanguageField
 from django_countries import CountryField
 from user_profile.models import Manager, Profile_abstract
+from agent.constants import AGENT_STATUS, AGENT_TYPE
 
 
 class AgentProfile(Profile_abstract):
@@ -37,11 +38,33 @@ class AgentProfile(Profile_abstract):
         verbose_name=_('Designates whether the user is an agent.'))
     manager = models.ForeignKey(Manager, verbose_name=_("manager"), blank=True, null=True,
         help_text=_("select manager"), related_name="manager")
+    #"""
+    type = models.IntegerField(choices=list(AGENT_TYPE),
+                               default=AGENT_TYPE.CALLBACK,
+                               verbose_name=_("type"), blank=True, null=True)
+    name = models.CharField(max_length=120, blank=True, null=True,
+                            verbose_name=_('name'))
 
+    call_timeout = models.IntegerField(default='45', blank=True, null=True,
+                                       verbose_name=_('timeout on call'),
+                                       help_text=_("connection timeout in seconds"))
+    contact = models.CharField(max_length=90, blank=True, null=True,
+                                verbose_name=_('contact'))
+    status = models.IntegerField(choices=list(AGENT_STATUS),
+                                 default=AGENT_STATUS.AVAILABLE,
+                                 verbose_name=_("status"), blank=True, null=True)
+    no_answer_delay_time = models.IntegerField(blank=True, null=True,
+                                        verbose_name=_('no answer delay time'))
+    max_no_answer = models.IntegerField(blank=True, null=True,
+                                        verbose_name=_('max. no of answer'))
+    wrap_up_time = models.IntegerField(blank=True, null=True,
+                                        verbose_name=_('wrap up time'))
+    reject_delay_time = models.IntegerField(blank=True, null=True,
+                                        verbose_name=_('reject delay time'))
+    busy_delay_time = models.IntegerField(blank=True, null=True,
+                                          verbose_name=_('busy delay time'))
+    #"""
     class Meta:
-        permissions = (
-            ("view_agent_dashboard", _('can see Agent dashboard')),
-        )
         db_table = 'agent_profile'
         verbose_name = _("agent profile")
         verbose_name_plural = _("agent profiles")
@@ -57,6 +80,9 @@ class Agent(User):
     They don't have access to the admin/manager.
     """
     class Meta:
+        permissions = (
+            ("view_agent_dashboard", _('can see Agent dashboard')),
+        )
         proxy = True
         app_label = 'auth'
         verbose_name = _('agent')
@@ -86,4 +112,3 @@ class Agent(User):
         return name
     manager_name.allow_tags = True
     manager_name.short_description = _('manager')
-

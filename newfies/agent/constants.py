@@ -21,3 +21,11 @@ class AGENT_COLUMN_NAME(Choice):
     name = _('name')
     date = _('date')
 
+
+class AGENT_STATUS(Choice):
+    AVAILABLE = 1, _('availabel')
+
+
+class AGENT_TYPE(Choice):
+    CALLBACK = 1, _('callback')
+    UUID_STANDBY = 2, _('uuid-standby')

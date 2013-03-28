@@ -30,12 +30,12 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                {% if perms.agent.delete_agent %}
+                {% if perms.agent.delete_agentprofile %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
             </ul>
         </div>
-        {% if perms.agent.add_agent %}
+        {% if perms.agent.add_agentprofile %}
             <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}
     </div>
@@ -63,10 +63,10 @@
                             <td>{{ row.user }}</td>
                             <td>{{ row.updated_date }}</td>
                             <td>
-                                {% if perms.agent.change_agent %}
+                                {% if perms.agent.change_agentprofile %}
                                     <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update agent"|title %}"></a>
                                 {% endif %}
-                                {% if perms.agent.delete_agent %}
+                                {% if perms.agent.delete_agentprofile %}
                                     <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete agent"|title %}"></a>
                                 {% endif %}
                             </td>

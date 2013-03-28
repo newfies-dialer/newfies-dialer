@@ -1,6 +1,9 @@
 {% extends "frontend/master.html" %}
 {% load i18n %}
 
+{% block header_files %}
+{% endblock %}
+
 {% block extra_files %}
 {% endblock %}
 
@@ -17,6 +20,7 @@
 
     {% block content %}
         {% if err_msg %}
+        {% include "frontend/extra_modal_files.html" %}
             <script type="text/javascript" charset="utf-8">
                 $(window).load(function(){
                     $('#survey_import_modal').modal('show');
@@ -62,7 +66,7 @@
 
         {% if err_msg %}
             </div>
-        {% endif %}    
+        {% endif %}
 
     {% endblock %}
 

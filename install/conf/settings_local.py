@@ -76,13 +76,15 @@ ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
 # ADD 'dummy','plivo','twilio','esl'
-NEWFIES_DIALER_ENGINE = 'dummy'
+NEWFIES_DIALER_ENGINE = 'esl'
 
 API_ALLOWED_IP = [
     '127.0.0.1',
     'localhost',
     #'SERVER_IP',
 ]
+
+ALLOWED_HOSTS = ['SERVER_IP']
 
 #LOGGING
 #=======
@@ -102,12 +104,18 @@ LOGGING = {
             'format': '%(asctime)s %(levelname)s || %(message)s'
         },
     },
+    'filters': {
+        'require_debug_false': {
+            '()': 'django.utils.log.RequireDebugFalse'
+        }
+    },
     'handlers': {
         # Include the default Django email handler for errors
         # This is what you'd get without configuring logging at all.
         'mail_admins': {
             'class': 'django.utils.log.AdminEmailHandler',
             'level': 'ERROR',
+            'filters': ['require_debug_false'],
             # But the emails are plain text by default - HTML is nicer
             'include_html': True,
         },

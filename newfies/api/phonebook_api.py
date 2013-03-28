@@ -30,24 +30,12 @@ from dialer_campaign.models import Campaign
 class PhonebookValidation(Validation):
     """Phonebook Validation Class"""
     def is_valid(self, bundle, request=None):
-        errors = {}
-
         if not bundle.data:
-            errors['Data'] = ['Data set is empty']
+            return {'__all__': 'Please enter data'}
 
-        if request.method == 'POST':
-            campaign_id = bundle.data.get('campaign_id')
-            if campaign_id:
-                try:
-                    Campaign.objects.get(id=campaign_id)
-                except:
-                    errors['chk_campaign'] = ['Campaign ID does not exist!']
-
-        try:
-            user_id = User.objects.get(username=request.user).id
-            bundle.data['user'] = '/api/v1/user/%s/' % user_id
-        except:
-            errors['chk_user'] = ["The User doesn't exist!"]
+        errors = {}
+        if not 'name' in bundle.data or bundle.data.get('name') == '':
+            errors['name'] = ['Please enter phonebook name.']
 
         return errors
 
@@ -58,7 +46,6 @@ class PhonebookResource(ModelResource):
 
         * ``name`` - Name of the Phonebook
         * ``description`` - Short description of the Campaign
-        * ``campaign_id`` - Campaign ID
 
     **Validation**:
 
@@ -68,7 +55,7 @@ class PhonebookResource(ModelResource):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mylittlephonebook", "description": "", "campaign_id": "1"}' http://localhost:8000/api/v1/phonebook/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mylittlephonebook", "description": ""}' http://localhost:8000/api/v1/phonebook/
 
         Response::
 
@@ -79,7 +66,6 @@ class PhonebookResource(ModelResource):
             Content-Type: text/html; charset=utf-8
             Location: http://localhost:8000/api/app/phonebook/1/
             Content-Language: en-us
-
 
     **Read**:
 
@@ -159,8 +145,7 @@ class PhonebookResource(ModelResource):
 
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/api/v1/phonebook/?name=myphonebook
     """
-    user = fields.ForeignKey(UserResource, 'user', full=True)
-
+    user = fields.ForeignKey(UserResource, 'user')
     class Meta:
         queryset = Phonebook.objects.all()
         resource_name = 'phonebook'
@@ -171,3 +156,7 @@ class PhonebookResource(ModelResource):
             'name': ALL,
         }
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
+
+    def hydrate(self, bundle, request=None):
+        bundle.obj.user = User.objects.get(pk=bundle.request.user.id)
+        return bundle

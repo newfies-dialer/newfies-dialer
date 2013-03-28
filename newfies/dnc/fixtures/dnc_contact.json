@@ -1,0 +1,12 @@
+[
+{
+    "pk": 1, 
+    "model": "dnc.dnccontact", 
+    "fields": {
+        "phone_number": "123456789", 
+        "updated_date": "2013-03-15T18:29:35.400", 
+        "dnc": 1, 
+        "created_date": "2013-03-15T18:29:35.400"
+    }
+}
+]

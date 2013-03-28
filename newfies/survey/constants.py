@@ -24,16 +24,8 @@ class SECTION_TYPE(Choice):
     RECORD_MSG = 5, _('record message').capitalize()
     CALL_TRANSFER = 6, _('call transfer').capitalize()
     HANGUP_SECTION = 7, _('hangup').capitalize()
-
-
-class SECTION_TYPE_NOTRANSFER(Choice):
-    PLAY_MESSAGE = 1, _('play message').capitalize()
-    MULTI_CHOICE = 2, _('multi-choice').capitalize()
-    RATING_SECTION = 3, _('rating question').capitalize()
-    CAPTURE_DIGITS = 4, _('capture digits').capitalize()
-    RECORD_MSG = 5, _('record message').capitalize()
-    #CALL_TRANSFER = 6, _('Call transfer')
-    HANGUP_SECTION = 7, _('hangup').capitalize()
+    CONFERENCE = 8, _('conference').capitalize()
+    DNC = 9, _('dnc').upper()
 
 
 class SURVEY_COLUMN_NAME(Choice):

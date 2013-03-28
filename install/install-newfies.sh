@@ -330,7 +330,6 @@ func_install_frontend(){
     do
         pip install $line
     done
-    #pip install plivohelper
 
     #Install Python ESL
     cd /usr/src/freeswitch/libs/esl
@@ -411,6 +410,7 @@ func_install_frontend(){
     touch /var/log/newfies/newfies-django.log
     touch /var/log/newfies/newfies-django-db.log
     touch /var/log/newfies/err-apache-newfies.log
+    touch /var/log/newfies/gunicorn_newfies_dialer.log
     chown -R $NEWFIES_USER:$NEWFIES_USER /var/log/newfies
 
     python manage.py syncdb --noinput
@@ -446,7 +446,7 @@ func_install_frontend(){
     #Update Authorize local IP
     sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/dummy/esl/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/SERVER_IP/$IPADDR/g" $INSTALL_DIR/settings_local.py
 
     #Get TZ
     ZONE=$(head -1 /etc/timezone)

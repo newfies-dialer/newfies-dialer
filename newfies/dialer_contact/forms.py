@@ -29,8 +29,8 @@ class SearchForm(forms.Form):
 
 class FileImport(forms.Form):
     """General Form : CSV file upload"""
-    csv_file = forms.FileField(label=_("upload CSV file, the delimiter have to be " + '\"|\"'), required=True,
-                               error_messages={'required': 'please upload a CSV File'})
+    csv_file = forms.FileField(label=_('upload CSV file using the pipe "|" as the field delimiter, e.g. 1234567890|surname|forename|email@somewhere.com|test-contact|1|address|city|state|US|unit|{"age":"32","title":"doctor"}|'),
+            required=True, error_messages={'required': 'please upload a CSV File'})
 
     def clean_csv_file(self):
         """Form Validation :  File extension Check"""
@@ -76,8 +76,8 @@ class ContactForm(ModelForm):
     class Meta:
         model = Contact
         fields = ['phonebook', 'contact', 'status', 'last_name', 'first_name',
-                  'email', 'country', 'city', 'additional_vars',
-                  'description']
+                  'email', 'address', 'city', 'state', 'country', 'unit_number',
+                  'additional_vars', 'description']
         widgets = {
             'additional_vars': Textarea(attrs={'cols': 23, 'rows': 3}),
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),

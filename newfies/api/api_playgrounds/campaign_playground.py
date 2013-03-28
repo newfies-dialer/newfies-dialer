@@ -55,6 +55,10 @@ class CampaignAPIPlayground(APIPlayground):
                                 "type": "string"
                             },
                             {
+                                "name": "caller_name",
+                                "type": "string"
+                            },
+                            {
                                 "name": "startingdate",
                                 "type": "string",
                                 "default": "1301392136.0"
@@ -107,7 +111,7 @@ class CampaignAPIPlayground(APIPlayground):
                             {
                                 "name": "content_type",
                                 "type": "string",
-                                "default": "voiceapp_template"
+                                "default": "survey_template"
                             },
                             {
                                 "name": "object_id",
@@ -127,7 +131,7 @@ class CampaignAPIPlayground(APIPlayground):
                         ]
                     },
                     {
-                        "method": "PUT",
+                        "method": "PATCH",
                         "url": "/api/v1/campaign/{campaign-id}/",
                         "description": _("update campaign"),
                         "parameters": [
@@ -143,6 +147,10 @@ class CampaignAPIPlayground(APIPlayground):
                             },
                             {
                                 "name": "callerid",
+                                "type": "string"
+                            },
+                            {
+                                "name": "caller_name",
                                 "type": "string"
                             },
                             {
@@ -188,7 +196,7 @@ class CampaignAPIPlayground(APIPlayground):
                             {
                                 "name": "content_type",
                                 "type": "string",
-                                "default": "voiceapp_template"
+                                "default": "survey_template"
                             },
                             {
                                 "name": "object_id",

@@ -38,7 +38,7 @@ class VoipSearchForm(SearchForm):
         if user:
             list = []
             list.append((0, _('all').upper()))
-            content_type_list = ['voiceapp', 'survey']
+            content_type_list = ['survey']
             try:
                 if user.is_superuser:
                     campaign_list = Campaign.objects.values_list('id', 'name')\

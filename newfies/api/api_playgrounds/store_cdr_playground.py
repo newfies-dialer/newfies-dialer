@@ -29,12 +29,14 @@ class StoreCdrAPIPlayground(APIPlayground):
                         "method": "POST",
                         "url": "/api/v1/store_cdr/",
                         "description": _("Store CDR"),
-                        "parameters": [{
-                                           "name": "cdr",
-                                           "type": "string",
-                                           "is_required": True,
-                                           "default": '<?xml version="1.0"?><cdr><other></other><variables><plivo_request_uuid>af41ac8a-ede4-11e0-9cca-00231470a30c</plivo_request_uuid><duration>3</duration></variables><notvariables><plivo_request_uuid>TESTc</plivo_request_uuid><duration>5</duration></notvariables></cdr>'
-                                       }]
+                        "parameters": [
+                            {
+                                "name": "cdr",
+                                "type": "string",
+                                "is_required": True,
+                                "default": '<?xml version="1.0"?><cdr><other></other><variables><request_uuid>af41ac8a-ede4-11e0-9cca-00231470a30c</request_uuid><duration>3</duration></variables><notvariables><request_uuid>TESTc</request_uuid><duration>5</duration></notvariables></cdr>'
+                            },
+                        ]
                     }
                 ]
             },

@@ -36,7 +36,7 @@ seed()
 logger = logging.getLogger('newfies.filelog')
 
 
-CDR_VARIABLES = ['plivo_request_uuid', 'plivo_answer_url', 'plivo_app',
+CDR_VARIABLES = ['request_uuid', 'answer_url', 'app',
                  'direction', 'endpoint_disposition', 'hangup_cause',
                  'hangup_cause_q850', 'duration', 'billsec', 'progresssec',
                  'answersec', 'waitsec', 'mduration', 'billmsec',
@@ -50,14 +50,13 @@ class CustomJSONSerializer(Serializer):
 
     def from_json(self, content):
         decoded_content = urllib.unquote(content.decode("utf8"))
-        #data = simplejson.loads(content)
         data = {}
         data['cdr'] = decoded_content[4:]
         return data
 
 
-def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
-                    leg='a', hangup_cause='', from_plivo='', to_plivo=''):
+def create_voipcall(obj_callrequest, request_uuid, data, data_prefix='',
+                    leg='a', hangup_cause='', caller_pn='', called_pn=''):
     """
     Common function to create CDR / VoIP Call
 
@@ -65,7 +64,7 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
 
         * data : list with call details data
         * obj_callrequest:  refer to the CallRequest object
-        * plivo_request_uuid : cdr uuid
+        * request_uuid : cdr uuid
 
     """
 
@@ -86,15 +85,11 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
     else:
         #B-Leg
         leg_type = 2
-        if obj_callrequest.content_object.__class__.__name__ == 'VoiceApp':
+        if obj_callrequest.content_object.__class__.__name__ == 'Survey':
             used_gateway = obj_callrequest.content_object.gateway
         else:
             #Survey
             used_gateway = obj_callrequest.aleg_gateway
-
-        #On B-leg issue to get the right CallerID and Phonenumber
-        if not to_plivo or len(to_plivo) == 0:
-            to_plivo = data["%s%s" % (data_prefix, 'caller_id')]
 
     #check the right variable for hangup cause
     data_hangup_cause = data["%s%s" % (data_prefix, 'hangup_cause')]
@@ -107,23 +102,23 @@ def create_voipcall(obj_callrequest, plivo_request_uuid, data, data_prefix='',
         disposition = 'BUSY'
     else:
         disposition = data["%s%s" % (data_prefix, 'endpoint_disposition')] or ''
-    if not from_plivo:
-        from_plivo = ''
+    if not caller_pn:
+        caller_pn = ''
 
     logger.debug('Create CDR - request_uuid=%s ; leg=%d ; hangup_cause= %s' %
-        (plivo_request_uuid, leg_type, cdr_hangup_cause))
+        (request_uuid, leg_type, cdr_hangup_cause))
 
-    prefix_obj = get_prefix_obj(to_plivo)
+    prefix_obj = get_prefix_obj(called_pn)
 
     new_voipcall = VoIPCall(
         user=obj_callrequest.user,
-        request_uuid=plivo_request_uuid,
+        request_uuid=request_uuid,
         leg_type=leg_type,
         used_gateway=used_gateway,
         callrequest=obj_callrequest,
         callid=data["%s%s" % (data_prefix, 'call_uuid')] or '',
-        callerid=from_plivo,
-        phone_number=to_plivo,
+        callerid=caller_pn,
+        phone_number=called_pn,
         dialcode=prefix_obj,
         starting_date=starting_date,
         duration=data["%s%s" % (data_prefix, 'duration')] or 0,

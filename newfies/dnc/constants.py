@@ -12,12 +12,19 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.conf.urls import patterns
+from django.utils.translation import ugettext_lazy as _
+from common.utils import Choice
 
-urlpatterns = patterns('voice_app.views',
-    (r'^voiceapp/$', 'voiceapp_list'),
-    (r'^voiceapp/add/$', 'voiceapp_add'),
-    (r'^voiceapp_view/(.+)/$', 'voiceapp_view'),
-    (r'^voiceapp/del/(.+)/$', 'voiceapp_del'),
-    (r'^voiceapp/(.+)/$', 'voiceapp_change'),
-)
+
+class DNC_COLUMN_NAME(Choice):
+    id = _('ID')
+    name = _('name')
+    date = _('date')
+    contacts = _('contacts')
+
+
+class DNC_CONTACT_COLUMN_NAME(Choice):
+    id = _('ID')
+    dnc = _('dnc').upper()
+    phone_number = _('phone number')
+    date = _('date')

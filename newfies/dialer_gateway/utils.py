@@ -12,34 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from dialer_gateway.models import Gateway
-
-
-#NOTE: This might get deleted as replaced by prepare_phonenumber
-def phonenumber_change_prefix(phone_number, gateway_id):
-    """
-    apply prefix modification for a given phone_number and gateway
-    """
-    try:
-        obj_gateway = Gateway.objects.get(id=gateway_id)
-    except:
-        print 'Can\'t find this Gateway : %s' % gateway_id
-        return False
-
-    if not phone_number:
-        return False
-
-    if obj_gateway.status != 1:
-        #Gateway not Active
-        return False
-
-    if (len(obj_gateway.removeprefix) > 0
-       and phone_number.startswith(obj_gateway.removeprefix)):
-        phone_number = phone_number[len(obj_gateway.removeprefix):]
-
-    phone_number = obj_gateway.addprefix + phone_number
-
-    return phone_number
+from dialer_gateway.constants import GATEWAY_STATUS
 
 
 def prepare_phonenumber(phone_number, addprefix, removeprefix, gw_status):
@@ -49,7 +22,7 @@ def prepare_phonenumber(phone_number, addprefix, removeprefix, gw_status):
     if not phone_number:
         return False
 
-    if gw_status != 1:
+    if gw_status != GATEWAY_STATUS.ACTIVE:
         #Gateway not Active
         return False
 

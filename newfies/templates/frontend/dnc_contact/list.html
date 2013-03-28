@@ -1,0 +1,148 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags pagination_tags icons %}
+
+{% block extra_files %}
+    <script language="javascript" type="text/javascript">
+        $(document).ready(function() {
+            $("#id_contact_no").keydown(function(event) {
+                numeric(event);
+            });
+        });
+    </script>
+    {% include "frontend/custom_jquery_select_all.html" %}
+
+    <style type="text/css">
+    table td {
+        width: auto;
+        padding: 10px 5px 9px 0px;
+    }
+    label {
+        text-align: left;
+    }
+    </style>
+{% endblock %}
+
+{% block content_header %}
+    <h1>{% trans "dnc"|upper %} {% trans "contacts"|title %} <small>{% trans "list, add and edit Do Not Call contacts"|capfirst %}</small></h1>
+{% endblock %}
+
+{% block content %}
+<div id="form_collapse" class="collapse">
+    <form class="well form-search" method="POST" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="span12">
+                <div class="row">
+                    {% get_fieldset phone_number,dnc as search_contact from form %}
+                    {% for field in search_contact %}
+                    <div class="span4 clearfix{% if field.errors %} error{% endif %}">
+                        <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
+                        <div class="input">
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <input class="btn btn-primary" type=submit name=submit value={% trans "search"|title %} />&nbsp;
+        </div>
+    </form>
+</div>
+
+<a class="btn btn-small" id="toggle_btn" href="#" data-toggle="collapse" data-target="#form_collapse">
+    <i class="icon-search"></i> <span>{% trans "search"|title %}</span>
+</a>
+
+<script type="text/javascript">
+function add_button()
+{
+    window.location = 'add/';
+}
+function import_button()
+{
+    window.location = 'import/';
+}
+function delete_button()
+{
+    $('#ListForm').submit();
+}
+</script>
+<p>&nbsp;</p>
+<div class="span12">
+    <div class="row">
+        <div class="btn-group">
+            <button class="btn">{% trans "action"|capfirst %}</button>
+            <button class="btn dropdown-toggle" data-toggle="dropdown">
+                <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu">
+                {% if perms.dnc.delete_dnccontact %}
+                    <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
+                {% endif %}
+            </ul>
+        </div>
+        {% if perms.dnc.add_dnccontact %}
+            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
+        {% endif %}
+    </div>
+</div>
+
+<div class="span12">
+    <div class="row">
+        <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
+            <table class="table table-striped table-bordered table-condensed">
+                <thead>
+                <tr>
+                    <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
+                    <th>{% sort_link DNC_CONTACT_COLUMN_NAME.id|capfirst col_name_with_order.id %}</th>
+                    <th>{% sort_link DNC_CONTACT_COLUMN_NAME.dnc|capfirst col_name_with_order.dnc %}</th>
+                    <th>{% sort_link DNC_CONTACT_COLUMN_NAME.phone_number|capfirst col_name_with_order.phone_number %}</th>
+                    <th>{% sort_link DNC_CONTACT_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
+                    <th>{% trans 'action'|capfirst %}</th>
+                </tr>
+                </thead>
+                {% if phone_number_list %}
+                    {% autopaginate all_phone_number_list PAGE_SIZE %}
+                    {% for row in phone_number_list %}
+                        <tr>
+                            <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
+                            <td>{{ row.id }}</td>
+                            <td>{{ row.dnc__name }}</td>
+                            <td>{{ row.phone_number }}</td>
+                            <td>{{ row.updated_date }}</td>
+                            <td>
+                                {% if perms.dnc.change_dnc_contact %}
+                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update dnc contact"|title %}"></a>
+                                {% endif %}
+                                {% if perms.dnc.delete_dnc_contact %}
+                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete dnc contact"|title %}"></a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                {% else %}
+                    <tr>
+                        <td colspan="6" align="center">
+                            {% trans "no records found"|title %}
+                        </td>
+                    </tr>
+                {% endif %}
+            </table>
+            <div align="right">
+                {% trans "total"|title %} : {{ total_phone_numbers }}
+            </div>
+            {% if contact_list %}
+                {% paginate %}
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}

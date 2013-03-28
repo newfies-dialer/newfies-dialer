@@ -18,7 +18,6 @@ from django.http import HttpResponseRedirect, HttpResponse, \
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-from django.utils import simplejson
 from django.db.models import Q
 from django.db.models import Count
 from dialer_contact.models import Phonebook, Contact
@@ -33,6 +32,7 @@ from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist, current_view,\
     get_pagination_vars
 import csv
+import json
 
 
 @permission_required('dialer_contact.view_phonebook', login_url='/')
@@ -116,7 +116,7 @@ def phonebook_add(request):
 @login_required
 def get_contact_count(request):
     """To get total no of contacts belonging to a phonebook list"""
-    values = request.GET.getlist('pb_ids')
+    values = request.GET.getlist('ids')
     values = ", ".join(["%s" % el for el in values])
     contact_count = Contact.objects.filter(phonebook__user=request.user)\
         .extra(where=['phonebook_id IN (%s)' % values]).count()
@@ -555,9 +555,12 @@ def contact_import(request):
             #  3     - email
             #  4     - description
             #  5     - status
-            #  6     - country
+            #  6     - address
             #  7     - city
-            #  8     - additional_vars
+            #  8     - country
+            #  9     - country
+            # 10     - unit_number
+            # 11     - additional_vars
             # To count total rows of CSV file
             records = csv.reader(request.FILES['csv_file'],
                                  delimiter='|', quotechar='"')
@@ -581,12 +584,12 @@ def contact_import(request):
                     type_error_import_list.append(row)
                     break
 
-                row_8 = ''
-                if row[8]:
+                row_11 = ''
+                if row[11]:
                     try:
-                        row_8 = simplejson.loads(row[8])
+                        row_11 = json.loads(row[11])
                     except:
-                        row_8 = ''
+                        row_11 = ''
 
                 bulk_record.append(
                     Contact(
@@ -597,9 +600,12 @@ def contact_import(request):
                         email=row[3],
                         description=row[4],
                         status=int(row[5]),
-                        country=row[6],
+                        address=row[6],
                         city=row[7],
-                        additional_vars=row_8)
+                        state=row[8],
+                        country=row[9],
+                        unit_number=row[10],
+                        additional_vars=row_11)
                 )
 
                 contact_cnt = contact_cnt + 1

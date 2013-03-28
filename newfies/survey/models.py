@@ -18,10 +18,23 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
-from survey.constants import SECTION_TYPE_NOTRANSFER, SECTION_TYPE
-from audiofield.models import AudioFile
+from survey.constants import SECTION_TYPE
+from audiofield.models import AudioFile, AudioField
 from common.language_field import LanguageField
 from adminsortable.models import Sortable
+from south.modelsinspector import add_introspection_rules
+
+add_introspection_rules([], ["^common\.language_field\.LanguageField"])
+add_introspection_rules([], ["^audiofield\.fields\.AudioField"])
+add_introspection_rules([
+    (
+        [AudioField],  # Class(es) these apply to
+        [],  # Positional arguments (not used)
+        {
+            "ext_whitelist": ["ext_whitelist", {"default": ""}],
+        },  # Keyword argument
+    ),
+], ["^audiofield\.fields\.AudioField"])
 
 
 class Survey_abstract(models.Model):
@@ -148,8 +161,9 @@ class Section_abstract(Sortable):
         * ``number_digits`` - Number of digits to wait for on Enter Number section
         * ``min_number`` - if validate_number the minimum number accepted
         * ``max_number`` - if validate_number the maximum number accepted
-        * ``phonenumber`` - phonenumber to dialout
+        * ``phonenumber`` - phonenumber to dialout / call transfer
         * ``completed`` - reaching this section will mark the subscriber as completed
+        * ``conference`` - Conference Room
 
     **Relationships**:
 
@@ -160,8 +174,8 @@ class Section_abstract(Sortable):
     **Name of DB table**: survey_question
     """
     # select section
-    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE_NOTRANSFER),
-                               default=SECTION_TYPE_NOTRANSFER.PLAY_MESSAGE,
+    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE),
+                               default=SECTION_TYPE.PLAY_MESSAGE,
                                blank=True, null=True,
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting
@@ -217,7 +231,12 @@ class Section_abstract(Sortable):
     #Call Transfer
     phonenumber = models.CharField(max_length=50,
                                    null=True, blank=True,
-                                   verbose_name=_("phone number"))
+                                   verbose_name=_("Phone Number / SIP URI"))
+    #Conference Room
+    conference = models.CharField(max_length=50,
+                                  null=True, blank=True,
+                                  verbose_name=_("conference"))
+
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
                                     verbose_name=_('survey complete'))
@@ -308,6 +327,7 @@ class Section_template(Section_abstract):
             min_number=self.min_number,
             max_number=self.max_number,
             phonenumber=self.phonenumber,
+            conference=self.conference,
             completed=self.completed,
             order=self.order,
             invalid_audiofile_id=self.invalid_audiofile_id,
@@ -501,7 +521,10 @@ def post_save_add_script(sender, **kwargs):
         obj.save()
 
         # Add default branching
-        if obj.type == SECTION_TYPE.PLAY_MESSAGE or obj.type == SECTION_TYPE.RECORD_MSG:
+        if (obj.type == SECTION_TYPE.PLAY_MESSAGE
+           or obj.type == SECTION_TYPE.RECORD_MSG
+           or obj.type == SECTION_TYPE.CALL_TRANSFER
+           or obj.type == SECTION_TYPE.CONFERENCE):
             Branching_template.objects.create(keys=0, section_id=obj.id, goto_id='')
 
         if obj.type == SECTION_TYPE.MULTI_CHOICE or \

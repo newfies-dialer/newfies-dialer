@@ -65,9 +65,9 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
     length = 5
     chars = "1234567890"
 
-    #content_type_id is survey or voiceapp
+    #content_type_id is survey
     try:
-        content_type_id = ContentType.objects.get(model='voiceapp').id
+        content_type_id = ContentType.objects.get(model='survey').id
     except:
         content_type_id = 1
 

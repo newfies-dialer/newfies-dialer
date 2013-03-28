@@ -29,7 +29,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
     Allows the administrator to view and modify certain attributes
     of a Campaign.
     """
-    content_type_whitelist = ('voice_app/voiceapp_template', 'survey/survey_template', )
+    content_type_whitelist = ('survey/survey_template', )
     fieldsets = (
         (_('standard options').capitalize(), {
             'fields': ('campaign_code', 'name', 'description', 'callerid',
@@ -46,7 +46,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
                        'daily_start_time', 'daily_stop_time',
                        'monday', 'tuesday', 'wednesday',
                        'thursday', 'friday', 'saturday', 'sunday',
-                       'completion_maxretry', 'completion_intervalretry')
+                       'completion_maxretry', 'completion_intervalretry', 'dnc')
         }),
     )
     list_display = ('id', 'name', 'content_type', 'campaign_code', 'user',

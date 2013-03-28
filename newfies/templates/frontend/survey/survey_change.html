@@ -63,7 +63,7 @@
             <div class="portlet-header">
                 {{ forloop.counter }}. {{ section.type|section_type_name|title }}
 
-                {% if section.timeout and section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER %}
+                {% if section.timeout and section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER and section.type != SECTION_TYPE.CONFERENCE and section.type != SECTION_TYPE.DNC %}
                     <span class="label label-info">T-{{ section.timeout }}s</span>
                 {% endif %}
                 {% if section.retries %}
@@ -107,14 +107,7 @@
                         });
                     {% endif %}
 
-                    {% if section.type == SECTION_TYPE.CALL_TRANSFER  %}
-                        $(function() {
-                            $("#row"+{{ section.id }}).find(".section-branch").contents().unwrap();
-                            $("#row"+{{ section.id }}).find(".icon-random").remove();
-                        });
-                    {% endif %}
-
-                    {% if section.type == SECTION_TYPE.PLAY_MESSAGE or section.type == SECTION_TYPE.HANGUP_SECTION or section.type == SECTION_TYPE.RECORD_MSG %}
+                    {% if section.type == SECTION_TYPE.PLAY_MESSAGE or section.type == SECTION_TYPE.HANGUP_SECTION or section.type == SECTION_TYPE.RECORD_MSG or section.type == SECTION_TYPE.CONFERENCE or section.type == SECTION_TYPE.CALL_TRANSFER or section.type == SECTION_TYPE.DNC %}
                         {% if section.get_branching_count_per_section > 0 %}
                             {% for branch in branching_list %}
                                 {% if branch.section_id == section.id %}
@@ -277,7 +270,16 @@
                             {% if section.type == SECTION_TYPE.CALL_TRANSFER %}
                                 <div class="span8">
                                     {% if section.phonenumber %}
-                                        {% trans "phone number"|title %} : {{ section.phonenumber }} <br/>
+                                        <b>{% trans "Phone Number / SIP URI" %} :</b> {{ section.phonenumber }} <br/>
+                                    {% endif %}
+                                </div>
+                            {% endif %}
+
+                            <!--Conference Section form-->
+                            {% if section.type == SECTION_TYPE.CONFERENCE %}
+                                <div class="span8">
+                                    {% if section.conference %}
+                                        {% trans "conference"|title %} : {{ section.conference }} <br/>
                                     {% endif %}
                                 </div>
                             {% endif %}
@@ -293,7 +295,7 @@
                                 <table class="table table-striped table-bordered table-condensed">
                                     <thead>
                                     <tr>
-                                        {% if section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG %}
+                                        {% if section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER and section.type != SECTION_TYPE.CONFERENCE and section.type == SECTION_TYPE.DNC %}
                                             <th>{% trans "keys"|title %}</th>
                                         {% endif %}
                                         <th>{% trans "goto"|title %}</th>
@@ -304,7 +306,7 @@
                                     {% for branch in branching_list %}
                                         <tr>
                                         {% if branch.section_id == section.id %}
-                                            {% if section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG %}
+                                            {% if section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER and section.type != SECTION_TYPE.CONFERENCE and section.type != SECTION_TYPE.DNC %}
                                                     <td>
                                                         {% if branch.keys == 'any' %}
                                                             {% trans "any other key"|title %}

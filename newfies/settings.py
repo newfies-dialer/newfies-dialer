@@ -166,6 +166,9 @@ TEMPLATE_DIRS = (
 
 INTERNAL_IPS = ('127.0.0.1',)
 
+#ALLOWED_HOSTS
+ALLOWED_HOSTS = ['127.0.0.1']
+
 DAJAXICE_MEDIA_PREFIX = "dajaxice"
 #DAJAXICE_MEDIA_PREFIX = "dajax"  # http://domain.com/dajax/
 #DAJAXICE_CACHE_CONTROL = 10 * 24 * 60 * 60
@@ -211,8 +214,8 @@ INSTALLED_APPS = (
     'dialer_settings',
     'user_profile',
     'notification',
-    'voice_app',
     'survey',
+    'dnc',
     #'raven.contrib.django',
     'apiplayground',
     'frontend_notification',
@@ -301,9 +304,10 @@ API_PLAYGROUND_FEEDBACK = False
 #=======================
 PAGE_SIZE = 10
 
-AUTH_PROFILE_MODULE = "user_profile.UserProfile"
+# AUTH MODULE SETTINGS
+AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
+LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/pleaselog/'
-
 
 #DILLA SETTINGS
 #==============
@@ -418,18 +422,6 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Use only in Debug mode. Not in production
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
-
-#PLIVO
-#=====
-PLIVO_DEFAULT_ANSWER_URL = 'http://127.0.0.1:8000/api/v1/answercall/'
-PLIVO_DEFAULT_HANGUP_URL = 'http://127.0.0.1:8000/api/v1/hangupcall/'
-PLIVO_DEFAULT_DIALCALLBACK_URL = 'http://127.0.0.1:8000/api/v1/dialcallback/'
-
-#TODO add consistancy between answercall api and survey_finitestatemachine
-PLIVO_DEFAULT_SURVEY_ANSWER_URL = 'http://127.0.0.1:8000/' \
-                                  'survey_finitestatemachine/'
-
-FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
 # ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'

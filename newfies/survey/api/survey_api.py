@@ -21,19 +21,18 @@ from tastypie.validation import Validation
 from tastypie.throttle import BaseThrottle
 from tastypie import fields
 from api.user_api import UserResource
-from survey.models import Survey
+from survey.models import Survey_template
 
 
 class SurveyValidation(Validation):
     """SurveyApp Validation Class"""
     def is_valid(self, bundle, request=None):
-        errors = {}
         if not bundle.data:
-            errors['Data'] = ['Data set is empty']
-        try:            
-            bundle.data['user'] = '/api/v1/user/%s/' % request.user.id
-        except:
-            errors['chk_user'] = ["The User doesn't exist!"]
+            return {'__all__': 'Please enter data'}
+
+        errors = {}
+        if not 'name' in bundle.data or bundle.data.get('name') == '':
+            errors['name'] = ['Please enter survey name.']
 
         return errors
 
@@ -143,7 +142,7 @@ class SurveyResource(ModelResource):
     user = fields.ForeignKey(UserResource, 'user', full=True)
 
     class Meta:
-        queryset = Survey.objects.all()
+        queryset = Survey_template.objects.all()
         resource_name = 'survey'
         authorization = Authorization()
         authentication = BasicAuthentication()
@@ -152,5 +151,9 @@ class SurveyResource(ModelResource):
         detail_allowed_methods = ['post', 'get', 'put', 'delete']
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
+
+    def hydrate(self, bundle, request=None):
+        bundle.obj.user = User.objects.get(pk=bundle.request.user.id)
+        return bundle
 
 

@@ -16,7 +16,6 @@ from django.contrib import admin
 from django.contrib import messages
 from django.conf.urls import patterns
 from django.utils.translation import ugettext as _
-from django.utils import simplejson
 from django.core.urlresolvers import reverse
 from django.template import RequestContext
 from django.http import HttpResponseRedirect
@@ -31,6 +30,7 @@ from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist
 from common.app_label_renamer import AppLabelRenamer
 import csv
+import json
 AppLabelRenamer(native_app_label=u'dialer_contact', app_label=_('Dialer Contact')).main()
 
 
@@ -143,9 +143,12 @@ class ContactAdmin(admin.ModelAdmin):
                 #  3     - email
                 #  4     - description
                 #  5     - status
-                #  6     - country
+                #  6     - address
                 #  7     - city
-                #  8     - additional_vars
+                #  8     - state
+                #  9     - country
+                # 10     - unit_number
+                # 11     - additional_vars
                 # To count total rows of CSV file
                 records = csv.reader(
                     request.FILES['csv_file'], delimiter='|', quotechar='"')
@@ -170,9 +173,9 @@ class ContactAdmin(admin.ModelAdmin):
                         type_error_import_list.append(row)
                         break
 
-                    row_8 = ''
-                    if row[8]:
-                        row_8 = simplejson.loads(row[8])
+                    row_11 = ''
+                    if row[11]:
+                        row_11 = json.loads(row[11])
 
                     bulk_record.append(
                         Contact(
@@ -183,9 +186,12 @@ class ContactAdmin(admin.ModelAdmin):
                             email=row[3],
                             description=row[4],
                             status=int(row[5]),
-                            country=row[6],
+                            address=row[6],
                             city=row[7],
-                            additional_vars=row_8)
+                            state=row[8],
+                            country=row[9],
+                            unit_number=row[10],
+                            additional_vars=row_11)
                     )
 
                     contact_cnt = contact_cnt + 1

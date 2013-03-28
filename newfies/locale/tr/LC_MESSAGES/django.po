@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-07 16:01+0100\n"
+"POT-Creation-Date: 2013-03-27 16:32+0100\n"
 "PO-Revision-Date: 2012-03-04 19:32+0200\n"
 "Last-Translator: serhat alpaslan <s.alpaslan@netglobalturkey.com>\n"
 "Language-Team: LANGUAGE <s.alpaslan@netglobalturkey.com>\n"
@@ -19,54 +19,37 @@ msgstr ""
 "X-Poedit-Language: Turkish\n"
 "X-Poedit-Country: TURKEY\n"
 
-#: settings.py:396
+#: settings.py:400
 msgid "English"
 msgstr "İngilizce"
 
-#: settings.py:397
+#: settings.py:401
 msgid "French"
 msgstr ""
 
-#: settings.py:398
+#: settings.py:402
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: settings.py:399
+#: settings.py:403
 msgid "Portuguese"
 msgstr "Portekizce"
 
-#: settings.py:400
+#: settings.py:404
 msgid "Chinese"
 msgstr "Çin"
 
-#: settings.py:401
+#: settings.py:405
 msgid "Turkish"
 msgstr "Türkçe"
 
-#: settings.py:402
+#: settings.py:406
 msgid "Japanese"
 msgstr ""
 
-#: api/api_playgrounds/answercall_playground.py:21
-#, fuzzy
-msgid "answer call"
-msgstr "Cevap süresi (sn)"
-
-#: api/api_playgrounds/answercall_playground.py:26
-#, fuzzy
-msgid "this resource allows you to manage answer call."
-msgstr "Kampanya başına maksimum aboneleri"
-
-#: api/api_playgrounds/answercall_playground.py:31
-#: api/api_playgrounds/hangupcall_playground.py:21
-#: api/api_playgrounds/hangupcall_playground.py:31
-#, fuzzy
-msgid "hangup call"
-msgstr "Cevap Sebepleri"
-
-#: api/api_playgrounds/branching_playground.py:21 survey/models.py:413
-#: survey/models.py:414 templates/frontend/survey/survey_change.html:292
-#: templates/frontend/survey/survey_view.html:215
+#: api/api_playgrounds/branching_playground.py:21 survey/models.py:433
+#: survey/models.py:434 templates/frontend/survey/survey_change.html:294
+#: templates/frontend/survey/survey_view.html:224
 #, fuzzy
 msgid "branching"
 msgstr "Kampanyası Update"
@@ -91,12 +74,12 @@ msgstr "Kampanyası Update"
 msgid "create new branching"
 msgstr "Kampanyası Update"
 
-#: api/api_playgrounds/branching_playground.py:58
+#: api/api_playgrounds/branching_playground.py:65
 #, fuzzy
 msgid "update branching"
 msgstr "Kampanyası Update"
 
-#: api/api_playgrounds/branching_playground.py:75
+#: api/api_playgrounds/branching_playground.py:89
 #, fuzzy
 msgid "delete branching"
 msgstr "Seçilen Sil"
@@ -112,10 +95,9 @@ msgid "this resource allows you to create bulk contacts."
 msgstr "Kampanya başına maksimum aboneleri"
 
 #: api/api_playgrounds/bulk_contact_playground.py:31
-#: api/api_playgrounds/phonebook_playground.py:41
 #, fuzzy
-msgid "create new phonebook"
-msgstr "Telefon defterini güncelle"
+msgid "create new contacts"
+msgstr "Kişiyi sil"
 
 #: api/api_playgrounds/callrequest_playground.py:21 dialer_cdr/models.py:199
 #, fuzzy
@@ -142,7 +124,7 @@ msgstr "ÇağrıSorgulama"
 msgid "create new callrequest"
 msgstr "ÇağrıSorgulama"
 
-#: api/api_playgrounds/callrequest_playground.py:88
+#: api/api_playgrounds/callrequest_playground.py:82
 #, fuzzy
 msgid "update callrequest"
 msgstr "ÇağrıSorgulama"
@@ -158,20 +140,20 @@ msgid "this resource allows you to delete campaign."
 msgstr "Kampanya başına maksimum aboneleri"
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:31
-#: api/api_playgrounds/campaign_playground.py:213
+#: api/api_playgrounds/campaign_playground.py:221
 #: templates/frontend/campaign/list.html:93
 #, fuzzy
 msgid "delete campaign"
 msgstr "Kampanyası sil"
 
-#: api/api_playgrounds/campaign_playground.py:21 dialer_campaign/models.py:263
-#: dialer_cdr/forms.py:33 frontend/forms.py:34 survey/forms.py:306
-#: survey/models.py:111 survey/models.py:472
+#: api/api_playgrounds/campaign_playground.py:21 dialer_campaign/models.py:271
+#: dialer_cdr/forms.py:33 frontend/forms.py:34 survey/forms.py:327
+#: survey/models.py:124 survey/models.py:492
 #: templates/frontend/bootstrap_menu.html:32
 #: templates/frontend/dashboard.html:27
 #: templates/frontend/campaign/campaign_duplicate.html:46
 #: templates/frontend/campaign/change.html:12
-#: templates/frontend/campaign/list.html:9 voice_app/models.py:131
+#: templates/frontend/campaign/list.html:9
 #, fuzzy
 msgid "campaign"
 msgstr "Kampanya"
@@ -196,29 +178,94 @@ msgstr "Kampanyası sil"
 msgid "create new campaign"
 msgstr "Kampanyası Update"
 
-#: api/api_playgrounds/campaign_playground.py:132
+#: api/api_playgrounds/campaign_playground.py:136
 #: templates/frontend/campaign/list.html:90
 #, fuzzy
 msgid "update campaign"
 msgstr "Kampanyası Update"
 
-#: api/api_playgrounds/dialcallback_playground.py:21
-msgid "dial callback"
-msgstr ""
-
-#: api/api_playgrounds/dialcallback_playground.py:26
+#: api/api_playgrounds/dnc_contact_playground.py:21
 #, fuzzy
-msgid "this resource allows you to manage dial callback."
+msgid "dnc contact"
+msgstr "temas"
+
+#: api/api_playgrounds/dnc_contact_playground.py:26
+#, fuzzy
+msgid "this resource allows you to manage DNC contacts."
 msgstr "Kampanya başına maksimum aboneleri"
 
-#: api/api_playgrounds/dialcallback_playground.py:31
-#: api/api_playgrounds/subscriber_playground.py:36
+#: api/api_playgrounds/dnc_contact_playground.py:31
 #, fuzzy
-msgid "create new subscriber"
-msgstr "Anketi güncelleyin"
+msgid "returns dnc contacts"
+msgstr "Genel ayarlar"
+
+#: api/api_playgrounds/dnc_contact_playground.py:36
+msgid "returns dnc contacts which are belong to DNC ID"
+msgstr ""
+
+#: api/api_playgrounds/dnc_contact_playground.py:41
+msgid "returns dnc contact if it is belong to DNC ID"
+msgstr ""
+
+#: api/api_playgrounds/dnc_contact_playground.py:46
+#, fuzzy
+msgid "create new dnc contact"
+msgstr "Kişiyi sil"
+
+#: api/api_playgrounds/dnc_contact_playground.py:63
+#: templates/frontend/dnc_contact/list.html:123
+#, fuzzy
+msgid "update dnc contact"
+msgstr "Iletişim Güncelle"
+
+#: api/api_playgrounds/dnc_contact_playground.py:80
+#: templates/frontend/dnc_contact/list.html:126
+#, fuzzy
+msgid "delete dnc contact"
+msgstr "Kişiyi sil"
+
+#: api/api_playgrounds/dnc_playground.py:21 dnc/constants.py:28
+#: survey/constants.py:28 templates/frontend/bootstrap_menu.html:59
+#: templates/frontend/bootstrap_menu.html:63
+#: templates/frontend/bootstrap_menu.html:67
+#: templates/frontend/dnc_contact/list.html:26
+#: templates/frontend/dnc_list/change.html:11
+#: templates/frontend/dnc_list/list.html:9
+msgid "dnc"
+msgstr ""
+
+#: api/api_playgrounds/dnc_playground.py:26
+#, fuzzy
+msgid "this resource allows you to manage DNC list."
+msgstr "Kampanya başına maksimum aboneleri"
+
+#: api/api_playgrounds/dnc_playground.py:31
+#, fuzzy
+msgid "returns all dncs"
+msgstr "Genel ayarlar"
+
+#: api/api_playgrounds/dnc_playground.py:36
+#, fuzzy
+msgid "returns a specific dnc"
+msgstr "Kampanyası Update"
+
+#: api/api_playgrounds/dnc_playground.py:41
+#, fuzzy
+msgid "create new dnc"
+msgstr "Kampanyası Update"
+
+#: api/api_playgrounds/dnc_playground.py:52
+#, fuzzy
+msgid "update dnc"
+msgstr "Iletişim Güncelle"
+
+#: api/api_playgrounds/dnc_playground.py:61
+#, fuzzy
+msgid "delete dnc"
+msgstr "Kişiyi sil"
 
 #: api/api_playgrounds/gateway_playground.py:21 dialer_cdr/constants.py:70
-#: user_profile/models.py:79 voice_app/constants.py:30
+#: user_profile/models.py:78
 #, fuzzy
 msgid "gateway"
 msgstr "Geçit"
@@ -242,20 +289,15 @@ msgstr ""
 msgid "create new gateway"
 msgstr "Kullanılan Arama Geçidi"
 
-#: api/api_playgrounds/gateway_playground.py:121
+#: api/api_playgrounds/gateway_playground.py:107
 #, fuzzy
 msgid "update gateway"
 msgstr "Kullanılan Arama Geçidi"
 
-#: api/api_playgrounds/gateway_playground.py:200
+#: api/api_playgrounds/gateway_playground.py:173
 #, fuzzy
 msgid "delete gateway"
 msgstr "Ağ Geçidi seçin"
-
-#: api/api_playgrounds/hangupcall_playground.py:26
-#, fuzzy
-msgid "this resource allows you to manage hangup call."
-msgstr "Kampanya başına maksimum aboneleri"
 
 #: api/api_playgrounds/phonebook_playground.py:21
 #: dialer_contact/constants.py:47 dialer_contact/forms.py:48
@@ -280,6 +322,11 @@ msgstr "Telefon rehberi sil"
 #, fuzzy
 msgid "returns a specific phonebook"
 msgstr "Telefon rehberi sil"
+
+#: api/api_playgrounds/phonebook_playground.py:41
+#, fuzzy
+msgid "create new phonebook"
+msgstr "Telefon defterini güncelle"
 
 #: api/api_playgrounds/phonebook_playground.py:56
 #: templates/frontend/phonebook/list.html:71
@@ -319,12 +366,12 @@ msgstr "Genel ayarlar"
 msgid "create new section"
 msgstr "Kişiyi sil"
 
-#: api/api_playgrounds/section_playground.py:68
+#: api/api_playgrounds/section_playground.py:186
 #, fuzzy
 msgid "update section"
 msgstr "Cevap Ekle"
 
-#: api/api_playgrounds/section_playground.py:95
+#: api/api_playgrounds/section_playground.py:331
 #: templates/frontend/survey/section_delete_confirmation.html:5
 #: templates/frontend/survey/survey_change_header.html:61
 #, fuzzy
@@ -360,7 +407,7 @@ msgid "returns specific subscribers per campaign"
 msgstr "Kampanya başına maksimum aboneleri"
 
 #: api/api_playgrounds/subscriber_playground.py:21
-#: dialer_campaign/models.py:408 dialer_campaign/models.py:468
+#: dialer_campaign/models.py:416 dialer_campaign/models.py:476
 #, fuzzy
 msgid "subscriber"
 msgstr "Kampanya Aboneleri"
@@ -369,6 +416,11 @@ msgstr "Kampanya Aboneleri"
 #, fuzzy
 msgid "this resource allows you to manage subscriber."
 msgstr "Kampanya başına maksimum aboneleri"
+
+#: api/api_playgrounds/subscriber_playground.py:36
+#, fuzzy
+msgid "create new subscriber"
+msgstr "Anketi güncelleyin"
 
 #: api/api_playgrounds/subscriber_playground.py:68
 #, fuzzy
@@ -390,9 +442,9 @@ msgstr "Kampanya başına maksimum aboneleri"
 msgid "returns a result belong to campaign"
 msgstr "Kampanyası sil"
 
-#: api/api_playgrounds/survey_playground.py:21 dialer_campaign/models.py:317
-#: dialer_campaign/views.py:184 survey/models.py:120 survey/models.py:272
-#: survey/models.py:334 templates/frontend/survey/survey_change.html:17
+#: api/api_playgrounds/survey_playground.py:21 dialer_campaign/models.py:325
+#: dialer_campaign/views.py:179 survey/models.py:133 survey/models.py:291
+#: survey/models.py:354 templates/frontend/survey/survey_change.html:17
 #: templates/frontend/survey/survey_list.html:9
 #, fuzzy
 msgid "survey"
@@ -431,45 +483,6 @@ msgstr "Anketi güncelleyin"
 msgid "delete survey"
 msgstr "Anketi sil"
 
-#: api/api_playgrounds/voiceapp_playground.py:21
-#: custom_admin_tools/dashboard.py:174 dialer_campaign/views.py:188
-#: voice_app/models.py:138
-#, fuzzy
-msgid "voice application"
-msgstr "Ses Uygulamaları"
-
-#: api/api_playgrounds/voiceapp_playground.py:26
-#, fuzzy
-msgid "this resource allows you to manage voice applications."
-msgstr "Kampanya başına maksimum aboneleri"
-
-#: api/api_playgrounds/voiceapp_playground.py:31
-#, fuzzy
-msgid "returns all voice applications."
-msgstr "Ses Uygulamaları"
-
-#: api/api_playgrounds/voiceapp_playground.py:36
-#, fuzzy
-msgid "returns a specific voice application."
-msgstr "Ses uygulama yapılandırma"
-
-#: api/api_playgrounds/voiceapp_playground.py:41
-#, fuzzy
-msgid "create new voice application."
-msgstr "Ses uygulama yapılandırma"
-
-#: api/api_playgrounds/voiceapp_playground.py:54
-#: templates/frontend/voiceapp/list.html:73
-#, fuzzy
-msgid "update voiceapp"
-msgstr "Ses Aplikasyonu Güncelle"
-
-#: api/api_playgrounds/voiceapp_playground.py:67
-#: templates/frontend/voiceapp/list.html:76
-#, fuzzy
-msgid "delete voiceapp"
-msgstr "Ses Aplikasyonu sil"
-
 #: custom_admin_tools/dashboard.py:62
 #, fuzzy
 msgid "general"
@@ -489,7 +502,7 @@ msgstr "Görev Yöneticisi"
 msgid "dashboard stats"
 msgstr "Pano İstatistikleri"
 
-#: custom_admin_tools/dashboard.py:77 custom_admin_tools/dashboard.py:185
+#: custom_admin_tools/dashboard.py:77 custom_admin_tools/dashboard.py:196
 #, fuzzy
 msgid "recent actions"
 msgstr "Son Eylemler"
@@ -505,47 +518,63 @@ msgstr "Ayarlar"
 msgid "VoIP dialer"
 msgstr "Voip Dialer"
 
-#: custom_admin_tools/dashboard.py:95 survey/models.py:121
-#: templates/frontend/bootstrap_menu.html:78
+#: custom_admin_tools/dashboard.py:95 survey/models.py:134
+#: templates/frontend/bootstrap_menu.html:95
 #, fuzzy
 msgid "surveys"
 msgstr "Anketler"
 
 #: custom_admin_tools/dashboard.py:101
-#: templates/frontend/bootstrap_menu.html:58
+#: templates/frontend/bootstrap_menu.html:75
 #: templates/frontend/audio/audio_list.html:10
 #, fuzzy
 msgid "audio files"
 msgstr "Ses dosyaları"
 
-#: custom_admin_tools/dashboard.py:128
+#: custom_admin_tools/dashboard.py:106 custom_admin_tools/dashboard.py:185
+#: dnc/admin.py:19 templates/frontend/bootstrap_menu.html:59
+#, fuzzy
+msgid "do not call"
+msgstr "Çağrı zaman aşımı"
+
+#: custom_admin_tools/dashboard.py:133
 msgid "Latest Newfies-Dialer News"
 msgstr "Son Newfies-Dialer Haberler"
 
-#: custom_admin_tools/dashboard.py:135
+#: custom_admin_tools/dashboard.py:140
 #, fuzzy
 msgid "dashboard stats settings"
 msgstr "Pano İstatistik Ayarları"
 
-#: custom_admin_tools/dashboard.py:162 dialer_settings/models.py:74
-#: templates/frontend/campaign/change.html:66 user_profile/models.py:81
+#: custom_admin_tools/dashboard.py:167 dialer_settings/models.py:74
+#: templates/frontend/campaign/change.html:87 user_profile/models.py:80
 #, fuzzy
 msgid "dialer settings"
 msgstr "Dialer ayarları"
 
-#: custom_admin_tools/dashboard.py:165
+#: custom_admin_tools/dashboard.py:170
 #, fuzzy
 msgid "dialer campaign"
 msgstr "Dialer Kampanya"
 
-#: custom_admin_tools/dashboard.py:168 dialer_cdr/admin.py:36
+#: custom_admin_tools/dashboard.py:173 dialer_contact/admin.py:221
+#, fuzzy
+msgid "dialer contact"
+msgstr "Kişiyi sil"
+
+#: custom_admin_tools/dashboard.py:176 dialer_cdr/admin.py:36
 msgid "Dialer CDR"
 msgstr "Dialer CDR"
 
-#: custom_admin_tools/dashboard.py:171 dialer_gateway/models.py:103
+#: custom_admin_tools/dashboard.py:179 dialer_gateway/models.py:103
 #, fuzzy
 msgid "dialer gateway"
 msgstr "Dialer Ağ Geçidi"
+
+#: custom_admin_tools/dashboard.py:182
+#, fuzzy
+msgid "country dialcode"
+msgstr "Ülke"
 
 #: custom_admin_tools/menu.py:32 templates/frontend/bootstrap_menu.html:15
 msgid "Newfies-Dialer"
@@ -556,12 +585,12 @@ msgstr "Newfies-Dialer"
 msgid "applications"
 msgstr "Uygulama"
 
-#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:119
+#: custom_admin_tools/menu.py:39 templates/frontend/bootstrap_menu.html:138
 #, fuzzy
 msgid "administration"
 msgstr "Yönetim"
 
-#: custom_admin_tools/menu.py:42 templates/frontend/bootstrap_menu.html:115
+#: custom_admin_tools/menu.py:42 templates/frontend/bootstrap_menu.html:134
 msgid "API Explorer"
 msgstr ""
 
@@ -571,12 +600,11 @@ msgid "customer panel"
 msgstr "Müşteri Paneli"
 
 #: dialer_audio/constants.py:20 dialer_campaign/constants.py:41
-#: dialer_campaign/models.py:162 dialer_contact/constants.py:39
-#: dialer_contact/models.py:38 dialer_contact/models.py:125
+#: dialer_campaign/models.py:167 dialer_contact/constants.py:39
+#: dialer_contact/models.py:38 dialer_contact/models.py:130
 #: dialer_gateway/models.py:53 dialer_settings/models.py:38
-#: survey/constants.py:40 survey/models.py:42
-#: templates/frontend/api/api_list.html:32 voice_app/constants.py:27
-#: voice_app/models.py:45
+#: dnc/constants.py:21 dnc/models.py:33 survey/constants.py:32
+#: survey/models.py:55 templates/frontend/api/api_list.html:32
 #, fuzzy
 msgid "name"
 msgstr "Soyadı"
@@ -591,30 +619,31 @@ msgstr "Ses"
 msgid "audio URL"
 msgstr "Ses URL"
 
-#: dialer_audio/constants.py:23 dialer_campaign/models.py:249
-#: dialer_campaign/models.py:463 dialer_cdr/models.py:104
+#: dialer_audio/constants.py:23 dialer_campaign/models.py:257
+#: dialer_campaign/models.py:471 dialer_cdr/models.py:104
 #: dialer_contact/constants.py:41 dialer_contact/constants.py:52
-#: dialer_contact/models.py:43 dialer_contact/models.py:107
-#: dialer_gateway/models.py:86 survey/constants.py:42 survey/models.py:48
+#: dialer_contact/models.py:43 dialer_contact/models.py:112
+#: dialer_gateway/models.py:86 dnc/constants.py:22 dnc/constants.py:30
+#: survey/constants.py:34 survey/models.py:61
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:54
 #: templates/frontend/dashboard.html:229
 #: templates/frontend/report/voipcall_report.html:156
-#: templates/frontend/survey/survey_report.html:208 voice_app/constants.py:33
-#: voice_app/models.py:64
+#: templates/frontend/survey/survey_report.html:208
 #, fuzzy
 msgid "date"
 msgstr "Güncelle"
 
-#: dialer_audio/views.py:93 dialer_campaign/views.py:344
-#: dialer_contact/views.py:102 dialer_contact/views.py:399 survey/views.py:769
-#: voice_app/views.py:93
+#: dialer_audio/views.py:93 dialer_campaign/views.py:324
+#: dialer_contact/views.py:102 dialer_contact/views.py:399 dnc/views.py:93
+#: dnc/views.py:347 survey/views.py:134
 #, python-format
 msgid "\"%(name)s\" added."
 msgstr "\"%(name)s\" eklenir."
 
-#: dialer_audio/views.py:134 dialer_campaign/views.py:376
-#: dialer_campaign/views.py:433 dialer_contact/views.py:152
-#: dialer_contact/views.py:441 survey/views.py:814 voice_app/views.py:127
+#: dialer_audio/views.py:134 dialer_campaign/views.py:356
+#: dialer_campaign/views.py:413 dialer_contact/views.py:152
+#: dialer_contact/views.py:441 dnc/views.py:143 dnc/views.py:389
+#: survey/views.py:179
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" silinir."
@@ -687,20 +716,20 @@ msgstr ""
 msgid "END"
 msgstr ""
 
-#: dialer_campaign/constants.py:40 survey/models.py:184 survey/models.py:186
-#: survey/models.py:188 survey/models.py:190 survey/models.py:192
-#: survey/models.py:194 survey/models.py:196 survey/models.py:198
-#: survey/models.py:200 survey/models.py:202
-#: templates/frontend/survey/survey_change.html:193
-#: templates/frontend/survey/survey_change.html:199
-#: templates/frontend/survey/survey_change.html:205
-#: templates/frontend/survey/survey_change.html:211
-#: templates/frontend/survey/survey_change.html:217
-#: templates/frontend/survey/survey_change.html:223
-#: templates/frontend/survey/survey_change.html:229
-#: templates/frontend/survey/survey_change.html:235
-#: templates/frontend/survey/survey_change.html:241
-#: templates/frontend/survey/survey_change.html:247
+#: dialer_campaign/constants.py:40 survey/models.py:198 survey/models.py:200
+#: survey/models.py:202 survey/models.py:204 survey/models.py:206
+#: survey/models.py:208 survey/models.py:210 survey/models.py:212
+#: survey/models.py:214 survey/models.py:216
+#: templates/frontend/survey/survey_change.html:186
+#: templates/frontend/survey/survey_change.html:192
+#: templates/frontend/survey/survey_change.html:198
+#: templates/frontend/survey/survey_change.html:204
+#: templates/frontend/survey/survey_change.html:210
+#: templates/frontend/survey/survey_change.html:216
+#: templates/frontend/survey/survey_change.html:222
+#: templates/frontend/survey/survey_change.html:228
+#: templates/frontend/survey/survey_change.html:234
+#: templates/frontend/survey/survey_change.html:240
 #: templates/frontend/survey/survey_view.html:117
 #: templates/frontend/survey/survey_view.html:123
 #: templates/frontend/survey/survey_view.html:129
@@ -720,9 +749,8 @@ msgstr "Anahtar"
 msgid "start date"
 msgstr "Başlangıç ​​tarihi"
 
-#: dialer_campaign/constants.py:43 dialer_campaign/models.py:222
-#: dialer_cdr/models.py:135 frontend/forms.py:35 voice_app/constants.py:29
-#: voice_app/models.py:52
+#: dialer_campaign/constants.py:43 dialer_campaign/models.py:227
+#: dialer_cdr/models.py:135 frontend/forms.py:35
 msgid "type"
 msgstr ""
 
@@ -732,16 +760,18 @@ msgid "app"
 msgstr "App"
 
 #: dialer_campaign/constants.py:45 dialer_contact/constants.py:42
-#: dialer_contact/models.py:61 dialer_contact/models.py:116
-#: templates/frontend/bootstrap_menu.html:42
+#: dialer_contact/models.py:61 dialer_contact/models.py:121
+#: dnc/constants.py:23 templates/frontend/bootstrap_menu.html:42
 #: templates/frontend/bootstrap_menu.html:50
+#: templates/frontend/bootstrap_menu.html:67
 #: templates/frontend/contact/list.html:26
+#: templates/frontend/dnc_contact/list.html:26
 #, fuzzy
 msgid "contacts"
 msgstr "temas"
 
-#: dialer_campaign/constants.py:46 dialer_campaign/models.py:168
-#: dialer_campaign/models.py:461 dialer_cdr/models.py:113
+#: dialer_campaign/constants.py:46 dialer_campaign/models.py:173
+#: dialer_campaign/models.py:469 dialer_cdr/models.py:113
 #: dialer_contact/constants.py:51 dialer_contact/forms.py:103
 #: dialer_contact/models.py:92
 #: templates/admin/dialer_contact/contact/import_contact.html:25
@@ -761,28 +791,28 @@ msgstr ""
 msgid "LEAVE MESSAGE TO VOICEMAIL ONLY"
 msgstr ""
 
-#: dialer_campaign/forms.py:51 dialer_campaign/models.py:225
+#: dialer_campaign/forms.py:51 dialer_campaign/models.py:229
 #: dialer_cdr/models.py:136
 #, fuzzy
 msgid "application"
 msgstr "Uygulama"
 
-#: dialer_campaign/forms.py:155
+#: dialer_campaign/forms.py:159
 #, fuzzy, python-format
 msgid "maximum frequency limit of %d exceeded."
 msgstr "%d Maksimum Frekans sınırı aşıldı."
 
-#: dialer_campaign/forms.py:161
+#: dialer_campaign/forms.py:165
 #, fuzzy, python-format
 msgid "maximum duration limit of %d exceeded."
 msgstr "%d Maksimum Süre sınırı aşıldı."
 
-#: dialer_campaign/forms.py:167
+#: dialer_campaign/forms.py:171
 #, fuzzy, python-format
 msgid "maximum retries limit of %d exceeded."
 msgstr "%d Maksimum Retries sınırı aşıldı."
 
-#: dialer_campaign/forms.py:173
+#: dialer_campaign/forms.py:177
 #, fuzzy, python-format
 msgid "maximum timeout limit of %d exceeded."
 msgstr "%d Maksimum zaman aşımı sınırı aşıldı."
@@ -795,12 +825,12 @@ msgstr ""
 "Ayarlarınız düzgün yapılandırılmamıştır. Lüten sistem yöneticinizle "
 "iletişime geçiniz."
 
-#: dialer_campaign/models.py:159
+#: dialer_campaign/models.py:164
 #, fuzzy
 msgid "campaign code"
 msgstr "Kampanya Kodu"
 
-#: dialer_campaign/models.py:160
+#: dialer_campaign/models.py:165
 #, fuzzy
 msgid ""
 "this code is auto-generated by the platform, this is used to identify the "
@@ -809,262 +839,273 @@ msgstr ""
 "Bu kod platform tarafından otomatik oluşturulur, bu kampanyayı tanımlamak "
 "için kullanılır"
 
-#: dialer_campaign/models.py:163 dialer_contact/constants.py:40
-#: dialer_gateway/models.py:57 survey/constants.py:41 survey/models.py:46
+#: dialer_campaign/models.py:168 dialer_contact/constants.py:40
+#: dialer_gateway/models.py:57 survey/constants.py:33 survey/models.py:59
 #: templates/admin/dialer_contact/contact/import_contact.html:24
 #: templates/frontend/contact/import_contact.html:26
-#: templates/frontend/survey/survey_view.html:24 voice_app/constants.py:28
-#: voice_app/models.py:49
+#: templates/frontend/survey/survey_view.html:24
 msgid "description"
 msgstr "tanım"
 
-#: dialer_campaign/models.py:164
+#: dialer_campaign/models.py:169
 #, fuzzy
 msgid "campaign description"
 msgstr "Kampanya açıklaması"
 
-#: dialer_campaign/models.py:170
+#: dialer_campaign/models.py:175
 #, fuzzy
 msgid "callerID"
 msgstr "CallerID"
 
-#: dialer_campaign/models.py:171
+#: dialer_campaign/models.py:176
 #, fuzzy
 msgid "outbound caller-ID"
 msgstr "Arayan numarayı Çıkan"
 
-#: dialer_campaign/models.py:173
+#: dialer_campaign/models.py:178
 #, fuzzy
 msgid "caller name"
 msgstr "Arayan Kimliği"
 
-#: dialer_campaign/models.py:174
+#: dialer_campaign/models.py:179
 #, fuzzy
 msgid "outbound caller-Name"
 msgstr "Arayan numarayı Çıkan"
 
-#: dialer_campaign/models.py:177 dialer_campaign/views.py:162
+#: dialer_campaign/models.py:182 dialer_campaign/views.py:157
 #, fuzzy
 msgid "start"
 msgstr "Başlatmak"
 
-#: dialer_campaign/models.py:178 dialer_campaign/models.py:181
+#: dialer_campaign/models.py:183 dialer_campaign/models.py:186
 #, fuzzy
 msgid "date format: YYYY-mm-DD HH:MM:SS"
 msgstr "Tarih Biçimi: YYYY-AA-GG SS: DD: SS"
 
-#: dialer_campaign/models.py:180
+#: dialer_campaign/models.py:185
 #, fuzzy
 msgid "finish"
 msgstr "Bitiş"
 
-#: dialer_campaign/models.py:184
+#: dialer_campaign/models.py:189
 msgid "daily start time"
 msgstr ""
 
-#: dialer_campaign/models.py:185 dialer_campaign/models.py:188
+#: dialer_campaign/models.py:190 dialer_campaign/models.py:193
 #, fuzzy
 msgid "time format: HH:MM:SS"
 msgstr "Zaman Formatı: SS: dd: ss"
 
-#: dialer_campaign/models.py:187
+#: dialer_campaign/models.py:192
 msgid "daily stop time"
 msgstr ""
 
-#: dialer_campaign/models.py:189
+#: dialer_campaign/models.py:194
 #, fuzzy
 msgid "monday"
 msgstr "Pazartesi"
 
-#: dialer_campaign/models.py:190
+#: dialer_campaign/models.py:195
 #, fuzzy
 msgid "tuesday"
 msgstr "Salı"
 
-#: dialer_campaign/models.py:191
+#: dialer_campaign/models.py:196
 #, fuzzy
 msgid "wednesday"
 msgstr "Çarşamba"
 
-#: dialer_campaign/models.py:192
+#: dialer_campaign/models.py:197
 #, fuzzy
 msgid "thursday"
 msgstr "Perşembe"
 
-#: dialer_campaign/models.py:193
+#: dialer_campaign/models.py:198
 #, fuzzy
 msgid "friday"
 msgstr "Cuma"
 
-#: dialer_campaign/models.py:194
+#: dialer_campaign/models.py:199
 #, fuzzy
 msgid "saturday"
 msgstr "Cumartesi"
 
-#: dialer_campaign/models.py:195
+#: dialer_campaign/models.py:200
 #, fuzzy
 msgid "sunday"
 msgstr "Pazar"
 
-#: dialer_campaign/models.py:198
+#: dialer_campaign/models.py:203
 #, fuzzy
 msgid "frequency"
 msgstr "Frekans"
 
-#: dialer_campaign/models.py:199
+#: dialer_campaign/models.py:204
 #, fuzzy
 msgid "calls per minute"
 msgstr "Dakika başına arama sayısı"
 
-#: dialer_campaign/models.py:201
+#: dialer_campaign/models.py:206
 #, fuzzy
 msgid "max call duration"
 msgstr "Maksimum arama süresi"
 
-#: dialer_campaign/models.py:202
+#: dialer_campaign/models.py:207
 #, fuzzy
 msgid "maximum call duration in seconds"
 msgstr "Saniyede Maksimum arama süresi"
 
-#: dialer_campaign/models.py:205 dialer_settings/models.py:49
+#: dialer_campaign/models.py:210 dialer_settings/models.py:49
 #, fuzzy
 msgid "max retries"
 msgstr "Maksimum deneme"
 
-#: dialer_campaign/models.py:206
+#: dialer_campaign/models.py:211
 #, fuzzy
 msgid "maximum retries per contact"
 msgstr "Kişi başına en fazla deneme"
 
-#: dialer_campaign/models.py:208
+#: dialer_campaign/models.py:213
 #, fuzzy
 msgid "time between retries"
 msgstr "Deneme arasındaki süre"
 
-#: dialer_campaign/models.py:209
+#: dialer_campaign/models.py:214
 #, fuzzy
 msgid "time delay in seconds before retrying contact"
 msgstr "İletişim numarasını aramadan önceki bekleme süresi"
 
-#: dialer_campaign/models.py:211
+#: dialer_campaign/models.py:216
 #, fuzzy
 msgid "completion max retries"
 msgstr "En fazla deneme"
 
-#: dialer_campaign/models.py:212
+#: dialer_campaign/models.py:217
 msgid "amount of retries until a contact is completed"
 msgstr ""
 
-#: dialer_campaign/models.py:214
+#: dialer_campaign/models.py:219
 #, fuzzy
 msgid "completion time between retries"
 msgstr "Deneme arasındaki süre"
 
-#: dialer_campaign/models.py:215
+#: dialer_campaign/models.py:220
 #, fuzzy
 msgid "time delay in seconds before retrying contact for completion"
 msgstr "İletişim numarasını aramadan önceki bekleme süresi"
 
-#: dialer_campaign/models.py:217 dialer_settings/models.py:52
+#: dialer_campaign/models.py:222 dialer_settings/models.py:52
 #, fuzzy
 msgid "timeout on call"
 msgstr "Çağrı zaman aşımı"
 
-#: dialer_campaign/models.py:218
+#: dialer_campaign/models.py:223
 #, fuzzy
 msgid "connection timeout in seconds"
 msgstr "Saniyede Bağlantı zaman aşımı"
 
-#: dialer_campaign/models.py:219
+#: dialer_campaign/models.py:224
 #, fuzzy
 msgid "A-Leg gateway"
 msgstr "A-Leg Ağ Geçidi"
 
-#: dialer_campaign/models.py:221
+#: dialer_campaign/models.py:226
 #, fuzzy
 msgid "select outbound gateway"
 msgstr "Giden ağ geçidi seçin"
 
-#: dialer_campaign/models.py:228
+#: dialer_campaign/models.py:232
 #, fuzzy
 msgid "extra parameters"
 msgstr "Ekstra Parametreler"
 
-#: dialer_campaign/models.py:229
+#: dialer_campaign/models.py:233
 #, fuzzy
 msgid "additional application parameters."
 msgstr "Ek uygulama parametreleri."
 
-#: dialer_campaign/models.py:232
+#: dialer_campaign/models.py:236
 #, fuzzy
 msgid "imported phonebook"
 msgstr "Telefon rehberlerinizi listeleyin , ekleyin yada düzenleyin"
 
-#: dialer_campaign/models.py:234
+#: dialer_campaign/models.py:238
 #: templates/frontend/survey/survey_report.html:64
 #, fuzzy
 msgid "total contact"
 msgstr "Kişileri içe Aktar"
 
-#: dialer_campaign/models.py:235
+#: dialer_campaign/models.py:239
 #, fuzzy
 msgid "total contact for this campaign"
 msgstr "Kampanyası Update"
 
-#: dialer_campaign/models.py:237
+#: dialer_campaign/models.py:241
 #, fuzzy
 msgid "completed"
 msgstr "Anketler"
 
-#: dialer_campaign/models.py:238
+#: dialer_campaign/models.py:242
 msgid "total contact that completed call / survey"
 msgstr ""
 
-#: dialer_campaign/models.py:240
+#: dialer_campaign/models.py:244
 #, fuzzy
 msgid "has been started"
 msgstr "Kampanya başladı"
 
-#: dialer_campaign/models.py:241
+#: dialer_campaign/models.py:245
 #, fuzzy
 msgid "has been duplicated"
 msgstr "Kampanya başladı"
 
-#: dialer_campaign/models.py:243
+#: dialer_campaign/models.py:246
+msgid "DNC"
+msgstr ""
+
+#: dialer_campaign/models.py:247
+msgid "do not call list"
+msgstr ""
+
+#: dialer_campaign/models.py:250
 #, fuzzy
 msgid "enable voicemail detection"
 msgstr "Dialer ayarları"
 
-#: dialer_campaign/models.py:246
+#: dialer_campaign/models.py:253
 msgid "detection behaviour"
 msgstr ""
 
-#: dialer_campaign/models.py:248
+#: dialer_campaign/models.py:255
 #, fuzzy
 msgid "voicemail audio file"
 msgstr "Ses Dosyası"
 
-#: dialer_campaign/models.py:259
+#: dialer_campaign/models.py:267
 #, fuzzy
 msgid "can see campaign"
 msgstr "Kampanya seç"
 
-#: dialer_campaign/models.py:260
+#: dialer_campaign/models.py:268
 #, fuzzy
 msgid "can see campaign dashboard"
 msgstr "Kampanya İptal Edildi"
 
-#: dialer_campaign/models.py:264
+#: dialer_campaign/models.py:272
 #, fuzzy
 msgid "campaigns"
 msgstr "Kampanya"
 
-#: dialer_campaign/models.py:308 templates/frontend/audio/audio_list.html:27
+#: dialer_campaign/models.py:316 templates/frontend/audio/audio_list.html:27
 #: templates/frontend/audio/audio_list.html:53
 #: templates/frontend/campaign/list.html:42
 #: templates/frontend/campaign/list.html:73
 #: templates/frontend/contact/list.html:89
 #: templates/frontend/contact/list.html:120
+#: templates/frontend/dnc_contact/list.html:82
+#: templates/frontend/dnc_contact/list.html:109
+#: templates/frontend/dnc_list/list.html:28
+#: templates/frontend/dnc_list/list.html:55
 #: templates/frontend/phonebook/list.html:28
 #: templates/frontend/phonebook/list.html:56
 #: templates/frontend/report/voipcall_report.html:91
@@ -1077,80 +1118,81 @@ msgstr "Kampanya"
 msgid "action"
 msgstr "Eylem"
 
-#: dialer_campaign/models.py:318
+#: dialer_campaign/models.py:326
 #, fuzzy
 msgid "voice app"
 msgstr "Ses Aplikasyonları"
 
-#: dialer_campaign/models.py:395
+#: dialer_campaign/models.py:403
 #, fuzzy
 msgid "progress"
 msgstr "İşlem"
 
-#: dialer_campaign/models.py:404
+#: dialer_campaign/models.py:412
 #, python-format
 msgid "<a href='%(link)s'>%(name)s</a>"
 msgstr "<a href='%(link)s'>%(name)s</a>"
 
-#: dialer_campaign/models.py:405
+#: dialer_campaign/models.py:413
 #, fuzzy
 msgid "details"
 msgstr "Detaylar"
 
-#: dialer_campaign/models.py:446
+#: dialer_campaign/models.py:454
 #, fuzzy
 msgid "select contact"
 msgstr "Kişi seç"
 
-#: dialer_campaign/models.py:448
+#: dialer_campaign/models.py:456
 #, fuzzy
 msgid "select campaign"
 msgstr "Kampanya seç"
 
-#: dialer_campaign/models.py:450
+#: dialer_campaign/models.py:458
 #, fuzzy
 msgid "last attempt"
 msgstr "Son deneme"
 
-#: dialer_campaign/models.py:452
+#: dialer_campaign/models.py:460
 #, fuzzy
 msgid "count attempts"
 msgstr "Deneme sayısı"
 
-#: dialer_campaign/models.py:455
+#: dialer_campaign/models.py:463
 #, fuzzy
 msgid "completion count attempts"
 msgstr "Deneme sayısı"
 
-#: dialer_campaign/models.py:458 dialer_contact/constants.py:48
-#: dialer_contact/models.py:115
+#: dialer_campaign/models.py:466 dialer_contact/constants.py:48
+#: dialer_contact/models.py:120
 #: templates/admin/dialer_contact/contact/import_contact.html:20
 #: templates/frontend/contact/change.html:19
+#: templates/frontend/dnc_contact/change.html:19
 msgid "contact"
 msgstr "temas"
 
-#: dialer_campaign/models.py:469
+#: dialer_campaign/models.py:477
 #, fuzzy
 msgid "subscribers"
 msgstr "Kampanya Aboneleri"
 
-#: dialer_campaign/views.py:71
+#: dialer_campaign/views.py:70
 msgid ""
 "error : you have to assign a phonebook to your campaign before starting it"
 msgstr ""
 
-#: dialer_campaign/views.py:79
+#: dialer_campaign/views.py:78
 msgid ""
 "the campaign global settings cannot be edited when the campaign is started"
 msgstr ""
 
-#: dialer_campaign/views.py:111 user_profile/constants.py:26
+#: dialer_campaign/views.py:106 user_profile/constants.py:26
 #: user_profile/management.py:57
 #, fuzzy
 msgid "dialer setting configuration"
 msgstr "Arama ayarları düzenle"
 
-#: dialer_campaign/views.py:112
+#: dialer_campaign/views.py:107
 #, fuzzy, python-format
 msgid ""
 "Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
@@ -1161,36 +1203,31 @@ msgstr ""
 "\" doğru sistemi kullanmak üzere yapılandırılmamış değil, onların çevirici "
 "ayarları yapılandırın."
 
-#: dialer_campaign/views.py:163 dialer_cdr/constants.py:28
+#: dialer_campaign/views.py:158 dialer_cdr/constants.py:28
 #, fuzzy
 msgid "pause"
 msgstr "Duraklat"
 
-#: dialer_campaign/views.py:164 dialer_cdr/constants.py:27
+#: dialer_campaign/views.py:159 dialer_cdr/constants.py:27
 #, fuzzy
 msgid "abort"
 msgstr "Iptal etmek"
 
-#: dialer_campaign/views.py:165
+#: dialer_campaign/views.py:160
 msgid "stop"
 msgstr ""
 
-#: dialer_campaign/views.py:193
+#: dialer_campaign/views.py:184
 #, fuzzy
 msgid "edit survey"
 msgstr "Anket"
 
-#: dialer_campaign/views.py:197
-#, fuzzy
-msgid "edit voice application"
-msgstr "Ses Uygulamaları"
-
-#: dialer_campaign/views.py:230
+#: dialer_campaign/views.py:210
 #, fuzzy
 msgid "duplicate this campaign"
 msgstr "Kampanyası Update"
 
-#: dialer_campaign/views.py:315
+#: dialer_campaign/views.py:295
 #, fuzzy
 msgid ""
 "in order to add a campaign, you need to have your settings configured "
@@ -1199,26 +1236,27 @@ msgstr ""
 "Kampanya eklemek için, ayarlarınızı düzgün yapılandırılmış olması gerekir, "
 "yönetici ile temasa geçiniz."
 
-#: dialer_campaign/views.py:322
+#: dialer_campaign/views.py:302
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
 msgstr ""
 "Çok fazla kampanyanız bulunmakta.Hesabınıza en fazla %(limit) sınır "
 "tanımlanmıştır."
 
-#: dialer_campaign/views.py:388
+#: dialer_campaign/views.py:368
 #, python-format
 msgid "%(count)s campaign(s) are deleted."
 msgstr "%(count)s kampanyası (ler) silinir."
 
-#: dialer_campaign/views.py:427
+#: dialer_campaign/views.py:407
 msgid ""
 "the campaign is started, you can only edit Dialer settings and Campaign "
 "schedule"
 msgstr ""
 
-#: dialer_campaign/views.py:461 dialer_contact/views.py:208
-#: dialer_contact/views.py:491 survey/views.py:1429 voice_app/views.py:176
+#: dialer_campaign/views.py:441 dialer_contact/views.py:208
+#: dialer_contact/views.py:491 dnc/views.py:198 dnc/views.py:439
+#: survey/views.py:760
 #, python-format
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" güncellendi."
@@ -1301,7 +1339,7 @@ msgstr "Deneme Yapıldı"
 msgid "A-Leg"
 msgstr "A-Leg"
 
-#: dialer_cdr/constants.py:46 voice_app/models.py:54
+#: dialer_cdr/constants.py:46
 msgid "B-Leg"
 msgstr "B-Leg"
 
@@ -1350,7 +1388,7 @@ msgstr "CallerID"
 msgid "phone no"
 msgstr "Telefon No"
 
-#: dialer_cdr/constants.py:71 dialer_cdr/models.py:212 survey/constants.py:48
+#: dialer_cdr/constants.py:71 dialer_cdr/models.py:212 survey/constants.py:40
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:55
 #: templates/frontend/dashboard.html:43 templates/frontend/dashboard.html:231
 #: templates/frontend/report/voipcall_report.html:157
@@ -1366,7 +1404,7 @@ msgid "bill sec"
 msgstr "Faturalandırılan İşlem süresi (sn)"
 
 #: dialer_cdr/constants.py:73 dialer_cdr/forms.py:30 dialer_cdr/models.py:219
-#: survey/constants.py:49
+#: survey/constants.py:41
 #, fuzzy
 msgid "disposition"
 msgstr "Eğilim"
@@ -1418,9 +1456,8 @@ msgstr "CallerID"
 msgid "callerID used to call the A-Leg"
 msgstr "A-Leg Üzerinden kullanılan Caller ID"
 
-#: dialer_cdr/models.py:118 dialer_cdr/models.py:203 survey/models.py:220
-#: templates/frontend/survey/survey_change.html:280
-#: templates/frontend/survey/survey_view.html:204 user_profile/forms.py:61
+#: dialer_cdr/models.py:118 dialer_cdr/models.py:203 dnc/constants.py:29
+#: dnc/forms.py:32 dnc/models.py:75 user_profile/forms.py:61
 #: user_profile/models.py:65
 #, fuzzy
 msgid "phone number"
@@ -1501,7 +1538,7 @@ msgstr "VoIP Çağrı Kimliği"
 msgid "the international number of the recipient, without the leading +"
 msgstr "Ön Kod + olmadan alıcının uluslararası numarası,"
 
-#: dialer_cdr/models.py:206 survey/constants.py:47
+#: dialer_cdr/models.py:206 survey/constants.py:39
 #, fuzzy
 msgid "destination"
 msgstr "Hedef"
@@ -1581,7 +1618,7 @@ msgstr ""
 "Kampanya için çok fazla kişi girişi yapıldı. En fazla %(limit)s kabul "
 "edilmektedir."
 
-#: dialer_contact/admin.py:169 dialer_contact/views.py:580
+#: dialer_contact/admin.py:172 dialer_contact/views.py:583
 #, fuzzy
 msgid ""
 "invalid value for import! please check the import samples or phonebook is "
@@ -1589,19 +1626,14 @@ msgid ""
 msgstr ""
 "İçe aktarma  için geçersiz değer! İçe aktarılan değerleri kontrol ediniz."
 
-#: dialer_contact/admin.py:206 dialer_contact/views.py:621
+#: dialer_contact/admin.py:212 dialer_contact/views.py:627
 #, fuzzy, python-format
 msgid ""
 "%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
 "row(s) !!"
 msgstr "%(contact_cnt)s Kişi(ler) %(total_rows)s başarıyla içe aktarıldı!"
 
-#: dialer_contact/admin.py:215
-#, fuzzy
-msgid "dialer contact"
-msgstr "Kişiyi sil"
-
-#: dialer_contact/admin.py:216
+#: dialer_contact/admin.py:222
 #: templates/frontend/contact/import_contact.html:13
 #, fuzzy
 msgid "import contact"
@@ -1640,6 +1672,7 @@ msgid "ends with"
 msgstr "Ile biter"
 
 #: dialer_contact/constants.py:38 dialer_contact/constants.py:46
+#: dnc/constants.py:20 dnc/constants.py:27
 msgid "ID"
 msgstr ""
 
@@ -1666,10 +1699,13 @@ msgid "to"
 msgstr "için"
 
 #: dialer_contact/forms.py:32
-msgid "upload CSV file, the delimiter have to be "
+msgid ""
+"upload CSV file using the pipe \"|\" as the field delimiter, e.g. 1234567890|"
+"surname|forename|email@somewhere.com|test-contact|1|address|city|state|US|"
+"unit|{\"age\":\"32\",\"title\":\"doctor\"}"
 msgstr ""
 
-#: dialer_contact/forms.py:42 survey/forms.py:350
+#: dialer_contact/forms.py:42 survey/forms.py:370
 #, fuzzy, python-format
 msgid "document types accepted: %s"
 msgstr "Belge türleri kabul edilir: %s"
@@ -1711,34 +1747,55 @@ msgstr "Telefon rehberi"
 msgid "email"
 msgstr "E-posta"
 
-#: dialer_contact/models.py:98
+#: dialer_contact/models.py:99
 #: templates/admin/dialer_contact/contact/import_contact.html:26
-#: templates/frontend/contact/import_contact.html:28 user_profile/models.py:61
+#: templates/frontend/contact/import_contact.html:28 user_profile/models.py:56
 #, fuzzy
-msgid "country"
-msgstr "Ülke"
+msgid "address"
+msgstr "Adres"
 
-#: dialer_contact/models.py:100
+#: dialer_contact/models.py:101
 #: templates/admin/dialer_contact/contact/import_contact.html:27
 #: templates/frontend/contact/import_contact.html:29 user_profile/models.py:58
 msgid "city"
 msgstr ""
 
-#: dialer_contact/models.py:102
+#: dialer_contact/models.py:103
+#: templates/admin/dialer_contact/contact/import_contact.html:28
+#: templates/frontend/contact/import_contact.html:30 user_profile/models.py:60
+#, fuzzy
+msgid "state"
+msgstr "Ülke"
+
+#: dialer_contact/models.py:104
+#: templates/admin/dialer_contact/contact/import_contact.html:29
+#: templates/frontend/contact/import_contact.html:31 user_profile/models.py:61
+#, fuzzy
+msgid "country"
+msgstr "Ülke"
+
+#: dialer_contact/models.py:105
+#: templates/admin/dialer_contact/contact/import_contact.html:30
+#: templates/frontend/contact/import_contact.html:32
+#, fuzzy
+msgid "unit number"
+msgstr "Numarası İletişim"
+
+#: dialer_contact/models.py:107
 #, fuzzy
 msgid "additional parameters (JSON)"
 msgstr "Ek parametreler"
 
-#: dialer_contact/models.py:103
+#: dialer_contact/models.py:108
 msgid "enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"
 msgstr ""
 
-#: dialer_contact/models.py:105
+#: dialer_contact/models.py:110
 #, fuzzy
 msgid "notes"
 msgstr "Notlar"
 
-#: dialer_contact/models.py:112
+#: dialer_contact/models.py:117
 #, fuzzy
 msgid "can see contact"
 msgstr "Kişi seç"
@@ -1748,12 +1805,12 @@ msgstr "Kişi seç"
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s rehberi (ler) silinir."
 
-#: dialer_contact/views.py:404
+#: dialer_contact/views.py:404 dnc/views.py:352
 #, python-format
 msgid "\"%(name)s\" cannot be added."
 msgstr "\"%(name)s\" eklenemiyor."
 
-#: dialer_contact/views.py:453
+#: dialer_contact/views.py:453 dnc/views.py:401
 #, python-format
 msgid "%(count)s contact(s) are deleted."
 msgstr "%(count)s Kişi (ler) silindi."
@@ -1998,6 +2055,53 @@ msgstr "Beyaz telefon numaraları için normal ifadeleri kullanın"
 msgid "dialer setting"
 msgstr "Dialer ayarları"
 
+#: dnc/forms.py:36 dnc/models.py:48
+msgid "Do Not Call list"
+msgstr ""
+
+#: dnc/models.py:34
+#, fuzzy
+msgid "DNC name"
+msgstr "Soyadı"
+
+#: dnc/models.py:45
+#, fuzzy
+msgid "can see Do Not Call list"
+msgstr "Anket Güncelle"
+
+#: dnc/models.py:49
+msgid "Do Not Call lists"
+msgstr ""
+
+#: dnc/models.py:55
+#, fuzzy
+msgid "dnc contacts"
+msgstr "temas"
+
+#: dnc/models.py:73
+msgid "Do Not Call List"
+msgstr ""
+
+#: dnc/models.py:85
+#, fuzzy
+msgid "can see Do Not Call contact"
+msgstr "Kişi seç"
+
+#: dnc/models.py:88
+#, fuzzy
+msgid "Do Not Call contact"
+msgstr "Kişileri içe Aktar"
+
+#: dnc/models.py:89
+#, fuzzy
+msgid "Do Not Call contacts"
+msgstr "temas"
+
+#: dnc/views.py:163
+#, fuzzy, python-format
+msgid "%(count)s dnc list(s) are deleted."
+msgstr "%(count)s Kişi (ler) silindi."
+
 #: frontend/constants.py:20
 #, fuzzy
 msgid "last 30 days"
@@ -2063,27 +2167,27 @@ msgstr "Geçerli Kullanıcı Kimlik Bilgileri girin."
 msgid "Survey"
 msgstr "Anket"
 
-#: survey/constants.py:20 survey/constants.py:30
+#: survey/constants.py:20
 #, fuzzy
 msgid "play message"
 msgstr "Ses Uygulaması"
 
-#: survey/constants.py:21 survey/constants.py:31
+#: survey/constants.py:21
 #, fuzzy
 msgid "multi-choice"
 msgstr "Sorunuzu girin"
 
-#: survey/constants.py:22 survey/constants.py:32
+#: survey/constants.py:22
 #, fuzzy
 msgid "rating question"
 msgstr "Soruyu sil"
 
-#: survey/constants.py:23 survey/constants.py:33
+#: survey/constants.py:23
 #, fuzzy
 msgid "capture digits"
 msgstr "Numarası İletişim"
 
-#: survey/constants.py:24 survey/constants.py:34
+#: survey/constants.py:24
 #, fuzzy
 msgid "record message"
 msgstr "Ses Dosyaları"
@@ -2093,276 +2197,288 @@ msgstr "Ses Dosyaları"
 msgid "call transfer"
 msgstr "Çağrı Raporu"
 
-#: survey/constants.py:26 survey/constants.py:36 survey/forms.py:44
+#: survey/constants.py:26 survey/forms.py:44
 #, fuzzy
 msgid "hangup"
 msgstr "Cevap Sebepleri"
 
-#: survey/constants.py:46
+#: survey/constants.py:27 survey/models.py:238
+#: templates/frontend/survey/survey_change.html:282
+#: templates/frontend/survey/survey_view.html:213
+msgid "conference"
+msgstr ""
+
+#: survey/constants.py:38
 #, fuzzy
 msgid "call-date "
 msgstr "Çağrı Kimliği"
 
-#: survey/constants.py:50 templates/frontend/survey/survey_report.html:18
+#: survey/constants.py:42 templates/frontend/survey/survey_report.html:18
 #, fuzzy
 msgid "survey result"
 msgstr "Anketler"
 
 #: survey/forms.py:78 survey/forms.py:104
 #: templates/frontend/survey/section_branch_change.html:70
-#: templates/frontend/survey/survey_change.html:310
-#: templates/frontend/survey/survey_view.html:232
+#: templates/frontend/survey/survey_change.html:312
+#: templates/frontend/survey/survey_view.html:241
 msgid "any other key"
 msgstr ""
 
 #: survey/forms.py:79 survey/forms.py:105
 #: templates/frontend/survey/section_branch_change.html:71
-#: templates/frontend/survey/survey_change.html:312
-#: templates/frontend/survey/survey_view.html:234
+#: templates/frontend/survey/survey_change.html:314
+#: templates/frontend/survey/survey_view.html:243
 #, fuzzy
 msgid "invalid"
 msgstr "Ses Dosyaları"
 
-#: survey/forms.py:338
+#: survey/forms.py:358
 #, fuzzy
 msgid "survey name"
 msgstr "Anket"
 
-#: survey/forms.py:339
+#: survey/forms.py:359
 #, fuzzy
-msgid "upload File "
+msgid "upload File"
 msgstr "CSV Dosya Yükle"
 
-#: survey/forms.py:341
+#: survey/forms.py:361
 #, fuzzy
 msgid "browse text file"
 msgstr "CSV dosyası Gözat"
 
-#: survey/models.py:44
+#: survey/models.py:57
 #, fuzzy
 msgid "Text-to-Speech language"
 msgstr "Dili seçin"
 
-#: survey/models.py:66
+#: survey/models.py:79
 #, fuzzy
 msgid "can see survey template"
 msgstr "Anket Raporları"
 
-#: survey/models.py:68
+#: survey/models.py:81
 #, fuzzy
 msgid "survey template"
 msgstr "Anketler"
 
-#: survey/models.py:69
+#: survey/models.py:82
 #, fuzzy
 msgid "survey templates"
 msgstr "Anket Raporları"
 
-#: survey/models.py:115
+#: survey/models.py:128
 #, fuzzy
 msgid "can see survey"
 msgstr "Anket Güncelle"
 
-#: survey/models.py:116
+#: survey/models.py:129
 #, fuzzy
 msgid "can export survey"
 msgstr "Anket Güncelle"
 
-#: survey/models.py:117
+#: survey/models.py:130
 #, fuzzy
 msgid "can import survey"
 msgstr "Anket Güncelle"
 
-#: survey/models.py:118
+#: survey/models.py:131
 #, fuzzy
 msgid "can see survey report"
 msgstr "Anket Raporları"
 
-#: survey/models.py:166
+#: survey/models.py:180
 #, fuzzy
 msgid "section type"
 msgstr "Bildirim türü"
 
-#: survey/models.py:169 templates/frontend/survey/section_change.html:108
+#: survey/models.py:183 templates/frontend/survey/section_change.html:108
 #: templates/frontend/survey/survey_campaign_result.html:14
-#: templates/frontend/survey/survey_change.html:143
+#: templates/frontend/survey/survey_change.html:136
 #: templates/frontend/survey/survey_report.html:86
 #: templates/frontend/survey/survey_view.html:77
 #, fuzzy
 msgid "question"
 msgstr "Soru"
 
-#: survey/models.py:170
+#: survey/models.py:184
 msgid "example : hotel service rating"
 msgstr ""
 
-#: survey/models.py:173
+#: survey/models.py:187
 msgid "example : capture digits between 1 to 5, press pound key when done"
 msgstr ""
 
-#: survey/models.py:175
+#: survey/models.py:189
 #, fuzzy
 msgid "audio File"
 msgstr "Ses Dosyası"
 
-#: survey/models.py:177
+#: survey/models.py:191
 #, fuzzy
 msgid "retries"
 msgstr "En fazla deneme"
 
-#: survey/models.py:178
+#: survey/models.py:192
 msgid "retries this section until it's valid"
 msgstr ""
 
-#: survey/models.py:180
+#: survey/models.py:194
 #: templates/frontend/registration/user_dialer_settings.html:17
-#: templates/frontend/survey/survey_change.html:314
-#: templates/frontend/survey/survey_view.html:236
+#: templates/frontend/survey/survey_change.html:316
+#: templates/frontend/survey/survey_view.html:245
 #, fuzzy
 msgid "timeout"
 msgstr "Zaman Aşımı"
 
-#: survey/models.py:181
+#: survey/models.py:195
 msgid "timeout in seconds to press the key(s)"
 msgstr ""
 
-#: survey/models.py:206
+#: survey/models.py:220
 #, fuzzy
 msgid "from 1 to X"
 msgstr "Itibaren"
 
-#: survey/models.py:209
+#: survey/models.py:223
 msgid "check validity"
 msgstr ""
 
-#: survey/models.py:212
+#: survey/models.py:226
 #, fuzzy
 msgid "number of digits"
 msgstr "Kampanyalar maksimum sayısı"
 
-#: survey/models.py:214
+#: survey/models.py:228
 msgid "minimum"
 msgstr ""
 
-#: survey/models.py:216
+#: survey/models.py:230
 #, fuzzy
 msgid "maximum"
 msgstr "Maksimum deneme"
 
-#: survey/models.py:223
+#: survey/models.py:234 templates/frontend/survey/survey_change.html:273
+#: templates/frontend/survey/survey_view.html:204
+#, fuzzy
+msgid "Phone Number / SIP URI"
+msgstr "Telefon Numarası"
+
+#: survey/models.py:242
 #, fuzzy
 msgid "survey complete"
 msgstr "Anketler"
 
-#: survey/models.py:274 survey/models.py:336
+#: survey/models.py:293 survey/models.py:356
 #, fuzzy
 msgid "audio invalid input"
 msgstr "Ses Dosyaları"
 
-#: survey/models.py:279
+#: survey/models.py:298
 #, fuzzy
 msgid "section template"
 msgstr "Bildirim türü"
 
-#: survey/models.py:280
+#: survey/models.py:299
 #, fuzzy
 msgid "section templates"
 msgstr "Bildirim türü"
 
-#: survey/models.py:341
+#: survey/models.py:361
 #, fuzzy
 msgid "section template ID"
 msgstr "Bildirim türü"
 
-#: survey/models.py:360
+#: survey/models.py:380
 msgid "entered value"
 msgstr ""
 
-#: survey/models.py:383
+#: survey/models.py:403
 #, fuzzy
 msgid "branching template"
 msgstr "Bildirim türü"
 
-#: survey/models.py:384
+#: survey/models.py:404
 #, fuzzy
 msgid "branching templates"
 msgstr "Bildirim türü"
 
-#: survey/models.py:450 survey/models.py:476
+#: survey/models.py:470 survey/models.py:496
 #: templates/frontend/survey/survey_campaign_result.html:15
 #, fuzzy
 msgid "response"
 msgstr "Yanıt"
 
-#: survey/models.py:452
+#: survey/models.py:472
 #, fuzzy
 msgid "record File"
 msgstr "Kullanıcı Profili"
 
-#: survey/models.py:455
+#: survey/models.py:475
 #, fuzzy
 msgid "recording duration"
 msgstr "Anket yapılandırma"
 
-#: survey/models.py:478
+#: survey/models.py:498
 #, fuzzy
 msgid "result count"
 msgstr "Çağrı sayısı"
 
-#: survey/views.py:831
+#: survey/views.py:196
 #, python-format
 msgid "%(count)s survey(s) are deleted."
 msgstr "%(count)s anketi (ler) silindi."
 
-#: survey/views.py:862
+#: survey/views.py:227
 msgid "section is added successfully."
 msgstr ""
 
-#: survey/views.py:1007
+#: survey/views.py:352
 #, fuzzy
 msgid "section updated."
 msgstr "Bildirim türü"
 
-#: survey/views.py:1165
+#: survey/views.py:498
 msgid "section is deleted successfully."
 msgstr ""
 
-#: survey/views.py:1200
+#: survey/views.py:533
 #, fuzzy
 msgid "script updated."
 msgstr "Bildirim türü"
 
-#: survey/views.py:1305
+#: survey/views.py:636
 msgid "branching is added successfully."
 msgstr ""
 
-#: survey/views.py:1309 survey/views.py:1373
+#: survey/views.py:640 survey/views.py:704
 #, fuzzy
 msgid "duplicate record keys with goto."
 msgstr "Temas çoğaltın!"
 
-#: survey/views.py:1352
+#: survey/views.py:683
 msgid "branching is deleted successfully."
 msgstr ""
 
-#: survey/views.py:1368
+#: survey/views.py:699
 #, fuzzy
 msgid "branching updated."
 msgstr "Bildirim türü"
 
-#: survey/views.py:1548
+#: survey/views.py:879
 #, fuzzy
 msgid "no recording"
 msgstr "Kayıt bulunamadı!."
 
-#: survey/views.py:1693
+#: survey/views.py:1024
 #, fuzzy
 msgid "no campaign attached with survey."
 msgstr "Hiçbir kampanya anket ile ilişkilendirilmedi."
 
 #: survey/templatetags/survey_tags.py:101
-#: templates/frontend/survey/survey_change.html:331
-#: templates/frontend/survey/survey_view.html:253
+#: templates/frontend/survey/survey_change.html:333
+#: templates/frontend/survey/survey_view.html:262
 #, fuzzy
 msgid "hang up"
 msgstr "Cevap Sebepleri"
@@ -2428,9 +2544,12 @@ msgstr "Arama Seçenekleri"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:39
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:39
-#: templates/frontend/master.html:106 templates/frontend/master.html.py:111
+#: templates/frontend/newfies_custom_js.html:28
+#: templates/frontend/newfies_custom_js.html:33
 #: templates/frontend/contact/list.html:62
 #: templates/frontend/contact/list.html:68
+#: templates/frontend/dnc_contact/list.html:55
+#: templates/frontend/dnc_contact/list.html:61
 #: templates/frontend/report/voipcall_report.html:67
 #: templates/frontend/report/voipcall_report.html:72
 #: templates/frontend/survey/survey_report.html:53
@@ -2440,7 +2559,7 @@ msgstr "Ara"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:40
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:40
-#: templates/admin/dialer_contact/contact/import_contact.html:64
+#: templates/admin/dialer_contact/contact/import_contact.html:73
 #, fuzzy
 msgid "reset"
 msgstr "Reset"
@@ -2507,6 +2626,8 @@ msgstr "ACT"
 #: templates/frontend/audio/audio_list.html:90
 #: templates/frontend/campaign/list.html:113
 #: templates/frontend/contact/list.html:159
+#: templates/frontend/dnc_contact/list.html:140
+#: templates/frontend/dnc_list/list.html:86
 #: templates/frontend/phonebook/list.html:88
 #: templates/frontend/report/voipcall_report.html:144
 #: templates/frontend/report/voipcall_report.html:180
@@ -2539,21 +2660,23 @@ msgstr "Örnek Dosya"
 msgid "email-id"
 msgstr "eposta-id"
 
-#: templates/admin/dialer_contact/contact/import_contact.html:28
+#: templates/admin/dialer_contact/contact/import_contact.html:31
 msgid "additional_vars"
 msgstr "additional_vars"
 
-#: templates/admin/dialer_contact/contact/import_contact.html:54
+#: templates/admin/dialer_contact/contact/import_contact.html:63
 msgid "CONTACT STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 msgstr "KİŞİ DURUMU = ('1'-'AKTIF') ('0'-'PASIF')"
 
-#: templates/admin/dialer_contact/contact/import_contact.html:63
+#: templates/admin/dialer_contact/contact/import_contact.html:72
 #: templates/frontend/audio/audio_change.html:41
-#: templates/frontend/campaign/change.html:203
+#: templates/frontend/campaign/change.html:224
 #: templates/frontend/contact/change.html:44
-#: templates/frontend/contact/import_contact.html:75
+#: templates/frontend/contact/import_contact.html:84
+#: templates/frontend/dnc_contact/change.html:44
+#: templates/frontend/dnc_list/change.html:35
 #: templates/frontend/phonebook/change.html:35
-#: templates/frontend/survey/import_survey.html:58
+#: templates/frontend/survey/import_survey.html:62
 #: templates/frontend/survey/survey_change.html:48
 #: templates/frontend/survey/survey_report.html:47
 #: templates/frontend/voiceapp/change.html:37
@@ -2561,13 +2684,13 @@ msgstr "KİŞİ DURUMU = ('1'-'AKTIF') ('0'-'PASIF')"
 msgid "submit"
 msgstr "Sunmak"
 
-#: templates/admin/dialer_contact/contact/import_contact.html:89
+#: templates/admin/dialer_contact/contact/import_contact.html:98
 #, fuzzy
 msgid "contact(s) imported"
 msgstr "Kişi (ler) İçe aktarıldı."
 
-#: templates/admin/dialer_contact/contact/import_contact.html:105
-#: templates/frontend/contact/import_contact.html:98
+#: templates/admin/dialer_contact/contact/import_contact.html:114
+#: templates/frontend/contact/import_contact.html:107
 #, fuzzy
 msgid "type mismatch"
 msgstr "Tip uyuşmazlığı"
@@ -2580,6 +2703,10 @@ msgstr "Tip uyuşmazlığı"
 #: templates/frontend/campaign/list.html:54
 #: templates/frontend/contact/change.html:18
 #: templates/frontend/contact/list.html:101
+#: templates/frontend/dnc_contact/change.html:18
+#: templates/frontend/dnc_contact/list.html:93
+#: templates/frontend/dnc_list/change.html:9
+#: templates/frontend/dnc_list/list.html:39
 #: templates/frontend/phonebook/change.html:9
 #: templates/frontend/phonebook/list.html:39
 #: templates/frontend/survey/section_change.html:49
@@ -2674,119 +2801,141 @@ msgstr "Ön İzleme"
 msgid "voice campaign"
 msgstr "Dialer Kampanya"
 
-#: templates/frontend/bootstrap_menu.html:62
+#: templates/frontend/bootstrap_menu.html:63
+#, fuzzy
+msgid "list"
+msgstr "Kara listeye almak"
+
+#: templates/frontend/bootstrap_menu.html:79
 #, fuzzy
 msgid "reporting"
 msgstr "Raporlama"
 
-#: templates/frontend/bootstrap_menu.html:65
+#: templates/frontend/bootstrap_menu.html:82
 #, fuzzy
 msgid "call detail report"
 msgstr "Çağrı Detay Raporu"
 
-#: templates/frontend/bootstrap_menu.html:68
+#: templates/frontend/bootstrap_menu.html:85
 #, fuzzy
 msgid "survey reports"
 msgstr "Anket Raporları"
 
-#: templates/frontend/bootstrap_menu.html:75
+#: templates/frontend/bootstrap_menu.html:92
 #, fuzzy
 msgid "modules"
 msgstr "Modüller"
 
-#: templates/frontend/bootstrap_menu.html:81
+#: templates/frontend/bootstrap_menu.html:98
 #, fuzzy
 msgid "add-ons"
 msgstr "Eklentiler"
 
-#: templates/frontend/bootstrap_menu.html:82
+#: templates/frontend/bootstrap_menu.html:99
 msgid "SMS (Text Messaging)"
 msgstr ""
 
-#: templates/frontend/bootstrap_menu.html:83
+#: templates/frontend/bootstrap_menu.html:100
 msgid "Voicemail Detection (AMD)"
 msgstr ""
 
-#: templates/frontend/bootstrap_menu.html:84
+#: templates/frontend/bootstrap_menu.html:101
 #, fuzzy
 msgid "rebranding"
 msgstr "Kayıt bulunamadı!."
 
-#: templates/frontend/bootstrap_menu.html:101
+#: templates/frontend/bootstrap_menu.html:118
 #, fuzzy
 msgid "account settings"
 msgstr "Hesap ayarları"
 
-#: templates/frontend/bootstrap_menu.html:104
+#: templates/frontend/bootstrap_menu.html:121
 #, fuzzy
 msgid "notifications"
 msgstr "Bildirimler"
 
-#: templates/frontend/bootstrap_menu.html:109
+#: templates/frontend/bootstrap_menu.html:127
 #: templates/frontend/registration/user_detail_change.html:14
 #, fuzzy
 msgid "account limits"
 msgstr "Hesap Sınırları"
 
-#: templates/frontend/bootstrap_menu.html:111
+#: templates/frontend/bootstrap_menu.html:130
 #: templates/frontend/registration/user_detail_change.html:16
 #, fuzzy
 msgid "change language"
 msgstr "Dil değiştirme"
 
-#: templates/frontend/bootstrap_menu.html:122
+#: templates/frontend/bootstrap_menu.html:141
 #, fuzzy
 msgid "log out"
 msgstr "Çıkış"
 
-#: templates/frontend/custom_jquery_select_all.html:19
+#: templates/frontend/custom_jquery_select_all.html:50
 #, fuzzy
 msgid "you must check at least one box!"
 msgstr "En az bir onay kutusunu gerekir!"
 
-#: templates/frontend/custom_jquery_select_all.html:29
+#: templates/frontend/custom_jquery_select_all.html:60
 msgid " voice app(s) are going to be deleted?"
 msgstr "ses uygulaması (ler) silinecek ?"
 
-#: templates/frontend/custom_jquery_select_all.html:32
+#: templates/frontend/custom_jquery_select_all.html:63
 #, fuzzy
 msgid " contact(s) are going to be deleted?"
 msgstr "ses (ler) silinecek gidiyorsun?"
 
-#: templates/frontend/custom_jquery_select_all.html:35
 #: templates/frontend/custom_jquery_select_all.html:66
+#: templates/frontend/custom_jquery_select_all.html:83
 msgid " survey(s) are going to be deleted?"
 msgstr "Anket (ler) silinecek ?"
 
-#: templates/frontend/custom_jquery_select_all.html:38
+#: templates/frontend/custom_jquery_select_all.html:69
 msgid " audio(s) are going to be deleted?"
 msgstr "ses (ler) silinecek gidiyorsun?"
 
-#: templates/frontend/custom_jquery_select_all.html:60
+#: templates/frontend/custom_jquery_select_all.html:77
 msgid " phonebook(s) are going to be deleted with "
 msgstr "telefon rehberi (ler) ile silinecek ?"
 
-#: templates/frontend/custom_jquery_select_all.html:60
+#: templates/frontend/custom_jquery_select_all.html:77
+#: templates/frontend/custom_jquery_select_all.html:92
 msgid " contact(s)?"
 msgstr "Kişi (ler)?"
 
-#: templates/frontend/custom_jquery_select_all.html:63
+#: templates/frontend/custom_jquery_select_all.html:80
 msgid " campaign(s) are going to be deleted?"
 msgstr "kampanyası (ler) silinecek?"
 
-#: templates/frontend/custom_jquery_select_all.html:82
+#: templates/frontend/custom_jquery_select_all.html:92
+#, fuzzy
+msgid " DNC(s) are going to be deleted with "
+msgstr "telefon rehberi (ler) ile silinecek ?"
+
+#: templates/frontend/custom_jquery_select_all.html:95
+#, fuzzy
+msgid " DNC contact(s) are going to be deleted?"
+msgstr "ses (ler) silinecek gidiyorsun?"
+
+#: templates/frontend/custom_jquery_select_all.html:110
 #, fuzzy
 msgid "confirm deletion?"
 msgstr "Silme işlemini onaylıyormusunuz ?"
 
-#: templates/frontend/custom_jquery_select_all.html:109
+#: templates/frontend/custom_jquery_select_all.html:121
 #, fuzzy
 msgid "please confirm to delete this phonebook with"
 msgstr "Bu rehber silmek için teyit edin"
 
-#: templates/frontend/custom_jquery_select_all.html:109
+#: templates/frontend/custom_jquery_select_all.html:121
+#: templates/frontend/custom_jquery_select_all.html:132
 msgid "contact(s)"
 msgstr "Kişi (ler)"
+
+#: templates/frontend/custom_jquery_select_all.html:132
+#, fuzzy
+msgid "please confirm to delete this DNC with"
+msgstr "Bu rehber silmek için teyit edin"
 
 #: templates/frontend/dashboard.html:12
 #, fuzzy
@@ -2995,28 +3144,23 @@ msgstr ""
 msgid "customer interface"
 msgstr "Müşteri Arayüzü"
 
-#: templates/frontend/master.html:114 templates/frontend/master.html.py:119
-#, fuzzy
-msgid "hide search"
-msgstr "Ara"
-
-#: templates/frontend/master.html:147
+#: templates/frontend/master.html:102
 #, fuzzy
 msgid "login"
 msgstr "Giriş"
 
-#: templates/frontend/master.html:148
+#: templates/frontend/master.html:103
 #, fuzzy
 msgid "forgot password?"
 msgstr "Şifremi Unuttum?"
 
-#: templates/frontend/master.html:154
+#: templates/frontend/master.html:109
 #, fuzzy
 msgid "display language"
 msgstr "Dil Göster"
 
-#: templates/frontend/master.html:169 templates/frontend/master.html.py:175
-#: templates/frontend/master.html:197 templates/frontend/master.html.py:211
+#: templates/frontend/master.html:124 templates/frontend/master.html.py:130
+#: templates/frontend/master.html:152 templates/frontend/master.html.py:166
 #: templates/frontend/registration/check_user_phone_number.html:4
 #: templates/frontend/registration/check_user_phone_number.html:9
 #: templates/frontend/registration/user_account.html:4
@@ -3027,38 +3171,44 @@ msgstr "Dil Göster"
 msgid "alert"
 msgstr "Uyarı"
 
-#: templates/frontend/master.html:175
+#: templates/frontend/master.html:130
 #, fuzzy
 msgid "please login by clicking on login button"
 msgstr "Giriş butonuna tıklayarak giriş yapınız"
 
-#: templates/frontend/master.html:184
+#: templates/frontend/master.html:139
 #, fuzzy
 msgid "voice broadcasting solution"
 msgstr "Ses Yayın Çözümü"
 
-#: templates/frontend/master.html:199
+#: templates/frontend/master.html:154
 #, fuzzy
 msgid "to send notification to administrator"
 msgstr "Yöneticiye bildirimde bulunun "
 
-#: templates/frontend/master.html:199
+#: templates/frontend/master.html:154
 #, fuzzy
 msgid "click here"
 msgstr "Buraya tıklayın"
 
-#: templates/frontend/master.html:201
+#: templates/frontend/master.html:156
 #, fuzzy
 msgid "(notification sent)"
 msgstr "(Bildirim gönderildi)"
 
-#: templates/frontend/master.html:218
+#: templates/frontend/master.html:173
 msgid "error"
 msgstr ""
 
-#: templates/frontend/master.html:225
+#: templates/frontend/master.html:180
 msgid "info"
 msgstr ""
+
+#: templates/frontend/newfies_custom_js.html:36
+#: templates/frontend/newfies_custom_js.html:41
+#, fuzzy
+msgid "hide search"
+msgstr "Ara"
 
 #: templates/frontend/api/api_list.html:19
 msgid "Newfies APIs"
@@ -3076,14 +3226,18 @@ msgstr ""
 #: templates/frontend/audio/audio_change.html:11
 #: templates/frontend/audio/audio_change.html:39
 #: templates/frontend/campaign/change.html:9
-#: templates/frontend/campaign/change.html:201
+#: templates/frontend/campaign/change.html:222
 #: templates/frontend/contact/change.html:16
 #: templates/frontend/contact/change.html:42
+#: templates/frontend/dnc_contact/change.html:16
+#: templates/frontend/dnc_contact/change.html:42
+#: templates/frontend/dnc_list/change.html:7
+#: templates/frontend/dnc_list/change.html:33
 #: templates/frontend/phonebook/change.html:7
 #: templates/frontend/phonebook/change.html:33
 #: templates/frontend/survey/section_branch_change.html:114
 #: templates/frontend/survey/section_change.html:47
-#: templates/frontend/survey/section_change.html:294
+#: templates/frontend/survey/section_change.html:312
 #: templates/frontend/survey/section_script_change.html:45
 #: templates/frontend/survey/section_script_change.html:72
 #: templates/frontend/survey/survey_change.html:13
@@ -3094,7 +3248,7 @@ msgid "update"
 msgstr "Güncelle"
 
 #: templates/frontend/audio/audio_change.html:15
-#: templates/frontend/survey/survey_change.html:152
+#: templates/frontend/survey/survey_change.html:145
 #: templates/frontend/survey/survey_view.html:86
 #, fuzzy
 msgid "audio file"
@@ -3113,6 +3267,8 @@ msgstr "Listeleme, yükleme ve ses dosyalarını güncelle"
 #: templates/frontend/audio/audio_list.html:33
 #: templates/frontend/campaign/list.html:48
 #: templates/frontend/contact/list.html:96
+#: templates/frontend/dnc_contact/list.html:88
+#: templates/frontend/dnc_list/list.html:34
 #: templates/frontend/phonebook/list.html:34
 #: templates/frontend/voiceapp/list.html:33
 #, fuzzy
@@ -3132,6 +3288,8 @@ msgstr "Sesi sil"
 #: templates/frontend/audio/audio_list.html:84
 #: templates/frontend/campaign/list.html:107
 #: templates/frontend/contact/list.html:153
+#: templates/frontend/dnc_contact/list.html:134
+#: templates/frontend/dnc_list/list.html:80
 #: templates/frontend/phonebook/list.html:82
 #: templates/frontend/report/voipcall_report.html:138
 #: templates/frontend/survey/survey_list.html:84
@@ -3142,15 +3300,15 @@ msgstr "Kayıt bulunamadı!."
 
 #: templates/frontend/campaign/campaign_duplicate.html:76
 #: templates/frontend/survey/section_branch_change.html:116
-#: templates/frontend/survey/section_change.html:296
+#: templates/frontend/survey/section_change.html:314
 #: templates/frontend/survey/section_script_change.html:74
 msgid "save"
 msgstr ""
 
 #: templates/frontend/campaign/campaign_duplicate.html:78
-#: templates/frontend/survey/import_survey.html:59
+#: templates/frontend/survey/import_survey.html:63
 #: templates/frontend/survey/section_branch_change.html:120
-#: templates/frontend/survey/section_change.html:299
+#: templates/frontend/survey/section_change.html:317
 #: templates/frontend/survey/section_script_change.html:77
 #: templates/frontend/survey/survey_campaign_result.html:44
 msgid "close"
@@ -3166,30 +3324,32 @@ msgstr "Kampanya parametreleri ayarlayın"
 msgid "general settings"
 msgstr "Genel ayarlar"
 
-#: templates/frontend/campaign/change.html:89
+#: templates/frontend/campaign/change.html:110
 #, fuzzy
 msgid "dialer completion settings"
 msgstr "Dialer ayarları"
 
-#: templates/frontend/campaign/change.html:113
+#: templates/frontend/campaign/change.html:134
 #, fuzzy
 msgid "voicemail settings"
 msgstr "Dialer ayarları"
 
-#: templates/frontend/campaign/change.html:145
+#: templates/frontend/campaign/change.html:166
 #, fuzzy
 msgid "campaign schedule"
 msgstr "Kampanya programı"
 
-#: templates/frontend/campaign/change.html:185
+#: templates/frontend/campaign/change.html:206
 #, fuzzy
 msgid "week days"
 msgstr "Hafta Gün"
 
-#: templates/frontend/campaign/change.html:207
+#: templates/frontend/campaign/change.html:228
 #: templates/frontend/contact/change.html:48
+#: templates/frontend/dnc_contact/change.html:48
+#: templates/frontend/dnc_list/change.html:39
 #: templates/frontend/phonebook/change.html:39
-#: templates/frontend/survey/survey_change.html:345
+#: templates/frontend/survey/survey_change.html:347
 #: templates/frontend/voiceapp/change.html:41
 #, fuzzy
 msgid "delete"
@@ -3201,6 +3361,7 @@ msgid "list, add and edit campaigns"
 msgstr "Listeleme, ekleme ve kampanyalar düzenlemek"
 
 #: templates/frontend/contact/change.html:20
+#: templates/frontend/dnc_contact/change.html:20
 #, fuzzy
 msgid "add contact details"
 msgstr "İletişim bilgilerini ekle"
@@ -3210,16 +3371,16 @@ msgstr "İletişim bilgilerini ekle"
 msgid "import list of contact by uploading CSV files"
 msgstr "CSV Dosyalar ile İçe Aktarın"
 
-#: templates/frontend/contact/import_contact.html:30
+#: templates/frontend/contact/import_contact.html:33
 #, fuzzy
 msgid "additional variables"
 msgstr "Ek değişkenler"
 
-#: templates/frontend/contact/import_contact.html:56
+#: templates/frontend/contact/import_contact.html:65
 msgid "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 msgstr "ABONE DURUMU = ('1'-'AKTİF') ('0'-'PASİF')"
 
-#: templates/frontend/contact/import_contact.html:82
+#: templates/frontend/contact/import_contact.html:91
 #, fuzzy
 msgid "subscriber(s) imported"
 msgstr "Abone (ler) İçe Aktarıldı."
@@ -3246,6 +3407,31 @@ msgstr "Iletişim Güncelle"
 #, fuzzy
 msgid "delete contact"
 msgstr "Kişiyi sil"
+
+#: templates/frontend/dnc_contact/list.html:26
+#, fuzzy
+msgid "list, add and edit Do Not Call contacts"
+msgstr "Kişileri listeleyin , ekleyin ve güncelleyin"
+
+#: templates/frontend/dnc_list/change.html:12
+#, fuzzy
+msgid "DNC contacts are stored in dnc list"
+msgstr "Kişiler Rehbere eklendi."
+
+#: templates/frontend/dnc_list/list.html:9
+#, fuzzy
+msgid "list, add and edit Do Not Call list"
+msgstr "Kişileri listeleyin , ekleyin ve güncelleyin"
+
+#: templates/frontend/dnc_list/list.html:69
+#, fuzzy
+msgid "update DNC"
+msgstr "Güncelle"
+
+#: templates/frontend/dnc_list/list.html:72
+#, fuzzy
+msgid "delete DNC"
+msgstr "Silmek"
 
 #: templates/frontend/phonebook/change.html:12
 #, fuzzy
@@ -3432,7 +3618,7 @@ msgstr "Detaylı Çağrı Datası"
 msgid "voip call detail records"
 msgstr "Çağrı Detay Raporu"
 
-#: templates/frontend/survey/import_survey.html:40
+#: templates/frontend/survey/import_survey.html:44
 #: templates/frontend/survey/survey_list.html:30
 #: templates/frontend/survey/survey_list.html:31
 #, fuzzy
@@ -3445,11 +3631,11 @@ msgid "branch to section"
 msgstr "Cevap Ekle"
 
 #: templates/frontend/survey/section_branch_change.html:105
-msgid "no branching on hangup, this will terminate the call"
+msgid "no branching, this will terminate the call"
 msgstr ""
 
 #: templates/frontend/survey/section_change.html:110
-#: templates/frontend/survey/survey_change.html:145
+#: templates/frontend/survey/survey_change.html:138
 #: templates/frontend/survey/survey_view.html:79
 #, fuzzy
 msgid "section title"
@@ -3515,67 +3701,67 @@ msgstr "Anket yapılandırma"
 msgid "complete"
 msgstr "Anketler"
 
-#: templates/frontend/survey/survey_change.html:161
+#: templates/frontend/survey/survey_change.html:154
 #: templates/frontend/survey/survey_view.html:96
 msgid "script"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:165
+#: templates/frontend/survey/survey_change.html:158
 msgid "edit"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:170
+#: templates/frontend/survey/survey_change.html:163
 msgid "play"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:185
+#: templates/frontend/survey/survey_change.html:178
 #: templates/frontend/survey/survey_view.html:109
 msgid "key associations"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:263
+#: templates/frontend/survey/survey_change.html:256
 #: templates/frontend/survey/survey_view.html:187
 #, fuzzy
 msgid "from 1 to"
 msgstr "Itibaren"
 
-#: templates/frontend/survey/survey_change.html:271
+#: templates/frontend/survey/survey_change.html:264
 #: templates/frontend/survey/survey_view.html:195
 msgid "number is between"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:271
+#: templates/frontend/survey/survey_change.html:264
 #: templates/frontend/survey/survey_view.html:195
 #, fuzzy
 msgid "and"
 msgstr "Ganda"
 
-#: templates/frontend/survey/survey_change.html:297
-#: templates/frontend/survey/survey_view.html:220
+#: templates/frontend/survey/survey_change.html:299
+#: templates/frontend/survey/survey_view.html:229
 msgid "keys"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:299
-#: templates/frontend/survey/survey_view.html:222
+#: templates/frontend/survey/survey_change.html:301
+#: templates/frontend/survey/survey_view.html:231
 msgid "goto"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:316
-#: templates/frontend/survey/survey_view.html:238
+#: templates/frontend/survey/survey_change.html:318
+#: templates/frontend/survey/survey_view.html:247
 msgid "Key"
 msgstr "Anahtar"
 
-#: templates/frontend/survey/survey_change.html:319
-#: templates/frontend/survey/survey_view.html:241
+#: templates/frontend/survey/survey_change.html:321
+#: templates/frontend/survey/survey_view.html:250
 msgid "none"
 msgstr ""
 
-#: templates/frontend/survey/survey_change.html:387
+#: templates/frontend/survey/survey_change.html:389
 #, fuzzy
 msgid "add section"
 msgstr "Soru ekle"
 
-#: templates/frontend/survey/survey_change.html:392
+#: templates/frontend/survey/survey_change.html:394
 #, fuzzy
 msgid "close survey"
 msgstr "Anket Güncelle"
@@ -3656,7 +3842,7 @@ msgid "Average Connection Time"
 msgstr "Ortalama Bağlantı Zaman"
 
 #: templates/frontend/voiceapp/change.html:11
-#: templates/frontend/voiceapp/list.html:9 voice_app/models.py:139
+#: templates/frontend/voiceapp/list.html:9
 #, fuzzy
 msgid "voice applications"
 msgstr "Ses Uygulamaları"
@@ -3670,6 +3856,16 @@ msgstr "Ses uygulama yapılandırma"
 #, fuzzy
 msgid "list, add and edit voice applications"
 msgstr "Listeleme, ekleme ve ses uygulamaları düzenle"
+
+#: templates/frontend/voiceapp/list.html:73
+#, fuzzy
+msgid "update voiceapp"
+msgstr "Ses Aplikasyonu Güncelle"
+
+#: templates/frontend/voiceapp/list.html:76
+#, fuzzy
+msgid "delete voiceapp"
+msgstr "Ses Aplikasyonu sil"
 
 #: templates/pagination/pagination.html:11
 #: templates/pagination/pagination.html:14
@@ -3752,16 +3948,6 @@ msgstr ""
 msgid "call request not found"
 msgstr "Çağrı talebi bulunamadı"
 
-#: user_profile/models.py:56
-#, fuzzy
-msgid "address"
-msgstr "Adres"
-
-#: user_profile/models.py:60
-#, fuzzy
-msgid "state"
-msgstr "Ülke"
-
 #: user_profile/models.py:63
 #, fuzzy
 msgid "zip code"
@@ -3777,50 +3963,55 @@ msgstr "Faks Numarası"
 msgid "company name"
 msgstr "Şirket adı"
 
-#: user_profile/models.py:72
+#: user_profile/models.py:71
 #, fuzzy
 msgid "company website"
 msgstr "Şirket web sitesi"
 
-#: user_profile/models.py:73
+#: user_profile/models.py:72
 #, fuzzy
 msgid "language"
 msgstr "Dil"
 
-#: user_profile/models.py:75
+#: user_profile/models.py:74
 msgid "note"
 msgstr ""
 
-#: user_profile/models.py:87
+#: user_profile/models.py:91
 msgid "can see API-Explorer"
 msgstr ""
 
-#: user_profile/models.py:90
+#: user_profile/models.py:94
 #, fuzzy
 msgid "user profile"
 msgstr "Kullanıcı Profili"
 
-#: user_profile/models.py:91
+#: user_profile/models.py:95
 #, fuzzy
 msgid "user profiles"
 msgstr "Kullanıcı Profili"
 
-#: user_profile/models.py:99
+#: user_profile/models.py:107
 #, fuzzy
 msgid "customer"
 msgstr "Müşteri"
 
-#: user_profile/models.py:100
+#: user_profile/models.py:108
 #, fuzzy
 msgid "customers"
 msgstr "Müşteriler"
 
-#: user_profile/models.py:108
+#: user_profile/models.py:111
+#, fuzzy
+msgid "can see Manager interface"
+msgstr "Müşteri Arayüzü"
+
+#: user_profile/models.py:133
 #, fuzzy
 msgid "admin"
 msgstr "Yönetici"
 
-#: user_profile/models.py:109
+#: user_profile/models.py:134
 #, fuzzy
 msgid "admins"
 msgstr "Yöneticiler"
@@ -3851,80 +4042,104 @@ msgstr "Bu telefon numarası yetkilidir."
 msgid "your password has been changed."
 msgstr "Parolanız değiştirildi."
 
-#: voice_app/constants.py:20
-msgid "dial"
-msgstr ""
-
-#: voice_app/constants.py:21
 #, fuzzy
-msgid "playaudio"
-msgstr "Ses"
+#~ msgid "can see dnc contact"
+#~ msgstr "Kişi seç"
 
-#: voice_app/constants.py:22
-msgid "conference"
-msgstr ""
-
-#: voice_app/constants.py:23
-msgid "speak"
-msgstr ""
-
-#: voice_app/constants.py:31
-msgid "data"
-msgstr ""
-
-#: voice_app/constants.py:32
 #, fuzzy
-msgid "TTS Language"
-msgstr "Dil"
+#~ msgid "DNC contact"
+#~ msgstr "temas"
 
-#: voice_app/models.py:47
 #, fuzzy
-msgid "Text-to-Speech Language"
-msgstr "Dili seçin"
+#~ msgid "answer call"
+#~ msgstr "Cevap süresi (sn)"
 
-#: voice_app/models.py:50
 #, fuzzy
-msgid "voice application description"
-msgstr "Ses Uygulaması Açıklaması"
+#~ msgid "this resource allows you to manage answer call."
+#~ msgstr "Kampanya başına maksimum aboneleri"
 
-#: voice_app/models.py:55
 #, fuzzy
-msgid "gateway used if we redirect the call"
-msgstr "Çağrı direkt olarak aranmayacaksa kullanılacak olan Ağ geçidi"
+#~ msgid "hangup call"
+#~ msgstr "Cevap Sebepleri"
 
-#: voice_app/models.py:57
 #, fuzzy
-msgid "The value of 'data' depends on the type of voice application :<br/>"
-msgstr ""
-"Data; değeri sesli uygulama türüne bağlıdır: <br/> - Dial: Telefon "
-"numarasını çevirmek için kullanılır <br/> - Conference: Konferans odası adı "
-"veya numarası <br/> - Playaudio: ses dosyası dnletilir URL girmeniz gerekir. "
-"<br/> - Speak: TTS kullanarak metni ses çevirebilirsiniz"
+#~ msgid "this resource allows you to manage dial callback."
+#~ msgstr "Kampanya başına maksimum aboneleri"
 
-#: voice_app/models.py:85
 #, fuzzy
-msgid "can see voiceapp template"
-msgstr "Kampanya seç"
+#~ msgid "this resource allows you to manage hangup call."
+#~ msgstr "Kampanya başına maksimum aboneleri"
 
-#: voice_app/models.py:87
 #, fuzzy
-msgid "voice application template"
-msgstr "Ses Uygulaması"
+#~ msgid "voice application"
+#~ msgstr "Ses Uygulamaları"
 
-#: voice_app/models.py:88
 #, fuzzy
-msgid "voice application templates"
-msgstr "Ses Uygulamaları"
+#~ msgid "this resource allows you to manage voice applications."
+#~ msgstr "Kampanya başına maksimum aboneleri"
 
-#: voice_app/models.py:135
 #, fuzzy
-msgid "can see voice application"
-msgstr "Ses uygulama yapılandırma"
+#~ msgid "returns all voice applications."
+#~ msgstr "Ses Uygulamaları"
 
-#: voice_app/views.py:141
-#, python-format
-msgid "%(count)s voiceapp(s) are deleted."
-msgstr "%(count)s voiceapp (ler) silindi."
+#, fuzzy
+#~ msgid "returns a specific voice application."
+#~ msgstr "Ses uygulama yapılandırma"
+
+#, fuzzy
+#~ msgid "create new voice application."
+#~ msgstr "Ses uygulama yapılandırma"
+
+#, fuzzy
+#~ msgid "edit voice application"
+#~ msgstr "Ses Uygulamaları"
+
+#, fuzzy
+#~ msgid "playaudio"
+#~ msgstr "Ses"
+
+#, fuzzy
+#~ msgid "TTS Language"
+#~ msgstr "Dil"
+
+#, fuzzy
+#~ msgid "Text-to-Speech Language"
+#~ msgstr "Dili seçin"
+
+#, fuzzy
+#~ msgid "voice application description"
+#~ msgstr "Ses Uygulaması Açıklaması"
+
+#, fuzzy
+#~ msgid "gateway used if we redirect the call"
+#~ msgstr "Çağrı direkt olarak aranmayacaksa kullanılacak olan Ağ geçidi"
+
+#, fuzzy
+#~ msgid "The value of 'data' depends on the type of voice application :<br/>"
+#~ msgstr ""
+#~ "Data; değeri sesli uygulama türüne bağlıdır: <br/> - Dial: Telefon "
+#~ "numarasını çevirmek için kullanılır <br/> - Conference: Konferans odası "
+#~ "adı veya numarası <br/> - Playaudio: ses dosyası dnletilir URL girmeniz "
+#~ "gerekir. <br/> - Speak: TTS kullanarak metni ses çevirebilirsiniz"
+
+#, fuzzy
+#~ msgid "can see voiceapp template"
+#~ msgstr "Kampanya seç"
+
+#, fuzzy
+#~ msgid "voice application template"
+#~ msgstr "Ses Uygulaması"
+
+#, fuzzy
+#~ msgid "voice application templates"
+#~ msgstr "Ses Uygulamaları"
+
+#, fuzzy
+#~ msgid "can see voice application"
+#~ msgstr "Ses uygulama yapılandırma"
+
+#~ msgid "%(count)s voiceapp(s) are deleted."
+#~ msgstr "%(count)s voiceapp (ler) silindi."
 
 #~ msgid "ANSWERED"
 #~ msgstr "CEVAP"
@@ -4005,9 +4220,6 @@ msgstr "%(count)s voiceapp (ler) silindi."
 
 #~ msgid "Update"
 #~ msgstr "Güncelle"
-
-#~ msgid "Phone Number"
-#~ msgstr "Telefon Numarası"
 
 #~ msgid "Date"
 #~ msgstr "Tarih"

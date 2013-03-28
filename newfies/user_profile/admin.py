@@ -16,8 +16,9 @@ from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 from django.db.models import Q
-from django.utils.translation import ugettext_lazy as _
+#from django.utils.translation import ugettext_lazy as _
 from user_profile.models import UserProfile, Customer, Staff
+#from user_profile.models import Agent
 
 
 class UserProfileInline(admin.StackedInline):
@@ -34,6 +35,19 @@ class StaffAdmin(UserAdmin):
         qs = super(UserAdmin, self).queryset(request)
         qs = qs.filter(Q(is_staff=True) | Q(is_superuser=True))
         return qs
+
+
+# class AgentAdmin(UserAdmin):
+#     inlines = [UserProfileInline]
+
+#     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
+#                     'is_active', 'is_superuser', 'last_login')
+
+#     def queryset(self, request):
+#         qs = super(UserAdmin, self).queryset(request)
+#         qs = qs.filter(Q(is_staff=False) & Q(is_superuser=False))
+#         ##TODO: We might want something like this : & Q(user_profile__is_agent=True)
+#         return qs
 
 
 class CustomerAdmin(StaffAdmin):
@@ -67,4 +81,5 @@ class CustomerAdmin(StaffAdmin):
 
 admin.site.unregister(User)
 admin.site.register(Staff, StaffAdmin)
+#admin.site.register(Agent, AgentAdmin)
 admin.site.register(Customer, CustomerAdmin)

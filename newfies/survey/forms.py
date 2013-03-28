@@ -237,15 +237,35 @@ class RecordMessageSectionForm(ModelForm):
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
 
+class ConferenceSectionForm(ModelForm):
+    """ConferenceSectionForm ModelForm"""
+
+    class Meta:
+        model = Section_template
+        fields = ['type', 'survey', 'question', 'audiofile', 'conference', 'completed']
+
+    def __init__(self, user, *args, **kwargs):
+        super(ConferenceSectionForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['audiofile'].choices = get_audiofile_list(user)
+            self.fields['audiofile'].widget.attrs['class'] = 'span2'
+        self.fields['question'].widget.attrs['class'] = 'span3'
+        self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+
+
 class CallTransferSectionForm(ModelForm):
     """CallTransferSectionForm ModelForm"""
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'phonenumber', 'completed']
+        fields = ['type', 'survey', 'question', 'audiofile', 'phonenumber', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(CallTransferSectionForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['audiofile'].choices = get_audiofile_list(user)
+            self.fields['audiofile'].widget.attrs['class'] = 'span2'
         self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
@@ -291,9 +311,10 @@ class BranchingForm(ModelForm):
                 choices=get_rating_choice_list(section_id),
                 required=False)
 
-        # voice & record section
         if (obj_section.type == SECTION_TYPE.PLAY_MESSAGE
-           or obj_section.type == SECTION_TYPE.RECORD_MSG):
+           or obj_section.type == SECTION_TYPE.RECORD_MSG
+           or obj_section.type == SECTION_TYPE.CALL_TRANSFER
+           or obj_section.type == SECTION_TYPE.CONFERENCE):
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 
@@ -311,14 +332,13 @@ class SurveyReportForm(forms.Form):
         # To get user's campaign list which are attached with survey
         if user:
             list = []
-            list.append((0, ''))
             try:
                 if user.is_superuser:
                     camp_list = Campaign.objects.values_list('id', 'name')\
-                        .filter(content_type__model='survey', has_been_started=True)
+                        .filter(content_type__model='survey', has_been_started=True).order_by('-id')
                 else:
                     camp_list = Campaign.objects.values_list('id', 'name')\
-                        .filter(user=user, content_type__model='survey', has_been_started=True)
+                        .filter(user=user, content_type__model='survey', has_been_started=True).order_by('-id')
                 for i in camp_list:
                     list.append((i[0], i[1]))
             except:
@@ -336,7 +356,7 @@ class SurveyDetailReportForm(SearchForm, SurveyReportForm):
 class SurveyFileImport(forms.Form):
     """General Form : file upload"""
     name = forms.CharField(label=_('survey name'), required=True)
-    survey_file = forms.FileField(label=_("upload File "), required=True,
+    survey_file = forms.FileField(label=_("upload File"), required=True,
         error_messages={'required': 'please upload File'},
         help_text=_("browse text file"))
 

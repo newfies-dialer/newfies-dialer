@@ -15,14 +15,12 @@
 #
 
 from django.conf.urls import url
-from django.http import HttpResponse
 from django.db import connection
 from tastypie.resources import ModelResource
 from tastypie.authentication import BasicAuthentication
 from tastypie.authorization import Authorization
 from tastypie.throttle import BaseThrottle
-from tastypie.exceptions import BadRequest, ImmediateHttpResponse
-from tastypie import http
+from tastypie.exceptions import BadRequest
 from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign
 import logging
@@ -32,8 +30,8 @@ logger = logging.getLogger('newfies.filelog')
 
 def get_contact(id):
     """
-    >>> get_contact(1)
-    u'640234000'
+    >>> get_contact(0)
+    ''
     """
     try:
         con_obj = Contact.objects.get(pk=id)
@@ -95,29 +93,21 @@ class SubscriberPerCampaignResource(ModelResource):
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
-    def override_urls(self):
-        """Override urls"""
+    def prepend_urls(self):
+        """Prepend urls"""
         return [
             url(r'^(?P<resource_name>%s)/(.+)/$' % self._meta.resource_name, self.wrap_view('read')),
         ]
 
-    def read_response(self, request, data,
-                      response_class=HttpResponse, **response_kwargs):
-        """To display API's result"""
-        desired_format = self.determine_format(request)
-        serialized = self.serialize(request, data, desired_format)
-        return response_class(content=serialized,
-            content_type=desired_format, **response_kwargs)
-
     def read(self, request=None, **kwargs):
         """GET method of Subscriber API"""
         logger.debug('Subscriber GET API get called')
-        auth_result = self._meta.authentication.is_authenticated(request)
-        if not auth_result is True:
-            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
+
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
 
         logger.debug('Subscriber GET API authorization called!')
-        auth_result = self._meta.authorization.is_authorized(request, object)
 
         temp_url = request.META['PATH_INFO']
         temp_id = temp_url.split('/api/v1/subscriber_per_campaign/')[1]
@@ -192,4 +182,6 @@ class SubscriberPerCampaignResource(ModelResource):
             result.append(modrecord)
 
         logger.debug('Subscriber GET API : result ok 200')
-        return self.read_response(request, result)
+
+        self.log_throttled_access(request)
+        return self.create_response(request, result)

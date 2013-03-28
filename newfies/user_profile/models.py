@@ -67,8 +67,7 @@ class UserProfile(models.Model):
                            verbose_name=_('fax Number'))
     company_name = models.CharField(max_length=90, blank=True, null=True,
                                     verbose_name=_('company name'))
-    company_website = models.URLField(verify_exists=False,
-                                      max_length=90, blank=True, null=True,
+    company_website = models.URLField(max_length=90, blank=True, null=True,
                                       verbose_name=_('company website'))
     language = LanguageField(blank=True, null=True, verbose_name=_('language'))
     note = models.CharField(max_length=250, blank=True, null=True,
@@ -82,6 +81,11 @@ class UserProfile(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
+    # is_agent = models.BooleanField(default=False,
+    #     verbose_name=_('Designates whether the user is an agent.'))
+    # manager = models.ForeignKey('self',
+    #                   verbose_name=_('Manager'), null=True, blank=True)
+
     class Meta:
         permissions = (
             ("view_api_explorer", _('can see API-Explorer')),
@@ -90,7 +94,11 @@ class UserProfile(models.Model):
         verbose_name = _("user profile")
         verbose_name_plural = _("user profiles")
 
+    def __unicode__(self):
+        return u"%s" % str(self.user)
 
+
+#TODO: Customer should become Manager
 class Customer(User):
 
     class Meta:
@@ -98,6 +106,23 @@ class Customer(User):
         app_label = 'auth'
         verbose_name = _('customer')
         verbose_name_plural = _('customers')
+
+        permissions = (
+            ("manager", _('can see Manager interface')),
+        )
+
+
+# class Agent(User):
+
+#     class Meta:
+#         proxy = True
+#         app_label = 'auth'
+#         verbose_name = _('agent')
+#         verbose_name_plural = _('agents')
+
+#         permissions = (
+#             ("agent", _('can see Agent interface')),
+#         )
 
 
 class Staff(User):

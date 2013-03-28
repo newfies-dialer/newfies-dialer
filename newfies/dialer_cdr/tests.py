@@ -21,9 +21,7 @@ from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.views import export_voipcall_report, voipcall_report
 from dialer_cdr.function_def import voipcall_search_admin_form_fun
-from dialer_cdr.tasks import init_callrequest
-# from dialer_cdr.tasks_dummy import dummy_testcall, \
-#    dummy_test_answerurl, dummy_test_hangupurl
+#from dialer_cdr.tasks import init_callrequest
 from datetime import datetime
 
 
@@ -82,7 +80,7 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
     def test_customer_voipcall(self):
         """Test Function to check VoIP call report"""
         response = self.client.get('/voipcall_report/')
-        self.assertEqual(response.status_code, 200)        
+        self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
             'frontend/report/voipcall_report.html')
 
@@ -110,7 +108,7 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 class DialerCdrCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
 
-    fixtures = ['gateway.json', 'voiceapp.json', 'auth_user.json',
+    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
                 'dialer_setting.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
                 'campaign.json', 'subscriber.json',
@@ -124,18 +122,6 @@ class DialerCdrCeleryTaskTestCase(TestCase):
     #    task runs with no errors, and returns the correct result."""
     #    result = init_callrequest.delay(self.callrequest.id, 1, self.callrequest.campaign.callmaxduration)
     #    self.assertEqual(result.successful(), True)
-
-    # def test_dummy_test_answerurl(self):
-    #     """Test that the ``dummy_test_answerurl``
-    #     task runs with no errors, and returns the correct result."""
-    #     result = dummy_test_answerurl.delay(self.callrequest.request_uuid)
-    #     self.assertEqual(result.successful(), True)
-
-    # def test_dummy_test_hangupurl(self):
-    #     """Test that the ``dummy_test_hangupurl``
-    #     periodic task runs with no errors, and returns the correct result."""
-    #     result = dummy_test_hangupurl.delay(self.callrequest.request_uuid)
-    #     self.assertEqual(result.successful(), True)
 
 
 class DialerCdrModel(TestCase):
@@ -151,7 +137,7 @@ class DialerCdrModel(TestCase):
         VoipSearchForm(self.user)
 
         try:
-            content_type_id = ContentType.objects.get(model='voiceapp').id
+            content_type_id = ContentType.objects.get(model='survey').id
         except:
             content_type_id = 1
 

@@ -224,7 +224,7 @@ function Database:load_audiofile()
 end
 
 function Database:load_campaign_info(campaign_id)
-    sqlquery = "SELECT * FROM dialer_campaign WHERE id="..campaign_id
+    sqlquery = "SELECT dialer_campaign.*, dialer_gateway.gateways FROM dialer_campaign LEFT JOIN dialer_gateway ON dialer_gateway.id=aleg_gateway_id WHERE dialer_campaign.id="..campaign_id
     self.debugger:msg("DEBUG", "Load campaign info : "..sqlquery)
     self.campaign_info = self:get_cache_object(sqlquery, 300)
     if not self.campaign_info then
@@ -359,6 +359,18 @@ function Database:save_result_aggregate(campaign_id, survey_id, section_id, resp
     end
 end
 
+function Database:add_dnc(dnc_id, phonenumber)
+    sqlquery = "INSERT INTO dnc_contact (dnc_id, phone_number, created_date, updated_date) "..
+        "VALUES ("..dnc_id..", '"..phonenumber.."', NOW(), NOW())"
+    self.debugger:msg("DEBUG", "Insert DNC:"..sqlquery)
+    res = self.con:execute(sqlquery)
+    if not res then
+        return false
+    else
+        return true
+    end
+end
+
 function Database:update_result_aggregate(campaign_id, survey_id, section_id, response)
     sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
         " WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..section_id.."'"
@@ -443,6 +455,10 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
         end
         --Save result to memory
         self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
+    else
+        --Save result to memory
+        result = DTMF
+        self:save_result_mem(callrequest_id, current_node.id, '', 0, result)
     end
 end
 
@@ -450,10 +466,11 @@ end
 -- Test Code
 --
 if false then
-    campaign_id = 23
+    campaign_id = 141
     survey_id = 11
     callrequest_id = 165
     section_id = 180
+    dnc_id = 1
     record_file = '/tmp/recording-file.wav'
     recording_duration = '30'
     dtmf = '5'
@@ -461,6 +478,11 @@ if false then
     local debugger = Debugger(false)
     db = Database(debug_mode, debugger)
     db:connect()
+
+    db:load_campaign_info(campaign_id)
+    print(inspect(db.campaign_info))
+
+    db:add_dnc(dnc_id, '12388888880')
 
     print(db:load_content_type())
 

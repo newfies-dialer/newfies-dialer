@@ -28,6 +28,7 @@ from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from audiofield.models import AudioFile
 from user_profile.models import UserProfile
+from dnc.models import DNC
 from datetime import datetime
 from common.intermediate_model_base_class import Model
 from common.common_functions import get_unique_code
@@ -134,12 +135,14 @@ class Campaign(Model):
         * ``extra_data`` - Additional data to pass to the application
         * ``totalcontact`` - Total Contact for this campaign
         * ``completed`` - Total Contact that completed Call / Survey
+        * ``has_been_started`` - campaign started flag
+        * ``has_been_duplicated`` - campaign duplicated flag
         * ``voicemail`` - Enable Voicemail Detection
         * ``amd_behavior`` - Detection Behaviour
 
     **Relationships**:
 
-        * ``content_type`` - Defines the application (``voice_app`` or ``survey``) \
+        * ``content_type`` - Defines the application (``survey``) \
         to use when the call is established on the A-Leg
 
         * ``object_id`` - Defines the object of content_type application
@@ -152,6 +155,8 @@ class Campaign(Model):
         Each campaign assigned to a User
 
         * ``voicemail_audiofile`` - Foreign key relationship to the a AudioFile model.
+
+        * ``dnc`` - Foreign key relationship to the a DNC model.
 
     **Name of DB table**: dialer_campaign
     """
@@ -220,8 +225,7 @@ class Campaign(Model):
                                      related_name="A-Leg Gateway",
                                      help_text=_("select outbound gateway"))
     content_type = models.ForeignKey(ContentType, verbose_name=_("type"),
-                                     limit_choices_to={"model__in": ("survey_template",
-                                                                     "voiceapp_template")})
+                                     limit_choices_to={"model__in": ("survey_template")})
     object_id = models.PositiveIntegerField(verbose_name=_("application"))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     extra_data = models.CharField(max_length=120, blank=True,
@@ -239,6 +243,9 @@ class Campaign(Model):
     #Flags
     has_been_started = models.BooleanField(default=False, verbose_name=_('has been started'))
     has_been_duplicated = models.BooleanField(default=False, verbose_name=_('has been duplicated'))
+    dnc = models.ForeignKey(DNC, null=True, blank=True, verbose_name=_("DNC"),
+                            help_text=_("do not call list"),
+                            related_name='DNC')
     #Voicemail
     voicemail = models.BooleanField(default=False, verbose_name=_('enable voicemail detection'))
     amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),
@@ -246,6 +253,7 @@ class Campaign(Model):
                                  verbose_name=_("detection behaviour"), blank=True, null=True)
     voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("voicemail audio file"))
+
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -473,7 +481,7 @@ class Subscriber(Model):
         return u"%s" % str(self.id)
 
     def contact_name(self):
-        return self.contact.name
+        return self.contact.first_name
 
     # static method to perform a stored procedure
     # Ref link - http://www.chrisumbel.com/article/django_python_stored_procedures.aspx

@@ -39,6 +39,8 @@ FSMCall = oo.class{
     current_node_id = false,
     db = nil,
     record_filename = false,
+    actionresult = false,
+    lastaction_start = false,
     last_node = nil,
     ended = false,
 }
@@ -64,6 +66,7 @@ function FSMCall:init()
     self.subscriber_id = self.session:getVariable("subscriber_id")
     self.contact_id = self.session:getVariable("contact_id")
     self.callrequest_id = self.session:getVariable("callrequest_id")
+    self.used_gateway_id = self.session:getVariable("used_gateway_id")
 
     --This is needed for Inbound test
     if not self.campaign_id or self.campaign_id == 0 or not self.contact_id then
@@ -116,6 +119,15 @@ function FSMCall:end_call()
         record_dur = audio_lenght(record_filepath)
         self.debugger:msg("INFO", "End_call -> Save missing recording")
         self.db:save_section_result(self.callrequest_id, current_node, digits, self.record_filename, record_dur)
+    end
+
+    --Check if we need to save the last action
+    if self.actionresult and string.len(self.actionresult) > 0 then
+        current_node = self.last_node
+        actionduration = os.time() - self.lastaction_start
+        self.actionresult = self.actionresult
+        self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
+        self.actionresult = false
     end
 
     --Save all the result to the Database
@@ -415,6 +427,82 @@ function FSMCall:next_node()
         self:playnode(current_node)
         self:end_call()
 
+    elseif current_node.type == CALL_TRANSFER then
+        self:playnode(current_node)
+        phonenumber = current_node.phonenumber
+        self.debugger:msg("INFO", "STARTING CALL_TRANSFER : "..phonenumber)
+        if phonenumber == '' then
+            self:end_call()
+        else
+            self.lastaction_start = os.time()
+
+            -- Allow to hang up transfer call detecting DMTF ( *0 ) in LEG A
+            session:execute("bind_meta_app","0 a o hangup::normal_clearing")
+
+            session:setAutoHangup(false)
+            callerid = self.db.campaign_info.callerid
+            originate_timeout = self.db.campaign_info.calltimeout
+            leg_timeout = self.db.campaign_info.calltimeout
+
+            --dialstr = 'sofia/default/'..phonenumber..'@'..self.outbound_gateway;
+            if string.find(phonenumber, "/") then
+                --SIP URI call
+                dialstr = phonenumber
+            else
+                --Use Gateway call
+                dialstr = self.db.campaign_info.gateways..phonenumber
+            end
+
+            self.actionresult = 'phonenumber: '..phonenumber
+            dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..
+                ",origination_caller_id_name="..callerid..",originate_timeout="..originate_timeout..
+                ",leg_timeout="..leg_timeout..",legtype=bleg,callrequest_id="..self.callrequest_id..
+                ",used_gateway_id="..self.used_gateway_id.."}"..dialstr
+
+            -- originate the call
+            session:execute("bridge", dialstr)
+            actionduration = os.time() - self.lastaction_start
+
+            -- get disposition status
+            originate_disposition = session:getVariable("originate_disposition") or ''
+            if originate_disposition ~= 'SUCCESS' then
+                actionduration = 0
+            end
+            freeswitch.consoleLog("info", "END CALL_TRANSFER callduration:"..actionduration.." - originate_disposition:"..originate_disposition)
+
+            self.actionresult = 'phonenumber: '..phonenumber
+            --.." duration: "..actionduration
+            self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
+            self.actionresult = false
+        end
+
+    elseif current_node.type == CONFERENCE then
+        self:playnode(current_node)
+        conference = current_node.conference
+        self.debugger:msg("INFO", "STARTING CONFERENCE : "..conference)
+        if conference == '' then
+            conference = self.campaign_id
+        end
+        self.lastaction_start = os.time()
+        self.actionresult = 'conf: '..conference
+        self.session:execute("conference", conference..'@default')
+        actionduration = os.time() - self.lastaction_start
+        self.debugger:msg("INFO", "END CONFERENCE : duration "..actionduration)
+
+        self.actionresult = 'conf: '..conference
+        --.." duration:"..actionduration
+        self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
+        self.actionresult = false
+
+    elseif current_node.type == DNC then
+        --Add this phonenumber to the DNC campaign list
+        self.db:connect()
+        self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
+        self.db:disconnect()
+        --Play Node
+        self:playnode(current_node)
+        self:end_call()
+
     elseif current_node.type == MULTI_CHOICE then
         digits = self:getdigitnode(current_node)
         self.debugger:msg("INFO", "result digit => "..digits)
@@ -450,9 +538,7 @@ function FSMCall:next_node()
     --3. Record result and Aggregate result
     --
     if digits or self.record_filename then
-        self.db:connect()
         self.db:save_section_result(self.callrequest_id, current_node, digits, self.record_filename, record_dur)
-        self.db:disconnect()
         --reinit record_filename
         self.record_filename = false
         record_dur = false
@@ -465,7 +551,8 @@ function FSMCall:next_node()
 
     if current_node.type == PLAY_MESSAGE
         or current_node.type == RECORD_MSG
-        or current_node.type == CALL_TRANSFER then
+        or current_node.type == CALL_TRANSFER
+        or current_node.type == CONFERENCE then
         --Check for timeout
         if (not current_branching["0"] or not current_branching["0"].goto_id) and
            (not current_branching["timeout"] or not current_branching["timeout"].goto_id) then

@@ -60,6 +60,27 @@
                     {% endfor %}
                 </div>
             </div>
+
+            <div class="span12">
+                <div class="row">
+                    {% get_fieldset dnc as campaign_fields from form %}
+                    {% for field in campaign_fields.visible_fields %}
+                        <div class="span6">
+                            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                                <label for="{{ field.auto_id }}">{{ field.label|upper }}</label>
+                                <div class="input">
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ field.help_text|capfirst }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                </div>
+            </div>
         </fieldset>
 
         <fieldset>

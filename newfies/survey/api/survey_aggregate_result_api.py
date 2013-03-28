@@ -67,8 +67,8 @@ class ResultAggregateResource(ModelResource):
         # default 1000 calls / hour
         throttle = BaseThrottle(throttle_at=1000, timeframe=3600)
 
-    def override_urls(self):
-        """Override urls"""
+    def prepend_urls(self):
+        """prepend urls"""
         return [
             url(r'^(?P<resource_name>%s)/(.+)/$' %
                 self._meta.resource_name, self.wrap_view('read')),
@@ -85,12 +85,10 @@ class ResultAggregateResource(ModelResource):
     def read(self, request=None, **kwargs):
         """GET method of Subscriber API"""
         logger.debug('Survey Aggregate Result GET API get called')
-        auth_result = self._meta.authentication.is_authenticated(request)
-        if not auth_result is True:
-            raise ImmediateHttpResponse(response=http.HttpUnauthorized())
 
-        logger.debug('Survey Aggregate Result GET API authorization called!')
-        auth_result = self._meta.authorization.is_authorized(request, object)
+        self.method_check(request, allowed=['get'])
+        self.is_authenticated(request)
+        self.throttle_check(request)
 
         temp_url = request.META['PATH_INFO']
         temp_id = temp_url.split('/api/v1/survey_aggregate_result/')[1]
@@ -117,5 +115,5 @@ class ResultAggregateResource(ModelResource):
             .values('section__question', 'response', 'count')\
             .order_by('section')
 
-        logger.debug('Subscriber GET API : result ok 200')
+        logger.debug('Survey Aggregate Result GET API : result ok 200')
         return self.read_response(request, survey_result)

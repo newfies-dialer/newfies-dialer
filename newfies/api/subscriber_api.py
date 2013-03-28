@@ -175,7 +175,7 @@ class SubscriberResource(ModelResource):
 
         campaign_obj = Campaign.objects.filter(
             phonebook=obj_phonebook,
-            user=request.user)
+            user=bundle.request.user)
         for c_campaign in campaign_obj:
             imported_phonebook = []
             if c_campaign.imported_phonebook:
@@ -202,7 +202,7 @@ class SubscriberResource(ModelResource):
                                 duplicate_contact=con_obj.contact,
                                 status=SUBSCRIBER_STATUS.PENDING,  # PENDING
                                 campaign=c_campaign)
-                        except:                            
+                        except:
                             error_msg = "Duplicate Subscriber"
                             logger.error(error_msg)
                             #raise BadRequest(error_msg)
@@ -217,7 +217,7 @@ class SubscriberResource(ModelResource):
         """
         logger.debug('Subscriber PUT API get called')
 
-        temp_url = request.META['PATH_INFO']
+        temp_url = bundle.request.META['PATH_INFO']
         temp_id = temp_url.split('/api/v1/subscriber/')[1]
         campaign_id = temp_id.split('/')[0]
 

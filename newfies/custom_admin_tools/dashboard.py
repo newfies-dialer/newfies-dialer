@@ -102,6 +102,11 @@ class CustomIndexDashboard(Dashboard):
             models=('audiofield.*', ),
         ))
 
+        self.children.append(modules.AppList(
+            _('do not call').title(),
+            models=('dnc.*', ),
+        ))
+
         # append a link list module for "quick links"
         """
         site_name = get_admin_site_name(context)
@@ -164,15 +169,21 @@ class CustomAppIndexDashboard(AppIndexDashboard):
         elif str(self.app_title) == 'Dialer_Campaign':
             app_title = _('dialer campaign').title()
             models = ['dialer_campaign.*']
+        elif str(self.app_title) == 'Dialer_Contact':
+            app_title = _('dialer contact').title()
+            models = ['dialer_contact.*']
         elif str(self.app_title) == 'Dialer_Cdr':
             app_title = _('Dialer CDR')
             models = ['dialer_cdr.*']
         elif str(self.app_title) == 'Dialer_Gateway':
             app_title = _('dialer gateway').title()
             models = ['dialer_gateway.*']
-        elif str(self.app_title) == 'Voice_App':
-            app_title = _('voice application').title()
-            models = ['voice_app.*']
+        elif str(self.app_title) == 'Country_Dialcode':
+            app_title = _('country dialcode').title()
+            models = ['country_dialcode.*']
+        elif str(self.app_title) == 'Dnc':
+            app_title = _('do not call').title()
+            models = ['dnc.*']
         else:
             app_title = self.app_title
             models = self.models

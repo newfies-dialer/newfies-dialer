@@ -1,7 +1,7 @@
 {% load i18n frontend_notification_tags %}
 
 
-<div class="navbar navbar-inverse navbar-fixed-top">
+<div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
 
@@ -48,6 +48,23 @@
 
                     {% if perms.dialer_contact.view_contact %}
                       <li {% if 'contact' in module  %}class="active"{% endif %}><a href="/contact/">{% trans "contacts"|title %}</a></li>
+                    {% endif %}
+                  </ul>
+              {% endif %}
+          </li>
+          {% endif %}
+
+          {% if perms.dnc.view_dnc_list or perms.dnc.view_dnccontact %}
+          <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{% trans "do not call"|capfirst %}">{% trans "dnc"|upper %} <b class="caret"></b></a>
+              {% if perms.dnc.view_dnc_list %}
+                  <ul class="dropdown-menu">
+                    {% if perms.dnc.view_dnc_list %}
+                      <li {% if 'dnc_list' in module %}class="active"{% endif %}><a href="/dnc_list/">{% trans "dnc"|upper %} {% trans "list"|title %}</a></li>
+                    {% endif %}
+
+                    {% if perms.dnc.view_dnccontact %}
+                      <li {% if 'dnc_contact' in module  %}class="active"{% endif %}><a href="/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts" %}</a></li>
                     {% endif %}
                   </ul>
               {% endif %}
@@ -105,8 +122,10 @@
                             <span class="label label-warning">{{ notice_count }}</span>
                         </a>
                     </li>
+                    {% if user.is_staff or user.is_superuser %}
                     <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">
                         {% trans "account limits"|capfirst %}</a></li>
+                    {% endif %}
                     <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-5">
                         {% trans "change language"|capfirst %}</a>
                     </li>

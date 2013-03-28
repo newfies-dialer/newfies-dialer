@@ -23,8 +23,8 @@ from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Phonebook, Campaign
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_campaign.function_def import user_dialer_setting
-from user_profile.models import UserProfile
 from common.common_functions import get_unique_code
+from dnc.models import DNC
 
 
 def get_object_choices(available_objects):
@@ -69,7 +69,8 @@ class CampaignForm(ModelForm):
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                   'saturday', 'sunday', 'ds_user',
                   'selected_phonebook', 'selected_content_object',
-                  'voicemail', 'amd_behavior', 'voicemail_audiofile'
+                  'voicemail', 'amd_behavior', 'voicemail_audiofile',
+                  'dnc'
                   ]
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -81,11 +82,11 @@ class CampaignForm(ModelForm):
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         self.fields['description'].widget.attrs['class'] = "input-xlarge"
 
-
         if user:
             self.fields['ds_user'].initial = user
             list_gw = []
             list_pb = []
+            dnc_list = []
 
             list_pb.append((0, '---'))
             list = Phonebook.objects.values_list('id', 'name')\
@@ -97,6 +98,13 @@ class CampaignForm(ModelForm):
             list = user.get_profile().userprofile_gateway.all()
             gw_list = ((l.id, l.name) for l in list)
 
+            dnc_list.append(('', '---'))
+            list = DNC.objects.values_list('id', 'name')\
+                .filter(user=user).order_by('id')
+            for l in list:
+                dnc_list.append((l[0], l[1]))
+            self.fields['dnc'].choices = dnc_list
+
             for i in gw_list:
                 list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = list_gw
@@ -107,10 +115,6 @@ class CampaignForm(ModelForm):
                 object_choices = get_object_choices(available_objects)
                 self.fields['content_object'].widget.attrs['readonly'] = True
             else:
-                #from voice_app.models import VoiceApp_template
-                #available_objects = VoiceApp_template.objects.filter(user=user)
-                #object_choices = get_object_choices(available_objects)
-
                 from survey.models import Survey_template
                 available_objects = Survey_template.objects.filter(user=user)
                 object_choices = get_object_choices(available_objects)

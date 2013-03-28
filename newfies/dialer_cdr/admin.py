@@ -40,7 +40,7 @@ APP_LABEL = _('VoIP report')
 class CallrequestAdmin(GenericAdminModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Callrequest."""
-    content_type_whitelist = ('voice_app/voiceapp', 'survey/survey', )
+    content_type_whitelist = ('survey/survey', )
     fieldsets = (
         (_('standard options').capitalize(), {
             'fields': ('user', 'request_uuid', 'call_time', 'campaign',

@@ -1,0 +1,12 @@
+[
+{
+    "pk": 1, 
+    "model": "dnc.dnc", 
+    "fields": {
+        "updated_date": "2013-03-15T18:28:30.208", 
+        "created_date": "2013-03-15T18:28:30.208", 
+        "name": "sample dnc", 
+        "user": 1
+    }
+}
+]

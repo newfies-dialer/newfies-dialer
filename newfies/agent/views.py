@@ -195,6 +195,9 @@ def agent_add(request):
                 is_agent=True
             )
 
+            # Add agent's default permission
+            new_agent.user_permissions.add('view_agent_dashboard')
+
             request.session["msg"] = _('"%(name)s" added as agent.') %\
                 {'name': request.POST['username']}
             return HttpResponseRedirect('/agent/')

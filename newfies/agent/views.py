@@ -21,9 +21,11 @@ from django.template.context import RequestContext
 from django.contrib.auth.forms import PasswordChangeForm
 
 from agent.models import AgentProfile
+from agent.constants import AGENT_COLUMN_NAME
 from agent.forms import AgentChangeDetailExtendForm
 from user_profile.forms import UserChangeDetailForm
-from common.common_functions import current_view
+from dialer_campaign.function_def import user_dialer_setting_msg
+from common.common_functions import current_view, get_pagination_vars
 
 
 @permission_required('agent.view_agent_dashboard', login_url='/')
@@ -121,3 +123,44 @@ def agent_detail_change(request):
     }
     return render_to_response(template, data,
            context_instance=RequestContext(request))
+
+
+@permission_required('user_profile.view_agent', login_url='/')
+@login_required
+def agent_list(request):
+    """Agent list for the logged in Manager
+
+    **Attributes**:
+
+        * ``template`` - frontend/agent/list.html
+
+    **Logic Description**:
+
+        * List all agents which belong to the logged in manager.
+    """
+    sort_col_field_list = ['id', 'user', 'updated_date']
+    default_sort_field = 'id'
+    pagination_data = \
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    agent_list = AgentProfile.objects\
+        .filter(manager=request.user).order_by(sort_order)
+
+    template = 'frontend/agent/list.html'
+    data = {
+        'module': current_view(request),
+        'msg': request.session.get('msg'),
+        'agent_list': agent_list,
+        'total_agent': agent_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'AGENT_COLUMN_NAME': AGENT_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))

@@ -11,14 +11,13 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from user_profile.models import Manager
+
+from django.utils.translation import ugettext_lazy as _
+from common.utils import Choice
 
 
-def manager_list():
-    """Return all managers of the system"""
-    manager_list = []
-    list = Manager.objects.values_list('id', 'username')\
-        .filter(is_staff=True, is_superuser=False, is_active=True).order_by('id')
-    for l in list:
-        manager_list.append((l[0], l[1]))
-    return manager_list
+class AGENT_COLUMN_NAME(Choice):
+    id = _('ID')
+    name = _('name')
+    date = _('date')
+

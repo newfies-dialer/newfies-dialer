@@ -91,6 +91,8 @@ class UserProfile(Profile_abstract):
     class Meta:
         permissions = (
             ("view_api_explorer", _('can see API-Explorer')),
+            ("view_agent", _('can see Agent list')),
+            ("view_queue", _('can see Queue list')),
         )
         db_table = 'user_profile'
         verbose_name = _("user profile")
@@ -114,10 +116,6 @@ class Manager(User):
         app_label = 'auth'
         verbose_name = _('manager')
         verbose_name_plural = _('managers')
-
-        permissions = (
-            ("manager", _('can see Manager interface')),
-        )
 
     def save(self, **kwargs):
         if not self.pk:

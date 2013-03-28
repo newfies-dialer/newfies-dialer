@@ -63,10 +63,6 @@ class Agent(User):
         verbose_name = _('agent')
         verbose_name_plural = _('agents')
 
-        permissions = (
-            ("aegnt", _('can see agent interface')),
-        )
-
     def save(self, **kwargs):
         if not self.pk:
             self.is_staff = 0

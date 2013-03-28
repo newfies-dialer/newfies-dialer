@@ -17,7 +17,8 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.admin import SimpleListFilter
 from django.utils.translation import ugettext as _
 from agent.models import Agent, AgentProfile
-from agent.forms import AgentProfileForm, manager_list
+from agent.forms import AgentProfileForm
+from agent.function_def import manager_list
 
 
 class ManagerFilter(SimpleListFilter):

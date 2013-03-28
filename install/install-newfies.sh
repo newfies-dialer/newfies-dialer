@@ -249,6 +249,10 @@ func_install_frontend(){
     luarocks install inspect
     luarocks install redis-lua
     luarocks install lua-cmsgpack
+    #Issue with last version of lpeg - lua libs/tag_replace.lua will seg fault
+    #Pin the version 0.10.2-1
+    luarocks remove lpeg --force
+    luarocks install http://luarocks.org/repositories/rocks/lpeg-0.10.2-1.rockspec
 
     #Create Newfies User
     echo ""

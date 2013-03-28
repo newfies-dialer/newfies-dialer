@@ -12,14 +12,3 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.template.defaultfilters import register
-from agent.models import AgentProfile
-
-
-@register.assignment_tag(name='agent_check')
-def agent_check(user):
-    try:
-        AgentProfile.objects.get(user=user, is_agent=True)
-        return True
-    except:
-        return False

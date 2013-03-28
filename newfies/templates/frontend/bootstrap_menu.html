@@ -1,5 +1,5 @@
-{% load i18n frontend_notification_tags agent_tags %}
-{% agent_check user as user_agent %}
+{% load i18n frontend_notification_tags %}
+
 <div class="navbar navbar-fixed-top">
   <div class="navbar-inner">
     <div class="container">
@@ -14,7 +14,7 @@
 
       <div class="nav-collapse">
 
-        {% if user.is_authenticated and not user_agent %}
+        {% if user.is_authenticated and not user.is_agent %}
         <ul class="nav">
 
           {% if perms.dialer_campaign.view_dashboard %}
@@ -127,7 +127,7 @@
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                    {% if user_agent %}
+                    {% if user.is_agent %}
                       <li  {% if action == "tabs-1" %}class="active"{% endif %}><a href="/agent_detail_change/?action=tabs-1">
                             {% trans "account settings"|capfirst %}</a>
                       </li>
@@ -143,13 +143,13 @@
                         </a>
                     </li>
 
-                    {% if not user_agent %}
+                    {% if not user.is_agent %}
                       <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">
                         {% trans "account limits"|capfirst %}</a>
                       </li>
                     {% endif %}
 
-                    {% if not user_agent %}
+                    {% if not user.is_agent %}
                       <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-5">
                           {% trans "change language"|capfirst %}</a>
                       </li>

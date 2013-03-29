@@ -168,7 +168,7 @@ def agent_list(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('auth.add_agent', login_url='/')
+@permission_required('agent.add_agentprofile', login_url='/')
 @login_required
 def agent_add(request):
     """Add new Agent for the logged in manager

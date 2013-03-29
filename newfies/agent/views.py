@@ -50,6 +50,52 @@ def agent_dashboard(request):
     return render_to_response(template, data,
         context_instance=RequestContext(request))
 
+@login_required
+def agent_change_password(request, object_id):
+    """
+    User Detail change on Agent UI
+
+    **Attributes**:
+
+        * ``form`` - PasswordChangeForm
+        * ``template`` - 'frontend/agent/change_password.html',
+             'frontend/registration/user_detail_change.html'
+
+    **Logic Description**:
+
+        * Reset Agent username.
+    """
+    msg_pass = ''
+    error_pass = ''
+    agent_profile = get_object_or_404(AgentProfile, pk=object_id, manager_id=request.user.id)
+    agent_username = agent_profile.user.username
+    agent_userdetail = get_object_or_404(Agent, pk=agent_profile.user_id)
+
+    user_password_form = PasswordChangeForm(user=agent_userdetail)
+    if request.method == 'POST':
+        user_password_form = PasswordChangeForm(user=agent_userdetail,
+                                                data=request.POST)
+        if user_password_form.is_valid():
+            user_password_form.save()
+            request.session["msg"] = _('%s password has been changed.' % agent_username)
+            return HttpResponseRedirect('/agent/')
+        else:
+            error_pass = _('please correct the errors below.')
+
+
+    template = 'frontend/agent/change_password.html'
+    data = {
+        'module': current_view(request),
+        'agent_username': agent_username,
+        'user_password_form': user_password_form,
+        'msg_pass': msg_pass,
+        'error_pass': error_pass,
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
+    return render_to_response(template, data,
+        context_instance=RequestContext(request))
+
 
 @login_required
 def agent_detail_change(request):

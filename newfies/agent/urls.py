@@ -21,5 +21,6 @@ urlpatterns = patterns('agent.views',
     (r'^agent/$', 'agent_list'),
     (r'^agent/add/$', 'agent_add'),
     (r'^agent/del/(.+)/$', 'agent_del'),
+    (r'^agent/password/(.+)/$', 'agent_change_password'),
     (r'^agent/(.+)/$', 'agent_change'),
 )

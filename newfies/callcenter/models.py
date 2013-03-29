@@ -37,7 +37,7 @@ class Queue(Model):
     """
     manager = models.ForeignKey(Manager,
                                 verbose_name=_("manager"), blank=True, null=True,
-                                help_text=_("select manager"), related_name="manager")
+                                help_text=_("select manager"), related_name="queue manager")
     strategy = models.CharField(verbose_name=_("strategy"),
                                 max_length=120, null=True, blank=True)
     moh_sound = models.CharField(verbose_name=_("moh-sound"),
@@ -46,21 +46,17 @@ class Queue(Model):
                                 max_length=250, null=True, blank=True)
     time_base_score = models.CharField(verbose_name=_("time-base-score"),
                                 max_length=50, null=True, blank=True)
-    tier_rules_apply = models.BooleanField(default=True, verbose_name=_("tier-rules-apply"),
-                                max_length=250, null=True, blank=True)
+    tier_rules_apply = models.BooleanField(default=True, verbose_name=_("tier-rules-apply"))
     tier_rule_wait_second = models.IntegerField(verbose_name=_("tier-rule-wait-second"),
                                 max_length=250, null=True, blank=True)
     tier_rule_wait_multiply_level = models.BooleanField(default=True,
-                                                        verbose_name=_("tier-rule-wait-multiply-level"),
-                                                        max_length=250, null=True, blank=True)
+                                            verbose_name=_("tier-rule-wait-multiply-level"))
     tier_rule_no_agent_no_wait = models.BooleanField(default=True,
-                                                     verbose_name=_("tier-rule-no-agent-no-wait"),
-                                                     max_length=250, null=True, blank=True)
+                                                     verbose_name=_("tier-rule-no-agent-no-wait"))
     discard_abandoned_after = models.IntegerField(verbose_name=_("discard-abandoned-after"),
                                                   max_length=250, null=True, blank=True)
     abandoned_resume_allowed = models.BooleanField(default=True,
-                                                   verbose_name=_("abandoned-resume-allowed"),
-                                                   max_length=250, null=True, blank=True)
+                                                   verbose_name=_("abandoned-resume-allowed"))
     max_wait_time = models.IntegerField(verbose_name=_("max-wait-time"),
                                         max_length=250, null=True, blank=True)
     max_wait_time_with_no_agent = models.IntegerField(verbose_name=_("max-wait-time-with-no-agent"),
@@ -106,7 +102,7 @@ class Tier(Model):
     """
     manager = models.ForeignKey(Manager,
                                 verbose_name=_("manager"), blank=True, null=True,
-                                help_text=_("select manager"), related_name="manager")
+                                help_text=_("select manager"), related_name="tier manager")
     agent = models.ForeignKey(AgentProfile,
                               verbose_name=_("agent"), blank=True, null=True,
                               help_text=_("select agent"), related_name="agent")

@@ -37,7 +37,7 @@ class AgentProfileAdminView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
 
-class UserProfileCustomerView(BaseAuthenticatedClient):
+class AgentProfileCustomerView(BaseAuthenticatedClient):
     """Test Function to check UserProfile Customer pages"""
 
     fixtures = ['auth_user.json', 'notification.json']

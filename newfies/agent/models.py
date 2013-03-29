@@ -15,8 +15,6 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from common.language_field import LanguageField
-from django_countries import CountryField
 from user_profile.models import Manager, Profile_abstract
 from agent.constants import AGENT_STATUS, AGENT_TYPE
 
@@ -49,7 +47,7 @@ class AgentProfile(Profile_abstract):
                                        verbose_name=_('timeout on call'),
                                        help_text=_("connection timeout in seconds"))
     contact = models.CharField(max_length=90, blank=True, null=True,
-                                verbose_name=_('contact'))
+                               verbose_name=_('contact'))
     status = models.IntegerField(choices=list(AGENT_STATUS),
                                  default=AGENT_STATUS.AVAILABLE,
                                  verbose_name=_("status"), blank=True, null=True)
@@ -58,11 +56,12 @@ class AgentProfile(Profile_abstract):
     max_no_answer = models.IntegerField(blank=True, null=True,
                                         verbose_name=_('max. no of answer'))
     wrap_up_time = models.IntegerField(blank=True, null=True,
-                                        verbose_name=_('wrap up time'))
+                                       verbose_name=_('wrap up time'))
     reject_delay_time = models.IntegerField(blank=True, null=True,
                                         verbose_name=_('reject delay time'))
     busy_delay_time = models.IntegerField(blank=True, null=True,
                                           verbose_name=_('busy delay time'))
+
     class Meta:
         db_table = 'agent_profile'
         verbose_name = _("agent profile")

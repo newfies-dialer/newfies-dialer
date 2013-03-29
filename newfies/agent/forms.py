@@ -23,6 +23,7 @@ class AgentProfileForm(ModelForm):
 
     class Meta:
         model = AgentProfile
+        exclude = ('is_agent',)
 
     def __init__(self, *args, **kwargs):
         super(AgentProfileForm, self).__init__(*args, **kwargs)

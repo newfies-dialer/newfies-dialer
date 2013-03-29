@@ -23,7 +23,7 @@ from django.contrib.auth.models import Permission
 
 from agent.models import AgentProfile, Agent
 from agent.constants import AGENT_COLUMN_NAME
-from agent.forms import AgentChangeDetailExtendForm
+from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
 from dialer_campaign.function_def import user_dialer_setting_msg
@@ -55,7 +55,7 @@ def agent_detail_change(request):
 
     **Attributes**:
 
-        * ``form`` - UserChangeDetailForm, AgentChangeDetailExtendForm,
+        * ``form`` - UserChangeDetailForm, AgentDetailExtendForm,
                      PasswordChangeForm
         * ``template`` - 'frontend/registration/user_detail_change.html'
 
@@ -69,8 +69,8 @@ def agent_detail_change(request):
     user_detail_form = UserChangeDetailForm(request.user,
                                             instance=user_detail)
     user_detail_extened_form = \
-        AgentChangeDetailExtendForm(request.user,
-                                    instance=user_detail_extened)
+        AgentDetailExtendForm(request.user,
+                              instance=user_detail_extened)
     user_password_form = PasswordChangeForm(user=request.user)
 
     msg_detail = ''
@@ -87,7 +87,7 @@ def agent_detail_change(request):
             user_detail_form = UserChangeDetailForm(
                 request.user, request.POST, instance=user_detail)
             user_detail_extened_form = \
-                AgentChangeDetailExtendForm(
+                AgentDetailExtendForm(
                     request.user, request.POST, instance=user_detail_extened)
             action = 'tabs-1'
             if (user_detail_form.is_valid()

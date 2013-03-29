@@ -1,0 +1,44 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+
+{% block content_header %}
+    <h1>
+        {% if action == 'update' %}
+            {% trans "update"|title %}
+        {% else %}
+            {% trans "add"|title %}
+        {% endif %}
+        {% trans "agent"|title %}
+        <small>{% trans "agent is belong to manager"|capfirst %}</small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+<form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    {% for field in form %}
+    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+        <div class="input">
+            {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+            {% endif %}
+                <span class="help-block">{{ field.help_text|capfirst }} </span>
+        </div>
+    </div>
+    {% endfor %}
+    <div class="actions">
+        {% if action == 'update' %}
+        <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
+        {% else %}
+        <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
+        {% endif %}
+        &nbsp;&nbsp;
+        {% if action == 'update' %}
+         <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
+        {% endif %}
+    </div>
+</form>
+
+{% endblock %}

@@ -13,13 +13,25 @@
 #
 from django import forms
 from django.forms import ModelForm
+from django.contrib.auth.forms import UserChangeForm
 from django.utils.translation import ugettext as _
-from django.contrib.auth.models import User
-from agent.models import AgentProfile
+from agent.models import AgentProfile, Agent
 from agent.function_def import manager_list
 
 
+class AgentNameChangeForm(UserChangeForm):
+    """AgentNameChangeForm is used to change agent username"""
+
+    class Meta:
+        model = Agent
+        fields = ["username"]
+
+    def __init__(self, *args, **kwargs):
+        super(AgentNameChangeForm, self).__init__(*args, **kwargs)
+
+
 class AgentProfileForm(ModelForm):
+    """AgentProfileForm is used to change agent profile"""
 
     class Meta:
         model = AgentProfile

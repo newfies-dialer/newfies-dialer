@@ -18,12 +18,14 @@ from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
+from django.contrib.auth.forms import PasswordChangeForm, \
+    UserCreationForm
 from django.contrib.auth.models import Permission
 
 from agent.models import AgentProfile, Agent
 from agent.constants import AGENT_COLUMN_NAME
-from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm
+from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm, \
+    AgentNameChangeForm
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
 from dialer_campaign.function_def import user_dialer_setting_msg
@@ -266,7 +268,7 @@ def agent_change(request, object_id):
     **Attributes**:
 
         * ``object_id`` - Selected agent object
-        * ``form`` - AgentChangeDetailExtendForm
+        * ``form`` - AgentChangeDetailExtendForm, AgentNameChangeForm
         * ``template`` - frontend/agent/change.html
 
     **Logic Description**:
@@ -275,23 +277,37 @@ def agent_change(request, object_id):
           via AgentChangeDetailExtendForm & get redirected to agent list
     """
     agent_profile = get_object_or_404(AgentProfile, pk=object_id, manager_id=request.user.id)
+    agent_userdetail = get_object_or_404(Agent, pk=agent_profile.user_id)
+
     form = AgentChangeDetailExtendForm(request.user, instance=agent_profile)
+    agent_username_form = AgentNameChangeForm(initial={'username': agent_userdetail.username,
+        'password': agent_userdetail.password})
+
     if request.method == 'POST':
         if request.POST.get('delete'):
             agent_del(request, object_id)
             return HttpResponseRedirect('/agent/')
         else:
             form = AgentChangeDetailExtendForm(request.user, request.POST, instance=agent_profile)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': agent_profile.user}
-                return HttpResponseRedirect('/agent/')
+
+            agent_username_form = AgentNameChangeForm(request.POST,
+                initial={'password': agent_userdetail.password}, instance=agent_userdetail)
+
+            # Save agent username
+            if agent_username_form.is_valid():
+                agent_username_form.save()
+
+                if form.is_valid():
+                    form.save()
+                    request.session["msg"] = _('"%(name)s" is updated.') \
+                        % {'name': agent_profile.user}
+                    return HttpResponseRedirect('/agent/')
 
     template = 'frontend/agent/change.html'
     data = {
         'module': current_view(request),
         'form': form,
+        'agent_username_form': agent_username_form,
         'action': 'update',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }

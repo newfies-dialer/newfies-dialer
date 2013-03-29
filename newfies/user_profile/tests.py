@@ -71,10 +71,6 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
         self.assertTrue(response.context['user_password_form'],
                         PasswordChangeForm(self.user))
 
-        response = self.client.get(
-            '/user_detail_change/?action=tabs-3&notification=mark_read_all', {})
-        self.assertEqual(response.status_code, 200)
-
         response = self.client.post('/user_detail_change/?action=tabs-5',
                                     {'form-type': 'check-number',
                                      'phone_no': '9324552563'})

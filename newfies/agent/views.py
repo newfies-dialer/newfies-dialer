@@ -212,7 +212,6 @@ def agent_add(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('auth.delete_agent', login_url='/')
 @permission_required('agent.delete_agentprofile', login_url='/')
 @login_required
 def agent_del(request, object_id):

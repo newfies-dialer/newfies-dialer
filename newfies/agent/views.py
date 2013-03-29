@@ -14,14 +14,14 @@
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from django.contrib.auth.forms import PasswordChangeForm, UserCreationForm
 from django.contrib.auth.models import Permission
 
-from agent.models import AgentProfile
+from agent.models import AgentProfile, Agent
 from agent.constants import AGENT_COLUMN_NAME
 from agent.forms import AgentChangeDetailExtendForm
 from user_profile.models import Manager
@@ -189,7 +189,7 @@ def agent_add(request):
         if form.is_valid():
             new_agent = form.save()
 
-            AgentProfile.objects.create(
+            new_agent_profile = AgentProfile.objects.create(
                 user=new_agent,
                 manager=Manager.objects.get(username=request.user),
                 is_agent=True
@@ -199,12 +199,101 @@ def agent_add(request):
 
             request.session["msg"] = _('"%(name)s" added as agent.') %\
                 {'name': request.POST['username']}
-            return HttpResponseRedirect('/agent/')
+            return HttpResponseRedirect('/agent/%s/' % str(new_agent_profile.id))
+
     template = 'frontend/agent/change.html'
     data = {
         'module': current_view(request),
         'form': form,
         'action': 'add',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('auth.delete_agent', login_url='/')
+@permission_required('agent.delete_agentprofile', login_url='/')
+@login_required
+def agent_del(request, object_id):
+    """Delete a agent for a logged in manager
+
+    **Attributes**:
+
+        * ``object_id`` - Selected agent object
+        * ``object_list`` - Selected agent objects
+
+    **Logic Description**:
+
+        * Delete agent from a agent list.
+    """
+    if int(object_id) != 0:
+        # When object_id is not 0
+        # 1) delete agent profile & agent
+        agent_profile = get_object_or_404(
+            AgentProfile, pk=object_id, manager_id=request.user.id)
+        agent = User.objects.get(pk=agent_profile.user_id)
+
+        request.session["msg"] = _('"%(name)s" is deleted.')\
+            % {'name': agent}
+        agent.delete()
+    else:
+        # When object_id is 0 (Multiple records delete)
+        values = request.POST.getlist('select')
+        values = ", ".join(["%s" % el for el in values])
+        try:
+            # 1) delete all agents belonging to a managers
+            agent_list = AgentProfile.objects\
+                .filter(manager_id=request.user.id)\
+                .extra(where=['id IN (%s)' % values])
+
+            if agent_list:
+                user_list = agent_list.values_list('user_id', flat=True)
+                agents = User.objects.filter(pk__in=user_list)
+                request.session["msg"] = _('%(count)s agent(s) are deleted.')\
+                    % {'count': agent_list.count()}
+                agents.delete()
+        except:
+            raise Http404
+
+    return HttpResponseRedirect('/agent/')
+
+
+@permission_required('agent.change_agentprofile', login_url='/')
+@login_required
+def agent_change(request, object_id):
+    """Update/Delete Agent for the logged in manager
+
+    **Attributes**:
+
+        * ``object_id`` - Selected agent object
+        * ``form`` - AgentChangeDetailExtendForm
+        * ``template`` - frontend/agent/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected agent from the agent list
+          via AgentChangeDetailExtendForm & get redirected to agent list
+    """
+    agent_profile = get_object_or_404(AgentProfile, pk=object_id, manager_id=request.user.id)
+    form = AgentChangeDetailExtendForm(request.user, instance=agent_profile)
+    if request.method == 'POST':
+        if request.POST.get('delete'):
+            agent_del(request, object_id)
+            return HttpResponseRedirect('/agent/')
+        else:
+            form = AgentChangeDetailExtendForm(request.user, request.POST, instance=agent_profile)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%(name)s" is updated.') \
+                    % {'name': agent_profile.user}
+                return HttpResponseRedirect('/agent/')
+
+    template = 'frontend/agent/change.html'
+    data = {
+        'module': current_view(request),
+        'form': form,
+        'action': 'update',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,

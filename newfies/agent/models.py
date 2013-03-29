@@ -38,7 +38,7 @@ class AgentProfile(Profile_abstract):
         verbose_name=_('Designates whether the user is an agent.'))
     manager = models.ForeignKey(Manager, verbose_name=_("manager"), blank=True, null=True,
         help_text=_("select manager"), related_name="manager")
-    #"""
+
     type = models.IntegerField(choices=list(AGENT_TYPE),
                                default=AGENT_TYPE.CALLBACK,
                                verbose_name=_("type"), blank=True, null=True)
@@ -63,7 +63,6 @@ class AgentProfile(Profile_abstract):
                                         verbose_name=_('reject delay time'))
     busy_delay_time = models.IntegerField(blank=True, null=True,
                                           verbose_name=_('busy delay time'))
-    #"""
     class Meta:
         db_table = 'agent_profile'
         verbose_name = _("agent profile")

@@ -33,9 +33,9 @@ class AgentChangeDetailExtendForm(ModelForm):
     """A form used to change the detail of a user in the Agent UI."""
     class Meta:
         model = AgentProfile
-        fields = ["address", "city", "state", "country", "zip_code",
-                  "phone_no", "fax", "company_name", "company_website",
-                  "language", "note"]
+        fields = ["type", "name", "call_timeout", "contact", "status",
+                  "no_answer_delay_time", "max_no_answer", "wrap_up_time",
+                  "company_website", "reject_delay_time", "busy_delay_time"]
 
     def __init__(self, user, *args, **kwargs):
         self.user = user

@@ -63,7 +63,7 @@ def agent_change_password(request, object_id):
 
     **Logic Description**:
 
-        * Reset Agent username.
+        * Reset Agent password.
     """
     msg_pass = ''
     error_pass = ''
@@ -81,7 +81,6 @@ def agent_change_password(request, object_id):
             return HttpResponseRedirect('/agent/')
         else:
             error_pass = _('please correct the errors below.')
-
 
     template = 'frontend/agent/change_password.html'
     data = {

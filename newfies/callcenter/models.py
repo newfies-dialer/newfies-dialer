@@ -48,8 +48,7 @@ class Queue(Model):
 
     **Name of DB table**: queue
     """
-    manager = models.ForeignKey(Manager,
-                                verbose_name=_("manager"), blank=True, null=True,
+    manager = models.ForeignKey(Manager, verbose_name=_("manager"), blank=True, null=True,
                                 help_text=_("select manager"), related_name="queue manager")
     strategy = models.CharField(verbose_name=_("strategy"),
                                 max_length=120, null=True, blank=True)
@@ -82,12 +81,15 @@ class Queue(Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
+        permissions = (
+            ("view_queue_list", _('can see Queue list')),
+        )
         db_table = u'callcenter_queue'
         verbose_name = _("queue")
         verbose_name_plural = _("queues")
 
     def __unicode__(self):
-            return u"%s [%s]" % (self.id, self.request_uuid)
+            return u"%s [%s]" % (self.id, self.strategy)
 
 
 class Tier(Model):
@@ -130,9 +132,12 @@ class Tier(Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
+        permissions = (
+            ("view_tier_list", _('can see Tier list')),
+        )
         db_table = u'callcenter_tier'
         verbose_name = _("tier")
         verbose_name_plural = _("tiers")
 
     def __unicode__(self):
-            return u"%s [%s]" % (self.id, self.request_uuid)
+            return u"%s" % (self.id)

@@ -11,3 +11,18 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+
+from django.utils.translation import ugettext_lazy as _
+from common.utils import Choice
+
+
+class QUEUE_COLUMN_NAME(Choice):
+    id = _('ID')
+    manager = _('manager')
+    date = _('date')
+
+
+class TIER_COLUMN_NAME(Choice):
+    id = _('ID')
+    name = _('name')
+    date = _('date')

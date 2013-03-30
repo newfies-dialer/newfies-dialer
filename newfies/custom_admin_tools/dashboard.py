@@ -107,6 +107,11 @@ class CustomIndexDashboard(Dashboard):
             models=('dnc.*', ),
         ))
 
+        self.children.append(modules.AppList(
+            _('callcenter').title(),
+            models=('callcenter.*', ),
+        ))
+
         # append a link list module for "quick links"
         """
         site_name = get_admin_site_name(context)

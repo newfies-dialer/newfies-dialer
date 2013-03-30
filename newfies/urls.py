@@ -24,7 +24,7 @@ from survey.urls import urlpatterns as urlpatterns_survey
 from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
 from frontend_notification.urls import urlpatterns as urlpatterns_frontend_notification
 from agent.urls import urlpatterns as urlpatterns_agent
-#from callcenter.urls import urlpatterns as urlpatterns_callcenter
+from callcenter.urls import urlpatterns as urlpatterns_callcenter
 from api.api_playgrounds.urls import urlpatterns as urlpatterns_api_playgrounds
 from tastypie.api import Api
 
@@ -116,7 +116,7 @@ urlpatterns += urlpatterns_dialer_audio
 urlpatterns += urlpatterns_api_playgrounds
 urlpatterns += urlpatterns_frontend_notification
 urlpatterns += urlpatterns_agent
-#urlpatterns += urlpatterns_callcenter
+urlpatterns += urlpatterns_callcenter
 
 urlpatterns += patterns('',
     (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),

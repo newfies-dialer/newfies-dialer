@@ -69,7 +69,7 @@
                                 {% if perms.agent.delete_agentprofile %}
                                     <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete agent"|title %}"></a>
                                 {% endif %}
-                                <a id="id_change_password" href="password/{{ row.id }}/" {% icon "update" %} title="{% trans "change agent password"|title %}"></a>
+                                <a id="id_change_password" href="password/{{ row.user_id }}/" {% icon "update" %} title="{% trans "change agent password"|title %}"></a>
                             </td>
                         </tr>
                     {% endfor %}

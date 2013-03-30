@@ -19,7 +19,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from django.contrib.auth.forms import PasswordChangeForm, \
-    UserCreationForm
+    UserCreationForm, AdminPasswordChangeForm
 from django.contrib.auth.models import Permission
 
 from agent.models import AgentProfile, Agent
@@ -57,7 +57,7 @@ def agent_change_password(request, object_id):
 
     **Attributes**:
 
-        * ``form`` - PasswordChangeForm
+        * ``form`` - AdminPasswordChangeForm
         * ``template`` - 'frontend/agent/change_password.html',
              'frontend/registration/user_detail_change.html'
 
@@ -67,14 +67,14 @@ def agent_change_password(request, object_id):
     """
     msg_pass = ''
     error_pass = ''
-    agent_profile = get_object_or_404(AgentProfile, pk=object_id, manager_id=request.user.id)
-    agent_username = agent_profile.user.username
-    agent_userdetail = get_object_or_404(Agent, pk=agent_profile.user_id)
 
-    user_password_form = PasswordChangeForm(user=agent_userdetail)
+    agent_userdetail = get_object_or_404(Agent, pk=object_id)
+    agent_username = agent_userdetail.username
+
+    user_password_form = AdminPasswordChangeForm(user=agent_userdetail)
     if request.method == 'POST':
-        user_password_form = PasswordChangeForm(user=agent_userdetail,
-                                                data=request.POST)
+        user_password_form = AdminPasswordChangeForm(user=agent_userdetail,
+                                                     data=request.POST)
         if user_password_form.is_valid():
             user_password_form.save()
             request.session["msg"] = _('%s password has been changed.' % agent_username)

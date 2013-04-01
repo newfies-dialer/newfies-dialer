@@ -21,7 +21,7 @@ from django.template.context import RequestContext
 from django.contrib.auth.models import Permission
 from user_profile.models import Manager
 from callcenter.models import Queue, Tier
-from callcenter.constants import QUEUE_COLUMN_NAME
+from callcenter.constants import QUEUE_COLUMN_NAME, TIER_COLUMN_NAME
 from callcenter.forms import QueueFrontEndForm
 from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import current_view, get_pagination_vars
@@ -187,5 +187,46 @@ def queue_change(request, object_id):
         'action': 'update',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('callcenter.view_tier_list', login_url='/')
+@login_required
+def tier_list(request):
+    """Tier list for the logged in Manager
+
+    **Attributes**:
+
+        * ``template`` - frontend/tier/list.html
+
+    **Logic Description**:
+
+        * List all tier which belong to the logged in manager.
+    """
+    sort_col_field_list = ['id', 'manager', 'agent', 'queue', 'updated_date']
+    default_sort_field = 'id'
+    pagination_data = \
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    tier_list = Tier.objects\
+        .filter(manager=request.user).order_by(sort_order)
+
+    template = 'frontend/tier/list.html'
+    data = {
+        'module': current_view(request),
+        'msg': request.session.get('msg'),
+        'tier_list': tier_list,
+        'total_tier': tier_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'TIER_COLUMN_NAME': TIER_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

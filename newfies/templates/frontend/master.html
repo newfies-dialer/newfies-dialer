@@ -145,7 +145,7 @@
 
     {% endblock %}
 
-        {% if user.is_authenticated %}
+        {% if user.is_authenticated and not user.is_agent %}
             {% if dialer_setting_msg %}
 
             <div class="alert alert-error">

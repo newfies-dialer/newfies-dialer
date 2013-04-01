@@ -15,7 +15,7 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
-from agent.function_def import manager_list
+from agent.function_def import manager_list, agent_list
 from callcenter.models import Queue, Tier
 
 
@@ -55,3 +55,7 @@ class TierFrontEndForm(ModelForm):
     class Meta:
         model = Tier
         exclude = ('manager',)
+
+    def __init__(self, manager_id, *args, **kwargs):
+        super(TierFrontEndForm, self).__init__(*args, **kwargs)
+        self.fields['agent'].choices = agent_list(manager_id)

@@ -247,9 +247,9 @@ def tier_add(request):
         * Add a new tier which will belong to the logged in manager
           via the TierFrontEndForm & get redirected to the tier list
     """
-    form = TierFrontEndForm()
+    form = TierFrontEndForm(request.user.id)
     if request.method == 'POST':
-        form = TierFrontEndForm(request.POST)
+        form = TierFrontEndForm(request.user.id, request.POST)
         if form.is_valid():
             obj = form.save(commit=False)
             obj.manager = Manager.objects.get(username=request.user)

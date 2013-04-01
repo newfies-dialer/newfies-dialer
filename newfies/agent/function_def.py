@@ -25,12 +25,17 @@ def manager_list():
     return manager_list
 
 
-def agent_list():
+def agent_list(managert_id=None):
     """Return all agents of the system"""
     agent_list = []
     agent_id_list = AgentProfile.objects.values_list('user_id', flat=True)
+
+    if managert_id is not None:
+        agent_id_list = agent_id_list.filter(manager_id=int(managert_id))
+
     list = Agent.objects.values_list('id', 'username')\
         .filter(id__in=agent_id_list).order_by('id')
+
     for l in list:
         agent_list.append((l[0], l[1]))
     return agent_list

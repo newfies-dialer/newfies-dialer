@@ -14,7 +14,7 @@
 
 from django.contrib.auth.models import User
 from django.test import TestCase
-from django.contrib.auth.forms import PasswordChangeForm
+from django.contrib.auth.forms import AdminPasswordChangeForm
 from agent.models import AgentProfile
 from agent.forms import UserChangeDetailForm, \
     AgentChangeDetailExtendForm
@@ -55,7 +55,7 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
         response = self.client.post('/agent_detail_change/?action=tabs-2',
                                     {'form-type': ''})
         self.assertTrue(response.context['user_password_form'],
-                        PasswordChangeForm(self.user))
+                        AdminPasswordChangeForm(self.user))
 
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
@@ -108,7 +108,7 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.context['action'], 'update')
         self.assertTemplateUsed(response, 'frontend/agent/change.html')
 
-        request = self.factory.post('/contact/1/', {'contact': '1234'})
+        request = self.factory.post('/agent/1/', {'contact': '1234'})
         request.user = self.user
         request.session = {}
         response = agent_change(request, 1)
@@ -124,7 +124,7 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
     def test_agent_view_delete(self):
-        """Test Function to check delete contact"""
+        """Test Function to check delete agent"""
         request = self.factory.get('/agent/del/1/')
         request.user = self.user
         request.session = {}

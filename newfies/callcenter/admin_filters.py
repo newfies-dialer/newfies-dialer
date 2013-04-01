@@ -13,7 +13,7 @@
 #
 from django.contrib.admin import SimpleListFilter
 from django.utils.translation import ugettext as _
-from agent.function_def import manager_list, agent_list
+from agent.function_def import manager_list, agentprofile_list
 
 
 class CallcenterAdminAgentFilter(SimpleListFilter):
@@ -28,7 +28,7 @@ class CallcenterAdminAgentFilter(SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
-        return agent_list()
+        return agentprofile_list()
 
     def queryset(self, request, queryset):
         """
@@ -37,7 +37,7 @@ class CallcenterAdminAgentFilter(SimpleListFilter):
         `self.value()`.
         """
         if self.value() != None:
-            return queryset.filter(agent__user_id=self.value())
+            return queryset.filter(agent_id=self.value())
         else:
             return queryset
 

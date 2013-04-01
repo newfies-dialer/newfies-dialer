@@ -30,5 +30,6 @@ class TierAdmin(admin.ModelAdmin):
     list_display = ('id', 'manager', 'agent', 'queue', 'level', 'position')
     list_filter = (CallcenterAdminManagerFilter, CallcenterAdminAgentFilter, 'queue')
 
+
 admin.site.register(Queue, QueueAdmin)
 admin.site.register(Tier, TierAdmin)

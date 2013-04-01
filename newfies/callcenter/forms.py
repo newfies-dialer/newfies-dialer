@@ -31,6 +31,14 @@ class QueueForm(ModelForm):
         self.fields['manager'].choices = manager_list()
 
 
+class QueueFrontEndForm(ModelForm):
+    """Queue ModelForm"""
+
+    class Meta:
+        model = Queue
+        exclude = ('manager',)
+
+
 class TierForm(ModelForm):
     """TierForm is used to change"""
 

@@ -14,38 +14,9 @@
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from django.contrib.admin import SimpleListFilter
-from django.utils.translation import ugettext as _
 from agent.models import Agent, AgentProfile
 from agent.forms import AgentProfileForm
-from agent.function_def import manager_list
-
-
-class ManagerFilter(SimpleListFilter):
-    title = _('manager')
-    parameter_name = 'manager'
-
-    def lookups(self, request, model_admin):
-        """
-        Returns a list of tuples. The first element in each
-        tuple is the coded value for the option that will
-        appear in the URL query. The second element is the
-        human-readable name for the option that will appear
-        in the right sidebar.
-        """
-        return manager_list()
-
-    def queryset(self, request, queryset):
-        """
-        Returns the filtered queryset based on the value
-        provided in the query string and retrievable via
-        `self.value()`.
-        """
-        if self.value() != None:
-            agent_id_list = AgentProfile.objects.values_list('user_id', flat=True).filter(manager_id=self.value())
-            return queryset.filter(id__in=agent_id_list)
-        else:
-            return queryset
+from agent.admin_filters import ManagerFilter
 
 
 class AgentProfileInline(admin.StackedInline):

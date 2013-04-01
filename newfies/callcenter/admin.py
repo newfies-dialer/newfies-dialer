@@ -15,15 +15,20 @@
 from django.contrib import admin
 from django.utils.translation import ugettext as _
 from callcenter.models import Queue, Tier
+from callcenter.forms import QueueForm, TierForm
+from callcenter.admin_filters import CallcenterAdminAgentFilter, CallcenterAdminManagerFilter
 
 
 class QueueAdmin(admin.ModelAdmin):
+    form = QueueForm
     list_display = ('id', 'manager', 'strategy', 'moh_sound', 'time_base_score')
-    list_filter = ('manager',)
+    list_filter = (CallcenterAdminManagerFilter,)
+
 
 class TierAdmin(admin.ModelAdmin):
+    form = TierForm
     list_display = ('id', 'manager', 'agent', 'queue', 'level', 'position')
-    list_filter = ('manager', 'agent', 'queue')
+    list_filter = (CallcenterAdminManagerFilter, CallcenterAdminAgentFilter, 'queue')
 
 admin.site.register(Queue, QueueAdmin)
 admin.site.register(Tier, TierAdmin)

@@ -15,15 +15,28 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
-from callcenter.models import Queue
+from agent.function_def import manager_list
+from callcenter.models import Queue, Tier
 
 
-class Queue(ModelForm):
+
+class QueueForm(ModelForm):
+    """QueueForm is used to change manager list"""
 
     class Meta:
         model = Queue
-        #exclude = ('is_agent',)
 
     def __init__(self, *args, **kwargs):
         super(QueueForm, self).__init__(*args, **kwargs)
+        self.fields['manager'].choices = manager_list()
 
+
+class TierForm(ModelForm):
+    """TierForm is used to change"""
+
+    class Meta:
+        model = Tier
+
+    def __init__(self, *args, **kwargs):
+        super(TierForm, self).__init__(*args, **kwargs)
+        self.fields['manager'].choices = manager_list()

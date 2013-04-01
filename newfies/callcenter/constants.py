@@ -24,5 +24,8 @@ class QUEUE_COLUMN_NAME(Choice):
 
 class TIER_COLUMN_NAME(Choice):
     id = _('ID')
-    name = _('name')
+    agent = _('agent')
+    queue = _('queue')
+    level = _('level')
+    position = _('position')
     date = _('date')

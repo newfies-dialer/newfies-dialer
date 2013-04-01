@@ -22,7 +22,7 @@ from django.contrib.auth.models import Permission
 from user_profile.models import Manager
 from callcenter.models import Queue, Tier
 from callcenter.constants import QUEUE_COLUMN_NAME, TIER_COLUMN_NAME
-from callcenter.forms import QueueFrontEndForm
+from callcenter.forms import QueueFrontEndForm, TierFrontEndForm
 from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import current_view, get_pagination_vars
 
@@ -228,5 +228,128 @@ def tier_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('callcenter.add_tier', login_url='/')
+@login_required
+def tier_add(request):
+    """Add new tier for the logged in manager
+
+    **Attributes**:
+
+        * ``form`` - TierFrontEndForm
+        * ``template`` - frontend/tier/change.html
+
+    **Logic Description**:
+
+        * Add a new tier which will belong to the logged in manager
+          via the TierFrontEndForm & get redirected to the tier list
+    """
+    form = TierFrontEndForm()
+    if request.method == 'POST':
+        form = TierFrontEndForm(request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.manager = Manager.objects.get(username=request.user)
+            obj.save()
+
+            request.session["msg"] = _('"%(name)s" queue is added.') %\
+                {'name': obj.id}
+            return HttpResponseRedirect('/tier/')
+
+    template = 'frontend/tier/change.html'
+    data = {
+        'module': current_view(request),
+        'form': form,
+        'action': 'add',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('callcenter.delete_tier', login_url='/')
+@login_required
+def tier_del(request, object_id):
+    """Delete tier for the logged in Manager
+
+    **Attributes**:
+
+        * ``object_id`` - Selected tier object
+        * ``object_list`` - Selected tier objects
+
+    **Logic Description**:
+
+        * Delete selected tier from the tier list
+    """
+    if int(object_id) != 0:
+        # When object_id is not 0
+        tier = get_object_or_404(
+            Tier, pk=object_id, manager=request.user)
+
+        # Delete tier
+        request.session["msg"] = _('"%(name)s" is deleted.')\
+            % {'name': tier.id}
+        tier.delete()
+    else:
+        # When object_id is 0 (Multiple records delete)
+        values = request.POST.getlist('select')
+        values = ", ".join(["%s" % el for el in values])
+
+        try:
+            tier_list = Tier.objects.extra(where=['id IN (%s)' % values])
+            if tier_list:
+                request.session["msg"] =\
+                    _('%(count)s tier(s) are deleted.')\
+                        % {'count': tier_list.count()}
+                tier_list.delete()
+        except:
+            raise Http404
+    return HttpResponseRedirect('/tier/')
+
+
+@permission_required('callcenter.change_tier', login_url='/')
+@login_required
+def tier_change(request, object_id):
+    """Update/Delete tier for the logged in manager
+
+    **Attributes**:
+
+        * ``object_id`` - Selected tier object
+        * ``form`` - TierFrontEndForm
+        * ``template`` - frontend/tier/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected tier from the tier list
+          via TierFrontEndForm & get redirected to the tier list
+    """
+    tier = get_object_or_404(
+        Tier, pk=object_id, manager=request.user)
+
+    form = TierFrontEndForm(instance=tier)
+    if request.method == 'POST':
+        # Delete tier
+        if request.POST.get('delete'):
+            tier_del(request, object_id)
+            return HttpResponseRedirect('/tier/')
+        else:
+            # Update tier
+            form = TierFrontEndForm(request.POST, instance=tier)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%(name)s" is updated.') \
+                    % {'name': tier.id}
+                return HttpResponseRedirect('/tier/')
+
+    template = 'frontend/tier/change.html'
+    data = {
+        'module': current_view(request),
+        'form': form,
+        'action': 'update',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

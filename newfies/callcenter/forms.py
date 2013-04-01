@@ -19,7 +19,6 @@ from agent.function_def import manager_list
 from callcenter.models import Queue, Tier
 
 
-
 class QueueForm(ModelForm):
     """QueueForm is used to change manager list"""
 
@@ -48,3 +47,11 @@ class TierForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(TierForm, self).__init__(*args, **kwargs)
         self.fields['manager'].choices = manager_list()
+
+
+class TierFrontEndForm(ModelForm):
+    """Tier ModelForm"""
+
+    class Meta:
+        model = Tier
+        exclude = ('manager',)

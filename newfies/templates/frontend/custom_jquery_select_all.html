@@ -98,8 +98,13 @@ $(function () {
             if(document.location.href.search("/agent/") != -1) {
                 confirm_string = $fields.length +  '{% trans " Agent(s) are going to be deleted?" %}' ;
             }
+
             if(document.location.href.search("/queue/") != -1) {
                 confirm_string = $fields.length +  '{% trans " Queue(s) are going to be deleted?" %}' ;
+            }
+
+            if(document.location.href.search("/tier/") != -1) {
+                confirm_string = $fields.length +  '{% trans " Tier(s) are going to be deleted?" %}' ;
             }
 
             bootbox.confirm(confirm_string, function(result) {

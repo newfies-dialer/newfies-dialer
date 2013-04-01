@@ -15,7 +15,8 @@ from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
 from django.contrib.auth.models import User
-from agent.function_def import manager_list, agent_list
+from agent.models import AgentProfile
+from agent.function_def import manager_list, agentprofile_list
 from callcenter.models import Queue, Tier
 from callcenter.function_def import queue_list
 
@@ -59,5 +60,5 @@ class TierFrontEndForm(ModelForm):
 
     def __init__(self, manager_id, *args, **kwargs):
         super(TierFrontEndForm, self).__init__(*args, **kwargs)
-        self.fields['agent'].choices = agent_list(manager_id)
+        self.fields['agent'].choices = agentprofile_list(manager_id)
         self.fields['queue'].choices = queue_list(manager_id)

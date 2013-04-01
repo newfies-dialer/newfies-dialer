@@ -329,7 +329,7 @@ def tier_change(request, object_id):
     tier = get_object_or_404(
         Tier, pk=object_id, manager=request.user)
 
-    form = TierFrontEndForm(instance=tier)
+    form = TierFrontEndForm(request.user.id, instance=tier)
     if request.method == 'POST':
         # Delete tier
         if request.POST.get('delete'):
@@ -337,7 +337,7 @@ def tier_change(request, object_id):
             return HttpResponseRedirect('/tier/')
         else:
             # Update tier
-            form = TierFrontEndForm(request.POST, instance=tier)
+            form = TierFrontEndForm(request.user.id, request.POST, instance=tier)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.') \

@@ -39,3 +39,13 @@ def agent_list(manager_id=None):
     for l in list:
         agent_list.append((l[0], l[1]))
     return agent_list
+
+
+def agentprofile_list(manager_id):
+    """Return agents which are belong to manager_id"""
+    agent_list = []
+    agent_id_list = AgentProfile.objects.filter(manager_id=int(manager_id))
+
+    for l in agent_id_list:
+        agent_list.append((l.id, l.user.username))
+    return agent_list

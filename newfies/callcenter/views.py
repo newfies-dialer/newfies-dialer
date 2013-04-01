@@ -56,7 +56,7 @@ def queue_list(request):
         'module': current_view(request),
         'msg': request.session.get('msg'),
         'queue_list': queue_list,
-        'total_agent': queue_list.count(),
+        'total_queue': queue_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
         'QUEUE_COLUMN_NAME': QUEUE_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n %}
+{% load i18n common_tags %}
 
 {% block content_header %}
     <h1>
@@ -16,7 +16,8 @@
 {% block content %}
 
 <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    {% for field in form %}
+    {% get_fieldset strategy,moh_sound,record_template,time_base_score,tier_rule_wait_second,discard_abandoned_after,max_wait_time,max_wait_time_with_no_agent,max_wait_time_with_no_agent_time_reached as form_fields from form %}
+            {% for field in form_fields.visible_fields %}
     <div class="clearfix{% if field.errors %} control-group error{% endif %}">
         <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
         <div class="input">
@@ -29,6 +30,17 @@
     </div>
     {% endfor %}
 
+    <div class="clearfix">
+        <label class="control-label" for="{{ field.auto_id }}"></label>
+        <div class="input">
+            {% get_fieldset tier_rules_apply,tier_rule_wait_multiply_level,tier_rule_no_agent_no_wait,abandoned_resume_allowed as boolean_fields from form %}
+            {% for field in boolean_fields %}
+                {{ field }}&nbsp;<label style="display: inline;" for="{{ field.auto_id }}">{{ field.label|title }}</label>&nbsp;
+            {% endfor %}
+        </div>
+    </div>
+
+    <p>&nbsp;</p>
     <div class="actions">
         {% if action == 'update' %}
         <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />

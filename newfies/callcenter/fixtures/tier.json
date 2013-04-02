@@ -1,0 +1,15 @@
+[
+    {
+        "pk": 1,
+        "model": "callcenter.tier",
+        "fields": {
+            "updated_date": "2013-04-01T15:23:44.934",
+            "level": 1,
+            "agent": 1,
+            "queue": 1,
+            "manager": 2,
+            "created_date": "2013-04-01T15:23:44.934",
+            "position": 1
+        }
+    }
+]

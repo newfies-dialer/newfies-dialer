@@ -35,7 +35,12 @@
         <div class="input">
             {% get_fieldset tier_rules_apply,tier_rule_wait_multiply_level,tier_rule_no_agent_no_wait,abandoned_resume_allowed as boolean_fields from form %}
             {% for field in boolean_fields %}
-                {{ field }}&nbsp;<label style="display: inline;" for="{{ field.auto_id }}">{{ field.label|title }}</label>&nbsp;
+
+                <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                    {{ field }}&nbsp;<label style="display: inline;" for="{{ field.auto_id }}">{{ field.label|title }}</label>&nbsp;
+                </div>
+
+
             {% endfor %}
         </div>
     </div>

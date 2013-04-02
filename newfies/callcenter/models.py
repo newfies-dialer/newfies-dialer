@@ -16,6 +16,7 @@ from django.utils.translation import ugettext_lazy as _
 from common.intermediate_model_base_class import Model
 from user_profile.models import Manager
 from agent.models import AgentProfile
+from callcenter.constants import STRATEGY
 
 
 class Queue(Model):
@@ -50,31 +51,36 @@ class Queue(Model):
     """
     manager = models.ForeignKey(Manager, verbose_name=_("manager"), blank=True, null=True,
                                 help_text=_("select manager"), related_name="queue manager")
-    strategy = models.CharField(verbose_name=_("strategy"),
-                                max_length=120, null=True, blank=True)
+    strategy = models.IntegerField(choices=list(STRATEGY),
+                                  default=STRATEGY.agent_with_least_talk_time,
+                                  verbose_name=_("status"), blank=True, null=True)
     moh_sound = models.CharField(verbose_name=_("moh-sound"),
                                 max_length=250, null=True, blank=True)
     record_template = models.CharField(verbose_name=_("record-template"),
                                 max_length=250, null=True, blank=True)
     time_base_score = models.CharField(verbose_name=_("time-base-score"),
-                                max_length=50, null=True, blank=True)
-    tier_rules_apply = models.BooleanField(default=True, verbose_name=_("tier-rules-apply"))
+                                max_length=50, null=True, blank=True, default='queue')
+    tier_rules_apply = models.BooleanField(default=False, verbose_name=_("tier-rules-apply"))
     tier_rule_wait_second = models.IntegerField(verbose_name=_("tier-rule-wait-second"),
-                                max_length=250, null=True, blank=True)
+                                max_length=250, null=True, blank=True, default=300)
     tier_rule_wait_multiply_level = models.BooleanField(default=True,
                                             verbose_name=_("tier-rule-wait-multiply-level"))
-    tier_rule_no_agent_no_wait = models.BooleanField(default=True,
+    tier_rule_no_agent_no_wait = models.BooleanField(default=False,
                                                      verbose_name=_("tier-rule-no-agent-no-wait"))
     discard_abandoned_after = models.IntegerField(verbose_name=_("discard-abandoned-after"),
-                                                  max_length=250, null=True, blank=True)
+                                                  max_length=250, null=True, blank=True,
+                                                  default=14400)
     abandoned_resume_allowed = models.BooleanField(default=True,
                                                    verbose_name=_("abandoned-resume-allowed"))
     max_wait_time = models.IntegerField(verbose_name=_("max-wait-time"),
-                                        max_length=250, null=True, blank=True)
+                                        max_length=250, null=True, blank=True,
+                                        default=0)
     max_wait_time_with_no_agent = models.IntegerField(verbose_name=_("max-wait-time-with-no-agent"),
-                                                      max_length=250, null=True, blank=True)
+                                                      max_length=250, null=True, blank=True,
+                                                      default=120)
     max_wait_time_with_no_agent_time_reached = models.IntegerField(verbose_name=_("max-wait-time-with-no-agent-time-reached"),
-                                                                   max_length=250, null=True, blank=True)
+                                                                   max_length=250, null=True, blank=True,
+                                                                   default=5)
 
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('date'))

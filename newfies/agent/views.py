@@ -110,7 +110,7 @@ def agent_detail_change(request):
 
         * User is able to change his/her detail.
     """
-    user_detail = get_object_or_404(User, username=request.user)
+    user_detail = get_object_or_404(Agent, username=request.user)
     user_detail_extened = AgentProfile.objects.get(user=user_detail)
 
     user_detail_form = UserChangeDetailForm(request.user,
@@ -278,7 +278,7 @@ def agent_del(request, object_id):
         # 1) delete agent profile & agent
         agent_profile = get_object_or_404(
             AgentProfile, pk=object_id, manager_id=request.user.id)
-        agent = User.objects.get(pk=agent_profile.user_id)
+        agent = Agent.objects.get(pk=agent_profile.user_id)
 
         request.session["msg"] = _('"%(name)s" is deleted.')\
             % {'name': agent}
@@ -295,7 +295,7 @@ def agent_del(request, object_id):
 
             if agent_list:
                 user_list = agent_list.values_list('user_id', flat=True)
-                agents = User.objects.filter(pk__in=user_list)
+                agents = Agent.objects.filter(pk__in=user_list)
                 request.session["msg"] = _('%(count)s agent(s) are deleted.')\
                     % {'count': agent_list.count()}
                 agents.delete()

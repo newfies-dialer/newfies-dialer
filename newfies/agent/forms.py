@@ -48,7 +48,7 @@ class AgentChangeDetailExtendForm(ModelForm):
         model = AgentProfile
         fields = ["type", "name", "call_timeout", "contact", "status",
                   "no_answer_delay_time", "max_no_answer", "wrap_up_time",
-                  "company_website", "reject_delay_time", "busy_delay_time"]
+                  "reject_delay_time", "busy_delay_time"]
 
     def __init__(self, user, *args, **kwargs):
         self.user = user

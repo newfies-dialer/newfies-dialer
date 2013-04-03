@@ -152,7 +152,7 @@ class Tier(Model):
             return u"%s" % (self.id)
 
 
-def create_callcenter_config_xml():
+def create_callcenter_config_xml(manager_id):
     """Create XML config file"""
 
     from xml.etree.ElementTree import Element, SubElement, Comment, tostring
@@ -172,7 +172,7 @@ def create_callcenter_config_xml():
     'max_wait_time', 'tier_rule_wait_second', 'max_wait_time_with_no_agent',
     'moh_sound', 'record_template', 'strategy']
 
-    queue_list = Queue.objects.filter(manager=obj.manager)
+    queue_list = Queue.objects.filter(manager_id=manager_id)
 
     for queue_obj in queue_list:
         obj_dict = queue_obj.__dict__
@@ -191,7 +191,7 @@ def create_callcenter_config_xml():
     # Write agent
     agents = SubElement(top, 'agents')
 
-    agent_list = AgentProfile.objects.filter(manager=obj.manager)
+    agent_list = AgentProfile.objects.filter(manager_id=manager_id)
     agent_field_list = ['name', 'type', 'call_timeout', 'contact', 'status',
                         'max_no_answer', 'wrap_up_time', 'reject_delay_time',
                         'busy_delay_time', 'no_answer_delay_time']
@@ -216,7 +216,7 @@ def create_callcenter_config_xml():
 
     # Write tier
     tiers = SubElement(top, 'tiers')
-    tier_list = Tier.objects.filter(manager=obj.manager)
+    tier_list = Tier.objects.filter(manager_id=manager_id)
     tier_field_list = ['agent_id', 'queue_id', 'level', 'position']
 
     for tier_obj in tier_list:
@@ -245,7 +245,8 @@ def post_save_update_tier(sender, **kwargs):
     it is going to save.
     """
     if not kwargs['created']:
-        create_callcenter_config_xml()
+        manager_id = kwargs['instance'].manager_id
+        create_callcenter_config_xml(manager_id)
 
 
 def post_save_update_queue(sender, **kwargs):
@@ -253,7 +254,8 @@ def post_save_update_queue(sender, **kwargs):
     it is going to save.
     """
     if not kwargs['created']:
-        create_callcenter_config_xml()
+        manager_id = kwargs['instance'].manager_id
+        create_callcenter_config_xml(manager_id)
 
 
 def post_save_update_agentprofile(sender, **kwargs):
@@ -261,7 +263,8 @@ def post_save_update_agentprofile(sender, **kwargs):
     it is going to save.
     """
     if not kwargs['created']:
-        create_callcenter_config_xml()
+        manager_id = kwargs['instance'].manager_id
+        create_callcenter_config_xml(manager_id)
 
 
 post_save.connect(post_save_update_tier, sender=Tier)

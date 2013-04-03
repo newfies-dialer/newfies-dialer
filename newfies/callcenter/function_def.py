@@ -13,6 +13,7 @@
 #
 from user_profile.models import Manager
 from callcenter.models import Queue
+from callcenter.constants import STRATEGY
 
 
 def queue_list(manager_id):
@@ -20,7 +21,7 @@ def queue_list(manager_id):
     queue_list = []
     list = Queue.objects.values_list('id', 'strategy')\
         .filter(manager_id=manager_id).order_by('id')
-
+    NAME = dict(STRATEGY)
     for l in list:
-        queue_list.append((l[0], l[1]))
+        queue_list.append((l[0], "[%s] " % str(l[0]) + NAME[l[1]] ))
     return queue_list

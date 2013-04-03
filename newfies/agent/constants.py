@@ -23,9 +23,9 @@ class AGENT_COLUMN_NAME(Choice):
 
 
 class AGENT_STATUS(Choice):
-    AVAILABLE = 1, _('availabel')
+    AVAILABLE = 1, 'availabel'
 
 
 class AGENT_TYPE(Choice):
-    CALLBACK = 1, _('callback')
-    UUID_STANDBY = 2, _('uuid-standby')
+    CALLBACK = 1, 'callback'
+    UUID_STANDBY = 2, 'uuid-standby'

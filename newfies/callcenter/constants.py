@@ -16,14 +16,14 @@ from django.utils.translation import ugettext_lazy as _
 from common.utils import Choice
 
 class STRATEGY(Choice):
-    ring_all = 1, _('ring-all')
-    longest_idle_agent = 2, _('longest-idle-agent')
-    round_robin = 3, _('round-robin')
-    top_down = 4, _('top-down')
-    agent_with_least_talk_time = 5, _('agent-with-least-talk-time')
-    agent_with_fewest_calls = 6, _('agent-with-fewest-calls')
-    sequentially_by_agent_order = 7, _('sequentially-by-agent-order')
-    random = 8, _('random')
+    ring_all = 1, 'ring-all'
+    longest_idle_agent = 2, 'longest-idle-agent'
+    round_robin = 3, 'round-robin'
+    top_down = 4, 'top-down'
+    agent_with_least_talk_time = 5, 'agent-with-least-talk-time'
+    agent_with_fewest_calls = 6, 'agent-with-fewest-calls'
+    sequentially_by_agent_order = 7, 'sequentially-by-agent-order'
+    random = 8, 'random'
 
 
 class QUEUE_COLUMN_NAME(Choice):

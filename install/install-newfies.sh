@@ -55,12 +55,19 @@ export LANG="en_US.UTF-8"
 # Identify Linux Distribution type
 func_identify_os() {
     if [ -f /etc/debian_version ] ; then
+        DIST='DEBIAN'
         if [ "$(lsb_release -cs)" != "precise" ]; then
-            echo "This script is only intended to run on Ubuntu 12.04 TLS"
-            exit 1
+            echo "This script is only intended to run on Ubuntu LTS 12.04 or CentOS 6.X"
+            exit 255
+        fi
+    elif [ -f /etc/redhat-release ] ; then
+        DIST='CENTOS'
+        if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.3" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.4" ] ; then
+            echo "This script is only intended to run on Ubuntu LTS 12.04 or CentOS 6.X"
+            exit 255
         fi
     else
-        echo "This script is only intended to run on Ubuntu 12.04 TLS"
+        echo "This script is only intended to run on Ubuntu LTS 12.04 or CentOS 6.X"
         exit 1
     fi
 }
@@ -103,8 +110,15 @@ func_install_landing_page() {
     echo ""
     echo "Add Nginx configuration for Welcome page..."
     cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
-    cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-available/
-    ln -s /etc/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-enabled/newfies_dialer.conf
+    case $DIST in
+        'DEBIAN')
+            cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-available/
+            ln -s /etc/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-enabled/newfies_dialer.conf
+        ;;
+        'CENTOS')
+            cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/conf.d/
+        ;;
+    esac
 
     #Remove default NGINX landing page
     rm /etc/nginx/sites-enabled/default
@@ -209,37 +223,80 @@ func_install_frontend(){
     #python setup tools
     echo "Install Dependencies and python modules..."
 
-    export LANGUAGE=en_US.UTF-8
-    export LANG=en_US.UTF-8
-    export LC_ALL=en_US.UTF-8
-    locale-gen en_US.UTF-8
-    dpkg-reconfigure locales
+    case $DIST in
+        'DEBIAN')
+            export LANGUAGE=en_US.UTF-8
+            export LANG=en_US.UTF-8
+            export LC_ALL=en_US.UTF-8
+            locale-gen en_US.UTF-8
+            dpkg-reconfigure locales
 
-    apt-get update
-    apt-get -y remove apache2.2-common apache2
-    apt-get -y install --reinstall language-pack-en
+            apt-get update
+            apt-get -y remove apache2.2-common apache2
+            apt-get -y install --reinstall language-pack-en
 
-    apt-get -y install python-setuptools python-dev build-essential
-    apt-get -y install nginx supervisor
-    apt-get -y install git-core mercurial gawk
-    apt-get -y install python-pip python-dev
-    #for audiofile convertion
-    apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
+            apt-get -y install python-setuptools python-dev build-essential
+            apt-get -y install nginx supervisor
+            apt-get -y install git-core mercurial gawk
+            apt-get -y install python-pip python-dev
+            #for audiofile convertion
+            apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
 
-    #PostgreSQL
-    apt-get -y install python-software-properties
-    apt-get -y install postgresql-9.1
-    apt-get -y install libpq-dev
-    #Start PostgreSQL
-    /etc/init.d/postgresql start
+            #PostgreSQL
+            apt-get -y install python-software-properties
+            apt-get -y install postgresql-9.1
+            apt-get -y install libpq-dev
+            #Start PostgreSQL
+            /etc/init.d/postgresql start
 
-    #Lua Deps
-    apt-get -y install liblua5.1-sql-postgres-dev
-    apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
-    #Memcached
-    apt-get -y install memcached
-    #Luarocks
-    apt-get -y install luarocks luasocket
+            #Lua Deps
+            apt-get -y install liblua5.1-sql-postgres-dev
+            apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
+            #Memcached
+            apt-get -y install memcached
+            #Luarocks
+            apt-get -y install luarocks luasocket
+        ;;
+        'CENTOS')
+            if [ ! -f /etc/yum.repos.d/rpmforge.repo ]; then
+                # Install RPMFORGE Repo
+                rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$KERNEL_ARCH.rpm
+            fi
+
+            #Install epel repo for pip and mod_python
+            rpm -ivh http://dl.fedoraproject.org/pub/epel/6/$KERNEL_ARCH/epel-release-6-7.noarch.rpm
+
+            #Disable epel repository since by default it is enabled.
+            sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
+            yum -y groupinstall "Development Tools"
+            yum -y install git sudo
+            yum -y --enablerepo=epel install nginx python-pip python-setuptools python-tools python-devel mercurial
+            #configure and start nginx
+            chkconfig --levels 235 nginx on
+            service nginx start
+
+            #Install & Start PostgreSQL
+            yum -y install postgresql-server postgresql-devel
+            sed -i "s/ident/md5/g" /var/lib/pgsql/data/pg_hba.conf
+            chkconfig --levels 235 postgresql on
+            service postgresql initdb
+            service postgresql restart
+
+            #Install Supervisor
+            yum -y install supervisor
+
+            #TODO: Convert the follow to CentOS
+            #Lua Deps
+            apt-get -y install liblua5.1-sql-postgres-dev
+            apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
+            #Memcached
+            apt-get -y install memcached
+            #Luarocks
+            apt-get -y install luarocks luasocket
+        ;;
+    esac
+
+    #Install Lua dependencies
     luarocks install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
     luarocks install lualogging
     luarocks install loop
@@ -452,8 +509,30 @@ func_install_frontend(){
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
     sed -i "s/SERVER_IP/$IPADDR/g" $INSTALL_DIR/settings_local.py
 
-    #Get TZ
-    ZONE=$(head -1 /etc/timezone)
+
+    case $DIST in
+        'DEBIAN')
+            #Get TZ
+            ZONE=$(head -1 /etc/timezone)
+        ;;
+        'CENTOS')
+            #Get TZ
+            . /etc/sysconfig/clock
+            echo ""
+            echo "We will now add port $HTTP_PORT  and port 80 to your Firewall"
+            echo "Press Enter to continue or CTRL-C to exit"
+            read TEMP
+
+            func_iptables_configuration
+
+            #Selinux to allow apache to access this directory
+            chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
+            chcon -Rv --type=httpd_sys_content_t /usr/share/newfies/usermedia
+            semanage port -a -t http_port_t -p tcp $HTTP_PORT
+            #Allowing Apache to access Redis port
+            semanage port -a -t http_port_t -p tcp 6379
+        ;;
+    esac
 
     #Set Timezone in settings_local.py
     sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/settings_local.py
@@ -462,7 +541,14 @@ func_install_frontend(){
     # * * NGINX / SUPERVISOR * *
 
     #Configure and Start supervisor
-    cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
+    case $DIST in
+        'DEBIAN')
+            cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
+        ;;
+        'CENTOS')
+            cat /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf >> /etc/supervisord.conf
+        ;;
+    esac
     /etc/init.d/supervisor force-stop
     /etc/init.d/supervisor start
 
@@ -538,33 +624,50 @@ func_install_backend() {
     #pip install python-memcached
 
     echo "Configure Celery..."
+    case $DIST in
+        'DEBIAN')
+            # Add init-scripts
+            cp /usr/src/newfies-dialer/install/celery-init/debian/etc/default/newfies-celeryd /etc/default/
+            cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celeryd /etc/init.d/
+            # Configure init-scripts
+            sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
+            sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
+            chmod +x /etc/default/newfies-celeryd
+            chmod +x /etc/init.d/newfies-celeryd
 
-    # Add init-scripts
-    cp /usr/src/newfies-dialer/install/celery-init/debian/etc/default/newfies-celeryd /etc/default/
-    cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celeryd /etc/init.d/
-    # Configure init-scripts
-    sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
-    sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
-    chmod +x /etc/default/newfies-celeryd
-    chmod +x /etc/init.d/newfies-celeryd
+            /etc/init.d/newfies-celeryd restart
+            cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
 
-    /etc/init.d/newfies-celeryd restart
-    cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
+            #Check permissions on /dev/shm to ensure that celery can start and run for openVZ.
+            DIR="/dev/shm"
+            echo "Checking the permissions for $dir"
+            stat $DIR
+            if [ `stat -c "%a" $DIR` -ge 777 ] ; then
+                echo "$DIR has Read Write permissions."
+            else
+                echo "$DIR has no read write permissions."
+                chmod -R 777 /dev/shm
+                if [ `grep -i /dev/shm /etc/fstab | wc -l` -eq 0 ]; then
+                    echo "Adding fstab entry to set permissions /dev/shm"
+                    echo "none /dev/shm tmpfs rw,nosuid,nodev,noexec 0 0" >> /etc/fstab
+                fi
+            fi
+        ;;
+        'CENTOS')
+            # Add init-scripts
+            cp /usr/src/newfies-dialer/install/celery-init/centos/etc/default/newfies-celeryd /etc/default/
+            cp /usr/src/newfies-dialer/install/celery-init/centos/etc/init.d/newfies-celeryd /etc/init.d/
+            # Configure init-scripts
+            sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
+            sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
 
-    #Check permissions on /dev/shm to ensure that celery can start and run for openVZ.
-    DIR="/dev/shm"
-    echo "Checking the permissions for $dir"
-    stat $DIR
-    if [ `stat -c "%a" $DIR` -ge 777 ] ; then
-        echo "$DIR has Read Write permissions."
-    else
-        echo "$DIR has no read write permissions."
-        chmod -R 777 /dev/shm
-        if [ `grep -i /dev/shm /etc/fstab | wc -l` -eq 0 ]; then
-            echo "Adding fstab entry to set permissions /dev/shm"
-            echo "none /dev/shm tmpfs rw,nosuid,nodev,noexec 0 0" >> /etc/fstab
-        fi
-    fi
+            chmod +x /etc/init.d/newfies-celeryd
+            /etc/init.d/newfies-celeryd restart
+
+            chkconfig --add newfies-celeryd
+            chkconfig --level 2345 newfies-celeryd on
+        ;;
+    esac
 
     echo ""
     echo "**************************************************************"
@@ -584,8 +687,18 @@ func_install_backend() {
 #Install recent version of redis-server
 func_install_redis_server() {
     echo "Install Redis-server ..."
-    apt-get -y install redis-server
-    /etc/init.d/redis-server restart
+    case $DIST in
+        'DEBIAN')
+            apt-get -y install redis-server
+            /etc/init.d/redis-server restart
+        ;;
+        'CENTOS')
+            yum -y --enablerepo=epel install redis
+            chkconfig --add redis
+            chkconfig --level 2345 redis on
+            /etc/init.d/redis start
+        ;;
+    esac
 }
 
 #Menu Section for Script
@@ -608,7 +721,14 @@ show_menu_newfies() {
 func_identify_os
 
 #Prepare settings for installation
-SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
+case $DIST in
+    'DEBIAN')
+        SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
+    ;;
+    'CENTOS')
+        SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
+    ;;
+esac
 
 #Request the user to accept the license
 func_accept_license

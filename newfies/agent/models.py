@@ -14,6 +14,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
+from django.db.models.signals import post_save, post_delete
 from django.utils.translation import ugettext_lazy as _
 from user_profile.models import Manager, Profile_abstract
 from agent.constants import AGENT_STATUS, AGENT_TYPE
@@ -110,3 +111,27 @@ class Agent(User):
         return name
     manager_name.allow_tags = True
     manager_name.short_description = _('manager')
+
+
+def common_signal(manager_id):
+    """common_signal for agentprofile model for post_save & post_delete"""
+    from utils.callcenter_config_xml import create_callcenter_config_xml
+    create_callcenter_config_xml(manager_id)
+
+
+def post_save_agentprofile(sender, **kwargs):
+    """A ``post_delete`` signal is sent by the AgentProfile model instance whenever
+    it is going to save.
+    """
+    common_signal(kwargs['instance'].manager_id)
+
+
+def post_delete_agentprofile(sender, **kwargs):
+    """A ``post_delete`` signal is sent by the AgentProfile model instance whenever
+    it is going to delete.
+    """
+    common_signal(kwargs['instance'].manager_id)
+
+
+post_save.connect(post_save_agentprofile, sender=AgentProfile)
+post_delete.connect(post_delete_agentprofile, sender=AgentProfile)

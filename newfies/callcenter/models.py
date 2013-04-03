@@ -13,10 +13,10 @@
 #
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.db.models.signals import post_save
+from django.db.models.signals import post_save, post_delete
 from common.intermediate_model_base_class import Model
 from user_profile.models import Manager
-from agent.models import AgentProfile
+from agent.models import AgentProfile, common_signal
 from agent.constants import AGENT_STATUS, AGENT_TYPE
 from callcenter.constants import STRATEGY
 
@@ -152,121 +152,37 @@ class Tier(Model):
             return u"%s" % (self.id)
 
 
-def create_callcenter_config_xml(manager_id):
-    """Create XML config file"""
 
-    from xml.etree.ElementTree import Element, SubElement, Comment, tostring
-    top = Element('configuration', {"name": "callcenter.conf", "description": "CallCenter",})
-
-    #settings = SubElement(top, 'settings')
-    #comment = Comment('<param name="odbc-dsn" value="dsn:user:pass"/>\
-    #    <param name="dbname" value="/dev/shm/callcenter.db"/>')
-    #settings.append(comment)
-
-    # Write queue
-    queues = SubElement(top, 'queues')
-
-    queue_field_list = ['tier_rule_wait_multiply_level', 'discard_abandoned_after',
-    'tier_rules_apply', 'abandoned_resume_allowed', 'time_base_score',
-    'max_wait_time_with_no_agent_time_reached', 'tier_rule_no_agent_no_wait',
-    'max_wait_time', 'tier_rule_wait_second', 'max_wait_time_with_no_agent',
-    'moh_sound', 'record_template', 'strategy']
-
-    queue_list = Queue.objects.filter(manager_id=manager_id)
-
-    for queue_obj in queue_list:
-        obj_dict = queue_obj.__dict__
-
-        # change queue name
-        queue = SubElement(queues, 'queue', {"name": str(queue_obj.id)})
-
-        for key, value in obj_dict.iteritems():
-            if key in queue_field_list:
-                if key == 'strategy':
-                    value = dict(STRATEGY)[value]
-                    param = SubElement(queue, 'param', {"name": str(key), "value": str(value)})
-                else:
-                    param = SubElement(queue, 'param', {"name": str(key), "value": str(value)})
-
-    # Write agent
-    agents = SubElement(top, 'agents')
-
-    agent_list = AgentProfile.objects.filter(manager_id=manager_id)
-    agent_field_list = ['name', 'type', 'call_timeout', 'contact', 'status',
-                        'max_no_answer', 'wrap_up_time', 'reject_delay_time',
-                        'busy_delay_time', 'no_answer_delay_time']
-    for agent_obj in agent_list:
-        agent_dict = agent_obj.__dict__
-        xml_agent_data = {}
-        for key, value in agent_dict.iteritems():
-            if key in agent_field_list:
-                if key == 'type':
-                    value = dict(AGENT_TYPE)[value]
-                    xml_agent_data[str(key)] = str(value)
-
-                elif key == 'status':
-                    value = dict(AGENT_STATUS)[value]
-                    xml_agent_data[str(key)] = str(value)
-                else:
-                    key = key.replace('_', '-')
-                    xml_agent_data[str(key)] = str(value)
-
-        # write agent detail
-        agent = SubElement(agents, 'agent', xml_agent_data)
-
-    # Write tier
-    tiers = SubElement(top, 'tiers')
-    tier_list = Tier.objects.filter(manager_id=manager_id)
-    tier_field_list = ['agent_id', 'queue_id', 'level', 'position']
-
-    for tier_obj in tier_list:
-        tier_dict = tier_obj.__dict__
-        xml_tier_data = {}
-        for key, value in tier_dict.iteritems():
-            if key in tier_field_list:
-                if key == 'queue_id':
-                    xml_tier_data['queue'] = str(value)
-                elif key == 'agent_id':
-                    xml_tier_data['agent'] = str(value)
-                else:
-                    xml_tier_data[str(key)] = str(value)
-
-        # write tier detail
-        tier = SubElement(tiers, 'tier', xml_tier_data)
-
-    #print tostring(top)
-    import xml.etree.ElementTree as ET
-    tree = ET.ElementTree(top)
-    tree.write("/tmp/callcenter.conf.xml")
-
-
-def post_save_update_tier(sender, **kwargs):
-    """A ``post_save`` signal is sent by the Contact model instance whenever
+def post_save_tier(sender, **kwargs):
+    """A ``post_save`` signal is sent by the Queue model instance whenever
     it is going to save.
     """
-    if not kwargs['created']:
-        manager_id = kwargs['instance'].manager_id
-        create_callcenter_config_xml(manager_id)
+    common_signal(kwargs['instance'].manager_id)
 
 
-def post_save_update_queue(sender, **kwargs):
-    """A ``post_save`` signal is sent by the Contact model instance whenever
+def post_save_queue(sender, **kwargs):
+    """A ``post_save`` signal is sent by the Queue model instance whenever
+    it is going to delete.
+    """
+    common_signal(kwargs['instance'].manager_id)
+
+
+def post_delete_queue(sender, **kwargs):
+    """A ``post_delete`` signal is sent by the Queue model instance whenever
     it is going to save.
     """
-    if not kwargs['created']:
-        manager_id = kwargs['instance'].manager_id
-        create_callcenter_config_xml(manager_id)
+    common_signal(kwargs['instance'].manager_id)
 
-
-def post_save_update_agentprofile(sender, **kwargs):
-    """A ``post_save`` signal is sent by the Contact model instance whenever
-    it is going to save.
+def post_delete_tier(sender, **kwargs):
+    """A ``post_delete`` signal is sent by the Tier model instance whenever
+    it is going to delete.
     """
-    if not kwargs['created']:
-        manager_id = kwargs['instance'].manager_id
-        create_callcenter_config_xml(manager_id)
+    common_signal(kwargs['instance'].manager_id)
 
 
-post_save.connect(post_save_update_tier, sender=Tier)
-post_save.connect(post_save_update_queue, sender=Queue)
-post_save.connect(post_save_update_agentprofile, sender=AgentProfile)
+post_save.connect(post_save_tier, sender=Tier)
+post_save.connect(post_save_queue, sender=Queue)
+post_delete.connect(post_delete_tier, sender=Tier)
+post_delete.connect(post_delete_queue, sender=Queue)
+
+

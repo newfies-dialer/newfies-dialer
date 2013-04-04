@@ -20,6 +20,7 @@ from xml.dom import minidom
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 import xml.etree.ElementTree as ET
 
+callcenter_namespace = '@default'
 
 def prettify(elem):
     """Return a pretty-printed XML string for the Element."""
@@ -53,10 +54,10 @@ def create_callcenter_config_xml(manager_id):
         obj_dict = queue_obj.__dict__
 
         # change queue name
-        queue = SubElement(queues, 'queue', {"name": str(queue_obj.name)})
+        queue = SubElement(queues, 'queue', {"name": str(queue_obj.name) + callcenter_namespace})
 
         for key, value in obj_dict.iteritems():
-            if key in queue_field_list and value is not None:
+            if key in queue_field_list and value != None:
                 if key == 'strategy':
                     value = dict(STRATEGY)[value]
                     param = SubElement(queue, 'param', {"name": str(key), "value": str(value)})
@@ -74,11 +75,10 @@ def create_callcenter_config_xml(manager_id):
         agent_dict = agent_obj.__dict__
         xml_agent_data = {}
         for key, value in agent_dict.iteritems():
-            if key in agent_field_list and value is not None:
+            if key in agent_field_list and value != None:
                 if key == 'type':
                     value = dict(AGENT_TYPE)[value]
                     xml_agent_data[str(key)] = str(value)
-
                 elif key == 'status':
                     value = dict(AGENT_STATUS)[value]
                     xml_agent_data[str(key)] = str(value)
@@ -96,14 +96,15 @@ def create_callcenter_config_xml(manager_id):
 
     for tier_obj in tier_list:
         agent_username = tier_obj.agent
+        queue_name = tier_obj.queue
         tier_dict = tier_obj.__dict__
         xml_tier_data = {}
         for key, value in tier_dict.iteritems():
             if key in tier_field_list:
                 if key == 'queue_id':
-                    xml_tier_data['queue'] = str(value)
+                    xml_tier_data['queue'] = str(queue_name) + callcenter_namespace
                 elif key == 'agent_id':
-                    xml_tier_data['agent'] = str(agent_username)
+                    xml_tier_data['agent'] = str(agent_username) + callcenter_namespace
                 else:
                     xml_tier_data[str(key)] = str(value)
 

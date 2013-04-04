@@ -16,8 +16,16 @@ from agent.models import AgentProfile
 from agent.constants import AGENT_STATUS, AGENT_TYPE
 from callcenter.models import Queue, Tier
 from callcenter.constants import STRATEGY
+from xml.dom import minidom
 from xml.etree.ElementTree import Element, SubElement, Comment, tostring
 import xml.etree.ElementTree as ET
+
+
+def prettify(elem):
+    """Return a pretty-printed XML string for the Element."""
+    rough_string = ET.tostring(elem, 'utf-8')
+    reparsed = minidom.parseString(rough_string)
+    return reparsed.toprettyxml(indent="  ")
 
 
 def create_callcenter_config_xml(manager_id):
@@ -101,6 +109,7 @@ def create_callcenter_config_xml(manager_id):
         # write tier detail
         tier = SubElement(tiers, 'tier', xml_tier_data)
 
-    #print tostring(top)
-    tree = ET.ElementTree(top)
-    tree.write("/tmp/callcenter.conf.xml")
+    callcenter_file = open('/tmp/callcenter.conf.xml', 'w')
+    callcenter_file.write(prettify(top))
+    callcenter_file.close()
+

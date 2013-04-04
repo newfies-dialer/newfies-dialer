@@ -49,6 +49,7 @@
                 <tr>
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
                     <th>{% sort_link QUEUE_COLUMN_NAME.id|capfirst col_name_with_order.id %}</th>
+                    <th>{% sort_link QUEUE_COLUMN_NAME.name|capfirst col_name_with_order.name %}</th>
                     <th>{% sort_link QUEUE_COLUMN_NAME.strategy|capfirst col_name_with_order.strategy %}</th>
                     <th>{% sort_link QUEUE_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
                     <th>{% trans 'action'|capfirst %}</th>
@@ -60,6 +61,7 @@
                         <tr>
                             <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
                             <td>{{ row.id }}</td>
+                            <td>{{ row.name }}</td>
                             <td>{{ row.strategy|strategy_name }}</td>
                             <td>{{ row.updated_date }}</td>
                             <td>

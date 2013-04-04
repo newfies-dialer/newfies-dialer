@@ -28,6 +28,7 @@ class STRATEGY(Choice):
 
 class QUEUE_COLUMN_NAME(Choice):
     id = _('ID')
+    name = _('name')
     strategy = _('strategy')
     date = _('date')
 

@@ -40,7 +40,7 @@ def queue_list(request):
 
         * List all queue which belong to the logged in manager.
     """
-    sort_col_field_list = ['id', 'manager', 'updated_date']
+    sort_col_field_list = ['id', 'name', 'manager', 'updated_date']
     default_sort_field = 'id'
     pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
@@ -92,7 +92,7 @@ def queue_add(request):
             obj.save()
 
             request.session["msg"] = _('"%(name)s" queue is added.') %\
-                {'name': request.POST['strategy']}
+                {'name': obj.name}
             return HttpResponseRedirect('/queue/')
 
     template = 'frontend/queue/change.html'
@@ -127,7 +127,7 @@ def queue_del(request, object_id):
 
         # Delete queue
         request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': queue.strategy}
+            % {'name': queue.name}
         queue.delete()
     else:
         # When object_id is 0 (Multiple records delete)
@@ -175,9 +175,9 @@ def queue_change(request, object_id):
             # Update queue
             form = QueueFrontEndForm(request.POST, instance=queue)
             if form.is_valid():
-                form.save()
+                obj = form.save()
                 request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['strategy']}
+                    % {'name': obj.name}
                 return HttpResponseRedirect('/queue/')
 
     template = 'frontend/queue/change.html'

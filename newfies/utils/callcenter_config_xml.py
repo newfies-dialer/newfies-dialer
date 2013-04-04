@@ -53,10 +53,10 @@ def create_callcenter_config_xml(manager_id):
         obj_dict = queue_obj.__dict__
 
         # change queue name
-        queue = SubElement(queues, 'queue', {"name": str(queue_obj.id)})
+        queue = SubElement(queues, 'queue', {"name": str(queue_obj.name)})
 
         for key, value in obj_dict.iteritems():
-            if key in queue_field_list:
+            if key in queue_field_list and value is not None:
                 if key == 'strategy':
                     value = dict(STRATEGY)[value]
                     param = SubElement(queue, 'param', {"name": str(key), "value": str(value)})
@@ -74,7 +74,7 @@ def create_callcenter_config_xml(manager_id):
         agent_dict = agent_obj.__dict__
         xml_agent_data = {}
         for key, value in agent_dict.iteritems():
-            if key in agent_field_list:
+            if key in agent_field_list and value is not None:
                 if key == 'type':
                     value = dict(AGENT_TYPE)[value]
                     xml_agent_data[str(key)] = str(value)

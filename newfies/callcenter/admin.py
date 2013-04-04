@@ -21,7 +21,7 @@ from callcenter.admin_filters import CallcenterAdminAgentFilter, CallcenterAdmin
 
 class QueueAdmin(admin.ModelAdmin):
     form = QueueForm
-    list_display = ('id', 'manager', 'strategy', 'moh_sound', 'time_base_score')
+    list_display = ('id', 'manager', 'name', 'strategy', 'moh_sound', 'time_base_score')
     list_filter = (CallcenterAdminManagerFilter,)
 
 

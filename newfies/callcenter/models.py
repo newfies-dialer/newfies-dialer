@@ -53,6 +53,7 @@ class Queue(Model):
     """
     manager = models.ForeignKey(Manager, verbose_name=_("manager"), blank=True, null=True,
                                 help_text=_("select manager"), related_name="queue manager")
+    name = models.CharField(verbose_name=_("name"), max_length=250)
     strategy = models.IntegerField(choices=list(STRATEGY),
                                   default=STRATEGY.agent_with_least_talk_time,
                                   verbose_name=_("status"), blank=True, null=True)
@@ -97,8 +98,7 @@ class Queue(Model):
         verbose_name_plural = _("queues")
 
     def __unicode__(self):
-        NAME = dict(STRATEGY)
-        return u"%s [%s]" % (self.id, NAME[self.strategy])
+        return u"%s" % (self.name)
 
 
 class Tier(Model):

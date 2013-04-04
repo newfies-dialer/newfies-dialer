@@ -16,7 +16,7 @@
 {% block content %}
 
 <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    {% get_fieldset strategy,moh_sound,record_template,time_base_score,tier_rule_wait_second,discard_abandoned_after,max_wait_time,max_wait_time_with_no_agent,max_wait_time_with_no_agent_time_reached as form_fields from form %}
+    {% get_fieldset name,strategy,moh_sound,record_template,time_base_score,tier_rule_wait_second,discard_abandoned_after,max_wait_time,max_wait_time_with_no_agent,max_wait_time_with_no_agent_time_reached as form_fields from form %}
             {% for field in form_fields.visible_fields %}
     <div class="clearfix{% if field.errors %} control-group error{% endif %}">
         <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>

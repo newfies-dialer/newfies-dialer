@@ -21,7 +21,7 @@
 BRANCH='master'
 
 FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-conf
-FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-init
+FS_INIT_PATH=https://raw.hub.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-init
 FS_INSTALLED_PATH=/usr/local/freeswitch
 FS_CONFIG_PATH=/etc/freeswitch
 FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.7.tar.bz2
@@ -113,21 +113,7 @@ case $DIST in
     'CENTOS')
         yum -y update
         yum -y install autoconf automake bzip2 cpio curl curl-devel curl-devel expat-devel fileutils gcc-c++ gettext-devel gnutls-devel libjpeg-devel libogg-devel libtiff-devel libtool libvorbis-devel make ncurses-devel nmap openssl openssl-devel openssl-devel perl patch unixODBC unixODBC-devel unzip wget zip zlib zlib-devel
-        yum -y install flite
-
-        #install the RPMFORGE Repository
-        if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
-            then
-                # Install RPMFORGE Repo
-                #Check architecture
-                KERNELARCH=$(uname -p)
-                if [ $KERNELARCH = "x86_64" ]; then
-                    rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
-                else
-                    rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
-                fi
-        fi
-        yum -y --enablerepo=rpmforge install git-core
+        yum -y install git 
     ;;
 esac
 

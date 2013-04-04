@@ -40,6 +40,46 @@ func_identify_os() {
     fi
 }
 
+#install the epel repository.
+func_install_epel_repo() {
+	
+	if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
+		then
+			echo '
+[epel]
+name=Extra Packages for Enterprise Linux 6 - $basearch
+#baseurl=http://download.fedoraproject.org/pub/epel/6/$basearch
+mirrorlist=https://mirrors.fedoraproject.org/metalink?repo=epel-6&arch=$basearch
+failovermethod=priority
+enabled=0
+gpgcheck=0
+gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
+		' > /etc/yum.repos.d/epel.repo 
+	fi
+}
+
+#install the rpmforge repository.
+func_install_rpmforge_repo() {
+
+	if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
+		then
+			echo '
+[rpmforge]
+name = RHEL $releasever - RPMforge.net - dag
+baseurl = http://apt.sw.be/redhat/el6/en/$basearch/rpmforge
+mirrorlist = http://apt.sw.be/redhat/el6/en/mirrors-rpmforge
+#mirrorlist = file:///etc/yum.repos.d/mirrors-rpmforge
+enabled = 0
+protect = 0
+gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
+gpgcheck = 0
+		' > /etc/yum.repos.d/rpmforge.repo 
+	fi
+}
+
+
+
+
 #Identify the OS
 func_identify_os
 
@@ -52,41 +92,23 @@ echo ""
 read TEMP
 
 
+
+
+
 case $DIST in
     'DEBIAN')
         apt-get -y update
         apt-get -y install vim git-core
     ;;
     'CENTOS')
-        if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
-        then
-            # Install RPMFORGE Repo
-            #Check architecture
-            KERNELARCH=$(uname -p)
-            if [ $KERNELARCH = "x86_64" ]; then
-                rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.x86_64.rpm
-           else
-                rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.i686.rpm
-            fi
-        fi
+		func_install_epel_repo
+		func_install_rpmforge_repo
         yum -y update
-        yum -y install mlocate vim git-core
+        yum -y install mlocate vim git wget
         yum -y install policycoreutils-python
-        yum -y --enablerepo=rpmforge install sox sox-devel ffmpeg ffmpeg-devel mpg123 mpg123-devel libmad libmad-devel libid3tag libid3tag-devel lame lame-devel flac-devel libvorbis-devel
-        yum -y groupinstall 'Development Tools'
-        cd /usr/src/
-        wget http://switch.dl.sourceforge.net/project/sox/sox/14.3.2/sox-14.3.2.tar.gz
-        tar zxfv sox*
-        rm -rf sox*.tar.gz
-        mv sox* sox
-        cd /usr/src/sox
-        make distclean
-        make clean
-        ./configure --bindir=/usr/bin/
-        make -s
-        make install
     ;;
 esac
+
 
 
 #Install Freeswitch
@@ -99,3 +121,4 @@ bash install-freeswitch.sh
 cd /usr/src/
 wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/install-newfies.sh -O install-newfies.sh
 bash install-newfies.sh
+

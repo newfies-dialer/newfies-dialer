@@ -49,6 +49,7 @@ HTTP_PORT='8008'
 DEBVERSION=$( lsb_release -cs )
 
 
+
 #Django bug https://code.djangoproject.com/ticket/16017
 export LANG="en_US.UTF-8"
 
@@ -114,15 +115,17 @@ func_install_landing_page() {
         'DEBIAN')
             cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-available/
             ln -s /etc/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-enabled/newfies_dialer.conf
+			#Remove default NGINX landing page
+			rm /etc/nginx/sites-enabled/default
         ;;
         'CENTOS')
             cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/conf.d/
+            rm /etc/nginx/conf.d/default.conf
         ;;
     esac
 
-    #Remove default NGINX landing page
-    rm /etc/nginx/sites-enabled/default
-
+	cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
+	
     #Restart Nginx
     service nginx restart
 
@@ -256,48 +259,95 @@ func_install_frontend(){
             apt-get -y install memcached
             #Luarocks
             apt-get -y install luarocks luasocket
+            luarocks install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
+
         ;;
         'CENTOS')
-            if [ ! -f /etc/yum.repos.d/rpmforge.repo ]; then
-                # Install RPMFORGE Repo
-                rpm -ivh http://pkgs.repoforge.org/rpmforge-release/rpmforge-release-0.5.2-2.el6.rf.$KERNEL_ARCH.rpm
-            fi
-
-            #Install epel repo for pip and mod_python
-            rpm -ivh http://dl.fedoraproject.org/pub/epel/6/$KERNEL_ARCH/epel-release-6-7.noarch.rpm
-
-            #Disable epel repository since by default it is enabled.
-            sed -i "s/enabled=1/enable=0/" /etc/yum.repos.d/epel.repo
             yum -y groupinstall "Development Tools"
             yum -y install git sudo
-            yum -y --enablerepo=epel install nginx python-pip python-setuptools python-tools python-devel mercurial
-            #configure and start nginx
+            yum -y install python-setuptools python-tools python-devel mercurial memcached
+            yum -y install --enablerepo=epel python-pip
+            
+            #Audio File Conversion
+            yum -y --enablerepo=rpmforge install sox sox-devel ffmpeg ffmpeg-devel mpg123 mpg123-devel libmad libmad-devel libid3tag libid3tag-devel lame lame-devel flac-devel libvorbis-devel
+			cd /usr/src/
+			
+        	#Install SOX for MP3 support
+			SOXVERSION=14.4.1
+			rm -rf sox
+			wget http://switch.dl.sourceforge.net/project/sox/sox/$SOXVERSION/sox-$SOXVERSION.tar.gz			
+			tar zxf	sox-$SOXVERSION.tar.gz
+			rm -rf sox-$SOXVERSION.tar.gz
+			mv sox-$SOXVERSION sox
+			cd sox
+			./configure --bindir=/usr/bin/
+			make -s
+        	make install
+        	cd /usr/src
+        	
+        	            
+            #Install, configure and start nginx
+            yum -y install --enablerepo=epel nginx             
             chkconfig --levels 235 nginx on
             service nginx start
 
-            #Install & Start PostgreSQL
-            yum -y install postgresql-server postgresql-devel
-            sed -i "s/ident/md5/g" /var/lib/pgsql/data/pg_hba.conf
-            chkconfig --levels 235 postgresql on
-            service postgresql initdb
-            service postgresql restart
+            #Install & Start PostgreSQL 9.1
+            rpm -ivh http://yum.pgrpms.org/9.1/redhat/rhel-6-x86_64/pgdg-centos91-9.1-4.noarch.rpm
+            yum -y install postgresql91-server postgresql91-devel
+            chkconfig --levels 235 postgresql-9.1 on
+            service postgresql-9.1 initdb
+			ln -s /usr/pgsql-9.1/bin/pg_config /usr/bin  
+			ln -s /var/lib/pgsql/9.1/data /var/lib/pgsql
+			ln -s /var/lib/pgsql/9.1/backups /var/lib/pgsql
+			sed -i "s/ident/md5/g" /var/lib/pgsql/data/pg_hba.conf
+            service postgresql-9.1 restart
 
             #Install Supervisor
-            yum -y install supervisor
+			yum -y install --enablerepo=epel supervisor
+			chkconfig --levels 235 supervisord on
+			service supervisord start
+			
+			
+			# Install Lua & luarocks
+			cd /usr/src
+			
+			#Install Lua
+			yum install readline-devel
+			LUAVERSION=lua-5.1.5
+			rm -rf lua
+			wget http://www.lua.org/ftp/$LUAVERSION.tar.gz
+			tar zxf	$LUAVERSION.tar.gz
+			rm -rf $LUAVERSION.tar.gz
+			mv $LUAVERSION lua
+			cd lua
+			make linux
+			make install
+			cd /usr/src
+			
+			
+			
+			#Install Luarocks
+			cd /usr/src
+			LUAROCKSVERSION=luarocks-2.0.12
+			rm -rf luarocks
+			wget http://luarocks.org/releases/$LUAROCKSVERSION.tar.gz
+			tar zxf	$LUAROCKSVERSION.tar.gz
+			rm -rf $LUAROCKSVERSION.tar.gz
+			mv $LUAROCKSVERSION luarocks
+			cd luarocks
+			./configure
+			make 
+			make install
+			cd /usr/src
 
-            #TODO: Convert the follow to CentOS
-            #Lua Deps
-            apt-get -y install liblua5.1-sql-postgres-dev
-            apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
-            #Memcached
-            apt-get -y install memcached
-            #Luarocks
-            apt-get -y install luarocks luasocket
+			luarocks install luasql-postgres PGSQL_DIR=/usr/pgsql-9.1/
+
         ;;
     esac
 
     #Install Lua dependencies
-    luarocks install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
+	luarocks install luasocket
+	luarocks install luacurl
     luarocks install lualogging
     luarocks install loop
     luarocks install md5
@@ -476,6 +526,7 @@ func_install_frontend(){
 
     python manage.py syncdb --noinput
     python manage.py migrate
+    clear
     echo ""
     echo "Create a super admin user..."
     python manage.py createsuperuser
@@ -552,11 +603,6 @@ func_install_frontend(){
     /etc/init.d/supervisor force-stop
     /etc/init.d/supervisor start
 
-    #Prepare and Start Nginx
-    echo "Prepare Nginx configuration..."
-    cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
-    cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-available/
-    service nginx restart
 
     # * * LOGROTATE * *
 
@@ -700,6 +746,7 @@ func_install_redis_server() {
         ;;
     esac
 }
+
 
 #Menu Section for Script
 show_menu_newfies() {

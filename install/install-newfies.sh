@@ -115,8 +115,8 @@ func_install_landing_page() {
         'DEBIAN')
             cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-available/
             ln -s /etc/nginx/sites-available/newfies_dialer.conf /etc/nginx/sites-enabled/newfies_dialer.conf
-			#Remove default NGINX landing page
-			rm /etc/nginx/sites-enabled/default
+            #Remove default NGINX landing page
+            rm /etc/nginx/sites-enabled/default
         ;;
         'CENTOS')
             cp /usr/src/newfies-dialer/install/nginx/sites-available/newfies_dialer.conf /etc/nginx/conf.d/
@@ -124,8 +124,8 @@ func_install_landing_page() {
         ;;
     esac
 
-	cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
-	
+    cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
+
     #Restart Nginx
     service nginx restart
 
@@ -267,27 +267,26 @@ func_install_frontend(){
             yum -y install git sudo
             yum -y install python-setuptools python-tools python-devel mercurial memcached
             yum -y install --enablerepo=epel python-pip
-            
+
             #Audio File Conversion
             yum -y --enablerepo=rpmforge install sox sox-devel ffmpeg ffmpeg-devel mpg123 mpg123-devel libmad libmad-devel libid3tag libid3tag-devel lame lame-devel flac-devel libvorbis-devel
-			cd /usr/src/
-			
-        	#Install SOX for MP3 support
-			SOXVERSION=14.4.1
-			rm -rf sox
-			wget http://switch.dl.sourceforge.net/project/sox/sox/$SOXVERSION/sox-$SOXVERSION.tar.gz			
-			tar zxf	sox-$SOXVERSION.tar.gz
-			rm -rf sox-$SOXVERSION.tar.gz
-			mv sox-$SOXVERSION sox
-			cd sox
-			./configure --bindir=/usr/bin/
-			make -s
-        	make install
-        	cd /usr/src
-        	
-        	            
+            cd /usr/src/
+
+            #Install SOX for MP3 support
+            SOXVERSION=14.4.1
+            rm -rf sox
+            wget http://switch.dl.sourceforge.net/project/sox/sox/$SOXVERSION/sox-$SOXVERSION.tar.gz
+            tar zxf sox-$SOXVERSION.tar.gz
+            rm -rf sox-$SOXVERSION.tar.gz
+            mv sox-$SOXVERSION sox
+            cd sox
+            ./configure --bindir=/usr/bin/
+            make -s
+            make install
+            cd /usr/src
+
             #Install, configure and start nginx
-            yum -y install --enablerepo=epel nginx             
+            yum -y install --enablerepo=epel nginx
             chkconfig --levels 235 nginx on
             service nginx start
 
@@ -296,58 +295,53 @@ func_install_frontend(){
             yum -y install postgresql91-server postgresql91-devel
             chkconfig --levels 235 postgresql-9.1 on
             service postgresql-9.1 initdb
-			ln -s /usr/pgsql-9.1/bin/pg_config /usr/bin  
-			ln -s /var/lib/pgsql/9.1/data /var/lib/pgsql
-			ln -s /var/lib/pgsql/9.1/backups /var/lib/pgsql
-			sed -i "s/ident/md5/g" /var/lib/pgsql/data/pg_hba.conf
+            ln -s /usr/pgsql-9.1/bin/pg_config /usr/bin
+            ln -s /var/lib/pgsql/9.1/data /var/lib/pgsql
+            ln -s /var/lib/pgsql/9.1/backups /var/lib/pgsql
+            sed -i "s/ident/md5/g" /var/lib/pgsql/data/pg_hba.conf
             service postgresql-9.1 restart
 
             #Install Supervisor
-			yum -y install --enablerepo=epel supervisor
-			chkconfig --levels 235 supervisord on
-			service supervisord start
-			
-			
-			# Install Lua & luarocks
-			cd /usr/src
-			
-			#Install Lua
-			yum -y install readline-devel
-			LUAVERSION=lua-5.1.5
-			rm -rf lua
-			wget http://www.lua.org/ftp/$LUAVERSION.tar.gz
-			tar zxf	$LUAVERSION.tar.gz
-			rm -rf $LUAVERSION.tar.gz
-			mv $LUAVERSION lua
-			cd lua
-			make linux
-			make install
-			cd /usr/src
-			
-			
-			
-			#Install Luarocks
-			cd /usr/src
-			LUAROCKSVERSION=luarocks-2.0.12
-			rm -rf luarocks
-			wget http://luarocks.org/releases/$LUAROCKSVERSION.tar.gz
-			tar zxf	$LUAROCKSVERSION.tar.gz
-			rm -rf $LUAROCKSVERSION.tar.gz
-			mv $LUAROCKSVERSION luarocks
-			cd luarocks
-			./configure
-			make 
-			make install
-			cd /usr/src
+            yum -y install --enablerepo=epel supervisor
+            chkconfig --levels 235 supervisord on
+            service supervisord start
 
-			luarocks install luasql-postgres PGSQL_DIR=/usr/pgsql-9.1/
+            # Install Lua & luarocks
+            cd /usr/src
+            yum -y install readline-devel
+            LUAVERSION=lua-5.1.5
+            rm -rf lua
+            wget http://www.lua.org/ftp/$LUAVERSION.tar.gz
+            tar zxf $LUAVERSION.tar.gz
+            rm -rf $LUAVERSION.tar.gz
+            mv $LUAVERSION lua
+            cd lua
+            make linux
+            make install
+            cd /usr/src
+
+            #Install Luarocks
+            cd /usr/src
+            LUAROCKSVERSION=luarocks-2.0.12
+            rm -rf luarocks
+            wget http://luarocks.org/releases/$LUAROCKSVERSION.tar.gz
+            tar zxf $LUAROCKSVERSION.tar.gz
+            rm -rf $LUAROCKSVERSION.tar.gz
+            mv $LUAROCKSVERSION luarocks
+            cd luarocks
+            ./configure
+            make
+            make install
+            cd /usr/src
+
+            luarocks install luasql-postgres PGSQL_DIR=/usr/pgsql-9.1/
 
         ;;
     esac
 
     #Install Lua dependencies
-	luarocks install luasocket
-	luarocks install luacurl
+    luarocks install luasocket
+    luarocks install luacurl
     luarocks install lualogging
     luarocks install loop
     luarocks install md5

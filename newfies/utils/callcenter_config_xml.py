@@ -74,6 +74,7 @@ def create_callcenter_config_xml(manager_id):
                         'busy_delay_time', 'no_answer_delay_time']
     for agent_obj in agent_list:
         agent_dict = agent_obj.__dict__
+        agent_username = agent_obj.user
         xml_agent_data = {}
         for key, value in agent_dict.iteritems():
             if key in agent_field_list and value != None:
@@ -84,7 +85,7 @@ def create_callcenter_config_xml(manager_id):
                     value = dict(AGENT_STATUS)[value]
                     xml_agent_data[str(key)] = str(value)
                 elif key == 'name':
-                    xml_agent_data[str(key)] = str(value) + callcenter_namespace
+                    xml_agent_data[str(key)] = str(agent_username) + callcenter_namespace
                 else:
                     key = key.replace('_', '-')
                     xml_agent_data[str(key)] = str(value)
@@ -98,7 +99,7 @@ def create_callcenter_config_xml(manager_id):
     tier_field_list = ['agent_id', 'queue_id', 'level', 'position']
 
     for tier_obj in tier_list:
-        agent_username = tier_obj.agent
+        agent_username = tier_obj.agent.user
         queue_name = tier_obj.queue
         tier_dict = tier_obj.__dict__
         xml_tier_data = {}

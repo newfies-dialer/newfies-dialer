@@ -74,7 +74,7 @@
                         </div>
                     </div>
 
-                    {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS or form.type.value|convert_to_int == SECTION_TYPE.CALL_TRANSFER or form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE %}
+                    {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS or form.type.value|convert_to_int == SECTION_TYPE.CALL_TRANSFER or form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE or form.type.value|convert_to_int == SECTION_TYPE.QUEUE %}
                         <div class="row">
                             <div class="span2">
                                 <label class="control-label" for="{{ form.retries.auto_id }}">{{ form.retries.label|title }}</label>
@@ -267,6 +267,24 @@
                                         <span class="help-inline">{{ form.conference.errors|removetags:"ul li"|safe }}</span>
                                     {% endif %}
                                     <span class="help-block">{{ form.conference.help_text|capfirst|safe }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <!--Queue Section form-->
+                    {% if form.type.value|convert_to_int == SECTION_TYPE.QUEUE %}
+                        <div class="row">
+                            <div class="span2">
+                                <label class="control-label" for="{{ form.queue.auto_id }}">{{ form.queue.label|title }}</label>
+                            </div>
+                            <div class="span3 clearfix{% if form.queue.errors %} control-group error{% endif %}">
+                                <div class="input">
+                                    {{ form.queue }}
+                                    {% if form.queue.errors %}
+                                        <span class="help-inline">{{ form.queue.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ form.queue.help_text|capfirst|safe }} </span>
                                 </div>
                             </div>
                         </div>

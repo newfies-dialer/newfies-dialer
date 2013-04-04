@@ -32,7 +32,8 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
     CallTransferSectionForm, BranchingForm, ScriptForm,\
-    SurveyDetailReportForm, SurveyFileImport, ConferenceSectionForm
+    SurveyDetailReportForm, SurveyFileImport, ConferenceSectionForm,\
+    QueueSectionForm
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME
 from survey.models import post_save_add_script
 from common.common_functions import striplist, variable_value, current_view,\
@@ -297,7 +298,7 @@ def section_add(request):
             form_data =\
                 section_add_form(request, RecordMessageSectionForm, survey, SECTION_TYPE.RECORD_MSG)
 
-        # Call transfer Section
+        # Call conference Section
         if int(request.POST.get('type')) == SECTION_TYPE.CONFERENCE:
             form_data =\
                 section_add_form(request, ConferenceSectionForm, survey, SECTION_TYPE.CONFERENCE)
@@ -306,6 +307,11 @@ def section_add(request):
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
             form_data =\
                 section_add_form(request, CallTransferSectionForm, survey, SECTION_TYPE.CALL_TRANSFER)
+
+        # Queue Section
+        if int(request.POST.get('type')) == SECTION_TYPE.QUEUE:
+            form_data =\
+                section_add_form(request, QueueSectionForm, survey, SECTION_TYPE.QUEUE)
 
         if form_data.get('save_tag'):
             return HttpResponseRedirect('/survey/%s/#row%s'
@@ -405,6 +411,9 @@ def section_change(request, id):
     elif section.type == SECTION_TYPE.CALL_TRANSFER:
         #CALL_TRANSFER
         form = CallTransferSectionForm(request.user, instance=section)
+    elif section.type == SECTION_TYPE.QUEUE:
+        #QUEUE
+        form = QueueSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
 
@@ -445,6 +454,11 @@ def section_change(request, id):
         if int(request.POST.get('type')) == SECTION_TYPE.CONFERENCE:
             form_data = section_update_form(request,
                 ConferenceSectionForm, SECTION_TYPE.CONFERENCE, section)
+
+        # Queue Section
+        if int(request.POST.get('type')) == SECTION_TYPE.QUEUE:
+            form_data = section_update_form(request,
+                QueueSectionForm, SECTION_TYPE.QUEUE, section)
 
         if form_data.get('save_tag'):
             return HttpResponseRedirect('/survey/%s/#row%s'

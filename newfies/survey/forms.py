@@ -21,6 +21,7 @@ from survey.models import Survey_template, Section_template, \
     Branching_template
 from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile
+from callcenter.function_def import queue_list
 
 
 def get_audiofile_list(user):
@@ -254,6 +255,25 @@ class ConferenceSectionForm(ModelForm):
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
 
+class QueueSectionForm(ModelForm):
+    """QueueSectionForm ModelForm"""
+
+    class Meta:
+        model = Section_template
+        fields = ['type', 'survey', 'question', 'audiofile', 'queue', 'completed']
+
+    def __init__(self, user, *args, **kwargs):
+        super(QueueSectionForm, self).__init__(*args, **kwargs)
+        if user:
+            self.fields['audiofile'].choices = get_audiofile_list(user)
+            self.fields['audiofile'].widget.attrs['class'] = 'span2'
+            self.fields['queue'].choices = queue_list(user.id)
+            self.fields['queue'].widget.attrs['class'] = 'span2'
+        self.fields['question'].widget.attrs['class'] = 'span3'
+        self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+
+
 class CallTransferSectionForm(ModelForm):
     """CallTransferSectionForm ModelForm"""
 
@@ -314,7 +334,8 @@ class BranchingForm(ModelForm):
         if (obj_section.type == SECTION_TYPE.PLAY_MESSAGE
            or obj_section.type == SECTION_TYPE.RECORD_MSG
            or obj_section.type == SECTION_TYPE.CALL_TRANSFER
-           or obj_section.type == SECTION_TYPE.CONFERENCE):
+           or obj_section.type == SECTION_TYPE.CONFERENCE
+           or obj_section.type == SECTION_TYPE.QUEUE):
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 

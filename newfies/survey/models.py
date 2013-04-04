@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
+from callcenter.models import Queue
 from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile, AudioField
 from common.language_field import LanguageField
@@ -240,6 +241,8 @@ class Section_abstract(Sortable):
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
                                     verbose_name=_('survey complete'))
+    queue = models.ForeignKey(Queue, null=True, blank=True,
+                              verbose_name=_("queue"))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
@@ -331,6 +334,7 @@ class Section_template(Section_abstract):
             completed=self.completed,
             order=self.order,
             invalid_audiofile_id=self.invalid_audiofile_id,
+            queue=self.queue,
         )
         return True
 
@@ -524,7 +528,8 @@ def post_save_add_script(sender, **kwargs):
         if (obj.type == SECTION_TYPE.PLAY_MESSAGE
            or obj.type == SECTION_TYPE.RECORD_MSG
            or obj.type == SECTION_TYPE.CALL_TRANSFER
-           or obj.type == SECTION_TYPE.CONFERENCE):
+           or obj.type == SECTION_TYPE.CONFERENCE
+           or obj.type == SECTION_TYPE.QUEUE):
             Branching_template.objects.create(keys=0, section_id=obj.id, goto_id='')
 
         if obj.type == SECTION_TYPE.MULTI_CHOICE or \

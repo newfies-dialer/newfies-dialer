@@ -55,6 +55,7 @@ def queue_list(request):
     data = {
         'module': current_view(request),
         'msg': request.session.get('msg'),
+        'error_msg': request.session.get('error_msg'),
         'queue_list': queue_list,
         'total_queue': queue_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
@@ -106,6 +107,16 @@ def queue_add(request):
                               context_instance=RequestContext(request))
 
 
+def queue_delete_allow(queue_id):
+    """Check queue is attached to any survey section or not"""
+    try:
+        from survey.models import Section_template
+        Section_template.objects.filter(queue_id=int(queue_id))
+        return False
+    except:
+        return True
+
+
 @permission_required('callcenter.delete_queue', login_url='/')
 @login_required
 def queue_del(request, object_id):
@@ -125,10 +136,15 @@ def queue_del(request, object_id):
         queue = get_object_or_404(
             Queue, pk=object_id, manager=request.user)
 
-        # Delete queue
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': queue.name}
-        queue.delete()
+        if queue_delete_allow(object_id):
+            # Delete queue
+            request.session["msg"] = _('"%(name)s" is deleted.')\
+                % {'name': queue.name}
+            queue.delete()
+        else:
+            request.session["error_msg"] = \
+                _('"%(name)s" is not allowed to delete because it is being used with survey.')\
+                    % {'name': queue.name}
     else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')

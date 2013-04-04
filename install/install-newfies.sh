@@ -312,7 +312,7 @@ func_install_frontend(){
 			cd /usr/src
 			
 			#Install Lua
-			yum install readline-devel
+			yum -y install readline-devel
 			LUAVERSION=lua-5.1.5
 			rm -rf lua
 			wget http://www.lua.org/ftp/$LUAVERSION.tar.gz

@@ -95,6 +95,7 @@ def create_callcenter_config_xml(manager_id):
     tier_field_list = ['agent_id', 'queue_id', 'level', 'position']
 
     for tier_obj in tier_list:
+        agent_username = tier_obj.agent
         tier_dict = tier_obj.__dict__
         xml_tier_data = {}
         for key, value in tier_dict.iteritems():
@@ -102,13 +103,14 @@ def create_callcenter_config_xml(manager_id):
                 if key == 'queue_id':
                     xml_tier_data['queue'] = str(value)
                 elif key == 'agent_id':
-                    xml_tier_data['agent'] = str(value)
+                    xml_tier_data['agent'] = str(agent_username)
                 else:
                     xml_tier_data[str(key)] = str(value)
 
         # write tier detail
         tier = SubElement(tiers, 'tier', xml_tier_data)
 
+    #print prettify(top)
     callcenter_file = open('/tmp/callcenter.conf.xml', 'w')
     callcenter_file.write(prettify(top))
     callcenter_file.close()

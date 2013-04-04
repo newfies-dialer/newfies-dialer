@@ -83,6 +83,8 @@ def create_callcenter_config_xml(manager_id):
                 elif key == 'status':
                     value = dict(AGENT_STATUS)[value]
                     xml_agent_data[str(key)] = str(value)
+                elif key == 'name':
+                    xml_agent_data[str(key)] = str(value) + callcenter_namespace
                 else:
                     key = key.replace('_', '-')
                     xml_agent_data[str(key)] = str(value)

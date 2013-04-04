@@ -15,6 +15,7 @@
 from django.utils.translation import ugettext_lazy as _
 from common.utils import Choice
 
+
 class STRATEGY(Choice):
     ring_all = 1, 'ring-all'
     longest_idle_agent = 2, 'longest-idle-agent'
@@ -29,6 +30,7 @@ class STRATEGY(Choice):
 class QUEUE_COLUMN_NAME(Choice):
     name = _('name')
     strategy = _('strategy')
+    time_base_score = _('time base score')
     date = _('date')
 
 
@@ -38,3 +40,8 @@ class TIER_COLUMN_NAME(Choice):
     level = _('level')
     position = _('position')
     date = _('date')
+
+
+class TIME_BASE_SCORE_TYPE(Choice):
+    queue = 'queue'
+    system = 'system'

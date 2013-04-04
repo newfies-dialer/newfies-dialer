@@ -40,7 +40,7 @@ def queue_list(request):
 
         * List all queue which belong to the logged in manager.
     """
-    sort_col_field_list = ['name', 'manager', 'updated_date']
+    sort_col_field_list = ['name', 'strategy', 'time_base_score', 'updated_date']
     default_sort_field = 'id'
     pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)

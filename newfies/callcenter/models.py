@@ -18,7 +18,7 @@ from common.intermediate_model_base_class import Model
 from user_profile.models import Manager
 from agent.models import AgentProfile, common_signal
 from agent.constants import AGENT_STATUS, AGENT_TYPE
-from callcenter.constants import STRATEGY
+from callcenter.constants import STRATEGY, TIME_BASE_SCORE_TYPE
 
 
 class Queue(Model):
@@ -62,7 +62,8 @@ class Queue(Model):
     record_template = models.CharField(verbose_name=_("record-template"),
                                 max_length=250, null=True, blank=True)
     time_base_score = models.CharField(verbose_name=_("time-base-score"),
-                                max_length=50, null=True, blank=True, default='queue')
+                                choices=list(TIME_BASE_SCORE_TYPE), max_length=250,
+                                default=TIME_BASE_SCORE_TYPE.queue)
     tier_rules_apply = models.BooleanField(default=False, verbose_name=_("tier-rules-apply"))
     tier_rule_wait_second = models.IntegerField(verbose_name=_("tier-rule-wait-second"),
                                 max_length=250, null=True, blank=True, default=300)

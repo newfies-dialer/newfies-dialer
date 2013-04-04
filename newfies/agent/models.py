@@ -41,9 +41,6 @@ class AgentProfile(Profile_abstract):
     type = models.IntegerField(choices=list(AGENT_TYPE),
                                default=AGENT_TYPE.CALLBACK,
                                verbose_name=_("type"), blank=True, null=True)
-    name = models.CharField(max_length=120, blank=True, null=True,
-                            verbose_name=_('name'))
-
     call_timeout = models.IntegerField(default='45', blank=True, null=True,
                                        verbose_name=_('timeout on call'),
                                        help_text=_("connection timeout in seconds"))

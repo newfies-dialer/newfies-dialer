@@ -24,7 +24,7 @@ class AGENT_COLUMN_NAME(Choice):
 
 
 class AGENT_STATUS(Choice):
-    AVAILABLE = 1, 'availabel'
+    AVAILABLE = 1, 'available'
 
 
 class AGENT_TYPE(Choice):

@@ -1182,6 +1182,7 @@ def export_survey(request, id):
                 section.conference,
                 section.completed,
                 section.invalid_audiofile_id,
+                section.queue_id
                 section.id
             ])
 
@@ -1233,8 +1234,8 @@ def import_survey(request):
                 if not row or str(row[0]) == 0:
                     continue
 
-                #if length of row is 27, it's a section
-                if  len(row) == 27:
+                #if length of row is 28, it's a section
+                if  len(row) == 28:
                     try:
                         # for section
                         section_template_obj = Section_template.objects.create(
@@ -1264,10 +1265,11 @@ def import_survey(request):
                             conference=row[23],
                             completed=1 if row[24] == 'TRUE' else 0,
                             invalid_audiofile_id=int(row[25]) if row[25] else None,
+                            queue_id=int(row[26]) if row[26] else None,
                             survey=new_survey,
                         )
 
-                        new_old_section[int(row[26])] = section_template_obj.id
+                        new_old_section[int(row[27])] = section_template_obj.id
                         section_row.append(row)
                     except:
                         type_error_import_list.append(row)

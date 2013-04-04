@@ -84,6 +84,7 @@ class SectionResource(ModelResource):
         * ``max_number`` - if validate_number the maximum number accepted
         * ``phonenumber`` - phonenumber to dialout
         * ``conference`` - conference pin
+        * ``queue`` - queue
         * ``completed`` - reaching this section will mark the subscriber as completed
 
     **Validation**:
@@ -277,6 +278,8 @@ class SectionResource(ModelResource):
             bundle.obj.phonenumber = bundle.data.get('phonenumber')
         if bundle.data.get('conference'):
             bundle.obj.conference = bundle.data.get('conference')
+        if bundle.data.get('queue'):
+          bundle.obj.queue = bundle.data.get('queue')
 
         return bundle
 

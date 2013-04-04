@@ -69,7 +69,7 @@ def create_callcenter_config_xml(manager_id):
     agents = SubElement(top, 'agents')
 
     agent_list = AgentProfile.objects.filter(manager_id=manager_id)
-    agent_field_list = ['user', 'type', 'call_timeout', 'contact', 'status',
+    agent_field_list = ['user_id', 'type', 'call_timeout', 'contact', 'status',
                         'max_no_answer', 'wrap_up_time', 'reject_delay_time',
                         'busy_delay_time', 'no_answer_delay_time']
     for agent_obj in agent_list:
@@ -84,8 +84,8 @@ def create_callcenter_config_xml(manager_id):
                 elif key == 'status':
                     value = dict(AGENT_STATUS)[value]
                     xml_agent_data[str(key)] = str(value)
-                elif key == 'user':
-                    xml_agent_data[str(key)] = str(agent_username) + callcenter_namespace
+                elif key == 'user_id':
+                    xml_agent_data['name'] = str(agent_username) + callcenter_namespace
                 else:
                     key = key.replace('_', '-')
                     xml_agent_data[str(key)] = str(value)

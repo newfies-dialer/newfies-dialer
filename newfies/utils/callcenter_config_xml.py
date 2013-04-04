@@ -34,7 +34,7 @@ def create_callcenter_config_xml(manager_id):
     top = Element('configuration', {"name": "callcenter.conf", "description": "CallCenter",})
 
     #settings = SubElement(top, 'settings')
-    #comment = Comment('<param name="odbc-dsn" value="dsn:user:pass"/>\
+    #comment = Comment('<param name="odbc-dsn" value="dsn:user:pass"/>\n\
     #    <param name="dbname" value="/dev/shm/callcenter.db"/>')
     #settings.append(comment)
 
@@ -57,11 +57,12 @@ def create_callcenter_config_xml(manager_id):
         queue = SubElement(queues, 'queue', {"name": str(queue_obj.name) + callcenter_namespace})
 
         for key, value in obj_dict.iteritems():
-            if key in queue_field_list and value != None:
+            if key in queue_field_list and value != '':
                 if key == 'strategy':
                     value = dict(STRATEGY)[value]
                     param = SubElement(queue, 'param', {"name": str(key), "value": str(value)})
                 else:
+                    key = key.replace('_', '-')
                     param = SubElement(queue, 'param', {"name": str(key), "value": str(value)})
 
     # Write agent

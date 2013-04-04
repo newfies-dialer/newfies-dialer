@@ -21,7 +21,7 @@
 BRANCH='master'
 
 FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-conf
-FS_INIT_PATH=https://raw.hub.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-init
+FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-init
 FS_INSTALLED_PATH=/usr/local/freeswitch
 FS_CONFIG_PATH=/etc/freeswitch
 FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.7.tar.bz2
@@ -74,7 +74,6 @@ func_install_fs_source() {
 
     cd $FS_BASE_PATH/freeswitch
     ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
-    #sh bootstrap.sh && ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
     [ -f modules.conf ] && cp modules.conf modules.conf.bak
     sed -i -e \
     "s/#applications\/mod_curl/applications\/mod_curl/g" \
@@ -143,7 +142,7 @@ modules.conf.xml
 wget --no-check-certificate $FS_CONF_PATH/lua.conf.xml -O lua.conf.xml
 
 #Configure Dialplan
-cd $FS_CONFIG_PATH/conf/dialplan/
+#cd $FS_CONFIG_PATH/conf/dialplan/
 
 #Configure XML CDR
 #cd $FS_INSTALLED_PATH/conf/autoload_configs/

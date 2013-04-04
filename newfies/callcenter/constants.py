@@ -27,14 +27,12 @@ class STRATEGY(Choice):
 
 
 class QUEUE_COLUMN_NAME(Choice):
-    id = _('ID')
     name = _('name')
     strategy = _('strategy')
     date = _('date')
 
 
 class TIER_COLUMN_NAME(Choice):
-    id = _('ID')
     agent = _('agent')
     queue = _('queue')
     level = _('level')

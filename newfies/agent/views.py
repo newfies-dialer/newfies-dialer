@@ -187,7 +187,7 @@ def agent_list(request):
 
         * List all agents which belong to the logged in manager.
     """
-    sort_col_field_list = ['id', 'user', 'updated_date']
+    sort_col_field_list = ['user', 'status', 'contact', 'updated_date']
     default_sort_field = 'id'
     pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)

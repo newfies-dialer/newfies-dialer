@@ -48,7 +48,6 @@
                 <thead>
                 <tr>
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-                    <th>{% sort_link TIER_COLUMN_NAME.id|capfirst col_name_with_order.id %}</th>
                     <th>{% sort_link TIER_COLUMN_NAME.agent|capfirst col_name_with_order.agent %}</th>
                     <th>{% sort_link TIER_COLUMN_NAME.queue|capfirst col_name_with_order.queue %}</th>
                     <th>{% sort_link TIER_COLUMN_NAME.level|capfirst col_name_with_order.level %}</th>
@@ -62,7 +61,6 @@
                     {% for row in tier_list %}
                         <tr>
                             <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
-                            <td>{{ row.id }}</td>
                             <td>{{ row.agent }}</td>
                             <td>{{ row.queue }}</td>
                             <td>{{ row.level }}</td>
@@ -80,7 +78,7 @@
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="8" align="center">
+                        <td colspan="7" align="center">
                             {% trans "no records found"|title %}
                         </td>
                     </tr>

@@ -40,7 +40,7 @@ def queue_list(request):
 
         * List all queue which belong to the logged in manager.
     """
-    sort_col_field_list = ['id', 'name', 'manager', 'updated_date']
+    sort_col_field_list = ['name', 'manager', 'updated_date']
     default_sort_field = 'id'
     pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
@@ -204,7 +204,7 @@ def tier_list(request):
 
         * List all tier which belong to the logged in manager.
     """
-    sort_col_field_list = ['id', 'agent', 'queue', 'level', 'position', 'updated_date']
+    sort_col_field_list = ['agent', 'queue', 'level', 'position', 'updated_date']
     default_sort_field = 'id'
     pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)

@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons %}
+{% load i18n pagination_tags common_tags icons agent_tags %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -48,8 +48,9 @@
                 <thead>
                 <tr>
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-                    <th>{% sort_link AGENT_COLUMN_NAME.id|capfirst col_name_with_order.id %}</th>
                     <th>{% sort_link AGENT_COLUMN_NAME.name|capfirst col_name_with_order.user %}</th>
+                    <th>{% sort_link AGENT_COLUMN_NAME.status|capfirst col_name_with_order.status %}</th>
+                    <th>{% sort_link AGENT_COLUMN_NAME.contact|capfirst col_name_with_order.contact %}</th>
                     <th>{% sort_link AGENT_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
                     <th>{% trans 'action'|capfirst %}</th>
                 </tr>
@@ -59,8 +60,9 @@
                     {% for row in agent_list %}
                         <tr>
                             <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
-                            <td>{{ row.id }}</td>
                             <td>{{ row.user }}</td>
+                            <td>{{ row.status|agent_status_name }}</td>
+                            <td>{{ row.contact }}</td>
                             <td>{{ row.updated_date }}</td>
                             <td>
                                 {% if perms.agent.change_agentprofile %}

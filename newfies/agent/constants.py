@@ -17,8 +17,9 @@ from common.utils import Choice
 
 
 class AGENT_COLUMN_NAME(Choice):
-    id = _('ID')
     name = _('name')
+    contact = _('contact')
+    status = _('status')
     date = _('date')
 
 

@@ -46,7 +46,7 @@ class AgentChangeDetailExtendForm(ModelForm):
     """A form used to change the detail of a agent in the manager UI."""
     class Meta:
         model = AgentProfile
-        fields = ["type", "name", "call_timeout", "contact", "status",
+        fields = ["type", "call_timeout", "contact", "status",
                   "no_answer_delay_time", "max_no_answer", "wrap_up_time",
                   "reject_delay_time", "busy_delay_time"]
 

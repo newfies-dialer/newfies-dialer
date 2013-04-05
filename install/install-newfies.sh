@@ -240,7 +240,7 @@ func_install_frontend(){
 
             apt-get -y install python-setuptools python-dev build-essential
             apt-get -y install nginx supervisor
-            apt-get -y install git-core mercurial gawk
+            apt-get -y install git-core mercurial gawk cmake
             apt-get -y install python-pip python-dev
             #for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
@@ -254,7 +254,6 @@ func_install_frontend(){
 
             #Lua Deps
             apt-get -y install liblua5.1-sql-postgres-dev
-            apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
             #Memcached
             apt-get -y install memcached
             #Luarocks
@@ -264,7 +263,7 @@ func_install_frontend(){
         ;;
         'CENTOS')
             yum -y groupinstall "Development Tools"
-            yum -y install git sudo
+            yum -y install git sudo cmake
             yum -y install python-setuptools python-tools python-devel mercurial memcached
             yum -y install --enablerepo=epel python-pip
 
@@ -341,7 +340,6 @@ func_install_frontend(){
 
     #Install Lua dependencies
     luarocks install luasocket
-    luarocks install luacurl
     luarocks install lualogging
     luarocks install loop
     luarocks install md5
@@ -354,6 +352,13 @@ func_install_frontend(){
     #Pin the version 0.10.2-1
     luarocks remove lpeg --force
     luarocks install http://luarocks.org/repositories/rocks/lpeg-0.10.2-1.rockspec
+
+    #Lua curl
+    cd /usr/src/
+    wget https://github.com/msva/lua-curl/archive/master.zip -O lua-curl.zip
+    unzip lua-curl.zip
+    cd lua-curl-master
+    cmake . && make install
 
     #Create Newfies User
     echo ""

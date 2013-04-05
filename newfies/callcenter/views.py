@@ -169,7 +169,7 @@ def queue_del(request, object_id):
                         _('%s queue(s) are deleted.') % deleted_list
                 if not_deleted_list:
                     request.session["error_msg"] =\
-                        _('%s queue(s) are deleted because they are being used with surveys.')\
+                        _('%s queue(s) are not deleted because they are being used with surveys.')\
                              % not_deleted_list
         except:
             raise Http404

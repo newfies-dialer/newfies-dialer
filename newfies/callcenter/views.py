@@ -109,10 +109,13 @@ def queue_add(request):
 
 def queue_delete_allow(queue_id):
     """Check queue is attached to any survey section or not"""
+    from survey.models import Section_template
     try:
-        from survey.models import Section_template
-        Section_template.objects.filter(queue_id=int(queue_id))
-        return False
+        section_count = Section_template.objects.filter(queue_id=queue_id).count()
+        if section_count > 0:
+            return False
+        else:
+            return True
     except:
         return True
 
@@ -149,14 +152,25 @@ def queue_del(request, object_id):
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
-
+        deleted_list = []
+        not_deleted_list = []
         try:
             queue_list = Queue.objects.extra(where=['id IN (%s)' % values])
             if queue_list:
-                request.session["msg"] =\
-                    _('%(count)s queue(s) are deleted.')\
-                    % {'count': queue_list.count()}
-                queue_list.delete()
+                for queue_obj in queue_list:
+                    if queue_delete_allow(queue_obj.id):
+                        deleted_list.append(str(queue_obj.name))
+                        queue_obj.delete()
+                    else:
+                        not_deleted_list.append(str(queue_obj.name))
+
+                if deleted_list:
+                    request.session["msg"] =\
+                        _('%s queue(s) are deleted.') % deleted_list
+                if not_deleted_list:
+                    request.session["error_msg"] =\
+                        _('%s queue(s) are deleted because they are being used with surveys.')\
+                             % not_deleted_list
         except:
             raise Http404
     return HttpResponseRedirect('/queue/')

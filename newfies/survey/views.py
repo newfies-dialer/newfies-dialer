@@ -1182,7 +1182,7 @@ def export_survey(request, id):
                 section.conference,
                 section.completed,
                 section.invalid_audiofile_id,
-                section.queue_id
+                section.queue_id,
                 section.id
             ])
 

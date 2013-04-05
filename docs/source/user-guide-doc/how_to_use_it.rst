@@ -70,17 +70,6 @@ system User, Click on ``Add dialer settings``. Add numeric values for the limit.
 To apply the dialer settings limit on a system user, click on ``Customers`` or ``Admins`` 
 in admin UI, select the user to update, & apply the settings from the dialer settings list.
 
-
-.. _Voice App:
-
-Create Voice Application
-----------------------------
-
-A number of voice applications are provided with Newfies-Dialer. Click ``Add Voice App`` give the
-voice application a name, select the type of  application from the dropdown, select the gateway 
-to use if the call is to be redirected, and provide the data to be used, e.g. in the case of “Speak” 
-this would be the words to convert to text to speech.
-
 .. _Survey:
 
 Create Survey

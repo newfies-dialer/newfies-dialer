@@ -43,7 +43,7 @@ func_identify_os() {
 #install the epel repository.
 func_install_epel_repo() {
 	
-	if [ ! -f /etc/yum.repos.d/rpmforge.repo ];
+	if [ ! -f /etc/yum.repos.d/epel.repo ];
 		then
 			echo '
 [epel]

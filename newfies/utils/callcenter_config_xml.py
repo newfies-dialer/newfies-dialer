@@ -11,7 +11,6 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from user_profile.models import Manager
 from agent.models import AgentProfile
 from agent.constants import AGENT_STATUS, AGENT_TYPE
 from callcenter.models import Queue, Tier
@@ -22,6 +21,7 @@ import xml.etree.ElementTree as ET
 
 callcenter_namespace = '@default'
 
+
 def prettify(elem):
     """Return a pretty-printed XML string for the Element."""
     rough_string = ET.tostring(elem, 'utf-8')
@@ -31,7 +31,7 @@ def prettify(elem):
 
 def create_callcenter_config_xml(manager_id):
     """Create Callcenter XML config file"""
-    top = Element('configuration', {"name": "callcenter.conf", "description": "CallCenter",})
+    top = Element('configuration', {"name": "callcenter.conf", "description": "CallCenter"})
 
     #settings = SubElement(top, 'settings')
     #comment = Comment('<param name="odbc-dsn" value="dsn:user:pass"/>\n\
@@ -63,6 +63,7 @@ def create_callcenter_config_xml(manager_id):
                     param = SubElement(queue, 'param', {"name": str(key), "value": str(value)})
                 else:
                     key = key.replace('_', '-')
+                    #FIXME: param is not used
                     param = SubElement(queue, 'param', {"name": str(key), "value": str(value)})
 
     # Write agent
@@ -77,7 +78,7 @@ def create_callcenter_config_xml(manager_id):
         agent_username = agent_obj.user
         xml_agent_data = {}
         for key, value in agent_dict.iteritems():
-            if key in agent_field_list and value != None:
+            if key in agent_field_list and not value:
                 if key == 'type':
                     value = dict(AGENT_TYPE)[value]
                     xml_agent_data[str(key)] = str(value)
@@ -91,6 +92,7 @@ def create_callcenter_config_xml(manager_id):
                     xml_agent_data[str(key)] = str(value)
 
         # write agent detail
+        #FIXME: agent is not used
         agent = SubElement(agents, 'agent', xml_agent_data)
 
     # Write tier
@@ -113,10 +115,10 @@ def create_callcenter_config_xml(manager_id):
                     xml_tier_data[str(key)] = str(value)
 
         # write tier detail
+        #FIXME: tier is not used
         tier = SubElement(tiers, 'tier', xml_tier_data)
 
     #print prettify(top)
     callcenter_file = open('/tmp/callcenter.conf.xml', 'w')
     callcenter_file.write(prettify(top))
     callcenter_file.close()
-

@@ -63,8 +63,7 @@ def create_callcenter_config_xml(manager_id):
                     param = SubElement(queue, 'param', {"name": str(key), "value": str(value)})
                 else:
                     key = key.replace('_', '-')
-                    #FIXME: param is not used
-                    param = SubElement(queue, 'param', {"name": str(key), "value": str(value)})
+                    SubElement(queue, 'param', {"name": str(key), "value": str(value)})
 
     # Write agent
     agents = SubElement(top, 'agents')
@@ -92,8 +91,7 @@ def create_callcenter_config_xml(manager_id):
                     xml_agent_data[str(key)] = str(value)
 
         # write agent detail
-        #FIXME: agent is not used
-        agent = SubElement(agents, 'agent', xml_agent_data)
+        SubElement(agents, 'agent', xml_agent_data)
 
     # Write tier
     tiers = SubElement(top, 'tiers')
@@ -115,8 +113,7 @@ def create_callcenter_config_xml(manager_id):
                     xml_tier_data[str(key)] = str(value)
 
         # write tier detail
-        #FIXME: tier is not used
-        tier = SubElement(tiers, 'tier', xml_tier_data)
+        SubElement(tiers, 'tier', xml_tier_data)
 
     #print prettify(top)
     callcenter_file = open('/tmp/callcenter.conf.xml', 'w')

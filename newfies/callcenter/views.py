@@ -11,20 +11,18 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.conf import settings
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import HttpResponseRedirect, HttpResponse, Http404
+from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from django.contrib.auth.models import Permission
 from user_profile.models import Manager
 from callcenter.models import Queue, Tier
 from callcenter.constants import QUEUE_COLUMN_NAME, TIER_COLUMN_NAME
 from callcenter.forms import QueueFrontEndForm, TierFrontEndForm
 from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import current_view, get_pagination_vars
+from survey.models import Section_template
 
 
 @permission_required('callcenter.view_queue_list', login_url='/')
@@ -109,7 +107,6 @@ def queue_add(request):
 
 def queue_delete_allow(queue_id):
     """Check queue is attached to any survey section or not"""
-    from survey.models import Section_template
     try:
         section_count = Section_template.objects.filter(queue_id=queue_id).count()
         if section_count > 0:
@@ -147,7 +144,7 @@ def queue_del(request, object_id):
         else:
             request.session["error_msg"] = \
                 _('"%(name)s" is not allowed to delete because it is being used with survey.')\
-                    % {'name': queue.name}
+                % {'name': queue.name}
     else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
@@ -170,7 +167,7 @@ def queue_del(request, object_id):
                 if not_deleted_list:
                     request.session["error_msg"] =\
                         _('%s queue(s) are not deleted because they are being used with surveys.')\
-                             % not_deleted_list
+                        % not_deleted_list
         except:
             raise Http404
     return HttpResponseRedirect('/queue/')
@@ -333,7 +330,7 @@ def tier_del(request, object_id):
             if tier_list:
                 request.session["msg"] =\
                     _('%(count)s tier(s) are deleted.')\
-                        % {'count': tier_list.count()}
+                    % {'count': tier_list.count()}
                 tier_list.delete()
         except:
             raise Http404

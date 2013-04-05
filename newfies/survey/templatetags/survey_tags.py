@@ -80,7 +80,7 @@ def que_res_string(val):
             que_res = i.encode('utf-8').split("*|*")
             result_string +=\
                 '<tr><td>%s</td><td class="survey_result_key">%s</td></tr>' %\
-            (que_res[0], que_res[1])
+                (que_res[0], que_res[1])
 
     result_string += '</table>'
     return result_string

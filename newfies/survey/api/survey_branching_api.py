@@ -48,14 +48,13 @@ class BranchingValidation(Validation):
         else:
             errors['keys'] = "Please enter Keys."
 
-
         section_id = bundle.data.get('section')
         if section_id and section_id != '':
             try:
                 section_id = Section_template.objects.get(id=section_id).id
                 bundle.data['section'] = section_id
             except:
-                errors['section'] =  "The Section ID doesn't exist!"
+                errors['section'] = "The Section ID doesn't exist!"
         else:
             errors['section'] = "Please enter section."
 
@@ -65,7 +64,7 @@ class BranchingValidation(Validation):
                 section_id = Section_template.objects.get(id=goto).id
                 bundle.data['goto'] = section_id
             except:
-                errors['goto'] =  "The Section ID doesn't exist!"
+                errors['goto'] = "The Section ID doesn't exist!"
 
         if errors:
             raise BadRequest(errors)
@@ -209,5 +208,3 @@ class BranchingResource(ModelResource):
         self.save_m2m(m2m_bundle)
         logger.debug('Branching API : Result ok 200')
         return bundle
-
-

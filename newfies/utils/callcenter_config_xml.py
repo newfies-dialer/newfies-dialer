@@ -77,7 +77,7 @@ def create_callcenter_config_xml(manager_id):
         agent_username = agent_obj.user
         xml_agent_data = {}
         for key, value in agent_dict.iteritems():
-            if key in agent_field_list and not value:
+            if key in agent_field_list and value:
                 if key == 'type':
                     value = dict(AGENT_TYPE)[value]
                     xml_agent_data[str(key)] = str(value)

@@ -235,7 +235,18 @@ func_install_frontend(){
 
     #Lua Deps
     apt-get -y install liblua5.1-sql-postgres-dev
-    apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
+    #apt-get -y install liblua5.1-curl0 liblua5.1-curl-dev
+
+    #needed by lua-curl
+    apt-get -y install libcurl4-openssl-dev
+
+    #Lua curl
+    cd /usr/src/
+    wget https://github.com/msva/lua-curl/archive/master.zip -O lua-curl.zip
+    unzip lua-curl.zip
+    cd lua-curl-master
+    cmake . && make install
+
     #Memcached
     apt-get -y install memcached
     #Luarocks

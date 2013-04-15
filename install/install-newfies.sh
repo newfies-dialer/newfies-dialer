@@ -223,6 +223,7 @@ func_install_frontend(){
     apt-get -y install nginx supervisor
     apt-get -y install git-core mercurial gawk
     apt-get -y install python-pip python-dev
+    apt-get -y install cmake
     #for audiofile convertion
     apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
 

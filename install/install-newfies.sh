@@ -241,12 +241,6 @@ func_install_frontend(){
     #needed by lua-curl
     apt-get -y install libcurl4-openssl-dev
 
-    #Lua curl
-    cd /usr/src/
-    wget https://github.com/msva/lua-curl/archive/master.zip -O lua-curl.zip
-    unzip lua-curl.zip
-    cd lua-curl-master
-    cmake . && make install
 
     #Memcached
     apt-get -y install memcached
@@ -265,6 +259,13 @@ func_install_frontend(){
     #Pin the version 0.10.2-1
     luarocks remove lpeg --force
     luarocks install http://luarocks.org/repositories/rocks/lpeg-0.10.2-1.rockspec
+
+    #Lua curl
+    cd /usr/src/
+    wget https://github.com/msva/lua-curl/archive/master.zip -O lua-curl.zip
+    unzip lua-curl.zip
+    cd lua-curl-master
+    cmake . && make install
 
     #Create Newfies User
     echo ""

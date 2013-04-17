@@ -304,9 +304,12 @@ func_install_frontend(){
             service postgresql-9.1 restart
 
             #Install Supervisor
-            yum -y install --enablerepo=epel supervisor
+            easy_install supervisor
+            cp /usr/src/newfies-dialer/install/supervisor/supervisord /etc/rc.d/init.d/supervisord
+            chmod +x /etc/rc.d/init.d/supervisord
             chkconfig --levels 235 supervisord on
-            service supervisord start
+            echo_supervisord_conf > /etc/supervisord.conf
+            service supervisord start                       
 
             # Install Lua & luarocks
             cd /usr/src
@@ -602,6 +605,7 @@ func_install_frontend(){
             cat /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf >> /etc/supervisord.conf
         ;;
     esac
+    #get init script - https://github.com/Supervisor/initscripts/blob/master/redhat-init-jkoppe
     /etc/init.d/supervisor force-stop
     /etc/init.d/supervisor start
 

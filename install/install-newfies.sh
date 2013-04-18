@@ -269,7 +269,7 @@ func_install_frontend(){
             yum -y install git sudo cmake
             yum -y install python-setuptools python-tools python-devel mercurial memcached
             easy_install pip
-            
+
             #Install Supervisor
             pip install supervisor
 
@@ -360,6 +360,8 @@ func_install_frontend(){
     unzip lua-curl.zip
     cd lua-curl-master
     cmake . && make install
+    #add cURL.so to lua libs
+    cp cURL.so /usr/local/lib/lua/5.1/
 
     #Create Newfies User
     echo ""

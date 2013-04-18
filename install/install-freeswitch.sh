@@ -27,6 +27,10 @@ FS_CONFIG_PATH=/etc/freeswitch
 FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.7.tar.bz2
 FS_BASE_PATH=/usr/src/
 CURRENT_PATH=$PWD
+FS_VERSION=v1.2.stable
+# Valid Freeswitch versions are :-
+# v1.2.stable
+# master
 
 
 # Identify Linux Distribution type
@@ -63,16 +67,16 @@ func_install_fs_source() {
         /usr/sbin/useradd -r -c "freeswitch" -g freeswitch freeswitch
     fi
 
-    # Install FreeSWITCH
+    #Download and install FS from git repository.   
     cd $FS_BASE_PATH
     rm -rf freeswitch
-    rm -rf freeswitch-*.tar.*
-    wget $FS_DOWNLOAD
-    tar jxf freeswitch-*.tar.*
-    rm freeswitch-*.tar.*
-    mv freeswitch-* freeswitch
+    git clone git://git.freeswitch.org/freeswitch.git
+    git checkout $FS_VERSION
+    
+    
 
     cd $FS_BASE_PATH/freeswitch
+    ./bootstrap.sh
     ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
     [ -f modules.conf ] && cp modules.conf modules.conf.bak
     sed -i -e \

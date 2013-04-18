@@ -25,6 +25,7 @@ start()
 {
         echo -n $"Starting $prog: "
         daemon $prog_bin --pidfile $PIDFILE
+        sleep 3
         [ -f $PIDFILE ] && success $"$prog startup" || failure $"$prog startup"
         echo
 }

@@ -269,6 +269,10 @@ func_install_frontend(){
             yum -y install git sudo cmake
             yum -y install python-setuptools python-tools python-devel mercurial memcached
             yum -y install --enablerepo=epel python-pip
+            easy_install pip
+            
+            #Install Supervisor
+            pip install supervisor
 
             #Audio File Conversion
             yum -y --enablerepo=rpmforge install sox sox-devel ffmpeg ffmpeg-devel mpg123 mpg123-devel libmad libmad-devel libid3tag libid3tag-devel lame lame-devel flac-devel libvorbis-devel
@@ -302,14 +306,6 @@ func_install_frontend(){
             ln -s /var/lib/pgsql/9.1/backups /var/lib/pgsql
             sed -i "s/ident/md5/g" /var/lib/pgsql/data/pg_hba.conf
             service postgresql-9.1 restart
-
-            #Install Supervisor
-            easy_install supervisor
-            cp /usr/src/newfies-dialer/install/supervisor/supervisord /etc/rc.d/init.d/supervisord
-            chmod +x /etc/rc.d/init.d/supervisord
-            chkconfig --levels 235 supervisord on
-            echo_supervisord_conf > /etc/supervisord.conf
-            service supervisord start                       
 
             # Install Lua & luarocks
             cd /usr/src
@@ -602,10 +598,14 @@ func_install_frontend(){
             cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
         ;;
         'CENTOS')
+            cp /usr/src/newfies-dialer/install/supervisor/supervisord /etc/init.d/supervisor
+            chmod +x /etc/rc.d/init.d/supervisor
+            chkconfig --levels 235 supervisor on
+            echo_supervisord_conf > /etc/supervisord.conf
             cat /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf >> /etc/supervisord.conf
+            mkdir /var/log/supervisor/
         ;;
     esac
-    #get init script - https://github.com/Supervisor/initscripts/blob/master/redhat-init-jkoppe
     /etc/init.d/supervisor force-stop
     /etc/init.d/supervisor start
 

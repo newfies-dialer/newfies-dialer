@@ -268,7 +268,6 @@ func_install_frontend(){
             yum -y groupinstall "Development Tools"
             yum -y install git sudo cmake
             yum -y install python-setuptools python-tools python-devel mercurial memcached
-            yum -y install --enablerepo=epel python-pip
             easy_install pip
             
             #Install Supervisor

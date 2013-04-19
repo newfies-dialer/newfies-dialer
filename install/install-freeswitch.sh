@@ -86,6 +86,7 @@ func_install_fs_source() {
     -e "s/#formats\/mod_shout/formats\/mod_shout/g" \
     -e "s/#endpoints\/mod_dingaling/endpoints\/mod_dingaling/g" \
     -e "s/#formats\/mod_shell_stream/formats\/mod_shell_stream/g" \
+    -e "s/languages\/mod_spidermonkey/#languages\/mod_spidermonkey/g" \
     -e "s/#say\/mod_say_de/say\/mod_say_de/g" \
     -e "s/#say\/mod_say_es/say\/mod_say_es/g" \
     -e "s/#say\/mod_say_fr/say\/mod_say_fr/g" \

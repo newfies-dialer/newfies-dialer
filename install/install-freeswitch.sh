@@ -27,6 +27,10 @@ FS_CONFIG_PATH=/etc/freeswitch
 FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.7.tar.bz2
 FS_BASE_PATH=/usr/src/
 CURRENT_PATH=$PWD
+FS_VERSION=v1.2.stable
+# Valid Freeswitch versions are :-
+# v1.2.stable
+# master
 
 
 # Identify Linux Distribution type
@@ -63,16 +67,16 @@ func_install_fs_source() {
         /usr/sbin/useradd -r -c "freeswitch" -g freeswitch freeswitch
     fi
 
-    # Install FreeSWITCH
+    #Download and install FS from git repository.   
     cd $FS_BASE_PATH
     rm -rf freeswitch
-    rm -rf freeswitch-*.tar.*
-    wget $FS_DOWNLOAD
-    tar jxf freeswitch-*.tar.*
-    rm freeswitch-*.tar.*
-    mv freeswitch-* freeswitch
+    git clone git://git.freeswitch.org/freeswitch.git
+    git checkout $FS_VERSION
+    
+    
 
     cd $FS_BASE_PATH/freeswitch
+    ./bootstrap.sh
     ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
     [ -f modules.conf ] && cp modules.conf modules.conf.bak
     sed -i -e \
@@ -82,6 +86,7 @@ func_install_fs_source() {
     -e "s/#formats\/mod_shout/formats\/mod_shout/g" \
     -e "s/#endpoints\/mod_dingaling/endpoints\/mod_dingaling/g" \
     -e "s/#formats\/mod_shell_stream/formats\/mod_shell_stream/g" \
+    -e "s/languages\/mod_spidermonkey/#languages\/mod_spidermonkey/g" \
     -e "s/#say\/mod_say_de/say\/mod_say_de/g" \
     -e "s/#say\/mod_say_es/say\/mod_say_es/g" \
     -e "s/#say\/mod_say_fr/say\/mod_say_fr/g" \
@@ -136,6 +141,7 @@ sed -i -r \
 -e "s/<\!--\s?<load module=\"mod_flite\"\/>\s?-->/<load module=\"mod_flite\"\/>/g" \
 -e "s/<\!--\s?<load module=\"mod_say_ru\"\/>\s?-->/<load module=\"mod_say_ru\"\/>/g" \
 -e "s/<\!--\s?<load module=\"mod_say_zh\"\/>\s?-->/<load module=\"mod_say_zh\"\/>/g" \
+-e "s/<load module=\"mod_spidermonkey\"\/>/<\!-- \<load module=\"mod_spidermonkey\"\/> -->/g" \
 -e 's/mod_say_zh.*$/&\n    <load module="mod_say_de"\/>\n    <load module="mod_say_es"\/>\n    <load module="mod_say_fr"\/>\n    <load module="mod_say_it"\/>\n    <load module="mod_say_nl"\/>\n    <load module="mod_say_hu"\/>\n    <load module="mod_say_th"\/>/' \
 modules.conf.xml
 

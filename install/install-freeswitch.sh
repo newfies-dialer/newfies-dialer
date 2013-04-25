@@ -27,12 +27,24 @@ FS_CONFIG_PATH=/etc/freeswitch
 FS_DOWNLOAD=http://files.freeswitch.org/freeswitch-1.2.7.tar.bz2
 FS_BASE_PATH=/usr/src/
 CURRENT_PATH=$PWD
+FS_VERSION=v1.2.stable
+# Valid Freeswitch versions are :-
+# v1.2.stable
+# master
 
+
+# Identify Linux Distribution type
+if [ -f /etc/debian_version ] ; then
+    DIST='DEBIAN'
+elif [ -f /etc/redhat-release ] ; then
+    DIST='CENTOS'
+else
+    echo "\n\nThis Installer should be run on a CentOS or Ubuntu."
+    exit 1
+fi
 
 
 clear
-echo ""
-echo "This Installer should be run on Ubuntu 12.04 TLS!"
 echo ""
 echo "FreeSWITCH will be installed in $FS_INSTALLED_PATH"
 echo "Press Enter to continue or CTRL-C to exit"
@@ -55,18 +67,17 @@ func_install_fs_source() {
         /usr/sbin/useradd -r -c "freeswitch" -g freeswitch freeswitch
     fi
 
-    # Install FreeSWITCH
+    #Download and install FS from git repository.   
     cd $FS_BASE_PATH
     rm -rf freeswitch
-    rm -rf freeswitch-*.tar.*
-    wget $FS_DOWNLOAD
-    tar jxf freeswitch-*.tar.*
-    rm freeswitch-*.tar.*
-    mv freeswitch-* freeswitch
+    git clone git://git.freeswitch.org/freeswitch.git
+    git checkout $FS_VERSION
+    
+    
 
     cd $FS_BASE_PATH/freeswitch
+    ./bootstrap.sh
     ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
-    #sh bootstrap.sh && ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
     [ -f modules.conf ] && cp modules.conf modules.conf.bak
     sed -i -e \
     "s/#applications\/mod_curl/applications\/mod_curl/g" \
@@ -75,6 +86,7 @@ func_install_fs_source() {
     -e "s/#formats\/mod_shout/formats\/mod_shout/g" \
     -e "s/#endpoints\/mod_dingaling/endpoints\/mod_dingaling/g" \
     -e "s/#formats\/mod_shell_stream/formats\/mod_shell_stream/g" \
+    -e "s/languages\/mod_spidermonkey/#languages\/mod_spidermonkey/g" \
     -e "s/#say\/mod_say_de/say\/mod_say_de/g" \
     -e "s/#say\/mod_say_es/say\/mod_say_es/g" \
     -e "s/#say\/mod_say_fr/say\/mod_say_fr/g" \
@@ -94,12 +106,23 @@ func_install_fs_source() {
 
 
 echo "Setting up Prerequisites and Dependencies for FreeSWITCH"
-apt-get -y update
-apt-get -y install autoconf automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libexpat1-dev libgdbm-dev libgnutls-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpopt-dev libsctp-dev libsqlite3-dev libtiff4 libtiff4-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unixodbc-dev unzip zip zlib1g-dev zlib1g-dev
-apt-get -y install libssl-dev pkg-config
-apt-get -y install libvorbis0a libogg0 libogg-dev libvorbis-dev
-apt-get -y install flite flite1-dev
+case $DIST in
+    'DEBIAN')
+        apt-get -y update
+        apt-get -y install autoconf automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libexpat1-dev libgdbm-dev libgnutls-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpopt-dev libsctp-dev libsqlite3-dev libtiff4 libtiff4-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unixodbc-dev unzip zip zlib1g-dev zlib1g-dev
+        apt-get -y install libssl-dev pkg-config
+        apt-get -y install libvorbis0a libogg0 libogg-dev libvorbis-dev
+        apt-get -y install flite flite1-dev
+        ;;
+    'CENTOS')
+        yum -y update
+        yum -y install autoconf automake bzip2 cpio curl curl-devel curl-devel expat-devel fileutils gcc-c++ gettext-devel gnutls-devel libjpeg-devel libogg-devel libtiff-devel libtool libvorbis-devel make ncurses-devel nmap openssl openssl-devel openssl-devel perl patch unixODBC unixODBC-devel unzip wget zip zlib zlib-devel
+        yum -y install git 
+        yum -y install --enablerepo=epel flite flite-devel
+    ;;
+esac
 
+echo "Installing from source"
 #Install Freeswitch
 func_install_fs_source
 
@@ -118,6 +141,7 @@ sed -i -r \
 -e "s/<\!--\s?<load module=\"mod_flite\"\/>\s?-->/<load module=\"mod_flite\"\/>/g" \
 -e "s/<\!--\s?<load module=\"mod_say_ru\"\/>\s?-->/<load module=\"mod_say_ru\"\/>/g" \
 -e "s/<\!--\s?<load module=\"mod_say_zh\"\/>\s?-->/<load module=\"mod_say_zh\"\/>/g" \
+-e "s/<load module=\"mod_spidermonkey\"\/>/<\!-- \<load module=\"mod_spidermonkey\"\/> -->/g" \
 -e 's/mod_say_zh.*$/&\n    <load module="mod_say_de"\/>\n    <load module="mod_say_es"\/>\n    <load module="mod_say_fr"\/>\n    <load module="mod_say_it"\/>\n    <load module="mod_say_nl"\/>\n    <load module="mod_say_hu"\/>\n    <load module="mod_say_th"\/>/' \
 modules.conf.xml
 
@@ -125,7 +149,7 @@ modules.conf.xml
 wget --no-check-certificate $FS_CONF_PATH/lua.conf.xml -O lua.conf.xml
 
 #Configure Dialplan
-cd $FS_CONFIG_PATH/conf/dialplan/
+#cd $FS_CONFIG_PATH/conf/dialplan/
 
 #Configure XML CDR
 #cd $FS_INSTALLED_PATH/conf/autoload_configs/
@@ -139,12 +163,25 @@ cd $FS_CONFIG_PATH/conf/dialplan/
 
 #Return to current path
 cd $CURRENT_PATH
-#Install init.d script
-wget --no-check-certificate $FS_INIT_PATH/debian/freeswitch -O /etc/init.d/freeswitch
-chmod 0755 /etc/init.d/freeswitch
-cd /etc/init.d; update-rc.d freeswitch defaults 90
 
-echo "installing from source"
+case $DIST in
+    'DEBIAN')
+        #Install init.d script
+        wget --no-check-certificate $FS_INIT_PATH/debian/freeswitch -O /etc/init.d/freeswitch
+        chmod 0755 /etc/init.d/freeswitch
+        cd /etc/init.d; update-rc.d freeswitch defaults 90
+    ;;
+    'CENTOS')
+        #Install init.d script
+        wget --no-check-certificate $FS_INIT_PATH/centos/freeswitch -O /etc/init.d/freeswitch
+        chmod 0755 /etc/init.d/freeswitch
+        chkconfig --add freeswitch
+        chkconfig --level 345 freeswitch on
+    ;;
+esac
+
+
+echo "Installing from source"
 #Add alias fs_cli
 chk=`grep "fs_cli" ~/.bashrc|wc -l`
 if [ $chk -lt 1 ] ; then

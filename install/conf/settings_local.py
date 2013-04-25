@@ -66,7 +66,7 @@ REDIS_DB = 0
 
 #ESL
 #===
-ESL_HOSTNAME = 'localhost'
+ESL_HOSTNAME = '127.0.0.1'
 ESL_PORT = '8021'
 ESL_SECRET = 'ClueCon'
 ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'

@@ -406,6 +406,10 @@ LANGUAGES = (
     ('ja', gettext('Japanese')),
 )
 
+LOCALE_PATHS = (
+    os.path.join(APPLICATION_DIR, 'locale'),
+)
+
 LANGUAGE_COOKIE_NAME = 'newfies_dialer_language'
 
 #DJANGO-ADMIN-TOOL

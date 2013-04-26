@@ -1085,17 +1085,22 @@ def export_surveycall_report(request):
                 column = unicode(i.question.replace(',', ' '))
                 column_list.append(column.encode('utf-8'))
 
+        #write the header for the csv export file
         writer.writerow(column_list)
         for voipcall in qs:
             result_row_list = []
+            #For each voip call retrieve the results of the survey nodes
             results = Result.objects.filter(callrequest=voipcall.callrequest_id).order_by('section')
+
             result_list = {}
+            #We will prepare a dictionary result_list to help exporting the result
             for result in results:
                 if result.record_file and len(result.record_file) > 0:
                     result_list[result.section.question] = result.record_file
                 else:
                     result_list[result.section.question] = result.response
 
+            #We will build result_row_list which will be a value for each element from column_list
             for ikey in column_list:
                 if ikey in column_list_base:
                     #This is not a Section result
@@ -1108,6 +1113,7 @@ def export_surveycall_report(request):
                         #Add empty result
                         result_row_list.append("")
 
+            #Write line of the result
             writer.writerow(result_row_list)
     return response
 

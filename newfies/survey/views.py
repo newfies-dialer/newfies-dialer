@@ -1085,17 +1085,22 @@ def export_surveycall_report(request):
                 column = unicode(i.question.replace(',', ' '))
                 column_list.append(column.encode('utf-8'))
 
+        #write the header for the csv export file
         writer.writerow(column_list)
         for voipcall in qs:
             result_row_list = []
+            #For each voip call retrieve the results of the survey nodes
             results = Result.objects.filter(callrequest=voipcall.callrequest_id).order_by('section')
+
             result_list = {}
+            #We will prepare a dictionary result_list to help exporting the result
             for result in results:
                 if result.record_file and len(result.record_file) > 0:
                     result_list[result.section.question] = result.record_file
                 else:
                     result_list[result.section.question] = result.response
 
+            #We will build result_row_list which will be a value for each element from column_list
             for ikey in column_list:
                 if ikey in column_list_base:
                     #This is not a Section result
@@ -1108,6 +1113,7 @@ def export_surveycall_report(request):
                         #Add empty result
                         result_row_list.append("")
 
+            #Write line of the result
             writer.writerow(result_row_list)
     return response
 
@@ -1246,19 +1252,19 @@ def import_survey(request):
                             audiofile_id=int(row[4]) if row[4] else None,
                             retries=int(row[5]) if row[5] else None,
                             timeout=int(row[6]) if row[6] else 0,
-                            key_0=row[7] if row[7] else None,
-                            key_1=row[8] if row[8] else None,
-                            key_2=row[9] if row[9] else None,
-                            key_3=row[10] if row[10] else None,
-                            key_4=row[11] if row[11] else None,
-                            key_5=row[12] if row[12] else None,
-                            key_6=row[13] if row[13] else None,
-                            key_7=row[14] if row[14] else None,
-                            key_8=row[15] if row[15] else None,
-                            key_9=row[16] if row[16] else None,
-                            rating_laps=int(row[17]) if row[17] else 0,
+                            key_0=row[7] if row[7] else '',
+                            key_1=row[8] if row[8] else '',
+                            key_2=row[9] if row[9] else '',
+                            key_3=row[10] if row[10] else '',
+                            key_4=row[11] if row[11] else '',
+                            key_5=row[12] if row[12] else '',
+                            key_6=row[13] if row[13] else '',
+                            key_7=row[14] if row[14] else '',
+                            key_8=row[15] if row[15] else '',
+                            key_9=row[16] if row[16] else '',
+                            rating_laps=int(row[17]) if row[17] else None,
                             validate_number=row[18],
-                            number_digits=int(row[19]) if row[19] else 0,
+                            number_digits=int(row[19]) if row[19] else None,
                             min_number=row[20],
                             max_number=row[21],
                             phonenumber=row[22],
@@ -1285,7 +1291,8 @@ def import_survey(request):
                         new_goto_section_id = new_old_section[int(row[2])]
 
                     duplicate_count = \
-                        Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
+                        Branching_template.objects.filter(keys=row[0],
+                                                          section_id=new_section_id).count()
                     if duplicate_count == 0:
                         try:
                             Branching_template.objects.create(

@@ -1256,9 +1256,9 @@ def import_survey(request):
                             key_7=row[14] if row[14] else '',
                             key_8=row[15] if row[15] else '',
                             key_9=row[16] if row[16] else '',
-                            rating_laps=int(row[17]) if row[17] else 0,
+                            rating_laps=int(row[17]) if row[17] else None,
                             validate_number=row[18],
-                            number_digits=int(row[19]) if row[19] else 0,
+                            number_digits=int(row[19]) if row[19] else None,
                             min_number=row[20],
                             max_number=row[21],
                             phonenumber=row[22],
@@ -1286,7 +1286,8 @@ def import_survey(request):
                         new_goto_section_id = new_old_section[int(row[2])]
 
                     duplicate_count = \
-                        Branching_template.objects.filter(keys=row[0], section_id=new_section_id).count()
+                        Branching_template.objects.filter(keys=row[0],
+                                                          section_id=new_section_id).count()
                     if duplicate_count == 0:
                         try:
                             Branching_template.objects.create(

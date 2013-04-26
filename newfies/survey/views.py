@@ -571,7 +571,6 @@ def section_script_play(request, id):
         if settings.TTS_ENGINE == 'ACAPELA':
             #Acapela
             audio_file_path = settings.MEDIA_ROOT + '/' + getaudio_acapela(script_text, 'US')
-            print(audio_file_path)
         else:
             #Flite
             script_hexdigest = hashlib.md5(script_text).hexdigest()
@@ -1076,24 +1075,39 @@ def export_surveycall_report(request):
         qs = VoIPCall.objects.filter(**kwargs)
         campaign_id = request.session['session_campaign_id']
         campaign_obj = Campaign.objects.get(pk=campaign_id)
-        column_list = ['starting_date', 'destination', 'duration', 'disposition']
+        column_list_base = ['starting_date', 'phone_number', 'duration', 'disposition']
+        column_list = list(column_list_base)
 
         survey_qst = False
         if campaign_obj.content_type.model == 'survey':
-            survey_qst = Section.objects\
-                .filter(survey_id=int(campaign_obj.object_id))
+            survey_qst = Section.objects.filter(survey_id=int(campaign_obj.object_id))
             for i in survey_qst:
                 column = unicode(i.question.replace(',', ' '))
                 column_list.append(column.encode('utf-8'))
 
         writer.writerow(column_list)
-        for i in qs:
-            result_row_list = [
-                i.starting_date,
-                i.phone_number,
-                i.duration,
-                i.disposition,
-            ]
+        for voipcall in qs:
+            result_row_list = []
+            results = Result.objects.filter(callrequest=voipcall.callrequest_id).order_by('section')
+            result_list = {}
+            for result in results:
+                if result.record_file and len(result.record_file) > 0:
+                    result_list[result.section.question] = result.record_file
+                else:
+                    result_list[result.section.question] = result.response
+
+            for ikey in column_list:
+                if ikey in column_list_base:
+                    #This is not a Section result
+                    result_row_list.append(voipcall.__dict__[ikey])
+                else:
+                    #This is a Section result
+                    if ikey in result_list:
+                        result_row_list.append(result_list[ikey].encode('utf-8'))
+                    else:
+                        #Add empty result
+                        result_row_list.append("")
+
             writer.writerow(result_row_list)
     return response
 

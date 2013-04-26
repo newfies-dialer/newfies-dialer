@@ -66,7 +66,7 @@ def check_retrycall_completion(callrequest):
             user=callrequest.user,
             campaign_id=callrequest.campaign_id,
             aleg_gateway_id=callrequest.aleg_gateway_id,
-            content_type_id=callrequest.content_type_id,
+            content_type=callrequest.content_type,
             object_id=callrequest.object_id,
             phone_number=callrequest.phone_number,
             timelimit=callrequest.timelimit,

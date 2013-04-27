@@ -1152,7 +1152,7 @@ def export_survey(request, id):
         Survey_template, pk=int(id), user=request.user)
 
     if survey:
-        section_list = Section_template.objects.filter(survey=survey).order_by('id')
+        section_list = Section_template.objects.filter(survey=survey).order_by('order')
         for section in section_list:
             # write section in text file
             writer.writerow([
@@ -1239,7 +1239,7 @@ def import_survey(request):
                     try:
                         # for section
                         section_template_obj = Section_template.objects.create(
-                            order=int(row[0]) if row[0] else 1,
+                            order=int(row[0]),
                             type=int(row[1]) if row[1] else 1,
                             question=row[2],
                             script=row[3],

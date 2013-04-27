@@ -1263,7 +1263,7 @@ def import_survey(request):
                             max_number=row[21],
                             phonenumber=row[22],
                             conference=row[23],
-                            completed=1 if row[24] == 'TRUE' else 0,
+                            completed=True if row[24] == 'True' else False,
                             invalid_audiofile_id=int(row[25]) if row[25] else None,
                             queue_id=int(row[26]) if row[26] else None,
                             survey=new_survey,

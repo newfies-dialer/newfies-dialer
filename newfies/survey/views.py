@@ -1159,7 +1159,7 @@ def export_survey(request, id):
         Survey_template, pk=int(id), user=request.user)
 
     if survey:
-        section_list = Section_template.objects.filter(survey=survey).order_by('id')
+        section_list = Section_template.objects.filter(survey=survey).order_by('order')
         for section in section_list:
             # write section in text file
             writer.writerow([
@@ -1245,7 +1245,7 @@ def import_survey(request):
                     try:
                         # for section
                         section_template_obj = Section_template.objects.create(
-                            order=int(row[0]) if row[0] else 1,
+                            order=int(row[0]),
                             type=int(row[1]) if row[1] else 1,
                             question=row[2],
                             script=row[3],
@@ -1269,7 +1269,7 @@ def import_survey(request):
                             max_number=row[21],
                             phonenumber=row[22],
                             conference=row[23],
-                            completed=1 if row[24] == 'TRUE' else 0,
+                            completed=True if row[24] == 'True' else False,
                             invalid_audiofile_id=int(row[25]) if row[25] else None,
                             survey=new_survey,
                         )

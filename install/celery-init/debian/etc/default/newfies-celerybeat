@@ -9,7 +9,7 @@ CELERYBEAT='/usr/share/virtualenvs/newfies-dialer/bin/python /usr/share/newfies/
 CELERYBEAT_OPTS='--schedule=/var/run/celerybeat-schedule'
 
 # Name of the celery config module.#
-CELERY_CONFIG_MODULE="celeryconfig"
+#CELERY_CONFIG_MODULE="celeryconfig"
 
 # %n will be replaced with the nodename.
 CELERYBEAT_LOG_FILE="/var/log/newfies/celerybeat-%n.log"
@@ -22,5 +22,3 @@ CELERYBEAT_PID_FILE="/var/run/celerybeat-%n.pid"
 
 # Name of the projects settings module.
 export DJANGO_SETTINGS_MODULE='settings'
-
-

@@ -214,14 +214,9 @@ func_setup_virtualenv() {
     echo "Virtualenv $NEWFIES_ENV created and activated"
 }
 
-#Function to install Frontend
-func_install_frontend(){
 
-    echo ""
-    echo ""
-    echo "This script will install Newfies-Dialer on your server"
-    echo "======================================================"
-    echo ""
+#Function to install Dependencies
+func_install_dependencies(){
 
     #python setup tools
     echo "Install Dependencies and python modules..."
@@ -367,6 +362,188 @@ func_install_frontend(){
     echo ""
     echo "Create Newfies-Dialer User/Group : $NEWFIES_USER"
     useradd $NEWFIES_USER --user-group --system --no-create-home
+}
+
+
+#Function to install Python dependencies
+func_install_pip_deps(){
+
+    #Install Newfies-Dialer depencencies
+    easy_install -U distribute
+    #For python 2.6 only
+    pip install importlib
+    echo "Install basic requirements..."
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
+    do
+        pip install $line
+    done
+    echo "Install Django requirements..."
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt | grep -v \#)
+    do
+        pip install $line
+    done
+
+    #Check Python dependencies
+    func_check_dependencies
+
+    echo "**********"
+    echo "PIP Freeze"
+    echo "**********"
+    pip freeze
+}
+
+
+#Function to prepare settings_local.py
+func_prepare_settings(){
+
+    #Copy settings_local.py into newfies dir
+    cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
+
+    #Update Secret Key
+    echo "Update Secret Key..."
+    RANDPASSW=`</dev/urandom tr -dc A-Za-z0-9| (head -c $1 > /dev/null 2>&1 || head -c 50)`
+    sed -i "s/^SECRET_KEY.*/SECRET_KEY = \'$RANDPASSW\'/g"  $INSTALL_DIR/settings.py
+    echo ""
+
+    #Disable Debug
+    sed -i "s/DEBUG = True/DEBUG = False/g"  $INSTALL_DIR/settings_local.py
+    sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/settings_local.py
+
+    #Setup settings_local.py for POSTGRESQL
+    sed -i "s/DATABASENAME/$DATABASENAME/"  $INSTALL_DIR/settings_local.py
+    sed -i "s/DB_USERNAME/$DB_USERNAME/" $INSTALL_DIR/settings_local.py
+    sed -i "s/DB_PASSWORD/$DB_PASSWORD/" $INSTALL_DIR/settings_local.py
+    sed -i "s/DB_HOSTNAME/$DB_HOSTNAME/" $INSTALL_DIR/settings_local.py
+    sed -i "s/DB_PORT/$DB_PORT/" $INSTALL_DIR/settings_local.py
+
+    #Setup settings_local.py for POSTGRESQL
+    sed -i "s/newfiesdb/$DATABASENAME/"  $LUA_DIR/libs/settings.lua
+    sed -i "s/newfiesuser/$DB_USERNAME/" $LUA_DIR/libs/settings.lua
+    sed -i "s/password/$DB_PASSWORD/" $LUA_DIR/libs/settings.lua
+    sed -i "s/127.0.0.1/$DB_HOSTNAME/" $LUA_DIR/libs/settings.lua
+    sed -i "s/5432/$DB_PORT/" $LUA_DIR/libs/settings.lua
+
+    #Load Countries Dialcode
+    #python manage.py load_country_dialcode
+
+    IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
+    IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
+    if [ -z "$IPADDR" ]; then
+        clear
+        echo "We have not detected your IP address automatically, please enter it manually"
+        read IPADDR
+    fi
+
+    ##Update Freeswitch XML CDR
+    #NEWFIES_CDR_API='api\/v1\/store_cdr\/'
+    #CDR_API_URL="http:\/\/$IPADDR:$HTTP_PORT\/$NEWFIES_CDR_API"
+    #cd "$FS_INSTALLED_PATH/conf/autoload_configs/"
+    #sed -i "s/NEWFIES_API_STORE_CDR/$CDR_API_URL/g" xml_cdr.conf.xml
+    #
+    ##Update API username and password
+    #sed -i "s/APIUSERNAME/$APIUSERNAME/g" xml_cdr.conf.xml
+    #sed -i "s/APIPASSWORD/$APIPASSWORD/g" xml_cdr.conf.xml
+
+    #Update Authorize local IP
+    sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/SERVER_IP/$IPADDR/g" $INSTALL_DIR/settings_local.py
+
+    case $DIST in
+        'DEBIAN')
+            #Get TZ
+            ZONE=$(head -1 /etc/timezone)
+        ;;
+        'CENTOS')
+            #Get TZ
+            . /etc/sysconfig/clock
+            echo ""
+            echo "We will now add port $HTTP_PORT  and port 80 to your Firewall"
+            echo "Press Enter to continue or CTRL-C to exit"
+            read TEMP
+
+            func_iptables_configuration
+
+            #Selinux to allow apache to access this directory
+            chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
+            chcon -Rv --type=httpd_sys_content_t /usr/share/newfies/usermedia
+            semanage port -a -t http_port_t -p tcp $HTTP_PORT
+            #Allowing Apache to access Redis port
+            semanage port -a -t http_port_t -p tcp 6379
+        ;;
+    esac
+
+    #Set Timezone in settings_local.py
+    sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/settings_local.py
+}
+
+
+#Configure Logs files and logrotate
+func_prepare_logger() {
+
+    #Following lines is for apache logs
+    touch /var/log/newfies/newfies-django.log
+    touch /var/log/newfies/newfies-django-db.log
+    touch /var/log/newfies/gunicorn_newfies_dialer.log
+    chown -R $NEWFIES_USER:$NEWFIES_USER /var/log/newfies
+
+    echo "Install Logrotate..."
+    # First delete to avoid error when running the script several times.
+    rm /etc/logrotate.d/newfies_dialer
+    touch /etc/logrotate.d/newfies_dialer
+    echo '
+    /var/log/newfies/*.log {
+        daily
+        rotate 10
+        size = 50M
+        missingok
+        compress
+    }
+    '  >> /etc/logrotate.d/newfies_dialer
+
+    logrotate /etc/logrotate.d/newfies_dialer
+}
+
+#function to get the source of Newfies
+func_install_source(){
+
+    #get Newfies-Dialer
+    echo "Install Newfies-Dialer..."
+    cd /usr/src/
+    rm -rf newfies-dialer
+    mkdir /var/log/newfies
+
+    case $INSTALL_MODE in
+        'CLONE')
+            git clone git://github.com/Star2Billing/newfies-dialer.git
+            #Install Develop / Master
+            if echo $BRANCH | grep -i "^develop" > /dev/null ; then
+                cd newfies-dialer
+                git checkout -b develop --track origin/develop
+            fi
+        ;;
+    esac
+
+    #Copy files
+    cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
+    cp -r /usr/src/newfies-dialer/lua $LUA_DIR
+    cd $LUA_DIR/libs/
+    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/master/acapela.lua
+
+    #Upload audio files
+    mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
+    chown -R $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/usermedia
+}
+
+
+#Function to install Frontend
+func_install_frontend(){
+
+    echo ""
+    echo ""
+    echo "This script will install Newfies-Dialer on your server"
+    echo "======================================================"
+    echo ""
 
     if [ -d "$INSTALL_DIR" ]; then
         # Newfies-Dialer is already installed
@@ -397,91 +574,15 @@ func_install_frontend(){
     #Create and enable virtualenv
     func_setup_virtualenv
 
-    #get Newfies-Dialer
-    echo "Install Newfies-Dialer..."
-    cd /usr/src/
-    rm -rf newfies-dialer
-    mkdir /var/log/newfies
+    #Install Code Source
+    func_install_source
 
-    case $INSTALL_MODE in
-        'CLONE')
-            git clone git://github.com/Star2Billing/newfies-dialer.git
-            #Install Develop / Master
-            if echo $BRANCH | grep -i "^develop" > /dev/null ; then
-                cd newfies-dialer
-                git checkout -b develop --track origin/develop
-            fi
-        ;;
-        # 'DOWNLOAD')
-        #    VERSION=master
-        #    wget --no-check-certificate https://github.com/Star2Billing/newfies-dialer/tarball/$VERSION
-        #    mv master Star2Billing-newfies-dialer-$VERSION.tar.gz
-        #    tar xvzf Star2Billing-newfies-dialer-*.tar.gz
-        #    rm -rf Star2Billing-newfies-*.tar.gz
-        #    mv newfies-dialer newfies-dialer_$DATETIME
-        #    mv Star2Billing-newfies-* newfies-dialer
-        #;;
-    esac
+    #Install PIP dependencies
+    func_install_pip_deps
 
-    #Copy files
-    cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
-    cp -r /usr/src/newfies-dialer/lua $LUA_DIR
-    cd $LUA_DIR/libs/
-    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/master/acapela.lua
+    #Prepare the settings
+    func_prepare_settings
 
-    #Install Newfies-Dialer depencencies
-    easy_install -U distribute
-    #For python 2.6 only
-    pip install importlib
-    echo "Install basic requirements..."
-    for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
-    do
-        pip install $line
-    done
-    echo "Install Django requirements..."
-    for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt | grep -v \#)
-    do
-        pip install $line
-    done
-
-    #Install Python ESL
-    cd /usr/src/freeswitch/libs/esl
-    make pymod-install
-
-    #Check Python dependencies
-    func_check_dependencies
-
-    echo "**********"
-    echo "PIP Freeze"
-    echo "**********"
-    pip freeze
-
-    #Copy settings_local.py into newfies dir
-    cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
-
-    #Update Secret Key
-    echo "Update Secret Key..."
-    RANDPASSW=`</dev/urandom tr -dc A-Za-z0-9| (head -c $1 > /dev/null 2>&1 || head -c 50)`
-    sed -i "s/^SECRET_KEY.*/SECRET_KEY = \'$RANDPASSW\'/g"  $INSTALL_DIR/settings.py
-    echo ""
-
-    #Disable Debug
-    sed -i "s/DEBUG = True/DEBUG = False/g"  $INSTALL_DIR/settings_local.py
-    sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/settings_local.py
-
-    #Setup settings_local.py for POSTGRESQL
-    sed -i "s/DATABASENAME/$DATABASENAME/"  $INSTALL_DIR/settings_local.py
-    sed -i "s/DB_USERNAME/$DB_USERNAME/" $INSTALL_DIR/settings_local.py
-    sed -i "s/DB_PASSWORD/$DB_PASSWORD/" $INSTALL_DIR/settings_local.py
-    sed -i "s/DB_HOSTNAME/$DB_HOSTNAME/" $INSTALL_DIR/settings_local.py
-    sed -i "s/DB_PORT/$DB_PORT/" $INSTALL_DIR/settings_local.py
-
-    #Setup settings_local.py for POSTGRESQL
-    sed -i "s/newfiesdb/$DATABASENAME/"  $LUA_DIR/libs/settings.lua
-    sed -i "s/newfiesuser/$DB_USERNAME/" $LUA_DIR/libs/settings.lua
-    sed -i "s/password/$DB_PASSWORD/" $LUA_DIR/libs/settings.lua
-    sed -i "s/127.0.0.1/$DB_HOSTNAME/" $LUA_DIR/libs/settings.lua
-    sed -i "s/5432/$DB_PORT/" $LUA_DIR/libs/settings.lua
 
     # Create the Database
     echo "We will remove existing Database"
@@ -510,22 +611,6 @@ func_install_frontend(){
 
     cd $INSTALL_DIR/
 
-    #Fix permission on python-egg
-    #mkdir /usr/share/newfies/.python-eggs
-    #chown $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/.python-eggs
-    #mkdir database
-
-    #Upload audio files
-    mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
-    chown -R $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/usermedia
-
-    #Following lines is for apache logs
-    touch /var/log/newfies/newfies-django.log
-    touch /var/log/newfies/newfies-django-db.log
-    touch /var/log/newfies/err-apache-newfies.log
-    touch /var/log/newfies/gunicorn_newfies_dialer.log
-    chown -R $NEWFIES_USER:$NEWFIES_USER /var/log/newfies
-
     python manage.py syncdb --noinput
     python manage.py migrate
     clear
@@ -536,60 +621,6 @@ func_install_frontend(){
     #Collect static files from apps and other locations in a single location.
     python manage.py collectstatic --noinput
 
-    #Load Countries Dialcode
-    #python manage.py load_country_dialcode
-
-    IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
-    IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
-    if [ -z "$IPADDR" ]; then
-        clear
-        echo "We have not detected your IP address automatically, please enter it manually"
-        read IPADDR
-    fi
-
-    ##Update Freeswitch XML CDR
-    #NEWFIES_CDR_API='api\/v1\/store_cdr\/'
-    #CDR_API_URL="http:\/\/$IPADDR:$HTTP_PORT\/$NEWFIES_CDR_API"
-    #cd "$FS_INSTALLED_PATH/conf/autoload_configs/"
-    #sed -i "s/NEWFIES_API_STORE_CDR/$CDR_API_URL/g" xml_cdr.conf.xml
-    #
-    ##Update API username and password
-    #sed -i "s/APIUSERNAME/$APIUSERNAME/g" xml_cdr.conf.xml
-    #sed -i "s/APIPASSWORD/$APIPASSWORD/g" xml_cdr.conf.xml
-
-    #Update Authorize local IP
-    sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/SERVER_IP/$IPADDR/g" $INSTALL_DIR/settings_local.py
-
-
-    case $DIST in
-        'DEBIAN')
-            #Get TZ
-            ZONE=$(head -1 /etc/timezone)
-        ;;
-        'CENTOS')
-            #Get TZ
-            . /etc/sysconfig/clock
-            echo ""
-            echo "We will now add port $HTTP_PORT  and port 80 to your Firewall"
-            echo "Press Enter to continue or CTRL-C to exit"
-            read TEMP
-
-            func_iptables_configuration
-
-            #Selinux to allow apache to access this directory
-            chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
-            chcon -Rv --type=httpd_sys_content_t /usr/share/newfies/usermedia
-            semanage port -a -t http_port_t -p tcp $HTTP_PORT
-            #Allowing Apache to access Redis port
-            semanage port -a -t http_port_t -p tcp 6379
-        ;;
-    esac
-
-    #Set Timezone in settings_local.py
-    sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/settings_local.py
-    sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/celeryconfig.py
 
     # * * NGINX / SUPERVISOR * *
 
@@ -610,24 +641,8 @@ func_install_frontend(){
     /etc/init.d/supervisor force-stop
     /etc/init.d/supervisor start
 
-
     # * * LOGROTATE * *
-
-    echo "Install Logrotate..."
-    # First delete to avoid error when running the script several times.
-    rm /etc/logrotate.d/newfies_dialer
-    touch /etc/logrotate.d/newfies_dialer
-    echo '
-    /var/log/newfies/*.log {
-        daily
-        rotate 10
-        size = 50M
-        missingok
-        compress
-    }
-    '  >> /etc/logrotate.d/newfies_dialer
-
-    logrotate /etc/logrotate.d/newfies_dialer
+    func_prepare_logger
 
     #Restart FreeSWITCH to find the startup-script
     /etc/init.d/freeswitch restart

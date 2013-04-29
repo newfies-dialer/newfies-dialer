@@ -67,13 +67,13 @@ func_install_fs_source() {
         /usr/sbin/useradd -r -c "freeswitch" -g freeswitch freeswitch
     fi
 
-    #Download and install FS from git repository.   
+    #Download and install FS from git repository.
     cd $FS_BASE_PATH
     rm -rf freeswitch
     git clone git://git.freeswitch.org/freeswitch.git
     git checkout $FS_VERSION
-    
-    
+
+
 
     cd $FS_BASE_PATH/freeswitch
     ./bootstrap.sh
@@ -117,7 +117,7 @@ case $DIST in
     'CENTOS')
         yum -y update
         yum -y install autoconf automake bzip2 cpio curl curl-devel curl-devel expat-devel fileutils gcc-c++ gettext-devel gnutls-devel libjpeg-devel libogg-devel libtiff-devel libtool libvorbis-devel make ncurses-devel nmap openssl openssl-devel openssl-devel perl patch unixODBC unixODBC-devel unzip wget zip zlib zlib-devel
-        yum -y install git 
+        yum -y install git
         yum -y install --enablerepo=epel flite flite-devel
     ;;
 esac
@@ -179,6 +179,10 @@ case $DIST in
         chkconfig --level 345 freeswitch on
     ;;
 esac
+
+#Install Python ESL
+cd /usr/src/freeswitch/libs/esl
+make pymod-install
 
 
 echo "Installing from source"

@@ -1158,8 +1158,8 @@ def export_survey(request, id):
             writer.writerow([
                 section.order,
                 section.type,
-                section.question,
-                section.script,
+                section.question.encode('utf-8'),
+                section.script.encode('utf-8'),
                 section.audiofile_id,
                 section.retries,
                 section.timeout,

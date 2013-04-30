@@ -535,6 +535,54 @@ func_install_source(){
     chown -R $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/usermedia
 }
 
+#Create PGSQL
+func_create_pgsql_database(){
+
+    # Create the Database
+    echo "We will remove existing Database"
+    echo "Press Enter to continue"
+    read TEMP
+    echo "sudo -u postgres dropdb $DATABASENAME"
+    sudo -u postgres dropdb $DATABASENAME
+    # echo "Remove Existing Database if exists..."
+    #if [ `sudo -u postgres psql -qAt --list | egrep $DATABASENAME | wc -l` -eq 1 ]; then
+    #     echo "sudo -u postgres dropdb $DATABASENAME"
+    #     sudo -u postgres dropdb $DATABASENAME
+    # fi
+    echo "Create Database..."
+    echo "sudo -u postgres createdb $DATABASENAME"
+    sudo -u postgres createdb $DATABASENAME
+
+    #CREATE ROLE / USER
+    echo "Create Postgresql user $DB_USERNAME"
+    #echo "sudo -u postgres createuser --no-createdb --no-createrole --no-superuser $DB_USERNAME"
+    #sudo -u postgres createuser --no-createdb --no-createrole --no-superuser $DB_USERNAME
+    echo "sudo -u postgres psql --command=\"create user $DB_USERNAME with password 'XXXXXXXXXXXX';\""
+    sudo -u postgres psql --command="CREATE USER $DB_USERNAME with password '$DB_PASSWORD';"
+
+    echo "Grant all privileges to user..."
+    sudo -u postgres psql --command="GRANT ALL PRIVILEGES on database $DATABASENAME to $DB_USERNAME;"
+}
+
+#NGINX / SUPERVISOR
+func_config_start_nginx_supervisor(){
+    #Configure and Start supervisor
+    case $DIST in
+        'DEBIAN')
+            cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
+        ;;
+        'CENTOS')
+            cp /usr/src/newfies-dialer/install/supervisor/supervisord /etc/init.d/supervisor
+            chmod +x /etc/rc.d/init.d/supervisor
+            chkconfig --levels 235 supervisor on
+            echo_supervisord_conf > /etc/supervisord.conf
+            cat /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf >> /etc/supervisord.conf
+            mkdir /var/log/supervisor/
+        ;;
+    esac
+    /etc/init.d/supervisor force-stop
+    /etc/init.d/supervisor start
+}
 
 #Function to install Frontend
 func_install_frontend(){
@@ -583,34 +631,10 @@ func_install_frontend(){
     #Prepare the settings
     func_prepare_settings
 
+    func_create_pgsql_database
 
-    # Create the Database
-    echo "We will remove existing Database"
-    echo "Press Enter to continue"
-    read TEMP
-    echo "sudo -u postgres dropdb $DATABASENAME"
-    sudo -u postgres dropdb $DATABASENAME
-    # echo "Remove Existing Database if exists..."
-    #if [ `sudo -u postgres psql -qAt --list | egrep $DATABASENAME | wc -l` -eq 1 ]; then
-    #     echo "sudo -u postgres dropdb $DATABASENAME"
-    #     sudo -u postgres dropdb $DATABASENAME
-    # fi
-    echo "Create Database..."
-    echo "sudo -u postgres createdb $DATABASENAME"
-    sudo -u postgres createdb $DATABASENAME
-
-    #CREATE ROLE / USER
-    echo "Create Postgresql user $DB_USERNAME"
-    #echo "sudo -u postgres createuser --no-createdb --no-createrole --no-superuser $DB_USERNAME"
-    #sudo -u postgres createuser --no-createdb --no-createrole --no-superuser $DB_USERNAME
-    echo "sudo -u postgres psql --command=\"create user $DB_USERNAME with password 'XXXXXXXXXXXX';\""
-    sudo -u postgres psql --command="CREATE USER $DB_USERNAME with password '$DB_PASSWORD';"
-
-    echo "Grant all privileges to user..."
-    sudo -u postgres psql --command="GRANT ALL PRIVILEGES on database $DATABASENAME to $DB_USERNAME;"
-
+    #Prepare Django DB / Migrate / Create User ...
     cd $INSTALL_DIR/
-
     python manage.py syncdb --noinput
     python manage.py migrate
     clear
@@ -618,28 +642,11 @@ func_install_frontend(){
     echo "Create a super admin user..."
     python manage.py createsuperuser
 
-    #Collect static files from apps and other locations in a single location.
     python manage.py collectstatic --noinput
 
 
-    # * * NGINX / SUPERVISOR * *
-
-    #Configure and Start supervisor
-    case $DIST in
-        'DEBIAN')
-            cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
-        ;;
-        'CENTOS')
-            cp /usr/src/newfies-dialer/install/supervisor/supervisord /etc/init.d/supervisor
-            chmod +x /etc/rc.d/init.d/supervisor
-            chkconfig --levels 235 supervisor on
-            echo_supervisord_conf > /etc/supervisord.conf
-            cat /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf >> /etc/supervisord.conf
-            mkdir /var/log/supervisor/
-        ;;
-    esac
-    /etc/init.d/supervisor force-stop
-    /etc/init.d/supervisor start
+    #NGINX / SUPERVISOR
+    func_config_start_nginx_supervisor
 
     # * * LOGROTATE * *
     func_prepare_logger

@@ -29,8 +29,6 @@ BRANCH='develop'
 #Get Scripts dependencies
 cd /usr/src/
 wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/newfies-dialer-functions.sh -O newfies-dialer-functions.sh
-
-
 #Include cdr-stats install functions
 source newfies-dialer-functions.sh
 

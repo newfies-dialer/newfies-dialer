@@ -193,6 +193,16 @@ func_setup_virtualenv() {
     echo "This will install virtualenv & virtualenvwrapper"
     echo "and create a new virtualenv : $NEWFIES_ENV"
 
+    #Prepare settings for installation
+    case $DIST in
+        'DEBIAN')
+            SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
+        ;;
+        'CENTOS')
+            SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
+        ;;
+    esac
+
     easy_install virtualenv
     easy_install virtualenvwrapper
 
@@ -795,16 +805,6 @@ show_menu_newfies() {
 
 #Identify the OS
 func_identify_os
-
-#Prepare settings for installation
-case $DIST in
-    'DEBIAN')
-        SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
-    ;;
-    'CENTOS')
-        SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
-    ;;
-esac
 
 #Request the user to accept the license
 func_accept_license

@@ -28,9 +28,7 @@ BRANCH="master"
 
 #Install mode can me either CLONE or DOWNLOAD
 INSTALL_MODE='CLONE'
-DB_BACKEND=PostgreSQL
 DATETIME=$(date +"%Y%m%d%H%M%S")
-KERNEL_ARCH=$(uname -p)
 INSTALL_DIR='/usr/share/newfies'
 LUA_DIR='/usr/share/newfies-lua'
 INSTALL_DIR_WELCOME='/var/www/newfies'
@@ -46,8 +44,6 @@ CELERYD_USER='celery'
 CELERYD_GROUP='celery'
 NEWFIES_ENV='newfies-dialer'
 HTTP_PORT='8008'
-DEBVERSION=$( lsb_release -cs )
-
 
 
 #Django bug https://code.djangoproject.com/ticket/16017

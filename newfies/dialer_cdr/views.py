@@ -26,7 +26,6 @@ from dialer_cdr.forms import VoipSearchForm
 from common.common_functions import current_view, ceil_strdate,\
     get_pagination_vars
 from datetime import datetime
-import csv
 import tablib
 
 

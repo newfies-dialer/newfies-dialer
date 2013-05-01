@@ -23,8 +23,8 @@
 # cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
 #
 
-
-BRANCH='develop'
+#Set branch to install develop/master
+BRANCH='master'
 
 #Get Scripts dependencies
 cd /usr/src/

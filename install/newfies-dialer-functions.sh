@@ -310,6 +310,7 @@ func_install_dependencies(){
             ln -s /var/lib/pgsql/9.1/data /var/lib/pgsql
             ln -s /var/lib/pgsql/9.1/backups /var/lib/pgsql
             sed -i "s/ident/md5/g" /var/lib/pgsql/data/pg_hba.conf
+            sed -i "s/ident/md5/g" /var/lib/pgsql/9.1/data/pg_hba.conf
             service postgresql-9.1 restart
 
             # Install Lua & luarocks

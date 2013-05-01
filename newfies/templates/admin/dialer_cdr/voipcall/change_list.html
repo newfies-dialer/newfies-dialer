@@ -53,8 +53,18 @@
         </li>
         {% endif %}
             <li>
-                <a href="export_voip_report/" class="addlink">
-                    {% trans "export CSV file"|capfirst %}
+                <a href="export_voip_report/?format=csv" class="addlink">
+                    {% trans "export to CSV"|capfirst %}
+                </a>
+            </li>
+            <li>
+                <a href="export_voip_report/?format=xls" class="addlink">
+                    {% trans "export to XLS"|capfirst %}
+                </a>
+            </li>
+            <li>
+                <a href="export_voip_report/?format=json" class="addlink">
+                    {% trans "export to JSON"|capfirst %}
                 </a>
             </li>
             <li>

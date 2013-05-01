@@ -32,7 +32,7 @@ from common.common_functions import variable_value
 from common.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
-import csv
+import tablib
 AppLabelRenamer(native_app_label=u'dialer_cdr', app_label=_('Dialer CDR')).main()
 APP_LABEL = _('VoIP report')
 
@@ -274,10 +274,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
                               used_gateway]
         """
         # get the response object, this can be used as a stream.
-        response = HttpResponse(mimetype='text/csv')
+        format = request.GET['format']
+        response = HttpResponse(mimetype='text/' + format)
         # force download.
-        response['Content-Disposition'] = 'attachment;filename=export.csv'
-        writer = csv.writer(response)
+        response['Content-Disposition'] = 'attachment;filename=export.' + format
 
         # super(VoIPCall_ReportAdmin, self).queryset(request)
         kwargs = request.session['admin_voipcall_record_kwargs']
@@ -287,22 +287,41 @@ class VoIPCallAdmin(admin.ModelAdmin):
         if settings.AMD:
             amd_status = 'amd_status'
 
-        writer.writerow(['user', 'callid', 'callerid', 'phone_number',
-                         'starting_date', 'duration', 'disposition',
-                         'gateway', amd_status])
+        headers = ('user', 'callid', 'callerid', 'phone_number',
+                   'starting_date', 'duration', 'billsec',
+                   'disposition', 'used_gateway', amd_status)
+
+        list_val = []
         for i in qs:
             gateway_used = i.used_gateway.name if i.used_gateway else ''
             amd_status = i.amd_status if settings.AMD else ''
-            writer.writerow([i.user,
+
+            starting_date = i.starting_date
+            if format == 'json':
+                starting_date = str(i.starting_date)
+
+            list_val.append((i.user.username,
                              i.callid,
                              i.callerid,
                              i.phone_number,
-                             i.starting_date,
+                             starting_date,
                              i.duration,
+                             i.billsec,
                              i.disposition,
                              gateway_used,
-                             amd_status,
-                             ])
+                             amd_status))
+
+        data = tablib.Dataset(*list_val, headers=headers)
+
+        if format == 'xls':
+            response.write(data.xls)
+
+        if format == 'csv':
+            response.write(data.csv)
+
+        if format == 'json':
+            response.write(data.json)
+
         return response
 
 admin.site.register(VoIPCall, VoIPCallAdmin)

@@ -281,15 +281,12 @@ def export_voipcall_report(request):
         data = tablib.Dataset(*list_val, headers=headers)
 
         if format == 'xls':
-            # the csv writer
             response.write(data.xls)
 
         if format == 'csv':
-            # the csv writer
             response.write(data.csv)
 
         if format == 'json':
-            # the csv writer
             response.write(data.json)
 
     return response

@@ -389,6 +389,10 @@ func_install_pip_deps(){
         pip install $line
     done
 
+    #Install Python ESL / this needs to be done within the virtualenv
+    cd /usr/src/freeswitch/libs/esl
+    make pymod-install
+
     #Check Python dependencies
     func_check_dependencies
 

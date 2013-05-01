@@ -269,6 +269,8 @@ func_install_dependencies(){
             yum -y groupinstall "Development Tools"
             yum -y install git sudo cmake
             yum -y install python-setuptools python-tools python-devel mercurial memcached
+            yum -y install mlocate vim git wget
+            yum -y install policycoreutils-python
             easy_install pip
 
             #Install Supervisor
@@ -297,7 +299,10 @@ func_install_dependencies(){
             service nginx start
 
             #Install & Start PostgreSQL 9.1
+            #CentOs
             rpm -ivh http://yum.pgrpms.org/9.1/redhat/rhel-6-x86_64/pgdg-centos91-9.1-4.noarch.rpm
+            #Redhad
+            #rpm -ivh http://yum.pgrpms.org/9.1/redhat/rhel-6-x86_64/pgdg-redhat91-9.1-5.noarch.rpm
             yum -y install postgresql91-server postgresql91-devel
             chkconfig --levels 235 postgresql-9.1 on
             service postgresql-9.1 initdb
@@ -336,7 +341,6 @@ func_install_dependencies(){
             cd /usr/src
 
             luarocks install luasql-postgres PGSQL_DIR=/usr/pgsql-9.1/
-
         ;;
     esac
 
@@ -357,6 +361,7 @@ func_install_dependencies(){
 
     #Lua curl
     cd /usr/src/
+    rm -rf lua-curl-master
     wget https://github.com/msva/lua-curl/archive/master.zip -O lua-curl.zip
     unzip lua-curl.zip
     cd lua-curl-master

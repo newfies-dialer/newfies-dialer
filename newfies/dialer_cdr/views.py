@@ -27,6 +27,7 @@ from common.common_functions import current_view, ceil_strdate,\
     get_pagination_vars
 from datetime import datetime
 import csv
+import tablib
 
 
 def get_voipcall_daily_data(voipcall_list):
@@ -239,8 +240,6 @@ def export_voipcall_report(request):
     response = HttpResponse(mimetype='text/csv')
     # force download.
     response['Content-Disposition'] = 'attachment;filename=export.csv'
-    # the csv writer
-    writer = csv.writer(response)
 
     # super(VoIPCall_ReportAdmin, self).queryset(request)
     if request.session.get('voipcall_record_kwargs'):
@@ -251,26 +250,33 @@ def export_voipcall_report(request):
         if settings.AMD:
             amd_status = 'amd_status'
 
-        writer.writerow(['user', 'callid', 'callerid', 'phone_number',
-                         'starting_date', 'duration', 'billsec',
-                         'disposition', 'hangup_cause', 'hangup_cause_q850',
-                         'used_gateway', amd_status])
+        headers = ('user', 'callid', 'callerid', 'phone_number',
+                   'starting_date', 'duration', 'billsec',
+                   'disposition', 'hangup_cause', 'hangup_cause_q850',
+                   'used_gateway', amd_status)
+
+        list_val = []
         for i in qs:
             gateway_used = i.used_gateway.name if i.used_gateway else ''
             amd_status = i.amd_status if settings.AMD else ''
 
-            writer.writerow([
-                i.user,
-                i.callid,
-                i.callerid,
-                i.phone_number,
-                i.starting_date,
-                i.duration,
-                i.billsec,
-                i.disposition,
-                i.hangup_cause,
-                i.hangup_cause_q850,
-                gateway_used,
-                amd_status,
-            ])
+            list_val.append((i.user.username,
+                             i.callid,
+                             i.callerid,
+                             i.phone_number,
+                             i.starting_date,
+                             i.duration,
+                             i.billsec,
+                             i.disposition,
+                             i.hangup_cause,
+                             i.hangup_cause_q850,
+                             gateway_used,
+                             amd_status))
+
+        data = tablib.Dataset(*list_val, headers=headers)
+        #print data.csv
+
+        # the csv writer
+        response.write(data.csv)
+
     return response

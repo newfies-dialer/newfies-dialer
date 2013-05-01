@@ -26,7 +26,7 @@ from dialer_cdr.forms import VoipSearchForm
 from common.common_functions import current_view, ceil_strdate,\
     get_pagination_vars
 from datetime import datetime
-import csv
+import tablib
 
 
 def get_voipcall_daily_data(voipcall_list):
@@ -235,12 +235,12 @@ def export_voipcall_report(request):
     **Exported fields**: [user, callid, callerid, phone_number, starting_date,
                           duration, disposition, used_gateway]
     """
+    format = request.GET['format']
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/csv')
+    response = HttpResponse(mimetype='text/' + format)
+
     # force download.
-    response['Content-Disposition'] = 'attachment;filename=export.csv'
-    # the csv writer
-    writer = csv.writer(response)
+    response['Content-Disposition'] = 'attachment;filename=export.' + format
 
     # super(VoIPCall_ReportAdmin, self).queryset(request)
     if request.session.get('voipcall_record_kwargs'):
@@ -251,26 +251,45 @@ def export_voipcall_report(request):
         if settings.AMD:
             amd_status = 'amd_status'
 
-        writer.writerow(['user', 'callid', 'callerid', 'phone_number',
-                         'starting_date', 'duration', 'billsec',
-                         'disposition', 'hangup_cause', 'hangup_cause_q850',
-                         'used_gateway', amd_status])
+        headers = ('user', 'callid', 'callerid', 'phone_number',
+                   'starting_date', 'duration', 'billsec',
+                   'disposition', 'hangup_cause', 'hangup_cause_q850',
+                   'used_gateway', amd_status)
+
+        list_val = []
         for i in qs:
             gateway_used = i.used_gateway.name if i.used_gateway else ''
             amd_status = i.amd_status if settings.AMD else ''
 
-            writer.writerow([
-                i.user,
-                i.callid,
-                i.callerid,
-                i.phone_number,
-                i.starting_date,
-                i.duration,
-                i.billsec,
-                i.disposition,
-                i.hangup_cause,
-                i.hangup_cause_q850,
-                gateway_used,
-                amd_status,
-            ])
+            starting_date = i.starting_date
+            if format == 'json':
+                starting_date = str(i.starting_date)
+
+            list_val.append((i.user.username,
+                             i.callid,
+                             i.callerid,
+                             i.phone_number,
+                             starting_date,
+                             i.duration,
+                             i.billsec,
+                             i.disposition,
+                             i.hangup_cause,
+                             i.hangup_cause_q850,
+                             gateway_used,
+                             amd_status))
+
+        data = tablib.Dataset(*list_val, headers=headers)
+
+        if format == 'xls':
+            # the csv writer
+            response.write(data.xls)
+
+        if format == 'csv':
+            # the csv writer
+            response.write(data.csv)
+
+        if format == 'json':
+            # the csv writer
+            response.write(data.json)
+
     return response

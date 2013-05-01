@@ -41,7 +41,7 @@ from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import subprocess
 import hashlib
-import csv
+import tablib
 import os
 
 testdebug = False
@@ -1065,11 +1065,12 @@ def export_surveycall_report(request):
     **Exported fields**: ['starting_date', 'phone_number', 'duration',
                           'disposition', 'survey results']
     """
+    format = request.GET['format']
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/csv')
+    response = HttpResponse(mimetype='text/' + format)
     # force download.
-    response['Content-Disposition'] = 'attachment;filename=export.csv'
-    writer = csv.writer(response)
+    response['Content-Disposition'] = 'attachment;filename=export.' + format
+    #writer = csv.writer(response)
     if request.session.get('session_surveycalls_kwargs'):
         kwargs = request.session.get('session_surveycalls_kwargs')
         qs = VoIPCall.objects.filter(**kwargs)
@@ -1085,8 +1086,7 @@ def export_surveycall_report(request):
                 column = unicode(i.question.replace(',', ' '))
                 column_list.append(column.encode('utf-8'))
 
-        #write the header for the csv export file
-        writer.writerow(column_list)
+        result_row = []
         for voipcall in qs:
             result_row_list = []
             #For each voip call retrieve the results of the survey nodes
@@ -1104,7 +1104,11 @@ def export_surveycall_report(request):
             for ikey in column_list:
                 if ikey in column_list_base:
                     #This is not a Section result
-                    result_row_list.append(voipcall.__dict__[ikey])
+                    if ikey == 'starting_date' and format == 'json':
+                        starting_date = str(voipcall.__dict__[ikey])
+                        result_row_list.append(starting_date)
+                    else:
+                        result_row_list.append(voipcall.__dict__[ikey])
                 else:
                     #This is a Section result
                     if ikey in result_list:
@@ -1113,8 +1117,20 @@ def export_surveycall_report(request):
                         #Add empty result
                         result_row_list.append("")
 
-            #Write line of the result
-            writer.writerow(result_row_list)
+            result_row.append(result_row_list)
+
+        data = tablib.Dataset(*result_row, headers=tuple(column_list))
+        if format == 'xls':
+            # the csv writer
+            response.write(data.xls)
+
+        if format == 'csv':
+            # the csv writer
+            response.write(data.csv)
+
+        if format == 'json':
+            # the csv writer
+            response.write(data.json)
     return response
 
 
@@ -1165,8 +1181,8 @@ def export_survey(request, id):
             writer.writerow([
                 section.order,
                 section.type,
-                section.question,
-                section.script,
+                section.question.encode('utf-8'),
+                section.script.encode('utf-8'),
                 section.audiofile_id,
                 section.retries,
                 section.timeout,

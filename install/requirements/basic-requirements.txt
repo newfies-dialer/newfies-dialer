@@ -20,3 +20,4 @@ python-acapela==0.2.1
 Django==1.5.1
 gunicorn==0.17.2
 South==0.7.6
+tablib==0.9.11

@@ -18,7 +18,7 @@
 # cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
 #
 
-BRANCH='master'
+BRANCH='develop'
 
 # Identify Linux Distribution type
 func_identify_os() {
@@ -42,7 +42,7 @@ func_identify_os() {
 
 #install the epel repository.
 func_install_epel_repo() {
-	
+
 	if [ ! -f /etc/yum.repos.d/epel.repo ];
 		then
 			echo '
@@ -54,7 +54,7 @@ failovermethod=priority
 enabled=0
 gpgcheck=0
 gpgkey=file:///etc/pki/rpm-gpg/RPM-GPG-KEY-EPEL-6
-		' > /etc/yum.repos.d/epel.repo 
+		' > /etc/yum.repos.d/epel.repo
 	fi
 }
 
@@ -73,7 +73,7 @@ enabled = 0
 protect = 0
 gpgkey = file:///etc/pki/rpm-gpg/RPM-GPG-KEY-rpmforge-dag
 gpgcheck = 0
-		' > /etc/yum.repos.d/rpmforge.repo 
+		' > /etc/yum.repos.d/rpmforge.repo
 	fi
 }
 

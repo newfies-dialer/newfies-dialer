@@ -236,10 +236,12 @@ def export_voipcall_report(request):
     **Exported fields**: [user, callid, callerid, phone_number, starting_date,
                           duration, disposition, used_gateway]
     """
+    format = request.GET['format']
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/csv')
+    response = HttpResponse(mimetype='text/' + format)
+
     # force download.
-    response['Content-Disposition'] = 'attachment;filename=export.csv'
+    response['Content-Disposition'] = 'attachment;filename=export.' + format
 
     # super(VoIPCall_ReportAdmin, self).queryset(request)
     if request.session.get('voipcall_record_kwargs'):
@@ -260,11 +262,15 @@ def export_voipcall_report(request):
             gateway_used = i.used_gateway.name if i.used_gateway else ''
             amd_status = i.amd_status if settings.AMD else ''
 
+            starting_date = i.starting_date
+            if format == 'json':
+                starting_date = str(i.starting_date)
+
             list_val.append((i.user.username,
                              i.callid,
                              i.callerid,
                              i.phone_number,
-                             i.starting_date,
+                             starting_date,
                              i.duration,
                              i.billsec,
                              i.disposition,
@@ -274,9 +280,17 @@ def export_voipcall_report(request):
                              amd_status))
 
         data = tablib.Dataset(*list_val, headers=headers)
-        #print data.csv
 
-        # the csv writer
-        response.write(data.csv)
+        if format == 'xls':
+            # the csv writer
+            response.write(data.xls)
+
+        if format == 'csv':
+            # the csv writer
+            response.write(data.csv)
+
+        if format == 'json':
+            # the csv writer
+            response.write(data.json)
 
     return response

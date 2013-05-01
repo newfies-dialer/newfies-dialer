@@ -93,7 +93,9 @@
                     <span class="caret"></span>
                 </button>
                 <ul class="dropdown-menu">
-                    <li><a href="/export_voipcall_report/">{% trans "export CSV file"|capfirst %}</a></li>
+                    <li><a href="/export_voipcall_report/?format=csv">{% trans "export CSV file"|capfirst %}</a></li>
+                    <li><a href="/export_voipcall_report/?format=xls">{% trans "export XLS file"|capfirst %}</a></li>
+                    <li><a href="/export_voipcall_report/?format=json">{% trans "export JSON file"|capfirst %}</a></li>
                 </ul>
             </div>
             <div>&nbsp;</div>

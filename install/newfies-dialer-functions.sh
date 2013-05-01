@@ -625,6 +625,9 @@ func_install_frontend(){
         fi
     fi
 
+    #Install Depedencies
+    func_install_dependencies
+
     #Create and enable virtualenv
     func_setup_virtualenv
 

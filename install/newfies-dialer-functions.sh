@@ -638,6 +638,9 @@ func_install_frontend(){
     #Install Depedencies
     func_install_dependencies
 
+    #Install Celery & redis-server
+    func_install_redis_server
+
     #Create and enable virtualenv
     func_setup_virtualenv
 

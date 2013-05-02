@@ -33,7 +33,7 @@ from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
-from common.common_functions import current_view
+from common.common_functions import current_view, percentage
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import time
@@ -421,6 +421,26 @@ def customer_dashboard(request, on_index=None):
                     updated_date__range=(start_date, end_date))\
             .count()
 
+    # PieChart
+    xdata = []
+    ydata = []
+    for i in VOIPCALL_DISPOSITION:
+        xdata.append(i[0])
+
+    # Y-axis order depend upon VOIPCALL_DISPOSITION
+    # 'ANSWER', 'BUSY', 'CANCEL', 'CONGESTION', 'FAILED', 'NOANSWER'
+    if total_call_count != 0:
+        ydata = [percentage(total_answered, total_call_count),
+                 percentage(total_busy, total_call_count),
+                 percentage(total_cancel, total_call_count),
+                 percentage(total_congestion, total_call_count),
+                 percentage(total_failed, total_call_count),
+                 percentage(total_not_answered, total_call_count),]
+
+    extra_serie = {"tooltip": {"y_start": "", "y_end": " %"}}
+    hangup_analytic_chartdata = {'x': xdata, 'y1': ydata, 'extra1': extra_serie}
+    hangup_analytic_charttype = "pieChart"
+
     template = 'frontend/dashboard.html'
 
     data = {
@@ -449,6 +469,8 @@ def customer_dashboard(request, on_index=None):
         'failed_color': COLOR_DISPOSITION['FAILED'],
         'SEARCH_TYPE': SEARCH_TYPE,
         'VOIPCALL_DISPOSITION': VOIPCALL_DISPOSITION,
+        'hangup_analytic_chartdata': hangup_analytic_chartdata,
+        'hangup_analytic_charttype': hangup_analytic_charttype,
     }
     if on_index == 'yes':
         return data

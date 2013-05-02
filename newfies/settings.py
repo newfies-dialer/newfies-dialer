@@ -219,6 +219,7 @@ INSTALLED_APPS = (
     #'raven.contrib.django',
     'apiplayground',
     'frontend_notification',
+    'django_nvd3',
 )
 
 # Django extensions

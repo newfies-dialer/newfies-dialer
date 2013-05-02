@@ -1,11 +1,13 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags %}
+{% load i18n common_tags nvd3_tags %}
 
 {% block title %}
     {% trans 'dashboard'|title %}
 {% endblock %}
 
 {% block extra_header %}
+    {% include_nvd3jscss False %}
+    {% load_chart hangup_analytic_charttype hangup_analytic_chartdata "hangup_analytic_container" %}
 {% endblock %}
 
 {% block content_header %}
@@ -310,71 +312,11 @@
     </div>
 {% endif %}
 
-<script type="text/javascript">
-    function pieHover(event, pos, obj)
-    {
-        if (!obj)
-            return;
-        percent = parseFloat(obj.series.percent).toFixed(2);
-        $(function(){
-            $("#hover").html('<span style="font-weight: bold; color: '+obj.series.color+'">'+obj.series.label+' ('+percent+'%)</span>');
-        });
-    }
-
-    function pieClick(event, pos, obj)
-    {
-        if (!obj)
-            return;
-        percent = parseFloat(obj.series.percent).toFixed(2);
-        alert(''+obj.series.label+': '+percent+'%');
-    }
-    $(function(){
-        $(function () {
-            var data = [
-                { label: '{{ VOIPCALL_DISPOSITION.ANSWER }}', data: [[1, {{ total_answered }}]], color: '{{ answered_color }}' },
-                { label: '{{ VOIPCALL_DISPOSITION.BUSY }}', data: [[1, {{ total_busy }}]], color: '{{ busy_color }}' },
-                { label: '{{ VOIPCALL_DISPOSITION.NOANSWER }}', data: [[1, {{ total_not_answered }}]], color: '{{ not_answered_color }}' },
-                //{ label: 'OHTERS' , data: [[1, {{ total_others }}]]},
-                { label: '{{ VOIPCALL_DISPOSITION.CANCEL }}', data: [[1, {{ total_cancel }}]], color: '{{ cancel_color }}' },
-                { label: '{{ VOIPCALL_DISPOSITION.CONGESTION }}', data: [[1, {{ total_congestion }}]], color: '{{ congestion_color }}' },
-                { label: '{{ VOIPCALL_DISPOSITION.FAILED }}', data: [[1, {{ total_failed }}]], color: '{{ failed_color }}' },
-            ];
-            var options = {
-                    series: {
-                        pie: {
-                            show: true,
-                            radius: 1,
-                            label: {
-                                show: true,
-                                radius: 3/4,
-                                formatter: function(label, series){
-                                    return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
-                                    }
-                                },
-                            background: { opacity: 0.5 },
-                        }
-                    },
-                    legend: {
-                        show: false,
-                    },
-                    grid: {
-                        hoverable: true,
-                        clickable: true
-                    },
-            };
-            $("#camp_pie").bind("plothover", pieHover);
-            $("#camp_pie").bind("plotclick", pieClick);
-            var plot = $.plot($("#camp_pie"), data, options);
-        });
-
-    });
-</script>
-
 <div class="row">
     <div class="span12">
         <div class="row">
             <div class="span6">
-                <div id="camp_pie" style="width:300px;height:270px;float:left;margin: 0px 50px 50px 50px;"></div>
+                {% include_container "hangup_analytic_container" 400 500 %}
             </div>
 
             <div class="span6">

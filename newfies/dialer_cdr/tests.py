@@ -97,7 +97,21 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 
     def test_export_voipcall_report(self):
         """Test Function to check VoIP call export report"""
-        request = self.factory.get('/export_voipcall_report/')
+        request = self.factory.get('/export_voipcall_report/?format=csv')
+        request.user = self.user
+        request.session = {}
+        request.session['voipcall_record_qs'] = {}
+        response = export_voipcall_report(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/export_voipcall_report/?format=json')
+        request.user = self.user
+        request.session = {}
+        request.session['voipcall_record_qs'] = {}
+        response = export_voipcall_report(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/export_voipcall_report/?format=xls')
         request.user = self.user
         request.session = {}
         request.session['voipcall_record_qs'] = {}

@@ -122,9 +122,9 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 class DialerCdrCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
 
-    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
-                'dialer_setting.json', 'contenttype.json',
-                'phonebook.json', 'contact.json',
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'contenttype.json', 'user_profile.json',
+                'phonebook.json', 'contact.json', 'survey.json',
                 'campaign.json', 'subscriber.json',
                 'callrequest.json', 'voipcall.json', 'user_profile.json']
 
@@ -141,8 +141,10 @@ class DialerCdrCeleryTaskTestCase(TestCase):
 class DialerCdrModel(TestCase):
     """Test Callrequest, VoIPCall models"""
 
-    fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'contenttype.json', 'user_profile.json',
                 'phonebook.json', 'contact.json',
+                'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
                 'callrequest.json', 'survey.json', 'section.json']
 

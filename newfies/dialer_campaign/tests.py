@@ -88,9 +88,11 @@ class DialerCampaignView(BaseAuthenticatedClient):
 class DialerCampaignCustomerView(BaseAuthenticatedClient):
     """Test cases for Campaign, Subscriber Customer Interface."""
 
-    fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
-                'survey.json', 'phonebook.json', 'contact.json',
-                'campaign.json', 'subscriber.json']
+    fixtures = ['gateway.json', 'dialer_setting.json', 'auth_user.json',
+                'user_profile.json', 'contenttype.json',
+                'phonebook.json', 'contact.json', 'survey.json',
+                'dnc_list.json', 'dnc_contact.json',
+                'campaign.json', 'subscriber.json',]
 
     def test_campaign_view_list(self):
         """Test Function to check campaign list"""
@@ -110,7 +112,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = campaign_add(request)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.post('/campaign/add/', data={
             "name": "mylittlecampaign",
@@ -123,7 +125,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
-            "content_object": "type:32-id:1",
+            "content_object": "type:30-id:1",
             "extra_data": "2000"}, follow=True)
         self.assertEqual(response.status_code, 200)
 
@@ -241,11 +243,12 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 class DialerCampaignCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
 
-    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
-                'dialer_setting.json', 'contenttype.json',
-                'phonebook.json', 'contact.json',
+    fixtures = ['gateway.json', 'dialer_setting.json', 'auth_user.json',
+                'user_profile.json', 'contenttype.json',
+                'phonebook.json', 'contact.json', 'survey.json',
+                'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
-                'user_profile.json']
+                ]
 
     #def test_check_campaign_pendingcall(self):
     #    """Test that the ``check_campaign_pendingcall``

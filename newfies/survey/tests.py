@@ -74,14 +74,16 @@ class SurveyCustomerView(BaseAuthenticatedClient):
        ResultAggregate Customer pages
     """
 
-    fixtures = ['auth_user.json', 'gateway.json', 'survey.json',
-                'dialer_setting.json', 'phonebook.json', 'contact.json',
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'user_profile.json', 'contenttype.json',
+                'phonebook.json', 'contact.json',
+                'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
                 'callrequest.json', 'voipcall.json',
-                'survey_template.json', 'survey.json',
-                'section_template.json', 'section.json',
-                'branching_template.json', 'branching.json',
-                'user_profile.json']
+                'survey_template.json', #'survey.json',
+                'section_template.json', #'section.json',
+                'branching_template.json', #'branching.json',
+                ]
 
     def test_survey_view_list(self):
         """Test Function survey view list"""
@@ -483,13 +485,16 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 class SurveyModel(TestCase):
     """Test Survey, Section, Branching, Result, ResultAggregate Model"""
 
-    fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'user_profile.json', 'contenttype.json',
                 'phonebook.json', 'contact.json',
+                'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
-                'survey_template.json', 'survey.json',
-                'section_template.json', 'section.json',
-                'branching_template.json', 'branching.json',
-                'callrequest.json']
+                'callrequest.json', 'voipcall.json',
+                #'survey_template.json', 'survey.json',
+                #'section_template.json', 'section.json',
+                #'branching_template.json', 'branching.json',
+                ]
 
     def setUp(self):
         self.user = User.objects.get(username='admin')

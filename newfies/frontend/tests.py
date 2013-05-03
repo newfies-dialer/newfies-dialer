@@ -39,11 +39,12 @@ class FrontendView(BaseAuthenticatedClient):
 class FrontendCustomerView(BaseAuthenticatedClient):
     """Test cases for Newfies-Dialer Customer Interface."""
 
-    fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
-                'survey.json', 'phonebook.json', 'contact.json',
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'user_profile.json', 'contenttype.json',
+                'phonebook.json', 'contact.json', 'survey.json',
+                'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
-                'callrequest.json', 'voipcall.json',
-                'survey.json', 'section.json', 'branching.json']
+                'callrequest.json', 'voipcall.json',]
 
     def test_a_mgt_command(self):
         # Test mgt command

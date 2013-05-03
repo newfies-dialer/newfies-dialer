@@ -246,6 +246,7 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
     fixtures = ['auth_user.json', 'gateway.json',
                 'dialer_setting.json', 'user_profile.json',
                 'phonebook.json', 'contact.json', 'survey.json',
+                'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
                 ]
 
@@ -280,6 +281,7 @@ class DialerCampaignModel(TestCase):
     fixtures = ['auth_user.json', 'gateway.json',
                 'dialer_setting.json', 'user_profile.json',
                 'phonebook.json', 'contact.json', 'survey.json',
+                'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
                 ]
 

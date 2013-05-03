@@ -134,10 +134,10 @@ def prefix_list_string(phone_number):
     >>> prefix_list_string(phone_no)
     '34650, 3465, 346, 34'
 
-    >>> phone_no = -34650123456
+    >>> phone_no = 34650123456
 
     >>> prefix_list_string(phone_no)
-    False
+    '34650, 3465, 346, 34'
     """
     try:
         int(phone_number)

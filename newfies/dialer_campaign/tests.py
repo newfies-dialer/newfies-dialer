@@ -88,9 +88,11 @@ class DialerCampaignView(BaseAuthenticatedClient):
 class DialerCampaignCustomerView(BaseAuthenticatedClient):
     """Test cases for Campaign, Subscriber Customer Interface."""
 
-    fixtures = ['dialer_setting.json', 'auth_user.json', 'gateway.json',
-                'survey.json', 'phonebook.json', 'contact.json',
-                'campaign.json', 'subscriber.json']
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'user_profile.json', 'contenttype.json',
+                'phonebook.json', 'contact.json', 'survey.json',
+                'dnc_list.json', 'dnc_contact.json',
+                'campaign.json', 'subscriber.json',]
 
     def test_campaign_view_list(self):
         """Test Function to check campaign list"""
@@ -110,7 +112,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = campaign_add(request)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
         response = self.client.post('/campaign/add/', data={
             "name": "mylittlecampaign",
@@ -123,8 +125,9 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
-            "content_object": "type:32-id:1",
-            "extra_data": "2000"}, follow=True)
+            "content_object": "type:43-id:1",
+            "extra_data": "2000",
+            "ds_user": self.user}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/campaign/add/', {
@@ -138,13 +141,13 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
-            "content_object": "type:32-id:1",
-            "extra_data": "2000"}, follow=True)
+            "content_object": "type:43-id:1",
+            "extra_data": "2000",
+            "ds_user": self.user}, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_add(request)
-        self.assertEqual(response['Location'], '/campaign/')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/campaign/add/', {
             "name": "mycampaign",
@@ -157,25 +160,26 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
-            "content_object": "type:32-id:1",
-            "extra_data": "2000"}, follow=True)
+            "content_object": "type:43-id:1",
+            "extra_data": "2000",
+            "ds_user": self.user,}, follow=True)
 
         request.user = self.user
         request.session = {}
         response = campaign_add(request)
-        self.assertEqual(response['Location'], '/campaign/')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_campaign_view_update(self):
         """Test Function to check update campaign"""
         request = self.factory.post('/campaign/1/', {
             "name": "Sample campaign",
-            "content_object": "type:30-id:1",
+            "content_object": "type:43-id:1",
+            "ds_user": self.user,
         }, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_change(request, 1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/campaign/1/',
             {'delete': 'true'}, follow=True)
@@ -241,11 +245,12 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 class DialerCampaignCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
 
-    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
-                'dialer_setting.json', 'contenttype.json',
-                'phonebook.json', 'contact.json',
+    fixtures = ['auth_user.json', 'gateway.json',
+                'dialer_setting.json', 'user_profile.json',
+                'phonebook.json', 'contact.json', 'survey.json',
+                'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
-                'user_profile.json']
+                ]
 
     #def test_check_campaign_pendingcall(self):
     #    """Test that the ``check_campaign_pendingcall``
@@ -275,11 +280,12 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
 class DialerCampaignModel(TestCase):
     """Test Campaign, Subscriber models"""
 
-    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
-                'dialer_setting.json',
-                'phonebook.json', 'contact.json',
+    fixtures = ['auth_user.json', 'gateway.json',
+                'dialer_setting.json', 'user_profile.json',
+                'phonebook.json', 'contact.json', 'survey.json',
+                'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
-                'user_profile.json']
+                ]
 
     def setUp(self):
         self.user = User.objects.get(username='admin')

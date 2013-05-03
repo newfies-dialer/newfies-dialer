@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-
 #IMPORT SETTINGS
 #===============
 from settings import *
@@ -23,14 +22,6 @@ from settings import *
 SOUTH_TESTS_MIGRATE = False
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.mysql',
-    #     'NAME': 'newfies',
-    #     'USER': 'root',
-    #     'PASSWORD': 'password',
-    #     'HOST': 'localhost',
-    #     'PORT': '3306',
-    # },
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': ':memory:',

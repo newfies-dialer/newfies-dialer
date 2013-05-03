@@ -126,7 +126,8 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "calltimeout": "60",
             "aleg_gateway": "1",
             "content_object": "type:43-id:1",
-            "extra_data": "2000"}, follow=True)
+            "extra_data": "2000",
+            "ds_user": self.user}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/campaign/add/', {
@@ -141,12 +142,12 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "calltimeout": "60",
             "aleg_gateway": "1",
             "content_object": "type:43-id:1",
-            "extra_data": "2000"}, follow=True)
+            "extra_data": "2000",
+            "ds_user": self.user}, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_add(request)
-        self.assertEqual(response['Location'], '/campaign/')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/campaign/add/', {
             "name": "mycampaign",
@@ -160,24 +161,25 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "calltimeout": "60",
             "aleg_gateway": "1",
             "content_object": "type:43-id:1",
-            "extra_data": "2000"}, follow=True)
+            "extra_data": "2000",
+            "ds_user": self.user,}, follow=True)
 
         request.user = self.user
         request.session = {}
         response = campaign_add(request)
-        self.assertEqual(response['Location'], '/campaign/')
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_campaign_view_update(self):
         """Test Function to check update campaign"""
         request = self.factory.post('/campaign/1/', {
             "name": "Sample campaign",
             "content_object": "type:43-id:1",
+            "ds_user": self.user,
         }, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_change(request, 1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/campaign/1/',
             {'delete': 'true'}, follow=True)

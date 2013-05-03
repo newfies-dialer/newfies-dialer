@@ -261,8 +261,8 @@ def get_content_type(object_string):
     Retrieve ContentType and Object ID from a string
     It is used by campaign_add & campaign_change
 
-    >>> get_content_type("type:30-id:1")
-    {'object_type': <ContentType: Phonebook>, 'object_id': '1'}
+    #get_content_type("type:38-id:1")
+    #{'object_type': <ContentType: Phonebook>, 'object_id': '1'}
     """
     contenttype = {}
     matches = re.match("type:(\d+)-id:(\d+)", object_string).groups()
@@ -411,7 +411,7 @@ def campaign_change(request, object_id):
         if request.POST.get('delete'):
             campaign_del(request, object_id)
             request.session["msg"] = _('"%(name)s" is deleted.')\
-                % {'name': request.POST['name']}
+                % {'name': campaign.name}
             request.session['error_msg'] = ''
             return HttpResponseRedirect('/campaign/')
         else:

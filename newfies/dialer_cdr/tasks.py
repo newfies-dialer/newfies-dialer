@@ -207,6 +207,9 @@ def check_callevent():
 
     cursor = connection.cursor()
 
+    #TODO (Areski)
+    #Replace this for ORM with select_for_update or transaction
+
     sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, "\
         "callrequest_id, callerid, phonenumber, duration, billsec, hangup_cause, "\
         "hangup_cause_q850, starting_date, status, created_date, amd_status, leg FROM call_event WHERE status=1 LIMIT 2000 OFFSET 0"
@@ -386,11 +389,12 @@ class task_pending_callevent(PeriodicTask):
 
         check_callevent.delay()
     """
-    run_every = timedelta(seconds=15)
     #The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
-    #run_every = timedelta(seconds=60)
+    run_every = timedelta(seconds=60)
+    #run_every = timedelta(seconds=15)
 
+    #TODO: problem of the lock if it's a cloud, it won't be shared
     @only_one(ikey="task_pending_callevent", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.info("ASK :: task_pending_callevent")

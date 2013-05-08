@@ -80,9 +80,9 @@ class SurveyCustomerView(BaseAuthenticatedClient):
                 'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
                 'callrequest.json', 'voipcall.json',
-                'survey_template.json', #'survey.json',
-                'section_template.json', #'section.json',
-                'branching_template.json', #'branching.json',
+                #'survey_template.json', 'survey.json',
+                #'section_template.json', 'section.json',
+                #'branching_template.json', 'branching.json',
                 ]
 
     def test_survey_view_list(self):
@@ -491,9 +491,9 @@ class SurveyModel(TestCase):
                 'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
                 'callrequest.json', 'voipcall.json',
-                #'survey_template.json', 'survey.json',
-                #'section_template.json', 'section.json',
-                #'branching_template.json', 'branching.json',
+                'survey_template.json', 'survey.json',
+                'section_template.json', 'section.json',
+                'branching_template.json', 'branching.json',
                 ]
 
     def setUp(self):

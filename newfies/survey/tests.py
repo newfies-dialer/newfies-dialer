@@ -530,6 +530,21 @@ class SurveyModel(TestCase):
         self.section.save()
         self.assertTrue(self.section.__unicode__())
 
+        # Branching_template model
+        self.branching_template = Branching_template(
+            keys=5,
+            section=self.section_template,
+        )
+        self.branching_template.save()
+
+        # Branching model
+        self.branching = Branching(
+            keys=5,
+            section=self.section,
+        )
+        self.branching.save()
+        self.assertTrue(self.branching.__unicode__())
+
         # Result model
         self.result = Result(
             section=self.section,
@@ -555,7 +570,7 @@ class SurveyModel(TestCase):
     def test_survey_forms(self):
         self.assertEqual(self.survey_template.name, "test_survey")
         #self.assertEqual(self.section_template.survey, self.survey_template)
-        #self.assertEqual(self.branching_template.section, self.section_template)
+        self.assertEqual(self.branching_template.section, self.section_template)
         self.assertEqual(self.result.section, self.section)
 
         form = PlayMessageSectionForm(self.user, instance=self.section_template)
@@ -621,7 +636,7 @@ class SurveyModel(TestCase):
         self.survey.delete()
         self.section_template.delete()
         self.section.delete()
-        #self.branching_template.delete()
+        self.branching_template.delete()
         self.branching.delete()
         self.result.delete()
         self.result_aggregate.delete()

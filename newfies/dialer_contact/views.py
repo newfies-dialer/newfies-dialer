@@ -30,7 +30,7 @@ from dialer_campaign.function_def import check_dialer_setting,\
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist, current_view,\
-    get_pagination_vars, getvar
+    get_pagination_vars, getvar, unset_session_var
 import csv
 import json
 

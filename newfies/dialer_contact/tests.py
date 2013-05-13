@@ -221,7 +221,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         request = self.factory.post('/contact/',
                                     data={'from_date': datetime.now(),
                                           'to_date': datetime.now(),
-                                          'name': '123'})
+                                          'contact_name': '123'})
         request.user = self.user
         request.session = {}
         response = contact_list(request)

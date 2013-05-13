@@ -30,7 +30,7 @@ from dialer_campaign.function_def import check_dialer_setting,\
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist, current_view,\
-    get_pagination_vars
+    get_pagination_vars, getvar, unset_session_var
 import csv
 import json
 
@@ -256,26 +256,14 @@ def contact_list(request):
     if request.method == 'POST':
         form = ContactSearchForm(request.user, request.POST)
         if form.is_valid():
-            request.session['session_contact_no'] = ''
-            request.session['session_contact_name'] = ''
-            request.session['session_contact_status'] = ''
-            request.session['session_phonebook'] = ''
+            field_list = ['contact_no', 'contact_name',
+                          'contact_status', 'phonebook']
+            unset_session_var(request, field_list)
 
-            if request.POST.get('contact_no'):
-                contact_no = request.POST.get('contact_no')
-                request.session['session_contact_no'] = contact_no
-
-            if request.POST.get('name'):
-                contact_name = request.POST.get('name')
-                request.session['session_contact_name'] = contact_name
-
-            if request.POST.get('status'):
-                contact_status = request.POST.get('status')
-                request.session['session_contact_status'] = contact_status
-
-            if request.POST.get('phonebook'):
-                phonebook = request.POST.get('phonebook')
-                request.session['session_phonebook'] = phonebook
+            contact_no = getvar(request, 'contact_no', setsession=True)
+            contact_name = getvar(request, 'contact_name', setsession=True)
+            contact_status = getvar(request, 'contact_status', setsession=True)
+            phonebook = getvar(request, 'phonebook', setsession=True)
 
     post_var_with_page = 0
     try:
@@ -299,10 +287,9 @@ def contact_list(request):
     if post_var_with_page == 0:
         # default
         # unset session var
-        request.session['session_contact_no'] = ''
-        request.session['session_contact_name'] = ''
-        request.session['session_contact_status'] = ''
-        request.session['session_phonebook'] = ''
+        field_list = ['contact_no', 'contact_name',
+                      'contact_status', 'phonebook']
+        unset_session_var(request, field_list)
 
     kwargs = {}
     if phonebook and phonebook != '0':

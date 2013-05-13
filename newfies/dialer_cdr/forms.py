@@ -30,7 +30,7 @@ class VoipSearchForm(SearchForm):
     status = forms.ChoiceField(label=_('disposition'),
                                choices=voip_call_disposition_list,
                                required=False)
-    campaign = forms.ChoiceField(label=_('campaign'), required=False)
+    campaign_id = forms.ChoiceField(label=_('campaign'), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(VoipSearchForm, self).__init__(*args, **kwargs)
@@ -55,4 +55,4 @@ class VoipSearchForm(SearchForm):
                     list.append((i[0], i[1]))
             except:
                 pass
-            self.fields['campaign'].choices = list
+            self.fields['campaign_id'].choices = list

@@ -69,11 +69,9 @@ func_install_fs_source() {
     cd $FS_BASE_PATH
     rm -rf freeswitch
     git clone git://git.freeswitch.org/freeswitch.git
+    cd $FS_BASE_PATH/freeswitch
     git checkout $FS_VERSION
 
-
-
-    cd $FS_BASE_PATH/freeswitch
     ./bootstrap.sh
     ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
     [ -f modules.conf ] && cp modules.conf modules.conf.bak

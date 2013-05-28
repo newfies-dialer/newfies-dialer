@@ -460,7 +460,15 @@ def customer_dashboard(request, on_index=None):
                  percentage(total_failed, total_call_count),
                  percentage(total_not_answered, total_call_count),]
 
-        extra_serie = {"tooltip": {"y_start": "", "y_end": " %"}}
+        color_list = [
+            COLOR_DISPOSITION['ANSWER'],
+            COLOR_DISPOSITION['BUSY'],
+            COLOR_DISPOSITION['CANCEL'],
+            COLOR_DISPOSITION['CONGESTION'],
+            COLOR_DISPOSITION['FAILED'],
+            COLOR_DISPOSITION['NOANSWER'],
+        ]
+        extra_serie = {"tooltip": {"y_start": "", "y_end": " %"}, "color_list": color_list}
         hangup_analytic_chartdata = {'x': xdata, 'y1': ydata, 'extra1': extra_serie}
 
     template = 'frontend/dashboard.html'

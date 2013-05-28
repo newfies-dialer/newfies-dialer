@@ -97,12 +97,12 @@ class ContactSearchForm(forms.Form):
                                  widget=forms.TextInput(attrs={'size': 15}))
     # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
     #                                     choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
-    name = forms.CharField(label=_('contact name'), required=False,
-                           widget=forms.TextInput(attrs={'size': 15}))
+    contact_name = forms.CharField(label=_('contact name'), required=False,
+                                   widget=forms.TextInput(attrs={'size': 15}))
     phonebook = forms.ChoiceField(label=_('phonebook'), required=False)
-    status = forms.TypedChoiceField(label=_('status'), required=False,
-                                    choices=list(STATUS_CHOICE),
-                                    initial=STATUS_CHOICE.ALL)
+    contact_status = forms.TypedChoiceField(label=_('status'), required=False,
+                                            choices=list(STATUS_CHOICE),
+                                            initial=STATUS_CHOICE.ALL)
 
     def __init__(self, user, *args, **kwargs):
         super(ContactSearchForm, self).__init__(*args, **kwargs)

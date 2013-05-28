@@ -33,7 +33,7 @@ from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
-from common.common_functions import current_view
+from common.common_functions import current_view, percentage
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import time
@@ -410,6 +410,27 @@ def customer_dashboard(request, on_index=None):
     total_record = total_record.items()
     total_record = sorted(total_record, key=lambda k: k[0])
 
+    # lineWithFocusChart
+    final_charttype = "lineWithFocusChart"
+    xdata = []
+    ydata = []
+    ydata2 = []
+    for i in total_record:
+        xdata.append(i[0])
+        ydata.append(i[1]['call_count'])
+        ydata2.append(i[1]['duration_sum'])
+
+    tooltip_date = "%d %b %y %H:%M %p"
+    extra_serie1 = {"tooltip": {"y_start": "", "y_end": " calls"}, "date_format": tooltip_date}
+    extra_serie2 = {"tooltip": {"y_start": "", "y_end": " sec"}, "date_format": tooltip_date}
+
+    final_chartdata = {
+        'x': xdata,
+        'name1': 'Calls', 'y1': ydata, 'extra1': extra_serie1,
+        'name2': 'Duration', 'y2': ydata2, 'extra2': extra_serie2,
+    }
+
+
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     if campaign_id_list:
@@ -421,8 +442,28 @@ def customer_dashboard(request, on_index=None):
                     updated_date__range=(start_date, end_date))\
             .count()
 
-    template = 'frontend/dashboard.html'
+    # PieChart
+    hangup_analytic_charttype = "pieChart"
+    xdata = []
+    ydata = []
+    hangup_analytic_chartdata = {'x': xdata}
+    if total_call_count != 0:
+        for i in VOIPCALL_DISPOSITION:
+            xdata.append(i[0])
 
+        # Y-axis order depend upon VOIPCALL_DISPOSITION
+        # 'ANSWER', 'BUSY', 'CANCEL', 'CONGESTION', 'FAILED', 'NOANSWER'
+        ydata = [percentage(total_answered, total_call_count),
+                 percentage(total_busy, total_call_count),
+                 percentage(total_cancel, total_call_count),
+                 percentage(total_congestion, total_call_count),
+                 percentage(total_failed, total_call_count),
+                 percentage(total_not_answered, total_call_count),]
+
+        extra_serie = {"tooltip": {"y_start": "", "y_end": " %"}}
+        hangup_analytic_chartdata = {'x': xdata, 'y1': ydata, 'extra1': extra_serie}
+
+    template = 'frontend/dashboard.html'
     data = {
         'module': current_view(request),
         'form': form,
@@ -431,13 +472,11 @@ def customer_dashboard(request, on_index=None):
         'total_of_phonebook_contacts': total_of_phonebook_contacts,
         'campaign_phonebook_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
-        'total_record': total_record,
         'total_duration_sum': total_duration_sum,
         'total_call_count': total_call_count,
         'total_answered': total_answered,
         'total_not_answered': total_not_answered,
         'total_busy': total_busy,
-        #'total_others': total_others,
         'total_cancel': total_cancel,
         'total_congestion': total_congestion,
         'total_failed': total_failed,
@@ -447,8 +486,11 @@ def customer_dashboard(request, on_index=None):
         'cancel_color': COLOR_DISPOSITION['CANCEL'],
         'congestion_color': COLOR_DISPOSITION['CONGESTION'],
         'failed_color': COLOR_DISPOSITION['FAILED'],
-        'SEARCH_TYPE': SEARCH_TYPE,
         'VOIPCALL_DISPOSITION': VOIPCALL_DISPOSITION,
+        'hangup_analytic_chartdata': hangup_analytic_chartdata,
+        'hangup_analytic_charttype': hangup_analytic_charttype,
+        'final_chartdata': final_chartdata,
+        'final_charttype': final_charttype,
     }
     if on_index == 'yes':
         return data

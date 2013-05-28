@@ -96,7 +96,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
        Customer Interface.
     """
 
-    fixtures = ['auth_user.json', 'phonebook.json', 'contact.json']
+    #fixtures = ['auth_user.json', 'phonebook.json', 'contact.json']
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'user_profile.json', 'contenttype.json',
+                'phonebook.json', 'contact.json', 'survey.json',
+                'dnc_list.json', 'dnc_contact.json',
+                'campaign.json', 'subscriber.json',]
 
     def test_phonebook_view_list(self):
         """Test Function to check phonebook list"""
@@ -216,7 +221,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         request = self.factory.post('/contact/',
                                     data={'from_date': datetime.now(),
                                           'to_date': datetime.now(),
-                                          'name': '123'})
+                                          'contact_name': '123'})
         request.user = self.user
         request.session = {}
         response = contact_list(request)
@@ -313,7 +318,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_get_contact_count(self):
-        request = self.factory.get('/contact/', {'pb_ids': '1'})
+        request = self.factory.get('/contact/', {'ids': '1'})
         request.user = self.user
         request.session = {}
         response = get_contact_count(request)
@@ -323,11 +328,11 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 class DialerContactCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
 
-    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
-                'dialer_setting.json', 'contenttype.json',
-                'phonebook.json', 'contact.json',
-                'campaign.json', 'subscriber.json',
-                'user_profile.json']
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'user_profile.json', 'contenttype.json',
+                'phonebook.json', 'contact.json', 'survey.json',
+                'dnc_list.json', 'dnc_contact.json',
+                'campaign.json', 'subscriber.json',]
 
     def test_import_phonebook(self):
         """Test that the ``ImportPhonebook``

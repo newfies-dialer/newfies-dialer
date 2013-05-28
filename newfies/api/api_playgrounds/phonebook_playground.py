@@ -39,29 +39,33 @@ class PhonebookAPIPlayground(APIPlayground):
                         "method": "POST",
                         "url": "/api/v1/phonebook/",
                         "description": _("create new phonebook"),
-                        "parameters": [{
-                                           "name": "name",
-                                           "type": "string",
-                                           "is_required": True,
-                                           "default": "Sample Phonebook"
-                                       },
-                                       {
-                                           "name": "description",
-                                           "type": "string"
-                                       }]
+                        "parameters": [
+                            {
+                                "name": "name",
+                                "type": "string",
+                                "is_required": True,
+                                "default": "Sample Phonebook"
+                            },
+                            {
+                                "name": "description",
+                                "type": "string"
+                            }
+                        ]
                     },
                     {
                         "method": "PUT",
                         "url": "/api/v1/phonebook/{phonebook-id}/",
                         "description": _("update phonebook"),
-                        "parameters": [{
-                                           "name": "name",
-                                           "type": "string"
-                                       },
-                                       {
-                                           "name": "description",
-                                           "type": "string"
-                                       }]
+                        "parameters": [
+                            {
+                                "name": "name",
+                                "type": "string"
+                            },
+                            {
+                                "name": "description",
+                                "type": "string"
+                            }
+                        ]
                     },
                     {
                         "method": "DELETE",

@@ -24,7 +24,7 @@ from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
 from common.common_functions import current_view, ceil_strdate,\
-    get_pagination_vars
+    get_pagination_vars, unset_session_var
 from datetime import datetime
 import tablib
 
@@ -99,10 +99,9 @@ def voipcall_report(request):
     if request.method == 'POST':
         form = VoipSearchForm(request.user, request.POST)
         if form.is_valid():
-            request.session['session_start_date'] = ''
-            request.session['session_end_date'] = ''
-            request.session['session_disposition'] = ''
-            request.session['session_campaign_id'] = ''
+            field_list = ['start_date', 'end_date',
+                          'disposition', 'campaign_id']
+            unset_session_var(request, field_list)
 
             if request.POST.get('from_date'):
                 # From
@@ -120,7 +119,7 @@ def voipcall_report(request):
             if disposition != 'all':
                 request.session['session_disposition'] = disposition
 
-            campaign_id = request.POST.get('campaign')
+            campaign_id = request.POST.get('campaign_id')
             if campaign_id and int(campaign_id) != 0:
                 request.session['session_campaign_id'] = int(campaign_id)
 
@@ -136,7 +135,7 @@ def voipcall_report(request):
                                   initial={'from_date': start_date.strftime('%Y-%m-%d'),
                                            'to_date': end_date.strftime('%Y-%m-%d'),
                                            'status': disposition,
-                                           'campaign': campaign_id})
+                                           'campaign_id': campaign_id})
         else:
             post_var_with_page = 1
             if request.method == 'GET':
@@ -155,7 +154,7 @@ def voipcall_report(request):
         campaign_id = 0
         form = VoipSearchForm(request.user,
                               initial={'from_date': from_date, 'to_date': to_date,
-                                       'status': disposition, 'campaign': campaign_id})
+                                       'status': disposition, 'campaign_id': campaign_id})
         # unset session var
         request.session['session_start_date'] = start_date
         request.session['session_end_date'] = end_date

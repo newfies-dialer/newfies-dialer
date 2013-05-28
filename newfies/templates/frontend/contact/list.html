@@ -34,7 +34,7 @@
         <div class="row">
             <div class="span12">
                 <div class="row">
-                    {% get_fieldset contact_no,name,phonebook as search_contact from form %}
+                    {% get_fieldset contact_no,contact_name,phonebook as search_contact from form %}
                     {% for field in search_contact %}
                     <div class="span4 clearfix{% if field.errors %} error{% endif %}">
                         <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
@@ -48,10 +48,10 @@
                     </div>
                     {% endfor %}
 
-                    <div class="span4 clearfix{% if form.status.errors %} error{% endif %}">
-                        <label class="control-label" for="id_{{ form.status.name }}">{{ form.status.label|title }}</label>
+                    <div class="span4 clearfix{% if form.contact_status.errors %} error{% endif %}">
+                        <label class="control-label" for="id_{{ form.contact_status.name }}">{{ form.contact_status.label|title }}</label>
                         <div class="input">
-                            {{ form.status|removetags:"ul li"|safe }}
+                            {{ form.contact_status|removetags:"ul li"|safe }}
                         </div>
                     </div>
                 </div>
@@ -149,7 +149,7 @@ function delete_button()
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="8" align="center">
+                        <td colspan="9" align="center">
                             {% trans "no records found"|title %}
                         </td>
                     </tr>

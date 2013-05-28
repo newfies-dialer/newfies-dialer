@@ -97,7 +97,21 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 
     def test_export_voipcall_report(self):
         """Test Function to check VoIP call export report"""
-        request = self.factory.get('/export_voipcall_report/')
+        request = self.factory.get('/export_voipcall_report/?format=csv')
+        request.user = self.user
+        request.session = {}
+        request.session['voipcall_record_qs'] = {}
+        response = export_voipcall_report(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/export_voipcall_report/?format=json')
+        request.user = self.user
+        request.session = {}
+        request.session['voipcall_record_qs'] = {}
+        response = export_voipcall_report(request)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/export_voipcall_report/?format=xls')
         request.user = self.user
         request.session = {}
         request.session['voipcall_record_qs'] = {}
@@ -108,9 +122,9 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 class DialerCdrCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
 
-    fixtures = ['gateway.json', 'survey.json', 'auth_user.json',
-                'dialer_setting.json', 'contenttype.json',
-                'phonebook.json', 'contact.json',
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'contenttype.json', 'user_profile.json',
+                'phonebook.json', 'contact.json', 'survey.json',
                 'campaign.json', 'subscriber.json',
                 'callrequest.json', 'voipcall.json', 'user_profile.json']
 
@@ -127,8 +141,10 @@ class DialerCdrCeleryTaskTestCase(TestCase):
 class DialerCdrModel(TestCase):
     """Test Callrequest, VoIPCall models"""
 
-    fixtures = ['gateway.json', 'auth_user.json', 'contenttype.json',
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'contenttype.json', 'user_profile.json',
                 'phonebook.json', 'contact.json',
+                'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
                 'callrequest.json', 'survey.json', 'section.json']
 

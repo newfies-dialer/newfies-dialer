@@ -28,7 +28,7 @@ from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
     voipcall_search_admin_form_fun
-from common.common_functions import variable_value
+from common.common_functions import getvar
 from common.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
@@ -155,19 +155,17 @@ class VoIPCallAdmin(admin.ModelAdmin):
             from_date = ''
             to_date = ''
             campaign_id = ''
-            if request.GET.get('starting_date__gte'):
-                from_date = variable_value(request, 'starting_date__gte')
-            if request.GET.get('starting_date__lte'):
-                to_date = variable_value(request, 'starting_date__lte')[0:10]
-            if request.GET.get('disposition__exact'):
-                status = variable_value(request, 'disposition__exact')
-            if request.GET.get('callrequest__campaign_id'):
-                campaign_id = variable_value(request, 'callrequest__campaign_id')
+
+            from_date = getvar(request, 'starting_date__gte')
+            to_date = getvar(request, 'starting_date__lte')[0:10]
+            status = getvar(request, 'disposition__exact')
+            campaign_id = getvar(request, 'callrequest__campaign_id')
+
             form = VoipSearchForm(request.user,
                                   initial={'status': status,
                                            'from_date': from_date,
                                            'to_date': to_date,
-                                           'campaign': campaign_id})
+                                           'campaign_id': campaign_id})
 
         ChangeList = self.get_changelist(request)
         try:

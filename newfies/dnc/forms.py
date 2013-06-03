@@ -17,26 +17,9 @@ from django.forms import ModelForm
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from dnc.models import DNC, DNCContact
-from dnc.constants import EXPORT_CHOICE
+from common.common_constants import EXPORT_CHOICE
+from common.common_forms import Exportfile
 from dialer_contact.forms import FileImport
-
-
-class HorizRadioRenderer(forms.RadioSelect.renderer):
-    """This overrides widget method to put radio buttons horizontally
-       instead of vertically.
-    """
-    def render(self):
-            """Outputs radios"""
-            return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
-
-
-class Exportfile(forms.Form):
-    """
-    Abstract Form : export file in various format e.g. XLS, CSV, JSON
-    """
-    export_to = forms.TypedChoiceField(label=_('export to').capitalize(), required=True,
-                                       choices=list(EXPORT_CHOICE),
-                                       widget=forms.RadioSelect(renderer=HorizRadioRenderer))
 
 
 class DNCForm(ModelForm):

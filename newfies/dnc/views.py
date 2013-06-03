@@ -21,11 +21,12 @@ from django.utils.translation import ugettext as _
 from dnc.models import DNC, DNCContact
 from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
     DNCContact_fileImport, DNCContact_fileExport
-from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME, EXPORT_CHOICE
+from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
 from dialer_campaign.function_def import user_dialer_setting_msg, \
     type_field_chk
 from common.common_functions import current_view,\
     get_pagination_vars, striplist
+from common.common_constants import EXPORT_CHOICE
 import tablib
 import csv
 

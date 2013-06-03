@@ -589,7 +589,7 @@ def dnc_contact_export(request):
 @login_required
 def dnc_contact_export_view(request):
     """ """
-    form = DNCContact_fileExport(request.user)
+    form = DNCContact_fileExport(request.user, initial={'export_to': EXPORT_CHOICE.CSV})
     if request.method == 'POST':
         dnc_list_id = request.POST['dnc_list']
         export_to = request.POST['export_to']

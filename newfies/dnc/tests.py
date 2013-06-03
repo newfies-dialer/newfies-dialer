@@ -25,7 +25,7 @@ from common.utils import BaseAuthenticatedClient
 
 csv_file = open(
     settings.APPLICATION_DIR +
-    '/dnc/fixtures/import_dnc_contacts_10.txt', 'r'
+    '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
 )
 
 

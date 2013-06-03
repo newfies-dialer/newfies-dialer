@@ -482,6 +482,7 @@ def dnc_contact_import(request):
     success_import_list = []
     type_error_import_list = []
     contact_cnt = 0
+    dup_contact_cnt = 0
     bulk_record = []
     if request.method == 'POST':
         form = DNCContact_fileImport(request.user, request.POST, request.FILES)
@@ -501,25 +502,35 @@ def dnc_contact_import(request):
 
             # Read each Row
             for row in csv_data:
+                duplicate_flag = False
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
 
-                bulk_record.append(
-                    DNCContact(
-                        dnc=dnc,
-                        phone_number=row[0],
+                # check duplicate record
+                try:
+                    DNCContact.objects.get(dnc_id=dnc.id,
+                                           phone_number=row[0])
+                    dup_contact_cnt = dup_contact_cnt + 1
+                    type_error_import_list.append(row)
+                    duplicate_flag = True
+                except:
+                    bulk_record.append(
+                        DNCContact(
+                            dnc_id=dnc.id,
+                            phone_number=row[0],
+                        )
                     )
-                )
 
-                contact_cnt = contact_cnt + 1
-                if contact_cnt < 100:
-                    success_import_list.append(row)
+                if not duplicate_flag:
+                    contact_cnt = contact_cnt + 1
+                    if contact_cnt < 100:
+                        success_import_list.append(row)
 
-                if contact_cnt % BULK_SIZE == 0:
-                    # Bulk insert
-                    DNCContact.objects.bulk_create(bulk_record)
-                    bulk_record = []
+                    if contact_cnt % BULK_SIZE == 0:
+                        # Bulk insert
+                        DNCContact.objects.bulk_create(bulk_record)
+                        bulk_record = []
 
             # remaining record
             DNCContact.objects.bulk_create(bulk_record)
@@ -530,6 +541,10 @@ def dnc_contact_import(request):
         msg = _('%(contact_cnt)s dnc contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
             % {'contact_cnt': contact_cnt,
                'total_rows': total_rows}
+
+    if dup_contact_cnt > 0:
+        error_msg = _('Duplicate dnc contact(s) %(dup_contact_cnt)s  are  not inserted!!') \
+            % {'dup_contact_cnt': dup_contact_cnt}
 
     data = RequestContext(request, {
                           'form': form,

@@ -26,6 +26,7 @@ from dialer_campaign.function_def import user_dialer_setting_msg, \
     type_field_chk
 from common.common_functions import current_view,\
     get_pagination_vars, striplist
+import tablib
 import csv
 
 
@@ -543,3 +544,35 @@ def dnc_contact_import(request):
     template = 'frontend/dnc_contact/import_dnc_contact.html'
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
+
+@login_required
+def dnc_contact_export(request):
+    """Export CSV file of dnc contact"""
+    format = request.GET['format']
+    # get the response object, this can be used as a stream.
+    response = HttpResponse(mimetype='text/' + format)
+
+    # force download.
+    response['Content-Disposition'] = 'attachment;filename=export.' + format
+
+    headers = ('phone_number',)
+
+    dnc_contact = DNCContact.objects.filter(dnc__user=request.user)
+
+    list_val = []
+    for i in dnc_contact:
+        list_val.append((i.phone_number,))
+
+    data = tablib.Dataset(*list_val, headers=headers)
+
+    if format == 'xls':
+        response.write(data.xls)
+
+    if format == 'csv':
+        response.write(data.csv)
+
+    if format == 'json':
+        response.write(data.json)
+
+    return response

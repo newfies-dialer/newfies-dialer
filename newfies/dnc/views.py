@@ -588,7 +588,18 @@ def dnc_contact_export(request):
 
 @login_required
 def dnc_contact_export_view(request):
-    """ """
+    """Export CSV file of dnc contact form view
+
+    **Attributes**:
+
+        * ``form`` - DNCContact_fileExport
+        * ``template`` - frontend/dnc_contact/export_dnc_contact.html
+
+    **Logic Description**:
+
+        * DNC contacts export form will be redirected to ``/dnc_contact/export/`` view
+          with format & dnc_list_id parameters
+    """
     form = DNCContact_fileExport(request.user, initial={'export_to': EXPORT_CHOICE.CSV})
     if request.method == 'POST':
         dnc_list_id = request.POST['dnc_list']

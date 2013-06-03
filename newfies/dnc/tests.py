@@ -14,12 +14,19 @@
 
 from django.test import TestCase
 from django.contrib.auth.models import User
+from django.conf import settings
 from dnc.models import DNC, DNCContact
 from dnc.views import dnc_add, dnc_change, dnc_list, dnc_del,\
     dnc_contact_list, dnc_contact_add, dnc_contact_change, \
-    dnc_contact_del, get_dnc_contact_count
-from dnc.forms import DNCForm, DNCContactForm, DNCContactSearchForm
+    dnc_contact_del, get_dnc_contact_count, dnc_contact_import
+from dnc.forms import DNCForm, DNCContactForm, DNCContactSearchForm,\
+    DNCContact_fileImport
 from common.utils import BaseAuthenticatedClient
+
+csv_file = open(
+    settings.APPLICATION_DIR +
+    '/dnc_contact/fixtures/import_dnc_contacts_10.txt', 'r'
+)
 
 
 class DNCAdminView(BaseAuthenticatedClient):
@@ -197,6 +204,35 @@ class DNCCustomerView(BaseAuthenticatedClient):
         response = dnc_contact_del(request, 0)
         self.assertEqual(response['Location'], '/dnc_contact/')
         self.assertEqual(response.status_code, 302)
+
+    def test_dnc_contact_view_import(self):
+        """Test Function to check import dnc Contact"""
+        response = self.client.get('/dnc_contact/import/')
+        self.assertTrue(response.context['form'],
+                        DNCContact_fileImport(self.user))
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response,
+                                'frontend/dnc_contact/import_dnc_contact.html')
+
+        response = self.client.post('/dnc_contact/import/',
+                                    data={'dnc_list': '1',
+                                          'csv_file': csv_file})
+        self.assertEqual(response.status_code, 200)
+
+        new_file = open(
+            settings.APPLICATION_DIR +
+            '/dialer_audio/fixtures/sample_audio_file.mp3', 'r'
+        )
+        response = self.client.post('/dnc_contact/import/',
+                                    data={'dnc_list': '1',
+                                          'csv_file': new_file})
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/dnc_contact/import/')
+        request.user = self.user
+        request.session = {}
+        response = dnc_contact_import(request)
+        self.assertEqual(response.status_code, 200)
 
     def test_get_dnc_contact_count(self):
         request = self.factory.get('/dnc_contact/', {'ids': '1'})

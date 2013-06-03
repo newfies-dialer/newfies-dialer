@@ -19,12 +19,14 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from dnc.models import DNC, DNCContact
-from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm
+from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
+    DNCContact_fileImport
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
 from dialer_campaign.function_def import user_dialer_setting_msg, \
     type_field_chk
 from common.common_functions import current_view,\
-    get_pagination_vars
+    get_pagination_vars, striplist
+import csv
 
 
 @permission_required('dnc.view_dnc_list', login_url='/')
@@ -447,5 +449,97 @@ def dnc_contact_change(request, object_id):
         'action': 'update',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@login_required
+def dnc_contact_import(request):
+    """Import CSV file of DNC Contacts for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - DNCContact_fileImport
+        * ``template`` - frontend/dnc/import_contact.html
+
+    **Logic Description**:
+
+        * Add new dnc contacts which will belong to the logged in user
+          via csv file & get the result (upload success and failure
+          statistics)
+
+    **Important variable**:
+
+        * total_rows - Total no. of records in the CSV file
+        * retail_record_count - No. of records imported from the CSV file
+    """
+    form = DNCContact_fileImport(request.user)
+    csv_data = ''
+    msg = ''
+    error_msg = ''
+    success_import_list = []
+    type_error_import_list = []
+    contact_cnt = 0
+    bulk_record = []
+    if request.method == 'POST':
+        form = DNCContact_fileImport(request.user, request.POST, request.FILES)
+        if form.is_valid():
+            # col_no - field name
+            #  0     - contact
+            # To count total rows of CSV file
+            records = csv.reader(request.FILES['csv_file'],
+                                 delimiter='|', quotechar='"')
+            total_rows = len(list(records))
+            BULK_SIZE = 1000
+            csv_data = csv.reader(request.FILES['csv_file'],
+                             delimiter='|', quotechar='"')
+            #Get Phonebook Obj
+            dnc = get_object_or_404(
+                DNC, pk=request.POST['dnc_list'], user=request.user)
+
+            # Read each Row
+            for row in csv_data:
+                row = striplist(row)
+                if not row or str(row[0]) == 0:
+                    continue
+
+                bulk_record.append(
+                    DNCContact(
+                        dnc=dnc,
+                        phone_number=row[0],
+                    )
+                )
+
+                contact_cnt = contact_cnt + 1
+
+                if contact_cnt < 100:
+                    success_import_list.append(row)
+
+                if contact_cnt % BULK_SIZE == 0:
+                    # Bulk insert
+                    DNCContact.objects.bulk_create(bulk_record)
+                    bulk_record = []
+
+            # remaining record
+            DNCContact.objects.bulk_create(bulk_record)
+            bulk_record = []
+
+    #check if there is contact imported
+    if contact_cnt > 0:
+        msg = _('%(contact_cnt)s dnc contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
+            % {'contact_cnt': contact_cnt,
+               'total_rows': total_rows}
+
+    data = RequestContext(request, {
+                          'form': form,
+                          'csv_data': csv_data,
+                          'msg': msg,
+                          'error_msg': error_msg,
+                          'success_import_list': success_import_list,
+                          'type_error_import_list': type_error_import_list,
+                          'module': current_view(request),
+                          'dialer_setting_msg': user_dialer_setting_msg(request.user),
+                          })
+    template = 'frontend/dnc_contact/import_dnc_contact.html'
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

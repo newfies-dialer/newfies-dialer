@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-03-27 16:32+0100\n"
+"POT-Creation-Date: 2013-06-03 18:21+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: Hebrew <LL@li.org>\n"
@@ -18,31 +18,31 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1)\n"
 
-#: settings.py:400
+#: settings.py:406
 msgid "English"
 msgstr "אנגלית"
 
-#: settings.py:401
+#: settings.py:407
 msgid "French"
 msgstr ""
 
-#: settings.py:402
+#: settings.py:408
 msgid "Spanish"
 msgstr "ספרדית"
 
-#: settings.py:403
+#: settings.py:409
 msgid "Portuguese"
 msgstr "פורטוגזית"
 
-#: settings.py:404
+#: settings.py:410
 msgid "Chinese"
 msgstr "סינית"
 
-#: settings.py:405
+#: settings.py:411
 msgid "Turkish"
 msgstr "טורקית"
 
-#: settings.py:406
+#: settings.py:412
 msgid "Japanese"
 msgstr ""
 
@@ -149,7 +149,7 @@ msgstr "מחק את הקמפיין"
 #: dialer_cdr/forms.py:33 frontend/forms.py:34 survey/forms.py:327
 #: survey/models.py:124 survey/models.py:492
 #: templates/frontend/bootstrap_menu.html:32
-#: templates/frontend/dashboard.html:27
+#: templates/frontend/dashboard.html:28
 #: templates/frontend/campaign/campaign_duplicate.html:46
 #: templates/frontend/campaign/change.html:12
 #: templates/frontend/campaign/list.html:9
@@ -212,13 +212,13 @@ msgid "create new dnc contact"
 msgstr "מחק קשר"
 
 #: api/api_playgrounds/dnc_contact_playground.py:63
-#: templates/frontend/dnc_contact/list.html:123
+#: templates/frontend/dnc_contact/list.html:127
 #, fuzzy
 msgid "update dnc contact"
 msgstr "עדכון קשר"
 
 #: api/api_playgrounds/dnc_contact_playground.py:80
-#: templates/frontend/dnc_contact/list.html:126
+#: templates/frontend/dnc_contact/list.html:130
 #, fuzzy
 msgid "delete dnc contact"
 msgstr "מחק קשר"
@@ -327,13 +327,13 @@ msgstr "מחיקת ספר טלפונים"
 msgid "create new phonebook"
 msgstr "עדכון ספר הטלפונים"
 
-#: api/api_playgrounds/phonebook_playground.py:56
+#: api/api_playgrounds/phonebook_playground.py:58
 #: templates/frontend/phonebook/list.html:71
 #, fuzzy
 msgid "update phonebook"
 msgstr "עדכון ספר הטלפונים"
 
-#: api/api_playgrounds/phonebook_playground.py:69
+#: api/api_playgrounds/phonebook_playground.py:73
 #: templates/frontend/phonebook/list.html:74
 #, fuzzy
 msgid "delete phonebook"
@@ -600,7 +600,7 @@ msgstr "לקוחות לוח"
 
 #: dialer_audio/constants.py:20 dialer_campaign/constants.py:41
 #: dialer_campaign/models.py:167 dialer_contact/constants.py:39
-#: dialer_contact/models.py:38 dialer_contact/models.py:130
+#: dialer_contact/models.py:38 dialer_contact/models.py:131
 #: dialer_gateway/models.py:53 dialer_settings/models.py:38
 #: dnc/constants.py:21 dnc/models.py:33 survey/constants.py:32
 #: survey/models.py:55 templates/frontend/api/api_list.html:32
@@ -621,28 +621,27 @@ msgstr "אודיו URL"
 #: dialer_audio/constants.py:23 dialer_campaign/models.py:257
 #: dialer_campaign/models.py:471 dialer_cdr/models.py:104
 #: dialer_contact/constants.py:41 dialer_contact/constants.py:52
-#: dialer_contact/models.py:43 dialer_contact/models.py:112
+#: dialer_contact/models.py:43 dialer_contact/models.py:113
 #: dialer_gateway/models.py:86 dnc/constants.py:22 dnc/constants.py:30
 #: survey/constants.py:34 survey/models.py:61
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:54
-#: templates/frontend/dashboard.html:229
-#: templates/frontend/report/voipcall_report.html:156
-#: templates/frontend/survey/survey_report.html:208
+#: templates/frontend/report/voipcall_report.html:158
+#: templates/frontend/survey/survey_report.html:210
 #, fuzzy
 msgid "date"
 msgstr "לעדכן"
 
 #: dialer_audio/views.py:93 dialer_campaign/views.py:324
-#: dialer_contact/views.py:102 dialer_contact/views.py:399 dnc/views.py:93
-#: dnc/views.py:347 survey/views.py:134
+#: dialer_contact/views.py:102 dialer_contact/views.py:386 dnc/views.py:97
+#: dnc/views.py:351 survey/views.py:135
 #, python-format
 msgid "\"%(name)s\" added."
 msgstr "\"(שם) s%\" הוא הוסיף."
 
 #: dialer_audio/views.py:134 dialer_campaign/views.py:356
 #: dialer_campaign/views.py:413 dialer_contact/views.py:152
-#: dialer_contact/views.py:441 dnc/views.py:143 dnc/views.py:389
-#: survey/views.py:179
+#: dialer_contact/views.py:428 dnc/views.py:147 dnc/views.py:393
+#: survey/views.py:180
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" נמחק."
@@ -757,7 +756,7 @@ msgid "app"
 msgstr "App"
 
 #: dialer_campaign/constants.py:45 dialer_contact/constants.py:42
-#: dialer_contact/models.py:61 dialer_contact/models.py:121
+#: dialer_contact/models.py:61 dialer_contact/models.py:122
 #: dnc/constants.py:23 templates/frontend/bootstrap_menu.html:42
 #: templates/frontend/bootstrap_menu.html:50
 #: templates/frontend/bootstrap_menu.html:67
@@ -1096,7 +1095,7 @@ msgstr "מסע"
 #: templates/frontend/contact/list.html:89
 #: templates/frontend/contact/list.html:120
 #: templates/frontend/dnc_contact/list.html:82
-#: templates/frontend/dnc_contact/list.html:109
+#: templates/frontend/dnc_contact/list.html:113
 #: templates/frontend/dnc_list/list.html:28
 #: templates/frontend/dnc_list/list.html:55
 #: templates/frontend/phonebook/list.html:28
@@ -1157,7 +1156,7 @@ msgid "completion count attempts"
 msgstr "ספור ניסיונות"
 
 #: dialer_campaign/models.py:466 dialer_contact/constants.py:48
-#: dialer_contact/models.py:120
+#: dialer_contact/models.py:121
 #: templates/admin/dialer_contact/contact/import_contact.html:20
 #: templates/frontend/contact/change.html:19
 #: templates/frontend/dnc_contact/change.html:19
@@ -1245,7 +1244,7 @@ msgid ""
 msgstr ""
 
 #: dialer_campaign/views.py:441 dialer_contact/views.py:208
-#: dialer_contact/views.py:491 dnc/views.py:198 dnc/views.py:439
+#: dialer_contact/views.py:478 dnc/views.py:202 dnc/views.py:443
 #: survey/views.py:760
 #, python-format
 msgid "\"%(name)s\" is updated."
@@ -1256,7 +1255,7 @@ msgstr "\"%(name)s\" מעודכן."
 msgid "VoIP report"
 msgstr "דו\"ח ה-VoIP"
 
-#: dialer_cdr/admin.py:72 dialer_cdr/admin.py:207
+#: dialer_cdr/admin.py:72 dialer_cdr/admin.py:205
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:14
 #: templates/admin_tools/dashboard/modules/app_list.html:13
 #, fuzzy
@@ -1268,23 +1267,23 @@ msgstr "קוראים דו\"ח"
 msgid "gateway used"
 msgstr "השער משמש"
 
-#: dialer_cdr/admin.py:182
+#: dialer_cdr/admin.py:180
 msgid "Database error"
 msgstr "מסד הנתונים שגיאה"
 
-#: dialer_cdr/admin.py:196
+#: dialer_cdr/admin.py:194
 #, fuzzy, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] "(TOTAL_COUNT)%s נבחר"
 msgstr[1] "(TOTAL_COUNT)%s נבחר"
 
-#: dialer_cdr/admin.py:200
+#: dialer_cdr/admin.py:198
 #, fuzzy, python-format
 msgid "0 of %(cnt)s selected"
 msgstr "(TOTAL_COUNT)%s נבחר"
 
-#: dialer_cdr/admin.py:259
+#: dialer_cdr/admin.py:257
 #: templates/admin_tools/dashboard/modules/app_list.html:45
 #: templates/admin_tools/dashboard/modules/model_list.html:26
 #, fuzzy
@@ -1381,10 +1380,9 @@ msgstr "מספר טלפון"
 
 #: dialer_cdr/constants.py:71 dialer_cdr/models.py:212 survey/constants.py:40
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:55
-#: templates/frontend/dashboard.html:43 templates/frontend/dashboard.html:231
-#: templates/frontend/report/voipcall_report.html:157
+#: templates/frontend/report/voipcall_report.html:159
 #: templates/frontend/survey/survey_campaign_result.html:17
-#: templates/frontend/survey/survey_report.html:209
+#: templates/frontend/survey/survey_report.html:211
 #, fuzzy
 msgid "duration"
 msgstr "משך"
@@ -1448,7 +1446,7 @@ msgid "callerID used to call the A-Leg"
 msgstr "זיהוי שיחה נהג לכנות-Leg"
 
 #: dialer_cdr/models.py:118 dialer_cdr/models.py:203 dnc/constants.py:29
-#: dnc/forms.py:32 dnc/models.py:75 user_profile/forms.py:61
+#: dnc/forms.py:36 dnc/models.py:75 user_profile/forms.py:61
 #: user_profile/models.py:65
 #, fuzzy
 msgid "phone number"
@@ -1600,21 +1598,21 @@ msgid "Dialer Contact"
 msgstr "בחר צור"
 
 #: dialer_contact/admin.py:79 dialer_contact/admin.py:118
-#: dialer_contact/views.py:385 dialer_contact/views.py:533
+#: dialer_contact/views.py:372 dialer_contact/views.py:520
 #, fuzzy, python-format
 msgid ""
 "you have too many contacts per campaign. you are allowed a maximum of "
 "%(limit)s"
 msgstr "יש לך קשרים רבים מדי לכל מסע פרסום. מותר לכל היותר% (הגבול) של"
 
-#: dialer_contact/admin.py:172 dialer_contact/views.py:583
+#: dialer_contact/admin.py:172 dialer_contact/views.py:570
 #, fuzzy
 msgid ""
 "invalid value for import! please check the import samples or phonebook is "
 "not valid"
 msgstr "ערך לא חוקי עבור יבוא! אנא בדקו את דגימות היבוא."
 
-#: dialer_contact/admin.py:212 dialer_contact/views.py:627
+#: dialer_contact/admin.py:212 dialer_contact/views.py:614
 #, fuzzy, python-format
 msgid ""
 "%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
@@ -1691,7 +1689,7 @@ msgstr "אל"
 msgid ""
 "upload CSV file using the pipe \"|\" as the field delimiter, e.g. 1234567890|"
 "surname|forename|email@somewhere.com|test-contact|1|address|city|state|US|"
-"unit|{\"age\":\"32\",\"title\":\"doctor\"}"
+"unit|{\"age\":\"32\",\"title\":\"doctor\"}|"
 msgstr ""
 
 #: dialer_contact/forms.py:42 survey/forms.py:370
@@ -1706,6 +1704,7 @@ msgstr "בחר ספר טלפונים"
 
 #: dialer_contact/forms.py:96 dialer_contact/models.py:89
 #: templates/frontend/contact/import_contact.html:22
+#: templates/frontend/dnc_contact/import_dnc_contact.html:22
 #, fuzzy
 msgid "contact number"
 msgstr "צור מספר"
@@ -1763,28 +1762,28 @@ msgstr "מדינה"
 msgid "country"
 msgstr "מדינה"
 
-#: dialer_contact/models.py:105
+#: dialer_contact/models.py:106
 #: templates/admin/dialer_contact/contact/import_contact.html:30
 #: templates/frontend/contact/import_contact.html:32
 #, fuzzy
 msgid "unit number"
 msgstr "צור מספר"
 
-#: dialer_contact/models.py:107
+#: dialer_contact/models.py:108
 #, fuzzy
 msgid "additional parameters (JSON)"
 msgstr "פרמטרים נוספים"
 
-#: dialer_contact/models.py:108
+#: dialer_contact/models.py:109
 msgid "enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"
 msgstr ""
 
-#: dialer_contact/models.py:110
+#: dialer_contact/models.py:111
 #, fuzzy
 msgid "notes"
 msgstr "הערה"
 
-#: dialer_contact/models.py:117
+#: dialer_contact/models.py:118
 #, fuzzy
 msgid "can see contact"
 msgstr "בחר צור"
@@ -1794,12 +1793,12 @@ msgstr "בחר צור"
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "(Count) s% הטלפונים (ים) יימחקו."
 
-#: dialer_contact/views.py:404 dnc/views.py:352
+#: dialer_contact/views.py:391 dnc/views.py:356
 #, fuzzy, python-format
 msgid "\"%(name)s\" cannot be added."
 msgstr "\"(שם) s%\" הוא הוסיף."
 
-#: dialer_contact/views.py:453 dnc/views.py:401
+#: dialer_contact/views.py:440 dnc/views.py:405
 #, python-format
 msgid "%(count)s contact(s) are deleted."
 msgstr "% (Count) s מגע (ים) יימחקו."
@@ -1937,7 +1936,7 @@ msgstr "בחר Gateway"
 msgid "add parameter"
 msgstr "הוספת פרמטר"
 
-#: dialer_gateway/models.py:94 templates/frontend/dashboard.html:42
+#: dialer_gateway/models.py:94
 #, fuzzy
 msgid "call count"
 msgstr "קוראים לספור"
@@ -2040,8 +2039,35 @@ msgstr "השתמש בביטויים רגילים למספרי טלפון לרש�
 msgid "dialer setting"
 msgstr "הגדרות חייגן"
 
-#: dnc/forms.py:36 dnc/models.py:48
+#: dnc/constants.py:34
+msgid "csv"
+msgstr ""
+
+#: dnc/constants.py:35
+msgid "xls"
+msgstr ""
+
+#: dnc/constants.py:36
+msgid "json"
+msgstr ""
+
+#: dnc/forms.py:40 dnc/models.py:48
 msgid "Do Not Call list"
+msgstr ""
+
+#: dnc/forms.py:72 dnc/forms.py:90
+#, fuzzy
+msgid "dnc list"
+msgstr "לכלול ברשימה השחורה"
+
+#: dnc/forms.py:74 dnc/forms.py:91
+#, fuzzy
+msgid "select dnc list"
+msgstr "בחר צור"
+
+#: dnc/forms.py:83
+msgid ""
+"upload CSV file using the pipe \"|\" as the field delimiter, e.g. 1234567890"
 msgstr ""
 
 #: dnc/models.py:34
@@ -2082,10 +2108,23 @@ msgstr "ייבוא ​​צור קשר"
 msgid "Do Not Call contacts"
 msgstr "ליצור קשר"
 
-#: dnc/views.py:163
+#: dnc/views.py:167
 #, fuzzy, python-format
 msgid "%(count)s dnc list(s) are deleted."
 msgstr "% (Count) s מגע (ים) יימחקו."
+
+#: dnc/views.py:541
+#, fuzzy, python-format
+msgid ""
+"%(contact_cnt)s dnc contact(s) are uploaded successfully out of "
+"%(total_rows)s row(s) !!"
+msgstr ""
+"% (contact_cnt) של צור (ים) הועלה בהצלחה מתוך% (TOTAL_ROWS) בשורה של (ים)!"
+
+#: dnc/views.py:546
+#, python-format
+msgid "Duplicate dnc contact(s) %(dup_contact_cnt)s  are  not inserted!!"
+msgstr ""
 
 #: frontend/constants.py:20
 #, fuzzy
@@ -2410,25 +2449,25 @@ msgstr "סקר תצורה"
 msgid "result count"
 msgstr "קוראים לספור"
 
-#: survey/views.py:196
+#: survey/views.py:197
 #, python-format
 msgid "%(count)s survey(s) are deleted."
 msgstr "(Count) s% בסקר (ים) יימחקו."
 
-#: survey/views.py:227
+#: survey/views.py:228
 msgid "section is added successfully."
 msgstr ""
 
-#: survey/views.py:352
+#: survey/views.py:353
 #, fuzzy
 msgid "section updated."
 msgstr "הודעה על סוג"
 
-#: survey/views.py:498
+#: survey/views.py:499
 msgid "section is deleted successfully."
 msgstr ""
 
-#: survey/views.py:533
+#: survey/views.py:534
 #, fuzzy
 msgid "script updated."
 msgstr "הודעה על סוג"
@@ -2560,51 +2599,62 @@ msgstr "הוסף%(name)s"
 #: templates/frontend/report/voipcall_report.html:96
 #: templates/frontend/survey/survey_report.html:141
 #, fuzzy
-msgid "export CSV file"
+msgid "export to CSV"
 msgstr "ייצוא קובץ CSV"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:62
+#: templates/frontend/report/voipcall_report.html:97
+#: templates/frontend/survey/survey_report.html:142
+msgid "export to XLS"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:67
+#: templates/frontend/report/voipcall_report.html:98
+#: templates/frontend/survey/survey_report.html:143
+msgid "export to JSON"
+msgstr ""
+
+#: templates/admin/dialer_cdr/voipcall/change_list.html:72
 #: templates/frontend/report/voipcall_report.html:23
 #, fuzzy
 msgid "daily report"
 msgstr "קוראים דו\"ח"
 
-#: templates/admin/dialer_cdr/voipcall/change_list.html:75
+#: templates/admin/dialer_cdr/voipcall/change_list.html:85
 #: templates/admin/dialer_contact/contact/change_list.html:49
 msgid "filter"
 msgstr ""
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:51
-#: templates/frontend/report/voipcall_report.html:152
-#: templates/frontend/survey/survey_report.html:204
+#: templates/frontend/report/voipcall_report.html:154
+#: templates/frontend/survey/survey_report.html:206
 #, fuzzy
 msgid "call detail report summary"
 msgstr "קוראים דוח סיכום פרטי"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:56
-#: templates/frontend/report/voipcall_report.html:158
-#: templates/frontend/survey/survey_report.html:210
+#: templates/frontend/report/voipcall_report.html:160
+#: templates/frontend/survey/survey_report.html:212
 #, fuzzy
 msgid "graphic"
 msgstr "גרפי"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:57
-#: templates/frontend/dashboard.html:230
-#: templates/frontend/report/voipcall_report.html:159
-#: templates/frontend/survey/survey_report.html:211
+#: templates/frontend/report/voipcall_report.html:161
+#: templates/frontend/survey/survey_report.html:213
 #, fuzzy
 msgid "calls"
 msgstr "שיחות"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:58
-#: templates/frontend/report/voipcall_report.html:160
+#: templates/frontend/report/voipcall_report.html:162
 #, fuzzy
 msgid "average connection time"
 msgstr "חיבור ממוצע זמן"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:58
-#: templates/frontend/report/voipcall_report.html:160
-#: templates/frontend/survey/survey_report.html:212
+#: templates/frontend/report/voipcall_report.html:162
+#: templates/frontend/survey/survey_report.html:214
 msgid "ACT"
 msgstr "מערכה"
 
@@ -2612,14 +2662,14 @@ msgstr "מערכה"
 #: templates/frontend/audio/audio_list.html:90
 #: templates/frontend/campaign/list.html:113
 #: templates/frontend/contact/list.html:159
-#: templates/frontend/dnc_contact/list.html:140
+#: templates/frontend/dnc_contact/list.html:144
 #: templates/frontend/dnc_list/list.html:86
 #: templates/frontend/phonebook/list.html:88
-#: templates/frontend/report/voipcall_report.html:144
-#: templates/frontend/report/voipcall_report.html:180
+#: templates/frontend/report/voipcall_report.html:146
+#: templates/frontend/report/voipcall_report.html:182
 #: templates/frontend/survey/survey_list.html:90
 #: templates/frontend/survey/survey_report.html:107
-#: templates/frontend/survey/survey_report.html:232
+#: templates/frontend/survey/survey_report.html:234
 #: templates/frontend/voiceapp/list.html:90
 #, fuzzy
 msgid "total"
@@ -2638,6 +2688,7 @@ msgstr "יבוא"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:18
 #: templates/frontend/contact/import_contact.html:19
+#: templates/frontend/dnc_contact/import_dnc_contact.html:19
 #, fuzzy
 msgid "sample file"
 msgstr "לדוגמה קובץ"
@@ -2662,6 +2713,8 @@ msgstr ""
 #: templates/frontend/contact/change.html:44
 #: templates/frontend/contact/import_contact.html:84
 #: templates/frontend/dnc_contact/change.html:44
+#: templates/frontend/dnc_contact/export_dnc_contact.html:31
+#: templates/frontend/dnc_contact/import_dnc_contact.html:50
 #: templates/frontend/dnc_list/change.html:35
 #: templates/frontend/phonebook/change.html:35
 #: templates/frontend/survey/import_survey.html:62
@@ -2679,6 +2732,7 @@ msgstr "צור (ים) יובאו"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:114
 #: templates/frontend/contact/import_contact.html:107
+#: templates/frontend/dnc_contact/import_dnc_contact.html:73
 #, fuzzy
 msgid "type mismatch"
 msgstr "סוג התאמה"
@@ -2692,7 +2746,7 @@ msgstr "סוג התאמה"
 #: templates/frontend/contact/change.html:18
 #: templates/frontend/contact/list.html:101
 #: templates/frontend/dnc_contact/change.html:18
-#: templates/frontend/dnc_contact/list.html:93
+#: templates/frontend/dnc_contact/list.html:97
 #: templates/frontend/dnc_list/change.html:9
 #: templates/frontend/dnc_list/list.html:39
 #: templates/frontend/phonebook/change.html:9
@@ -2774,7 +2828,7 @@ msgid "submit bug & feedback"
 msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:24
-#: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:12
+#: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:15
 #, fuzzy
 msgid "dashboard"
 msgstr "לוח מחוונים"
@@ -2925,141 +2979,31 @@ msgstr "מגע (ים)"
 msgid "please confirm to delete this DNC with"
 msgstr "נא לאשר למחוק את ספר הטלפונים עם"
 
-#: templates/frontend/dashboard.html:12
+#: templates/frontend/dashboard.html:15
 #, fuzzy
 msgid "realtime campaign performance monitoring"
 msgstr "מסע בזמן אמת מעקב אחר ביצועים"
 
-#: templates/frontend/dashboard.html:21
+#: templates/frontend/dashboard.html:23
 msgid "Submit"
 msgstr "להגיש"
 
-#: templates/frontend/dashboard.html:28
+#: templates/frontend/dashboard.html:29
 #, fuzzy
 msgid "total phonebook contacts"
 msgstr "ספר טלפונים אנשי קשר סך הכל"
 
-#: templates/frontend/dashboard.html:29
+#: templates/frontend/dashboard.html:30
 #, fuzzy
 msgid "total campaign contacts"
 msgstr "קמפיין אנשי קשר סך הכל"
 
-#: templates/frontend/dashboard.html:30
+#: templates/frontend/dashboard.html:31
 #, fuzzy
 msgid "contacted today"
 msgstr "פנה היום"
 
-#: templates/frontend/dashboard.html:66
-#, fuzzy
-msgid "jan"
-msgstr "Ganda"
-
-#: templates/frontend/dashboard.html:67
-msgid "feb"
-msgstr ""
-
-#: templates/frontend/dashboard.html:68
-msgid "mar"
-msgstr ""
-
-#: templates/frontend/dashboard.html:69
-#, fuzzy
-msgid "apr"
-msgstr "App"
-
-#: templates/frontend/dashboard.html:70 templates/frontend/dashboard.html:83
-#, fuzzy
-msgid "may"
-msgstr "יום שני"
-
-#: templates/frontend/dashboard.html:71
-msgid "jun"
-msgstr ""
-
-#: templates/frontend/dashboard.html:72
-msgid "jul"
-msgstr ""
-
-#: templates/frontend/dashboard.html:73
-msgid "aug"
-msgstr ""
-
-#: templates/frontend/dashboard.html:74
-msgid "sep"
-msgstr ""
-
-#: templates/frontend/dashboard.html:75
-#, fuzzy
-msgid "oct"
-msgstr "ליצור קשר"
-
-#: templates/frontend/dashboard.html:76
-#, fuzzy
-msgid "nov"
-msgstr "הערה"
-
-#: templates/frontend/dashboard.html:77
-msgid "dec"
-msgstr ""
-
-#: templates/frontend/dashboard.html:79
-msgid "january"
-msgstr ""
-
-#: templates/frontend/dashboard.html:80
-msgid "february"
-msgstr ""
-
-#: templates/frontend/dashboard.html:81
-#, fuzzy
-msgid "march"
-msgstr "חיפוש"
-
-#: templates/frontend/dashboard.html:82
-msgid "april"
-msgstr ""
-
-#: templates/frontend/dashboard.html:84
-msgid "june"
-msgstr ""
-
-#: templates/frontend/dashboard.html:85
-msgid "july"
-msgstr ""
-
-#: templates/frontend/dashboard.html:86
-msgid "august"
-msgstr ""
-
-#: templates/frontend/dashboard.html:87
-msgid "september"
-msgstr ""
-
-#: templates/frontend/dashboard.html:88
-msgid "october"
-msgstr ""
-
-#: templates/frontend/dashboard.html:89
-#, fuzzy
-msgid "november"
-msgstr "מספר טלפון"
-
-#: templates/frontend/dashboard.html:90
-#, fuzzy
-msgid "december"
-msgstr "מספר טלפון"
-
-#: templates/frontend/dashboard.html:232
-#, fuzzy
-msgid "avg. duration"
-msgstr "משך"
-
-#: templates/frontend/dashboard.html:233
-#, fuzzy
-msgid "hour"
-msgstr "בשעה האחרונה"
-
-#: templates/frontend/dashboard.html:383
+#: templates/frontend/dashboard.html:61
 msgid "TOTAL CALLS"
 msgstr "סך שיחות"
 
@@ -3131,23 +3075,23 @@ msgstr ""
 msgid "customer interface"
 msgstr "לקוחות ממשק"
 
-#: templates/frontend/master.html:102
+#: templates/frontend/master.html:97
 #, fuzzy
 msgid "login"
 msgstr "כניסה"
 
-#: templates/frontend/master.html:103
+#: templates/frontend/master.html:98
 #, fuzzy
 msgid "forgot password?"
 msgstr "שכחת את הסיסמה?"
 
-#: templates/frontend/master.html:109
+#: templates/frontend/master.html:104
 #, fuzzy
 msgid "display language"
 msgstr "הצגת השפה"
 
-#: templates/frontend/master.html:124 templates/frontend/master.html.py:130
-#: templates/frontend/master.html:152 templates/frontend/master.html.py:166
+#: templates/frontend/master.html:119 templates/frontend/master.html.py:125
+#: templates/frontend/master.html:147 templates/frontend/master.html.py:161
 #: templates/frontend/registration/check_user_phone_number.html:4
 #: templates/frontend/registration/check_user_phone_number.html:9
 #: templates/frontend/registration/user_account.html:4
@@ -3158,36 +3102,36 @@ msgstr "הצגת השפה"
 msgid "alert"
 msgstr "ערני"
 
-#: templates/frontend/master.html:130
+#: templates/frontend/master.html:125
 #, fuzzy
 msgid "please login by clicking on login button"
 msgstr "בבקשה התחבר על ידי לחיצה על כפתור התחברות"
 
-#: templates/frontend/master.html:139
+#: templates/frontend/master.html:134
 #, fuzzy
 msgid "voice broadcasting solution"
 msgstr "קול פתרון השידור"
 
-#: templates/frontend/master.html:154
+#: templates/frontend/master.html:149
 #, fuzzy
 msgid "to send notification to administrator"
 msgstr "כדי לשלוח הודעה למנהל"
 
-#: templates/frontend/master.html:154
+#: templates/frontend/master.html:149
 #, fuzzy
 msgid "click here"
 msgstr "לחץ כאן"
 
-#: templates/frontend/master.html:156
+#: templates/frontend/master.html:151
 #, fuzzy
 msgid "(notification sent)"
 msgstr "(הודעה נשלח)"
 
-#: templates/frontend/master.html:173
+#: templates/frontend/master.html:168
 msgid "error"
 msgstr ""
 
-#: templates/frontend/master.html:180
+#: templates/frontend/master.html:175
 msgid "info"
 msgstr ""
 
@@ -3275,10 +3219,10 @@ msgstr "מחק אודיו"
 #: templates/frontend/audio/audio_list.html:84
 #: templates/frontend/campaign/list.html:107
 #: templates/frontend/contact/list.html:153
-#: templates/frontend/dnc_contact/list.html:134
+#: templates/frontend/dnc_contact/list.html:138
 #: templates/frontend/dnc_list/list.html:80
 #: templates/frontend/phonebook/list.html:82
-#: templates/frontend/report/voipcall_report.html:138
+#: templates/frontend/report/voipcall_report.html:140
 #: templates/frontend/survey/survey_list.html:84
 #: templates/frontend/voiceapp/list.html:84
 #, fuzzy
@@ -3370,6 +3314,7 @@ msgstr ""
 "פעילה&#39;)"
 
 #: templates/frontend/contact/import_contact.html:91
+#: templates/frontend/dnc_contact/import_dnc_contact.html:57
 #, fuzzy
 msgid "subscriber(s) imported"
 msgstr "מנוי (ים) יובאו"
@@ -3397,10 +3342,40 @@ msgstr "עדכון קשר"
 msgid "delete contact"
 msgstr "מחק קשר"
 
+#: templates/frontend/dnc_contact/export_dnc_contact.html:13
+#, fuzzy
+msgid "export dnc contact"
+msgstr "עדכון קשר"
+
+#: templates/frontend/dnc_contact/export_dnc_contact.html:13
+#, fuzzy
+msgid "export list of dnc contact"
+msgstr "מחק קשר"
+
+#: templates/frontend/dnc_contact/import_dnc_contact.html:13
+#, fuzzy
+msgid "import dnc contact"
+msgstr "ייבוא ​​צור קשר"
+
+#: templates/frontend/dnc_contact/import_dnc_contact.html:13
+#, fuzzy
+msgid "import list of dnc contact by uploading CSV files"
+msgstr "ייבוא ​​רשימת אנשי הקשר על ידי העלאת קבצים-CSV"
+
 #: templates/frontend/dnc_contact/list.html:26
 #, fuzzy
 msgid "list, add and edit Do Not Call contacts"
 msgstr "רשימה, להוסיף ולערוך קשרים"
+
+#: templates/frontend/dnc_contact/list.html:93
+#, fuzzy
+msgid "import DNC"
+msgstr "יבוא"
+
+#: templates/frontend/dnc_contact/list.html:94
+#, fuzzy
+msgid "export DNC"
+msgstr "ייצוא קובץ CSV"
 
 #: templates/frontend/dnc_list/change.html:12
 #, fuzzy
@@ -3667,7 +3642,7 @@ msgid "section script"
 msgstr "הודעה על סוג"
 
 #: templates/frontend/survey/survey_campaign_result.html:7
-#: templates/frontend/survey/survey_report.html:164
+#: templates/frontend/survey/survey_report.html:166
 #, fuzzy
 msgid "result"
 msgstr "סקר דוח"
@@ -3805,7 +3780,7 @@ msgid "total contact that completed Call / Survey"
 msgstr ""
 
 #: templates/frontend/survey/survey_report.html:119
-#: templates/frontend/survey/survey_report.html:174
+#: templates/frontend/survey/survey_report.html:176
 #, fuzzy
 msgid "no record found"
 msgstr "שיא לא נמצאו."
@@ -3815,16 +3790,16 @@ msgstr "שיא לא נמצאו."
 msgid "survey call detail records"
 msgstr "קוראים דו\"ח פירוט"
 
-#: templates/frontend/survey/survey_report.html:165
+#: templates/frontend/survey/survey_report.html:167
 #, fuzzy
 msgid "view details"
 msgstr "שינוי הפרטים"
 
-#: templates/frontend/survey/survey_report.html:180
+#: templates/frontend/survey/survey_report.html:182
 msgid "total calls"
 msgstr ""
 
-#: templates/frontend/survey/survey_report.html:212
+#: templates/frontend/survey/survey_report.html:214
 msgid "Average Connection Time"
 msgstr "חיבור ממוצע זמן"
 
@@ -4027,6 +4002,46 @@ msgstr "מספר הטלפון הזה מוסמך."
 #, fuzzy
 msgid "your password has been changed."
 msgstr "סיסמתך שונתה."
+
+#, fuzzy
+#~ msgid "jan"
+#~ msgstr "Ganda"
+
+#, fuzzy
+#~ msgid "apr"
+#~ msgstr "App"
+
+#, fuzzy
+#~ msgid "may"
+#~ msgstr "יום שני"
+
+#, fuzzy
+#~ msgid "oct"
+#~ msgstr "ליצור קשר"
+
+#, fuzzy
+#~ msgid "nov"
+#~ msgstr "הערה"
+
+#, fuzzy
+#~ msgid "march"
+#~ msgstr "חיפוש"
+
+#, fuzzy
+#~ msgid "november"
+#~ msgstr "מספר טלפון"
+
+#, fuzzy
+#~ msgid "december"
+#~ msgstr "מספר טלפון"
+
+#, fuzzy
+#~ msgid "avg. duration"
+#~ msgstr "משך"
+
+#, fuzzy
+#~ msgid "hour"
+#~ msgstr "בשעה האחרונה"
 
 #, fuzzy
 #~ msgid "can see dnc contact"

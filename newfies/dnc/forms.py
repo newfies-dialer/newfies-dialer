@@ -14,9 +14,29 @@
 
 from django import forms
 from django.forms import ModelForm
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from dnc.models import DNC, DNCContact
+from dnc.constants import EXPORT_CHOICE
 from dialer_contact.forms import FileImport
+
+
+class HorizRadioRenderer(forms.RadioSelect.renderer):
+    """This overrides widget method to put radio buttons horizontally
+       instead of vertically.
+    """
+    def render(self):
+            """Outputs radios"""
+            return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
+
+
+class Exportfile(forms.Form):
+    """
+    Abstract Form : export file in various format e.g. XLS, CSV, JSON
+    """
+    export_to = forms.TypedChoiceField(label=_('export to').capitalize(), required=True,
+                                       choices=list(EXPORT_CHOICE),
+                                       widget=forms.RadioSelect(renderer=HorizRadioRenderer))
 
 
 class DNCForm(ModelForm):
@@ -78,3 +98,19 @@ class DNCContact_fileImport(FileImport):
             self.fields['dnc_list'].choices = \
                 DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
             self.fields['csv_file'].label = _('upload CSV file using the pipe "|" as the field delimiter, e.g. 1234567890')
+
+
+class DNCContact_fileExport(Exportfile):
+    """
+    DNC Contact Export
+    """
+    dnc_list = forms.ChoiceField(label=_("dnc list"), required=True,
+                                 help_text=_("select dnc list"))
+
+    def __init__(self, user, *args, **kwargs):
+        super(DNCContact_fileExport, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['dnc_list', 'export_to', ]
+        # To get user's dnc_list list
+        if user:  # and not user.is_superuser
+            self.fields['dnc_list'].choices = \
+                DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')

@@ -20,8 +20,8 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from dnc.models import DNC, DNCContact
 from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
-    DNCContact_fileImport
-from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
+    DNCContact_fileImport, DNCContact_fileExport
+from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME, EXPORT_CHOICE
 from dialer_campaign.function_def import user_dialer_setting_msg, \
     type_field_chk
 from common.common_functions import current_view,\
@@ -512,7 +512,6 @@ def dnc_contact_import(request):
                 )
 
                 contact_cnt = contact_cnt + 1
-
                 if contact_cnt < 100:
                     success_import_list.append(row)
 
@@ -550,6 +549,10 @@ def dnc_contact_import(request):
 def dnc_contact_export(request):
     """Export CSV file of dnc contact"""
     format = request.GET['format']
+    dnc_list_id = ''
+    if request.GET.get('dnc_list_id'):
+        dnc_list_id = request.GET.get('dnc_list_id')
+
     # get the response object, this can be used as a stream.
     response = HttpResponse(mimetype='text/' + format)
 
@@ -558,7 +561,11 @@ def dnc_contact_export(request):
 
     headers = ('phone_number',)
 
-    dnc_contact = DNCContact.objects.filter(dnc__user=request.user)
+    if dnc_list_id:
+        dnc_contact = DNCContact.objects.filter(pk=dnc_list_id)
+    else:
+        dnc_contact = DNCContact.objects.filter(dnc__user=request.user)
+
 
     list_val = []
     for i in dnc_contact:
@@ -566,13 +573,33 @@ def dnc_contact_export(request):
 
     data = tablib.Dataset(*list_val, headers=headers)
 
-    if format == 'xls':
+    if format == EXPORT_CHOICE.XLS:
         response.write(data.xls)
 
-    if format == 'csv':
+    if format == EXPORT_CHOICE.CSV:
         response.write(data.csv)
 
-    if format == 'json':
+    if format == EXPORT_CHOICE.JSON:
         response.write(data.json)
 
     return response
+
+
+@login_required
+def dnc_contact_export_view(request):
+    """ """
+    form = DNCContact_fileExport(request.user)
+    if request.method == 'POST':
+        dnc_list_id = request.POST['dnc_list']
+        export_to = request.POST['export_to']
+        return HttpResponseRedirect('/dnc_contact/export/?format='+export_to+'&dnc_list_id='+dnc_list_id)
+
+    template = 'frontend/dnc_contact/export_dnc_contact.html'
+    data = {
+        'module': current_view(request),
+        'form': form,
+        'action': 'update',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))

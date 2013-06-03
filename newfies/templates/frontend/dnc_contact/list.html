@@ -88,10 +88,7 @@ function delete_button()
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
                 <li><a href="import/" >{% trans "import dnc contact"|title %}</a></li>
-                <li><a href="export/?format=json" >{% trans "export to JSON"|capfirst %}</a></li>
-                <li><a href="export/?format=csv" >{% trans "export to CSV"|capfirst %}</a></li>
-                <li><a href="export/?format=xls" >{% trans "export to XLS"|capfirst %}</a></li>
-
+                <li><a href="export_view/">{% trans "export dnc contacts"|capfirst %}</a></li>
             </ul>
         </div>
         {% if perms.dnc.add_dnccontact %}

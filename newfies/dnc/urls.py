@@ -28,6 +28,7 @@ urlpatterns = patterns('dnc.views',
     (r'^dnc_contact/add/$', 'dnc_contact_add'),
     (r'^dnc_contact/import/$', 'dnc_contact_import'),
     (r'^dnc_contact/export/$', 'dnc_contact_export'),
+    (r'^dnc_contact/export_view/$', 'dnc_contact_export_view'),
     (r'^dnc_contact/del/(.+)/$', 'dnc_contact_del'),
     (r'^dnc_contact/(.+)/$', 'dnc_contact_change'),
 )

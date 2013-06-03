@@ -14,8 +14,12 @@
 
 from django import forms
 from django.forms import ModelForm
+from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from dnc.models import DNC, DNCContact
+from common.common_constants import EXPORT_CHOICE
+from common.common_forms import Exportfile
+from dialer_contact.forms import FileImport
 
 
 class DNCForm(ModelForm):
@@ -60,4 +64,36 @@ class DNCContactForm(ModelForm):
         # To get user's dnc list
         if user:
             self.fields['dnc'].choices = \
+                DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+
+
+class DNCContact_fileImport(FileImport):
+    """Admin Form : Import CSV file with dnc list"""
+    dnc_list = forms.ChoiceField(label=_("dnc list"),
+                                 required=True,
+                                 help_text=_("select dnc list"))
+
+    def __init__(self, user, *args, **kwargs):
+        super(DNCContact_fileImport, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['dnc_list', 'csv_file']
+        # To get user's dnc_list list
+        if user:  # and not user.is_superuser
+            self.fields['dnc_list'].choices = \
+                DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            self.fields['csv_file'].label = _('upload CSV file using the pipe "|" as the field delimiter, e.g. 1234567890')
+
+
+class DNCContact_fileExport(Exportfile):
+    """
+    DNC Contact Export
+    """
+    dnc_list = forms.ChoiceField(label=_("dnc list"), required=True,
+                                 help_text=_("select dnc list"))
+
+    def __init__(self, user, *args, **kwargs):
+        super(DNCContact_fileExport, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['dnc_list', 'export_to', ]
+        # To get user's dnc_list list
+        if user:  # and not user.is_superuser
+            self.fields['dnc_list'].choices = \
                 DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')

@@ -8,7 +8,7 @@ import namegen
 
 test = namegen.NameGenerator()
 count_contact = 0
-max_contact = 10
+max_contact = 1000
 start_phonenumber = 660200000
 
 for it_name in test:

@@ -225,7 +225,7 @@ class Campaign(Model):
                                      related_name="A-Leg Gateway",
                                      help_text=_("select outbound gateway"))
     content_type = models.ForeignKey(ContentType, verbose_name=_("type"),
-                                     limit_choices_to={"model__in": ("survey_template")})
+                                     limit_choices_to={"model__in": ["survey_template"]})
     object_id = models.PositiveIntegerField(verbose_name=_("application"))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
     extra_data = models.CharField(max_length=120, blank=True,

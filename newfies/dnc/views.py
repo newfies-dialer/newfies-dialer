@@ -571,7 +571,6 @@ def dnc_contact_export(request):
 
     # get the response object, this can be used as a stream.
     response = HttpResponse(mimetype='text/' + format)
-
     # force download.
     response['Content-Disposition'] = 'attachment;filename=export.' + format
 
@@ -581,7 +580,6 @@ def dnc_contact_export(request):
         dnc_contact = DNCContact.objects.filter(pk=dnc_list_id)
     else:
         dnc_contact = DNCContact.objects.filter(dnc__user=request.user)
-
 
     list_val = []
     for i in dnc_contact:
@@ -619,7 +617,7 @@ def dnc_contact_export_view(request):
     if request.method == 'POST':
         dnc_list_id = request.POST['dnc_list']
         export_to = request.POST['export_to']
-        return HttpResponseRedirect('/dnc_contact/export/?format='+export_to+'&dnc_list_id='+dnc_list_id)
+        return HttpResponseRedirect('/dnc_contact/export/?format=' + export_to + '&dnc_list_id=' + dnc_list_id)
 
     template = 'frontend/dnc_contact/export_dnc_contact.html'
     data = {

@@ -577,7 +577,7 @@ def dnc_contact_export(request):
     headers = ('phone_number',)
 
     if dnc_list_id:
-        dnc_contact = DNCContact.objects.filter(pk=dnc_list_id)
+        dnc_contact = DNCContact.objects.filter(dnc_id=dnc_list_id)
     else:
         dnc_contact = DNCContact.objects.filter(dnc__user=request.user)
 

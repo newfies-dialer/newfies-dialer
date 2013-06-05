@@ -356,8 +356,6 @@ def dnc_contact_add(request):
                 error_msg = _('"%(name)s" cannot be added.') %\
                     {'name': request.POST['phone_number']}
 
-    #FIXME: dnc_count not used
-    dnc_count = DNC.objects.filter(user=request.user).count()
     template = 'frontend/dnc_contact/change.html'
     data = {
         'module': current_view(request),
@@ -493,21 +491,26 @@ def dnc_contact_import(request):
             records = csv.reader(request.FILES['csv_file'],
                                  delimiter='|', quotechar='"')
             total_rows = len(list(records))
-            BULK_SIZE = 1000
+            BULK_SIZE = 10
             csv_data = csv.reader(request.FILES['csv_file'],
                              delimiter='|', quotechar='"')
             #Get Phonebook Obj
-            dnc = get_object_or_404(
-                DNC, pk=request.POST['dnc_list'], user=request.user)
+            dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
 
-            # Read each Row
+            #Read each Row
             for row in csv_data:
                 duplicate_flag = False
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
 
-                # check duplicate record
+                #Check field type
+                if not int(row[0]):
+                    error_msg = _("invalid value for import! please check that the import data is valid")
+                    type_error_import_list.append(row)
+                    break
+
+                #Check duplicate record
                 try:
                     DNCContact.objects.get(dnc_id=dnc.id,
                                            phone_number=row[0])
@@ -518,21 +521,27 @@ def dnc_contact_import(request):
                     bulk_record.append(
                         DNCContact(
                             dnc_id=dnc.id,
-                            phone_number=row[0],
-                        )
+                            phone_number=row[0])
                     )
 
                 if not duplicate_flag:
                     contact_cnt = contact_cnt + 1
                     if contact_cnt < 100:
+                        #We want to display only 100 lines of the success import
                         success_import_list.append(row)
 
                     if contact_cnt % BULK_SIZE == 0:
-                        # Bulk insert
+                        #Bulk insert
                         DNCContact.objects.bulk_create(bulk_record)
                         bulk_record = []
 
-            # remaining record
+                        # from django import db
+
+                        # print("------------------------------------------\n\n")
+                        # print("QUERY #) %d" % len(db.connection.queries))
+                        # print(db.connection.queries)
+
+            #Remaining record
             DNCContact.objects.bulk_create(bulk_record)
             bulk_record = []
 

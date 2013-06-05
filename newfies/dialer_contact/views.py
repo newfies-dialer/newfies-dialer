@@ -559,15 +559,15 @@ def contact_import(request):
             phonebook = get_object_or_404(
                 Phonebook, pk=request.POST['phonebook'],
                 user=request.user)
-            # Read each Row
+            #Read each Row
             for row in csv_data:
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
 
-                # check field type
+                #Check field type
                 if not int(row[5]):
-                    error_msg = _("invalid value for import! please check the import samples or phonebook is not valid")
+                    error_msg = _("nvalid value for import! please check the import samples or phonebook is not valid")
                     type_error_import_list.append(row)
                     break
 
@@ -598,10 +598,11 @@ def contact_import(request):
                 contact_cnt = contact_cnt + 1
 
                 if contact_cnt < 100:
+                    #We want to display only 100 lines of the success import
                     success_import_list.append(row)
 
                 if contact_cnt % BULK_SIZE == 0:
-                    # Bulk insert
+                    #Bulk insert
                     Contact.objects.bulk_create(bulk_record)
                     bulk_record = []
 

@@ -456,7 +456,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
 
     debug_query(9)
 
-    logger.info("TASK :: init_callrequest - status = %s" % str(obj_callrequest.status))
+    logger.info("TASK :: init_callrequest - status:%s;cmpg:%d" % (str(obj_callrequest.status), campaign_id))
 
     debug_query(10)
 
@@ -469,6 +469,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     else:
         dialout_phone_number = obj_callrequest.phone_number
     logger.debug("dialout_phone_number : %s" % dialout_phone_number)
+
+    if not dialout_phone_number:
+        logger.info("Error with dialout_phone_number - phone_number:%s;cmpg:%d" % (str(obj_callrequest.phone_number), campaign_id))
+        return False
 
     debug_query(11)
 

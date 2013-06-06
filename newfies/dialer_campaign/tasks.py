@@ -79,7 +79,7 @@ class CheckPendingcall(Task):
             * ``campaign_id`` - Campaign ID
         """
         logger = self.get_logger()
-        logger.info("TASK :: CheckPendingcall = %s" % str(campaign_id))
+        logger.info("TASK :: CheckPendingcall = %d" % campaign_id)
 
         debug_query(0)
 
@@ -119,14 +119,13 @@ class CheckPendingcall(Task):
         )
         if list_subscriber:
             no_subscriber = list_subscriber.count()
-            logger.info("#Subscriber: %d" % no_subscriber)
         else:
             no_subscriber = 0
+        logger.info("campaign_id=%d #Subscriber: %d" % (campaign_id, no_subscriber))
 
         debug_query(3)
 
         if no_subscriber == 0:
-            logger.info("No Subscriber to proceed on this campaign")
             return False
 
         if no_subscriber == 1:
@@ -143,8 +142,8 @@ class CheckPendingcall(Task):
         for elem_camp_subscriber in list_subscriber:
             """Loop on Subscriber and start the initcall task"""
             count = count + 1
-            logger.info("Add CallRequest for Subscriber (%s) & wait (%s) " %
-                       (str(elem_camp_subscriber.id), str(time_to_wait)))
+            logger.info("Add CallRequest for Subscriber (%d) & wait (%s) " %
+                       (elem_camp_subscriber.id, str(time_to_wait)))
             phone_number = elem_camp_subscriber.duplicate_contact
 
             debug_query(4)
@@ -189,7 +188,7 @@ class CheckPendingcall(Task):
             debug_query(6)
 
             second_towait = ceil(count * time_to_wait)
-            logger.info("Init CallRequest in  %d seconds" % second_towait)
+            logger.info("Init CallRequest in %d seconds (cmpg:%d)" % (second_towait, campaign_id))
             init_callrequest.apply_async(
                 args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration],
                 countdown=second_towait)

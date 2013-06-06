@@ -452,6 +452,7 @@ def dnc_contact_change(request, object_id):
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
 
+from django.db import IntegrityError
 
 @login_required
 def dnc_contact_import(request):
@@ -479,6 +480,7 @@ def dnc_contact_import(request):
     error_msg = ''
     success_import_list = []
     type_error_import_list = []
+    duplicate_import_list = []
     contact_cnt = 0
     dup_contact_cnt = 0
     bulk_record = []
@@ -488,12 +490,10 @@ def dnc_contact_import(request):
             # col_no - field name
             #  0     - contact
             # To count total rows of CSV file
-            records = csv.reader(request.FILES['csv_file'],
-                                 delimiter='|', quotechar='"')
+            records = csv.reader(request.FILES['csv_file'])
             total_rows = len(list(records))
-            BULK_SIZE = 10
-            csv_data = csv.reader(request.FILES['csv_file'],
-                             delimiter='|', quotechar='"')
+            BULK_SIZE = 999
+            csv_data = csv.reader(request.FILES['csv_file'])
             #Get Phonebook Obj
             dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
 
@@ -512,10 +512,9 @@ def dnc_contact_import(request):
 
                 #Check duplicate record
                 try:
-                    DNCContact.objects.get(dnc_id=dnc.id,
-                                           phone_number=row[0])
+                    DNCContact.objects.get(dnc_id=dnc.id, phone_number=row[0])
                     dup_contact_cnt = dup_contact_cnt + 1
-                    type_error_import_list.append(row)
+                    duplicate_import_list.append(row)
                     duplicate_flag = True
                 except:
                     bulk_record.append(
@@ -523,8 +522,6 @@ def dnc_contact_import(request):
                             dnc_id=dnc.id,
                             phone_number=row[0])
                     )
-
-                if not duplicate_flag:
                     contact_cnt = contact_cnt + 1
                     if contact_cnt < 100:
                         #We want to display only 100 lines of the success import
@@ -541,30 +538,30 @@ def dnc_contact_import(request):
                         # print("QUERY #) %d" % len(db.connection.queries))
                         # print(db.connection.queries)
 
-            #Remaining record
-            DNCContact.objects.bulk_create(bulk_record)
-            bulk_record = []
+            if bulk_record:
+                #Remaining record
+                DNCContact.objects.bulk_create(bulk_record)
+                #bulk_record = []
 
-    #check if there is contact imported
-    if contact_cnt > 0:
-        msg = _('%(contact_cnt)s dnc contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
-            % {'contact_cnt': contact_cnt,
-               'total_rows': total_rows}
+        #check if there is contact imported
+        if contact_cnt > 0:
+            msg = _('%(contact_cnt)s dnc contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
+                % {'contact_cnt': contact_cnt,
+                   'total_rows': total_rows}
 
-    if dup_contact_cnt > 0:
-        error_msg = _('Duplicate dnc contact(s) %(dup_contact_cnt)s  are  not inserted!!') \
-            % {'dup_contact_cnt': dup_contact_cnt}
+        if dup_contact_cnt > 0:
+            error_msg = _('Duplicate dnc contact(s) %(dup_contact_cnt)s  are  not inserted!!') \
+                % {'dup_contact_cnt': dup_contact_cnt}
 
     data = RequestContext(request, {
-                          'form': form,
-                          'csv_data': csv_data,
-                          'msg': msg,
-                          'error_msg': error_msg,
-                          'success_import_list': success_import_list,
-                          'type_error_import_list': type_error_import_list,
-                          'module': current_view(request),
-                          'dialer_setting_msg': user_dialer_setting_msg(request.user),
-                          })
+        'form': form,
+        'msg': msg,
+        'error_msg': error_msg,
+        'success_import_list': success_import_list,
+        'type_error_import_list': type_error_import_list,
+        'module': current_view(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    })
     template = 'frontend/dnc_contact/import_dnc_contact.html'
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

@@ -87,4 +87,4 @@ class DNCContact(models.Model):
         db_table = "dnc_contact"
         verbose_name = _("Do Not Call contact")
         verbose_name_plural = _("Do Not Call contacts")
-        unique_together = ['dnc', 'phone_number']
+        unique_together = ('dnc', 'phone_number')

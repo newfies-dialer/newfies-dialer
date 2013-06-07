@@ -483,7 +483,6 @@ def dnc_contact_import(request):
     error_msg = ''
     success_import_list = []
     type_error_import_list = []
-    duplicate_import_list = []
     contact_cnt = 0
     dup_contact_cnt = 0
     bulk_record = []
@@ -528,12 +527,6 @@ def dnc_contact_import(request):
                     DNCContact.objects.bulk_create(bulk_record)
                     bulk_record = []
 
-                    # from django import db
-
-                    # print("------------------------------------------\n\n")
-                    # print("QUERY #) %d" % len(db.connection.queries))
-                    # print(db.connection.queries)
-
             if bulk_record:
                 #Remaining record
                 DNCContact.objects.bulk_create(bulk_record)
@@ -546,7 +539,7 @@ def dnc_contact_import(request):
                    'total_rows': total_rows}
 
         if dup_contact_cnt > 0:
-            error_msg = _('Duplicate dnc contact(s) %(dup_contact_cnt)s  are  not inserted!!') \
+            error_msg = _('Duplicate dnc contact(s) %(dup_contact_cnt)s are not inserted!!') \
                 % {'dup_contact_cnt': dup_contact_cnt}
 
     data = RequestContext(request, {

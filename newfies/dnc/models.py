@@ -86,24 +86,3 @@ class DNCContact(models.Model):
         db_table = "dnc_contact"
         verbose_name = _("Do Not Call contact")
         verbose_name_plural = _("Do Not Call contacts")
-
-
-class DNCContact_temp(models.Model):
-    """This defines the Do Not Call Contact for each DNC List
-
-    **Attributes**:
-
-        * ``phone_number`` - Phone number
-        * ``dnc`` - DNC List
-
-    **Relationships**:
-
-        * ``dnc`` - Foreign key relationship to the DNC model.
-
-    **Name of DB table**: dnc_contact
-    """
-    dnc_id = models.CharField(max_length=120, null=True, blank=True)
-    phone_number = models.CharField(max_length=120, null=True, blank=True)
-
-    class Meta:
-        db_table = "dnc_contact_temp"

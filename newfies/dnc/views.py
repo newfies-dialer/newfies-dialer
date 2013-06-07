@@ -496,40 +496,13 @@ def dnc_contact_import(request):
             #Get DNC Obj
             dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
 
-            # upload csv to server
-            temp_file = request.FILES['csv_file']
-            path = default_storage.save(temp_file.name, ContentFile(temp_file.read()))
-
-            # Open connection
-            cursor = connection.cursor()
-            # Get CSV records and insert into dnc_contact_temp
-            cursor.execute('COPY dnc_contact_temp("phone_number") FROM %s CSV',
-                            [(settings.MEDIA_ROOT + '/' +path)])
-            # Update dnc_id in dnc_contact_temp with request.POST['dnc_list']
-            cursor.execute('UPDATE dnc_contact_temp SET dnc_id = ' + str(dnc.id))
-
-            # Insert dnc_contact_temp records into dnc_contact table
-            cursor.execute('INSERT INTO "dnc_contact" (dnc_id, phone_number, created_date, updated_date)\
-                            SELECT cast(dnc_id as int), phone_number, now(), now() FROM "dnc_contact_temp"')
-
-            # Truncate dnc_contact_temp
-            cursor.execute('TRUNCATE "dnc_contact_temp"')
-            # Close connection
-            connection.close()
-            # unlink uploaded csv from server
-            default_storage.delete(path)
-            msg = _('dnc contact(s) are uploaded successfully !!')
-
-
-            """
             records = csv.reader(request.FILES['csv_file'])
             total_rows = len(list(records))
-            BULK_SIZE = 999
+            BULK_SIZE = 1000
             csv_data = csv.reader(request.FILES['csv_file'])
 
             #Read each Row
             for row in csv_data:
-                duplicate_flag = False
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
@@ -540,44 +513,32 @@ def dnc_contact_import(request):
                     type_error_import_list.append(row)
                     break
 
+                bulk_record.append(
+                    DNCContact(
+                        dnc_id=dnc.id,
+                        phone_number=row[0])
+                )
+                contact_cnt = contact_cnt + 1
+                if contact_cnt < 100:
+                    #We want to display only 100 lines of the success import
+                    success_import_list.append(row)
 
-                #Check duplicate record
-                try:
-                    DNCContact.objects.get(dnc_id=dnc.id, phone_number=row[0])
-                    dup_contact_cnt = dup_contact_cnt + 1
-                    if dup_contact_cnt < 100:
-                        #We want to display only 100 lines of the success import
-                        duplicate_import_list.append(row)
-                    duplicate_flag = True
-                except:
-                    pass
+                if contact_cnt % BULK_SIZE == 0:
+                    #Bulk insert
+                    DNCContact.objects.bulk_create(bulk_record)
+                    bulk_record = []
 
-                    bulk_record.append(
-                        DNCContact(
-                            dnc_id=dnc.id,
-                            phone_number=row[0])
-                    )
-                    contact_cnt = contact_cnt + 1
-                    if contact_cnt < 100:
-                        #We want to display only 100 lines of the success import
-                        success_import_list.append(row)
+                    # from django import db
 
-                    if contact_cnt % BULK_SIZE == 0:
-                        #Bulk insert
-                        DNCContact.objects.bulk_create(bulk_record)
-                        bulk_record = []
-
-                        # from django import db
-
-                        # print("------------------------------------------\n\n")
-                        # print("QUERY #) %d" % len(db.connection.queries))
-                        # print(db.connection.queries)
+                    # print("------------------------------------------\n\n")
+                    # print("QUERY #) %d" % len(db.connection.queries))
+                    # print(db.connection.queries)
 
             if bulk_record:
                 #Remaining record
                 DNCContact.objects.bulk_create(bulk_record)
                 bulk_record = []
-            """
+
         #check if there is contact imported
         if contact_cnt > 0:
             msg = _('%(contact_cnt)s dnc contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \

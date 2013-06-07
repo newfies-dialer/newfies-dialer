@@ -69,8 +69,7 @@ class DNCContact(models.Model):
 
     **Name of DB table**: dnc_contact
     """
-    dnc = models.ForeignKey(DNC, null=True, blank=True,
-                    verbose_name=_("Do Not Call List"))
+    dnc = models.ForeignKey(DNC, verbose_name=_("Do Not Call List"))
     phone_number = models.CharField(max_length=120, db_index=True, null=True, blank=True,
         verbose_name=_("phone number"))
 
@@ -87,7 +86,6 @@ class DNCContact(models.Model):
         db_table = "dnc_contact"
         verbose_name = _("Do Not Call contact")
         verbose_name_plural = _("Do Not Call contacts")
-        unique_together = ('dnc', 'phone_number')
 
 
 class DNCContact_temp(models.Model):

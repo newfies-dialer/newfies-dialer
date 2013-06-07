@@ -116,6 +116,10 @@ class SubscriberAdmin(admin.ModelAdmin):
     def subscriber_report(self, request):
         opts = Subscriber._meta
         form = SubscriberReportForm()
+        if request.method == 'POST':
+            form = SubscriberReportForm(request.POST)
+            if form.is_valid():
+                print request.POST['campaign']
         ctx = RequestContext(request, {
             'form': form,
             'opts': opts,

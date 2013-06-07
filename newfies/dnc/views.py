@@ -507,10 +507,12 @@ def dnc_contact_import(request):
                     continue
 
                 #Check field type
-                if not int(row[0]):
-                    error_msg = _("invalid value for import! please check that the import data is valid")
+                try:
+                    int(row[0])
+                except ValueError:
+                    error_msg = _("Some of the imported data were invalid! (%s)" % str(row[0]))
                     type_error_import_list.append(row)
-                    break
+                    continue
 
                 bulk_record.append(
                     DNCContact(

@@ -63,7 +63,7 @@ class DNCAdminView(BaseAuthenticatedClient):
         response = self.client.post(
             '/admin/dnc/dnccontact/add/',
             data={'dnc_id': '1', 'phone_number': '1234'})
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
 
 class DNCCustomerView(BaseAuthenticatedClient):

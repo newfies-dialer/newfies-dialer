@@ -507,7 +507,7 @@ def dnc_contact_import(request):
                 try:
                     int(row[0])
                 except ValueError:
-                    error_msg = _("Some of the imported data were invalid! (%s)" % str(row[0]))
+                    error_msg = _("Some of the imported data were invalid!")
                     type_error_import_list.append(row)
                     continue
 
@@ -545,8 +545,8 @@ def dnc_contact_import(request):
         'form': form,
         'msg': msg,
         'error_msg': error_msg,
-        'success_import_list': [],
-        'type_error_import_list': [],
+        'success_import_list': success_import_list,
+        'type_error_import_list': type_error_import_list,
         'module': current_view(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     })

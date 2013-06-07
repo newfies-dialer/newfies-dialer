@@ -221,3 +221,14 @@ class CampaignAdminForm(ModelForm):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].widget.attrs['readonly'] = True
         self.fields['campaign_code'].initial = get_unique_code(length=5)
+
+
+class SubscriberReportForm(forms.Form):
+    """SubscriberReportForm Admin Form"""
+    campaign = forms.ChoiceField(label=_('campaign'), required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(SubscriberReportForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['campaign']
+        campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
+        self.fields['campaign'].choices = campaign_list

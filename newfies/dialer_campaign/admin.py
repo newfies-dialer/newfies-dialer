@@ -17,11 +17,14 @@ from django.conf.urls import patterns
 from django.utils.translation import ugettext as _
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
+from django.shortcuts import render_to_response
+from django.template.context import RequestContext
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit
+from dialer_campaign.forms import SubscriberReportForm
 from genericadmin.admin import GenericAdminModelAdmin
 from common.app_label_renamer import AppLabelRenamer
-AppLabelRenamer(native_app_label=u'dialer_campaign', app_label=_('Dialer Campaign')).main()
+APP_LABEL = AppLabelRenamer(native_app_label=u'dialer_campaign', app_label=_('Dialer Campaign')).main()
 
 
 class CampaignAdmin(GenericAdminModelAdmin):
@@ -102,4 +105,26 @@ class SubscriberAdmin(admin.ModelAdmin):
                     'contact_name', 'status', 'created_date')
     list_filter = ['campaign', 'status', 'created_date', 'last_attempt']
     ordering = ('-id', )
+
+    def get_urls(self):
+        urls = super(SubscriberAdmin, self).get_urls()
+        my_urls = patterns('',
+                    (r'^subscriber_report/$', self.admin_site.admin_view(self.subscriber_report)),
+                  )
+        return my_urls + urls
+
+    def subscriber_report(self, request):
+        opts = Subscriber._meta
+        form = SubscriberReportForm()
+        ctx = RequestContext(request, {
+            'form': form,
+            'opts': opts,
+            'model_name': opts.object_name.lower(),
+            'app_label': APP_LABEL,
+            'title': _('subscriber report'),
+        })
+
+        return render_to_response('admin/dialer_campaign/subscriber/subscriber_report.html',
+               context_instance=ctx)
+
 admin.site.register(Subscriber, SubscriberAdmin)

@@ -226,9 +226,9 @@ class CampaignAdminForm(ModelForm):
 
 class SubscriberReportForm(SearchForm):
     """SubscriberReportForm Admin Form"""
-    campaign = forms.ChoiceField(label=_('campaign'), required=True)
+    campaign_id = forms.ChoiceField(label=_('campaign'), required=True)
 
     def __init__(self, *args, **kwargs):
         super(SubscriberReportForm, self).__init__(*args, **kwargs)
         campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
-        self.fields['campaign'].choices = campaign_list
+        self.fields['campaign_id'].choices = campaign_list

@@ -27,6 +27,17 @@ class SUBSCRIBER_STATUS(Choice):
     COMPLETED = 8, _('COMPLETED')
 
 
+class SUBSCRIBER_STATUS_NAME(Choice):
+    PENDING = 'PENDING', _('PENDING')
+    PAUSE = 'PAUSE', _('PAUSE')
+    ABORT = 'ABORT', _('ABORT')
+    FAIL = 'FAIL', _('FAIL')
+    SENT = 'SENT', _('SENT')
+    IN_PROCESS = 'IN_PROCESS', _('IN_PROCESS')
+    NOT_AUTHORIZED = 'NOT_AUTHORIZED', _('NOT_AUTHORIZED')
+    COMPLETED = 'COMPLETED', _('COMPLETED')
+
+
 class CAMPAIGN_STATUS(Choice):
     START = 1, _('START')
     PAUSE = 2, _('PAUSE')

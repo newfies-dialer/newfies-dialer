@@ -18,9 +18,6 @@ from django.http import HttpResponseRedirect, HttpResponse, \
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.conf import settings
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
-from django.db import connection, transaction
 from django.utils.translation import ugettext as _
 from dnc.models import DNC, DNCContact
 from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
@@ -33,7 +30,7 @@ from common.common_functions import current_view,\
 from common.common_constants import EXPORT_CHOICE
 import tablib
 import csv
-import os
+
 
 @permission_required('dnc.view_dnc_list', login_url='/')
 @login_required

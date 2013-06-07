@@ -17,6 +17,10 @@ from django.http import HttpResponseRedirect, HttpResponse, \
     Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
+from django.conf import settings
+from django.core.files.storage import default_storage
+from django.core.files.base import ContentFile
+from django.db import connection, transaction
 from django.utils.translation import ugettext as _
 from dnc.models import DNC, DNCContact
 from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
@@ -29,7 +33,7 @@ from common.common_functions import current_view,\
 from common.common_constants import EXPORT_CHOICE
 import tablib
 import csv
-
+import os
 
 @permission_required('dnc.view_dnc_list', login_url='/')
 @login_required
@@ -452,7 +456,6 @@ def dnc_contact_change(request, object_id):
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
 
-from django.db import IntegrityError
 
 @login_required
 def dnc_contact_import(request):
@@ -490,12 +493,39 @@ def dnc_contact_import(request):
             # col_no - field name
             #  0     - contact
             # To count total rows of CSV file
+            #Get DNC Obj
+            dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
+
+            # upload csv to server
+            temp_file = request.FILES['csv_file']
+            path = default_storage.save(temp_file.name, ContentFile(temp_file.read()))
+
+            # Open connection
+            cursor = connection.cursor()
+            # Get CSV records and insert into dnc_contact_temp
+            cursor.execute('COPY dnc_contact_temp("phone_number") FROM %s CSV',
+                            [(settings.MEDIA_ROOT + '/' +path)])
+            # Update dnc_id in dnc_contact_temp with request.POST['dnc_list']
+            cursor.execute('UPDATE dnc_contact_temp SET dnc_id = ' + str(dnc.id))
+
+            # Insert dnc_contact_temp records into dnc_contact table
+            cursor.execute('INSERT INTO "dnc_contact" (dnc_id, phone_number, created_date, updated_date)\
+                            SELECT cast(dnc_id as int), phone_number, now(), now() FROM "dnc_contact_temp"')
+
+            # Truncate dnc_contact_temp
+            cursor.execute('TRUNCATE "dnc_contact_temp"')
+            # Close connection
+            connection.close()
+            # unlink uploaded csv from server
+            default_storage.delete(path)
+            msg = _('dnc contact(s) are uploaded successfully !!')
+
+
+            """
             records = csv.reader(request.FILES['csv_file'])
             total_rows = len(list(records))
             BULK_SIZE = 999
             csv_data = csv.reader(request.FILES['csv_file'])
-            #Get Phonebook Obj
-            dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
 
             #Read each Row
             for row in csv_data:
@@ -510,13 +540,18 @@ def dnc_contact_import(request):
                     type_error_import_list.append(row)
                     break
 
+
                 #Check duplicate record
                 try:
                     DNCContact.objects.get(dnc_id=dnc.id, phone_number=row[0])
                     dup_contact_cnt = dup_contact_cnt + 1
-                    duplicate_import_list.append(row)
+                    if dup_contact_cnt < 100:
+                        #We want to display only 100 lines of the success import
+                        duplicate_import_list.append(row)
                     duplicate_flag = True
                 except:
+                    pass
+
                     bulk_record.append(
                         DNCContact(
                             dnc_id=dnc.id,
@@ -541,8 +576,8 @@ def dnc_contact_import(request):
             if bulk_record:
                 #Remaining record
                 DNCContact.objects.bulk_create(bulk_record)
-                #bulk_record = []
-
+                bulk_record = []
+            """
         #check if there is contact imported
         if contact_cnt > 0:
             msg = _('%(contact_cnt)s dnc contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
@@ -557,8 +592,8 @@ def dnc_contact_import(request):
         'form': form,
         'msg': msg,
         'error_msg': error_msg,
-        'success_import_list': success_import_list,
-        'type_error_import_list': type_error_import_list,
+        'success_import_list': [],
+        'type_error_import_list': [],
         'module': current_view(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     })

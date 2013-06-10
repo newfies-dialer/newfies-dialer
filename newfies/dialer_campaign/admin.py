@@ -27,6 +27,7 @@ from dialer_campaign.forms import SubscriberReportForm
 from genericadmin.admin import GenericAdminModelAdmin
 from common.common_functions import variable_value, ceil_strdate
 from common.app_label_renamer import AppLabelRenamer
+from datetime import datetime
 APP_LABEL = _('Dialer Campaign')
 AppLabelRenamer(native_app_label=u'dialer_campaign', app_label=APP_LABEL).main()
 
@@ -128,7 +129,9 @@ class SubscriberAdmin(admin.ModelAdmin):
             * ``template`` - admin/dialer_campaign/subscriber/subscriber_report.html
         """
         opts = Subscriber._meta
-        form = SubscriberReportForm()
+        tday = datetime.today()
+        form = SubscriberReportForm(initial={"from_date": tday.strftime("%Y-%m-%d"),
+                                             "to_date": tday.strftime("%Y-%m-%d")})
         total_subscriber = 0
         total_pending = 0
         total_pause = 0
@@ -190,7 +193,7 @@ class SubscriberAdmin(admin.ModelAdmin):
                     else:
                         #status COMPLETED
                         total_completed += i['updated_date__count']
-        print APP_LABEL
+
         ctx = RequestContext(request, {
             'form': form,
             'opts': opts,

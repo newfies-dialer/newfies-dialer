@@ -232,3 +232,10 @@ class SubscriberReportForm(SearchForm):
         super(SubscriberReportForm, self).__init__(*args, **kwargs)
         campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
         self.fields['campaign_id'].choices = campaign_list
+        list = []
+        list.append((0, ''))
+        campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
+        for i in campaign_list:
+            list.append((i[0], i[1]))
+
+        self.fields['campaign_id'].choices = list

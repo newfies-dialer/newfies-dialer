@@ -41,24 +41,17 @@
     </table>
     </form>
     <p>&nbsp;</p>
-    <table style="width: 400px; margin: 50px 0px 0px 0px; background-color: #e6f7fe;">
-      <tr>
-          <th style="color: #111111; width: 120px;" colspan="3">{{ total_subscriber }}  {% trans "TOTAL SUBSCRIBERS" %}</th>
-      </tr>
-      <tr>
-          <th>{{ total_pending }}  {{ SUBSCRIBER_STATUS_NAME.PENDING }}</th>
-          <th>{{ total_pause }}  {{ SUBSCRIBER_STATUS_NAME.PAUSE }}</th>
-          <th>{{ total_abort }}  {{ SUBSCRIBER_STATUS_NAME.ABORT }}</th>
-      </tr>
-      <tr>
-          <th>{{ total_fail }}  {{ SUBSCRIBER_STATUS_NAME.FAIL }}</th>
-          <th>{{ total_sent }}  {{ SUBSCRIBER_STATUS_NAME.SENT }}</th>
-          <th>{{ total_in_process }}  {{ SUBSCRIBER_STATUS_NAME.IN_PROCESS }}</th>
-      </tr>
-      <tr>
-          <th>{{ total_not_auth }}  {{ SUBSCRIBER_STATUS_NAME.NOT_AUTHORIZED }}</th>
-          <th>{{ total_completed }}  {{ SUBSCRIBER_STATUS_NAME.COMPLETED }}</th>
-          <th>&nbsp;</th>
+    <table>
+      <tr><th>{{ total_subscriber }}  {% trans "TOTAL SUBSCRIBERS" %}</th></tr>
+      <tr><td>{{ total_pending }}  {{ SUBSCRIBER_STATUS_NAME.PENDING }}</td></tr>
+      <tr><td>{{ total_pause }}  {{ SUBSCRIBER_STATUS_NAME.PAUSE }}</td></tr>
+      <tr><td>{{ total_abort }}  {{ SUBSCRIBER_STATUS_NAME.ABORT }}</td></tr>
+      <tr><td>{{ total_fail }}  {{ SUBSCRIBER_STATUS_NAME.FAIL }}</td></tr>
+      <tr><td>{{ total_sent }}  {{ SUBSCRIBER_STATUS_NAME.SENT }}</td></tr>
+      <tr><td>{{ total_in_process }}  {{ SUBSCRIBER_STATUS_NAME.IN_PROCESS }}</td></tr>
+      <tr><td>{{ total_not_auth }}  {{ SUBSCRIBER_STATUS_NAME.NOT_AUTHORIZED }}</td></tr>
+      <tr><td>{{ total_completed }}  {{ SUBSCRIBER_STATUS_NAME.COMPLETED }}</td></tr>
+      <tr><td>&nbsp;</td></tr>
       </tr>
   </table>
 {% endblock %}

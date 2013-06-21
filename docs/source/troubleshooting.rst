@@ -114,6 +114,21 @@ Then run in debug mode::
     $ python manage.py celeryd -EB --loglevel=DEBUG
 
 
+.. _run-amazon-ec2:
+
+Run on Amazon EC2
+=================
+
+Although installing and running Newfies-Dialer on EC2 should work flawlessly, you will need
+to update the settings ALLOWED_HOSTS manually as the install script won't be able to detect the
+public IP address of your EC2 Instance.
+
+Edit /usr/share/newfies/settings_local.py and ensure that your public IP is set in ALLOWED_HOSTS,
+ie. ALLOWED_HOSTS = ['XXX.YYY.ZZZ']
+
+
+Further information about ALLOWED_HOSTS: https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
+
 
 .. _celerymon:
 

@@ -569,6 +569,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
                     % (exec_on_media, hangup_on_ring))
                 exec_on_media += 1
 
+            #TODO: look and test http://wiki.freeswitch.org/wiki/Misc._Dialplan_Tools_queue_dtmf
+
             # Send digits
             if send_digits:
                 if send_preanswer:

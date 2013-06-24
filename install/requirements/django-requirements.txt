@@ -26,5 +26,5 @@ django-extensions==1.0.3
 django-nvd3==0.1.9
 git+git://github.com/Star2Billing/django-notification
 django-frontend-notification==0.1.6
-git+git://github.com/jschrewe/django-genericadmin.git
+django-genericadmin==0.4
 git+git://github.com/areski/Django-API-Playground.git

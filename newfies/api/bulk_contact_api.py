@@ -113,7 +113,7 @@ class BulkContactResource(ModelResource):
         new_contact_count = 0
         for phoneno in phonenolist:
             # check phoneno in Contact
-            dup_count = Contact.objects.filter(contact=phoneno).count()
+            dup_count = Contact.objects.filter(contact=phoneno, phonebook_id=phonebook_id).count()
 
             # If dup_count is zero, create new contact
             if dup_count == 0:

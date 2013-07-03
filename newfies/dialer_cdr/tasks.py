@@ -456,7 +456,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
 
     debug_query(9)
 
-    logger.info("TASK :: init_callrequest - status = %s" % str(obj_callrequest.status))
+    logger.info("TASK :: init_callrequest - status:%s;cmpg:%d" % (str(obj_callrequest.status), campaign_id))
 
     debug_query(10)
 
@@ -469,6 +469,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     else:
         dialout_phone_number = obj_callrequest.phone_number
     logger.debug("dialout_phone_number : %s" % dialout_phone_number)
+
+    if not dialout_phone_number:
+        logger.info("Error with dialout_phone_number - phone_number:%s;cmpg:%d" % (str(obj_callrequest.phone_number), campaign_id))
+        return False
 
     debug_query(11)
 
@@ -564,6 +568,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
                 args_list.append("execute_on_media_%d='sched_hangup +%d ORIGINATOR_CANCEL'"
                     % (exec_on_media, hangup_on_ring))
                 exec_on_media += 1
+
+            #TODO: look and test http://wiki.freeswitch.org/wiki/Misc._Dialplan_Tools_queue_dtmf
 
             # Send digits
             if send_digits:

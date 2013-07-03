@@ -24,6 +24,7 @@ from dialer_campaign.models import Phonebook, Campaign
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_campaign.function_def import user_dialer_setting
 from common.common_functions import get_unique_code
+from dialer_contact.forms import SearchForm
 from dnc.models import DNC
 
 
@@ -221,3 +222,20 @@ class CampaignAdminForm(ModelForm):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].widget.attrs['readonly'] = True
         self.fields['campaign_code'].initial = get_unique_code(length=5)
+
+
+class SubscriberReportForm(SearchForm):
+    """SubscriberReportForm Admin Form"""
+    campaign_id = forms.ChoiceField(label=_('campaign'), required=True)
+
+    def __init__(self, *args, **kwargs):
+        super(SubscriberReportForm, self).__init__(*args, **kwargs)
+        campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
+        self.fields['campaign_id'].choices = campaign_list
+        list = []
+        list.append((0, ''))
+        campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
+        for i in campaign_list:
+            list.append((i[0], i[1]))
+
+        self.fields['campaign_id'].choices = list

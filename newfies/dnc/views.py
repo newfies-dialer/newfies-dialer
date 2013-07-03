@@ -17,6 +17,7 @@ from django.http import HttpResponseRedirect, HttpResponse, \
     Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
+from django.conf import settings
 from django.utils.translation import ugettext as _
 from dnc.models import DNC, DNCContact
 from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
@@ -356,8 +357,6 @@ def dnc_contact_add(request):
                 error_msg = _('"%(name)s" cannot be added.') %\
                     {'name': request.POST['phone_number']}
 
-    #FIXME: dnc_count not used
-    dnc_count = DNC.objects.filter(user=request.user).count()
     template = 'frontend/dnc_contact/change.html'
     data = {
         'module': current_view(request),
@@ -490,72 +489,67 @@ def dnc_contact_import(request):
             # col_no - field name
             #  0     - contact
             # To count total rows of CSV file
-            records = csv.reader(request.FILES['csv_file'],
-                                 delimiter='|', quotechar='"')
+            #Get DNC Obj
+            dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
+
+            records = csv.reader(request.FILES['csv_file'])
             total_rows = len(list(records))
             BULK_SIZE = 1000
-            csv_data = csv.reader(request.FILES['csv_file'],
-                             delimiter='|', quotechar='"')
-            #Get Phonebook Obj
-            dnc = get_object_or_404(
-                DNC, pk=request.POST['dnc_list'], user=request.user)
+            csv_data = csv.reader(request.FILES['csv_file'])
 
-            # Read each Row
+            #Read each Row
             for row in csv_data:
-                duplicate_flag = False
                 row = striplist(row)
                 if not row or str(row[0]) == 0:
                     continue
 
-                # check duplicate record
+                #Check field type
                 try:
-                    DNCContact.objects.get(dnc_id=dnc.id,
-                                           phone_number=row[0])
-                    dup_contact_cnt = dup_contact_cnt + 1
+                    int(row[0])
+                except ValueError:
+                    error_msg = _("Some of the imported data were invalid!")
                     type_error_import_list.append(row)
-                    duplicate_flag = True
-                except:
-                    bulk_record.append(
-                        DNCContact(
-                            dnc_id=dnc.id,
-                            phone_number=row[0],
-                        )
-                    )
+                    continue
 
-                if not duplicate_flag:
-                    contact_cnt = contact_cnt + 1
-                    if contact_cnt < 100:
-                        success_import_list.append(row)
+                bulk_record.append(
+                    DNCContact(
+                        dnc_id=dnc.id,
+                        phone_number=row[0])
+                )
+                contact_cnt = contact_cnt + 1
+                if contact_cnt < 100:
+                    #We want to display only 100 lines of the success import
+                    success_import_list.append(row)
 
-                    if contact_cnt % BULK_SIZE == 0:
-                        # Bulk insert
-                        DNCContact.objects.bulk_create(bulk_record)
-                        bulk_record = []
+                if contact_cnt % BULK_SIZE == 0:
+                    #Bulk insert
+                    DNCContact.objects.bulk_create(bulk_record)
+                    bulk_record = []
 
-            # remaining record
-            DNCContact.objects.bulk_create(bulk_record)
-            bulk_record = []
+            if bulk_record:
+                #Remaining record
+                DNCContact.objects.bulk_create(bulk_record)
+                bulk_record = []
 
-    #check if there is contact imported
-    if contact_cnt > 0:
-        msg = _('%(contact_cnt)s dnc contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
-            % {'contact_cnt': contact_cnt,
-               'total_rows': total_rows}
+        #check if there is contact imported
+        if contact_cnt > 0:
+            msg = _('%(contact_cnt)s dnc contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
+                % {'contact_cnt': contact_cnt,
+                   'total_rows': total_rows}
 
-    if dup_contact_cnt > 0:
-        error_msg = _('Duplicate dnc contact(s) %(dup_contact_cnt)s  are  not inserted!!') \
-            % {'dup_contact_cnt': dup_contact_cnt}
+        if dup_contact_cnt > 0:
+            error_msg = _('Duplicate dnc contact(s) %(dup_contact_cnt)s are not inserted!!') \
+                % {'dup_contact_cnt': dup_contact_cnt}
 
     data = RequestContext(request, {
-                          'form': form,
-                          'csv_data': csv_data,
-                          'msg': msg,
-                          'error_msg': error_msg,
-                          'success_import_list': success_import_list,
-                          'type_error_import_list': type_error_import_list,
-                          'module': current_view(request),
-                          'dialer_setting_msg': user_dialer_setting_msg(request.user),
-                          })
+        'form': form,
+        'msg': msg,
+        'error_msg': error_msg,
+        'success_import_list': success_import_list,
+        'type_error_import_list': type_error_import_list,
+        'module': current_view(request),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    })
     template = 'frontend/dnc_contact/import_dnc_contact.html'
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

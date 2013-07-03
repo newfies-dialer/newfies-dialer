@@ -14,10 +14,8 @@
 
 from django import forms
 from django.forms import ModelForm
-from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from dnc.models import DNC, DNCContact
-from common.common_constants import EXPORT_CHOICE
 from common.common_forms import Exportfile
 from dialer_contact.forms import FileImport
 
@@ -80,7 +78,7 @@ class DNCContact_fileImport(FileImport):
         if user:  # and not user.is_superuser
             self.fields['dnc_list'].choices = \
                 DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
-            self.fields['csv_file'].label = _('upload CSV file using the pipe "|" as the field delimiter, e.g. 1234567890')
+            self.fields['csv_file'].label = _('upload CSV file')
 
 
 class DNCContact_fileExport(Exportfile):

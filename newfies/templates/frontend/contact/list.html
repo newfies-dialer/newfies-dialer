@@ -73,10 +73,6 @@ function add_button()
 {
     window.location = 'add/';
 }
-function import_button()
-{
-    window.location = 'import/';
-}
 function delete_button()
 {
     $('#ListForm').submit();
@@ -91,12 +87,14 @@ function delete_button()
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                <li><a href="#" onclick="import_button()">{% trans "import"|title %}</a></li>
                 {% if perms.dialer_contact.delete_contact %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
             </ul>
         </div>
+
+        <a class="btn" href="import/" >{% trans "import contact"|title %}</a></li>
+
         {% if perms.dialer_contact.add_contact %}
             <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}

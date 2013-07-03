@@ -1,0 +1,60 @@
+{% extends "admin/change_list.html" %}
+{% load admin_list i18n dialer_campaign_tags common_tags %}
+
+{% if not is_popup %}
+  {% block breadcrumbs %}
+    <div class="breadcrumbs">
+      <a href="../../">
+        {% trans "home"|title %}
+      </a>
+       &rsaquo;
+       <a href="../../">
+         {{ app_label|capfirst }}
+      </a>
+      &rsaquo; <a href="../">{% trans "subscriber"|title %}</a>
+      &rsaquo; {{ title|title }}
+    </div>
+  {% endblock %}
+{% endif %}
+
+{% block content_title %}{% if title %}<h1>{{ title|title }}</h1>{% endif %}{% endblock %}
+
+{% block content %}
+<div id="content-main">
+
+{% if cl.formset.errors %}
+    <p class="errornote">
+    {% blocktrans count cl.formset.errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+    </p>
+    {{ cl.formset.non_form_errors }}
+{% endif %}
+
+{% block custom-search %}
+    <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <table class="actions">
+    <caption>{% trans "search option"|title %}</caption>
+    {{ form.as_table }}
+    <tr>
+        <td>&nbsp;</td>
+        <td><input type="submit" value="{% trans "search"|title %}" class="l-1" /><td>
+    </tr>
+    </table>
+    </form>
+    <p>&nbsp;</p>
+    <table>
+      <tr><th>{{ total_subscriber }}  {% trans "TOTAL SUBSCRIBERS" %}</th></tr>
+      <tr><td>{{ total_pending }}  {{ SUBSCRIBER_STATUS_NAME.PENDING }}</td></tr>
+      <tr><td>{{ total_pause }}  {{ SUBSCRIBER_STATUS_NAME.PAUSE }}</td></tr>
+      <tr><td>{{ total_abort }}  {{ SUBSCRIBER_STATUS_NAME.ABORT }}</td></tr>
+      <tr><td>{{ total_fail }}  {{ SUBSCRIBER_STATUS_NAME.FAIL }}</td></tr>
+      <tr><td>{{ total_sent }}  {{ SUBSCRIBER_STATUS_NAME.SENT }}</td></tr>
+      <tr><td>{{ total_in_process }}  {{ SUBSCRIBER_STATUS_NAME.IN_PROCESS }}</td></tr>
+      <tr><td>{{ total_not_auth }}  {{ SUBSCRIBER_STATUS_NAME.NOT_AUTHORIZED }}</td></tr>
+      <tr><td>{{ total_completed }}  {{ SUBSCRIBER_STATUS_NAME.COMPLETED }}</td></tr>
+      <tr><td>&nbsp;</td></tr>
+      </tr>
+  </table>
+{% endblock %}
+
+
+{% endblock %}

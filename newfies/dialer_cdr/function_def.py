@@ -33,7 +33,7 @@ def voipcall_record_common_fun(request):
 
     # Assign form field value to local variable
     disposition = variable_value(request, 'status')
-    campaign_id = variable_value(request, 'campaign')
+    campaign_id = variable_value(request, 'campaign_id')
 
     kwargs = {}
     if start_date and end_date:
@@ -88,7 +88,7 @@ def voipcall_search_admin_form_fun(request):
 
     # Assign form field value to local variable
     disposition = variable_value(request, 'status')
-    campaign_id = variable_value(request, 'campaign')
+    campaign_id = variable_value(request, 'campaign_id')
     query_string = ''
 
     if start_date and end_date:

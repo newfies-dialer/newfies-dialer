@@ -373,7 +373,7 @@ end
 
 function Database:update_result_aggregate(campaign_id, survey_id, section_id, response)
     sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
-        " WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..section_id.."'"
+        " WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..response.."'"
     self.debugger:msg("DEBUG", "Update Result Aggregate:"..sqlquery)
     res = self.con:execute(sqlquery)
     if not res then

@@ -106,7 +106,6 @@ STATICFILES_DIRS = (
     ("newfies", os.path.join(APPLICATION_DIR, "resources")),
 )
 
-
 # List of finder classes that know how to find static files in
 # various locations.
 STATICFILES_FINDERS = (

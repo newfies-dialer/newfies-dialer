@@ -111,6 +111,7 @@ class SubscriberAdmin(admin.ModelAdmin):
                     'contact_name', 'status', 'created_date')
     list_filter = ['campaign', 'status', 'created_date', 'last_attempt']
     ordering = ('-id', )
+    raw_id_fields = ("contact",)
 
     def get_urls(self):
         urls = super(SubscriberAdmin, self).get_urls()

@@ -64,7 +64,19 @@ function Debugger:msg(level, message)
     if not self.fs_env then
         print(message)
     else
-        freeswitch.consoleLog(level, message.."\n")
+        if level == 'DEBUG' then
+            fslevel = 'debug'
+        elseif level == 'WARN' then
+            fslevel = 'warning'
+        elseif level == 'ERROR' then
+            fslevel = 'error'
+        elseif level == 'INFO' then
+            fslevel = 'info'
+        else
+            -- default value info
+            fslevel = 'info'
+        end
+        freeswitch.consoleLog(fslevel, message.."\n")
     end
     if level == 'DEBUG' then
         logger:debug(message)

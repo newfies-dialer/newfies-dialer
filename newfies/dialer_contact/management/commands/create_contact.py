@@ -20,37 +20,37 @@ from random import choice
 
 
 class Command(BaseCommand):
-    args = 'phonebook_id, quantity'
+    args = 'phonebook_id, amount'
     help = "Create a new contacts for a given phonebook\n"\
-           "--------------------------------------------------------------\n"\
-           "python manage.py create_contact --phonebook_id=1 --quantity=100 --prefix=@myip"
+           "-------------------------------------------\n"\
+           "python manage.py create_contact --phonebook_id=1 --amount=100 --prefix=@myip"
 
     option_list = BaseCommand.option_list + (
-        make_option('--quantity',
+        make_option('--amount',
                     default=None,
-                    dest='quantity',
-                    help=help),
+                    dest='amount',
+                    help='Amount to create, by default 1 contact will be created'),
         make_option('--phonebook_id',
                     default=None,
                     dest='phonebook_id',
-                    help=help),
+                    help='Phonebook ID for the new contact'),
         make_option('--prefix',
                     default=None,
                     dest='prefix',
-                    help=help),
+                    help='Prefix to be added after the phonenumber, ie. @myip'),
     )
 
     def handle(self, *args, **options):
         """
         Note that contacts created this way are only for devel purposes
         """
-        quantity = 1  # default
-        if options.get('quantity'):
+        amount = 1  # default
+        if options.get('amount'):
             try:
-                quantity = options.get('quantity')
-                quantity = int(quantity)
+                amount = options.get('amount')
+                amount = int(amount)
             except ValueError:
-                quantity = 1
+                amount = 1
 
         phonebook_id = 1
         if options.get('phonebook_id'):
@@ -72,7 +72,7 @@ class Command(BaseCommand):
 
         length = 15
         chars = "1234567890"
-        for i in range(1, int(quantity) + 1):
+        for i in range(1, int(amount) + 1):
             phone_no = ''.join([choice(chars) for i in range(length)])
 
             #TODO: Use generate_series to speed up the contact creation
@@ -85,4 +85,4 @@ class Command(BaseCommand):
             except IntegrityError:
                 print "Error : Duplicate contact - %s" % phone_no
 
-        print "Number of Contact created : %(count)s" % {'count': quantity}
+        print "Number of Contact created : %(count)s" % {'count': amount}

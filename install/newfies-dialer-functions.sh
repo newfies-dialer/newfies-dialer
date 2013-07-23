@@ -248,7 +248,7 @@ func_install_dependencies(){
 
             #PostgreSQL
             apt-get -y install python-software-properties
-            apt-get -y install postgresql-9.1
+            apt-get -y install postgresql-9.1 postgresql-contrib-9.1
             apt-get -y install libpq-dev
             #Start PostgreSQL
             /etc/init.d/postgresql start

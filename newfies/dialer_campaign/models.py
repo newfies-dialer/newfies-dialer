@@ -418,18 +418,22 @@ class Campaign(Model):
     # OPTIMIZATION - GOOD
     def get_pending_subscriber_update(self, limit, status):
         """Get all the pending subscribers from the campaign"""
-        #We cannot use select_related here as it' 's not compliant with locking the rows
+        #TODO: Improve this part with a PL/SQL
+
+        #We cannot use select_related here as it's not compliant with locking the rows
         list_subscriber = Subscriber.objects.select_for_update()\
             .filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING)\
             .all()[:limit]
         if not list_subscriber:
-            return False
+            return (False, 0)
         id_list_sb = []
+        count = 0
         for elem_subscriber in list_subscriber:
+            count = count + 1
             id_list_sb.append(elem_subscriber.id)
         #Update in bulk
         Subscriber.objects.filter(id__in=id_list_sb).update(status=status)
-        return list_subscriber
+        return (list_subscriber, count)
 
 
 class Subscriber(Model):

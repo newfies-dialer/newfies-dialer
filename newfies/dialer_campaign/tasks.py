@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.conf import settings
 from celery.task import PeriodicTask
 from celery.task import Task
 from celery.utils.log import get_task_logger
@@ -32,11 +31,7 @@ from common_functions import debug_query
 # from common_functions import isint
 
 
-if settings.DIALERDEBUG:
-    Timelaps = 5
-else:
-    Timelaps = 60
-
+Timelaps = 6
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 
 logger = get_task_logger(__name__)
@@ -67,7 +62,6 @@ class campaign_spool_contact(PeriodicTask):
 
 
 # OPTIMIZATION - FINE
-# TODO : Put a priority on this task
 class CheckPendingcall(Task):
     @only_one(ikey="check_pendingcall", timeout=LOCK_EXPIRE)
     def run(self, campaign_id):
@@ -113,14 +107,10 @@ class CheckPendingcall(Task):
 
         # Get the subscriber of this campaign
         # get_pending_subscriber get Max 1000 records
-        list_subscriber = obj_campaign.get_pending_subscriber_update(
-            frequency,
+        (list_subscriber, no_subscriber) = obj_campaign.get_pending_subscriber_update(
+            frequency / 10,
             SUBSCRIBER_STATUS.IN_PROCESS
         )
-        if list_subscriber:
-            no_subscriber = list_subscriber.count()
-        else:
-            no_subscriber = 0
         logger.info("campaign_id=%d #Subscriber: %d" % (campaign_id, no_subscriber))
 
         debug_query(3)
@@ -128,15 +118,8 @@ class CheckPendingcall(Task):
         if no_subscriber == 0:
             return False
 
-        if no_subscriber == 1:
-            # Not many subscriber do a fast dial
-            time_to_wait = 1.0
-        elif no_subscriber <= 10:
-            # Not many subscriber do a fast dial
-            time_to_wait = 6.0
-        else:
-            # Set time to wait for balanced dispatching of calls
-            time_to_wait = 60.0 / no_subscriber
+        # Set time to wait for balanced dispatching of calls
+        time_to_wait = 6.0 / no_subscriber
 
         count = 0
         for elem_camp_subscriber in list_subscriber:
@@ -212,6 +195,7 @@ class campaign_running(PeriodicTask):
 
         campaign_running.delay()
     """
+    #run_every = timedelta(seconds=Timelaps)
     run_every = timedelta(seconds=Timelaps)
     # NOTE : until we implement a PID Controller :
     # http://en.wikipedia.org/wiki/PID_controller

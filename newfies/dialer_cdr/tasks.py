@@ -172,6 +172,270 @@ class BufferVoIPCall:
         VoIPCall.objects.bulk_create(self.list_voipcall)
 
 
+@task()
+def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
+                  hangup_cause_q850='', callerid='', phonenumber='', starting_date='',
+                  call_uuid='', duration=0, billsec=0, amd_status='person'):
+        """
+        Save voip call immediately
+        """
+        if leg == 'aleg':
+            #A-Leg
+            leg_type = LEG_TYPE.A_LEG
+            used_gateway = callrequest.aleg_gateway
+        else:
+            #B-Leg
+            leg_type = LEG_TYPE.B_LEG
+            used_gateway = callrequest.aleg_gateway
+            #This code is useful if we want to let the survey editor select the gateway
+            # if callrequest.content_object.__class__.__name__ == 'Survey':
+            #     #Get the gateway from the App
+            #     used_gateway = callrequest.content_object.gateway
+            # else:
+            #     #Survey
+            #     used_gateway = callrequest.aleg_gateway
+        if amd_status == 'machine':
+            amd_status_id = VOIPCALL_AMD_STATUS.MACHINE
+        else:
+            amd_status_id = VOIPCALL_AMD_STATUS.PERSON
+
+        logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
+            (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
+
+        #Get the first word only
+        hangup_cause = hangup_cause.split()[0]
+
+        if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
+            hangup_cause = 'ANSWER'
+
+        if hangup_cause == 'ANSWER':
+            disposition = 'ANSWER'
+        elif hangup_cause == 'USER_BUSY':
+            disposition = 'BUSY'
+        elif hangup_cause == 'NO_ANSWER':
+            disposition = 'NOANSWER'
+        elif hangup_cause == 'ORIGINATOR_CANCEL':
+            disposition = 'CANCEL'
+        elif hangup_cause == 'NORMAL_CIRCUIT_CONGESTION':
+            disposition = 'CONGESTION'
+        else:
+            disposition = 'FAILED'
+
+        #Note: Removed for test performance
+        #Note: Look at prefix PG module : https://github.com/dimitri/prefix
+        #prefix_obj = get_prefix_obj(phonenumber)
+
+        #Save this
+        new_voipcall = VoIPCall(
+            user_id=callrequest.user_id,
+            request_uuid=request_uuid,
+            leg_type=leg_type,
+            used_gateway=used_gateway,
+            callrequest_id=callrequest.id,
+            callid=call_uuid,
+            callerid=callerid,
+            phone_number=phonenumber,
+            #dialcode=prefix_obj,
+            starting_date=starting_date,
+            duration=duration,
+            billsec=billsec,
+            disposition=disposition,
+            hangup_cause=hangup_cause,
+            hangup_cause_q850=hangup_cause_q850,
+            amd_status=amd_status_id)
+        new_voipcall.save()
+
+
+@task()
+def update_callrequest(callrequest, opt_hangup_cause):
+    #Only the aleg will update the subscriber status / Bleg is only recorded
+    #Update Callrequest Status
+    if opt_hangup_cause == 'NORMAL_CLEARING':
+        callrequest.status = CALLREQUEST_STATUS.SUCCESS
+        if callrequest.subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
+            callrequest.subscriber.status = SUBSCRIBER_STATUS.SENT
+    else:
+        callrequest.status = CALLREQUEST_STATUS.FAILURE
+        callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
+    callrequest.hangup_cause = opt_hangup_cause
+
+    callrequest.save()
+    callrequest.subscriber.save()
+    debug_query(24)
+
+
+@task()
+def handle_callevent(record):
+    """
+    Handle the callevent, create the voipcall, and save different data
+    """
+    event_name = record[1]
+    body = record[2]
+    job_uuid = record[3]
+    call_uuid = record[4]
+    #used_gateway_id = record[5]
+    callrequest_id = record[6]
+    callerid = record[7]
+    phonenumber = record[8]
+    duration = record[9]
+    billsec = record[10]
+    hangup_cause = record[11]
+    hangup_cause_q850 = record[12]
+    starting_date = record[13]
+    amd_status = record[16]
+    leg = record[17]
+
+    if event_name == 'BACKGROUND_JOB':
+        #hangup cause come from body
+        hangup_cause = body[5:]
+
+    # if event_name == 'CHANNEL_HANGUP_COMPLETE':
+    #     #hangup cause come from body
+    #     print(event_name)
+
+    if hangup_cause == '':
+        hangup_cause = body[5:]
+
+    request_uuid = job_uuid
+    opt_hangup_cause = hangup_cause
+
+    debug_query(22)
+
+    try:
+        if callrequest_id == 0:
+            callrequest = Callrequest.objects\
+                .select_related('aleg_gateway', 'subscriber', 'campaign')\
+                .get(request_uuid=request_uuid.strip(' \t\n\r'))
+        else:
+            #mainly coming here
+            callrequest = Callrequest.objects\
+                .select_related('aleg_gateway', 'subscriber', 'campaign')\
+                .get(id=callrequest_id)
+    except:
+        logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)
+        return True
+
+    logger.debug("Find Callrequest id : %d" % callrequest.id)
+    debug_query(23)
+
+    if leg == 'aleg':
+        #Update callrequest
+        #update_callrequest.delay(callrequest, opt_hangup_cause)
+        #Disabled above tasks to reduce amount of tasks
+
+        #Only the aleg will update the subscriber status / Bleg is only recorded
+        #Update Callrequest Status
+        if opt_hangup_cause == 'NORMAL_CLEARING':
+            callrequest.status = CALLREQUEST_STATUS.SUCCESS
+            if callrequest.subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
+                callrequest.subscriber.status = SUBSCRIBER_STATUS.SENT
+        else:
+            callrequest.status = CALLREQUEST_STATUS.FAILURE
+            callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
+        callrequest.hangup_cause = opt_hangup_cause
+
+        callrequest.save()
+        callrequest.subscriber.save()
+        debug_query(24)
+
+    if call_uuid == '':
+        call_uuid = job_uuid
+    if callerid == '':
+        callerid = callrequest.callerid
+    if phonenumber == '':
+        phonenumber = callrequest.phone_number
+
+    #Create those in Bulk - add in a buffer until reach certain number
+    # buff_voipcall.save(
+    #     obj_callrequest=callrequest,
+    #     request_uuid=request_uuid,
+    #     leg=leg,
+    #     hangup_cause=opt_hangup_cause,
+    #     hangup_cause_q850=hangup_cause_q850,
+    #     callerid=callerid,
+    #     phonenumber=phonenumber,
+    #     starting_date=starting_date,
+    #     call_uuid=call_uuid,
+    #     duration=duration,
+    #     billsec=billsec,
+    #     amd_status=amd_status)
+
+    # debug_query(25)
+
+    voipcall_save.delay(
+        callrequest=callrequest,
+        request_uuid=request_uuid,
+        leg=leg,
+        hangup_cause=opt_hangup_cause,
+        hangup_cause_q850=hangup_cause_q850,
+        callerid=callerid,
+        phonenumber=phonenumber,
+        starting_date=starting_date,
+        call_uuid=call_uuid,
+        duration=duration,
+        billsec=billsec,
+        amd_status=amd_status)
+
+    #TODO: Move this to tasks?
+
+    #If the call failed we will check if we want to make a retry call
+    #Add condition to retry when it s machine and we want to reach a human
+    if (opt_hangup_cause != 'NORMAL_CLEARING' and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
+       (amd_status == 'machine' and callrequest.campaign.voicemail
+       and callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
+        #Update to Retry Done
+        callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
+        callrequest.save()
+
+        debug_query(26)
+
+        #check if we are allowed to retry on failure
+        if ((callrequest.subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
+           or not callrequest.campaign.maxretry):
+            logger.error("Not allowed retry - Maxretry (%d)" %
+                         callrequest.campaign.maxretry)
+            #Check here if we should try for completion
+            check_retrycall_completion(callrequest)
+            debug_query(28)
+        else:
+            #Allowed Retry
+            logger.error("Allowed Retry - Maxretry (%d)" % callrequest.campaign.maxretry)
+
+            # Create new callrequest, Assign parent_callrequest,
+            # Change callrequest_type & num_attempt
+            new_callrequest = Callrequest(
+                request_uuid=uuid1(),
+                parent_callrequest_id=callrequest.id,
+                call_type=CALLREQUEST_TYPE.ALLOW_RETRY,
+                num_attempt=callrequest.num_attempt + 1,
+                user=callrequest.user,
+                campaign_id=callrequest.campaign_id,
+                aleg_gateway_id=callrequest.aleg_gateway_id,
+                content_type=callrequest.content_type,
+                object_id=callrequest.object_id,
+                phone_number=callrequest.phone_number,
+                timelimit=callrequest.timelimit,
+                callerid=callrequest.callerid,
+                timeout=callrequest.timeout,
+                subscriber_id=callrequest.subscriber_id
+            )
+            new_callrequest.save()
+            #NOTE : implement a PID algorithm
+            second_towait = callrequest.campaign.intervalretry
+            debug_query(29)
+
+            logger.debug("Init Retry CallRequest in  %d seconds" % second_towait)
+            init_callrequest.apply_async(
+                args=[new_callrequest.id, callrequest.campaign.id, callrequest.campaign.callmaxduration],
+                countdown=second_towait)
+    else:
+        #The Call is Answered
+        logger.debug("Check for completion call")
+
+        #Check if we should relaunch a new call to achieve completion
+        check_retrycall_completion(callrequest)
+
+
 # OPTIMIZATION - TO REVIEW
 def check_callevent():
     """
@@ -195,13 +459,12 @@ def check_callevent():
         hangup_cause_q850 varchar(10),
         amd_status varchar(40),
         starting_date timestamp with time zone,
-        status integer,
+        status smallint,
         created_date timestamp with time zone NOT NULL
         );
-    CREATE INDEX call_event_idx_uuid ON call_event (call_uuid);
     CREATE INDEX call_event_idx_status ON call_event (status);
-    CREATE INDEX call_event_idx_date ON call_event (created_date);
-
+    --CREATE INDEX call_event_idx_date ON call_event (created_date);
+    --CREATE INDEX call_event_idx_uuid ON call_event (call_uuid);
     """
     debug_query(20)
 
@@ -212,172 +475,29 @@ def check_callevent():
 
     sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, "\
         "callrequest_id, callerid, phonenumber, duration, billsec, hangup_cause, "\
-        "hangup_cause_q850, starting_date, status, created_date, amd_status, leg FROM call_event WHERE status=1 LIMIT 2000 OFFSET 0"
+        "hangup_cause_q850, starting_date, status, created_date, amd_status, leg FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
 
     cursor.execute(sql_statement)
     row = cursor.fetchall()
 
     debug_query(21)
-    buff_voipcall = BufferVoIPCall()
+    # buff_voipcall = BufferVoIPCall()
 
     for record in row:
         call_event_id = record[0]
         event_name = record[1]
-        body = record[2]
-        job_uuid = record[3]
-        call_uuid = record[4]
-        #used_gateway_id = record[5]
-        callrequest_id = record[6]
-        callerid = record[7]
-        phonenumber = record[8]
-        duration = record[9]
-        billsec = record[10]
-        hangup_cause = record[11]
-        hangup_cause_q850 = record[12]
-        starting_date = record[13]
-        amd_status = record[16]
-        leg = record[17]
 
         #Update Call Event
         sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
         cursor.execute(sql_statement)
         logger.info("Processing Event : %s" % event_name)
 
-        if event_name == 'BACKGROUND_JOB':
-            #hangup cause come from body
-            hangup_cause = body[5:]
-
-        # if event_name == 'CHANNEL_HANGUP_COMPLETE':
-        #     #hangup cause come from body
-        #     print(event_name)
-
-        if hangup_cause == '':
-            hangup_cause = body[5:]
-
-        opt_request_uuid = job_uuid
-        opt_hangup_cause = hangup_cause
-
-        debug_query(22)
-
-        try:
-            if callrequest_id == 0:
-                callrequest = Callrequest.objects\
-                    .select_related('aleg_gateway', 'subscriber', 'campaign')\
-                    .get(request_uuid=opt_request_uuid.strip(' \t\n\r'))
-            else:
-                #mainly coming here
-                callrequest = Callrequest.objects\
-                    .select_related('aleg_gateway', 'subscriber', 'campaign')\
-                    .get(id=callrequest_id)
-        except:
-            logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)
-            continue
-
-        logger.debug("Find Callrequest id : %d" % callrequest.id)
-        debug_query(23)
-
-        if leg == 'aleg':
-            #Only the aleg will update the subscriber status / Bleg is only recorded
-            #Update Callrequest Status
-            if opt_hangup_cause == 'NORMAL_CLEARING':
-                callrequest.status = CALLREQUEST_STATUS.SUCCESS
-                if callrequest.subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
-                    callrequest.subscriber.status = SUBSCRIBER_STATUS.SENT
-            else:
-                callrequest.status = CALLREQUEST_STATUS.FAILURE
-                callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
-            callrequest.hangup_cause = opt_hangup_cause
-
-            callrequest.save()
-            callrequest.subscriber.save()
-
-        debug_query(24)
-
-        if call_uuid == '':
-            call_uuid = job_uuid
-        if callerid == '':
-            callerid = callrequest.callerid
-        if phonenumber == '':
-            phonenumber = callrequest.phone_number
-
-        #TODO: Create those in Bulk - add in a buffer until reach certain number
-        buff_voipcall.save(
-            obj_callrequest=callrequest,
-            request_uuid=opt_request_uuid,
-            leg=leg,
-            hangup_cause=opt_hangup_cause,
-            hangup_cause_q850=hangup_cause_q850,
-            callerid=callerid,
-            phonenumber=phonenumber,
-            starting_date=starting_date,
-            call_uuid=call_uuid,
-            duration=duration,
-            billsec=billsec,
-            amd_status=amd_status)
-
-        debug_query(25)
-
-        #If the call failed we will check if we want to make a retry call
-        #Add condition to retry when it s machine and we want to reach a human
-        if (opt_hangup_cause != 'NORMAL_CLEARING' and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
-           (amd_status == 'machine' and callrequest.campaign.voicemail
-           and callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
-            #Update to Retry Done
-            callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
-            callrequest.save()
-
-            debug_query(26)
-
-            #check if we are allowed to retry on failure
-            if ((callrequest.subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
-               or not callrequest.campaign.maxretry):
-                logger.error("Not allowed retry - Maxretry (%d)" %
-                             callrequest.campaign.maxretry)
-                #Check here if we should try for completion
-                check_retrycall_completion(callrequest)
-                debug_query(28)
-            else:
-                #Allowed Retry
-                logger.error("Allowed Retry - Maxretry (%d)" % callrequest.campaign.maxretry)
-
-                # Create new callrequest, Assign parent_callrequest,
-                # Change callrequest_type & num_attempt
-                new_callrequest = Callrequest(
-                    request_uuid=uuid1(),
-                    parent_callrequest_id=callrequest.id,
-                    call_type=CALLREQUEST_TYPE.ALLOW_RETRY,
-                    num_attempt=callrequest.num_attempt + 1,
-                    user=callrequest.user,
-                    campaign_id=callrequest.campaign_id,
-                    aleg_gateway_id=callrequest.aleg_gateway_id,
-                    content_type=callrequest.content_type,
-                    object_id=callrequest.object_id,
-                    phone_number=callrequest.phone_number,
-                    timelimit=callrequest.timelimit,
-                    callerid=callrequest.callerid,
-                    timeout=callrequest.timeout,
-                    subscriber_id=callrequest.subscriber_id
-                )
-                new_callrequest.save()
-                #NOTE : implement a PID algorithm
-                second_towait = callrequest.campaign.intervalretry
-                debug_query(29)
-
-                logger.debug("Init Retry CallRequest in  %d seconds" % second_towait)
-                init_callrequest.apply_async(
-                    args=[new_callrequest.id, callrequest.campaign.id, callrequest.campaign.callmaxduration],
-                    countdown=second_towait)
-        else:
-            #The Call is Answered
-            logger.debug("Check for completion call")
-
-            #Check if we should relaunch a new call to achieve completion
-            check_retrycall_completion(callrequest)
+        handle_callevent.delay(record)
 
     debug_query(30)
 
-    buff_voipcall.commit()
-    debug_query(31)
+    # buff_voipcall.commit()
+    # debug_query(31)
 
     logger.debug('End Loop : check_callevent')
 
@@ -391,7 +511,7 @@ class task_pending_callevent(PeriodicTask):
     """
     #The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
-    run_every = timedelta(seconds=60)
+    run_every = timedelta(seconds=15)
     #run_every = timedelta(seconds=15)
 
     #TODO: problem of the lock if it's a cloud, it won't be shared

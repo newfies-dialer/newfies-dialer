@@ -133,32 +133,36 @@ resex = assert(dbcon:execute([[
         amd_status varchar(40),
         leg varchar(10) DEFAULT 'aleg',
         starting_date timestamp with time zone,
-        status integer,
+        status smallint,
         created_date timestamp with time zone NOT NULL
         );
-    CREATE INDEX call_event_idx_uuid ON call_event (call_uuid);
     CREATE INDEX call_event_idx_status ON call_event (status);
-    CREATE INDEX call_event_idx_date ON call_event (created_date);
     ]]))
+-- CREATE INDEX call_event_idx_uuid ON call_event (call_uuid);
+-- CREATE INDEX call_event_idx_date ON call_event (created_date);
 --UNIQUE (event_name, call_uuid)
 dbcon:close()
 env:close()
 
 
-
 local event_name
 local event_subclass
+local con
 
+-- Listen to FreeSWITCH Events
+con = freeswitch.EventConsumer("CHANNEL_HANGUP_COMPLETE")
+con = freeswitch.EventConsumer("HEARTBEAT")
+con = freeswitch.EventConsumer("BACKGROUND_JOB")
+con = freeswitch.EventConsumer("CUSTOM lua::stop_event")
 
-con = freeswitch.EventConsumer("ALL")
--- con = freeswitch.EventConsumer("CHANNEL_CALLSTATE")
+-- Not used event
+-- con = freeswitch.EventConsumer("ALL")
 -- con = freeswitch.EventConsumer("CHANNEL_CREATE")
+-- con = freeswitch.EventConsumer("CHANNEL_CALLSTATE")
 -- con = freeswitch.EventConsumer("CHANNEL_PROGRESS")
 -- con = freeswitch.EventConsumer("CHANNEL_PROGRESS_MEDIA")
--- con = freeswitch.EventConsumer("CHANNEL_HANGUP_COMPLETE")
--- con = freeswitch.EventConsumer("BACKGROUND_JOB")
--- -- con = freeswitch.EventConsumer("CHANNEL_STATE")
--- con = freeswitch.EventConsumer("CUSTOM lua::stop_event")
+-- con = freeswitch.EventConsumer("CHANNEL_STATE")
+
 
 api = freeswitch.API()
 

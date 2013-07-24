@@ -307,19 +307,21 @@ function FSMCall:getdigitnode(current_node)
             break
 
         elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == 't'
-            and digits ~= '' then
+            and digits and digits ~= '' then
             --CAPTURE_DIGITS / Check Validity
             int_dtmf = tonumber(digits)
-            int_min = tonumber(current_node.min_number)
-            int_max = tonumber(current_node.max_number)
-            if not int_min then
-                int_min = 0
-            end
-            if not int_max then
-                int_max = 999999999999999
-            end
-            if int_dtmf >= int_min and int_dtmf <= int_max then
-                break
+            if int_dtmf and int_dtmf >= 0 then
+                int_min = tonumber(current_node.min_number)
+                int_max = tonumber(current_node.max_number)
+                if not int_min then
+                    int_min = 0
+                end
+                if not int_max then
+                    int_max = 999999999999999
+                end
+                if int_dtmf >= int_min and int_dtmf <= int_max then
+                    break
+                end
             end
         end
 
@@ -553,8 +555,12 @@ function FSMCall:next_node()
         or current_node.type == RECORD_MSG
         or current_node.type == CALL_TRANSFER
         or current_node.type == CONFERENCE then
+        --Check when no branching has been created
+        if (not current_branching) then
+            self.debugger:msg("ERROR", "No existing branching -> Goto Hangup - nodetype:"..current_node.type)
+            self:end_call()
         --Check for timeout
-        if (not current_branching["0"] or not current_branching["0"].goto_id) and
+        elseif (not current_branching["0"] or not current_branching["0"].goto_id) and
            (not current_branching["timeout"] or not current_branching["timeout"].goto_id) then
             --Go to hangup
             self.debugger:msg("DEBUG", "No more branching -> Goto Hangup")

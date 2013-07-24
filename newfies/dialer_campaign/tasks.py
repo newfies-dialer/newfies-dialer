@@ -143,13 +143,13 @@ class CheckPendingcall(Task):
                 return True
             #Verify that the contact is not in the DNC list
             if obj_campaign.dnc:
-                try:
-                    DNCContact.objects.get(dnc_id=obj_campaign.dnc_id, phone_number=phone_number)
+                res_dnc = DNCContact.objects.filter(dnc_id=obj_campaign.dnc_id, phone_number=phone_number)
+                if res_dnc:
                     logger.error("Contact (%s) in DNC list" % phone_number)
                     elem_camp_subscriber.status = SUBSCRIBER_STATUS.NOT_AUTHORIZED
                     elem_camp_subscriber.save()
                     return True
-                except DNCContact.DoesNotExist:
+                else:
                     logger.debug("Contact (%s) not in DNC list" % phone_number)
 
             debug_query(5)

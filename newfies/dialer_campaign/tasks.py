@@ -107,8 +107,12 @@ class CheckPendingcall(Task):
 
         # Get the subscriber of this campaign
         # get_pending_subscriber get Max 1000 records
+        if frequency >= 10:
+            callfrequency = int(frequency / 10) + 1
+        else:
+            callfrequency = frequency
         (list_subscriber, no_subscriber) = obj_campaign.get_pending_subscriber_update(
-            frequency / 10,
+            callfrequency,
             SUBSCRIBER_STATUS.IN_PROCESS
         )
         logger.info("campaign_id=%d #Subscriber: %d" % (campaign_id, no_subscriber))

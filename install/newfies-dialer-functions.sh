@@ -189,6 +189,9 @@ func_setup_virtualenv() {
     echo "This will install virtualenv & virtualenvwrapper"
     echo "and create a new virtualenv : $NEWFIES_ENV"
 
+    pip install virtualenv
+    pip install virtualenvwrapper
+
     #Prepare settings for installation
     case $DIST in
         'DEBIAN')
@@ -198,9 +201,6 @@ func_setup_virtualenv() {
             SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
         ;;
     esac
-
-    easy_install virtualenv
-    easy_install virtualenvwrapper
 
     # Enable virtualenvwrapper
     chk=`grep "virtualenvwrapper" ~/.bashrc|wc -l`

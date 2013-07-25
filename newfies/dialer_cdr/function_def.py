@@ -34,6 +34,7 @@ def voipcall_record_common_fun(request):
     # Assign form field value to local variable
     disposition = variable_value(request, 'status')
     campaign_id = variable_value(request, 'campaign_id')
+    leg_type = variable_value(request, 'leg_type')
 
     kwargs = {}
     if start_date and end_date:
@@ -48,6 +49,9 @@ def voipcall_record_common_fun(request):
 
     if campaign_id and campaign_id != '0':
         kwargs['callrequest__campaign_id'] = campaign_id
+
+    if leg_type and leg_type != '':
+        kwargs['leg_type__exact'] = leg_type
 
     if len(kwargs) == 0:
         tday = datetime.today()
@@ -89,6 +93,7 @@ def voipcall_search_admin_form_fun(request):
     # Assign form field value to local variable
     disposition = variable_value(request, 'status')
     campaign_id = variable_value(request, 'campaign_id')
+    leg_type = variable_value(request, 'leg_type')
     query_string = ''
 
     if start_date and end_date:
@@ -111,6 +116,10 @@ def voipcall_search_admin_form_fun(request):
     if campaign_id and campaign_id != '0':
         campaign_string = 'callrequest__campaign_id=' + str(campaign_id)
         query_string = return_query_string(query_string, campaign_string)
+
+    if leg_type and leg_type != '':
+        leg_type_string = 'leg_type__exact=' + str(leg_type)
+        query_string = return_query_string(query_string, leg_type_string)
 
     if start_date == '' and end_date == '':
         tday = datetime.today()

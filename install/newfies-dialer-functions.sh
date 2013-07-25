@@ -382,8 +382,11 @@ func_install_pip_deps(){
 
     #Install Newfies-Dialer depencencies
     easy_install -U distribute
+    #pip now only installs stable versions by default, so we need to use --pre option
+    pip install --pre pytz
     #For python 2.6 only
     pip install importlib
+
     echo "Install basic requirements..."
     for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
     do

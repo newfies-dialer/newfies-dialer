@@ -15,7 +15,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
-from dialer_cdr.constants import VOIPCALL_DISPOSITION
+from dialer_cdr.constants import VOIPCALL_DISPOSITION, LEG_TYPE
 from dialer_contact.forms import SearchForm
 
 
@@ -31,13 +31,22 @@ class VoipSearchForm(SearchForm):
                                choices=voip_call_disposition_list,
                                required=False)
     campaign_id = forms.ChoiceField(label=_('campaign'), required=False)
+    leg_type = forms.ChoiceField(choices=list(LEG_TYPE),
+                                 label=_("leg type"), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(VoipSearchForm, self).__init__(*args, **kwargs)
         # To get user's campaign list which are attached with voipcall
         if user:
-            list = []
-            list.append((0, _('all').upper()))
+            leg_type_list = []
+            leg_type_list.append(('', _('all').upper()))
+            LEG = dict(LEG_TYPE)
+            for i in LEG:
+                leg_type_list.append((i, LEG[i].encode('utf-8')))
+            self.fields['leg_type'].choices = leg_type_list
+
+            campaign_list = []
+            campaign_list.append((0, _('all').upper()))
             content_type_list = ['survey']
             try:
                 if user.is_superuser:
@@ -52,7 +61,7 @@ class VoipSearchForm(SearchForm):
                         .order_by('-id')
 
                 for i in campaign_list:
-                    list.append((i[0], i[1]))
+                    campaign_list.append((i[0], i[1]))
             except:
                 pass
-            self.fields['campaign_id'].choices = list
+            self.fields['campaign_id'].choices = campaign_list

@@ -179,7 +179,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = dnc_contact_change(request, 1)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
         # delete contact through dnc_contact_change
         request = self.factory.post('/dnc_contact/1/',
@@ -188,7 +188,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = dnc_contact_change(request, 1)
         self.assertEqual(response['Location'], '/dnc_contact/')
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_dnc_contact_view_delete(self):
         """Test Function to check delete dnc contact"""

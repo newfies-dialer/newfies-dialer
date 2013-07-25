@@ -100,7 +100,7 @@ def voipcall_report(request):
         form = VoipSearchForm(request.user, request.POST)
         if form.is_valid():
             field_list = ['start_date', 'end_date',
-                          'disposition', 'campaign_id']
+                          'disposition', 'campaign_id', 'leg_type']
             unset_session_var(request, field_list)
 
             if request.POST.get('from_date'):
@@ -123,6 +123,10 @@ def voipcall_report(request):
             if campaign_id and int(campaign_id) != 0:
                 request.session['session_campaign_id'] = int(campaign_id)
 
+            leg_type = request.POST.get('leg_type')
+            if leg_type and leg_type != '':
+                request.session['session_leg_type'] = leg_type
+
     post_var_with_page = 0
     try:
         if request.GET.get('page') or request.GET.get('sort_by'):
@@ -131,11 +135,13 @@ def voipcall_report(request):
             end_date = request.session.get('session_end_date')
             disposition = request.session.get('session_disposition')
             campaign_id = request.session.get('session_campaign_id')
+            leg_type = request.session.get('session_leg_type')
             form = VoipSearchForm(request.user,
                                   initial={'from_date': start_date.strftime('%Y-%m-%d'),
                                            'to_date': end_date.strftime('%Y-%m-%d'),
                                            'status': disposition,
-                                           'campaign_id': campaign_id})
+                                           'campaign_id': campaign_id,
+                                           'leg_type': leg_type})
         else:
             post_var_with_page = 1
             if request.method == 'GET':
@@ -152,14 +158,19 @@ def voipcall_report(request):
         end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999)
         disposition = 'all'
         campaign_id = 0
+        leg_type = ''
         form = VoipSearchForm(request.user,
-                              initial={'from_date': from_date, 'to_date': to_date,
-                                       'status': disposition, 'campaign_id': campaign_id})
+                              initial={'from_date': from_date,
+                                       'to_date': to_date,
+                                       'status': disposition,
+                                       'campaign_id': campaign_id,
+                                       'leg_type': leg_type})
         # unset session var
         request.session['session_start_date'] = start_date
         request.session['session_end_date'] = end_date
         request.session['session_disposition'] = disposition
         request.session['session_campaign_id'] = ''
+        request.session['session_leg_type'] = ''
 
     kwargs = {}
     if start_date and end_date:
@@ -174,6 +185,9 @@ def voipcall_report(request):
 
     if campaign_id and int(campaign_id) != 0:
         kwargs['callrequest__campaign_id'] = campaign_id
+
+    if leg_type and leg_type != '':
+        kwargs['leg_type__exact'] = leg_type
 
     if not request.user.is_superuser:
         kwargs['user'] = request.user

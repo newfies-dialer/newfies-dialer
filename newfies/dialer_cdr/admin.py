@@ -155,17 +155,20 @@ class VoIPCallAdmin(admin.ModelAdmin):
             from_date = ''
             to_date = ''
             campaign_id = ''
+            leg_type = ''
 
             from_date = getvar(request, 'starting_date__gte')
             to_date = getvar(request, 'starting_date__lte')[0:10]
             status = getvar(request, 'disposition__exact')
             campaign_id = getvar(request, 'callrequest__campaign_id')
+            leg_type = getvar(request, 'leg_type__exact')
 
             form = VoipSearchForm(request.user,
                                   initial={'status': status,
                                            'from_date': from_date,
                                            'to_date': to_date,
-                                           'campaign_id': campaign_id})
+                                           'campaign_id': campaign_id,
+                                           'leg_type': leg_type})
 
         ChangeList = self.get_changelist(request)
         try:

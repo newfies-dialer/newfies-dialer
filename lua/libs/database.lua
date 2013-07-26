@@ -17,9 +17,12 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 --It might worth to rename this to model.lua
 
+local inspect = require 'inspect'
 require "constant"
 local oo = require "loop.simple"
 local dbhanlder = require "dbhandler"
+--local dbh_fs = require "dbh_fs"
+
 
 --redis.commands.expire = redis.command('EXPIRE')
 --redis.commands.ttl = redis.command('TTL')
@@ -84,6 +87,7 @@ function Database:load_survey_section(survey_id)
         list[tonumber(row['id'])] = row
     end
     self.debugger:msg("DEBUG", string.format("start_node:%15d", self.start_node))
+    self.debugger:msg("DEBUG", inspect(list))
     self.list_section = list
     if not self.start_node then
         self.debugger:msg("ERROR", "Error Loading Survey Section")
@@ -106,6 +110,7 @@ function Database:load_survey_branching(survey_id)
         end
         list[tonumber(row['section_id'])][tostring(row.keys)] = row
     end
+    self.debugger:msg("DEBUG", inspect(list))
     self.list_branching = list
 end
 
@@ -115,6 +120,7 @@ function Database:load_audiofile()
     sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
     self.debugger:msg("DEBUG", "Load audiofile branching : "..sqlquery)
     self.list_audio = self.dbh:get_cache_list(sqlquery, 300)
+    self.debugger:msg("DEBUG", inspect(self.list_audio))
 end
 
 function Database:load_campaign_info(campaign_id)
@@ -407,6 +413,7 @@ if false then
     recording_duration = '30'
     dtmf = '5'
     require "debugger"
+    local inspect = require 'inspect'
     local debugger = Debugger(false)
 
     db = Database(debug_mode, debugger)
@@ -428,3 +435,20 @@ if false then
 
     db:disconnect()
 end
+
+
+-- campaign_id = 42
+-- contact_id = 40
+
+-- require "debugger"
+-- local debugger = Debugger(false)
+
+-- db = Database(debug_mode, debugger)
+-- db:connect()
+-- db:load_all(campaign_id, contact_id)
+-- --freeswitch.consoleLog('err', inspect(db.list_audio))
+-- print(inspect(db.contact))
+-- for k,v in pairs(db.contact) do
+--     print(k)
+--     print(v)
+-- end

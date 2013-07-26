@@ -435,20 +435,3 @@ if false then
 
     db:disconnect()
 end
-
-
--- campaign_id = 42
--- contact_id = 40
-
--- require "debugger"
--- local debugger = Debugger(false)
-
--- db = Database(debug_mode, debugger)
--- db:connect()
--- db:load_all(campaign_id, contact_id)
--- --freeswitch.consoleLog('err', inspect(db.list_audio))
--- print(inspect(db.contact))
--- for k,v in pairs(db.contact) do
---     print(k)
---     print(v)
--- end

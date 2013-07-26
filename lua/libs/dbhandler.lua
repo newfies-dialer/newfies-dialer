@@ -32,8 +32,6 @@ require "md5"
 --redis.commands.expire = redis.command('EXPIRE')
 --redis.commands.ttl = redis.command('TTL')
 
-USE_CACHE = false
-
 DBH = oo.class{
     env = nil,
     con = nil,

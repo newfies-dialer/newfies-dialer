@@ -94,7 +94,7 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = audio_change(request, obj.id)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_audiofile_view_bulk_del(self):
         """Test Function to check audio delete"""

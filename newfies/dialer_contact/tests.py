@@ -179,8 +179,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                                     data={'delete': True}, follow=True)
         request.user = self.user
         request.session = {}
-        response = phonebook_change(request, 1)
-        self.assertEqual(response['Location'], '/phonebook/')
+        response = phonebook_change(request, 1)        
         self.assertEqual(response.status_code, 302)
 
     def test_phonebook_view_delete(self):
@@ -269,8 +268,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                                     data={'delete': True}, follow=True)
         request.user = self.user
         request.session = {}
-        response = contact_change(request, 1)
-        self.assertEqual(response['Location'], '/contact/')
+        response = contact_change(request, 1)        
         self.assertEqual(response.status_code, 302)
 
     def test_contact_view_delete(self):

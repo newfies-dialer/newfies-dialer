@@ -193,16 +193,15 @@ def dnc_change(request, object_id):
     dnc = get_object_or_404(DNC, pk=object_id, user=request.user)
     form = DNCForm(instance=dnc)
     if request.method == 'POST':
-        if request.POST.get('delete'):
-            dnc_del(request, object_id)
-            return HttpResponseRedirect('/dnc/')
+        if request.POST.get('delete'):            
+            return HttpResponseRedirect('/dnc_list/del/%s/' % object_id)
         else:
             form = DNCForm(request.POST, instance=dnc)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.') \
                     % {'name': request.POST['name']}
-                return HttpResponseRedirect('/dnc/')
+                return HttpResponseRedirect('/dnc_list/')
 
     template = 'frontend/dnc_list/change.html'
     data = {
@@ -431,9 +430,8 @@ def dnc_contact_change(request, object_id):
     form = DNCContactForm(request.user, instance=dnc_contact)
     if request.method == 'POST':
         # Delete dnc contact
-        if request.POST.get('delete'):
-            dnc_contact_del(request, object_id)
-            return HttpResponseRedirect('/dnc_contact/')
+        if request.POST.get('delete'):            
+            return HttpResponseRedirect('/dnc_contact/del/%s/' % object_id)
         else:
             # Update dnc contact
             form = DNCContactForm(request.user, request.POST, instance=dnc_contact)

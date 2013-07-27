@@ -178,16 +178,12 @@ def audio_change(request, object_id):
           via the CustomerAudioFileForm & get redirected to the audio list
     """
     obj = get_object_or_404(AudioFile, pk=object_id, user=request.user)
-    form = DialerAudioFileForm(instance=obj)
-
-    if request.GET.get('delete'):
-        # 1) remove audio file from drive
-        delete_audio_file(obj)
-        # 2) delete audio
-        obj.delete()
-        return HttpResponseRedirect('/audio/')
+    form = DialerAudioFileForm(instance=obj)    
 
     if request.method == 'POST':
+        if request.POST.get('delete'):        
+            return HttpResponseRedirect('/audio/del/%s/' % object_id)
+            
         form = DialerAudioFileForm(
             request.POST, request.FILES, instance=obj)
         if form.is_valid():

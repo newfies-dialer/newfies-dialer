@@ -750,9 +750,8 @@ def survey_change(request, object_id):
         branching_list.values_list('section_id', flat=True).distinct()
 
     if request.method == 'POST':
-        if request.POST.get('delete'):
-            survey_del(request, object_id)
-            return HttpResponseRedirect('/survey/')
+        if request.POST.get('delete'):            
+            return HttpResponseRedirect('/survey/del/%s/' % object_id)
         else:
             form = SurveyForm(request.POST, request.user, instance=survey)
             if form.is_valid():

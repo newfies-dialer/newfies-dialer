@@ -408,12 +408,8 @@ def campaign_change(request, object_id):
 
     if request.method == 'POST':
         # Delete campaign
-        if request.POST.get('delete'):
-            campaign_del(request, object_id)
-            request.session["msg"] = _('"%(name)s" is deleted.')\
-                % {'name': campaign.name}
-            request.session['error_msg'] = ''
-            return HttpResponseRedirect('/campaign/')
+        if request.POST.get('delete'):            
+            return HttpResponseRedirect('/campaign/del/%s/' % object_id)
         else:
             # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)

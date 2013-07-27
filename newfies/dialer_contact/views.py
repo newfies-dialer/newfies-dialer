@@ -198,9 +198,8 @@ def phonebook_change(request, object_id):
     phonebook = get_object_or_404(Phonebook, pk=object_id, user=request.user)
     form = PhonebookForm(instance=phonebook)
     if request.method == 'POST':
-        if request.POST.get('delete'):
-            phonebook_del(request, object_id)
-            return HttpResponseRedirect('/phonebook/')
+        if request.POST.get('delete'):            
+            return HttpResponseRedirect('/phonebook/del/%s/' % object_id)
         else:
             form = PhonebookForm(request.POST, instance=phonebook)
             if form.is_valid():
@@ -467,9 +466,8 @@ def contact_change(request, object_id):
     form = ContactForm(request.user, instance=contact)
     if request.method == 'POST':
         # Delete contact
-        if request.POST.get('delete'):
-            contact_del(request, object_id)
-            return HttpResponseRedirect('/contact/')
+        if request.POST.get('delete'):            
+            return HttpResponseRedirect('/contact/del/%s/' % object_id)
         else:
             # Update contact
             form = ContactForm(request.user, request.POST, instance=contact)

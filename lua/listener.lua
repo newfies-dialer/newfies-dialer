@@ -150,10 +150,11 @@ local event_subclass
 local con
 
 -- Listen to FreeSWITCH Events
-con = freeswitch.EventConsumer("CHANNEL_HANGUP_COMPLETE")
-con = freeswitch.EventConsumer("HEARTBEAT")
-con = freeswitch.EventConsumer("BACKGROUND_JOB")
-con = freeswitch.EventConsumer("CUSTOM lua::stop_event")
+con = freeswitch.EventConsumer("ALL")
+-- con = freeswitch.EventConsumer("CHANNEL_HANGUP_COMPLETE")
+-- con = freeswitch.EventConsumer("HEARTBEAT")
+-- con = freeswitch.EventConsumer("BACKGROUND_JOB")
+-- con = freeswitch.EventConsumer("CUSTOM lua::stop_event")
 
 -- Not used event
 -- con = freeswitch.EventConsumer("ALL")

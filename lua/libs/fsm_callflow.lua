@@ -298,7 +298,7 @@ function FSMCall:getdigitnode(current_node)
 
         if current_node.type == RATING_SECTION then
             --break if digits is accepted
-            if digits ~= '' and tonumber(digits) >= 1 and tonumber(digits) <= tonumber(current_node.rating_laps) then
+            if digits ~= '' and tonumber(digits) >= 0 and tonumber(digits) <= tonumber(current_node.rating_laps) then
                 --Correct entrie, quit the loop
                 break
             end
@@ -306,8 +306,8 @@ function FSMCall:getdigitnode(current_node)
             --We already managed invalid on the playAndGetDigits
             break
 
-        elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == 't'
-            and digits and digits ~= '' then
+        elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == '1'
+            and digits ~= '' then
             --CAPTURE_DIGITS / Check Validity
             int_dtmf = tonumber(digits)
             if int_dtmf and int_dtmf >= 0 then
@@ -323,6 +323,11 @@ function FSMCall:getdigitnode(current_node)
                     break
                 end
             end
+        elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == '0'
+            and digits ~= '' then
+            --CAPTURE_DIGITS / No Check Validity
+            break
+
         end
 
         if invalid_audiofile ~= '' and i < retries then
@@ -595,7 +600,7 @@ function FSMCall:next_node()
                 invalid_input = true
             end
         elseif current_node.type == CAPTURE_DIGITS
-            and current_node.validate_number == 't'
+            and current_node.validate_number == '1'
             and digits ~= '' then
             --We have DTMF now we check validity
             int_dtmf = tonumber(digits)

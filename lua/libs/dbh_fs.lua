@@ -76,7 +76,7 @@ function DBH:get_list(sqlquery)
                 row[k] = false
             end
         end
-        list[row.id] = row
+        list[tonumber(row.id)] = row
         --freeswitch.consoleLog(fslevel, string.format("%5s : %s\n", row.id, row.name))
     end)
     return list

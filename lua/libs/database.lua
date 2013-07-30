@@ -20,8 +20,8 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 local inspect = require 'inspect'
 require "constant"
 local oo = require "loop.simple"
-local dbhanlder = require "dbhandler"
---local dbh_fs = require "dbh_fs"
+--local dbhanlder = require "dbhandler"
+local dbh_fs = require "dbh_fs"
 
 
 --redis.commands.expire = redis.command('EXPIRE')
@@ -301,6 +301,9 @@ function Database:set_aggregate_result(campaign_id, survey_id, section_id, respo
             response = '> 90 seconds'
         end
     end
+
+    --TODO: Replace Insert ResultAggregate by a stored procedure PL/SQL
+
     -- Insert ResultAggregate
     if self:save_result_aggregate(campaign_id, survey_id, section_id, response) then
         -- no errors in save_result_aggregate
@@ -435,3 +438,23 @@ if false then
 
     db:disconnect()
 end
+
+
+-- campaign_id = 42
+-- contact_id = 40
+
+-- require "debugger"
+-- local debugger = Debugger(false)
+
+-- db = Database(debug_mode, debugger)
+-- db:connect()
+-- db:load_all(campaign_id, contact_id)
+-- --freeswitch.consoleLog('err', inspect(db.list_audio))
+-- print(inspect(db.contact))
+-- for k,v in pairs(db.contact) do
+--     print(k)
+--     print(v)
+-- end
+
+-- db:load_audiofile()
+-- print(inspect(db.list_audio))

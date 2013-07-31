@@ -170,9 +170,11 @@ function FSMCall:playnode(current_node)
         --Use TTS
         mscript = tag_replace(current_node.script, self.db.contact)
         self.debugger:msg("INFO", "Speak : "..mscript)
-        tts_file = tts(mscript, TTS_DIR)
-        self.debugger:msg("DEBUG", "Speak TTS : "..tts_file)
-        self.session:streamFile(tts_file)
+        if mscript and mscript ~= '' then
+            tts_file = tts(mscript, TTS_DIR)
+            self.debugger:msg("DEBUG", "Speak TTS : "..tts_file)
+            self.session:streamFile(tts_file)
+        end
     end
 end
 

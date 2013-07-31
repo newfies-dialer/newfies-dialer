@@ -27,8 +27,6 @@ local dbh_fs = require "dbh_fs"
 --redis.commands.expire = redis.command('EXPIRE')
 --redis.commands.ttl = redis.command('TTL')
 
-USE_CACHE = false
-
 Database = oo.class{
     -- default field values
     DG_SURVEY_ID = false,

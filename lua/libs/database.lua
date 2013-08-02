@@ -20,8 +20,8 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 local inspect = require 'inspect'
 require "constant"
 local oo = require "loop.simple"
---local dbhanlder = require "dbhandler"
-local dbh_fs = require "dbh_fs"
+local dbhanlder = require "dbhandler"
+--local dbh_fs = require "dbh_fs"
 
 
 --redis.commands.expire = redis.command('EXPIRE')

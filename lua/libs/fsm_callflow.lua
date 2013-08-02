@@ -134,6 +134,7 @@ function FSMCall:end_call()
     --TODO: Reuse connection is faster, use the opened con
     self.db:connect()
     self.db:commit_result_mem(self.campaign_id, self.survey_id)
+    --We need to keep this disconnect as it's End of Call
     self.db:disconnect()
 
     -- NOTE: Don't use this call time for Billing / Use CDRs
@@ -170,9 +171,11 @@ function FSMCall:playnode(current_node)
         --Use TTS
         mscript = tag_replace(current_node.script, self.db.contact)
         self.debugger:msg("INFO", "Speak : "..mscript)
-        tts_file = tts(mscript, TTS_DIR)
-        self.debugger:msg("DEBUG", "Speak TTS : "..tts_file)
-        self.session:streamFile(tts_file)
+        if mscript and mscript ~= '' then
+            tts_file = tts(mscript, TTS_DIR)
+            self.debugger:msg("DEBUG", "Speak TTS : "..tts_file)
+            self.session:streamFile(tts_file)
+        end
     end
 end
 
@@ -298,7 +301,7 @@ function FSMCall:getdigitnode(current_node)
 
         if current_node.type == RATING_SECTION then
             --break if digits is accepted
-            if digits ~= '' and tonumber(digits) >= 1 and tonumber(digits) <= tonumber(current_node.rating_laps) then
+            if digits ~= '' and tonumber(digits) >= 0 and tonumber(digits) <= tonumber(current_node.rating_laps) then
                 --Correct entrie, quit the loop
                 break
             end
@@ -306,8 +309,8 @@ function FSMCall:getdigitnode(current_node)
             --We already managed invalid on the playAndGetDigits
             break
 
-        elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == 't'
-            and digits and digits ~= '' then
+        elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == '1'
+            and digits ~= '' then
             --CAPTURE_DIGITS / Check Validity
             int_dtmf = tonumber(digits)
             if int_dtmf and int_dtmf >= 0 then
@@ -323,6 +326,11 @@ function FSMCall:getdigitnode(current_node)
                     break
                 end
             end
+        elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == '0'
+            and digits ~= '' then
+            --CAPTURE_DIGITS / No Check Validity
+            break
+
         end
 
         if invalid_audiofile ~= '' and i < retries then
@@ -595,7 +603,7 @@ function FSMCall:next_node()
                 invalid_input = true
             end
         elseif current_node.type == CAPTURE_DIGITS
-            and current_node.validate_number == 't'
+            and current_node.validate_number == '1'
             and digits ~= '' then
             --We have DTMF now we check validity
             int_dtmf = tonumber(digits)

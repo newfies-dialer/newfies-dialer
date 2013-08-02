@@ -69,7 +69,10 @@ function Debugger:msg(level, message)
         elseif level == 'WARN' then
             fslevel = 'warning'
         elseif level == 'ERROR' then
-            fslevel = 'error'
+            fslevel = 'err'
+        elseif level == 'NOTICE' then
+            --notice not supported by logger
+            fslevel = 'notice'
         elseif level == 'INFO' then
             fslevel = 'info'
         else

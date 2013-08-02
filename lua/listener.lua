@@ -151,19 +151,7 @@ local con
 
 -- Listen to FreeSWITCH Events
 con = freeswitch.EventConsumer("ALL")
--- con = freeswitch.EventConsumer("CHANNEL_HANGUP_COMPLETE")
--- con = freeswitch.EventConsumer("HEARTBEAT")
--- con = freeswitch.EventConsumer("BACKGROUND_JOB")
--- con = freeswitch.EventConsumer("CUSTOM lua::stop_event")
-
--- Not used event
--- con = freeswitch.EventConsumer("ALL")
--- con = freeswitch.EventConsumer("CHANNEL_CREATE")
--- con = freeswitch.EventConsumer("CHANNEL_CALLSTATE")
--- con = freeswitch.EventConsumer("CHANNEL_PROGRESS")
--- con = freeswitch.EventConsumer("CHANNEL_PROGRESS_MEDIA")
--- con = freeswitch.EventConsumer("CHANNEL_STATE")
-
+-- con = freeswitch.EventConsumer("CHANNEL_HANGUP_COMPLETE HEARTBEAT BACKGROUND_JOB CUSTOM lua::stop_event")
 
 api = freeswitch.API()
 

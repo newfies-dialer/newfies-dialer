@@ -243,7 +243,8 @@ try:
 except ImportError:
     pass
 else:
-    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', 'template_timings_panel',)
+    INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', )
+    #INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', 'template_timings_panel',)
     MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + \
         ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     DEBUG_TOOLBAR_PANELS = (
@@ -256,7 +257,7 @@ else:
         'debug_toolbar.panels.sql.SQLDebugPanel',
         'debug_toolbar.panels.signals.SignalDebugPanel',
         'debug_toolbar.panels.logger.LoggingPanel',
-        'template_timings_panel.panels.TemplateTimings.TemplateTimings',
+        #'template_timings_panel.panels.TemplateTimings.TemplateTimings',
     )
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,

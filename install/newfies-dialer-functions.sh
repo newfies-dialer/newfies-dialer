@@ -382,8 +382,11 @@ func_install_pip_deps(){
 
     #Install Newfies-Dialer depencencies
     easy_install -U distribute
+    #pip now only installs stable versions by default, so we need to use --pre option
+    pip install --pre pytz
     #For python 2.6 only
     pip install importlib
+
     echo "Install basic requirements..."
     for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
     do
@@ -438,6 +441,15 @@ func_prepare_settings(){
     sed -i "s/password/$DB_PASSWORD/" $LUA_DIR/libs/settings.lua
     sed -i "s/127.0.0.1/$DB_HOSTNAME/" $LUA_DIR/libs/settings.lua
     sed -i "s/5432/$DB_PORT/" $LUA_DIR/libs/settings.lua
+
+    #ODBC
+    cp /usr/src/newfies-dialer/install/odbc/odbc.ini /etc/odbc.ini
+    #Setup odbc.ini for POSTGRESQL
+    sed -i "s/DATABASENAME/$DATABASENAME/" /etc/odbc.ini
+    sed -i "s/DB_USERNAME/$DB_USERNAME/" /etc/odbc.ini
+    sed -i "s/DB_PASSWORD/$DB_PASSWORD/" /etc/odbc.ini
+    sed -i "s/DB_HOSTNAME/$DB_HOSTNAME/" /etc/odbc.ini
+    sed -i "s/DB_PORT/$DB_PORT/" /etc/odbc.ini
 
     #Load Countries Dialcode
     #python manage.py load_country_dialcode

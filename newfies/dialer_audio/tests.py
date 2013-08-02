@@ -89,8 +89,8 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         response = audio_change(request, obj.id)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/audio/%s/?delete=true' % str(obj.id),
-            {}, follow=True)
+        request = self.factory.post('/audio/%s/' % str(obj.id),
+            {'delete': 'true'}, follow=True)
         request.user = self.user
         request.session = {}
         response = audio_change(request, obj.id)

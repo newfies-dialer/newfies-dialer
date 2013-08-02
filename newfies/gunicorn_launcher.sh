@@ -20,6 +20,6 @@ cd /usr/share/newfies
 test -d $LOGDIR || mkdir -p $LOGDIR
 
 #Execute unicorn
-exec gunicorn_django -b 127.0.0.1:8123 -w $NUM_WORKERS --timeout=120 \
+exec gunicorn_django -b 127.0.0.1:8123 -w $NUM_WORKERS --timeout=300 \
     --user=$USER --group=$GROUP --log-level=debug \
     --log-file=$LOGFILE 2>>$LOGFILE

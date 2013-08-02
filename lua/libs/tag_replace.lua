@@ -27,7 +27,13 @@ local json = require("json")
 --     as well as, get additional_vars, and replace json tags
 --
 function tag_replace(text, contact)
+    if not text or text == '' then
+        return ''
+    end
     --decode the json
+    if not contact['additional_vars'] then
+        return text
+    end
     decdata = decodejson(contact['additional_vars'])
     if decdata and type(decdata) == "table" then
         -- Merge Table

@@ -23,41 +23,41 @@ PIDFILE="/var/run/$prog.pid"
 
 start()
 {
-        echo -n $"Starting $prog: "
-        daemon $prog_bin --pidfile $PIDFILE
-        sleep 3
-        [ -f $PIDFILE ] && success $"$prog startup" || failure $"$prog startup"
-        echo
+    echo -n $"Starting $prog: "
+    daemon $prog_bin --pidfile $PIDFILE
+    sleep 3
+    [ -f $PIDFILE ] && success $"$prog startup" || failure $"$prog startup"
+    echo
 }
 
 stop()
 {
-        echo -n $"Shutting down $prog: "
-        [ -f $PIDFILE ] && killproc $prog || success $"$prog shutdown"
-        echo
+    echo -n $"Shutting down $prog: "
+    [ -f $PIDFILE ] && killproc $prog || success $"$prog shutdown"
+    echo
 }
 
 case "$1" in
 
-  start)
-    start
-  ;;
+    start)
+        start
+    ;;
 
-  stop)
-    stop
-  ;;
+    stop)
+        stop
+    ;;
 
-  status)
+    status)
         status $prog
-  ;;
+    ;;
 
-  restart)
-    stop
-    start
-  ;;
+    restart)
+        stop
+        start
+    ;;
 
-  *)
-    echo "Usage: $0 {start|stop|restart|status}"
-  ;;
+    *)
+        echo "Usage: $0 {start|stop|restart|status}"
+    ;;
 
 esac

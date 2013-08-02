@@ -198,9 +198,8 @@ def phonebook_change(request, object_id):
     phonebook = get_object_or_404(Phonebook, pk=object_id, user=request.user)
     form = PhonebookForm(instance=phonebook)
     if request.method == 'POST':
-        if request.POST.get('delete'):
-            phonebook_del(request, object_id)
-            return HttpResponseRedirect('/phonebook/')
+        if request.POST.get('delete'):            
+            return HttpResponseRedirect('/phonebook/del/%s/' % object_id)
         else:
             form = PhonebookForm(request.POST, instance=phonebook)
             if form.is_valid():
@@ -383,13 +382,11 @@ def contact_add(request):
         form = ContactForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('"%(name)s" added.') %\
-                {'name': request.POST['contact']}
+            request.session["msg"] = _('"%s" is added.') % request.POST['contact']
             return HttpResponseRedirect('/contact/')
         else:
             if len(request.POST['contact']) > 0:
-                error_msg = _('"%(name)s" cannot be added.') %\
-                    {'name': request.POST['contact']}
+                error_msg = _('"%s" cannot be added.') % request.POST['contact']
 
     phonebook_count = Phonebook.objects.filter(user=request.user).count()
     template = 'frontend/contact/change.html'
@@ -425,8 +422,7 @@ def contact_del(request, object_id):
             Contact, pk=object_id, phonebook__user=request.user)
 
         # Delete contact
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': contact.first_name}
+        request.session["msg"] = _('"%s" is deleted.') % contact.contact
         contact.delete()
     else:
         # When object_id is 0 (Multiple records delete)
@@ -437,8 +433,7 @@ def contact_del(request, object_id):
             contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
             if contact_list:
                 request.session["msg"] =\
-                    _('%(count)s contact(s) are deleted.')\
-                    % {'count': contact_list.count()}
+                    _('%s contact(s) are deleted.') % contact_list.count()
                 contact_list.delete()
         except:
             raise Http404
@@ -467,16 +462,14 @@ def contact_change(request, object_id):
     form = ContactForm(request.user, instance=contact)
     if request.method == 'POST':
         # Delete contact
-        if request.POST.get('delete'):
-            contact_del(request, object_id)
-            return HttpResponseRedirect('/contact/')
+        if request.POST.get('delete'):            
+            return HttpResponseRedirect('/contact/del/%s/' % object_id)
         else:
             # Update contact
             form = ContactForm(request.user, request.POST, instance=contact)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['contact']}
+                request.session["msg"] = _('"%s" is updated.') % request.POST['contact']
                 return HttpResponseRedirect('/contact/')
 
     template = 'frontend/contact/change.html'

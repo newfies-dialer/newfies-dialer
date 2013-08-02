@@ -15,21 +15,17 @@
 package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
-local luasql = require "luasql.postgres"
-local oo = require "loop.simple"
+--It might worth to rename this to model.lua
+
 local inspect = require 'inspect'
-local cmsgpack = require 'cmsgpack'
---local redis = require 'redis'
---require "memcached"
-local lfs_cache = require "lfs_cache"
 require "constant"
-require "settings"
-require "md5"
+local oo = require "loop.simple"
+local dbhanlder = require "dbhandler"
+--local dbh_fs = require "dbh_fs"
+
 
 --redis.commands.expire = redis.command('EXPIRE')
 --redis.commands.ttl = redis.command('TTL')
-
-USE_CACHE = false
 
 Database = oo.class{
     -- default field values
@@ -56,22 +52,16 @@ function Database:__init(debug_mode, debugger)
     return oo.rawnew(self, {
         debug_mode = debug_mode,
         debugger = debugger,
+        dbh = DBH(debug_mode, debugger),
     })
 end
 
 function Database:connect()
-    self.env = assert(luasql.postgres())
-    self.con = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
-    if USE_CACHE then
-        --self.caching = redis.connect('127.0.0.1', 6379)
-        --self.caching = memcached.connect('127.0.0.1', 11211)
-        self.caching = LFS_Caching(nil)
-    end
+    self.dbh:connect()
 end
 
 function Database:disconnect()
-    self.con:close()
-    self.env:close()
+    self.dbh:disconnect()
 end
 
 function Database:load_survey_section(survey_id)
@@ -81,11 +71,7 @@ function Database:load_survey_section(survey_id)
     -- updated_date survey_id   invalid_audiofile_id    min_number  max_number
     sqlquery = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
     self.debugger:msg("DEBUG", "Load survey section : "..sqlquery)
-    if not USE_CACHE then
-        qresult = self:get_list(sqlquery, 300)
-    else
-        qresult = self:get_cache_list(sqlquery, 300)
-    end
+    qresult = self.dbh:get_cache_list(sqlquery, 300)
 
     list = {}
     low_order = -1
@@ -99,6 +85,7 @@ function Database:load_survey_section(survey_id)
         list[tonumber(row['id'])] = row
     end
     self.debugger:msg("DEBUG", string.format("start_node:%15d", self.start_node))
+    self.debugger:msg("DEBUG", inspect(list))
     self.list_section = list
     if not self.start_node then
         self.debugger:msg("ERROR", "Error Loading Survey Section")
@@ -112,11 +99,7 @@ function Database:load_survey_branching(survey_id)
         " ON "..self.TABLE_SECTION..".id="..self.TABLE_BRANCHING..".section_id "..
         "WHERE survey_id="..survey_id
     self.debugger:msg("DEBUG", "Load survey branching : "..sqlquery)
-    if not USE_CACHE then
-        qresult = self:get_list(sqlquery, 300)
-    else
-        qresult = self:get_cache_list(sqlquery, 300)
-    end
+    qresult = self.dbh:get_cache_list(sqlquery, 300)
 
     list = {}
     for i,row in pairs(qresult) do
@@ -125,108 +108,23 @@ function Database:load_survey_branching(survey_id)
         end
         list[tonumber(row['section_id'])][tostring(row.keys)] = row
     end
-
+    self.debugger:msg("DEBUG", inspect(list))
     self.list_branching = list
 end
 
-function Database:get_list(sqlquery)
-    self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
-    cur = assert(self.con:execute(sqlquery))
-    list = {}
-    row = cur:fetch ({}, "a")
-    while row do
-        list[tonumber(row.id)] = row
-        row = cur:fetch ({}, "a")
-    end
-    cur:close()
-    return list
-end
-
-function Database:get_cache_list(sqlquery, ttl)
-    --If not Cache
-    if not USE_CACHE then
-        return self:get_list(sqlquery)
-    end
-    hashkey = md5.sumhexa(sqlquery)
-    --memcached / redis
-    --local value = self.caching:get(hashkey)
-    --lfs_cache
-    local value = self.caching:get(hashkey, ttl)
-    if value then
-        --Cached
-        return cmsgpack.unpack(value)
-    else
-        --Not in Cache
-        cur = assert(self.con:execute(sqlquery))
-        list = {}
-        row = cur:fetch ({}, "a")
-        while row do
-            list[tonumber(row.id)] = row
-            row = cur:fetch ({}, "a")
-        end
-        cur:close()
-        --Add in Cache
-        msgpack = cmsgpack.pack(list)
-        --Redis
-        --self.caching:set(hashkey, msgpack)
-        --self.caching:expire(hashkey, ttl)
-        --Memcache
-        --self.caching:set(hashkey, msgpack, ttl)
-        --lfs_cache
-        self.caching:set(hashkey, msgpack)
-        return list
-    end
-end
-
-function Database:get_object(sqlquery)
-    self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
-    cur = assert(self.con:execute(sqlquery))
-    row = cur:fetch ({}, "a")
-    cur:close()
-    return row
-end
-
-function Database:get_cache_object(sqlquery, ttl)
-    --If not Cache
-    if not USE_CACHE then
-        return self:get_object(sqlquery)
-    end
-    hashkey = md5.sumhexa(sqlquery)
-    --local value = self.caching:get(hashkey)
-    --lfs_cache
-    local value = self.caching:get(hashkey, ttl)
-    if value then
-        --Cached
-        return cmsgpack.unpack(value)
-    else
-        --Not in Cache
-        cur = assert(self.con:execute(sqlquery))
-        row = cur:fetch ({}, "a")
-        cur:close()
-        --Add in Cache
-        msgpack = cmsgpack.pack(row)
-        --Redis
-        --self.caching:set(hashkey, msgpack)
-        --self.caching:expire(hashkey, ttl)
-        --Memcache
-        --self.caching:set(hashkey, msgpack, ttl)
-        --lfs_cache
-        self.caching:set(hashkey, msgpack)
-        return row
-    end
-end
 
 function Database:load_audiofile()
     -- id   name    audio_file  user_id
     sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
     self.debugger:msg("DEBUG", "Load audiofile branching : "..sqlquery)
-    self.list_audio = self:get_cache_list(sqlquery, 300)
+    self.list_audio = self.dbh:get_cache_list(sqlquery, 300)
+    self.debugger:msg("DEBUG", inspect(self.list_audio))
 end
 
 function Database:load_campaign_info(campaign_id)
     sqlquery = "SELECT dialer_campaign.*, dialer_gateway.gateways FROM dialer_campaign LEFT JOIN dialer_gateway ON dialer_gateway.id=aleg_gateway_id WHERE dialer_campaign.id="..campaign_id
     self.debugger:msg("DEBUG", "Load campaign info : "..sqlquery)
-    self.campaign_info = self:get_cache_object(sqlquery, 300)
+    self.campaign_info = self.dbh:get_cache_object(sqlquery, 300)
     if not self.campaign_info then
         return false
     end
@@ -236,33 +134,33 @@ end
 function Database:load_contact(contact_id)
     sqlquery = "SELECT * FROM dialer_contact WHERE id="..contact_id
     self.debugger:msg("DEBUG", "Load contact data : "..sqlquery)
-    self.contact = self:get_object(sqlquery)
+    self.contact = self.dbh:get_object(sqlquery)
 end
 
 function Database:load_content_type()
     sqlquery = "SELECt id FROM django_content_type WHERE model='survey'"
     self.debugger:msg("DEBUG", "Load content_type : "..sqlquery)
-    result = self:get_cache_object(sqlquery, 300)
+    result = self.dbh:get_cache_object(sqlquery, 300)
     return result["id"]
 end
 
 function Database:update_subscriber(subscriber_id, status)
     sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
     self.debugger:msg("DEBUG", "Update Subscriber : "..sqlquery)
-    res = self.con:execute(sqlquery)
+    res = self.dbh:execute(sqlquery)
     self:update_campaign_completed()
 end
 
 function Database:update_campaign_completed()
     sqlquery = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..self.campaign_info.id
     self.debugger:msg("DEBUG", "Update Campaign : "..sqlquery)
-    res = self.con:execute(sqlquery)
+    res = self.dbh:execute(sqlquery)
 end
 
 function Database:update_callrequest_cpt(callrequest_id)
     sqlquery = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
     self.debugger:msg("DEBUG", "Update CallRequest : "..sqlquery)
-    res = self.con:execute(sqlquery)
+    res = self.dbh:execute(sqlquery)
 end
 
 function Database:load_all(campaign_id, contact_id)
@@ -340,7 +238,7 @@ function Database:commit_result_mem(campaign_id, survey_id)
     "VALUES "..sql_result
     if count > 0 then
         self.debugger:msg("DEBUG", "Insert Bulk Result : "..sqlquery)
-        res = self.con:execute(sqlquery)
+        res = self.dbh:execute(sqlquery)
         if not res then
             self.debugger:msg("ERROR", "ERROR to Insert Bulk Result : "..sqlquery)
         end
@@ -351,7 +249,7 @@ function Database:save_result_aggregate(campaign_id, survey_id, section_id, resp
     sqlquery = "INSERT INTO survey_resultaggregate (campaign_id, survey_id, section_id, response, count, created_date) "..
         "VALUES ("..campaign_id..", "..survey_id..", "..section_id..", '"..response.."', 1, NOW())"
     self.debugger:msg("DEBUG", "Save Result Aggregate:"..sqlquery)
-    res = self.con:execute(sqlquery)
+    res = self.dbh:execute(sqlquery)
     if not res then
         return false
     else
@@ -363,7 +261,7 @@ function Database:add_dnc(dnc_id, phonenumber)
     sqlquery = "INSERT INTO dnc_contact (dnc_id, phone_number, created_date, updated_date) "..
         "VALUES ("..dnc_id..", '"..phonenumber.."', NOW(), NOW())"
     self.debugger:msg("DEBUG", "Insert DNC:"..sqlquery)
-    res = self.con:execute(sqlquery)
+    res = self.dbh:execute(sqlquery)
     if not res then
         return false
     else
@@ -375,7 +273,7 @@ function Database:update_result_aggregate(campaign_id, survey_id, section_id, re
     sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
         " WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..response.."'"
     self.debugger:msg("DEBUG", "Update Result Aggregate:"..sqlquery)
-    res = self.con:execute(sqlquery)
+    res = self.dbh:execute(sqlquery)
     if not res then
         return false
     else
@@ -401,6 +299,9 @@ function Database:set_aggregate_result(campaign_id, survey_id, section_id, respo
             response = '> 90 seconds'
         end
     end
+
+    --TODO: Replace Insert ResultAggregate by a stored procedure PL/SQL
+
     -- Insert ResultAggregate
     if self:save_result_aggregate(campaign_id, survey_id, section_id, response) then
         -- no errors in save_result_aggregate
@@ -466,14 +367,15 @@ end
 -- Test Code
 --
 if false then
-    campaign_id = 141
-    survey_id = 11
-    callrequest_id = 165
-    section_id = 180
+    campaign_id = 151
+    survey_id = 72
+    callrequest_id = 5000
+    section_id = 315
     dnc_id = 1
     record_file = '/tmp/recording-file.wav'
     recording_duration = '30'
     dtmf = '5'
+    local inspect = require 'inspect'
     require "debugger"
     local debugger = Debugger(false)
     db = Database(debug_mode, debugger)
@@ -512,6 +414,7 @@ if false then
     recording_duration = '30'
     dtmf = '5'
     require "debugger"
+    local inspect = require 'inspect'
     local debugger = Debugger(false)
 
     db = Database(debug_mode, debugger)
@@ -533,3 +436,23 @@ if false then
 
     db:disconnect()
 end
+
+
+-- campaign_id = 42
+-- contact_id = 40
+
+-- require "debugger"
+-- local debugger = Debugger(false)
+
+-- db = Database(debug_mode, debugger)
+-- db:connect()
+-- db:load_all(campaign_id, contact_id)
+-- --freeswitch.consoleLog('err', inspect(db.list_audio))
+-- print(inspect(db.contact))
+-- for k,v in pairs(db.contact) do
+--     print(k)
+--     print(v)
+-- end
+
+-- db:load_audiofile()
+-- print(inspect(db.list_audio))

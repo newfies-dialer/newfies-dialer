@@ -134,6 +134,7 @@ function FSMCall:end_call()
     --TODO: Reuse connection is faster, use the opened con
     self.db:connect()
     self.db:commit_result_mem(self.campaign_id, self.survey_id)
+    --We need to keep this disconnect as it's End of Call
     self.db:disconnect()
 
     -- NOTE: Don't use this call time for Billing / Use CDRs

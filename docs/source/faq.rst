@@ -72,7 +72,7 @@ Newfies-Dialer is a bulk dialer application which was commissioned by a charity 
 In less economically developed countries, Internet is often limited, but there is usually comprehensive mobile phone coverage. Freedomfone uses Newfies-Dialer to dial up people’s phones and offer health information on Cholera, Malaria and so many other avoidable health issues in the third world, which may be alleviated by education. Newfies-Dialer was so named after the Newfoundland Dog nicknamed Newfies and used by sea rescue services around the world.
 
 
-How does the tag substitution works with the TTS engine?
+How does the tag substitution work with the TTS engine?
 --------------------------------------------------------
 
 **Answer:** .
@@ -89,5 +89,83 @@ Then if you need more flexibility, you can use the "Additional Parameters (Json)
 
 To give an example, let's add this in "Additional Parameters (Json)" : {"company_name": "Canonical", "bonus" : "200", "currency" : "euro"}
 
-Water on, when you will create a survey with node that will play a TTS, you can easily replace those key-value in text.
-Example of text : "We are calling you on behalf of {company_name}, you receive a bonus of {bonus} {currency}"
+Later on, when you create a survey with node that will play a TTS, you can easily replace those key-values in the text.
+Text example : "We are calling you on behalf of {company_name}, you receive a bonus of {bonus} {currency}"
+
+
+How does Newfies-Dialer provide TTS in multi-languages?
+-------------------------------------------------------
+
+**Answer:** .
+
+By default the TTS engine used by newfies-Dialer is Flite (http://www.speech.cs.cmu.edu/flite/),
+so if you want TTS in a language that is not english you will need to use an other TTS engine.
+
+For this we integrated Acapela: http://acapela-vaas.com/ and in order to use Acapela,
+the only thing, you have to do, is to signin and enable Acapela on Newfies-dialer.
+
+
+Enable Acapela on Newfies-Dialer?
+--------------------------------
+
+**Answer:** .
+
+First you will have to sign-in and register an account with Acapela : http://acapela-vaas.com/
+Once you signed in you will receive a login, an application login and an application password, you will need those to configure Acapela on Newfies-Dialer.
+
+Acapela needs to be configured in 2 places:
+
+1. On the Web interface:
+
+    edit the file /usr/share/newfies-dialer/settings_local.py
+
+    You will find:
+
+    #TEXT-TO-SPEECH
+    #==============
+    TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
+
+    ACCOUNT_LOGIN = 'EVAL_XXXX'
+    APPLICATION_LOGIN = 'EVAL_XXXXXXX'
+    APPLICATION_PASSWORD = 'XXXXXXXX'
+
+    SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
+    QUALITY = '22k'  # 22k, 8k, 8ka, 8kmu
+    ACAPELA_GENDER = 'W'
+    ACAPELA_INTONATION = 'NORMAL'
+
+    You will have to change the value of the settings : TTS_ENGINE, ACCOUNT_LOGIN, APPLICATION_LOGIN and APPLICATION_PASSWORD.
+
+
+2. On the IVR application:
+
+Edit the file /usr/share/newfies-lua/libs/settings.lua
+
+
+    You will find:
+    --
+    -- Select the TTS engine, value : flite, acapela
+    --
+    TTS_ENGINE = 'flite'
+
+    --
+    -- Acapela TTS Settings
+    --
+    ACCOUNT_LOGIN = 'EVAL_VAAS'
+    APPLICATION_LOGIN = 'EVAL_YYYYYYY'
+    APPLICATION_PASSWORD = 'XXXXXXXX'
+
+    SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
+    QUALITY = '22k'  -- 22k, 8k, 8ka, 8kmu
+    ACAPELA_GENDER = 'W'
+    ACAPELA_INTONATION = 'NORMAL'
+    ACAPELA_LANG = 'EN'
+
+    You will have to change the value of the settings : TTS_ENGINE, ACCOUNT_LOGIN, APPLICATION_LOGIN and APPLICATION_PASSWORD.
+
+
+Finally restart the web UI:
+
+    /etc/init.d/supervisor stop
+    and
+    /etc/init.d/supervisor start

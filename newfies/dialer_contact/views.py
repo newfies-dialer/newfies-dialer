@@ -198,7 +198,7 @@ def phonebook_change(request, object_id):
     phonebook = get_object_or_404(Phonebook, pk=object_id, user=request.user)
     form = PhonebookForm(instance=phonebook)
     if request.method == 'POST':
-        if request.POST.get('delete'):            
+        if request.POST.get('delete'):
             return HttpResponseRedirect('/phonebook/del/%s/' % object_id)
         else:
             form = PhonebookForm(request.POST, instance=phonebook)
@@ -462,7 +462,7 @@ def contact_change(request, object_id):
     form = ContactForm(request.user, instance=contact)
     if request.method == 'POST':
         # Delete contact
-        if request.POST.get('delete'):            
+        if request.POST.get('delete'):
             return HttpResponseRedirect('/contact/del/%s/' % object_id)
         else:
             # Update contact
@@ -560,7 +560,12 @@ def contact_import(request):
 
                 #Check field type
                 if not int(row[5]):
-                    error_msg = _("nvalid value for import! please check the import samples or phonebook is not valid")
+                    error_msg = _("invalid value for import! please check the import samples or phonebook is not valid")
+                    type_error_import_list.append(row)
+                    break
+
+                if len(row[9]) > 2:
+                    error_msg = _("invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 codes (http://en.wikipedia.org/wiki/ISO_3166-1)")
                     type_error_import_list.append(row)
                     break
 
@@ -583,7 +588,7 @@ def contact_import(request):
                         address=row[6],
                         city=row[7],
                         state=row[8],
-                        country=row[9],
+                        country=row[9],  # Note: country needs to be a country code (CA, ES)
                         unit_number=row[10],
                         additional_vars=row_11)
                 )

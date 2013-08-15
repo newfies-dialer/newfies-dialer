@@ -173,6 +173,11 @@ class ContactAdmin(admin.ModelAdmin):
                         type_error_import_list.append(row)
                         break
 
+                    if len(row[9]) > 2:
+                        error_msg = _("invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 codes (http://en.wikipedia.org/wiki/ISO_3166-1)")
+                        type_error_import_list.append(row)
+                        break
+
                     row_11 = ''
                     if row[11]:
                         row_11 = json.loads(row[11])

@@ -73,7 +73,7 @@ In less economically developed countries, Internet is often limited, but there i
 
 
 How does the tag substitution work with the TTS engine?
---------------------------------------------------------
+-------------------------------------------------------
 
 **Answer:** .
 
@@ -94,7 +94,7 @@ Text example : "We are calling you on behalf of {company_name}, you receive a bo
 
 
 How does Newfies-Dialer provide TTS in multiple languages?
--------------------------------------------------------
+----------------------------------------------------------
 
 **Answer:** .
 
@@ -106,7 +106,7 @@ the only thing you have to do is to sign in and enable Acapela on Newfies-dialer
 
 
 Enable Acapela on Newfies-Dialer?
---------------------------------
+---------------------------------
 
 **Answer:** .
 

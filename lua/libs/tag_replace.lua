@@ -47,7 +47,7 @@ function tag_replace(text, contact)
     end
 
     for k, v in pairs(mcontact) do
-        if k == 'contact' then
+        if k == 'contact' or k == 'Phone1' or k == 'Phone2' or k == 'Phone3' then
             newv = ''
             for i = 1, string.len(v) do
                 newv = newv..string.sub(v, i, i)..' '

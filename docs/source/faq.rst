@@ -88,20 +88,22 @@ How does the tag substitution work with the TTS engine?
 
 **Answer:** .
 
-This is the list of standard tags that will be automatically replaced:
---         {last_name}
---         {first_name}
---         {email}
---         {country}
---         {city}
---         {contact}  // This is the phone number
+This is the list of standard tags that will be automatically replaced::
+    {last_name}
+    {first_name}
+    {email}
+    {country}
+    {city}
+    {contact}  // This is the phone number
 
 If you need more flexibility, you can use the "Additional Parameters (Json)" field which allow you to add custom key-values that will be replaced.
 
-For example, let's add this in "Additional Parameters (Json)" : {"company_name": "Canonical", "bonus" : "200", "currency" : "euro"}
+For example, let's add this in "Additional Parameters (Json)"::
+    {"company_name": "Canonical", "bonus" : "200", "currency" : "euro"}
 
 When you create a survey with a node that plays TTS, you can easily replace the key-values in the text.
-Text example : "We are calling you on behalf of {company_name}, you receive a bonus of {bonus} {currency}"
+Text example::
+    "We are calling you on behalf of {company_name}, you receive a bonus of {bonus} {currency}"
 
 
 .. _faq-how-provide-tts-in-multiple-languages:
@@ -132,11 +134,9 @@ Once you signed up you will receive a login, an application login and an applica
 
 Acapela needs to be configured in 2 places:
 
-1. On the Web interface:
+1. On the Web interface
 
-    edit the file /usr/share/newfies-dialer/settings_local.py
-
-    You will find:
+Edit the file /usr/share/newfies-dialer/settings_local.py and find::
 
     #TEXT-TO-SPEECH
     #==============
@@ -154,12 +154,10 @@ Acapela needs to be configured in 2 places:
     You will have to change the value of the settings : TTS_ENGINE, ACCOUNT_LOGIN, APPLICATION_LOGIN and APPLICATION_PASSWORD.
 
 
-2. On the IVR application:
+2. On the IVR application
 
-Edit the file /usr/share/newfies-lua/libs/settings.lua
+Edit the file /usr/share/newfies-lua/libs/settings.lua and find::
 
-
-    You will find:
     --
     -- Select the TTS engine, value : flite, acapela
     --
@@ -181,7 +179,7 @@ Edit the file /usr/share/newfies-lua/libs/settings.lua
     You will have to change the value of the settings : TTS_ENGINE, ACCOUNT_LOGIN, APPLICATION_LOGIN and APPLICATION_PASSWORD.
 
 
-Finally restart the web UI:
+Finally restart the web UI:::
 
     /etc/init.d/supervisor stop
     and

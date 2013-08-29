@@ -85,24 +85,24 @@ This is the list of standard tags that will be automatically replaced:
 --         {city}
 --         {contact}  // This is the phone number
 
-Then if you need more flexibility, you can use the "Additional Parameters (Json)" field which allow you to add custom key-value that will be replaced.
+If you need more flexibility, you can use the "Additional Parameters (Json)" field which allow you to add custom key-values that will be replaced.
 
-To give an example, let's add this in "Additional Parameters (Json)" : {"company_name": "Canonical", "bonus" : "200", "currency" : "euro"}
+For example, let's add this in "Additional Parameters (Json)" : {"company_name": "Canonical", "bonus" : "200", "currency" : "euro"}
 
-Later on, when you create a survey with node that will play a TTS, you can easily replace those key-values in the text.
+When you create a survey with a node that plays TTS, you can easily replace the key-values in the text.
 Text example : "We are calling you on behalf of {company_name}, you receive a bonus of {bonus} {currency}"
 
 
-How does Newfies-Dialer provide TTS in multi-languages?
+How does Newfies-Dialer provide TTS in multiple languages?
 -------------------------------------------------------
 
 **Answer:** .
 
-By default the TTS engine used by newfies-Dialer is Flite (http://www.speech.cs.cmu.edu/flite/),
-so if you want TTS in a language that is not english you will need to use an other TTS engine.
+By default the TTS engine used by newfies-Dialer is Flite (http://www.speech.cs.cmu.edu/flite/)
+which only supports English. If you want to use another language you will need another TTS engine.
 
-For this we integrated Acapela: http://acapela-vaas.com/ and in order to use Acapela,
-the only thing, you have to do, is to signin and enable Acapela on Newfies-dialer.
+We have integrated Acapela: http://acapela-vaas.com/ and in order to use Acapela,
+the only thing you have to do is to sign in and enable Acapela on Newfies-dialer.
 
 
 Enable Acapela on Newfies-Dialer?
@@ -110,8 +110,8 @@ Enable Acapela on Newfies-Dialer?
 
 **Answer:** .
 
-First you will have to sign-in and register an account with Acapela : http://acapela-vaas.com/
-Once you signed in you will receive a login, an application login and an application password, you will need those to configure Acapela on Newfies-Dialer.
+First you will have to sign-up and register an account with Acapela : http://acapela-vaas.com/
+Once you signed up you will receive a login, an application login and an application password, you will need those to configure Acapela on Newfies-Dialer.
 
 Acapela needs to be configured in 2 places:
 

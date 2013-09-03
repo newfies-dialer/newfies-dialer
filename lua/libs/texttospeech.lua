@@ -155,7 +155,7 @@ function tts(text, tts_dir)
 
     elseif TTS_ENGINE == 'flite' then
         --Flite
-        voice = "slt"
+        voice = "awb"
         frequency = 8000
         text = trim(text)
         if string.len(text) == 0 then

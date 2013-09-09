@@ -66,7 +66,6 @@ end
 function DBH:get_list(sqlquery)
     self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
     local list = {}
-    sql = "SELECT id, name FROM my_table"
     self.dbh:query(sqlquery, function(row)
         --Let's transform empty value to False
         --We do this to have similar behavior to luasql

@@ -85,8 +85,12 @@ def check_retrycall_completion(callrequest):
 
 
 class BufferVoIPCall:
-
-    list_voipcall = []
+    """
+    BufferVoIPCall stores VoIPCall (CDR) into a buffer and allow
+    to save CDRs per bulk.
+    - save : store the CDRs in memory
+    - commit : trigger the bulk_create method to save the CDRs
+    """
 
     def __init__(self):
         self.list_voipcall = []
@@ -176,74 +180,74 @@ class BufferVoIPCall:
 def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
                   hangup_cause_q850='', callerid='', phonenumber='', starting_date='',
                   call_uuid='', duration=0, billsec=0, amd_status='person'):
-        """
-        Save voip call immediately
-        """
-        if leg == 'aleg':
-            #A-Leg
-            leg_type = LEG_TYPE.A_LEG
-            used_gateway = callrequest.aleg_gateway
-        else:
-            #B-Leg
-            leg_type = LEG_TYPE.B_LEG
-            used_gateway = callrequest.aleg_gateway
-            #This code is useful if we want to let the survey editor select the gateway
-            # if callrequest.content_object.__class__.__name__ == 'Survey':
-            #     #Get the gateway from the App
-            #     used_gateway = callrequest.content_object.gateway
-            # else:
-            #     #Survey
-            #     used_gateway = callrequest.aleg_gateway
-        if amd_status == 'machine':
-            amd_status_id = VOIPCALL_AMD_STATUS.MACHINE
-        else:
-            amd_status_id = VOIPCALL_AMD_STATUS.PERSON
+    """
+    Save voip call immediately
+    """
+    if leg == 'aleg':
+        #A-Leg
+        leg_type = LEG_TYPE.A_LEG
+        used_gateway = callrequest.aleg_gateway
+    else:
+        #B-Leg
+        leg_type = LEG_TYPE.B_LEG
+        used_gateway = callrequest.aleg_gateway
+        #This code is useful if we want to let the survey editor select the gateway
+        # if callrequest.content_object.__class__.__name__ == 'Survey':
+        #     #Get the gateway from the App
+        #     used_gateway = callrequest.content_object.gateway
+        # else:
+        #     #Survey
+        #     used_gateway = callrequest.aleg_gateway
+    if amd_status == 'machine':
+        amd_status_id = VOIPCALL_AMD_STATUS.MACHINE
+    else:
+        amd_status_id = VOIPCALL_AMD_STATUS.PERSON
 
-        logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
-            (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
+    logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
+        (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
-        #Get the first word only
-        hangup_cause = hangup_cause.split()[0]
+    #Get the first word only
+    hangup_cause = hangup_cause.split()[0]
 
-        if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
-            hangup_cause = 'ANSWER'
+    if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
+        hangup_cause = 'ANSWER'
 
-        if hangup_cause == 'ANSWER':
-            disposition = 'ANSWER'
-        elif hangup_cause == 'USER_BUSY':
-            disposition = 'BUSY'
-        elif hangup_cause == 'NO_ANSWER':
-            disposition = 'NOANSWER'
-        elif hangup_cause == 'ORIGINATOR_CANCEL':
-            disposition = 'CANCEL'
-        elif hangup_cause == 'NORMAL_CIRCUIT_CONGESTION':
-            disposition = 'CONGESTION'
-        else:
-            disposition = 'FAILED'
+    if hangup_cause == 'ANSWER':
+        disposition = 'ANSWER'
+    elif hangup_cause == 'USER_BUSY':
+        disposition = 'BUSY'
+    elif hangup_cause == 'NO_ANSWER':
+        disposition = 'NOANSWER'
+    elif hangup_cause == 'ORIGINATOR_CANCEL':
+        disposition = 'CANCEL'
+    elif hangup_cause == 'NORMAL_CIRCUIT_CONGESTION':
+        disposition = 'CONGESTION'
+    else:
+        disposition = 'FAILED'
 
-        #Note: Removed for test performance
-        #Note: Look at prefix PG module : https://github.com/dimitri/prefix
-        #prefix_obj = get_prefix_obj(phonenumber)
+    #Note: Removed for test performance
+    #Note: Look at prefix PG module : https://github.com/dimitri/prefix
+    #prefix_obj = get_prefix_obj(phonenumber)
 
-        #Save this
-        new_voipcall = VoIPCall(
-            user_id=callrequest.user_id,
-            request_uuid=request_uuid,
-            leg_type=leg_type,
-            used_gateway=used_gateway,
-            callrequest_id=callrequest.id,
-            callid=call_uuid,
-            callerid=callerid,
-            phone_number=phonenumber,
-            #dialcode=prefix_obj,
-            starting_date=starting_date,
-            duration=duration,
-            billsec=billsec,
-            disposition=disposition,
-            hangup_cause=hangup_cause,
-            hangup_cause_q850=hangup_cause_q850,
-            amd_status=amd_status_id)
-        new_voipcall.save()
+    #Save this
+    new_voipcall = VoIPCall(
+        user_id=callrequest.user_id,
+        request_uuid=request_uuid,
+        leg_type=leg_type,
+        used_gateway=used_gateway,
+        callrequest_id=callrequest.id,
+        callid=call_uuid,
+        callerid=callerid,
+        phone_number=phonenumber,
+        #dialcode=prefix_obj,
+        starting_date=starting_date,
+        duration=duration,
+        billsec=billsec,
+        disposition=disposition,
+        hangup_cause=hangup_cause,
+        hangup_cause_q850=hangup_cause_q850,
+        amd_status=amd_status_id)
+    new_voipcall.save()
 
 
 @task()
@@ -265,9 +269,11 @@ def update_callrequest(callrequest, opt_hangup_cause):
 
 
 @task()
-def handle_callevent(record):
+def process_callevent(record):
     """
-    Handle the callevent, create the voipcall, and save different data
+    Process the callevent, this tasks will:
+        - Retrieve the callrequest using either callrequest_id or request_uuid
+        - create the voipcall, and save different data
     """
     event_name = record[1]
     body = record[2]
@@ -490,9 +496,9 @@ def check_callevent():
         #Update Call Event
         sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
         cursor.execute(sql_statement)
-        logger.info("Processing Event : %s" % event_name)
 
-        handle_callevent.delay(record)
+        logger.info("Processing Event : %s" % event_name)
+        process_callevent.delay(record)
 
     debug_query(30)
 

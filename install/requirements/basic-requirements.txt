@@ -7,7 +7,7 @@ python-dateutil==2.1
 uuid==1.30
 wsgiref==0.1.2
 redis==2.7.2
-celery==3.0.15
+celery==3.0.23
 pytz==2012j
 kombu==2.4.8
 mimeparse==0.1.3

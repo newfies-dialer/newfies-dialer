@@ -72,7 +72,9 @@ class Command(BaseCommand):
 
         length = 15
         chars = "1234567890"
-        for i in range(1, int(amount) + 1):
+        for k in range(1, int(amount) + 1):
+            if k % 1000 == 0:
+                print "%d contacts created..." % k
             phone_no = ''.join([choice(chars) for i in range(length)])
 
             #TODO: Use generate_series to speed up the contact creation
@@ -85,4 +87,4 @@ class Command(BaseCommand):
             except IntegrityError:
                 print "Error : Duplicate contact - %s" % phone_no
 
-        print "Number of Contact created : %(count)s" % {'count': amount}
+        print "\nTotal contacts created : %(count)s" % {'count': amount}

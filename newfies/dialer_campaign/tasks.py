@@ -31,8 +31,8 @@ from common_functions import debug_query
 # from common_functions import isint
 
 
-Timelaps = 6
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
+DIV_MIN = 10  # This will divide the minutes by that value and allow to not wait too long for the calls
 
 logger = get_task_logger(__name__)
 
@@ -62,7 +62,7 @@ class campaign_spool_contact(PeriodicTask):
 
 
 # OPTIMIZATION - FINE
-class CheckPendingcall(Task):
+class spool_pending_call(Task):
     @only_one(ikey="check_pendingcall", timeout=LOCK_EXPIRE)
     def run(self, campaign_id):
         """
@@ -73,14 +73,14 @@ class CheckPendingcall(Task):
             * ``campaign_id`` - Campaign ID
         """
         logger = self.get_logger()
-        logger.info("TASK :: CheckPendingcall = %d" % campaign_id)
+        logger.info("TASK :: spool_pending_call = %d" % campaign_id)
 
         debug_query(0)
 
         try:
             obj_campaign = Campaign.objects.select_related('user__userprofile__dialersetting', 'aleg_gateway', 'content_type').get(id=campaign_id)
         except:
-            logger.error('Can\'t find this campaign')
+            logger.error("Can't find this campaign")
             return False
 
         # TODO : Control the Speed
@@ -108,15 +108,12 @@ class CheckPendingcall(Task):
         # Get the subscriber of this campaign
         # get_pending_subscriber get Max 1000 records
         if frequency >= 10:
-            callfrequency = int(frequency / 10) + 1
+            callfrequency = int(frequency / DIV_MIN) + 1  # 1000 per minutes 101
+            #callfrequency = int(frequency) + 1  # 1000 per minutes 101
         else:
             callfrequency = frequency
-        (list_subscriber, no_subscriber) = obj_campaign.get_pending_subscriber_update(
-            callfrequency,
-            SUBSCRIBER_STATUS.IN_PROCESS
-        )
-        logger.info("campaign_id=%d #Subscriber: %d" % (campaign_id, no_subscriber))
-
+        (list_subscriber, no_subscriber) = obj_campaign.get_pending_subscriber_update(callfrequency, SUBSCRIBER_STATUS.IN_PROCESS)
+        logger.info("##subscriber=%d campaign_id=%d callfrequency=%d frequency=%d" % (no_subscriber, campaign_id, callfrequency, frequency))
         debug_query(3)
 
         if no_subscriber == 0:
@@ -124,15 +121,15 @@ class CheckPendingcall(Task):
 
         # Set time to wait for balanced dispatching of calls
         time_to_wait = 6.0 / no_subscriber
-
         count = 0
+
         for elem_camp_subscriber in list_subscriber:
             """Loop on Subscriber and start the initcall task"""
             count = count + 1
-            logger.info("Add CallRequest for Subscriber (%d) & wait (%s) " %
-                       (elem_camp_subscriber.id, str(time_to_wait)))
-            phone_number = elem_camp_subscriber.duplicate_contact
+            second_towait = ceil(count * time_to_wait)
+            logger.info("Init CallRequest in %d seconds (cmpg:%d,subscriber:%d)" % (second_towait, campaign_id, elem_camp_subscriber.id))
 
+            phone_number = elem_camp_subscriber.duplicate_contact
             debug_query(4)
 
             #Verify that the contact is authorized
@@ -154,6 +151,8 @@ class CheckPendingcall(Task):
 
             debug_query(5)
 
+            #TODO: idea to speed up, create bluck of 10(Y) and then send a list of callrequest_id to init_callrequest
+
             # Create a Callrequest Instance to track the call task
             new_callrequest = Callrequest(
                 status=CALLREQUEST_STATUS.PENDING,
@@ -174,8 +173,6 @@ class CheckPendingcall(Task):
 
             debug_query(6)
 
-            second_towait = ceil(count * time_to_wait)
-            logger.info("Init CallRequest in %d seconds (cmpg:%d)" % (second_towait, campaign_id))
             init_callrequest.apply_async(
                 args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration],
                 countdown=second_towait)
@@ -199,8 +196,7 @@ class campaign_running(PeriodicTask):
 
         campaign_running.delay()
     """
-    #run_every = timedelta(seconds=Timelaps)
-    run_every = timedelta(seconds=Timelaps)
+    run_every = timedelta(seconds=int(60 / DIV_MIN))
     # NOTE : until we implement a PID Controller :
     # http://en.wikipedia.org/wiki/PID_controller
 
@@ -208,9 +204,6 @@ class campaign_running(PeriodicTask):
     # of calls per minute. Cons : new calls might delay 60seconds
     # run_every = timedelta(seconds=60)
 
-    #NOTE: the Lock might not be needed here, it should be in the
-    #task CheckPendingcall
-    @only_one(ikey="campaign_running_renew", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.debug("TASK :: campaign_running")
 
@@ -218,7 +211,7 @@ class campaign_running(PeriodicTask):
             logger.info("=> Campaign name %s (id:%s)" %
                         (campaign.name, campaign.id))
             keytask = 'check_campaign_pendingcall-%d' % (campaign.id)
-            CheckPendingcall().delay(campaign.id, keytask=keytask)
+            spool_pending_call().delay(campaign.id, keytask=keytask)
         return True
 
 

@@ -88,7 +88,7 @@ How does the tag substitution work with the TTS engine?
 
 **Answer:** .
 
-This is the list of standard tags that will be automatically replaced::
+This is the list of standard tags that will be automatically replaced:
     {last_name}
     {first_name}
     {email}
@@ -98,11 +98,11 @@ This is the list of standard tags that will be automatically replaced::
 
 If you need more flexibility, you can use the "Additional Parameters (Json)" field which allow you to add custom key-values that will be replaced.
 
-For example, let's add this in "Additional Parameters (Json)"::
+For example, let's add this in "Additional Parameters (Json)":
     {"company_name": "Canonical", "bonus" : "200", "currency" : "euro"}
 
 When you create a survey with a node that plays TTS, you can easily replace the key-values in the text.
-Text example::
+Text example:
     "We are calling you on behalf of {company_name}, you receive a bonus of {bonus} {currency}"
 
 

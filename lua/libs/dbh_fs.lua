@@ -66,7 +66,6 @@ end
 function DBH:get_list(sqlquery)
     self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
     local list = {}
-    sql = "SELECT id, name FROM my_table"
     self.dbh:query(sqlquery, function(row)
         --Let's transform empty value to False
         --We do this to have similar behavior to luasql
@@ -97,14 +96,19 @@ function DBH:get_cache_list(sqlquery, ttl)
         return cmsgpack.unpack(value)
     else
         --Not in Cache
-        cur = assert(self.con:execute(sqlquery))
-        list = {}
-        row = cur:fetch ({}, "a")
-        while row do
+        local list = {}
+        self.dbh:query(sqlquery, function(row)
+            --Let's transform empty value to False
+            --We do this to have similar behavior to luasql
+            --luasql doesn't return the empty/null fields
+            for k, v in pairs(row) do
+                if v == '' then
+                    row[k] = false
+                end
+            end
             list[tonumber(row.id)] = row
-            row = cur:fetch ({}, "a")
-        end
-        cur:close()
+            --freeswitch.consoleLog(fslevel, string.format("%5s : %s\n", row.id, row.name))
+        end)
         --Add in Cache
         msgpack = cmsgpack.pack(list)
         --Redis
@@ -146,12 +150,20 @@ function DBH:get_cache_object(sqlquery, ttl)
         --Cached
         return cmsgpack.unpack(value)
     else
-        --Not in Cache
-        cur = assert(self.con:execute(sqlquery))
-        row = cur:fetch ({}, "a")
-        cur:close()
-        --Add in Cache
-        msgpack = cmsgpack.pack(row)
+        --Not in cache
+        local res_get_object
+        self.dbh:query(sqlquery, function(row)
+            res_get_object = row
+            for k, v in pairs(res_get_object) do
+                if v == '' then
+                    res_get_object[k] = false
+                end
+            end
+            --freeswitch.consoleLog(fslevel, string.format("%5s : %s\n", row.id, row.name))
+        end)
+
+        --Add in cache
+        msgpack = cmsgpack.pack(res_get_object)
         --Redis
         --self.caching:set(hashkey, msgpack)
         --self.caching:expire(hashkey, ttl)
@@ -159,7 +171,7 @@ function DBH:get_cache_object(sqlquery, ttl)
         --self.caching:set(hashkey, msgpack, ttl)
         --lfs_cache
         self.caching:set(hashkey, msgpack)
-        return row
+        return res_get_object
     end
 end
 

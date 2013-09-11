@@ -599,8 +599,21 @@ function FSMCall:next_node()
         elseif current_node.type == MULTI_CHOICE then
             --Break if digits is accepted
             if digits == '' then
-                self.debugger:msg("DEBUG", "MULTI_CHOICE invalid_input")
+                self.debugger:msg("DEBUG", "MULTI_CHOICE invalid_input or maybe timeout")
                 invalid_input = true
+
+                -- in case of MULTI_CHOICE if digits is empty we might want to branch to the timeout first
+                if current_branching["timeout"] and current_branching["timeout"].goto_id then
+                    --We got an "timeout branching"
+                    self.debugger:msg("DEBUG", "Got 'timeout' Branching : "..current_branching["timeout"].goto_id)
+                    self.current_node_id = tonumber(current_branching["timeout"].goto_id)
+                    return true
+                elseif current_branching["timeout"] then
+                    --There is no goto_id -> then we got to hangup
+                    self.debugger:msg("DEBUG", "Got 'timeout' Branching but no goto_id -> then we got to hangup")
+                    self:end_call()
+                    return true
+                end
             end
         elseif current_node.type == CAPTURE_DIGITS
             and current_node.validate_number == '1'

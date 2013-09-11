@@ -155,7 +155,7 @@ function tts(text, tts_dir)
 
     elseif TTS_ENGINE == 'flite' then
         --Flite
-        voice = "slt"
+        voice = "awb"
         frequency = 8000
         text = trim(text)
         if string.len(text) == 0 then
@@ -173,7 +173,7 @@ function tts(text, tts_dir)
             assert(out:close())
 
             -- Convert file
-            flite_command = 'flite -voice '..voice..' -f '..txt_file..' -o '..output_file
+            flite_command = 'flite --setf duration_stretch=1.5 -voice '..voice..' -f '..txt_file..' -o '..output_file
             --print(flite_command)
             excecute_command(flite_command)
             return output_file

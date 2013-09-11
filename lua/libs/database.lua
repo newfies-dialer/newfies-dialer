@@ -131,6 +131,12 @@ function Database:load_campaign_info(campaign_id)
     self.user_id = self.campaign_info["user_id"]
 end
 
+function Database:test_get_campaign()
+    sqlquery = "SELECT * FROM dialer_campaign ORDER BY DESC id"
+    self.debugger:msg("DEBUG", "Get campaign list : "..sqlquery)
+    self.contact = self.dbh:get_object(sqlquery)
+end
+
 function Database:load_contact(contact_id)
     sqlquery = "SELECT * FROM dialer_contact WHERE id="..contact_id
     self.debugger:msg("DEBUG", "Load contact data : "..sqlquery)
@@ -138,7 +144,7 @@ function Database:load_contact(contact_id)
 end
 
 function Database:load_content_type()
-    sqlquery = "SELECt id FROM django_content_type WHERE model='survey'"
+    sqlquery = "SELECT id FROM django_content_type WHERE model='survey'"
     self.debugger:msg("DEBUG", "Load content_type : "..sqlquery)
     result = self.dbh:get_cache_object(sqlquery, 300)
     return result["id"]
@@ -436,6 +442,15 @@ if false then
 
     db:disconnect()
 end
+
+
+-- require "debugger"
+-- local debugger = Debugger(false)
+
+-- db = Database(debug_mode, debugger)
+-- db:connect()
+-- list_campaign = db:test_get_campaign()
+-- print(inspect(list_campaign))
 
 
 -- campaign_id = 42

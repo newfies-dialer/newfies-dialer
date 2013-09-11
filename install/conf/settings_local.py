@@ -25,6 +25,7 @@ TIME_ZONE = 'Europe/Madrid'
 
 APPLICATION_DIR = os.path.dirname(globals()['__file__'])
 
+
 #DATABASE SETTINGS
 #=================
 DATABASES = {
@@ -71,6 +72,10 @@ API_ALLOWED_IP = [
 ]
 
 ALLOWED_HOSTS = ['SERVER_IP']
+
+#CELERY
+#======
+CELERY_DISABLE_RATE_LIMITS = True
 
 #LOGGING
 #=======

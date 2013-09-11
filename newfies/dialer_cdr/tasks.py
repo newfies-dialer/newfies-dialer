@@ -85,8 +85,12 @@ def check_retrycall_completion(callrequest):
 
 
 class BufferVoIPCall:
-
-    list_voipcall = []
+    """
+    BufferVoIPCall stores VoIPCall (CDR) into a buffer and allow
+    to save CDRs per bulk.
+    - save : store the CDRs in memory
+    - commit : trigger the bulk_create method to save the CDRs
+    """
 
     def __init__(self):
         self.list_voipcall = []
@@ -172,81 +176,70 @@ class BufferVoIPCall:
         VoIPCall.objects.bulk_create(self.list_voipcall)
 
 
-@task()
 def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
                   hangup_cause_q850='', callerid='', phonenumber='', starting_date='',
                   call_uuid='', duration=0, billsec=0, amd_status='person'):
-        """
-        Save voip call immediately
-        """
-        if leg == 'aleg':
-            #A-Leg
-            leg_type = LEG_TYPE.A_LEG
-            used_gateway = callrequest.aleg_gateway
-        else:
-            #B-Leg
-            leg_type = LEG_TYPE.B_LEG
-            used_gateway = callrequest.aleg_gateway
-            #This code is useful if we want to let the survey editor select the gateway
-            # if callrequest.content_object.__class__.__name__ == 'Survey':
-            #     #Get the gateway from the App
-            #     used_gateway = callrequest.content_object.gateway
-            # else:
-            #     #Survey
-            #     used_gateway = callrequest.aleg_gateway
-        if amd_status == 'machine':
-            amd_status_id = VOIPCALL_AMD_STATUS.MACHINE
-        else:
-            amd_status_id = VOIPCALL_AMD_STATUS.PERSON
+    """
+    This task will save the voipcall(CDR) to the DB,
+    it will also reformat the disposition
+    """
+    used_gateway = callrequest.aleg_gateway
+    #Set Leg Type
+    if leg == 'aleg':
+        leg_type = LEG_TYPE.A_LEG
+    else:
+        leg_type = LEG_TYPE.B_LEG
+    #Set AMD status
+    if amd_status == 'machine':
+        amd_status_id = VOIPCALL_AMD_STATUS.MACHINE
+    else:
+        amd_status_id = VOIPCALL_AMD_STATUS.PERSON
 
-        logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
-            (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
+    logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
+        (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
-        #Get the first word only
-        hangup_cause = hangup_cause.split()[0]
+    #Get the first word only
+    hangup_cause = hangup_cause.split()[0]
 
-        if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
-            hangup_cause = 'ANSWER'
+    if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
+        disposition = 'ANSWER'
+    elif hangup_cause == 'USER_BUSY':
+        disposition = 'BUSY'
+    elif hangup_cause == 'NO_ANSWER':
+        disposition = 'NOANSWER'
+    elif hangup_cause == 'ORIGINATOR_CANCEL':
+        disposition = 'CANCEL'
+    elif hangup_cause == 'NORMAL_CIRCUIT_CONGESTION':
+        disposition = 'CONGESTION'
+    else:
+        disposition = 'FAILED'
 
-        if hangup_cause == 'ANSWER':
-            disposition = 'ANSWER'
-        elif hangup_cause == 'USER_BUSY':
-            disposition = 'BUSY'
-        elif hangup_cause == 'NO_ANSWER':
-            disposition = 'NOANSWER'
-        elif hangup_cause == 'ORIGINATOR_CANCEL':
-            disposition = 'CANCEL'
-        elif hangup_cause == 'NORMAL_CIRCUIT_CONGESTION':
-            disposition = 'CONGESTION'
-        else:
-            disposition = 'FAILED'
+    #Note: Removed for test performance
+    #Note: Look at prefix PG module : https://github.com/dimitri/prefix
+    #prefix_obj = get_prefix_obj(phonenumber)
 
-        #Note: Removed for test performance
-        #Note: Look at prefix PG module : https://github.com/dimitri/prefix
-        #prefix_obj = get_prefix_obj(phonenumber)
-
-        #Save this
-        new_voipcall = VoIPCall(
-            user_id=callrequest.user_id,
-            request_uuid=request_uuid,
-            leg_type=leg_type,
-            used_gateway=used_gateway,
-            callrequest_id=callrequest.id,
-            callid=call_uuid,
-            callerid=callerid,
-            phone_number=phonenumber,
-            #dialcode=prefix_obj,
-            starting_date=starting_date,
-            duration=duration,
-            billsec=billsec,
-            disposition=disposition,
-            hangup_cause=hangup_cause,
-            hangup_cause_q850=hangup_cause_q850,
-            amd_status=amd_status_id)
-        new_voipcall.save()
+    #Save the VoIPCall
+    new_voipcall = VoIPCall(
+        user_id=callrequest.user_id,
+        request_uuid=request_uuid,
+        leg_type=leg_type,
+        used_gateway=used_gateway,
+        callrequest_id=callrequest.id,
+        callid=call_uuid,
+        callerid=callerid,
+        phone_number=phonenumber,
+        #dialcode=prefix_obj,
+        starting_date=starting_date,
+        duration=duration,
+        billsec=billsec,
+        disposition=disposition,
+        hangup_cause=hangup_cause,
+        hangup_cause_q850=hangup_cause_q850,
+        amd_status=amd_status_id)
+    new_voipcall.save()
 
 
-@task()
+@task(ignore_result=True)
 def update_callrequest(callrequest, opt_hangup_cause):
     #Only the aleg will update the subscriber status / Bleg is only recorded
     #Update Callrequest Status
@@ -264,10 +257,12 @@ def update_callrequest(callrequest, opt_hangup_cause):
     debug_query(24)
 
 
-@task()
-def handle_callevent(record):
+@task(ignore_result=True)
+def process_callevent(record):
     """
-    Handle the callevent, create the voipcall, and save different data
+    Process the callevent, this tasks will:
+        - Retrieve the callrequest using either callrequest_id or request_uuid
+        - create the voipcall, and save different data
     """
     event_name = record[1]
     body = record[2]
@@ -289,16 +284,11 @@ def handle_callevent(record):
         #hangup cause come from body
         hangup_cause = body[5:]
 
-    # if event_name == 'CHANNEL_HANGUP_COMPLETE':
-    #     #hangup cause come from body
-    #     print(event_name)
-
     if hangup_cause == '':
         hangup_cause = body[5:]
 
     request_uuid = job_uuid
     opt_hangup_cause = hangup_cause
-
     debug_query(22)
 
     try:
@@ -362,7 +352,7 @@ def handle_callevent(record):
 
     # debug_query(25)
 
-    voipcall_save.delay(
+    voipcall_save(
         callrequest=callrequest,
         request_uuid=request_uuid,
         leg=leg,
@@ -475,7 +465,8 @@ def check_callevent():
 
     sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, "\
         "callrequest_id, callerid, phonenumber, duration, billsec, hangup_cause, "\
-        "hangup_cause_q850, starting_date, status, created_date, amd_status, leg FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
+        "hangup_cause_q850, starting_date, status, created_date, amd_status, leg "\
+        "FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
 
     cursor.execute(sql_statement)
     row = cursor.fetchall()
@@ -486,24 +477,22 @@ def check_callevent():
     for record in row:
         call_event_id = record[0]
         event_name = record[1]
-
         #Update Call Event
         sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
         cursor.execute(sql_statement)
-        logger.info("Processing Event : %s" % event_name)
 
-        handle_callevent.delay(record)
+        logger.info("Processing Event : %s" % event_name)
+        process_callevent.delay(record)
 
     debug_query(30)
-
     # buff_voipcall.commit()
     # debug_query(31)
-
     logger.debug('End Loop : check_callevent')
 
 
 class task_pending_callevent(PeriodicTask):
-    """A periodic task that checks the call events
+    """
+    A periodic task that checks the call events
 
     **Usage**:
 
@@ -517,7 +506,7 @@ class task_pending_callevent(PeriodicTask):
     #TODO: problem of the lock if it's a cloud, it won't be shared
     @only_one(ikey="task_pending_callevent", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger.info("ASK :: task_pending_callevent")
+        logger.debug("ASK :: task_pending_callevent")
         check_callevent()
 
 
@@ -552,7 +541,32 @@ def callrequest_pending(*args, **kwargs):
 """
 
 
-@task()
+def esl_dialout(dial_command):
+    """
+    function to dialout via ESL
+    """
+    print dial_command
+    #Connect to ESL
+    import ESL
+    c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
+    # c.connected()
+    ev = c.api("bgapi", str(dial_command))
+    c.disconnect()
+
+    if ev:
+        result = ev.serialize()
+        logger.debug(result)
+        pos = result.find('Job-UUID:')
+        if pos:
+            request_uuid = result[pos + 10:pos + 46]
+        else:
+            request_uuid = 'error'
+    else:
+        request_uuid = 'error'
+    return request_uuid
+
+
+@task(ignore_result=True)
 def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     """
     This task read the callrequest, update it as 'In Process'
@@ -566,12 +580,14 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     debug_query(8)
 
     #Get CallRequest object
-    # .only('id', 'callerid', 'phone_number', 'status',
-    #     'request_uuid', 'campaign__id', 'subscriber__id',
-    #     'aleg_gateway__id', 'aleg_gateway__addprefix', 'aleg_gateway__removeprefix', 'aleg_gateway__status',
-    #     'aleg_gateway__gateways', 'aleg_gateway__gateway_timeouts', 'aleg_gateway__originate_dial_string',
-    #     'user__userprofile__accountcode', 'campaign__caller_name',
+    #use only https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.only
+    # test2 = Callrequest.objects.only('id', 'callerid', 'phone_number', 'status', \
+    #     'request_uuid', 'campaign__id', 'subscriber__id', \
+    #     'aleg_gateway__id', 'aleg_gateway__addprefix', 'aleg_gateway__removeprefix', 'aleg_gateway__status', \
+    #     'aleg_gateway__gateways', 'aleg_gateway__gateway_timeouts', 'aleg_gateway__originate_dial_string', \
+    #     'user__userprofile__accountcode', 'campaign__caller_name', \
     #     'subscriber__id', 'subscriber__contact__id', 'subscriber__count_attempt', 'subscriber__last_attempt')\
+    #     .select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=4767)
     obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=callrequest_id)
 
     debug_query(9)
@@ -719,37 +735,19 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
 
             #DEBUG
             #settings.ESL_SCRIPT = '&playback(/usr/local/freeswitch/sounds/en/us/callie/voicemail/8000/vm-record_greeting.wav)'
-            dial = "originate {%s}%s%s '%s'" % \
+            dial_command = "originate {%s}%s%s '%s'" % \
                 (args_str, gateways, dialout_phone_number, settings.ESL_SCRIPT)
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
-            print dial
 
-            import ESL
-            c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
-            c.connected()
-            ev = c.api("bgapi", str(dial))
-            c.disconnect()
-
+            request_uuid = esl_dialout(dial_command)
             debug_query(14)
-
-            if ev:
-                result = ev.serialize()
-                logger.debug(result)
-                pos = result.find('Job-UUID:')
-                if pos:
-                    request_uuid = result[pos + 10:pos + 46]
-                else:
-                    request_uuid = 'error'
-            else:
-                request_uuid = 'error'
-
         except:
             raise
             logger.error('error : ESL')
             outbound_failure = True
             return False
-        logger.info('Received RequestUUID :> ' + request_uuid)
+        logger.debug('Received RequestUUID :> ' + request_uuid)
     else:
         logger.error('No other method supported!')
         obj_callrequest.status = CALLREQUEST_STATUS.FAILURE

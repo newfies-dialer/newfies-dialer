@@ -587,7 +587,7 @@ def section_script_play(request, id):
                 text_file.close()
 
                 #Convert file
-                conv = 'flite -voice slt -f %s -o %s' % (text_file_path, audio_file_path)
+                conv = 'flite --setf duration_stretch=1.5 -voice awb -f %s -o %s' % (text_file_path, audio_file_path)
                 response = subprocess.Popen(conv.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
                 (filetype, error) = response.communicate()
 
@@ -750,7 +750,7 @@ def survey_change(request, object_id):
         branching_list.values_list('section_id', flat=True).distinct()
 
     if request.method == 'POST':
-        if request.POST.get('delete'):            
+        if request.POST.get('delete'):
             return HttpResponseRedirect('/survey/del/%s/' % object_id)
         else:
             form = SurveyForm(request.POST, request.user, instance=survey)

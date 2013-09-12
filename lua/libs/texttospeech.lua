@@ -23,10 +23,10 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 -- acapela
 --
 
-require "md5"
 require "lfs"
 require "acapela"
 require "constant"
+local md5 = require "md5"
 local inspect = require 'inspect'
 
 

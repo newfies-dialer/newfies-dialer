@@ -27,7 +27,7 @@ local cmsgpack = require 'cmsgpack'
 local lfs_cache = require "lfs_cache"
 require "constant"
 require "settings"
-require "md5"
+local md5 = require "md5"
 
 --redis.commands.expire = redis.command('EXPIRE')
 --redis.commands.ttl = redis.command('TTL')

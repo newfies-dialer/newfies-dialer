@@ -30,7 +30,7 @@
 
 
 require "lfs"
-require "md5"
+local md5 = require "md5"
 local oo = require "loop.simple"
 local inspect = require 'inspect'
 

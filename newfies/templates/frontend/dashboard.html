@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block extra_header %}
-    {% include_nvd3jscss False %}
+    {% include_nvd3jscss True %}
     {% load_chart final_charttype final_chartdata "final_container" True "%d %b %Y" %}
     {% load_chart hangup_analytic_charttype hangup_analytic_chartdata "hangup_analytic_container" %}
 {% endblock %}

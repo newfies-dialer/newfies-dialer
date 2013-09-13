@@ -23,12 +23,22 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 -- acapela
 --
 
-require "lfs"
-require "acapela"
 require "constant"
-local md5 = require "md5"
-local inspect = require 'inspect'
 
+
+-- loadding acapela_config depend of file_exists which then load lfs
+-- TODO: Find a better way to load conf
+
+-- Check file exists and readable
+function file_exists(path)
+    local lfs = require "lfs"
+    local attr = lfs.attributes(path)
+    if (attr ~= nil) then
+        return true
+    else
+        return false
+    end
+end
 
 --load local config first
 if file_exists(ROOT_DIR..'libs/acapela_config.lua') then
@@ -57,17 +67,6 @@ function simple_command(command)
     file:close()
     return output
 end
-
--- Check file exists and readable
-function file_exists(path)
-    local attr = lfs.attributes(path)
-    if (attr ~= nil) then
-        return true
-    else
-        return false
-    end
-end
-
 
 -- Excecute Command function
 function excecute_command(cmd, quiet)
@@ -129,6 +128,8 @@ end
 --
 function tts(text, tts_dir)
 
+    local md5 = require "md5"
+
     if TTS_ENGINE == 'cepstral' then
         --Cepstral
         voice = "-n Allison-8kHz"
@@ -181,6 +182,7 @@ function tts(text, tts_dir)
 
     elseif TTS_ENGINE == 'acapela' then
         --Acapela
+        require "acapela"
         local tts_acapela = Acapela(ACCOUNT_LOGIN, APPLICATION_LOGIN, APPLICATION_PASSWORD, SERVICE_URL, QUALITY, tts_dir)
         tts_acapela:set_cache(true)
         tts_acapela:prepare(text, ACAPELA_LANG, ACAPELA_GENDER, ACAPELA_INTONATION)

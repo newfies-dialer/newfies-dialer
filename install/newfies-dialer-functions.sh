@@ -351,7 +351,7 @@ func_install_dependencies(){
     luarocks install loop
     luarocks install md5
     luarocks install luafilesystem
-    luarocks install luajson
+    luarocks install luajson 1.3.2-1
     luarocks install inspect
     luarocks install redis-lua
     luarocks install lua-cmsgpack

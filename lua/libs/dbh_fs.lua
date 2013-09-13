@@ -19,14 +19,13 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 --It might worth to rename this to model.lua
 
 local oo = require "loop.simple"
-local inspect = require 'inspect'
-local cmsgpack = require 'cmsgpack'
+local cmsgpack = require "cmsgpack"
+local lfs_cache = require "lfs_cache"
+local md5 = require "md5"
 --local redis = require 'redis'
 --require "memcached"
-local lfs_cache = require "lfs_cache"
 require "constant"
 require "settings"
-local md5 = require "md5"
 
 --redis.commands.expire = redis.command('EXPIRE')
 --redis.commands.ttl = redis.command('TTL')
@@ -86,7 +85,7 @@ function DBH:get_cache_list(sqlquery, ttl)
     if not USE_CACHE then
         return self:get_list(sqlquery)
     end
-    hashkey = md5.sumhexa(sqlquery)
+    local hashkey = md5.sumhexa(sqlquery)
     --memcached / redis
     --local value = self.caching:get(hashkey)
     --lfs_cache
@@ -110,7 +109,7 @@ function DBH:get_cache_list(sqlquery, ttl)
             --freeswitch.consoleLog(fslevel, string.format("%5s : %s\n", row.id, row.name))
         end)
         --Add in Cache
-        msgpack = cmsgpack.pack(list)
+        local msgpack = cmsgpack.pack(list)
         --Redis
         --self.caching:set(hashkey, msgpack)
         --self.caching:expire(hashkey, ttl)
@@ -142,7 +141,7 @@ function DBH:get_cache_object(sqlquery, ttl)
     if not USE_CACHE then
         return self:get_object(sqlquery)
     end
-    hashkey = md5.sumhexa(sqlquery)
+    local hashkey = md5.sumhexa(sqlquery)
     --local value = self.caching:get(hashkey)
     --lfs_cache
     local value = self.caching:get(hashkey, ttl)
@@ -163,7 +162,7 @@ function DBH:get_cache_object(sqlquery, ttl)
         end)
 
         --Add in cache
-        msgpack = cmsgpack.pack(res_get_object)
+        local msgpack = cmsgpack.pack(res_get_object)
         --Redis
         --self.caching:set(hashkey, msgpack)
         --self.caching:expire(hashkey, ttl)
@@ -176,7 +175,7 @@ function DBH:get_cache_object(sqlquery, ttl)
 end
 
 function DBH:execute(sqlquery)
-    res = self.dbh:query(sqlquery)
+    local res = self.dbh:query(sqlquery)
     --Get affected rows
     --self.dbh:affected_rows()
     return res

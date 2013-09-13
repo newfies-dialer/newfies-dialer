@@ -15,13 +15,13 @@
 package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
---It might worth to rename this to model.lua
+--TODO: It might worth to rename this to model.lua
 
-local inspect = require 'inspect'
-require "constant"
 local oo = require "loop.simple"
 local dbhanlder = require "dbhandler"
 --local dbh_fs = require "dbh_fs"
+--local inspect = require 'inspect'
+require "constant"
 
 
 --redis.commands.expire = redis.command('EXPIRE')
@@ -69,23 +69,23 @@ function Database:load_survey_section(survey_id)
     -- key_0    key_1   key_2   key_3   key_4   key_5   key_6   key_7   key_8   key_9
     -- rating_laps  validate_number number_digits   phonenumber completed   created_date
     -- updated_date survey_id   invalid_audiofile_id    min_number  max_number
-    sqlquery = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
+    local sqlquery = "SELECT * FROM "..self.TABLE_SECTION.." WHERE survey_id="..survey_id.." ORDER BY "..self.TABLE_SECTION..".order"
     self.debugger:msg("DEBUG", "Load survey section : "..sqlquery)
-    qresult = self.dbh:get_cache_list(sqlquery, 300)
+    local qresult = self.dbh:get_cache_list(sqlquery, 300)
 
-    list = {}
-    low_order = -1
+    local list = {}
+    local low_order = -1
     for i,row in pairs(qresult) do
         self.debugger:msg("DEBUG", string.format("id:%15d  question:%-15s type:%-15s order:%-15s", row.id, row.question, row.type, row.order))
         if tonumber(row.order) < low_order or low_order < 0 then
-            low_order = tonumber(row.order)
+            local low_order = tonumber(row.order)
             self.start_node = row.id
         end
 
         list[tonumber(row['id'])] = row
     end
     self.debugger:msg("DEBUG", string.format("start_node:%15d", self.start_node))
-    self.debugger:msg("DEBUG", inspect(list))
+    --self.debugger:msg("DEBUG", inspect(list))
     self.list_section = list
     if not self.start_node then
         self.debugger:msg("ERROR", "Error Loading Survey Section")
@@ -94,35 +94,36 @@ end
 
 function Database:load_survey_branching(survey_id)
     -- id   keys section_id goto_id
-    sqlquery = "SELECT "..self.TABLE_BRANCHING..".id, keys, section_id, goto_id "..
+    local sqlquery = "SELECT "..self.TABLE_BRANCHING..".id, keys, section_id, goto_id "..
         "FROM "..self.TABLE_BRANCHING.." LEFT JOIN "..self.TABLE_SECTION..
         " ON "..self.TABLE_SECTION..".id="..self.TABLE_BRANCHING..".section_id "..
         "WHERE survey_id="..survey_id
     self.debugger:msg("DEBUG", "Load survey branching : "..sqlquery)
-    qresult = self.dbh:get_cache_list(sqlquery, 300)
+    local qresult = self.dbh:get_cache_list(sqlquery, 300)
 
-    list = {}
+    local list = {}
     for i,row in pairs(qresult) do
         if not list[tonumber(row['section_id'])] then
             list[tonumber(row['section_id'])] = {}
         end
         list[tonumber(row['section_id'])][tostring(row.keys)] = row
     end
-    self.debugger:msg("DEBUG", inspect(list))
+    --self.debugger:msg("DEBUG", inspect(list))
     self.list_branching = list
 end
 
 
 function Database:load_audiofile()
     -- id   name    audio_file  user_id
-    sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
+    local sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
     self.debugger:msg("DEBUG", "Load audiofile branching : "..sqlquery)
     self.list_audio = self.dbh:get_cache_list(sqlquery, 300)
-    self.debugger:msg("DEBUG", inspect(self.list_audio))
+    --self.debugger:msg("DEBUG", inspect(self.list_audio))
 end
 
 function Database:load_campaign_info(campaign_id)
-    sqlquery = "SELECT dialer_campaign.*, dialer_gateway.gateways FROM dialer_campaign LEFT JOIN dialer_gateway ON dialer_gateway.id=aleg_gateway_id WHERE dialer_campaign.id="..campaign_id
+    local sqlquery = "SELECT dialer_campaign.*, dialer_gateway.gateways FROM dialer_campaign LEFT JOIN dialer_gateway "..
+        "ON dialer_gateway.id=aleg_gateway_id WHERE dialer_campaign.id="..campaign_id
     self.debugger:msg("DEBUG", "Load campaign info : "..sqlquery)
     self.campaign_info = self.dbh:get_cache_object(sqlquery, 300)
     if not self.campaign_info then
@@ -132,41 +133,41 @@ function Database:load_campaign_info(campaign_id)
 end
 
 function Database:test_get_campaign()
-    sqlquery = "SELECT * FROM dialer_campaign ORDER BY DESC id"
+    local sqlquery = "SELECT * FROM dialer_campaign ORDER BY DESC id"
     self.debugger:msg("DEBUG", "Get campaign list : "..sqlquery)
     self.contact = self.dbh:get_object(sqlquery)
 end
 
 function Database:load_contact(contact_id)
-    sqlquery = "SELECT * FROM dialer_contact WHERE id="..contact_id
+    local sqlquery = "SELECT * FROM dialer_contact WHERE id="..contact_id
     self.debugger:msg("DEBUG", "Load contact data : "..sqlquery)
     self.contact = self.dbh:get_object(sqlquery)
 end
 
 function Database:load_content_type()
-    sqlquery = "SELECT id FROM django_content_type WHERE model='survey'"
+    local sqlquery = "SELECT id FROM django_content_type WHERE model='survey'"
     self.debugger:msg("DEBUG", "Load content_type : "..sqlquery)
-    result = self.dbh:get_cache_object(sqlquery, 300)
+    local result = self.dbh:get_cache_object(sqlquery, 300)
     return result["id"]
 end
 
 function Database:update_subscriber(subscriber_id, status)
-    sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
+    local sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
     self.debugger:msg("DEBUG", "Update Subscriber : "..sqlquery)
-    res = self.dbh:execute(sqlquery)
+    local res = self.dbh:execute(sqlquery)
     self:update_campaign_completed()
 end
 
 function Database:update_campaign_completed()
-    sqlquery = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..self.campaign_info.id
+    local sqlquery = "UPDATE dialer_campaign SET completed = completed + 1 WHERE id="..self.campaign_info.id
     self.debugger:msg("DEBUG", "Update Campaign : "..sqlquery)
-    res = self.dbh:execute(sqlquery)
+    local res = self.dbh:execute(sqlquery)
 end
 
 function Database:update_callrequest_cpt(callrequest_id)
-    sqlquery = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
+    local sqlquery = "UPDATE dialer_callrequest SET completed = 't' WHERE id="..callrequest_id
     self.debugger:msg("DEBUG", "Update CallRequest : "..sqlquery)
-    res = self.dbh:execute(sqlquery)
+    local res = self.dbh:execute(sqlquery)
 end
 
 function Database:load_all(campaign_id, contact_id)
@@ -182,7 +183,7 @@ function Database:load_all(campaign_id, contact_id)
         return false
     end
 
-    content_type_id = self:load_content_type()
+    local content_type_id = self:load_content_type()
     if tonumber(self.campaign_info.content_type_id) == tonumber(content_type_id) then
         self.app_type = 'survey'
     else
@@ -191,7 +192,7 @@ function Database:load_all(campaign_id, contact_id)
             ") is not supported")
         return false
     end
-    survey_id = self.campaign_info.object_id
+    local survey_id = self.campaign_info.object_id
     if self.DG_SURVEY_ID and self.DG_SURVEY_ID > 0 then
         survey_id = self.DG_SURVEY_ID
     end
@@ -227,8 +228,8 @@ end
 
 function Database:commit_result_mem(campaign_id, survey_id)
     --Commit all results with one bulk insert to the Database
-    sql_result = ''
-    count = 0
+    local sql_result = ''
+    local count = 0
     for k, v in pairs(self.results) do
         count = count + 1
         if count > 1 then
@@ -239,12 +240,11 @@ function Database:commit_result_mem(campaign_id, survey_id)
         --TODO: For performance replace this by a celery task which will read 1000 survey_result and aggregate them in block
         self:set_aggregate_result(campaign_id, survey_id, v[2], v[5], v[4])
     end
-    sqlquery = "INSERT INTO survey_result "..
-    "(callrequest_id, section_id, record_file, recording_duration, response, created_date) "..
-    "VALUES "..sql_result
+    local sqlquery = "INSERT INTO survey_result "..
+        "(callrequest_id, section_id, record_file, recording_duration, response, created_date) VALUES "..sql_result
     if count > 0 then
         self.debugger:msg("DEBUG", "Insert Bulk Result : "..sqlquery)
-        res = self.dbh:execute(sqlquery)
+        local res = self.dbh:execute(sqlquery)
         if not res then
             self.debugger:msg("ERROR", "ERROR to Insert Bulk Result : "..sqlquery)
         end
@@ -252,10 +252,10 @@ function Database:commit_result_mem(campaign_id, survey_id)
 end
 
 function Database:save_result_aggregate(campaign_id, survey_id, section_id, response)
-    sqlquery = "INSERT INTO survey_resultaggregate (campaign_id, survey_id, section_id, response, count, created_date) "..
+    local sqlquery = "INSERT INTO survey_resultaggregate (campaign_id, survey_id, section_id, response, count, created_date) "..
         "VALUES ("..campaign_id..", "..survey_id..", "..section_id..", '"..response.."', 1, NOW())"
     self.debugger:msg("DEBUG", "Save Result Aggregate:"..sqlquery)
-    res = self.dbh:execute(sqlquery)
+    local res = self.dbh:execute(sqlquery)
     if not res then
         return false
     else
@@ -264,10 +264,10 @@ function Database:save_result_aggregate(campaign_id, survey_id, section_id, resp
 end
 
 function Database:add_dnc(dnc_id, phonenumber)
-    sqlquery = "INSERT INTO dnc_contact (dnc_id, phone_number, created_date, updated_date) "..
+    local sqlquery = "INSERT INTO dnc_contact (dnc_id, phone_number, created_date, updated_date) "..
         "VALUES ("..dnc_id..", '"..phonenumber.."', NOW(), NOW())"
     self.debugger:msg("DEBUG", "Insert DNC:"..sqlquery)
-    res = self.dbh:execute(sqlquery)
+    local res = self.dbh:execute(sqlquery)
     if not res then
         return false
     else
@@ -276,10 +276,10 @@ function Database:add_dnc(dnc_id, phonenumber)
 end
 
 function Database:update_result_aggregate(campaign_id, survey_id, section_id, response)
-    sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
+    local sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
         " WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..response.."'"
     self.debugger:msg("DEBUG", "Update Result Aggregate:"..sqlquery)
-    res = self.dbh:execute(sqlquery)
+    local res = self.dbh:execute(sqlquery)
     if not res then
         return false
     else
@@ -364,110 +364,6 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
         self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
     else
         --Save result to memory
-        result = DTMF
-        self:save_result_mem(callrequest_id, current_node.id, '', 0, result)
+        self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
     end
 end
-
---
--- Test Code
---
-if false then
-    campaign_id = 151
-    survey_id = 72
-    callrequest_id = 5000
-    section_id = 315
-    dnc_id = 1
-    record_file = '/tmp/recording-file.wav'
-    recording_duration = '30'
-    dtmf = '5'
-    local inspect = require 'inspect'
-    require "debugger"
-    local debugger = Debugger(false)
-    db = Database(debug_mode, debugger)
-    db:connect()
-
-    db:load_campaign_info(campaign_id)
-    print(inspect(db.campaign_info))
-
-    db:add_dnc(dnc_id, '12388888880')
-
-    print(db:load_content_type())
-
-    db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
-    dtmf=io.read()
-    section_id = section_id + 1
-    db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
-    dtmf=io.read()
-    section_id = section_id + 1
-    db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
-    dtmf=io.read()
-    --section_id = section_id + 1
-    db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
-
-    db:commit_result_mem(campaign_id, survey_id)
-end
-
-if false then
-    campaign_id = 42
-    subscriber_id = 39
-    survey_id = 5
-    contact_id = 40
-    callrequest_id = 30
-    debug_mode = false
-    section_id = 40
-    record_file = '/tmp/recording-file.wav'
-    recording_duration = '30'
-    dtmf = '5'
-    require "debugger"
-    local inspect = require 'inspect'
-    local debugger = Debugger(false)
-
-    db = Database(debug_mode, debugger)
-    db:connect()
-    db:load_survey_section(survey_id)
-    db:load_contact(subscriber_id)
-    print(inspect(db.contact))
-    error()
-    db:load_all(campaign_id, contact_id)
-
-    print(inspect(db.list_audio))
-    print(inspect(db.list_branching))
-    print(inspect(db.list_branching[11]["any"]))
-    print(inspect(db.list_branching[11]["1"]))
-    print(inspect(db.list_branching[11]["timeout"]))
-
-    db:update_callrequest_cpt(callrequest_id)
-    db:check_data()
-
-    db:disconnect()
-end
-
-
--- require "debugger"
--- local debugger = Debugger(false)
-
--- db = Database(debug_mode, debugger)
--- db:connect()
--- list_campaign = db:test_get_campaign()
--- print(inspect(list_campaign))
-
-
--- campaign_id = 42
--- contact_id = 40
-
--- require "debugger"
--- local debugger = Debugger(false)
-
--- db = Database(debug_mode, debugger)
--- db:connect()
--- db:load_all(campaign_id, contact_id)
--- --freeswitch.consoleLog('err', inspect(db.list_audio))
--- print(inspect(db.contact))
--- for k,v in pairs(db.contact) do
---     print(k)
---     print(v)
--- end
-
--- db:load_audiofile()
--- print(inspect(db.list_audio))

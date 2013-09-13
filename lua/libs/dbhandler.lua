@@ -16,18 +16,18 @@ package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 
---It might worth to rename this to model.lua
+--TODO: It might worth to rename this to dbh_luasql
 
 local luasql = require "luasql.postgres"
 local oo = require "loop.simple"
-local inspect = require 'inspect'
 local cmsgpack = require 'cmsgpack'
 --local redis = require 'redis'
 --require "memcached"
 local lfs_cache = require "lfs_cache"
+local md5 = require "md5"
 require "constant"
 require "settings"
-local md5 = require "md5"
+
 
 --redis.commands.expire = redis.command('EXPIRE')
 --redis.commands.ttl = redis.command('TTL')

@@ -32,7 +32,6 @@ local call_started = false
 local hangup_call = false
 
 local dumper = require "dumper"
-local luasql = require "luasql.postgres"
 -- local oo = require "loop.base"
 local oo = require "loop.simple"
 

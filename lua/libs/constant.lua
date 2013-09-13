@@ -12,10 +12,6 @@
 -- Arezqui Belaid <info@star2billing.com>
 --
 
---
--- Constant list
---
-
 -- Constant Value SECTION_TYPE
 PLAY_MESSAGE = "1"
 MULTI_CHOICE = "2"

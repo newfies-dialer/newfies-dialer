@@ -59,10 +59,10 @@ end
 
 function Debugger:msg(level, message)
     --Print out or logger message according to the verbosity
-    message = self.call_id..' '..message
+    local msg = self.call_id..' '..message
     -- level : DEBUG, INFO, WARN, ERROR
     if not self.fs_env then
-        print(message)
+        print(msg)
     else
         if level == 'DEBUG' then
             fslevel = 'debug'
@@ -79,15 +79,15 @@ function Debugger:msg(level, message)
             -- default value info
             fslevel = 'info'
         end
-        freeswitch.consoleLog(fslevel, message.."\n")
+        freeswitch.consoleLog(fslevel, msg.."\n")
     end
     if level == 'DEBUG' then
-        logger:debug(message)
+        logger:debug(msg)
     elseif level == 'INFO' then
-        logger:info(message)
+        logger:info(msg)
     elseif level == 'WARN' then
-        logger:warn(message)
+        logger:warn(msg)
     elseif level == 'ERROR' then
-        logger:error(message)
+        logger:error(msg)
     end
 end

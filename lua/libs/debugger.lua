@@ -57,6 +57,29 @@ function Debugger:set_call_id(call_id)
     self.call_id = call_id
 end
 
+function Debugger:msg_inspect(level, message)
+    --inspect the message prior calling the debugger
+    local inspect = require "inspect"
+    self:msg(level, inspect(message))
+end
+
+function Debugger:getfs_level(level)
+    --get freeswitch log level
+    if level == 'DEBUG' then
+        return 'debug'
+    elseif level == 'WARN' then
+        return 'warning'
+    elseif level == 'ERROR' then
+        return 'err'
+    elseif level == 'NOTICE' then
+        return 'notice'  --notice not supported by logger
+    elseif level == 'INFO' then
+        return 'info'
+    else
+        return 'info'  -- default value info
+    end
+end
+
 function Debugger:msg(level, message)
     --Print out or logger message according to the verbosity
     local msg = self.call_id..' '..message
@@ -64,22 +87,7 @@ function Debugger:msg(level, message)
     if not self.fs_env then
         print(msg)
     else
-        if level == 'DEBUG' then
-            fslevel = 'debug'
-        elseif level == 'WARN' then
-            fslevel = 'warning'
-        elseif level == 'ERROR' then
-            fslevel = 'err'
-        elseif level == 'NOTICE' then
-            --notice not supported by logger
-            fslevel = 'notice'
-        elseif level == 'INFO' then
-            fslevel = 'info'
-        else
-            -- default value info
-            fslevel = 'info'
-        end
-        freeswitch.consoleLog(fslevel, msg.."\n")
+        freeswitch.consoleLog(getfs_level(level), msg.."\n")
     end
     if level == 'DEBUG' then
         logger:debug(msg)

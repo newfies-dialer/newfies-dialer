@@ -16,7 +16,6 @@ package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 local oo = require "loop.simple"
-local inspect = require "inspect"
 local database = require "database"
 require "tag_replace"
 require "texttospeech"
@@ -92,7 +91,6 @@ function FSMCall:init()
     end
     self.db:check_data()
     self.db:disconnect()
-    --print(inspect(self.db.list_section[tonumber(self.db.start_node)]))
     if not self.db.valid_data then
         self.debugger:msg("ERROR", "Error invalid data")
         self:hangupcall()
@@ -349,7 +347,7 @@ function FSMCall:next_node_light()
     self.debugger:msg("INFO", "FSMCall:next_node_light (current_node="..tonumber(self.current_node_id)..")")
     local current_node = self.db.list_section[tonumber(self.current_node_id)]
     self.last_node = current_node
-    self.debugger:msg("DEBUG", inspect(current_node))
+    self.debugger:msg_inspect("DEBUG", current_node)
 
     current_branching = self.db.list_branching[tonumber(self.current_node_id)]
 
@@ -373,7 +371,7 @@ function FSMCall:next_node_light()
     --
     --Check Branching / Find the next node
     --
-    self.debugger:msg("DEBUG", inspect(current_branching))
+    self.debugger:msg_inspect("DEBUG", current_branching)
 
     if current_node.type == PLAY_MESSAGE then
         --Check for timeout
@@ -415,7 +413,7 @@ function FSMCall:next_node()
     current_branching = self.db.list_branching[tonumber(self.current_node_id)]
     if not current_node then
         self.debugger:msg("ERROR", "Not current_node : "..type(current_node))
-        self.debugger:msg("ERROR", inspect(self.db.list_section[tonumber(self.current_node_id)]))
+        self.debugger:msg_inspect("ERROR", self.db.list_section[tonumber(self.current_node_id)])
         return false
     end
 
@@ -557,7 +555,7 @@ function FSMCall:next_node()
     --
     --Check Branching / Find the next node
     --
-    self.debugger:msg("DEBUG", inspect(current_branching))
+    self.debugger:msg_inspect("DEBUG", current_branching)
 
     if current_node.type == PLAY_MESSAGE
         or current_node.type == RECORD_MSG

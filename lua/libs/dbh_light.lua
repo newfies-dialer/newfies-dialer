@@ -21,7 +21,6 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 local oo = require "loop.simple"
 --local redis = require 'redis'
 --require "memcached"
-require "constant"
 require "settings"
 
 --redis.commands.expire = redis.command('EXPIRE')
@@ -29,7 +28,7 @@ require "settings"
 
 DBH = oo.class{
     dbh = nil,
-    debugger = nil,
+    -- debugger = nil,
     results = {},
     caching = false,
 }
@@ -38,7 +37,7 @@ function DBH:__init(debug_mode, debugger)
     -- self is the class
     return oo.rawnew(self, {
         debug_mode = debug_mode,
-        debugger = debugger,
+        -- debugger = debugger,
     })
 end
 
@@ -54,7 +53,7 @@ function DBH:disconnect()
 end
 
 function DBH:get_list(sqlquery)
-    self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
+    -- self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
     local list = {}
     self.dbh:query(sqlquery, function(row)
         --Let's transform empty value to False
@@ -76,7 +75,7 @@ function DBH:get_cache_list(sqlquery, ttl)
 end
 
 function DBH:get_object(sqlquery)
-    self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
+    -- self.debugger:msg("DEBUG", "Load SQL : "..sqlquery)
     local res_get_object
     self.dbh:query(sqlquery, function(row)
         res_get_object = row

@@ -87,7 +87,7 @@ function Debugger:msg(level, message)
     if not self.fs_env then
         print(msg)
     else
-        freeswitch.consoleLog(getfs_level(level), msg.."\n")
+        freeswitch.consoleLog(self:getfs_level(level), msg.."\n")
     end
     if level == 'DEBUG' then
         logger:debug(msg)

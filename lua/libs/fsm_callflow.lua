@@ -476,7 +476,7 @@ function FSMCall:next_node()
             if originate_disposition ~= 'SUCCESS' then
                 actionduration = 0
             end
-            freeswitch.consoleLog("info", "END CALL_TRANSFER callduration:"..actionduration.." - originate_disposition:"..originate_disposition)
+            self.debugger:msg("INFO", "END CALL_TRANSFER callduration:"..actionduration.." - originate_disposition:"..originate_disposition)
 
             self.actionresult = 'phonenumber: '..phonenumber
             --.." duration: "..actionduration

@@ -89,7 +89,7 @@ if session:ready() then
         session:answer()
         session:setHangupHook("myHangupHook")
 
-        -- session:streamFile("/usr/share/newfies_ramdisk/tts/flite_d75315bfe82444aa79abb31140028701.wav")
+        -- session:streamFile("/usr/share/newfies_ramdisk/tts/flite_520f6ec9707bfe353662697257068b5e.wav")
 
         --Start the FSM
         callflow:start_call()

@@ -24,6 +24,7 @@ from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
 #from dialer_cdr.function_def import get_prefix_obj
 from dialer_gateway.utils import prepare_phonenumber
 from datetime import datetime, timedelta
+from time import sleep
 from common.only_one_task import only_one
 from uuid import uuid1
 from common_functions import debug_query
@@ -567,7 +568,7 @@ def esl_dialout(dial_command):
 
 
 @task(ignore_result=True)
-def init_callrequest(callrequest_id, campaign_id, callmaxduration):
+def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=0):
     """
     This task read the callrequest, update it as 'In Process'
     then proceed on the call outbound, using the different call engine supported
@@ -575,9 +576,15 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     **Attributes**:
 
         * ``callrequest_id`` - Callrequest ID
+        * ``campaign_id`` - Campaign ID
+        * ``callmaxduration`` - Max duration
+        * ``ms_addtowait`` - Milliseconds to wait before outbounding the call
 
     """
     debug_query(8)
+
+    if ms_addtowait > 0:
+        sleep(ms_addtowait)
 
     #Get CallRequest object
     #use only https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.only

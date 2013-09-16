@@ -29,14 +29,9 @@
 -- SOFTWARE.
 
 
-require "lfs"
-require "md5"
 local oo = require "loop.simple"
-local inspect = require 'inspect'
-
 
 CACHE_DIRECTORY = '/tmp'
-
 
 
 LFS_Caching = oo.class{
@@ -54,6 +49,7 @@ end
 --
 -- Check file exists and readable
 function LFS_Caching:file_exists(path)
+    local lfs = require "lfs"
     local attr = lfs.attributes(path)
     if (attr ~= nil) then
         return true
@@ -65,6 +61,7 @@ end
 --
 -- return a md5 file for the caching
 function LFS_Caching:key_filepath(key)
+    local md5 = require "md5"
     return CACHE_DIRECTORY..'/'..md5.sumhexa(key)
 end
 
@@ -105,6 +102,7 @@ end
 -- key: value of the cache
 -- ttl: number [optional] max age of file in seconds
 function LFS_Caching:get(key, ttl)
+    local lfs = require "lfs"
     local path = self:key_filepath(key)
     if not self:file_exists(path) then
         return nil
@@ -124,27 +122,29 @@ end
 --
 -- run test
 --
-if false then
 
-    caching = LFS_Caching(nil)
+-- if false then
 
-    local cmsgpack = require 'cmsgpack'
-    local inspect = require 'inspect'
+--     local inspect = require "inspect"
+--     caching = LFS_Caching(nil)
 
-    value_test = {}
-    value_test["1"] = "Orange"
-    value_test["2"] = "Apple"
-    value_test["3"] = "Carrot"
+--     local cmsgpack = require 'cmsgpack'
+--     local inspect = require 'inspect'
 
-    msgpack = cmsgpack.pack(value_test)
-    print(msgpack)
+--     value_test = {}
+--     value_test["1"] = "Orange"
+--     value_test["2"] = "Apple"
+--     value_test["3"] = "Carrot"
 
-    print("Test Get Cache")
-    res = caching:get('hashkeydb', 3)
-    if not(res) then
-        print("Set Cache")
-        caching:set('hashkeydb', msgpack)
-    else
-        print(inspect(cmsgpack.unpack(res)))
-    end
-end
+--     msgpack = cmsgpack.pack(value_test)
+--     print(msgpack)
+
+--     print("Test Get Cache")
+--     res = caching:get('hashkeydb', 3)
+--     if not(res) then
+--         print("Set Cache")
+--         caching:set('hashkeydb', msgpack)
+--     else
+--         print(inspect(cmsgpack.unpack(res)))
+--     end
+-- end

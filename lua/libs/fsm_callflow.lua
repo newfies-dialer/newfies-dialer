@@ -16,7 +16,6 @@ package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 local oo = require "loop.simple"
-local inspect = require 'inspect'
 local database = require "database"
 require "tag_replace"
 require "texttospeech"
@@ -92,7 +91,6 @@ function FSMCall:init()
     end
     self.db:check_data()
     self.db:disconnect()
-    --print(inspect(self.db.list_section[tonumber(self.db.start_node)]))
     if not self.db.valid_data then
         self.debugger:msg("ERROR", "Error invalid data")
         self:hangupcall()
@@ -113,20 +111,16 @@ function FSMCall:end_call()
 
     --Check if we need to save the last recording
     if self.record_filename and string.len(self.record_filename) > 0 then
-        current_node = self.last_node
-        digits = ''
-        record_filepath = FS_RECORDING_PATH..self.record_filename
-        record_dur = audio_lenght(record_filepath)
+        local digits = ''
+        local record_dur = audio_lenght(FS_RECORDING_PATH..self.record_filename)
         self.debugger:msg("INFO", "End_call -> Save missing recording")
-        self.db:save_section_result(self.callrequest_id, current_node, digits, self.record_filename, record_dur)
+        self.db:save_section_result(self.callrequest_id, self.last_node, digits, self.record_filename, record_dur)
     end
 
     --Check if we need to save the last action
     if self.actionresult and string.len(self.actionresult) > 0 then
-        current_node = self.last_node
-        actionduration = os.time() - self.lastaction_start
         self.actionresult = self.actionresult
-        self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
+        self.db:save_section_result(self.callrequest_id, self.last_node, self.actionresult, '', 0)
         self.actionresult = false
     end
 
@@ -163,16 +157,16 @@ function FSMCall:playnode(current_node)
     --play the audiofile or play the audio TTS
     if current_node.audiofile_id then
         --Get audio path
-        current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
-        filetoplay = UPLOAD_DIR..current_audio.audio_file
+        local current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
+        local filetoplay = UPLOAD_DIR..current_audio.audio_file
         self.debugger:msg("INFO", "StreamFile : "..filetoplay)
         self.session:streamFile(filetoplay)
     else
         --Use TTS
-        mscript = tag_replace(current_node.script, self.db.contact)
+        local mscript = tag_replace(current_node.script, self.db.contact)
         self.debugger:msg("INFO", "Speak : "..mscript)
         if mscript and mscript ~= '' then
-            tts_file = tts(mscript, TTS_DIR)
+            local tts_file = tts(mscript, TTS_DIR)
             self.debugger:msg("DEBUG", "Speak TTS : "..tts_file)
             self.session:streamFile(tts_file)
         end
@@ -183,7 +177,7 @@ end
 
 function FSMCall:build_dtmf_filter(current_node)
     -- Build the dtmf filter to capture digits
-    dtmffilter = ''
+    local dtmffilter = ''
     if current_node.key_0 and string.len(current_node.key_0) > 0 then
         dtmffilter = dtmffilter..'0'
     end
@@ -264,7 +258,7 @@ function FSMCall:getdigitnode(current_node)
         ",invalid_audiofile="..tostring(invalid_audiofile)..
         ", dtmf_filter="..tostring(dtmf_filter)..")")
 
-    i = 0
+    local i = 0
     while i < retries do
         i = i + 1
         self.debugger:msg("DEBUG", ">> Retries counter = "..i.." - Max Retries = "..retries)
@@ -309,10 +303,12 @@ function FSMCall:getdigitnode(current_node)
             --We already managed invalid on the playAndGetDigits
             break
 
-        elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == '1'
+        elseif current_node.type == CAPTURE_DIGITS
+            and current_node.validate_number == '1'
             and digits ~= '' then
             --CAPTURE_DIGITS / Check Validity
-            int_dtmf = tonumber(digits)
+            local int_dtmf = tonumber(digits)
+            local int_max = 0  -- init
             if int_dtmf and int_dtmf >= 0 then
                 int_min = tonumber(current_node.min_number)
                 int_max = tonumber(current_node.max_number)
@@ -349,7 +345,7 @@ function FSMCall:next_node_light()
     self.debugger:msg("INFO", "FSMCall:next_node_light (current_node="..tonumber(self.current_node_id)..")")
     local current_node = self.db.list_section[tonumber(self.current_node_id)]
     self.last_node = current_node
-    self.debugger:msg("DEBUG", inspect(current_node))
+    self.debugger:msg_inspect("DEBUG", current_node)
 
     current_branching = self.db.list_branching[tonumber(self.current_node_id)]
 
@@ -373,7 +369,7 @@ function FSMCall:next_node_light()
     --
     --Check Branching / Find the next node
     --
-    self.debugger:msg("DEBUG", inspect(current_branching))
+    self.debugger:msg_inspect("DEBUG", current_branching)
 
     if current_node.type == PLAY_MESSAGE then
         --Check for timeout
@@ -405,17 +401,18 @@ function FSMCall:marked_node_completed(current_node)
 end
 
 function FSMCall:next_node()
-    digits = false
-    recording_filename = false
+    local digits = false
+    local recording_filename = false
+    local actionduration = 0
 
     self.debugger:msg("DEBUG", "FSMCall:next_node (current_node="..tonumber(self.current_node_id)..")")
     local current_node = self.db.list_section[tonumber(self.current_node_id)]
     self.last_node = current_node
 
-    current_branching = self.db.list_branching[tonumber(self.current_node_id)]
+    local current_branching = self.db.list_branching[tonumber(self.current_node_id)]
     if not current_node then
         self.debugger:msg("ERROR", "Not current_node : "..type(current_node))
-        self.debugger:msg("ERROR", inspect(self.db.list_section[tonumber(self.current_node_id)]))
+        self.debugger:msg_inspect("ERROR", self.db.list_section[tonumber(self.current_node_id)])
         return false
     end
 
@@ -429,8 +426,6 @@ function FSMCall:next_node()
     --Run Action
     --
     if current_node.type == PLAY_MESSAGE then
-        number_digits = 1
-        timeout = 1
         self:playnode(current_node)
 
     elseif current_node.type == HANGUP_SECTION then
@@ -439,9 +434,8 @@ function FSMCall:next_node()
 
     elseif current_node.type == CALL_TRANSFER then
         self:playnode(current_node)
-        phonenumber = current_node.phonenumber
-        self.debugger:msg("INFO", "STARTING CALL_TRANSFER : "..phonenumber)
-        if phonenumber == '' then
+        self.debugger:msg("INFO", "STARTING CALL_TRANSFER : "..current_node.phonenumber)
+        if current_node.phonenumber == '' then
             self:end_call()
         else
             self.lastaction_start = os.time()
@@ -454,16 +448,17 @@ function FSMCall:next_node()
             originate_timeout = self.db.campaign_info.calltimeout
             leg_timeout = self.db.campaign_info.calltimeout
 
-            --dialstr = 'sofia/default/'..phonenumber..'@'..self.outbound_gateway;
-            if string.find(phonenumber, "/") then
+            local dialstr = ''
+            --dialstr = 'sofia/default/'..current_node.phonenumber..'@'..self.outbound_gateway;
+            if string.find(current_node.phonenumber, "/") then
                 --SIP URI call
-                dialstr = phonenumber
+                dialstr = current_node.phonenumber
             else
                 --Use Gateway call
-                dialstr = self.db.campaign_info.gateways..phonenumber
+                dialstr = self.db.campaign_info.gateways..current_node.phonenumber
             end
 
-            self.actionresult = 'phonenumber: '..phonenumber
+            self.actionresult = 'phonenumber: '..current_node.phonenumber
             dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..
                 ",origination_caller_id_name="..callerid..",originate_timeout="..originate_timeout..
                 ",leg_timeout="..leg_timeout..",legtype=bleg,callrequest_id="..self.callrequest_id..
@@ -478,9 +473,9 @@ function FSMCall:next_node()
             if originate_disposition ~= 'SUCCESS' then
                 actionduration = 0
             end
-            freeswitch.consoleLog("info", "END CALL_TRANSFER callduration:"..actionduration.." - originate_disposition:"..originate_disposition)
+            self.debugger:msg("INFO", "END CALL_TRANSFER callduration:"..actionduration.." - originate_disposition:"..originate_disposition)
 
-            self.actionresult = 'phonenumber: '..phonenumber
+            self.actionresult = 'phonenumber: '..current_node.phonenumber
             --.." duration: "..actionduration
             self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
             self.actionresult = false
@@ -557,7 +552,7 @@ function FSMCall:next_node()
     --
     --Check Branching / Find the next node
     --
-    self.debugger:msg("DEBUG", inspect(current_branching))
+    self.debugger:msg_inspect("DEBUG", current_branching)
 
     if current_node.type == PLAY_MESSAGE
         or current_node.type == RECORD_MSG
@@ -586,7 +581,7 @@ function FSMCall:next_node()
         or current_node.type == CAPTURE_DIGITS then
 
         --Flag for invalid input
-        invalid_input = false
+        local invalid_input = false
         self.debugger:msg("DEBUG", "Check Validity")
 
         --Check Validity
@@ -619,9 +614,9 @@ function FSMCall:next_node()
             and current_node.validate_number == '1'
             and digits ~= '' then
             --We have DTMF now we check validity
-            int_dtmf = tonumber(digits)
-            int_min = tonumber(current_node.min_number)
-            int_max = tonumber(current_node.max_number)
+            local int_dtmf = tonumber(digits)
+            local int_min = tonumber(current_node.min_number)
+            local int_max = tonumber(current_node.max_number)
             if not int_min then
                 int_min = 0
             end

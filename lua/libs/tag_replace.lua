@@ -12,8 +12,6 @@
 -- Arezqui Belaid <info@star2billing.com>
 --
 
-local json = require("json")
-
 
 --
 -- Function  Replace place holders by tag value.
@@ -27,13 +25,15 @@ local json = require("json")
 --     as well as, get additional_vars, and replace json tags
 --
 function tag_replace(text, contact)
+    --if no text return empty string
     if not text or text == '' then
         return ''
     end
     --decode the json
-    if not contact['additional_vars'] then
+    if not contact['additional_vars'] or not string.find(text, "[{|}]") then
         return text
     end
+    --decode json from additional_vars
     decdata = decodejson(contact['additional_vars'])
     if decdata and type(decdata) == "table" then
         -- Merge Table
@@ -84,6 +84,7 @@ end
 -- Decode Json and return false if the json have an error
 --
 function decodejson(jsondata)
+    local json = require("json")
     cError, res = pcall(json.decode,jsondata)
     if not cError then
         return false
@@ -97,7 +98,7 @@ end
 --
 if false then
 
-    local inspect = require 'inspect'
+    local inspect = require "inspect"
 
     text = "Hello there {first_name}, your city is {city} and your age is {age}, your number is {contact}"
 

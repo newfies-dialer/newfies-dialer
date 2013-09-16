@@ -25,7 +25,7 @@ from dialer_contact.tasks import collect_subscriber
 from dnc.models import DNCContact
 from common.only_one_task import only_one
 from datetime import datetime, timedelta
-from math import ceil
+from math import floor
 from common_functions import debug_query
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint
@@ -126,7 +126,8 @@ class spool_pending_call(Task):
         for elem_camp_subscriber in list_subscriber:
             """Loop on Subscriber and start the initcall task"""
             count = count + 1
-            second_towait = ceil(count * time_to_wait)
+            second_towait = floor(count * time_to_wait)
+            ms_addtowait = (count * time_to_wait) - second_towait
             logger.info("Init CallRequest in %d seconds (cmpg:%d,subscriber:%d)" % (second_towait, campaign_id, elem_camp_subscriber.id))
 
             phone_number = elem_camp_subscriber.duplicate_contact
@@ -174,7 +175,7 @@ class spool_pending_call(Task):
             debug_query(6)
 
             init_callrequest.apply_async(
-                args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration],
+                args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait],
                 countdown=second_towait)
             # Shell_plus
             # from dialer_cdr.tasks import init_callrequest

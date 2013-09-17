@@ -57,7 +57,7 @@ class Command(BaseCommand):
             print 'Need a prefix'
             return False
 
-        for l in range(0, 5):
+        for l in range(0, 6):
             amount = int(pow(10, l))  # pow 5 will be 100.000
             try:
                 pn_name = 'Phonebook-%d' % amount

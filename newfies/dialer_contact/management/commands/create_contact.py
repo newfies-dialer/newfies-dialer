@@ -20,7 +20,7 @@ from random import choice
 
 
 class Command(BaseCommand):
-    args = 'phonebook_id, amount'
+    args = "phonebook_id, amount"
     help = "Create a new contacts for a given phonebook\n"\
            "-------------------------------------------\n"\
            "python manage.py create_contact --phonebook_id=1 --amount=100 --prefix=@myip"
@@ -47,8 +47,7 @@ class Command(BaseCommand):
         amount = 1  # default
         if options.get('amount'):
             try:
-                amount = options.get('amount')
-                amount = int(amount)
+                amount = int(options.get('amount'))
             except ValueError:
                 amount = 1
 

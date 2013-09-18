@@ -304,7 +304,7 @@ function FSMCall:getdigitnode(current_node)
             break
 
         elseif current_node.type == CAPTURE_DIGITS
-            and current_node.validate_number == '1'
+            and (current_node.validate_number == '1' or current_node.validate_number == 't')
             and digits ~= '' then
             --CAPTURE_DIGITS / Check Validity
             local int_dtmf = tonumber(digits)
@@ -322,11 +322,11 @@ function FSMCall:getdigitnode(current_node)
                     break
                 end
             end
-        elseif current_node.type == CAPTURE_DIGITS and current_node.validate_number == '0'
+        elseif current_node.type == CAPTURE_DIGITS
+            and not (current_node.validate_number == '1' or current_node.validate_number == 't')
             and digits ~= '' then
-            --CAPTURE_DIGITS / No Check Validity
+            self.debugger:msg("INFO", "CAPTURE_DIGITS / No Check Validity")
             break
-
         end
 
         if invalid_audiofile ~= '' and i < retries then
@@ -376,7 +376,7 @@ function FSMCall:next_node_light()
         if (not current_branching["0"] or not current_branching["0"].goto_id) and
            (not current_branching["timeout"] or not current_branching["timeout"].goto_id) then
             --Go to hangup
-            self.debugger:msg("DEBUG", "No more branching -> Goto Hangup")
+            self.debugger:msg("DEBUG", "PLAY_MESSAGE : No more branching -> Goto Hangup")
             self:end_call()
         else
             if current_branching["0"] and current_branching["0"].goto_id then
@@ -566,7 +566,7 @@ function FSMCall:next_node()
         elseif (not current_branching["0"] or not current_branching["0"].goto_id) and
            (not current_branching["timeout"] or not current_branching["timeout"].goto_id) then
             --Go to hangup
-            self.debugger:msg("DEBUG", "No more branching -> Goto Hangup")
+            self.debugger:msg("DEBUG", "Check Branching : No more branching -> Goto Hangup")
             self:end_call()
         else
             if current_branching["0"] and current_branching["0"].goto_id then
@@ -611,9 +611,11 @@ function FSMCall:next_node()
                 end
             end
         elseif current_node.type == CAPTURE_DIGITS
-            and current_node.validate_number == '1'
+            and (current_node.validate_number == '1' or current_node.validate_number == 't')
             and digits ~= '' then
-            --We have DTMF now we check validity
+
+            self.debugger:msg("DEBUG", "We have DTMF now we check validity")
+
             local int_dtmf = tonumber(digits)
             local int_min = tonumber(current_node.min_number)
             local int_max = tonumber(current_node.max_number)
@@ -687,7 +689,7 @@ function FSMCall:next_node()
             --Check if there is a timeout / you should
             if not current_branching["timeout"] or not current_branching["timeout"].goto_id then
                 --Go to hangup
-                self.debugger:msg("DEBUG", "No more branching -> Goto Hangup")
+                self.debugger:msg("DEBUG", "Check capture : No more branching -> Goto Hangup")
                 self:end_call()
             else
                 self.current_node_id = tonumber(current_branching["timeout"].goto_id)

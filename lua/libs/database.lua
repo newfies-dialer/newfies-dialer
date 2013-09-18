@@ -22,7 +22,6 @@ local oo = require "loop.simple"
 local dbhanlder = require "dbhandler"
 -- local dbh_fs = require "dbh_fs"
 -- local dbh_fs = require "dbh_light"
--- local inspect = require 'inspect'
 
 
 
@@ -69,9 +68,15 @@ function Database:disconnect()
 end
 
 function Database:db_debugger(level, msg)
-    -- if self.debugger then
-    --     self.debugger:msg(level, msg)
-    -- end
+    if self.debugger then
+        self.debugger:msg(level, msg)
+    end
+end
+
+function Database:db_debugger_inspect(level, msg)
+    if self.debugger then
+        self.debugger:msg_inspect(level, msg)
+    end
 end
 
 function Database:load_survey_section(survey_id)
@@ -88,14 +93,14 @@ function Database:load_survey_section(survey_id)
     for i,row in pairs(qresult) do
         self:db_debugger("DEBUG", string.format("id:%15d  question:%-15s type:%-15s order:%-15s", row.id, row.question, row.type, row.order))
         if tonumber(row.order) < low_order or low_order < 0 then
-            local low_order = tonumber(row.order)
+            low_order = tonumber(row.order)
             self.start_node = row.id
         end
 
         list[tonumber(row['id'])] = row
     end
     self:db_debugger("DEBUG", string.format("start_node:%15d", self.start_node))
-    --self:db_debugger("DEBUG", inspect(list))
+    self:db_debugger_inspect("DEBUG", list)
     self.list_section = list
     if not self.start_node then
         self:db_debugger("ERROR", "Error Loading Survey Section")
@@ -118,7 +123,7 @@ function Database:load_survey_branching(survey_id)
         end
         list[tonumber(row['section_id'])][tostring(row.keys)] = row
     end
-    --self:db_debugger("DEBUG", inspect(list))
+    self:db_debugger_inspect("DEBUG", list)
     self.list_branching = list
 end
 
@@ -128,7 +133,7 @@ function Database:load_audiofile()
     local sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
     self:db_debugger("DEBUG", "Load audiofile branching : "..sqlquery)
     self.list_audio = self.dbh:get_cache_list(sqlquery, 300)
-    --self:db_debugger("DEBUG", inspect(self.list_audio))
+    self:db_debugger_inspect("DEBUG", self.list_audio)
 end
 
 function Database:load_campaign_info(campaign_id)

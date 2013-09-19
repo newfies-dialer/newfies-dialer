@@ -80,7 +80,7 @@ $(function () {
 
                 if(campaign_stop_flag){
 
-                    $("#ListForm").attr("action", "stop/0/");
+                    $("#ListForm").attr("action", "del/0/?stop_campaign=True");
                     confirm_string = $fields.length + '{% trans " campaign(s) are going to be stopped?" %}';
                     campaign_stop_flag = false;
                 }

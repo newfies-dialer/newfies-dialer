@@ -21,7 +21,7 @@ from dialer_campaign.models import Campaign, Subscriber, \
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add, \
     campaign_change, campaign_del, notify_admin, \
-    update_campaign_status_admin, campaign_stop,\
+    update_campaign_status_admin, \
     get_url_campaign_status, campaign_duplicate
 from dialer_campaign.tasks import campaign_running, \
     collect_subscriber, campaign_expire_check
@@ -205,19 +205,11 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response['Location'], '/campaign/')
         self.assertEqual(response.status_code, 302)
 
-    def test_campaign_view_stop(self):
-        """Test Function to stop campaign"""
-        request = self.factory.post('/campaign/stop/1/', follow=True)
+        request = self.factory.post(
+            '/campaign/del/0/?stop_campaign=True', {'select': '1'})
         request.user = self.user
         request.session = {}
-        response = campaign_stop(request, 1)
-        self.assertEqual(response['Location'], '/campaign/')
-        self.assertEqual(response.status_code, 302)
-
-        request = self.factory.post('/campaign/stop/', {'select': '1'})
-        request.user = self.user
-        request.session = {}
-        response = campaign_stop(request, 0)
+        response = campaign_del(request, 0)
         self.assertEqual(response['Location'], '/campaign/')
         self.assertEqual(response.status_code, 302)
 

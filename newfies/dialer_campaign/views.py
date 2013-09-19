@@ -339,7 +339,7 @@ def campaign_add(request):
 @permission_required('dialer_campaign.delete_campaign', login_url='/')
 @login_required
 def campaign_del(request, object_id):
-    """Delete campaign for the logged in user
+    """Delete/Stop campaign for the logged in user
 
     **Attributes**:
 
@@ -348,14 +348,21 @@ def campaign_del(request, object_id):
 
     **Logic Description**:
 
-        * Delete the selected campaign from the campaign list
+        * Delete/Stop the selected campaign from the campaign list
     """
+    stop_campaign = request.GET.get('stop_campaign', False)
     if int(object_id) != 0:
         # When object_id is not 0
         campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': campaign.name}
-        campaign.delete()
+        if stop_campaign:
+            campaign.status = CAMPAIGN_STATUS.END
+            campaign.save()
+            request.session["msg"] = _('"%(name)s" is stopped.')\
+                % {'name': campaign.name}
+        else:
+            request.session["msg"] = _('"%(name)s" is deleted.')\
+                % {'name': campaign.name}
+            campaign.delete()
     else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
@@ -365,39 +372,17 @@ def campaign_del(request, object_id):
                 .filter(user=request.user)\
                 .extra(where=['id IN (%s)' % values])
             if campaign_list:
-                request.session["msg"] = _('%(count)s campaign(s) are deleted.')\
-                    % {'count': campaign_list.count()}
-                campaign_list.delete()
+                if stop_campaign:
+                    campaign_list.update(status=CAMPAIGN_STATUS.END)
+                    request.session["msg"] = _('%(count)s campaign(s) are stopped.')\
+                        % {'count': campaign_list.count()}
+                else:
+                    request.session["msg"] = _('%(count)s campaign(s) are deleted.')\
+                        % {'count': campaign_list.count()}
+                    campaign_list.delete()
         except:
             raise Http404
 
-    return HttpResponseRedirect('/campaign/')
-
-
-@login_required
-def campaign_stop(request, object_id):
-    """Stop campaign in bulk from campaign list actions"""
-    if int(object_id) != 0:
-        # When object_id is not 0
-        campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
-        request.session["msg"] = _('"%(name)s" is stopped.')\
-            % {'name': campaign.name}
-        campaign.status = CAMPAIGN_STATUS.END
-        campaign.save()
-    else:
-        # When object_id is 0 (Multiple records delete)
-        values = request.POST.getlist('select')
-        values = ", ".join(["%s" % el for el in values])
-
-        try:
-            campaign_list = Campaign.objects.filter(user=request.user)\
-                .extra(where=['id IN (%s)' % values])
-            if campaign_list:
-                campaign_list.update(status=CAMPAIGN_STATUS.END)
-                request.session["msg"] = _('%(count)s campaign(s) are stopped.')\
-                    % {'count': campaign_list.count()}
-        except:
-            raise Http404
     return HttpResponseRedirect('/campaign/')
 
 

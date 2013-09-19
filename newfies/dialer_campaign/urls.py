@@ -19,6 +19,7 @@ urlpatterns = patterns('dialer_campaign.views',
     (r'^campaign/$', 'campaign_list'),
     (r'^campaign/add/$', 'campaign_add'),
     (r'^campaign/del/(.+)/$', 'campaign_del'),
+    (r'^campaign/stop/(.+)/$', 'campaign_stop'),
     (r'^campaign_duplicate/(.+)/$', 'campaign_duplicate'),
 
     # Campaign Actions (start|stop|pause|abort)

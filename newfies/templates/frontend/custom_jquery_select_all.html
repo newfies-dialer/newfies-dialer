@@ -37,7 +37,7 @@ function ajax_call(url, ids)
     return contact_count;
 }
 
-
+var campaign_stop_flag;
 $(function () {
     $('#ListForm').submit(function(e) {
 
@@ -77,7 +77,16 @@ $(function () {
                 confirm_string = $fields.length + '{% trans " phonebook(s) are going to be deleted with " %}' + contact_count + '{% trans " contact(s)?" %}';
             }
             if(document.location.href.search("/campaign/") != -1) {
-                confirm_string = $fields.length + '{% trans " campaign(s) are going to be deleted?" %}';
+
+                if(campaign_stop_flag){
+
+                    $("#ListForm").attr("action", "stop/0/");
+                    confirm_string = $fields.length + '{% trans " campaign(s) are going to be stopped?" %}';
+                    campaign_stop_flag = false;
+                }
+                else{
+                    confirm_string = $fields.length + '{% trans " campaign(s) are going to be deleted?" %}';
+                }
             }
             if(document.location.href.search("/survey/") != -1) {
                 confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
@@ -133,4 +142,6 @@ function get_alert_msg_for_dnc(id)
     bootbox_call(confirm_string, href);
     return false;
 }
+
+
 </script>

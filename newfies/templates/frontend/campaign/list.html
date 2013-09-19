@@ -19,7 +19,10 @@ function delete_button()
 {
     $('#ListForm').submit();
 }
-
+function campaign_stop_button(){
+    campaign_stop_flag = true;
+    $('#ListForm').submit();
+}
 </script>
 
 <!--Section branching change modal-->
@@ -45,8 +48,13 @@ function delete_button()
             </button>
             <ul class="dropdown-menu">
                 {% if perms.dialer_campaign.delete_campaign %}
-                    <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
+                    <li>
+                        <a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a>
+                    </li>
                 {% endif %}
+                    <li>
+                        <a href="#" onclick="campaign_stop_button()">{% trans "stop selected"|title %}</a>
+                    </li>
             </ul>
         </div>
 

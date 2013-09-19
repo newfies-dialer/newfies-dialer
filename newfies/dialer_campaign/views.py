@@ -374,6 +374,33 @@ def campaign_del(request, object_id):
     return HttpResponseRedirect('/campaign/')
 
 
+@login_required
+def campaign_stop(request, object_id):
+    """Stop campaign in bulk from campaign list actions"""
+    if int(object_id) != 0:
+        # When object_id is not 0
+        campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
+        request.session["msg"] = _('"%(name)s" is stopped.')\
+            % {'name': campaign.name}
+        campaign.status = CAMPAIGN_STATUS.END
+        campaign.save()
+    else:
+        # When object_id is 0 (Multiple records delete)
+        values = request.POST.getlist('select')
+        values = ", ".join(["%s" % el for el in values])
+
+        try:
+            campaign_list = Campaign.objects.filter(user=request.user)\
+                .extra(where=['id IN (%s)' % values])
+            if campaign_list:
+                campaign_list.update(status=CAMPAIGN_STATUS.END)
+                request.session["msg"] = _('%(count)s campaign(s) are stopped.')\
+                    % {'count': campaign_list.count()}
+        except:
+            raise Http404
+    return HttpResponseRedirect('/campaign/')
+
+
 @permission_required('dialer_campaign.change_campaign', login_url='/')
 @login_required
 def campaign_change(request, object_id):
@@ -408,7 +435,7 @@ def campaign_change(request, object_id):
 
     if request.method == 'POST':
         # Delete campaign
-        if request.POST.get('delete'):            
+        if request.POST.get('delete'):
             return HttpResponseRedirect('/campaign/del/%s/' % object_id)
         else:
             # Update campaign

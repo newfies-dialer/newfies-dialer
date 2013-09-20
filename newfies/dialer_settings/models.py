@@ -52,10 +52,15 @@ class DialerSetting(models.Model):
                                           verbose_name=_('timeout on call'),
                                           help_text=_("maximum call timeout in seconds"))
 
-    max_number_campaign = models.IntegerField(default=10,
+    max_number_campaign = models.IntegerField(default=100,
                                               help_text=_("maximum number of campaigns"))
-    max_number_subscriber_campaign = models.IntegerField(default=10000,
+    max_number_subscriber_campaign = models.IntegerField(default=100000,
                 help_text=_("maximum subscribers per campaign"))
+
+    #TODO: Add a new limit as there is some confusion now between max_number_subscriber_campaign
+    #      max_number_contact will define the amount of contact authorized to be created/imported for each user
+    # max_number_contact = models.IntegerField(default=1000000,
+    #             help_text=_("maximum number of contact per user"))
 
     blacklist = models.TextField(blank=True, null=True, default='', verbose_name=_("blacklist"),
         help_text=_("use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))

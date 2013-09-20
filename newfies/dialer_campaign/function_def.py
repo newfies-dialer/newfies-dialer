@@ -17,7 +17,6 @@ from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign
 from dialer_campaign.constants import CAMPAIGN_STATUS,\
     CAMPAIGN_STATUS_COLOR
-from dialer_settings.models import DialerSetting
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
 from datetime import timedelta
@@ -49,19 +48,24 @@ def check_dialer_setting(request, check_for, field_value=''):
 
             # check for subscriber per campaign
             if check_for == "contact":
-                # Campaign list for User
+                # campaign list for User
+                # TODO: We need to remove this from the contact, this limit should be the amount of subscriber per campaign,
+                #       we should do this check when we start the campaign and import the contact to subscriber
+                #       if the amount of contact from the phonebook we try to import is bigger than the limit we should not create the subscriber
+                #
+                # TODO: Replace this check by the new dialer setting max_number_contact
+                # TODO: This needs to be efficient/fast
                 campaign_list = Campaign.objects.filter(user=request.user)
                 for i in campaign_list:
-                    # Total contacts per campaign
+                    # total contacts per campaign
                     contact_count = Contact.objects\
                         .filter(phonebook__campaign=i.id, phonebook__user=request.user)\
                         .count()
-                    # Total active contacts matched with
-                    # max_number_subscriber_campaign
+                    # total active contacts matched with max_number_subscriber_campaign
                     if contact_count >= dialer_set_obj.max_number_subscriber_campaign:
                         # Limit matched or exceeded
                         return True
-                # Limit not matched
+                # limit not matched
                 return False
 
             # check for frequency limit
@@ -219,7 +223,7 @@ def get_campaign_status_name(id):
 
 def user_dialer_setting(user):
     """Get Dialer setting for user"""
-    try:        
+    try:
         dialer_set = user.get_profile().dialersetting
     except:
         dialer_set = []

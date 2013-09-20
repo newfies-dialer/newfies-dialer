@@ -205,6 +205,14 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response['Location'], '/campaign/')
         self.assertEqual(response.status_code, 302)
 
+        request = self.factory.post(
+            '/campaign/del/0/?stop_campaign=True', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = campaign_del(request, 0)
+        self.assertEqual(response['Location'], '/campaign/')
+        self.assertEqual(response.status_code, 302)
+
     def test_notify_admin(self):
         """Test Function to check notify_admin"""
         request = self.factory.post('/notify/admin/', follow=True)

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-06-03 18:21+0200\n"
+"POT-Creation-Date: 2013-09-25 12:55+0200\n"
 "PO-Revision-Date: 2012-02-28 23:20+0800\n"
 "Last-Translator: samlin <sam@theta.com.tw>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,31 +16,31 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: settings.py:406
+#: settings.py:420
 msgid "English"
 msgstr "英語 "
 
-#: settings.py:407
+#: settings.py:421
 msgid "French"
 msgstr ""
 
-#: settings.py:408
+#: settings.py:422
 msgid "Spanish"
 msgstr "西班牙語"
 
-#: settings.py:409
+#: settings.py:423
 msgid "Portuguese"
 msgstr "葡萄牙語"
 
-#: settings.py:410
+#: settings.py:424
 msgid "Chinese"
 msgstr "中文"
 
-#: settings.py:411
+#: settings.py:425
 msgid "Turkish"
 msgstr ""
 
-#: settings.py:412
+#: settings.py:426
 msgid "Japanese"
 msgstr ""
 
@@ -138,14 +138,14 @@ msgstr "每個競選活動最大電話用戶"
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:31
 #: api/api_playgrounds/campaign_playground.py:221
-#: templates/frontend/campaign/list.html:93
+#: templates/frontend/campaign/list.html:101
 #, fuzzy
 msgid "delete campaign"
 msgstr "刪除競選活動"
 
-#: api/api_playgrounds/campaign_playground.py:21 dialer_campaign/models.py:271
-#: dialer_cdr/forms.py:33 frontend/forms.py:34 survey/forms.py:327
-#: survey/models.py:124 survey/models.py:492
+#: api/api_playgrounds/campaign_playground.py:21 dialer_campaign/forms.py:229
+#: dialer_campaign/models.py:271 dialer_cdr/forms.py:33 frontend/forms.py:34
+#: survey/forms.py:327 survey/models.py:124 survey/models.py:492
 #: templates/frontend/bootstrap_menu.html:32
 #: templates/frontend/dashboard.html:28
 #: templates/frontend/campaign/campaign_duplicate.html:46
@@ -176,7 +176,7 @@ msgid "create new campaign"
 msgstr "更新競選活動"
 
 #: api/api_playgrounds/campaign_playground.py:136
-#: templates/frontend/campaign/list.html:90
+#: templates/frontend/campaign/list.html:98
 #, fuzzy
 msgid "update campaign"
 msgstr "更新競選活動"
@@ -404,7 +404,8 @@ msgid "returns specific subscribers per campaign"
 msgstr "每個競選活動最大電話用戶"
 
 #: api/api_playgrounds/subscriber_playground.py:21
-#: dialer_campaign/models.py:416 dialer_campaign/models.py:476
+#: dialer_campaign/models.py:416 dialer_campaign/models.py:480
+#: templates/admin/dialer_campaign/subscriber/subscriber_report.html:14
 #, fuzzy
 msgid "subscriber"
 msgstr "競選活動電話用戶"
@@ -543,7 +544,7 @@ msgstr "關於Newfies-Dialer最新消息"
 msgid "dashboard stats settings"
 msgstr "儀表板狀態設定"
 
-#: custom_admin_tools/dashboard.py:167 dialer_settings/models.py:74
+#: custom_admin_tools/dashboard.py:167 dialer_settings/models.py:79
 #: templates/frontend/campaign/change.html:87 user_profile/models.py:80
 #, fuzzy
 msgid "dialer settings"
@@ -554,7 +555,7 @@ msgstr "撥號設定"
 msgid "dialer campaign"
 msgstr "撥號程序競選活動"
 
-#: custom_admin_tools/dashboard.py:173 dialer_contact/admin.py:221
+#: custom_admin_tools/dashboard.py:173 dialer_contact/admin.py:226
 #, fuzzy
 msgid "dialer contact"
 msgstr "刪除聯絡人"
@@ -596,7 +597,7 @@ msgstr ""
 msgid "customer panel"
 msgstr "使用者控制台"
 
-#: dialer_audio/constants.py:20 dialer_campaign/constants.py:41
+#: dialer_audio/constants.py:20 dialer_campaign/constants.py:52
 #: dialer_campaign/models.py:167 dialer_contact/constants.py:39
 #: dialer_contact/models.py:38 dialer_contact/models.py:131
 #: dialer_gateway/models.py:53 dialer_settings/models.py:38
@@ -617,7 +618,7 @@ msgid "audio URL"
 msgstr "語音檔案網址"
 
 #: dialer_audio/constants.py:23 dialer_campaign/models.py:257
-#: dialer_campaign/models.py:471 dialer_cdr/models.py:104
+#: dialer_campaign/models.py:475 dialer_cdr/models.py:104
 #: dialer_contact/constants.py:41 dialer_contact/constants.py:52
 #: dialer_contact/models.py:43 dialer_contact/models.py:113
 #: dialer_gateway/models.py:86 dnc/constants.py:22 dnc/constants.py:30
@@ -630,15 +631,14 @@ msgid "date"
 msgstr "更新"
 
 #: dialer_audio/views.py:93 dialer_campaign/views.py:324
-#: dialer_contact/views.py:102 dialer_contact/views.py:386 dnc/views.py:97
-#: dnc/views.py:351 survey/views.py:135
+#: dialer_contact/views.py:102 dnc/views.py:98 dnc/views.py:351
+#: survey/views.py:135
 #, python-format
 msgid "\"%(name)s\" added."
 msgstr "\"%(name)s\" 已經新增."
 
-#: dialer_audio/views.py:134 dialer_campaign/views.py:356
-#: dialer_campaign/views.py:413 dialer_contact/views.py:152
-#: dialer_contact/views.py:428 dnc/views.py:147 dnc/views.py:393
+#: dialer_audio/views.py:134 dialer_campaign/views.py:363
+#: dialer_contact/views.py:152 dnc/views.py:148 dnc/views.py:391
 #: survey/views.py:180
 #, python-format
 msgid "\"%(name)s\" is deleted."
@@ -649,44 +649,52 @@ msgstr "\"%(name)s\" 已經刪除."
 msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s 語音檔案已經刪除."
 
-#: dialer_campaign/admin.py:24
+#: dialer_campaign/admin.py:31
 msgid "Dialer Campaign"
 msgstr "撥號程序競選活動"
 
-#: dialer_campaign/admin.py:34 dialer_cdr/admin.py:45
+#: dialer_campaign/admin.py:43 dialer_cdr/admin.py:45
 #: dialer_gateway/admin.py:36
 #, fuzzy
 msgid "standard options"
 msgstr "標準選項"
 
-#: dialer_campaign/admin.py:42 dialer_cdr/admin.py:51
+#: dialer_campaign/admin.py:51 dialer_cdr/admin.py:51
 #: dialer_gateway/admin.py:41
 #, fuzzy
 msgid "advanced options"
 msgstr "進階選項"
 
-#: dialer_campaign/admin.py:85
+#: dialer_campaign/admin.py:94
 #, fuzzy, python-format
 msgid "you have too many campaigns. max allowed %(limit)s"
 msgstr "您的競選活動太多.最大允許值為 %(limit)s"
 
-#: dialer_campaign/constants.py:20
+#: dialer_campaign/admin.py:213
+#: templates/admin/dialer_campaign/subscriber/change_list.html:36
+#, fuzzy
+msgid "subscriber report"
+msgstr "電話用戶已匯入"
+
+#: dialer_campaign/constants.py:20 dialer_campaign/constants.py:31
 msgid "PENDING"
 msgstr ""
 
 #: dialer_campaign/constants.py:21 dialer_campaign/constants.py:32
+#: dialer_campaign/constants.py:43
 msgid "PAUSE"
 msgstr ""
 
 #: dialer_campaign/constants.py:22 dialer_campaign/constants.py:33
+#: dialer_campaign/constants.py:44
 msgid "ABORT"
 msgstr ""
 
-#: dialer_campaign/constants.py:23
+#: dialer_campaign/constants.py:23 dialer_campaign/constants.py:34
 msgid "FAIL"
 msgstr ""
 
-#: dialer_campaign/constants.py:24
+#: dialer_campaign/constants.py:24 dialer_campaign/constants.py:35
 msgid "SENT"
 msgstr ""
 
@@ -698,19 +706,27 @@ msgstr ""
 msgid "NOT AUTHORIZED"
 msgstr ""
 
-#: dialer_campaign/constants.py:27
+#: dialer_campaign/constants.py:27 dialer_campaign/constants.py:38
 msgid "COMPLETED"
 msgstr ""
 
-#: dialer_campaign/constants.py:31
+#: dialer_campaign/constants.py:36
+msgid "IN_PROCESS"
+msgstr ""
+
+#: dialer_campaign/constants.py:37
+msgid "NOT_AUTHORIZED"
+msgstr ""
+
+#: dialer_campaign/constants.py:42
 msgid "START"
 msgstr ""
 
-#: dialer_campaign/constants.py:34
+#: dialer_campaign/constants.py:45
 msgid "END"
 msgstr ""
 
-#: dialer_campaign/constants.py:40 survey/models.py:198 survey/models.py:200
+#: dialer_campaign/constants.py:51 survey/models.py:198 survey/models.py:200
 #: survey/models.py:202 survey/models.py:204 survey/models.py:206
 #: survey/models.py:208 survey/models.py:210 survey/models.py:212
 #: survey/models.py:214 survey/models.py:216
@@ -738,22 +754,22 @@ msgstr ""
 msgid "key"
 msgstr "Key"
 
-#: dialer_campaign/constants.py:42 dialer_cdr/constants.py:65
+#: dialer_campaign/constants.py:53 dialer_cdr/constants.py:65
 #, fuzzy
 msgid "start date"
 msgstr "開始日期"
 
-#: dialer_campaign/constants.py:43 dialer_campaign/models.py:227
+#: dialer_campaign/constants.py:54 dialer_campaign/models.py:227
 #: dialer_cdr/models.py:135 frontend/forms.py:35
 msgid "type"
 msgstr ""
 
-#: dialer_campaign/constants.py:44
+#: dialer_campaign/constants.py:55
 #, fuzzy
 msgid "app"
 msgstr "App"
 
-#: dialer_campaign/constants.py:45 dialer_contact/constants.py:42
+#: dialer_campaign/constants.py:56 dialer_contact/constants.py:42
 #: dialer_contact/models.py:61 dialer_contact/models.py:122
 #: dnc/constants.py:23 templates/frontend/bootstrap_menu.html:42
 #: templates/frontend/bootstrap_menu.html:50
@@ -764,8 +780,8 @@ msgstr "App"
 msgid "contacts"
 msgstr "聯絡人"
 
-#: dialer_campaign/constants.py:46 dialer_campaign/models.py:173
-#: dialer_campaign/models.py:469 dialer_cdr/models.py:113
+#: dialer_campaign/constants.py:57 dialer_campaign/models.py:173
+#: dialer_campaign/models.py:473 dialer_cdr/models.py:113
 #: dialer_contact/constants.py:51 dialer_contact/forms.py:103
 #: dialer_contact/models.py:92
 #: templates/admin/dialer_contact/contact/import_contact.html:25
@@ -773,45 +789,45 @@ msgstr "聯絡人"
 msgid "status"
 msgstr "狀態"
 
-#: dialer_campaign/constants.py:50
+#: dialer_campaign/constants.py:61
 msgid "ALWAYS PLAY MESSAGE"
 msgstr ""
 
-#: dialer_campaign/constants.py:51
+#: dialer_campaign/constants.py:62
 msgid "PLAY MESSAGE TO HUMAN ONLY"
 msgstr ""
 
-#: dialer_campaign/constants.py:52
+#: dialer_campaign/constants.py:63
 msgid "LEAVE MESSAGE TO VOICEMAIL ONLY"
 msgstr ""
 
-#: dialer_campaign/forms.py:51 dialer_campaign/models.py:229
+#: dialer_campaign/forms.py:52 dialer_campaign/models.py:229
 #: dialer_cdr/models.py:136
 #, fuzzy
 msgid "application"
 msgstr "應用程式"
 
-#: dialer_campaign/forms.py:159
+#: dialer_campaign/forms.py:160
 #, fuzzy, python-format
 msgid "maximum frequency limit of %d exceeded."
 msgstr "最大頻率限制 %d 超過."
 
-#: dialer_campaign/forms.py:165
+#: dialer_campaign/forms.py:166
 #, fuzzy, python-format
 msgid "maximum duration limit of %d exceeded."
 msgstr "最大間隔時間 %d 超過."
 
-#: dialer_campaign/forms.py:171
+#: dialer_campaign/forms.py:172
 #, fuzzy, python-format
 msgid "maximum retries limit of %d exceeded."
 msgstr "最大重試次數 %d 超過."
 
-#: dialer_campaign/forms.py:177
+#: dialer_campaign/forms.py:178
 #, fuzzy, python-format
 msgid "maximum timeout limit of %d exceeded."
 msgstr "最大時間限制 %d 超過."
 
-#: dialer_campaign/function_def.py:232
+#: dialer_campaign/function_def.py:236
 #, fuzzy
 msgid ""
 "your settings are not configured properly, please contact the administrator."
@@ -1088,10 +1104,10 @@ msgstr "競選活動"
 
 #: dialer_campaign/models.py:316 templates/frontend/audio/audio_list.html:27
 #: templates/frontend/audio/audio_list.html:53
-#: templates/frontend/campaign/list.html:42
-#: templates/frontend/campaign/list.html:73
-#: templates/frontend/contact/list.html:89
-#: templates/frontend/contact/list.html:120
+#: templates/frontend/campaign/list.html:45
+#: templates/frontend/campaign/list.html:81
+#: templates/frontend/contact/list.html:85
+#: templates/frontend/contact/list.html:118
 #: templates/frontend/dnc_contact/list.html:82
 #: templates/frontend/dnc_contact/list.html:113
 #: templates/frontend/dnc_list/list.html:28
@@ -1128,32 +1144,32 @@ msgstr "<a href='%(link)s'>%(name)s</a>"
 msgid "details"
 msgstr "詳細內容"
 
-#: dialer_campaign/models.py:454
+#: dialer_campaign/models.py:458
 #, fuzzy
 msgid "select contact"
 msgstr "選擇聯絡人"
 
-#: dialer_campaign/models.py:456
+#: dialer_campaign/models.py:460
 #, fuzzy
 msgid "select campaign"
 msgstr "選擇競選活動"
 
-#: dialer_campaign/models.py:458
+#: dialer_campaign/models.py:462
 #, fuzzy
 msgid "last attempt"
 msgstr "最後嘗試"
 
-#: dialer_campaign/models.py:460
+#: dialer_campaign/models.py:464
 #, fuzzy
 msgid "count attempts"
 msgstr "嘗試次數"
 
-#: dialer_campaign/models.py:463
+#: dialer_campaign/models.py:467
 #, fuzzy
 msgid "completion count attempts"
 msgstr "嘗試次數"
 
-#: dialer_campaign/models.py:466 dialer_contact/constants.py:48
+#: dialer_campaign/models.py:470 dialer_contact/constants.py:48
 #: dialer_contact/models.py:121
 #: templates/admin/dialer_contact/contact/import_contact.html:20
 #: templates/frontend/contact/change.html:19
@@ -1161,7 +1177,7 @@ msgstr "嘗試次數"
 msgid "contact"
 msgstr "聯絡人"
 
-#: dialer_campaign/models.py:477
+#: dialer_campaign/models.py:481
 #, fuzzy
 msgid "subscribers"
 msgstr "競選活動電話用戶"
@@ -1228,20 +1244,29 @@ msgstr "為了新增競選活動, 您需要正確的設定, 請聯絡系統管�
 msgid "you have too many campaigns. Max allowed %(limit)s"
 msgstr "您的競選活動太多.最大允許值為 %(limit)s"
 
-#: dialer_campaign/views.py:368
+#: dialer_campaign/views.py:360
+#, fuzzy, python-format
+msgid "\"%(name)s\" is stopped."
+msgstr "\"%(name)s\" 已經刪除."
+
+#: dialer_campaign/views.py:377
+#, fuzzy, python-format
+msgid "%(count)s campaign(s) are stopped."
+msgstr "%(count)s 競選活動已經刪除."
+
+#: dialer_campaign/views.py:380
 #, python-format
 msgid "%(count)s campaign(s) are deleted."
 msgstr "%(count)s 競選活動已經刪除."
 
-#: dialer_campaign/views.py:407
+#: dialer_campaign/views.py:419
 msgid ""
 "the campaign is started, you can only edit Dialer settings and Campaign "
 "schedule"
 msgstr ""
 
-#: dialer_campaign/views.py:441 dialer_contact/views.py:208
-#: dialer_contact/views.py:478 dnc/views.py:202 dnc/views.py:443
-#: survey/views.py:760
+#: dialer_campaign/views.py:449 dialer_contact/views.py:207 dnc/views.py:202
+#: dnc/views.py:440 survey/views.py:759
 #, python-format
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" 已經更新."
@@ -1251,7 +1276,7 @@ msgstr "\"%(name)s\" 已經更新."
 msgid "VoIP report"
 msgstr "VoIP 報表"
 
-#: dialer_cdr/admin.py:72 dialer_cdr/admin.py:205
+#: dialer_cdr/admin.py:72 dialer_cdr/admin.py:208
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:14
 #: templates/admin_tools/dashboard/modules/app_list.html:13
 #, fuzzy
@@ -1263,23 +1288,23 @@ msgstr "撥號列表"
 msgid "gateway used"
 msgstr "已使用過的語音閘道器"
 
-#: dialer_cdr/admin.py:180
+#: dialer_cdr/admin.py:183
 msgid "Database error"
 msgstr "資料庫錯誤"
 
-#: dialer_cdr/admin.py:194
+#: dialer_cdr/admin.py:197
 #, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] "%(total_count)s selected"
 msgstr[1] "All %(total_count)s selected"
 
-#: dialer_cdr/admin.py:198
+#: dialer_cdr/admin.py:201
 #, python-format
 msgid "0 of %(cnt)s selected"
 msgstr "0 of %(cnt)s 選擇"
 
-#: dialer_cdr/admin.py:257
+#: dialer_cdr/admin.py:260
 #: templates/admin_tools/dashboard/modules/app_list.html:45
 #: templates/admin_tools/dashboard/modules/model_list.html:26
 #, fuzzy
@@ -1412,11 +1437,16 @@ msgstr "更新競選活動"
 msgid "unsure"
 msgstr ""
 
-#: dialer_cdr/forms.py:23 dialer_cdr/forms.py:40
+#: dialer_cdr/forms.py:23 dialer_cdr/forms.py:42 dialer_cdr/forms.py:49
 #: dialer_contact/constants.py:34
 #, fuzzy
 msgid "all"
 msgstr "撥號"
+
+#: dialer_cdr/forms.py:35
+#, fuzzy
+msgid "leg type"
+msgstr "通知型態"
 
 #: dialer_cdr/models.py:97 dialer_cdr/models.py:193
 msgid "RequestUUID"
@@ -1442,7 +1472,7 @@ msgid "callerID used to call the A-Leg"
 msgstr "已使用撥出號碼撥到A-Leg"
 
 #: dialer_cdr/models.py:118 dialer_cdr/models.py:203 dnc/constants.py:29
-#: dnc/forms.py:36 dnc/models.py:75 user_profile/forms.py:61
+#: dnc/forms.py:34 dnc/models.py:74 user_profile/forms.py:61
 #: user_profile/models.py:65
 #, fuzzy
 msgid "phone number"
@@ -1594,29 +1624,36 @@ msgid "Dialer Contact"
 msgstr "選擇聯絡人"
 
 #: dialer_contact/admin.py:79 dialer_contact/admin.py:118
-#: dialer_contact/views.py:372 dialer_contact/views.py:520
+#: dialer_contact/views.py:371 dialer_contact/views.py:513
 #, fuzzy, python-format
 msgid ""
 "you have too many contacts per campaign. you are allowed a maximum of "
 "%(limit)s"
 msgstr "您的競選活動的聯絡人數量超過.您的最大數值為%(limit)s"
 
-#: dialer_contact/admin.py:172 dialer_contact/views.py:570
+#: dialer_contact/admin.py:172 dialer_contact/views.py:563
 #, fuzzy
 msgid ""
 "invalid value for import! please check the import samples or phonebook is "
 "not valid"
 msgstr "匯入錯誤的數值!請檢查匯入的樣本."
 
-#: dialer_contact/admin.py:212 dialer_contact/views.py:614
+#: dialer_contact/admin.py:177 dialer_contact/views.py:568
+msgid ""
+"invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 "
+"codes (http://en.wikipedia.org/wiki/ISO_3166-1)"
+msgstr ""
+
+#: dialer_contact/admin.py:217 dialer_contact/views.py:613
 #, fuzzy, python-format
 msgid ""
 "%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
 "row(s) !!"
 msgstr "%(contact_cnt)s 聯絡人上傳成功, 超過 %(total_rows)s 列 !!"
 
-#: dialer_contact/admin.py:222
+#: dialer_contact/admin.py:227
 #: templates/frontend/contact/import_contact.html:13
+#: templates/frontend/contact/list.html:96
 #, fuzzy
 msgid "import contact"
 msgstr "匯入聯絡人"
@@ -1788,15 +1825,30 @@ msgstr "選擇聯絡人"
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s 電話簿已經刪除."
 
-#: dialer_contact/views.py:391 dnc/views.py:356
-#, python-format
-msgid "\"%(name)s\" cannot be added."
+#: dialer_contact/views.py:385
+#, fuzzy, python-format
+msgid "\"%s\" is added."
 msgstr "\"%(name)s\" 已經新增."
 
-#: dialer_contact/views.py:440 dnc/views.py:405
-#, python-format
-msgid "%(count)s contact(s) are deleted."
+#: dialer_contact/views.py:389
+#, fuzzy, python-format
+msgid "\"%s\" cannot be added."
+msgstr "\"%(name)s\" 已經新增."
+
+#: dialer_contact/views.py:425
+#, fuzzy, python-format
+msgid "\"%s\" is deleted."
+msgstr "\"%(name)s\" 已經刪除."
+
+#: dialer_contact/views.py:436
+#, fuzzy, python-format
+msgid "%s contact(s) are deleted."
 msgstr "%(count)s 聯絡人已經刪除."
+
+#: dialer_contact/views.py:472
+#, fuzzy, python-format
+msgid "\"%s\" is updated."
+msgstr "\"%(name)s\" 已經更新."
 
 #: dialer_gateway/admin.py:19
 msgid "Dialer Gateway"
@@ -1999,13 +2051,13 @@ msgstr "競選活動最大數量"
 msgid "maximum subscribers per campaign"
 msgstr "每個競選活動最大電話用戶"
 
-#: dialer_settings/models.py:60
+#: dialer_settings/models.py:65
 #: templates/frontend/registration/user_dialer_settings.html:33
 #, fuzzy
 msgid "blacklist"
 msgstr "黑名單"
 
-#: dialer_settings/models.py:61
+#: dialer_settings/models.py:66
 #, fuzzy
 msgid ""
 "use regular expressions to blacklist phone numbers. For example, '^[2-4]"
@@ -2013,18 +2065,18 @@ msgid ""
 "1 being called."
 msgstr "使用正規式到黑名單電話號碼"
 
-#: dialer_settings/models.py:63
+#: dialer_settings/models.py:68
 #: templates/frontend/registration/user_dialer_settings.html:29
 #, fuzzy
 msgid "whitelist"
 msgstr "白名單"
 
-#: dialer_settings/models.py:64
+#: dialer_settings/models.py:69
 #, fuzzy
 msgid "use regular expressions to whitelist phone numbers"
 msgstr "使用正規式到黑名單電話號碼"
 
-#: dialer_settings/models.py:73
+#: dialer_settings/models.py:78
 #, fuzzy
 msgid "dialer setting"
 msgstr "撥號設定"
@@ -2041,24 +2093,24 @@ msgstr ""
 msgid "json"
 msgstr ""
 
-#: dnc/forms.py:40 dnc/models.py:48
+#: dnc/forms.py:38 dnc/models.py:48
 msgid "Do Not Call list"
 msgstr ""
 
-#: dnc/forms.py:72 dnc/forms.py:90
+#: dnc/forms.py:70 dnc/forms.py:88
 #, fuzzy
 msgid "dnc list"
 msgstr "黑名單"
 
-#: dnc/forms.py:74 dnc/forms.py:91
+#: dnc/forms.py:72 dnc/forms.py:89
 #, fuzzy
 msgid "select dnc list"
 msgstr "選擇聯絡人"
 
-#: dnc/forms.py:83
-msgid ""
-"upload CSV file using the pipe \"|\" as the field delimiter, e.g. 1234567890"
-msgstr ""
+#: dnc/forms.py:81
+#, fuzzy
+msgid "upload CSV file"
+msgstr "上傳 CSV 檔案"
 
 #: dnc/models.py:34
 #, fuzzy
@@ -2079,40 +2131,54 @@ msgstr ""
 msgid "dnc contacts"
 msgstr "聯絡人"
 
-#: dnc/models.py:73
+#: dnc/models.py:72
 msgid "Do Not Call List"
 msgstr ""
 
-#: dnc/models.py:85
+#: dnc/models.py:84
 #, fuzzy
 msgid "can see Do Not Call contact"
 msgstr "選擇聯絡人"
 
-#: dnc/models.py:88
+#: dnc/models.py:87
 #, fuzzy
 msgid "Do Not Call contact"
 msgstr "匯入聯絡人"
 
-#: dnc/models.py:89
+#: dnc/models.py:88
 #, fuzzy
 msgid "Do Not Call contacts"
 msgstr "聯絡人"
 
-#: dnc/views.py:167
+#: dnc/views.py:168
 #, fuzzy, python-format
 msgid "%(count)s dnc list(s) are deleted."
 msgstr "%(count)s 聯絡人已經刪除."
 
-#: dnc/views.py:541
+#: dnc/views.py:356
+#, python-format
+msgid "\"%(name)s\" cannot be added."
+msgstr "\"%(name)s\" 已經新增."
+
+#: dnc/views.py:403
+#, python-format
+msgid "%(count)s contact(s) are deleted."
+msgstr "%(count)s 聯絡人已經刪除."
+
+#: dnc/views.py:508
+msgid "Some of the imported data were invalid!"
+msgstr ""
+
+#: dnc/views.py:534
 #, fuzzy, python-format
 msgid ""
 "%(contact_cnt)s dnc contact(s) are uploaded successfully out of "
 "%(total_rows)s row(s) !!"
 msgstr "%(contact_cnt)s 聯絡人上傳成功, 超過 %(total_rows)s 列 !!"
 
-#: dnc/views.py:546
+#: dnc/views.py:539
 #, python-format
-msgid "Duplicate dnc contact(s) %(dup_contact_cnt)s  are  not inserted!!"
+msgid "Duplicate dnc contact(s) %(dup_contact_cnt)s are not inserted!!"
 msgstr ""
 
 #: frontend/constants.py:20
@@ -2479,12 +2545,12 @@ msgstr ""
 msgid "branching updated."
 msgstr "通知型態"
 
-#: survey/views.py:879
+#: survey/views.py:878
 #, fuzzy
 msgid "no recording"
 msgstr "找不到紀錄!."
 
-#: survey/views.py:1024
+#: survey/views.py:1023
 #, fuzzy
 msgid "no campaign attached with survey."
 msgstr "無競選活動附加到民意調查"
@@ -2533,6 +2599,8 @@ msgstr ""
 msgid " By %(filter_title)s "
 msgstr ""
 
+#: templates/admin/dialer_campaign/subscriber/change_list.html:7
+#: templates/admin/dialer_campaign/subscriber/subscriber_report.html:8
 #: templates/admin/dialer_cdr/voipcall/change_list.html:8
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:8
 #: templates/admin/dialer_contact/contact/change_list.html:8
@@ -2541,6 +2609,8 @@ msgstr ""
 msgid "home"
 msgstr ""
 
+#: templates/admin/dialer_campaign/subscriber/change_list.html:21
+#: templates/admin/dialer_campaign/subscriber/subscriber_report.html:27
 #: templates/admin/dialer_cdr/voipcall/change_list.html:27
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:27
 #: templates/admin/dialer_contact/contact/change_list.html:38
@@ -2549,12 +2619,28 @@ msgid_plural "Please correct the errors below."
 msgstr[0] "Please correct the error below."
 msgstr[1] "Please correct the errors below."
 
+#: templates/admin/dialer_campaign/subscriber/change_list.html:32
+#: templates/admin/dialer_cdr/voipcall/change_list.html:51
+#: templates/admin/dialer_contact/contact/change_list.html:28
+#, python-format
+msgid "Add %(name)s"
+msgstr "新增 %(name)s"
+
+#: templates/admin/dialer_campaign/subscriber/change_list.html:50
+#: templates/admin/dialer_cdr/voipcall/change_list.html:85
+#: templates/admin/dialer_contact/contact/change_list.html:49
+#, fuzzy
+msgid "filter"
+msgstr "過濾器"
+
+#: templates/admin/dialer_campaign/subscriber/subscriber_report.html:35
 #: templates/admin/dialer_cdr/voipcall/change_list.html:35
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:35
 #, fuzzy
 msgid "search option"
 msgstr "搜尋項目"
 
+#: templates/admin/dialer_campaign/subscriber/subscriber_report.html:39
 #: templates/admin/dialer_cdr/voipcall/change_list.html:39
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:39
 #: templates/frontend/newfies_custom_js.html:28
@@ -2570,18 +2656,16 @@ msgstr "搜尋項目"
 msgid "search"
 msgstr "搜尋"
 
+#: templates/admin/dialer_campaign/subscriber/subscriber_report.html:45
+msgid "TOTAL SUBSCRIBERS"
+msgstr ""
+
 #: templates/admin/dialer_cdr/voipcall/change_list.html:40
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:40
 #: templates/admin/dialer_contact/contact/import_contact.html:73
 #, fuzzy
 msgid "reset"
 msgstr "重置"
-
-#: templates/admin/dialer_cdr/voipcall/change_list.html:51
-#: templates/admin/dialer_contact/contact/change_list.html:28
-#, python-format
-msgid "Add %(name)s"
-msgstr "新增 %(name)s"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:57
 #: templates/frontend/report/voipcall_report.html:96
@@ -2607,12 +2691,6 @@ msgstr ""
 #, fuzzy
 msgid "daily report"
 msgstr "撥號列表"
-
-#: templates/admin/dialer_cdr/voipcall/change_list.html:85
-#: templates/admin/dialer_contact/contact/change_list.html:49
-#, fuzzy
-msgid "filter"
-msgstr "過濾器"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:51
 #: templates/frontend/report/voipcall_report.html:154
@@ -2649,8 +2727,8 @@ msgstr "ACT"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:77
 #: templates/frontend/audio/audio_list.html:90
-#: templates/frontend/campaign/list.html:113
-#: templates/frontend/contact/list.html:159
+#: templates/frontend/campaign/list.html:121
+#: templates/frontend/contact/list.html:157
 #: templates/frontend/dnc_contact/list.html:144
 #: templates/frontend/dnc_list/list.html:86
 #: templates/frontend/phonebook/list.html:88
@@ -2670,7 +2748,6 @@ msgid "import contacts"
 msgstr "匯入聯絡人"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:9
-#: templates/frontend/contact/list.html:94
 #, fuzzy
 msgid "import"
 msgstr "匯入"
@@ -2729,9 +2806,9 @@ msgstr "型態不符合"
 #: templates/frontend/audio/audio_change.html:13
 #: templates/frontend/audio/audio_list.html:38
 #: templates/frontend/campaign/change.html:11
-#: templates/frontend/campaign/list.html:54
+#: templates/frontend/campaign/list.html:62
 #: templates/frontend/contact/change.html:18
-#: templates/frontend/contact/list.html:101
+#: templates/frontend/contact/list.html:99
 #: templates/frontend/dnc_contact/change.html:18
 #: templates/frontend/dnc_contact/list.html:97
 #: templates/frontend/dnc_list/change.html:9
@@ -2915,7 +2992,7 @@ msgid " contact(s) are going to be deleted?"
 msgstr "語音錄音檔案將要刪除?"
 
 #: templates/frontend/custom_jquery_select_all.html:66
-#: templates/frontend/custom_jquery_select_all.html:83
+#: templates/frontend/custom_jquery_select_all.html:92
 msgid " survey(s) are going to be deleted?"
 msgstr "民意調查將要刪除?"
 
@@ -2928,40 +3005,45 @@ msgid " phonebook(s) are going to be deleted with "
 msgstr "電話簿將要刪除及"
 
 #: templates/frontend/custom_jquery_select_all.html:77
-#: templates/frontend/custom_jquery_select_all.html:92
+#: templates/frontend/custom_jquery_select_all.html:101
 msgid " contact(s)?"
 msgstr "聯絡人?"
 
-#: templates/frontend/custom_jquery_select_all.html:80
+#: templates/frontend/custom_jquery_select_all.html:84
+#, fuzzy
+msgid " campaign(s) are going to be stopped?"
+msgstr "競選活動將要刪除?"
+
+#: templates/frontend/custom_jquery_select_all.html:88
 msgid " campaign(s) are going to be deleted?"
 msgstr "競選活動將要刪除?"
 
-#: templates/frontend/custom_jquery_select_all.html:92
+#: templates/frontend/custom_jquery_select_all.html:101
 #, fuzzy
 msgid " DNC(s) are going to be deleted with "
 msgstr "電話簿將要刪除及"
 
-#: templates/frontend/custom_jquery_select_all.html:95
+#: templates/frontend/custom_jquery_select_all.html:104
 #, fuzzy
 msgid " DNC contact(s) are going to be deleted?"
 msgstr "語音錄音檔案將要刪除?"
 
-#: templates/frontend/custom_jquery_select_all.html:110
+#: templates/frontend/custom_jquery_select_all.html:119
 #, fuzzy
 msgid "confirm deletion?"
 msgstr "確定要刪除?"
 
-#: templates/frontend/custom_jquery_select_all.html:121
+#: templates/frontend/custom_jquery_select_all.html:130
 #, fuzzy
 msgid "please confirm to delete this phonebook with"
 msgstr "請確認要刪除此電話簿及"
 
-#: templates/frontend/custom_jquery_select_all.html:121
-#: templates/frontend/custom_jquery_select_all.html:132
+#: templates/frontend/custom_jquery_select_all.html:130
+#: templates/frontend/custom_jquery_select_all.html:141
 msgid "contact(s)"
 msgstr "聯絡人"
 
-#: templates/frontend/custom_jquery_select_all.html:132
+#: templates/frontend/custom_jquery_select_all.html:141
 #, fuzzy
 msgid "please confirm to delete this DNC with"
 msgstr "請確認要刪除此電話簿及"
@@ -3175,14 +3257,26 @@ msgstr "語音檔案"
 msgid "upload audio to be used in voice applications"
 msgstr "上船語音檔案至語音應用程式"
 
+#: templates/frontend/audio/audio_change.html:43
+#: templates/frontend/campaign/change.html:228
+#: templates/frontend/contact/change.html:48
+#: templates/frontend/dnc_contact/change.html:48
+#: templates/frontend/dnc_list/change.html:39
+#: templates/frontend/phonebook/change.html:39
+#: templates/frontend/survey/survey_change.html:347
+#: templates/frontend/voiceapp/change.html:41
+#, fuzzy
+msgid "delete"
+msgstr "刪除"
+
 #: templates/frontend/audio/audio_list.html:10
 #, fuzzy
 msgid "list, upload and edit audio files"
 msgstr "顯示, 上傳 以及 編輯語音檔"
 
 #: templates/frontend/audio/audio_list.html:33
-#: templates/frontend/campaign/list.html:48
-#: templates/frontend/contact/list.html:96
+#: templates/frontend/campaign/list.html:52
+#: templates/frontend/contact/list.html:91
 #: templates/frontend/dnc_contact/list.html:88
 #: templates/frontend/dnc_list/list.html:34
 #: templates/frontend/phonebook/list.html:34
@@ -3202,8 +3296,8 @@ msgid "delete audio"
 msgstr "刪除語音檔"
 
 #: templates/frontend/audio/audio_list.html:84
-#: templates/frontend/campaign/list.html:107
-#: templates/frontend/contact/list.html:153
+#: templates/frontend/campaign/list.html:115
+#: templates/frontend/contact/list.html:151
 #: templates/frontend/dnc_contact/list.html:138
 #: templates/frontend/dnc_list/list.html:80
 #: templates/frontend/phonebook/list.html:82
@@ -3260,21 +3354,15 @@ msgstr "競選活動排程"
 msgid "week days"
 msgstr "星期天"
 
-#: templates/frontend/campaign/change.html:228
-#: templates/frontend/contact/change.html:48
-#: templates/frontend/dnc_contact/change.html:48
-#: templates/frontend/dnc_list/change.html:39
-#: templates/frontend/phonebook/change.html:39
-#: templates/frontend/survey/survey_change.html:347
-#: templates/frontend/voiceapp/change.html:41
-#, fuzzy
-msgid "delete"
-msgstr "刪除"
-
 #: templates/frontend/campaign/list.html:9
 #, fuzzy
 msgid "list, add and edit campaigns"
 msgstr "列出,新增以及編輯競選活動"
+
+#: templates/frontend/campaign/list.html:56
+#, fuzzy
+msgid "stop selected"
+msgstr "刪除所選者"
 
 #: templates/frontend/contact/change.html:20
 #: templates/frontend/dnc_contact/change.html:20
@@ -3307,20 +3395,20 @@ msgstr "電話用戶已匯入"
 msgid "list, add and edit contacts"
 msgstr "顯示, 新增 以及編輯聯絡人"
 
-#: templates/frontend/contact/list.html:134
+#: templates/frontend/contact/list.html:132
 msgid "ACTIVE"
 msgstr "啟動"
 
-#: templates/frontend/contact/list.html:136
+#: templates/frontend/contact/list.html:134
 msgid "INACTIVE"
 msgstr "未啟動"
 
-#: templates/frontend/contact/list.html:142
+#: templates/frontend/contact/list.html:140
 #, fuzzy
 msgid "update contact"
 msgstr "更新聯絡人"
 
-#: templates/frontend/contact/list.html:145
+#: templates/frontend/contact/list.html:143
 #, fuzzy
 msgid "delete contact"
 msgstr "刪除聯絡人"

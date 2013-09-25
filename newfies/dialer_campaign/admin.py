@@ -32,7 +32,6 @@ APP_LABEL = _('Dialer Campaign')
 AppLabelRenamer(native_app_label=u'dialer_campaign', app_label=APP_LABEL).main()
 
 
-
 class CampaignAdmin(GenericAdminModelAdmin):
     """
     Allows the administrator to view and modify certain attributes
@@ -73,9 +72,9 @@ class CampaignAdmin(GenericAdminModelAdmin):
     def get_urls(self):
         urls = super(CampaignAdmin, self).get_urls()
         my_urls = patterns('',
-                           (r'^$', self.admin_site.admin_view(self.changelist_view)),
-                           (r'^add/$', self.admin_site.admin_view(self.add_view)),
-                          )
+            (r'^$', self.admin_site.admin_view(self.changelist_view)),
+            (r'^add/$', self.admin_site.admin_view(self.add_view)),
+        )
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
@@ -116,8 +115,8 @@ class SubscriberAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(SubscriberAdmin, self).get_urls()
         my_urls = patterns('',
-                    (r'^subscriber_report/$', self.admin_site.admin_view(self.subscriber_report)),
-                  )
+            (r'^subscriber_report/$', self.admin_site.admin_view(self.subscriber_report)),
+        )
         return my_urls + urls
 
     def subscriber_report(self, request):

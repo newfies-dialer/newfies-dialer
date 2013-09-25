@@ -120,6 +120,7 @@ class spool_pending_call(Task):
             return False
 
         # Set time to wait for balanced dispatching of calls
+        #time_to_wait = int(60 / DIV_MIN) / no_subscriber
         time_to_wait = 6.0 / no_subscriber
         count = 0
 

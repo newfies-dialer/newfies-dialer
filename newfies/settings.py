@@ -305,10 +305,6 @@ except ImportError:
     pass
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('sms_module',)
-
-#DEBUG SMS
-#=========
-SMSDEBUG = False
 """
 
 #API PLAYGROUND

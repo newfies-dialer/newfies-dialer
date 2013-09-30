@@ -57,8 +57,8 @@ class DialerSetting(models.Model):
     max_number_subscriber_campaign = models.IntegerField(default=100000,
                 help_text=_("maximum subscribers per campaign"))
 
-    #TODO: Add a new limit as there is some confusion now between max_number_subscriber_campaign
-    #      max_number_contact will define the amount of contact authorized to be created/imported for each user
+    #TODO: Add a new limit as there is some confusion now with max_number_subscriber_campaign.
+    # max_number_contact will define the amount of contact authorized to be created/imported for each user
     max_number_contact = models.IntegerField(default=1000000,
                 help_text=_("maximum number of contact per user"))
 

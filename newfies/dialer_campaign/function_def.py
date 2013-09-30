@@ -29,6 +29,7 @@ def check_dialer_setting(request, check_for, field_value=''):
 
         * ``check_for`` -  for campaign or for contact
     """
+    #TODO: fix the try and improve the nesting
     try:
         # DialerSettings is linked with the User
         dialer_set_obj = request.user.get_profile().dialersetting
@@ -49,12 +50,18 @@ def check_dialer_setting(request, check_for, field_value=''):
             # check for subscriber per campaign
             if check_for == "contact":
                 # campaign list for User
-                # TODO: We need to remove this from the contact, this limit should be the amount of subscriber per campaign,
-                #       we should do this check when we start the campaign and import the contact to subscriber
-                #       if the amount of contact from the phonebook we try to import is bigger than the limit we should not create the subscriber
+
+                # TODO:
+                # We need to improve/normalize our limit check at the moment max_number_subscriber_campaign doesn't behave as it should.
                 #
-                # TODO: Replace this check by the new dialer setting max_number_contact
-                # TODO: This needs to be efficient/fast
+                # max_number_subscriber_campaign = max number of subscriber per campaign, this should be checked when a contact is going
+                # to be imported to the subscriber list
+                #
+                # max_number_contact = new setting, this will per user define the max number of contact in all the user phonebook together
+                # this will be checked when importing/adding new contact to phonebook
+                #
+                # TODO: This needs to be efficient/fast : Avoid things like checking for ALL the campaigns everytime
+                #
                 campaign_list = Campaign.objects.filter(user=request.user)
                 for i in campaign_list:
                     # total contacts per campaign

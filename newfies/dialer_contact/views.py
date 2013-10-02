@@ -371,7 +371,7 @@ def contact_add(request):
         # So "you have too many contacts per campaign" will become "you have too many contacts"
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
-                _("you have too many contacts per campaign. you are allowed a maximum of %(limit)s") % \
+                _("you have too many contacts. you are allowed a maximum of %(limit)s") % \
                 {'limit': dialer_setting_limit(request, limit_for="contact")}
 
             # contact limit reached
@@ -515,7 +515,7 @@ def contact_import(request):
         # TODO: use max_number_contact
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
-                _("you have too many contacts per campaign. you are allowed a maximum of %(limit)s") % \
+                _("you have too many contacts. you are allowed a maximum of %(limit)s") % \
                 {'limit': dialer_setting_limit(request, limit_for="contact")}
 
             # contact limit reached

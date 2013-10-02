@@ -69,7 +69,7 @@ def check_dialer_setting(request, check_for, field_value=''):
                         .filter(phonebook__campaign=i.id, phonebook__user=request.user)\
                         .count()
                     # total active contacts matched with max_number_subscriber_campaign
-                    if contact_count >= dialer_set_obj.max_number_subscriber_campaign:
+                    if contact_count >= dialer_set_obj.max_number_contact:
                         # Limit matched or exceeded
                         return True
                 # limit not matched
@@ -106,6 +106,14 @@ def check_dialer_setting(request, check_for, field_value=''):
                     return True
                 # Limit not exceeded
                 return False
+
+            # check for subscriber limit
+            if check_for == "subscriber":
+                if field_value > dialer_set_obj.max_number_subscriber_campaign:
+                    # Limit matched or exceeded
+                    return True
+                # Limit not exceeded
+                return False
     except:
         # DialerSettings not link to the User
         return False
@@ -125,6 +133,8 @@ def dialer_setting_limit(request, limit_for):
         # DialerSettings is linked with the User
         dialer_set_obj = request.user.get_profile().dialersetting
         if limit_for == "contact":
+            return str(dialer_set_obj.max_number_contact)
+        if limit_for == "subscriber":
             return str(dialer_set_obj.max_number_subscriber_campaign)
         if limit_for == "campaign":
             return str(dialer_set_obj.max_number_campaign)

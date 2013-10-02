@@ -92,7 +92,7 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     #TODO: Check how many we are going to import and how many exist for that campaign already
     #Use max_number_subscriber_campaign for this.
     #
-    #TODOL If max_number_subscriber_campaign == 0: don't do any check and let the system be fast
+    #TODO: If max_number_subscriber_campaign == 0: don't do any check and let the system be fast
 
     if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
         # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror

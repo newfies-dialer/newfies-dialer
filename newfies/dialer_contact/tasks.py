@@ -17,7 +17,6 @@ from celery.decorators import task
 # from celery.task import Task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_contact.models import Phonebook
 # from common.only_one_task import only_one
 
 logger = get_task_logger(__name__)
@@ -46,8 +45,6 @@ def collect_subscriber(campaign_id):
         if not str(phonebook_id) in obj_campaign.imported_phonebook.split(','):
             #Run import
             logger.info("ImportPhonebook %d for campaign = %d" % (phonebook_id, campaign_id))
-            # keytask = 'import_phonebook-%d-%d' % (campaign_id, phonebook_id)
-            # ImportPhonebook().delay(obj_campaign.id, phonebook_id, keytask=keytask)
 
             #Faster method, ask the Database to do the job
             importcontact_custom_sql(campaign_id, phonebook_id)

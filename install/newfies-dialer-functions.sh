@@ -682,6 +682,9 @@ func_install_frontend(){
 
     python manage.py collectstatic --noinput
 
+    echo ""
+    echo "Instal Bower deps"
+    python manage.py bower_install
 
     #NGINX / SUPERVISOR
     func_config_start_nginx_supervisor

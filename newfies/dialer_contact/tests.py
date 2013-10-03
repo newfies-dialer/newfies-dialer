@@ -101,7 +101,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                 'user_profile.json', 'contenttype.json',
                 'phonebook.json', 'contact.json', 'survey.json',
                 'dnc_list.json', 'dnc_contact.json',
-                'campaign.json', 'subscriber.json',]
+                'campaign.json', 'subscriber.json']
 
     def test_phonebook_view_list(self):
         """Test Function to check phonebook list"""

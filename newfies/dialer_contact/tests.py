@@ -26,7 +26,7 @@ from dialer_contact.views import phonebook_add, \
     contact_change, contact_del, contact_import,\
     get_contact_count
 from dialer_campaign.views import get_url_campaign_status
-from dialer_contact.tasks import ImportPhonebook
+from dialer_contact.tasks import ImportPhonebook  # TODO: replace this by collect_subscriber
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 

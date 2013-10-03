@@ -33,6 +33,7 @@ from common.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
 import tablib
+
 AppLabelRenamer(native_app_label=u'dialer_cdr', app_label=_('Dialer CDR')).main()
 APP_LABEL = _('VoIP report')
 

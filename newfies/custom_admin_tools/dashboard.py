@@ -29,6 +29,7 @@ from admin_tools_stats.modules import DashboardCharts, get_active_graph
 from admin_tools.utils import get_admin_site_name
 from django.conf import settings
 
+
 class HistoryDashboardModule(modules.LinkList):
     title = 'History'
 
@@ -107,6 +108,20 @@ class CustomIndexDashboard(Dashboard):
             models=('dnc.*', ),
         ))
 
+        site_name = get_admin_site_name(context)
+
+        # http://127.0.0.1:8000/admin/dialer_cdr/voipcall/voip_daily_report/
+        #Quick link seems to broke the admin design if too many element
+        self.children.append(modules.LinkList(
+            _('Reporting'),
+            draggable=True,
+            deletable=True,
+            collapsible=True,
+            children=[
+                [_('Call Daily Report'), reverse('%s:voip_daily_report' % site_name)],
+            ],
+        ))
+
         # append a link list module for "quick links"
         """
         site_name = get_admin_site_name(context)
@@ -120,8 +135,7 @@ class CustomIndexDashboard(Dashboard):
             collapsible=True,
             children=[
                 [_('Go to Newfies-Dialer'), 'http://www.newfies-dialer.org/'],
-                [_('Change password'),
-                 reverse('%s:password_change' % site_name)],
+                [_('Change password'), reverse('%s:password_change' % site_name)],
                 [_('Log out'), reverse('%s:logout' % site_name)],
             ],
         ))

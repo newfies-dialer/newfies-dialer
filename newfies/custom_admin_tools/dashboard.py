@@ -111,6 +111,19 @@ class CustomIndexDashboard(Dashboard):
         # append a link list module for "quick links"
         # site_name = get_admin_site_name(context)
 
+        # http://127.0.0.1:8000/admin/dialer_cdr/voipcall/voip_daily_report/
+        #Quick link seems to broke the admin design if too many element
+        self.children.append(modules.LinkList(
+            _('Reporting'),
+            draggable=True,
+            deletable=True,
+            collapsible=True,
+            children=[
+                [_('Call Daily Report'),
+                 reverse('admin:dialer_cdr_voipcall_changelist') + 'voip_daily_report/'],
+            ],
+        ))
+
         #Quick link seems to broke the admin design if too many element
         self.children.append(modules.LinkList(
             _('Quick links'),

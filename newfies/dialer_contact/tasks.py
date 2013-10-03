@@ -14,11 +14,11 @@
 
 from django.conf import settings
 from celery.decorators import task
-from celery.task import Task
+# from celery.task import Task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_contact.models import Phonebook
-from common.only_one_task import only_one
+# from common.only_one_task import only_one
 
 logger = get_task_logger(__name__)
 
@@ -80,9 +80,10 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     if max_number_subscriber_campaign > 0:
         #Check how many we are going to import and how many exist for that campaign already
         imported_subscriber_count = Subscriber.objects.filter(campaign_id=campaign_id).count()
-        total_phonebook_contacts = Phonebook.objects.get(pk=phonebook_id).phonebook_contacts
+        total_phonebook_contacts = Phonebook.objects.get(pk=phonebook_id).phonebook_contacts()
         to_import = (total_phonebook_contacts - imported_subscriber_count)
         if to_import > 0:
+            #handle negative value for to_import
             limit_import = 'LIMIT %d' % to_import
         else:
             limit_import = 'LIMIT 0'

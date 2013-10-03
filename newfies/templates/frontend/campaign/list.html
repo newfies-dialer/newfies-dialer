@@ -10,24 +10,21 @@
 {% endblock %}
 
 {% block content %}
-<script type="text/javascript">
-function add_button()
-{
-    window.location = 'add/';
-}
-function delete_button()
-{
-    $('#ListForm').submit();
-}
-function campaign_stop_button(){
-    campaign_stop_flag = true;
-    $('#ListForm').submit();
-}
+<script type="text/javascript" charset="utf-8">
+    function add_button() {
+        window.location = 'add/';
+    }
+    function delete_button() {
+        $('#ListForm').submit();
+    }
+    function campaign_stop_button() {
+        campaign_stop_flag = true;
+        $('#ListForm').submit();
+    }
 </script>
 
 <!--Section branching change modal-->
 <script type="text/javascript" charset="utf-8">
-
     $(".campaign-duplicate").live('click', function(e) {
         e.preventDefault();
         //e.stopPropagation();
@@ -87,7 +84,7 @@ function campaign_stop_button(){
                         <tr>
                             <td class="survey_edit_key"><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
                             <td class="survey_edit_key">{{ row.campaign_code }}</td>
-                            <td>{{ row.name }}</td>
+                            <td class="width_200">{{ row.name }}</td>
                             <td>{{ row.startingdate }}</td>
                             <td class="survey_edit_key">{{ row.content_type }}</td>
                             <td>{% get_app_name row.content_type.app_label row.content_type.model row.object_id %}</td>

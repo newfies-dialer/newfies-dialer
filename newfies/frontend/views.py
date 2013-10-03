@@ -410,8 +410,8 @@ def customer_dashboard(request, on_index=None):
     total_record = total_record.items()
     total_record = sorted(total_record, key=lambda k: k[0])
 
-    # lineWithFocusChart
-    final_charttype = "lineWithFocusChart"
+    # lineplusbarwithfocuschart
+    final_charttype = "linePlusBarWithFocusChart"
     xdata = []
     ydata = []
     ydata2 = []
@@ -421,15 +421,16 @@ def customer_dashboard(request, on_index=None):
         ydata2.append(i[1]['duration_sum'])
 
     tooltip_date = "%d %b %y %H:%M %p"
+    kwargs1 = {}
+    kwargs1['bar'] = True
     extra_serie1 = {"tooltip": {"y_start": "", "y_end": " calls"}, "date_format": tooltip_date}
     extra_serie2 = {"tooltip": {"y_start": "", "y_end": " sec"}, "date_format": tooltip_date}
 
     final_chartdata = {
         'x': xdata,
-        'name1': 'Calls', 'y1': ydata, 'extra1': extra_serie1,
+        'name1': 'Calls', 'y1': ydata, 'extra1': extra_serie1, "kwargs1": kwargs1,
         'name2': 'Duration', 'y2': ydata2, 'extra2': extra_serie2,
     }
-
 
     # Contacts which are successfully called for running campaign
     reached_contact = 0

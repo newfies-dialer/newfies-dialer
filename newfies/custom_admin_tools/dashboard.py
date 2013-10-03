@@ -108,23 +108,8 @@ class CustomIndexDashboard(Dashboard):
             models=('dnc.*', ),
         ))
 
-        site_name = get_admin_site_name(context)
-
-        # http://127.0.0.1:8000/admin/dialer_cdr/voipcall/voip_daily_report/
-        #Quick link seems to broke the admin design if too many element
-        self.children.append(modules.LinkList(
-            _('Reporting'),
-            draggable=True,
-            deletable=True,
-            collapsible=True,
-            children=[
-                [_('Call Daily Report'), reverse('%s:voip_daily_report' % site_name)],
-            ],
-        ))
-
         # append a link list module for "quick links"
-        """
-        site_name = get_admin_site_name(context)
+        # site_name = get_admin_site_name(context)
 
         #Quick link seems to broke the admin design if too many element
         self.children.append(modules.LinkList(
@@ -134,12 +119,11 @@ class CustomIndexDashboard(Dashboard):
             deletable=True,
             collapsible=True,
             children=[
-                [_('Go to Newfies-Dialer'), 'http://www.newfies-dialer.org/'],
-                [_('Change password'), reverse('%s:password_change' % site_name)],
-                [_('Log out'), reverse('%s:logout' % site_name)],
+                [_('Newfies-Dialer Website'), 'http://www.newfies-dialer.org/'],
+                [_('Contact support'), 'http://www.newfies-dialer.org/about-us/contact/'],
+                # [_('Change password'), reverse('%s:password_change' % site_name)],
             ],
         ))
-        """
 
         if not settings.DEBUG:
             # append a feed module

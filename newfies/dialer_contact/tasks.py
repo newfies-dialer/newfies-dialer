@@ -17,6 +17,7 @@ from celery.decorators import task
 from celery.task import Task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign, Subscriber
+from dialer_contact.models import Phonebook
 from common.only_one_task import only_one
 
 logger = get_task_logger(__name__)
@@ -90,33 +91,34 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
         Campaign.objects.get(pk=campaign_id).user.get_profile().dialersetting.max_number_subscriber_campaign
 
     #TODO: If max_number_subscriber_campaign == 0: don't do any check and let the system be fast
-
     if max_number_subscriber_campaign > 0:
 
         #TODO: Check how many we are going to import and how many exist for that campaign already
         #Use max_number_subscriber_campaign for this.
-
         imported_subscriber_count = Subscriber.objects.filter(campaign_id=campaign_id).count()
+        total_phonebook_contacts = Phonebook.objects.get(pk=phonebook_id).phonebook_contacts
 
-        from django.db import connection, transaction
-        cursor = connection.cursor()
-        if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
-            # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
-            sqlimport = "LOCK TABLE dialer_subscriber IN EXCLUSIVE MODE;" \
-                "INSERT INTO dialer_subscriber (contact_id, "\
-                "campaign_id, duplicate_contact, status, created_date, updated_date) "\
-                "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
-                "WHERE phonebook_id=%d AND dialer_contact.status=1 AND NOT EXISTS (" \
-                "SELECT 1 FROM dialer_subscriber WHERE "\
-                "dialer_subscriber.campaign_id=%d "\
-                "AND dialer_contact.id = dialer_subscriber.contact_id );" % \
-                (campaign_id, phonebook_id, campaign_id)
-        else:
-            # MYSQL Support removed
-            logger.error("Database not supported (%s)" %
-                         settings.DATABASES['default']['ENGINE'])
-            return False
+        going_to_import = (total_phonebook_contacts - imported_subscriber_count)
+        if going_to_import > 0:
+            from django.db import connection, transaction
+            cursor = connection.cursor()
+            if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
+                # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
+                sqlimport = "LOCK TABLE dialer_subscriber IN EXCLUSIVE MODE;" \
+                    "INSERT INTO dialer_subscriber (contact_id, "\
+                    "campaign_id, duplicate_contact, status, created_date, updated_date) "\
+                    "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
+                    "WHERE phonebook_id=%d AND dialer_contact.status=1 AND NOT EXISTS (" \
+                    "SELECT 1 FROM dialer_subscriber WHERE "\
+                    "dialer_subscriber.campaign_id=%d "\
+                    "AND dialer_contact.id = dialer_subscriber.contact_id );" % \
+                    (campaign_id, phonebook_id, campaign_id)
+            else:
+                # MYSQL Support removed
+                logger.error("Database not supported (%s)" %
+                             settings.DATABASES['default']['ENGINE'])
+                return False
 
-        cursor.execute(sqlimport)
-        transaction.commit_unless_managed()
+            cursor.execute(sqlimport)
+            transaction.commit_unless_managed()
     return True

@@ -28,8 +28,8 @@ class DialerSettingModel(TestCase):
             callmaxduration=1800,
             maxretry=3,
             max_calltimeout=45,
-            max_number_campaign=10,
-            max_number_subscriber_campaign=1000,
+            max_cpg=10,
+            max_subr_cpg=1000,
         )
         self.dialer_setting.save()
 

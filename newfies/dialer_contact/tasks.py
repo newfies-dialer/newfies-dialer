@@ -71,13 +71,12 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     #Subscriber.importcontact_pl_sql(campaign_id, phonebook_id)
 
     #TODO: to review first... accr max_subr_cpn/max_subr_cpg
-    max_number_subscriber_campaign = \
-        Campaign.objects.get(pk=campaign_id).user.get_profile().dialersetting.max_number_subscriber_campaign
+    max_subr_cpg = Campaign.objects.get(pk=campaign_id).user.get_profile().dialersetting.max_subr_cpg
 
-    if max_number_subscriber_campaign > 0:
+    if max_subr_cpg > 0:
         #Check how many we are going to import and how many exist for that campaign already
         imported_subscriber_count = Subscriber.objects.filter(campaign_id=campaign_id).count()
-        allowed_import = max_number_subscriber_campaign - imported_subscriber_count
+        allowed_import = max_subr_cpg - imported_subscriber_count
         if allowed_import > 0:
             #handle negative value for to_import
             limit_import = 'LIMIT %d' % allowed_import

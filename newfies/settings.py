@@ -113,6 +113,7 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
     #'django.contrib.staticfiles.finders.DefaultStorageFinder',
     'dajaxice.finders.DajaxiceFinder',
+    'djangobower.finders.BowerFinder',
 )
 
 # Make this unique, and don't share it with anybody.
@@ -219,6 +220,7 @@ INSTALLED_APPS = (
     'apiplayground',
     'frontend_notification',
     'django_nvd3',
+    'djangobower',
 )
 
 # Django extensions
@@ -524,6 +526,18 @@ PREFIX_LIMIT_MAX = 5
 # List of phonenumber prefix to ignore, this will be remove prior analysis
 PREFIX_TO_IGNORE = "+,0,00,000,0000,00000,011,55555,99999"
 
+
+# Django-bower
+# ------------
+# Specifie path to components root (you need to use absolute path)
+BOWER_COMPONENTS_ROOT = os.path.join(APPLICATION_DIR, 'components')
+
+BOWER_PATH = '/usr/local/bin/bower'
+
+BOWER_INSTALLED_APPS = (
+    'd3#3.3.6',
+    'nvd3#1.1.12-beta',
+)
 
 #IMPORT LOCAL SETTINGS
 #=====================

@@ -511,8 +511,7 @@ def contact_import(request):
     # Check dialer setting limit
     if request.user and request.method == 'POST':
         # check  Max Number of subscribers per campaign
-        #
-        # TODO: use max_number_contact
+
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
                 _("you have too many contacts. you are allowed a maximum of %(limit)s") % \

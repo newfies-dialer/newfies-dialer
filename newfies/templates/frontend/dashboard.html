@@ -1,12 +1,14 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags nvd3_tags %}
+{% load i18n common_tags nvd3_tags static %}
 
 {% block title %}
     {% trans 'dashboard'|title %}
 {% endblock %}
 
 {% block extra_header %}
-    {% include_chart_jscss 'newfies' %}
+    <link media="all" href="{% static 'nvd3/src/nv.d3.css' %}" type="text/css" rel="stylesheet" />
+    <script src="{% static 'nvd3/lib/d3.v2.js' %}" type="text/javascript"></script>
+    <script src="{% static 'nvd3/nv.d3.js'%}" type="text/javascript"></script>
     {% load_chart final_charttype final_chartdata "final_container" True "%d %b %Y" %}
     {% load_chart hangup_analytic_charttype hangup_analytic_chartdata "hangup_analytic_container" %}
 {% endblock %}

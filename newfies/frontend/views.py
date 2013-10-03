@@ -428,7 +428,7 @@ def customer_dashboard(request, on_index=None):
 
     final_chartdata = {
         'x': xdata,
-        'name1': 'Calls', 'y1': ydata, 'extra1': extra_serie1, "kwargs1": kwargs1,
+        'name1': 'Calls', 'y1': ydata, 'extra1': extra_serie1, 'kwargs1': kwargs1,
         'name2': 'Duration', 'y2': ydata2, 'extra2': extra_serie2,
     }
 

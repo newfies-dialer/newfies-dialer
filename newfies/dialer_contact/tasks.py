@@ -80,11 +80,10 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     if max_number_subscriber_campaign > 0:
         #Check how many we are going to import and how many exist for that campaign already
         imported_subscriber_count = Subscriber.objects.filter(campaign_id=campaign_id).count()
-        total_phonebook_contacts = Phonebook.objects.get(pk=phonebook_id).phonebook_contacts()
-        to_import = (total_phonebook_contacts - imported_subscriber_count)
-        if to_import > 0:
+        allowed_import = max_number_subscriber_campaign - imported_subscriber_count
+        if allowed_import > 0:
             #handle negative value for to_import
-            limit_import = 'LIMIT %d' % to_import
+            limit_import = 'LIMIT %d' % allowed_import
         else:
             limit_import = 'LIMIT 0'
     else:
@@ -105,8 +104,7 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
             (campaign_id, phonebook_id, campaign_id, limit_import)
     else:
         # MYSQL Support removed
-        logger.error("Database not supported (%s)" %
-                     settings.DATABASES['default']['ENGINE'])
+        logger.error("Database not supported (%s)" % settings.DATABASES['default']['ENGINE'])
         return False
 
     cursor.execute(sqlimport)

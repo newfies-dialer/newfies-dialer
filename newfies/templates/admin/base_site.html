@@ -1,5 +1,5 @@
 {% extends "admin/base.html" %}
-{% load i18n admin_tools_menu_tags %}
+{% load i18n admin_tools_menu_tags static %}
 
 {% block title %}{% trans 'Newfies-Dialer Admin' %}{% endblock %}
 {% block extrahead %}
@@ -10,6 +10,12 @@
 <!-- Javascript -->
 <script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-1.8.2.min.js"></script>
 <script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-ui-1.9.1.custom.min.js"></script>
+
+<!--For Chart-->
+<link media="all" href="{% static 'nvd3/src/nv.d3.css' %}" type="text/css" rel="stylesheet" />
+<script src="{% static 'nvd3/lib/d3.v2.js' %}" type="text/javascript"></script>
+<script src="{% static 'nvd3/nv.d3.js'%}" type="text/javascript"></script>
+
 
 <link href="{{ STATIC_URL }}newfies/css/datepicker.css" rel="stylesheet">
 <script type="text/javascript">

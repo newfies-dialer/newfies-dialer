@@ -423,6 +423,7 @@ def customer_dashboard(request, on_index=None):
     tooltip_date = "%d %b %y %H:%M %p"
     kwargs1 = {}
     kwargs1['bar'] = True
+    kwargs1['resize'] = True
     extra_serie1 = {"tooltip": {"y_start": "", "y_end": " calls"}, "date_format": tooltip_date}
     extra_serie2 = {"tooltip": {"y_start": "", "y_end": " sec"}, "date_format": tooltip_date}
 
@@ -469,7 +470,10 @@ def customer_dashboard(request, on_index=None):
             COLOR_DISPOSITION['FAILED'],
             COLOR_DISPOSITION['NOANSWER'],
         ]
-        extra_serie = {"tooltip": {"y_start": "", "y_end": " %"}, "color_list": color_list}
+        kwargs1 = {}
+        kwargs1['resize'] = True
+        extra_serie = {"tooltip": {"y_start": "", "y_end": " %"},
+                       "color_list": color_list, "kwargs1": kwargs1}
         hangup_analytic_chartdata = {'x': xdata, 'y1': ydata, 'extra1': extra_serie}
 
     template = 'frontend/dashboard.html'

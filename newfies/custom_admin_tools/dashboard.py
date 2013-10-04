@@ -120,7 +120,7 @@ class CustomIndexDashboard(Dashboard):
 
         # append a link list module for "quick links"
         #"""
-        site_name = get_admin_site_name(context)
+        # site_name = get_admin_site_name(context)
 
         #Quick link seems to broke the admin design if too many element
         self.children.append(modules.LinkList(
@@ -130,10 +130,11 @@ class CustomIndexDashboard(Dashboard):
             deletable=True,
             collapsible=True,
             children=[
-                [_('Go to Newfies-Dialer'), 'http://www.newfies-dialer.org/'],
-                [_('Change password'),
-                 reverse('%s:password_change' % site_name)],
-                [_('Log out'), reverse('%s:logout' % site_name)],
+                [_('Newfies-Dialer Website'), 'http://www.newfies-dialer.org/'],
+                [_('Support'), 'http://www.newfies-dialer.org/about-us/contact/'],
+                [_('Add-ons'), 'http://www.newfies-dialer.org/add-ons/'],
+                # [_('Change password'), reverse('%s:password_change' % site_name)],
+                # [_('Log out'), reverse('%s:logout' % site_name)],
             ],
         ))
         #"""

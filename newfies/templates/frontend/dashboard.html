@@ -9,8 +9,8 @@
     <link media="all" href="{% static 'nvd3/src/nv.d3.css' %}" type="text/css" rel="stylesheet" />
     <script src="{% static 'nvd3/lib/d3.v2.js' %}" type="text/javascript"></script>
     <script src="{% static 'nvd3/nv.d3.js'%}" type="text/javascript"></script>
-    {% load_chart final_charttype final_chartdata "final_container" True "%d %b %Y" %}
-    {% load_chart hangup_analytic_charttype hangup_analytic_chartdata "hangup_analytic_container" %}
+    {% load_chart final_charttype final_chartdata final_chartcontainer final_extra %}
+    {% load_chart hangup_analytic_charttype hangup_analytic_chartdata hangup_chartcontainer hangup_extra %}
 {% endblock %}
 
 {% block content_header %}
@@ -45,7 +45,7 @@
 
 <div class="row">
     <div class="span12">
-        {% include_container "final_container" 500 '100%' %}
+        {% include_container final_chartcontainer 500 '100%' %}
     </div>
 </div>
 
@@ -54,7 +54,7 @@
     <div class="span12">
         <div class="row">
             <div class="span6">
-                {% include_container "hangup_analytic_container" 400 500 %}
+                {% include_container hangup_chartcontainer 400 500 %}
             </div>
 
             <div class="span6">

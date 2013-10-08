@@ -29,6 +29,7 @@ from admin_tools_stats.modules import DashboardCharts, get_active_graph
 from admin_tools.utils import get_admin_site_name
 from django.conf import settings
 
+
 class HistoryDashboardModule(modules.LinkList):
     title = 'History'
 

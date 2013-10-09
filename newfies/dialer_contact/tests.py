@@ -26,7 +26,7 @@ from dialer_contact.views import phonebook_add, \
     contact_change, contact_del, contact_import,\
     get_contact_count
 from dialer_campaign.views import get_url_campaign_status
-from dialer_contact.tasks import ImportPhonebook  # TODO: replace this by collect_subscriber
+from dialer_contact.tasks import collect_subscriber
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 
@@ -330,13 +330,13 @@ class DialerContactCeleryTaskTestCase(TestCase):
                 'user_profile.json', 'contenttype.json',
                 'phonebook.json', 'contact.json', 'survey.json',
                 'dnc_list.json', 'dnc_contact.json',
-                'campaign.json', 'subscriber.json',]
+                'campaign.json', 'subscriber.json']
 
     def test_import_phonebook(self):
-        """Test that the ``ImportPhonebook``
+        """Test that the ``collect_subscriber``
         task runs with no errors, and returns the correct result."""
-        ImportPhonebook.delay(1, 1)
-        #self.assertEqual(result.successful(), True)
+        result = collect_subscriber.delay(1)
+        self.assertEqual(result.successful(), True)
 
         # Test mgt command
         call_command("create_contact", "1|10")

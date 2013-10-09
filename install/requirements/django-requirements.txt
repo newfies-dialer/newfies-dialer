@@ -23,8 +23,8 @@ django-audiofield==0.5.5
 django-admin-tools-stats==0.4.3
 switch2bill-common==2.8.0
 django-extensions==1.0.3
-python-nvd3==0.10.1
-django-nvd3==0.4.0
+python-nvd3==0.11.2
+django-nvd3==0.4.1
 git+git://github.com/Star2Billing/django-notification
 django-frontend-notification==0.1.6
 django-genericadmin==0.4

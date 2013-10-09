@@ -504,7 +504,7 @@ def customer_dashboard(request, on_index=None):
         'hangup_extra': {
             'x_is_date': False,
             'x_axis_format': '',
-            'tag_script_js': False,
+            'tag_script_js': True,
             'jquery_on_ready': False,
         },
         'final_chartdata': final_chartdata,
@@ -513,7 +513,7 @@ def customer_dashboard(request, on_index=None):
         'final_extra': {
             'x_is_date': True,
             'x_axis_format': '%d %b %Y',
-            'tag_script_js': False,
+            'tag_script_js': True,
             'jquery_on_ready': False,
         }
     }

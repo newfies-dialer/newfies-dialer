@@ -501,9 +501,11 @@ function FSMCall:next_node()
 
     elseif current_node.type == DNC then
         --Add this phonenumber to the DNC campaign list
-        self.db:connect()
-        self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
-        self.db:disconnect()
+        if self.db.campaign_info.dnc_id then
+            self.db:connect()
+            self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
+            self.db:disconnect()
+        end
         --Play Node
         self:playnode(current_node)
         self:end_call()

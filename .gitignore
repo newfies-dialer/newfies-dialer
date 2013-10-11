@@ -24,3 +24,4 @@ lua/tts/*.txt
 lua/*amd*
 acapela*.lua
 *.ipynb
+bower_components

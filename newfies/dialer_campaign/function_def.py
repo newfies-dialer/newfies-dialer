@@ -16,7 +16,7 @@ from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign
 from dialer_campaign.constants import CAMPAIGN_STATUS,\
-    CAMPAIGN_STATUS_COLOR
+    CAMPAIGN_STATUS_COLOR, SUBSCRIBER_STATUS
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
 from datetime import timedelta
@@ -256,3 +256,33 @@ def user_dialer_setting_msg(user):
     if not user_dialer_setting(user):
         msg = _('your settings are not configured properly, please contact the administrator.')
     return msg
+
+
+def get_subscriber_status(value):
+    """Get subscriber status name"""
+    if not value:
+        return ''
+    STATUS = dict(SUBSCRIBER_STATUS)
+    try:
+        status = STATUS[value].encode('utf-8')
+    except:
+        status = ''
+
+    return str(status)
+
+
+def get_subscriber_disposition(campaign_id, val):
+    """To get subscriber disposition name from campaign's
+    lead_disposition string"""
+    dsp_dict = {}
+    dsp_count = 1
+    try:
+        dsp_array = Campaign.objects.get(pk=campaign_id)\
+            .lead_disposition.split(',')
+        for i in dsp_array:
+            dsp_dict[dsp_count] = i.strip()
+            dsp_count += 1
+
+        return dsp_dict[val]
+    except:
+        return '-'

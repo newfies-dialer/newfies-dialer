@@ -21,9 +21,10 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from dialer_campaign.models import Campaign, Subscriber
+from dialer_campaign.admin_filters import AgentFilter
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit
 from dialer_campaign.constants import SUBSCRIBER_STATUS, SUBSCRIBER_STATUS_NAME
-from dialer_campaign.forms import SubscriberReportForm
+from dialer_campaign.forms import SubscriberReportForm, SubscriberAdminForm
 from genericadmin.admin import GenericAdminModelAdmin
 from common.common_functions import variable_value, ceil_strdate
 from common.app_label_renamer import AppLabelRenamer
@@ -54,7 +55,9 @@ class CampaignAdmin(GenericAdminModelAdmin):
                        'daily_start_time', 'daily_stop_time',
                        'monday', 'tuesday', 'wednesday',
                        'thursday', 'friday', 'saturday', 'sunday',
-                       'completion_maxretry', 'completion_intervalretry', 'dnc')
+                       'completion_maxretry', 'completion_intervalretry',
+                       'dnc', 'agent_script', 'lead_disposition',
+                       'external_link')
         }),
     )
     list_display = ('id', 'name', 'content_type', 'campaign_code', 'user',
@@ -72,9 +75,9 @@ class CampaignAdmin(GenericAdminModelAdmin):
     def get_urls(self):
         urls = super(CampaignAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^$', self.admin_site.admin_view(self.changelist_view)),
-            (r'^add/$', self.admin_site.admin_view(self.add_view)),
-        )
+                   (r'^$', self.admin_site.admin_view(self.changelist_view)),
+                   (r'^add/$', self.admin_site.admin_view(self.add_view)),
+                )
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
@@ -105,12 +108,12 @@ admin.site.register(Campaign, CampaignAdmin)
 class SubscriberAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Subscriber."""
-    list_display = ('id', 'contact', 'campaign',
-                    'last_attempt', 'count_attempt', 'completion_count_attempt', 'duplicate_contact',
-                    'contact_name', 'status', 'created_date')
-    list_filter = ['campaign', 'status', 'created_date', 'last_attempt']
+    form = SubscriberAdminForm
+    list_display = ('id', 'contact', 'campaign', 'last_attempt', 'get_attempts',
+                    'get_completion_attempts', 'duplicate_contact', 'disposition',
+                    'collected_data', 'status', 'agent', 'created_date')
+    list_filter = ('campaign', 'status', 'created_date', 'last_attempt', AgentFilter)
     ordering = ('-id', )
-    raw_id_fields = ("contact",)
 
     def get_urls(self):
         urls = super(SubscriberAdmin, self).get_urls()

@@ -29,9 +29,11 @@ from dialer_gateway.models import Gateway
 from audiofield.models import AudioFile
 from user_profile.models import UserProfile
 from dnc.models import DNC
+from agent.models import Agent
 from datetime import datetime
 from common.intermediate_model_base_class import Model
 from common.common_functions import get_unique_code
+import jsonfield
 import logging
 import re
 
@@ -253,6 +255,11 @@ class Campaign(Model):
                                  verbose_name=_("detection behaviour"), blank=True, null=True)
     voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("voicemail audio file"))
+    #Callcenter
+    agent_script = models.TextField(verbose_name=_('agent script'), blank=True, null=True)
+    lead_disposition = models.TextField(verbose_name=_('lead disposition'), blank=True, null=True)
+    external_link = jsonfield.JSONField(null=True, blank=True, verbose_name=_('additional parameters (JSON)'),
+        help_text=_("enter the list of parameters in Json format, e.g. {\"title\": [\"tab-1\", \"tab-2\"], \"url\": [\"https://duckduckgo.com/\", \"http://www.newfies-dialer.org/\"]}"))
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
@@ -471,11 +478,22 @@ class Subscriber(Model):
     status = models.IntegerField(choices=list(SUBSCRIBER_STATUS),
                                  default=SUBSCRIBER_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)
+    disposition = models.IntegerField(verbose_name=_("disposition"),
+                                      blank=True, null=True)
+    collected_data = models.TextField(verbose_name=_('subscriber_response'),
+                                      blank=True, null=True,
+                                      help_text=_("collect user call data"))
+    agent = models.ForeignKey(Agent, verbose_name=_("agent"),
+                              blank=True, null=True,
+                              related_name="agent")
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True, db_index=True)
 
     class Meta:
+        permissions = (
+            ("view_subscriber", _('can see subscriber')),
+        )
         db_table = u'dialer_subscriber'
         verbose_name = _("subscriber")
         verbose_name_plural = _("subscribers")
@@ -491,6 +509,16 @@ class Subscriber(Model):
             return self.contact.contact
         else:
             return ''
+
+    def get_completion_attempts(self):
+        return self.completion_count_attempt
+    get_completion_attempts.allow_tags = True
+    get_completion_attempts.short_description = _('completion attempts')
+
+    def get_attempts(self):
+        return self.count_attempt
+    get_attempts.allow_tags = True
+    get_attempts.short_description = _('attempts')
 
     # static method to perform a stored procedure
     # Ref link - http://www.chrisumbel.com/article/django_python_stored_procedures.aspx

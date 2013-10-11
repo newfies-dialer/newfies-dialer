@@ -61,3 +61,14 @@ class AMD_BEHAVIOR(Choice):
     ALWAYS = 1, _('ALWAYS PLAY MESSAGE')
     HUMAN_ONLY = 2, _('PLAY MESSAGE TO HUMAN ONLY')
     VOICEMAIL_ONLY = 3, _('LEAVE MESSAGE TO VOICEMAIL ONLY')
+
+
+class SUBSCRIBER_COLUMN_NAME(Choice):
+    contact = _('contact')
+    updated_date = _('date')
+    count_attempt = _('attempts')
+    completion_count_attempt = _('completion attempts')
+    status = _('status')
+    disposition = _('disposition')
+    collected_data = _('response')
+    agent = _('agent')

@@ -15,7 +15,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
     permission_required
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_admins
@@ -25,19 +25,24 @@ from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import get_model
 from dialer_contact.models import Phonebook
-from dialer_campaign.models import Campaign
-from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm
-from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME
+from dialer_campaign.models import Campaign, Subscriber
+from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm,\
+    SubscriberSearchForm
+from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME,\
+    SUBSCRIBER_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
-    user_dialer_setting, user_dialer_setting_msg
+    user_dialer_setting, user_dialer_setting_msg, get_subscriber_status,\
+    get_subscriber_disposition
 from dialer_campaign.tasks import collect_subscriber
 from survey.models import Section, Branching, Survey_template
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from common.common_functions import current_view, get_pagination_vars
+from common.common_functions import current_view, ceil_strdate, \
+    get_pagination_vars, unset_session_var, getvar
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import re
+import tablib
 
 
 @login_required
@@ -180,7 +185,7 @@ def _return_link(app_name, obj_id):
 
     # Object edit links
     if app_name == 'survey_template':
-        link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s></a>' %\
+        link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
             (obj_id, _('edit survey').title(), tpl_control_icon('zoom.png'))
 
     return link
@@ -206,7 +211,7 @@ def get_campaign_survey_view(campaign_object):
 
 def make_duplicate_campaign(campaign_object_id):
     """Create link to make duplicate campaign"""
-    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s></a>'\
+    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s></a>' \
            % (campaign_object_id, _('duplicate this campaign').capitalize(),
               tpl_control_icon('layers.png'))
     return link
@@ -564,5 +569,227 @@ def campaign_duplicate(request, id):
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''
+    return render_to_response(
+        template, data, context_instance=RequestContext(request))
+
+
+@permission_required('dialer_campaign.view_subscriber', login_url='/')
+@login_required
+def subscriber_list(request):
+    """Subscriber list for the logged in user
+
+    **Attributes**:
+
+        * ``template`` - frontend/subscriber/list.html
+        * ``form`` - SubscriberSearchForm
+
+    **Logic Description**:
+
+        * List all subscribers belonging to the logged in user & their campaign
+    """
+    sort_col_field_list = ['contact', 'updated_date', 'count_attempt',
+                           'completion_count_attempt', 'status',
+                           'disposition', 'collected_data', 'agent']
+    default_sort_field = 'id'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
+
+    form = SubscriberSearchForm(request.user)
+
+    search_tag = 1
+    campaign_id = ''
+    agent_id = ''
+    status = 'all'
+
+    if request.method == 'POST':
+        form = SubscriberSearchForm(request.user, request.POST)
+
+        if form.is_valid():
+            field_list = ['start_date', 'end_date', 'status',
+                          'campaign_id', 'agent_id']
+            unset_session_var(request, field_list)
+            campaign_id = getvar(request, 'campaign_id', setsession=True)
+            agent_id = getvar(request, 'agent_id', setsession=True)
+
+            if request.POST.get('from_date'):
+                # From
+                from_date = request.POST['from_date']
+                start_date = ceil_strdate(from_date, 'start')
+                request.session['session_start_date'] = start_date
+
+            if request.POST.get('to_date'):
+                # To
+                to_date = request.POST['to_date']
+                end_date = ceil_strdate(to_date, 'end')
+                request.session['session_end_date'] = end_date
+
+            status = request.POST.get('status')
+            if status != 'all':
+                request.session['session_status'] = status
+
+    post_var_with_page = 0
+    try:
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            post_var_with_page = 1
+            start_date = request.session.get('session_start_date')
+            end_date = request.session.get('session_end_date')
+            campaign_id = request.session.get('session_campaign_id')
+            agent_id = request.session.get('session_agent_id')
+            status = request.session.get('session_status')
+            form = SubscriberSearchForm(request.user,
+                                        initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                                                 'to_date': end_date.strftime('%Y-%m-%d'),
+                                                 'campaign_id': campaign_id,
+                                                 'agent_id': agent_id,
+                                                 'status': status})
+        else:
+            post_var_with_page = 1
+            if request.method == 'GET':
+                post_var_with_page = 0
+    except:
+        pass
+
+    if post_var_with_page == 0:
+        # default
+        tday = datetime.today()
+        from_date = tday.strftime('%Y-%m-%d')
+        to_date = tday.strftime('%Y-%m-%d')
+        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0)
+        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999)
+
+        form = SubscriberSearchForm(request.user, initial={'from_date': from_date,
+                                                           'to_date': to_date})
+        # unset session var
+        request.session['session_start_date'] = start_date
+        request.session['session_end_date'] = end_date
+        request.session['session_status'] = ''
+        request.session['session_campaign_id'] = ''
+        request.session['session_agent_id'] = ''
+
+    kwargs = {}
+    # updated_date might be replaced with last_attempt
+    if start_date and end_date:
+        kwargs['updated_date__range'] = (start_date, end_date)
+    if start_date and end_date == '':
+        kwargs['updated_date__gte'] = start_date
+    if start_date == '' and end_date:
+        kwargs['updated_date__lte'] = end_date
+
+    if campaign_id and campaign_id != '0':
+        kwargs['campaign_id'] = campaign_id
+
+    if agent_id and agent_id != '0':
+        kwargs['agent_id'] = agent_id
+
+    if status and status != 'all':
+        kwargs['status'] = status
+
+    subscriber_list = []
+    all_subscriber_list = []
+    subscriber_count = 0
+
+    if request.user.is_superuser:
+        subscriber_list = Subscriber.objects.all()
+    else:
+        subscriber_list = Subscriber.objects.filter(campaign__user=request.user)
+
+    if kwargs:
+        subscriber_list = subscriber_list.filter(**kwargs)
+        request.session['subscriber_list_kwargs'] = kwargs
+
+    #if contact_name:
+    #    # Search on contact name
+    #    q = (Q(last_name__icontains=contact_name) |
+    #         Q(first_name__icontains=contact_name))
+    #    if q:
+    #        contact_list = contact_list.filter(q)
+
+    all_subscriber_list = subscriber_list.order_by(sort_order)
+    subscriber_list = all_subscriber_list[start_page:end_page]
+    subscriber_count = all_subscriber_list.count()
+
+    template = 'frontend/subscriber/list.html'
+    data = {
+        'module': current_view(request),
+        'subscriber_list': subscriber_list,
+        'all_subscriber_list': all_subscriber_list,
+        'total_subscribers': subscriber_count,
+        'PAGE_SIZE': PAGE_SIZE,
+        'SUBSCRIBER_COLUMN_NAME': SUBSCRIBER_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'msg': request.session.get('msg'),
+        'error_msg': request.session.get('error_msg'),
+        'form': form,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'search_tag': search_tag,
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
+
+
+@login_required
+def subscriber_export(request):
+    """Export CSV file of subscriber record
+
+    **Important variable**:
+
+        * ``request.session['subscriber_list_kwargs']`` - stores subscriber_list kwargs
+
+    **Exported fields**: ['contact', 'updated_date', 'count_attempt',
+                          'completion_count_attempt', 'status', 'disposition',
+                          'collected_data', 'agent']
+    """
+    format = request.GET['format']
+    # get the response object, this can be used as a stream.
+    response = HttpResponse(mimetype='text/' + format)
+
+    # force download.
+    response['Content-Disposition'] = 'attachment;filename=export.' + format
+
+    if request.session.get('subscriber_list_kwargs'):
+        kwargs = request.session['subscriber_list_kwargs']
+        if request.user.is_superuser:
+            subscriber_list = Subscriber.objects.all()
+        else:
+            subscriber_list = Subscriber.objects.filter(campaign__user=request.user)
+
+        if kwargs:
+            subscriber_list = subscriber_list.filter(**kwargs)
+
+        headers = ('contact', 'updated_date', 'count_attempt', 'completion_count_attempt',
+                   'status', 'disposition', 'collected_data', 'agent', )
+
+        list_val = []
+        for i in subscriber_list:
+            updated_date = i.updated_date
+            if format == 'json':
+                updated_date = str(i.updated_date)
+
+            list_val.append((i.contact,
+                             updated_date,
+                             i.count_attempt,
+                             i.completion_count_attempt,
+                             get_subscriber_status(i.status),
+                             get_subscriber_disposition(i.campaign_id, i.disposition),
+                             i.collected_data,
+                             i.agent,))
+
+        data = tablib.Dataset(*list_val, headers=headers)
+
+        if format == 'xls':
+            response.write(data.xls)
+
+        if format == 'csv':
+            response.write(data.csv)
+
+        if format == 'json':
+            response.write(data.json)
+
+    return response

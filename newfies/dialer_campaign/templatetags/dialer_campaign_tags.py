@@ -16,7 +16,8 @@ from django.db.models import get_model
 from django.template.defaultfilters import register
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_campaign.views import make_duplicate_campaign
-from dialer_campaign.function_def import get_campaign_status_name
+from dialer_campaign.function_def import get_campaign_status_name, get_subscriber_disposition,\
+    get_subscriber_status
 from dialer_campaign.views import get_campaign_survey_view, get_url_campaign_status
 
 
@@ -80,3 +81,21 @@ def get_campaign_app_view(campaign_object):
 @register.simple_tag(name='get_campaign_status_url')
 def get_campaign_status_url(id, status):
     return get_url_campaign_status(id, status)
+
+
+@register.filter(name='subscriber_status')
+def subscriber_status(value):
+    """Subscriber Status
+
+    >>> subscriber_status(1)
+    'PENDING'
+    """
+    return get_subscriber_status(value)
+
+
+@register.simple_tag(name='subscriber_disposition')
+def subscriber_disposition(campaign_id, val):
+    """To get subscriber disposition name from campaign's
+    lead_disposition string"""
+    return get_subscriber_disposition(campaign_id, val)
+

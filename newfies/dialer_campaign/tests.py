@@ -22,7 +22,8 @@ from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add, \
     campaign_change, campaign_del, notify_admin, \
     update_campaign_status_admin, \
-    get_url_campaign_status, campaign_duplicate
+    get_url_campaign_status, campaign_duplicate, subscriber_list,\
+    subscriber_export
 from dialer_campaign.tasks import campaign_running, \
     collect_subscriber, campaign_expire_check
 from dialer_settings.models import DialerSetting
@@ -92,7 +93,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
                 'user_profile.json', 'contenttype.json',
                 'phonebook.json', 'contact.json', 'survey.json',
                 'dnc_list.json', 'dnc_contact.json',
-                'campaign.json', 'subscriber.json',]
+                'campaign.json', 'subscriber.json']
 
     def test_campaign_view_list(self):
         """Test Function to check campaign list"""
@@ -162,7 +163,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "aleg_gateway": "1",
             "content_object": "type:43-id:1",
             "extra_data": "2000",
-            "ds_user": self.user,}, follow=True)
+            "ds_user": self.user}, follow=True)
 
         request.user = self.user
         request.session = {}
@@ -205,8 +206,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response['Location'], '/campaign/')
         self.assertEqual(response.status_code, 302)
 
-        request = self.factory.post(
-            '/campaign/del/0/?stop_campaign=True', {'select': '1'})
+        request = self.factory.post('/campaign/del/0/?stop_campaign=True', {'select': '1'})
         request.user = self.user
         request.session = {}
         response = campaign_del(request, 0)
@@ -241,13 +241,36 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         response = campaign_duplicate(request, 1)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('campaign_duplicate/1/',
-            {'name': 'duplicate', 'campaign_code': 'ZUXSA'},
+        request = self.factory.post(
+            'campaign_duplicate/1/', {'name': 'duplicate', 'campaign_code': 'ZUXSA'},
             follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_duplicate(request, 1)
         self.assertEqual(response.status_code, 302)
+
+    def test_subscriber_list(self):
+        """Test Function to check subscriber list"""
+        response = self.client.get('/subscribers/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/subscriber/list.html')
+
+        request = self.factory.get('/subscribers/')
+        request.user = self.user
+        request.session = {}
+        response = subscriber_list(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_subscriber_list_export(self):
+        """Test Function to check subscriber list"""
+        response = self.client.get('/subscribers/export_subscriber/')
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/subscribers/export_subscriber/')
+        request.user = self.user
+        request.session = {}
+        response = subscriber_export(request)
+        self.assertEqual(response.status_code, 200)
 
 
 class DialerCampaignCeleryTaskTestCase(TestCase):

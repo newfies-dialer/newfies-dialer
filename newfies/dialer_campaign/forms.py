@@ -20,11 +20,14 @@ from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 
 from django.contrib.contenttypes.models import ContentType
-from dialer_campaign.models import Phonebook, Campaign
-from dialer_campaign.constants import CAMPAIGN_STATUS
+from dialer_campaign.models import Campaign, Subscriber
+from dialer_campaign.constants import CAMPAIGN_STATUS, SUBSCRIBER_STATUS
 from dialer_campaign.function_def import user_dialer_setting
-from common.common_functions import get_unique_code
+from dialer_contact.models import Phonebook
 from dialer_contact.forms import SearchForm
+from agent.function_def import agent_list
+from agent.models import AgentProfile, Agent
+from common.common_functions import get_unique_code
 from dnc.models import DNC
 
 
@@ -71,7 +74,8 @@ class CampaignForm(ModelForm):
                   'saturday', 'sunday', 'ds_user',
                   'selected_phonebook', 'selected_content_object',
                   'voicemail', 'amd_behavior', 'voicemail_audiofile',
-                  'dnc'
+                  'dnc', 'agent_script', 'lead_disposition',
+                  'external_link'
                   ]
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -82,6 +86,9 @@ class CampaignForm(ModelForm):
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         self.fields['description'].widget.attrs['class'] = "input-xlarge"
+        self.fields['agent_script'].widget.attrs['class'] = "input-xlarge"
+        self.fields['lead_disposition'].widget.attrs['class'] = "input-xlarge"
+        self.fields['external_link'].widget.attrs['class'] = "input-xlarge"
 
         if user:
             self.fields['ds_user'].initial = user
@@ -134,6 +141,7 @@ class CampaignForm(ModelForm):
             self.fields['callerid'].widget.attrs['readonly'] = True
             self.fields['extra_data'].widget.attrs['readonly'] = True
             self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
+            self.fields['lead_disposition'].widget.attrs['readonly'] = True
 
             selected_phonebook = ''
             if instance.phonebook.all():
@@ -216,7 +224,8 @@ class CampaignAdminForm(ModelForm):
                   'intervalretry', 'calltimeout', 'daily_start_time',
                   'daily_stop_time', 'monday', 'tuesday', 'wednesday',
                   'thursday', 'friday', 'saturday', 'sunday',
-                  'completion_maxretry', 'completion_intervalretry']
+                  'completion_maxretry', 'completion_intervalretry',
+                  'agent_script', 'lead_disposition',]
 
     def __init__(self, *args, **kwargs):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)
@@ -239,3 +248,65 @@ class SubscriberReportForm(SearchForm):
             list.append((i[0], i[1]))
 
         self.fields['campaign_id'].choices = list
+
+
+class SubscriberAdminForm(ModelForm):
+    """SubscriberAdminForm"""
+
+    class Meta:
+        model = Subscriber
+
+    def __init__(self, *args, **kwargs):
+        super(SubscriberAdminForm, self).__init__(*args, **kwargs)
+        self.fields['agent'].choices = agent_list()
+
+
+subscriber_status_list = []
+subscriber_status_list.append(('all', _('all').upper()))
+for i in SUBSCRIBER_STATUS:
+    subscriber_status_list.append((i[0], i[1]))
+
+
+class SubscriberSearchForm(SearchForm):
+    """Search Form on Subscriber List"""
+    campaign_id = forms.ChoiceField(label=_('campaign'), required=True)
+    agent_id = forms.ChoiceField(label=_('agent'), required=True)
+    status = forms.ChoiceField(label=_('status'),
+                               choices=subscriber_status_list,
+                               required=False)
+
+    def __init__(self, user, *args, **kwargs):
+        super(SubscriberSearchForm, self).__init__(*args, **kwargs)
+
+        if user:
+            camp_list = []
+            camp_list.append((0, _('all').upper()))
+            if user.is_superuser:
+                campaign_list = Campaign.objects.values_list('id', 'name')\
+                    .all().order_by('-id')
+            else:
+                campaign_list = Campaign.objects.values_list('id', 'name')\
+                    .filter(user=user).order_by('-id')
+
+            for i in campaign_list:
+                camp_list.append((i[0], i[1]))
+
+            agent_list = []
+            agent_list.append((0, _('all').upper()))
+
+            if user.is_superuser:
+                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True)\
+                    .filter(is_agent=True)
+            else:
+                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True)\
+                    .filter(is_agent=True, manager=user)
+
+            a_list = Agent.objects.values_list('id', 'username')\
+                .filter(id__in=agent_profile_list)
+            for i in a_list:
+                agent_list.append((i[0], i[1]))
+
+            self.fields['campaign_id'].choices = camp_list
+            self.fields['agent_id'].choices = agent_list
+
+

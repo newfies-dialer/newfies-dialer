@@ -214,8 +214,31 @@
 
                 </div>
             </div>
-
         </fieldset>
+
+        <fieldset>
+            <legend>{% trans "callcenter settings"|title %}</legend>
+            <div class="span12">
+                <div class="row">
+                {% get_fieldset agent_script,lead_disposition,external_link as callcenter_settings_fields from form %}
+                {% for field in callcenter_settings_fields %}
+                    <div class="span6">
+                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                            <div class="input">
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ field.help_text|capfirst }} </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+        </fieldset>
+
         <br/>
         <div class="actions">
               {% if action == 'update' %}

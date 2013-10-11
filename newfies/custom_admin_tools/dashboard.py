@@ -65,7 +65,7 @@ class CustomIndexDashboard(Dashboard):
             children=[
                 modules.AppList(
                     title=_('user').capitalize(),
-                    models=('django.contrib.*', 'user_profile.*', ),
+                    models=('django.contrib.*', 'user_profile.*', 'agent.*', ),
                 ),
                 modules.AppList(
                     _('task manager').title(),
@@ -77,6 +77,11 @@ class CustomIndexDashboard(Dashboard):
                 ),
                 modules.RecentActions(_('recent actions').capitalize(), 5),
             ]
+        ))
+
+        self.children.append(modules.AppList(
+            _('callcenter').title(),
+            models=('callcenter.*', ),
         ))
 
         self.children.append(modules.AppList(

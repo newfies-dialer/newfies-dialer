@@ -31,6 +31,9 @@ class UserChangeDetailForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(UserChangeDetailForm, self).__init__(*args, **kwargs)
+        self.fields['last_name'].widget.attrs['ng-model'] = "user.last_name"
+        self.fields['first_name'].widget.attrs['ng-model'] = "user.first_name"
+        self.fields['email'].widget.attrs['ng-model'] = "user.email"
 
     def save(self, commit=True):
         """Saves the detail."""
@@ -46,13 +49,15 @@ class UserChangeDetailExtendForm(ModelForm):
     """A form used to change the detail of a user in the Customer UI."""
     class Meta:
         model = UserProfile
-        fields = ["address", "city", "state", "country", "zip_code",
-                  "phone_no", "fax", "company_name", "company_website",
-                  "language", "note"]
+        #fields = ["address", "city", "state", "country", "zip_code",
+        #          "phone_no", "fax", "company_name", "company_website",
+        #          "language", "note"]
+        fields = ["address"]
 
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(UserChangeDetailExtendForm, self).__init__(*args, **kwargs)
+
 
 
 class CheckPhoneNumberForm(forms.Form):

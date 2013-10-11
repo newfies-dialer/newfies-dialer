@@ -44,6 +44,7 @@ def customer_detail_change(request):
         * User is able to change his/her detail.
     """
     user_detail = get_object_or_404(User, username=request.user)
+
     try:
         user_detail_extened = UserProfile.objects.get(user=user_detail)
     except UserProfile.DoesNotExist:
@@ -53,6 +54,13 @@ def customer_detail_change(request):
         if not settings.DEMO_MODE:
             user_detail_extened.save()
 
+    # To get SMS campaign dialer settings
+    try:
+        from sms_module.models import SMSDialerSetting
+        sms_dialer_set = SMSDialerSetting.objects.get(dialer_setting=user_detail_extened.dialersetting)
+    except:
+        sms_dialer_set = ''
+
     user_detail_form = UserChangeDetailForm(request.user,
                                             instance=user_detail)
     user_detail_extened_form = \
@@ -61,11 +69,6 @@ def customer_detail_change(request):
 
     user_password_form = PasswordChangeForm(user=request.user)
     check_phone_no_form = CheckPhoneNumberForm()
-
-    try:
-        dialer_set = DialerSetting.objects.get(id=request.user.get_profile().dialersetting_id)
-    except:
-        dialer_set = ''
 
     msg_detail = ''
     msg_pass = ''
@@ -117,6 +120,11 @@ def customer_detail_change(request):
             else:
                 error_pass = _('please correct the errors below.')
 
+    try:
+        dialer_set = DialerSetting.objects.get(id=request.user.get_profile().dialersetting_id)
+    except:
+        dialer_set = ''
+
     template = 'frontend/registration/user_detail_change.html'
     data = {
         'module': current_view(request),
@@ -131,8 +139,8 @@ def customer_detail_change(request):
         'error_pass': error_pass,
         'error_number': error_number,
         'dialer_set': dialer_set,
+        'sms_dialer_set': sms_dialer_set,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'action': action,
     }
-    return render_to_response(template, data,
-           context_instance=RequestContext(request))
+    return render_to_response(template, data, context_instance=RequestContext(request))

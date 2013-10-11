@@ -1,0 +1,24 @@
+{% load i18n %}
+<div class="navbar-wrapper">
+  <!-- Wrap the .navbar in .container to center it within the absolutely positioned parent. -->
+  <div class="container">
+
+    <div class="navbar navbar-inverse">
+      <div class="navbar-inner">
+        <button type="button" class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+          <span class="icon-bar"></span>
+        </button>
+        <a class="brand">Newfies-Dialer / {% trans "agent panel"|title %}</a>
+        <ul class="nav pull-right">
+          <li>{% trans "welcome"|title %} {{ user.username }}</li>
+          <li><a id="agent_dashboard" href="#/agent_dashboard" target="_self">{% trans "dashboard"|title %}</a></li>
+          <li><a id="agent_sestting" href="#/agent_detail" target="_self">{% trans "settings"|title %}</a></li>
+          <li ng-controller="LogoutController"><a id="logoutbtn" href="#/agent_logout" ng-click="logout()" target="_self">{% trans "logout"|title %}</a></li>
+        </ul>
+      </div><!-- /.navbar-inner -->
+    </div><!-- /.navbar -->
+
+  </div> <!-- /.container -->
+</div><!-- /.navbar-wrapper -->

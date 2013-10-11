@@ -1,0 +1,50 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+
+{% block head %}
+<!DOCTYPE>
+<html ng-app="agentPanel" >
+{% endblock %}
+
+{% block title_tag %}
+<title ng-controller="TitleCtrl">{% verbatim %}{{ Page.title() }}{% endverbatim %}</title>
+{% endblock %}
+
+{% block extra_header %}
+<script src="{{ STATIC_URL }}newfies/js/angular/angular.js"></script>
+<script src="{{ STATIC_URL }}newfies/js/angular/angular-sanitize.js"></script>
+<script src="{{ STATIC_URL }}newfies/js/agent_app.js"></script>
+<script src="{{ STATIC_URL }}newfies/js/agent_controller.js"></script>
+{% if user.is_authenticated %}
+<script type="text/javascript">
+    /*
+    agent_panel.run(function($rootScope) {
+        $rootScope.user = {{user_json|safe}};
+    });
+    agent_panel.config(['$httpProvider', function($httpProvider) {
+        //$httpProvider.defaults.headers.common['Authorization'] = 'Token '; //{#user.api_key#}
+    }]);
+    */
+</script>
+{% endif %}
+
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block content_header %}
+{% endblock %}
+
+{% block content %}
+
+    {% block row_fluid %}
+    {% endblock %}
+
+    <div class="span12">
+        {% verbatim %}
+        <div ng-view></div>
+        {% endverbatim %}
+    </div>
+
+{% endblock %}

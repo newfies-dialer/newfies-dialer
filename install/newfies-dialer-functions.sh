@@ -685,9 +685,6 @@ func_install_frontend(){
     # * * LOGROTATE * *
     func_prepare_logger
 
-    #Restart FreeSWITCH to find the startup-script
-    /etc/init.d/freeswitch restart
-
     echo ""
     echo "*****************************************************************"
     echo "Congratulations, Newfies-Dialer Web Application is now installed!"
@@ -777,6 +774,13 @@ func_install_backend() {
             chkconfig --level 2345 newfies-celeryd on
         ;;
     esac
+
+    #Install Python ESL / those lines doesn't work in install-freeswitch.sh
+    cd /usr/src/freeswitch/libs/esl
+    make pymod-install
+
+    #Restart FreeSWITCH to find the startup-script
+    /etc/init.d/freeswitch restart
 
     echo ""
     echo "**************************************************************"

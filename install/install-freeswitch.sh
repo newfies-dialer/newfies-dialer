@@ -177,11 +177,6 @@ case $DIST in
     ;;
 esac
 
-#Install Python ESL
-cd /usr/src/freeswitch/libs/esl
-make pymod-install
-
-
 echo "Installing from source"
 #Add alias fs_cli
 chk=`grep "fs_cli" ~/.bashrc|wc -l`

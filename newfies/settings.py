@@ -216,10 +216,15 @@ INSTALLED_APPS = (
     'notification',
     'survey',
     'dnc',
+    'agent',
+    'callcenter',
     #'raven.contrib.django',
     'apiplayground',
     'frontend_notification',
     'django_nvd3',
+    'rest_framework',
+    'rest_framework.authtoken',
+    'corsheaders',
     'djangobower',
 )
 

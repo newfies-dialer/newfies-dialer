@@ -14,6 +14,8 @@
 from django.conf.urls import handler404, handler500, \
     include, patterns
 from django.conf import settings
+from apirest.urls import urlpatterns as urlpatterns_apirest
+from agent.api_urls import urlpatterns as urlpatterns_agent_apirest
 from frontend.urls import urlpatterns as urlpatterns_frontend
 from dialer_contact.urls import urlpatterns as urlpatterns_dialer_contact
 from dialer_campaign.urls import urlpatterns as urlpatterns_dialer_campaign
@@ -23,6 +25,8 @@ from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from survey.urls import urlpatterns as urlpatterns_survey
 from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
 from frontend_notification.urls import urlpatterns as urlpatterns_frontend_notification
+from agent.urls import urlpatterns as urlpatterns_agent
+from callcenter.urls import urlpatterns as urlpatterns_callcenter
 from api.api_playgrounds.urls import urlpatterns as urlpatterns_api_playgrounds
 from tastypie.api import Api
 
@@ -103,6 +107,8 @@ urlpatterns = patterns('',
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )
 
+urlpatterns += urlpatterns_apirest
+urlpatterns += urlpatterns_agent_apirest
 urlpatterns += urlpatterns_frontend
 urlpatterns += urlpatterns_dialer_contact
 urlpatterns += urlpatterns_dialer_campaign
@@ -113,6 +119,8 @@ urlpatterns += urlpatterns_survey
 urlpatterns += urlpatterns_dialer_audio
 urlpatterns += urlpatterns_api_playgrounds
 urlpatterns += urlpatterns_frontend_notification
+urlpatterns += urlpatterns_agent
+urlpatterns += urlpatterns_callcenter
 
 urlpatterns += patterns('',
     (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),

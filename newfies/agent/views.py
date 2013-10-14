@@ -23,9 +23,9 @@ from django.contrib.auth.forms import PasswordChangeForm, \
     UserCreationForm, AdminPasswordChangeForm
 from django.contrib.auth.models import Permission
 from django.views.decorators.csrf import csrf_exempt
-from .models import AgentProfile, Agent
-from .constants import AGENT_COLUMN_NAME
-from .forms import AgentChangeDetailExtendForm, AgentDetailExtendForm, \
+from agent.models import AgentProfile, Agent
+from agent.constants import AGENT_COLUMN_NAME
+from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm, \
     AgentNameChangeForm
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm

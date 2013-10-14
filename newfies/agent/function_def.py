@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from user_profile.models import Manager
-from .models import AgentProfile, Agent
+from agent.models import AgentProfile, Agent
 
 
 def manager_list():

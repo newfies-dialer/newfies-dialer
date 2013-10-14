@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import serializers
-from .models import Agent, AgentProfile
+from agent.models import Agent, AgentProfile
 from django import forms
 from dialer_campaign.models import Subscriber
 

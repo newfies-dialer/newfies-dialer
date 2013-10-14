@@ -14,7 +14,7 @@
 from django.conf.urls import patterns, url
 from django.conf.urls import include
 from rest_framework.routers import DefaultRouter
-from .api_views import (AgentViewSet, AgentProfileViewSet,
+from agent.api_views import (AgentViewSet, AgentProfileViewSet,
     AgentPasswordViewSet, obtain_auth_token_login, AgentSubscriberViewSet,
     AgentQueueStatusViewSet)
 

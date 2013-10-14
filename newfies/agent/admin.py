@@ -14,9 +14,9 @@
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Agent, AgentProfile
-from .forms import AgentProfileForm
-from .admin_filters import ManagerFilter
+from agent.models import Agent, AgentProfile
+from agent.forms import AgentProfileForm
+from agent.admin_filters import ManagerFilter
 
 
 class AgentProfileInline(admin.StackedInline):

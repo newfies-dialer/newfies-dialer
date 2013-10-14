@@ -13,8 +13,8 @@
 #
 from django.contrib.admin import SimpleListFilter
 from django.utils.translation import ugettext as _
-from .function_def import manager_list
-from .models import AgentProfile
+from agent.function_def import manager_list
+from agent.models import AgentProfile
 
 
 class ManagerFilter(SimpleListFilter):

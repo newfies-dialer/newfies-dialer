@@ -14,8 +14,8 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserChangeForm
 from django.utils.translation import ugettext as _
-from .models import AgentProfile, Agent
-from .function_def import manager_list
+from agent.models import AgentProfile, Agent
+from agent.function_def import manager_list
 
 
 class AgentNameChangeForm(UserChangeForm):

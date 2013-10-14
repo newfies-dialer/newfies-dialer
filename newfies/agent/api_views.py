@@ -14,10 +14,10 @@
 from django.contrib.auth import authenticate
 from django.contrib.auth import login
 
-from .models import Agent, AgentProfile
-from .serializers import (AgentSerializer, AgentProfileSerializer,
+from agent.models import Agent, AgentProfile
+from agent.serializers import (AgentSerializer, AgentProfileSerializer,
     AgentPasswordSerializer, AgentSubscriberSerializer)
-from .permission import IsOwnerOrReadOnly
+from agent.permission import IsOwnerOrReadOnly
 from rest_framework import viewsets
 # from django.contrib.auth.models import User
 from rest_framework import permissions

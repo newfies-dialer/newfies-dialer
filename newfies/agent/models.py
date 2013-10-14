@@ -126,7 +126,7 @@ def post_save_agentprofile(sender, **kwargs):
     it is going to save.
     """
     if kwargs['created']:
-        print Token.objects.create(user=kwargs['instance'].user)
+        Token.objects.create(user=kwargs['instance'].user)
 
     common_signal(kwargs['instance'].manager_id)
 

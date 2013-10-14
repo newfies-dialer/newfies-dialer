@@ -125,6 +125,9 @@ def post_save_agentprofile(sender, **kwargs):
     """A ``post_delete`` signal is sent by the AgentProfile model instance whenever
     it is going to save.
     """
+    if kwargs['created']:
+        print Token.objects.create(user=kwargs['instance'].user)
+
     common_signal(kwargs['instance'].manager_id)
 
 
@@ -145,9 +148,11 @@ post_delete.connect(post_delete_agentprofile, sender=AgentProfile)
 Agent.profile = property(lambda u: AgentProfile.objects.get_or_create(user=u)[0])
 Agent.api_key = property(lambda u: Token.objects.get_or_create(user=u)[0].key)
 
+
 #from django.dispatch import receiver
 
-# @receiver(post_save, sender=User)
-# def create_auth_token(sender, instance=None, created=False, **kwargs):
-#     if created:
-#         Token.objects.create(user=instance)
+
+#@receiver(post_save, sender=User)
+#def create_auth_token(sender, instance=None, created=False, **kwargs):
+#    if created:
+#        Token.objects.create(user=instance)

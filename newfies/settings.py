@@ -203,7 +203,6 @@ INSTALLED_APPS = (
     #'pagination',
     'linaro_django_pagination',
     'memcache_status',
-    'chart_tools',
     'country_dialcode',
     'common',
     'dialer_contact',
@@ -531,6 +530,47 @@ PREFIX_LIMIT_MAX = 5
 # List of phonenumber prefix to ignore, this will be remove prior analysis
 PREFIX_TO_IGNORE = "+,0,00,000,0000,00000,011,55555,99999"
 
+#CORS (Cross-Origin Resource Sharing)
+#====================================
+
+#if True, the whitelist will not be used and all origins will be accepted
+CORS_ORIGIN_ALLOW_ALL = True
+
+#specify a list of origin hostnames that are authorized to make a cross-site HTTP request
+#CORS_ORIGIN_WHITELIST = ()
+
+#specify a regex list of origin hostnames that are authorized to make a cross-site HTTP request
+#CORS_ORIGIN_REGEX_WHITELIST = ('^http?://(\w+\.)?google\.com$', )
+
+#specify the allowed HTTP methods that can be used when making the actual request
+CORS_ALLOW_METHODS = (
+    'GET',
+    'POST',
+    'PUT',
+    'PATCH',
+    'DELETE',
+    'OPTIONS'
+)
+
+
+#specify which non-standard HTTP headers can be used when making the actual request
+CORS_ALLOW_HEADERS = (
+    'x-requested-with',
+    'content-type',
+    'accept',
+    'origin',
+    'authorization',
+    'x-csrftoken',
+)
+
+CORS_ORIGIN_WHITELIST = (
+    'hostname.example.com',
+)
+#specify which HTTP headers are to be exposed to the browser
+CORS_EXPOSE_HEADERS = ()
+
+#specify whether or not cookies are allowed to be included
+CORS_ALLOW_CREDENTIALS = False
 
 # Django-bower
 # ------------

@@ -13,7 +13,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-
 echo "Install basic requirements..."
 for line in $(cat install/requirements/basic-requirements.txt | grep -v \#)
 do

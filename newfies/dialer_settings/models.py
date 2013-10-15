@@ -55,18 +55,16 @@ class DialerSetting(models.Model):
     max_cpg = models.IntegerField(default=100, verbose_name=_('maximum number of campaigns'),
                                   help_text=_("maximum number of campaigns"))
     max_subr_cpg = models.IntegerField(default=100000, verbose_name=_('maximum subscribers per campaign'),
-                help_text=_("maximum subscribers per campaign. Unlimited if the value equal 0"))
+                                       help_text=_("maximum subscribers per campaign. Unlimited if the value equal 0"))
 
-    #TODO: Add a new limit as there is some confusion now with max_subr_cpg.
-    # max_contact will define the amount of contact authorized to be created/imported for each user
     max_contact = models.IntegerField(default=1000000, verbose_name=_('maximum number of contacts'),
-                help_text=_("maximum number of contacts per user. Unlimited if the value equal 0"))
+                                      help_text=_("maximum number of contacts per user. Unlimited if the value equal 0"))
 
     blacklist = models.TextField(blank=True, null=True, default='', verbose_name=_("blacklist"),
-        help_text=_("use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
+                                 help_text=_("use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
 
     whitelist = models.TextField(blank=True, null=True, default='', verbose_name=_("whitelist"),
-        help_text=_("use regular expressions to whitelist phone numbers"))
+                                 help_text=_("use regular expressions to whitelist phone numbers"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

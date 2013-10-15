@@ -70,6 +70,10 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     # Call PL-SQL stored procedure
     #Subscriber.importcontact_pl_sql(campaign_id, phonebook_id)
 
+    # max_subr_cpg = max number of subscriber per campaign,
+    # That is going to be checked when a contact is going to be imported
+    # to the subscriber list
+
     #TODO: to review first... accr max_subr_cpn/max_subr_cpg
     max_subr_cpg = Campaign.objects.get(pk=campaign_id).user.get_profile().dialersetting.max_subr_cpg
 

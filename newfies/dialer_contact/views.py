@@ -365,10 +365,6 @@ def contact_add(request):
     """
     # Check dialer setting limit
     if request.user and request.method == 'POST':
-        # check  Max Number of subscriber per campaign
-        #
-        # TODO: Implement the limit of contact general per user with max_contact
-        # So "you have too many contacts per campaign" will become "you have too many contacts"
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
                 _("you have too many contacts. you are allowed a maximum of %(limit)s") % \
@@ -510,8 +506,7 @@ def contact_import(request):
     """
     # Check dialer setting limit
     if request.user and request.method == 'POST':
-        # check  Max Number of subscribers per campaign
-
+        # check  Max Number of contacts
         if check_dialer_setting(request, check_for="contact"):
             request.session['msg'] = \
                 _("you have too many contacts. you are allowed a maximum of %(limit)s") % \

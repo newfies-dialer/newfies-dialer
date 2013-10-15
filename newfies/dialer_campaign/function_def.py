@@ -14,7 +14,7 @@
 
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Contact
-from dialer_campaign.models import Campaign
+from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import CAMPAIGN_STATUS,\
     CAMPAIGN_STATUS_COLOR, SUBSCRIBER_STATUS
 from dateutil.rrule import rrule, DAILY, HOURLY
@@ -29,17 +29,14 @@ def check_dialer_setting(request, check_for, field_value=''):
 
         * ``check_for`` -  for campaign or for contact
     """
-    #TODO: fix the try and improve the nesting
     try:
         # DialerSettings is linked with the User
         dialer_set_obj = request.user.get_profile().dialersetting
         if dialer_set_obj:
             # check running campaign for User
             if check_for == "campaign":
-                campaign_count = Campaign.objects\
-                    .filter(user=request.user).count()
-                # Total active campaign matched with
-                # max_cpgs
+                campaign_count = Campaign.objects.filter(user=request.user).count()
+                # Total campaign matched with max_cpgs
                 if campaign_count >= dialer_set_obj.max_cpg:
                     # Limit matched or exceeded
                     return True
@@ -47,35 +44,13 @@ def check_dialer_setting(request, check_for, field_value=''):
                     # Limit not matched
                     return False
 
-            # check for subscriber per campaign
+            # check contacts limit
             if check_for == "contact":
-                # campaign list for User
-
-                # TODO:
-                # We need to improve/normalize our limit check at the moment
-                # max_subr_cpg doesn't behave as it should.
-                #
-                # max_subr_cpg = max number of subscriber per campaign,
-                # this should be checked when a contact is going to be imported
-                # to the subscriber list
-                #
-                # TODO: This needs to be efficient/fast : Avoid things like
-                # checking for ALL the campaigns everytime
-                #
-
-                # max_contact = new setting, this will per user define
-                # the max number of contact in all the user phonebook together
-                # this will be checked when importing/adding new contact to phonebook
-                campaign_list = Campaign.objects.filter(user=request.user)
-                for i in campaign_list:
-                    # total contacts per campaign
-                    contact_count = Contact.objects\
-                        .filter(phonebook__campaign=i.id, phonebook__user=request.user)\
-                        .count()
-                    # total active contacts matched with max_subr_cpg
-                    if contact_count >= dialer_set_obj.max_contact:
-                        # Limit matched or exceeded
-                        return True
+                contact_count = Contact.objects.filter(phonebook__user=request.user).count()
+                # total contacts matched with max_contact
+                if contact_count >= dialer_set_obj.max_contact:
+                    # Limit matched or exceeded
+                    return True
                 # limit not matched
                 return False
 
@@ -87,7 +62,7 @@ def check_dialer_setting(request, check_for, field_value=''):
                 # Limit not exceeded
                 return False
 
-            # check for call duration limit
+            # check call duration limit
             if check_for == "duration":
                 if field_value > dialer_set_obj.callmaxduration:
                     # Limit matched or exceeded
@@ -95,7 +70,7 @@ def check_dialer_setting(request, check_for, field_value=''):
                 # Limit not exceeded
                 return False
 
-            # check for call retry limit
+            # check call retry limit
             if check_for == "retry":
                 if field_value > dialer_set_obj.maxretry:
                     # Limit matched or exceeded
@@ -103,7 +78,7 @@ def check_dialer_setting(request, check_for, field_value=''):
                 # Limit not exceeded
                 return False
 
-            # check for call timeout limit
+            # check call timeout limit
             if check_for == "timeout":
                 if field_value > dialer_set_obj.max_calltimeout:
                     # Limit matched or exceeded
@@ -111,9 +86,10 @@ def check_dialer_setting(request, check_for, field_value=''):
                 # Limit not exceeded
                 return False
 
-            # check for subscriber limit
+            # check subscriber limit
             if check_for == "subscriber":
-                if field_value > dialer_set_obj.max_subr_cpg:
+                subscriber_count = Subscriber.objects.filter(campaign__user=request.user).count()
+                if subscriber_count > dialer_set_obj.max_subr_cpg:
                     # Limit matched or exceeded
                     return True
                 # Limit not exceeded

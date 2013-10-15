@@ -129,6 +129,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     #'raven.contrib.django.middleware.SentryResponseErrorIdMiddleware',
     #'raven.contrib.django.middleware.Sentry404CatchMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',

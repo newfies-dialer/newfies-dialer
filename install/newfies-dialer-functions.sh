@@ -24,7 +24,7 @@
 #
 
 #Set branch to install develop/master
-BRANCH="master"
+BRANCH="develop"
 
 #Install mode can me either CLONE or DOWNLOAD
 INSTALL_MODE='CLONE'

@@ -76,7 +76,7 @@ class ContactAdmin(admin.ModelAdmin):
         if request.user and request.method == 'POST':
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
-                msg = _("you have too many contacts per campaign. you are allowed a maximum of %(limit)s")\
+                msg = _("you have too many contacts. you are allowed a maximum of %(limit)s")\
                     % {'limit': dialer_setting_limit(request, limit_for="contact")}
                 messages.error(request, msg)
 
@@ -115,7 +115,7 @@ class ContactAdmin(admin.ModelAdmin):
         if request.user and request.method == 'POST':
             # check Max Number of subscribers per campaign
             if check_dialer_setting(request, check_for="contact"):
-                msg = _("you have too many contacts per campaign. you are allowed a maximum of %(limit)s")\
+                msg = _("you have too many contacts. you are allowed a maximum of %(limit)s")\
                     % {'limit': dialer_setting_limit(request, limit_for="contact")}
                 messages.error(request, msg)
 

@@ -126,10 +126,10 @@ def get_url_campaign_status(id, status):
     Helper to display campaign status button on the grid
     """
     #Store html for campaign control button
-    control_play_style = tpl_control_icon('control_play.png')
-    control_pause_style = tpl_control_icon('control_pause.png')
-    control_abort_style = tpl_control_icon('control_abort.png')
-    control_stop_style = tpl_control_icon('control_stop.png')
+    control_play_style = tpl_control_icon('control_play_blue.png')
+    control_pause_style = tpl_control_icon('control_pause_blue.png')
+    control_abort_style = tpl_control_icon('control_abort_blue.png')
+    control_stop_style = tpl_control_icon('control_stop_blue.png')
 
     #set different url for the campaign status
     url_cpg_status = 'update_campaign_status_cust/%s' % str(id)
@@ -141,19 +141,19 @@ def get_url_campaign_status(id, status):
     #according to the current status, disable link and change the button color
     if status == CAMPAIGN_STATUS.START:
         url_cpg_start = '#'
-        control_play_style = tpl_control_icon('control_play_blue.png')
+        control_play_style = tpl_control_icon('control_play.png')
     elif status == CAMPAIGN_STATUS.PAUSE:
         url_cpg_pause = '#'
-        control_pause_style = tpl_control_icon('control_pause_blue.png')
+        control_pause_style = tpl_control_icon('control_pause.png')
     elif status == CAMPAIGN_STATUS.ABORT:
         url_cpg_abort = '#'
-        control_abort_style = tpl_control_icon('abort.png')
+        control_abort_style = tpl_control_icon('control_abort.png')
     elif status == CAMPAIGN_STATUS.END:
         url_cpg_stop = '#'
-        control_stop_style = tpl_control_icon('control_stop_blue.png')
+        control_stop_style = tpl_control_icon('control_stop.png')
 
     #return all the html button for campaign status management
-    return "<a href='%s' class='icon' title='%s' %s>&nbsp;</a> <a href='%s' class='icon' title='%s' %s>&nbsp;</a> <a href='%s' class='icon' title='%s' %s>&nbsp;</a> <a href='%s' class='icon' title='%s' %s>&nbsp;</a>" % \
+    return "<a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a>" % \
         (url_cpg_start, _("start").capitalize(), control_play_style,
         url_cpg_pause, _("pause").capitalize(), control_pause_style,
         url_cpg_abort, _("abort").capitalize(), control_abort_style,
@@ -175,12 +175,12 @@ def _return_link(app_name, obj_id):
     link = ''
     # Object view links
     if app_name == 'survey':
-        link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' % \
+        link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
             (obj_id, _('survey').title(), tpl_control_icon('zoom.png'))
 
     # Object edit links
     if app_name == 'survey_template':
-        link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s>&nbsp;</a>' %\
+        link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s></a>' %\
             (obj_id, _('edit survey').title(), tpl_control_icon('zoom.png'))
 
     return link
@@ -206,7 +206,7 @@ def get_campaign_survey_view(campaign_object):
 
 def make_duplicate_campaign(campaign_object_id):
     """Create link to make duplicate campaign"""
-    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s>&nbsp;</a>'\
+    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s></a>'\
            % (campaign_object_id, _('duplicate this campaign').capitalize(),
               tpl_control_icon('layers.png'))
     return link
@@ -253,7 +253,7 @@ def campaign_list(request):
     request.session['error_msg'] = ''
     request.session['info_msg'] = ''
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def get_content_type(object_string):
@@ -333,7 +333,7 @@ def campaign_add(request):
         'AMD': settings.AMD,
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.delete_campaign', login_url='/')
@@ -436,8 +436,8 @@ def campaign_change(request, object_id):
                 # while campaign status is running
                 if campaign.status == CAMPAIGN_STATUS.START:
                     if request.POST.get('selected_phonebook'):
-                        selected_phonebook = str(request.POST
-                            .get('selected_phonebook')).split(',')
+                        selected_phonebook = str(request.POST.get('selected_phonebook'))\
+                            .split(',')
                         obj.phonebook = Phonebook.objects\
                             .filter(id__in=selected_phonebook)
 
@@ -463,7 +463,7 @@ def campaign_change(request, object_id):
     request.session['error_msg'] = ''
     request.session['info_msg'] = ''
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def make_duplicate_survey(campaign_obj, new_campaign):
@@ -565,4 +565,4 @@ def campaign_duplicate(request, id):
     }
     request.session['error_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))

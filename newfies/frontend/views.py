@@ -410,8 +410,8 @@ def customer_dashboard(request, on_index=None):
     total_record = total_record.items()
     total_record = sorted(total_record, key=lambda k: k[0])
 
-    # lineWithFocusChart
-    final_charttype = "lineWithFocusChart"
+    # lineplusbarwithfocuschart
+    final_charttype = "linePlusBarWithFocusChart"
     xdata = []
     ydata = []
     ydata2 = []
@@ -421,15 +421,16 @@ def customer_dashboard(request, on_index=None):
         ydata2.append(i[1]['duration_sum'])
 
     tooltip_date = "%d %b %y %H:%M %p"
+    kwargs1 = {}
+    kwargs1['bar'] = True
     extra_serie1 = {"tooltip": {"y_start": "", "y_end": " calls"}, "date_format": tooltip_date}
     extra_serie2 = {"tooltip": {"y_start": "", "y_end": " sec"}, "date_format": tooltip_date}
 
     final_chartdata = {
         'x': xdata,
-        'name1': 'Calls', 'y1': ydata, 'extra1': extra_serie1,
+        'name1': 'Calls', 'y1': ydata, 'extra1': extra_serie1, 'kwargs1': kwargs1,
         'name2': 'Duration', 'y2': ydata2, 'extra2': extra_serie2,
     }
-
 
     # Contacts which are successfully called for running campaign
     reached_contact = 0
@@ -446,7 +447,7 @@ def customer_dashboard(request, on_index=None):
     hangup_analytic_charttype = "pieChart"
     xdata = []
     ydata = []
-    hangup_analytic_chartdata = {'x': xdata}
+    hangup_analytic_chartdata = {'x': xdata, 'y1': ydata}
     if total_call_count != 0:
         for i in VOIPCALL_DISPOSITION:
             xdata.append(i[0])
@@ -468,7 +469,9 @@ def customer_dashboard(request, on_index=None):
             COLOR_DISPOSITION['FAILED'],
             COLOR_DISPOSITION['NOANSWER'],
         ]
-        extra_serie = {"tooltip": {"y_start": "", "y_end": " %"}, "color_list": color_list}
+
+        extra_serie = {"tooltip": {"y_start": "", "y_end": " %"},
+                       "color_list": color_list}
         hangup_analytic_chartdata = {'x': xdata, 'y1': ydata, 'extra1': extra_serie}
 
     template = 'frontend/dashboard.html'
@@ -497,8 +500,22 @@ def customer_dashboard(request, on_index=None):
         'VOIPCALL_DISPOSITION': VOIPCALL_DISPOSITION,
         'hangup_analytic_chartdata': hangup_analytic_chartdata,
         'hangup_analytic_charttype': hangup_analytic_charttype,
+        'hangup_chartcontainer': 'piechart_container',
+        'hangup_extra': {
+            'x_is_date': False,
+            'x_axis_format': '',
+            'tag_script_js': True,
+            'jquery_on_ready': False,
+        },
         'final_chartdata': final_chartdata,
         'final_charttype': final_charttype,
+        'final_chartcontainer': 'lineplusbarwithfocuschart_container',
+        'final_extra': {
+            'x_is_date': True,
+            'x_axis_format': '%d %b %Y',
+            'tag_script_js': True,
+            'jquery_on_ready': False,
+        }
     }
     if on_index == 'yes':
         return data

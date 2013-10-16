@@ -14,43 +14,12 @@
 
 from django.conf import settings
 from celery.decorators import task
-from celery.task import Task
+# from celery.task import Task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign, Subscriber
-from common.only_one_task import only_one
+# from common.only_one_task import only_one
 
 logger = get_task_logger(__name__)
-
-
-class ImportPhonebook(Task):
-    """
-    ImportPhonebook class call the import for a specific campaign_id and phonebook_id
-    """
-    @only_one(ikey="import_phonebook", timeout=60 * 5)
-    def run(self, campaign_id, phonebook_id):
-        """
-        Read all the contact from phonebook_id and insert into subscriber
-        """
-        logger = self.get_logger()
-        logger.info("TASK :: import_phonebook")
-        obj_campaign = Campaign.objects.get(id=campaign_id)
-
-        #Faster method, ask the Database to do the job
-        importcontact_custom_sql(campaign_id, phonebook_id)
-
-        #Count contact imported
-        count_contact = Subscriber.objects.filter(campaign=campaign_id).count()
-
-        #Add the phonebook id to the imported list
-        if obj_campaign.imported_phonebook == '':
-            sep = ''
-        else:
-            sep = ','
-        obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
-            '%s%d' % (sep, phonebook_id)
-        obj_campaign.totalcontact = count_contact
-        obj_campaign.save()
-        return True
 
 
 @task()
@@ -76,8 +45,23 @@ def collect_subscriber(campaign_id):
         if not str(phonebook_id) in obj_campaign.imported_phonebook.split(','):
             #Run import
             logger.info("ImportPhonebook %d for campaign = %d" % (phonebook_id, campaign_id))
-            keytask = 'import_phonebook-%d-%d' % (campaign_id, phonebook_id)
-            ImportPhonebook().delay(obj_campaign.id, phonebook_id, keytask=keytask)
+
+            #Faster method, ask the Database to do the job
+            importcontact_custom_sql(campaign_id, phonebook_id)
+
+            #Add the phonebook id to the imported list
+            if obj_campaign.imported_phonebook == '':
+                sep = ''
+            else:
+                sep = ','
+            obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
+                '%s%d' % (sep, phonebook_id)
+            obj_campaign.save()
+
+    #Count contact imported
+    count_contact = Subscriber.objects.filter(campaign=campaign_id).count()
+    obj_campaign.totalcontact = count_contact
+    obj_campaign.save()
 
     return True
 
@@ -86,18 +70,28 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     # Call PL-SQL stored procedure
     #Subscriber.importcontact_pl_sql(campaign_id, phonebook_id)
 
+    # max_subr_cpg = max number of subscriber per campaign,
+    # That is going to be checked when a contact is going to be imported
+    # to the subscriber list
+
+    #TODO: to review first... accr max_subr_cpn/max_subr_cpg
+    max_subr_cpg = Campaign.objects.get(pk=campaign_id).user.get_profile().dialersetting.max_subr_cpg
+
+    if max_subr_cpg > 0:
+        #Check how many we are going to import and how many exist for that campaign already
+        imported_subscriber_count = Subscriber.objects.filter(campaign_id=campaign_id).count()
+        allowed_import = max_subr_cpg - imported_subscriber_count
+        if allowed_import > 0:
+            #handle negative value for to_import
+            limit_import = 'LIMIT %d' % allowed_import
+        else:
+            limit_import = 'LIMIT 0'
+    else:
+        limit_import = ''
+
     from django.db import connection, transaction
     cursor = connection.cursor()
-
-    if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
-        # Data insert operation - commit required
-        sqlimport = "INSERT IGNORE INTO dialer_subscriber (contact_id, "\
-            "campaign_id, duplicate_contact, status, created_date, updated_date) "\
-            "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
-            "WHERE phonebook_id=%d AND dialer_contact.status=1" % \
-            (campaign_id, phonebook_id)
-
-    elif settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
+    if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
         # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
         sqlimport = "LOCK TABLE dialer_subscriber IN EXCLUSIVE MODE;" \
             "INSERT INTO dialer_subscriber (contact_id, "\
@@ -106,14 +100,14 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
             "WHERE phonebook_id=%d AND dialer_contact.status=1 AND NOT EXISTS (" \
             "SELECT 1 FROM dialer_subscriber WHERE "\
             "dialer_subscriber.campaign_id=%d "\
-            "AND dialer_contact.id = dialer_subscriber.contact_id );" % \
-            (campaign_id, phonebook_id, campaign_id)
+            "AND dialer_contact.id = dialer_subscriber.contact_id ) %s;" % \
+            (campaign_id, phonebook_id, campaign_id, limit_import)
     else:
-        # Other DB
-        logger.error("Database not supported (%s)" %
-                     settings.DATABASES['default']['ENGINE'])
+        # MYSQL Support removed
+        logger.error("Database not supported (%s)" % settings.DATABASES['default']['ENGINE'])
         return False
 
     cursor.execute(sqlimport)
     transaction.commit_unless_managed()
+
     return True

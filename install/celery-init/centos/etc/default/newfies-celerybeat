@@ -22,5 +22,3 @@ CELERYBEAT_PID_FILE="/var/run/celerybeat-%n.pid"
 
 # Name of the projects settings module.
 export DJANGO_SETTINGS_MODULE='settings'
-
-

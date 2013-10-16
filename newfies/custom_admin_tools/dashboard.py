@@ -26,8 +26,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools_stats.modules import DashboardCharts, get_active_graph
-from admin_tools.utils import get_admin_site_name
+#from admin_tools.utils import get_admin_site_name
 from django.conf import settings
+
 
 class HistoryDashboardModule(modules.LinkList):
     title = 'History'
@@ -107,9 +108,20 @@ class CustomIndexDashboard(Dashboard):
             models=('dnc.*', ),
         ))
 
+        self.children.append(modules.LinkList(
+            _('Reporting'),
+            draggable=True,
+            deletable=True,
+            collapsible=True,
+            children=[
+                [_('Call Daily Report'),
+                 reverse('admin:dialer_cdr_voipcall_changelist') + 'voip_daily_report/'],
+            ],
+        ))
+
         # append a link list module for "quick links"
-        """
-        site_name = get_admin_site_name(context)
+        #"""
+        # site_name = get_admin_site_name(context)
 
         #Quick link seems to broke the admin design if too many element
         self.children.append(modules.LinkList(
@@ -119,13 +131,14 @@ class CustomIndexDashboard(Dashboard):
             deletable=True,
             collapsible=True,
             children=[
-                [_('Go to Newfies-Dialer'), 'http://www.newfies-dialer.org/'],
-                [_('Change password'),
-                 reverse('%s:password_change' % site_name)],
-                [_('Log out'), reverse('%s:logout' % site_name)],
+                [_('Newfies-Dialer Website'), 'http://www.newfies-dialer.org/'],
+                [_('Support'), 'http://www.newfies-dialer.org/about-us/contact/'],
+                [_('Add-ons'), 'http://www.newfies-dialer.org/add-ons/'],
+                # [_('Change password'), reverse('%s:password_change' % site_name)],
+                # [_('Log out'), reverse('%s:logout' % site_name)],
             ],
         ))
-        """
+        #"""
 
         if not settings.DEBUG:
             # append a feed module
@@ -145,7 +158,7 @@ class CustomIndexDashboard(Dashboard):
         graph_list = get_active_graph()
         for i in graph_list:
             kwargs = {}
-            kwargs['chart_size'] = "360x100"
+            kwargs['require_chart_jscss'] = False
             kwargs['graph_key'] = i.graph_key
             if request.POST.get('select_box_' + i.graph_key):
                 kwargs['select_box_' + i.graph_key] = request.POST['select_box_' + i.graph_key]

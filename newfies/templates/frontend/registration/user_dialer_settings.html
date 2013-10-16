@@ -19,11 +19,15 @@
         </tr>
         <tr>
             <td>{% trans "maximum campaigns"|title %}</td>
-            <td>{{ dialer_set.max_number_campaign }}</td>
+            <td>{{ dialer_set.max_cpg }}</td>
         </tr>
         <tr>
             <td>{% trans "maximum subscribers per campaign"|title %}</td>
-            <td>{{ dialer_set.max_number_subscriber_campaign }}</td>
+            <td>{{ dialer_set.max_subr_cpg }}</td>
+        </tr>
+        <tr>
+            <td>{% trans "maximum number of contact per user"|title %}</td>
+            <td>{{ dialer_set.max_contact }}</td>
         </tr>
         <tr>
             <td>{% trans "whitelist"|title %}</td>

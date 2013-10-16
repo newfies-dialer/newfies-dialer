@@ -26,7 +26,7 @@ from dialer_contact.views import phonebook_add, \
     contact_change, contact_del, contact_import,\
     get_contact_count
 from dialer_campaign.views import get_url_campaign_status
-from dialer_contact.tasks import ImportPhonebook
+from dialer_contact.tasks import collect_subscriber
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 
@@ -101,7 +101,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                 'user_profile.json', 'contenttype.json',
                 'phonebook.json', 'contact.json', 'survey.json',
                 'dnc_list.json', 'dnc_contact.json',
-                'campaign.json', 'subscriber.json',]
+                'campaign.json', 'subscriber.json']
 
     def test_phonebook_view_list(self):
         """Test Function to check phonebook list"""
@@ -179,7 +179,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                                     data={'delete': True}, follow=True)
         request.user = self.user
         request.session = {}
-        response = phonebook_change(request, 1)        
+        response = phonebook_change(request, 1)
         self.assertEqual(response.status_code, 302)
 
     def test_phonebook_view_delete(self):
@@ -268,7 +268,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
                                     data={'delete': True}, follow=True)
         request.user = self.user
         request.session = {}
-        response = contact_change(request, 1)        
+        response = contact_change(request, 1)
         self.assertEqual(response.status_code, 302)
 
     def test_contact_view_delete(self):
@@ -330,12 +330,12 @@ class DialerContactCeleryTaskTestCase(TestCase):
                 'user_profile.json', 'contenttype.json',
                 'phonebook.json', 'contact.json', 'survey.json',
                 'dnc_list.json', 'dnc_contact.json',
-                'campaign.json', 'subscriber.json',]
+                'campaign.json', 'subscriber.json']
 
     def test_import_phonebook(self):
-        """Test that the ``ImportPhonebook``
+        """Test that the ``collect_subscriber``
         task runs with no errors, and returns the correct result."""
-        result = ImportPhonebook.delay(1, 1)
+        result = collect_subscriber.delay(1)
         self.assertEqual(result.successful(), True)
 
         # Test mgt command

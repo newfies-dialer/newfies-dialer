@@ -235,6 +235,8 @@ func_install_dependencies(){
             locale-gen en_US.UTF-8
             dpkg-reconfigure locales
 
+            apt-get -y install python-software-properties
+            add-apt-repository -y ppa:chris-lea/node.js
             apt-get update
             apt-get -y remove apache2.2-common apache2
             apt-get -y install --reinstall language-pack-en
@@ -245,13 +247,10 @@ func_install_dependencies(){
             apt-get -y install python-pip python-dev
             # for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
-            # install NPM
-            apt-get -y install npm
-            # install Bower
-            npm install -g bower
+            # install Node & npm
+            apt-get -y install nodejs
 
             # postgresql
-            apt-get -y install python-software-properties
             apt-get -y install postgresql-9.1 postgresql-contrib-9.1
             apt-get -y install libpq-dev
             # start postgresql
@@ -348,6 +347,9 @@ func_install_dependencies(){
             luarocks install luasql-postgres PGSQL_DIR=/usr/pgsql-9.1/
         ;;
     esac
+
+    # install Bower
+    npm install -g bower
 
     #Install Lua dependencies
     luarocks install luasocket
@@ -680,11 +682,11 @@ func_install_frontend(){
     echo "Create a super admin user..."
     python manage.py createsuperuser
 
-    python manage.py collectstatic --noinput
+    echo "Install Bower deps"
+    python manage.py bower_install -- --allow-root
 
-    echo ""
-    echo "Instal Bower deps"
-    python manage.py bower_install
+    echo "Collects the static files"
+    python manage.py collectstatic --noinput
 
     #NGINX / SUPERVISOR
     func_config_start_nginx_supervisor

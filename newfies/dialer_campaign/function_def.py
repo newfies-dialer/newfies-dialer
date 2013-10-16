@@ -54,7 +54,7 @@ def check_dialer_setting(request, check_for, field_value=''):
                 # limit not matched
                 return False
 
-            # check for frequency limit
+            # check frequency limit
             if check_for == "frequency":
                 if field_value > dialer_set_obj.max_frequency:
                     # Limit matched or exceeded

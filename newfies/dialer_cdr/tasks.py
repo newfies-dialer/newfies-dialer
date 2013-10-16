@@ -451,6 +451,7 @@ def check_callevent():
         amd_status varchar(40),
         starting_date timestamp with time zone,
         status smallint,
+        leg smallint,
         created_date timestamp with time zone NOT NULL
         );
     CREATE INDEX call_event_idx_status ON call_event (status);

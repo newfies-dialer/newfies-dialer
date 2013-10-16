@@ -81,7 +81,7 @@ class Survey_template(Survey_abstract):
         verbose_name = _("survey template")
         verbose_name_plural = _("survey templates")
 
-    def copy_survey_template(self, campaign_id):
+    def copy_survey_template(self, campaign_id=None):
         """
         copy survey template to survey when starting campaign
         """
@@ -92,13 +92,14 @@ class Survey_template(Survey_abstract):
             user=self.user,
             campaign_id=campaign_id)
 
-        # updated campaign content_type & object_id with new survey object
-        survey_id = ContentType.objects.get(model='survey').id
+        if campaign_id:
+            # updated campaign content_type & object_id with new survey object
+            survey_id = ContentType.objects.get(model='survey').id
 
-        campaign_obj = Campaign.objects.get(id=campaign_id)
-        campaign_obj.content_type_id = survey_id
-        campaign_obj.object_id = new_survey_obj.id
-        campaign_obj.save()
+            campaign_obj = Campaign.objects.get(id=campaign_id)
+            campaign_obj.content_type_id = survey_id
+            campaign_obj.object_id = new_survey_obj.id
+            campaign_obj.save()
 
         # Copy Sections
         section_template = Section_template.objects.filter(survey=self)
@@ -127,6 +128,7 @@ class Survey(Survey_abstract):
         permissions = (
             ("view_survey", _('can see survey')),
             ("view_frozen_survey", _('can see frozen survey')),
+            ("froze_survey", _('can froze survey')),
             ("export_survey", _('can export survey')),
             ("import_survey", _('can import survey')),
             ("view_survey_report", _('can see survey report'))

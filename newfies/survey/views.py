@@ -1339,7 +1339,7 @@ def import_survey(request):
 @permission_required('survey.view_frozen_survey', login_url='/')
 @login_required
 def frozen_survey_list(request):
-    """SurveyApp list for the logged in user
+    """Survey list for the logged in user
 
     **Attributes**:
 
@@ -1347,7 +1347,7 @@ def frozen_survey_list(request):
 
     **Logic Description**:
 
-        * List all surveys which belong to the logged in user.
+        * List all frozen surveys which belong to the logged in user.
     """
     sort_col_field_list = ['id', 'name', 'updated_date', 'campaign']
     default_sort_field = 'id'
@@ -1375,3 +1375,18 @@ def frozen_survey_list(request):
     request.session['error_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
+
+@permission_required('survey.froze_survey', login_url='/')
+@login_required
+def froze_survey(request, object_id):
+    """
+        create frozen survey without campaign
+    """
+    survey_template = get_object_or_404(
+        Survey_template, pk=object_id, user=request.user)
+    survey_template.copy_survey_template()
+
+    request.session['msg'] = '(%s) is forzen successfully' % survey_template.name
+
+    return HttpResponseRedirect('/survey/')

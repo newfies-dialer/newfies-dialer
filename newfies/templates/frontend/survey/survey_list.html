@@ -74,7 +74,12 @@ function delete_button(){
 
                                 {% if perms.survey.export_survey %}
                                     <a href="/export_survey/{{ row.id }}/" target="_blank" {% icon "database_go" %} title="{% trans "export survey"|title %}"></a>
-                                {% endif %}                                
+                                {% endif %}
+
+                                {% if perms.survey.froze_survey %}
+                                    <a href="/froze_survey/{{ row.id }}/" target="_blank" {% icon "layers" %} title="{% trans "froze survey"|title %}"></a>
+                                {% endif %}
+
                             </td>
                         </tr>
                     {% endfor %}

@@ -109,10 +109,10 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "modules"|title %} <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 {% if perms.survey.view_survey %}
-                    <li {% if 'survey' in module %}class="active"{% endif %}><a href="/survey/">{% trans "surveys"|title %}</a></li>
+                    <li {% if module == 'survey_list' %}class="active"{% endif %}><a href="/survey/">{% trans "surveys"|title %}</a></li>
                 {% endif %}
-                {% if perms.survey.view_survey %}
-                    <li {% if 'survey' in module %}class="active"{% endif %}><a href="/frozen_survey/">{% trans "frozen surveys"|title %}</a></li>
+                {% if perms.survey.view_frozen_survey %}
+                    <li {% if module == 'frozen_survey_list' %}class="active"{% endif %}><a href="/frozen_survey/">{% trans "frozen surveys"|title %}</a></li>
                 {% endif %}
                 {% if perms.audiofield.view_audio %}
                     <li {% if 'audio' in module  %}class="active"{% endif %}><a href="/audio/">{% trans "audio files"|capfirst %}</a></li>

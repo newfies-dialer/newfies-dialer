@@ -94,7 +94,6 @@ def survey_list(request):
     survey_list = Survey_template.objects\
         .values('id', 'name', 'description', 'updated_date')\
         .filter(user=request.user).order_by(sort_order)
-
     template = 'frontend/survey/survey_list.html'
     data = {
         'module': current_view(request),

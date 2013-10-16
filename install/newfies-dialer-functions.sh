@@ -681,11 +681,9 @@ func_install_frontend(){
     echo "Create a super admin user..."
     python manage.py createsuperuser
 
-    echo ""
     echo "Install Bower deps"
     python manage.py bower_install -- --allow-root
 
-    echo ""
     echo "Collects the static files"
     python manage.py collectstatic --noinput
 

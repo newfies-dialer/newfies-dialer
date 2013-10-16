@@ -128,7 +128,7 @@ class Survey(Survey_abstract):
         permissions = (
             ("view_survey", _('can see survey')),
             ("view_frozen_survey", _('can see frozen survey')),
-            ("froze_survey", _('can froze survey')),
+            ("freeze_survey", _('can froze survey')),
             ("export_survey", _('can export survey')),
             ("import_survey", _('can import survey')),
             ("view_survey_report", _('can see survey report'))

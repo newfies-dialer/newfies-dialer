@@ -25,7 +25,7 @@ urlpatterns = patterns('survey.views',
     (r'^export_survey/(.+)/$', 'export_survey'),
     (r'^import_survey/$', 'import_survey'),
     (r'^frozen_survey/$', 'frozen_survey_list'),
-    (r'^froze_survey/(.+)/$', 'froze_survey'),
+    (r'^freeze_survey/(.+)/$', 'freeze_survey'),
 
     # Section urls
     (r'^section/add/$', 'section_add'),

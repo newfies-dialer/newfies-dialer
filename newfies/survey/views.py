@@ -1377,11 +1377,11 @@ def frozen_survey_list(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('survey.froze_survey', login_url='/')
+@permission_required('survey.freeze_survey', login_url='/')
 @login_required
-def froze_survey(request, object_id):
+def freeze_survey(request, object_id):
     """
-        create frozen survey without campaign
+        freeze survey without campaign
     """
     survey_template = get_object_or_404(
         Survey_template, pk=object_id, user=request.user)

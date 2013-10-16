@@ -235,7 +235,7 @@ func_install_dependencies(){
             locale-gen en_US.UTF-8
             dpkg-reconfigure locales
 
-            apt-get -y python-software-properties
+            apt-get -y install python-software-properties
             add-apt-repository -y ppa:chris-lea/node.js
             apt-get update
             apt-get -y remove apache2.2-common apache2

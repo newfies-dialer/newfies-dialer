@@ -249,8 +249,6 @@ func_install_dependencies(){
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
             # install Node & npm
             apt-get -y install nodejs
-            # install Bower
-            npm install -g bower
 
             # postgresql
             apt-get -y install postgresql-9.1 postgresql-contrib-9.1
@@ -349,6 +347,9 @@ func_install_dependencies(){
             luarocks install luasql-postgres PGSQL_DIR=/usr/pgsql-9.1/
         ;;
     esac
+
+    # install Bower
+    npm install -g bower
 
     #Install Lua dependencies
     luarocks install luasocket

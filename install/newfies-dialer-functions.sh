@@ -24,7 +24,7 @@
 #
 
 #Set branch to install develop/master
-BRANCH="develop"
+BRANCH="master"
 
 #Install mode can me either CLONE or DOWNLOAD
 INSTALL_MODE='CLONE'
@@ -681,11 +681,13 @@ func_install_frontend(){
     echo "Create a super admin user..."
     python manage.py createsuperuser
 
-    python manage.py collectstatic --noinput
+    echo ""
+    echo "Install Bower deps"
+    python manage.py bower_install -- --allow-root
 
     echo ""
-    echo "Instal Bower deps"
-    python manage.py bower_install
+    echo "Collects the static files"
+    python manage.py collectstatic --noinput
 
     #NGINX / SUPERVISOR
     func_config_start_nginx_supervisor

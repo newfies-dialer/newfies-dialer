@@ -24,7 +24,7 @@
 #
 
 #Set branch to install develop/master
-BRANCH='develop'
+BRANCH='master'
 
 #Get Scripts dependencies
 cd /usr/src/

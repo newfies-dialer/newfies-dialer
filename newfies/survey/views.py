@@ -33,7 +33,8 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
     CallTransferSectionForm, BranchingForm, ScriptForm,\
     SurveyDetailReportForm, SurveyFileImport, ConferenceSectionForm
-from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME
+from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME,\
+    FROZEN_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
 from common.common_functions import striplist, variable_value, current_view,\
     ceil_strdate, get_pagination_vars
@@ -1348,17 +1349,16 @@ def frozen_survey_list(request):
 
         * List all surveys which belong to the logged in user.
     """
-    sort_col_field_list = ['id', 'name', 'updated_date']
+    sort_col_field_list = ['id', 'name', 'updated_date', 'campaign']
     default_sort_field = 'id'
-    pagination_data =\
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
     survey_list = Survey.objects\
-        .values('id', 'name', 'description', 'updated_date')\
+        .values('id', 'name', 'description', 'updated_date', 'campaign__name')\
         .filter(user=request.user).order_by(sort_order)
 
     template = 'frontend/survey/frozen_survey_list.html'
@@ -1367,7 +1367,7 @@ def frozen_survey_list(request):
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
-        'SURVEY_COLUMN_NAME': SURVEY_COLUMN_NAME,
+        'FROZEN_SURVEY_COLUMN_NAME': FROZEN_SURVEY_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
     }

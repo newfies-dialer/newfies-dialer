@@ -40,3 +40,10 @@ class SURVEY_CALL_RESULT_NAME(Choice):
     duration = _('duration')
     disposition = _('disposition')
     result = _('survey result')
+
+
+class FROZEN_SURVEY_COLUMN_NAME(Choice):
+    name = _('name')
+    description = _('description')
+    campaign = _('campaign')
+    date = _('date')

@@ -14,6 +14,7 @@
 
 from django.template.defaultfilters import register
 from django.utils.translation import ugettext_lazy as _
+from dialer_campaign.views import tpl_control_icon
 from survey.views import survey_audio_recording
 from survey.models import Section_template, Branching_template
 from survey.constants import SECTION_TYPE
@@ -119,6 +120,9 @@ def get_branching_goto_field(section_id, selected_value):
 
 @register.filter(name='get_branching_count')
 def get_branching_count(section_id, branch_id):
+    """
+    calculate branching count
+    """
     branch_list = Branching_template\
         .objects.values_list('id', flat=True).filter(section_id=section_id)\
         .order_by('id')
@@ -127,3 +131,13 @@ def get_branching_count(section_id, branch_id):
     if branch_list[0] == branch_id:
         branch_count = 0
     return branch_count
+
+
+@register.simple_tag(name='link_of_survey_view')
+def link_of_survey_view(survey_id, survey_name):
+    """
+    create survey view link
+    """
+    link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
+        (survey_id, survey_name, tpl_control_icon('zoom.png'))
+    return link

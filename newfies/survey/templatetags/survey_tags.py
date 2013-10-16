@@ -134,10 +134,10 @@ def get_branching_count(section_id, branch_id):
 
 
 @register.simple_tag(name='link_of_survey_view')
-def link_of_survey_view(survey_id, survey_name):
+def link_of_survey_view(survey_id):
     """
     create survey view link
     """
     link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
-        (survey_id, survey_name, tpl_control_icon('zoom.png'))
+        (survey_id, _('view freeze survey').capitalize(), tpl_control_icon('zoom.png'))
     return link

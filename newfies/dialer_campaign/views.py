@@ -258,7 +258,7 @@ def campaign_list(request):
     request.session['error_msg'] = ''
     request.session['info_msg'] = ''
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def get_content_type(object_string):
@@ -338,7 +338,7 @@ def campaign_add(request):
         'AMD': settings.AMD,
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.delete_campaign', login_url='/')
@@ -441,10 +441,9 @@ def campaign_change(request, object_id):
                 # while campaign status is running
                 if campaign.status == CAMPAIGN_STATUS.START:
                     if request.POST.get('selected_phonebook'):
-                        selected_phonebook = str(request.POST
-                            .get('selected_phonebook')).split(',')
-                        obj.phonebook = Phonebook.objects\
-                            .filter(id__in=selected_phonebook)
+                        selected_phonebook = str(request.POST.get('selected_phonebook'))\
+                            .split(',')
+                        obj.phonebook = Phonebook.objects.filter(id__in=selected_phonebook)
 
                 contenttype = get_content_type(selected_content_object)
                 obj.content_type = contenttype['object_type']
@@ -468,7 +467,7 @@ def campaign_change(request, object_id):
     request.session['error_msg'] = ''
     request.session['info_msg'] = ''
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def make_duplicate_survey(campaign_obj, new_campaign):

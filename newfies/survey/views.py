@@ -1333,3 +1333,45 @@ def import_survey(request):
     request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))
+
+
+@permission_required('survey.view_frozen_survey', login_url='/')
+@login_required
+def frozen_survey_list(request):
+    """SurveyApp list for the logged in user
+
+    **Attributes**:
+
+        * ``template`` - frontend/survey/frozen_survey_list.html
+
+    **Logic Description**:
+
+        * List all surveys which belong to the logged in user.
+    """
+    sort_col_field_list = ['id', 'name', 'updated_date']
+    default_sort_field = 'id'
+    pagination_data =\
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    survey_list = Survey.objects\
+        .values('id', 'name', 'description', 'updated_date')\
+        .filter(user=request.user).order_by(sort_order)
+
+    template = 'frontend/survey/frozen_survey_list.html'
+    data = {
+        'module': current_view(request),
+        'survey_list': survey_list,
+        'total_survey': survey_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'SURVEY_COLUMN_NAME': SURVEY_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'msg': request.session.get('msg'),
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))

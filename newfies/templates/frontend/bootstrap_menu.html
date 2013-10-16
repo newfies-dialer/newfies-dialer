@@ -111,6 +111,9 @@
                 {% if perms.survey.view_survey %}
                     <li {% if 'survey' in module %}class="active"{% endif %}><a href="/survey/">{% trans "surveys"|title %}</a></li>
                 {% endif %}
+                {% if perms.survey.view_survey %}
+                    <li {% if 'survey' in module %}class="active"{% endif %}><a href="/frozen_survey/">{% trans "frozen surveys"|title %}</a></li>
+                {% endif %}
                 {% if perms.audiofield.view_audio %}
                     <li {% if 'audio' in module  %}class="active"{% endif %}><a href="/audio/">{% trans "audio files"|capfirst %}</a></li>
                 {% endif %}

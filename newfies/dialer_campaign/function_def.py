@@ -104,10 +104,11 @@ def dialer_setting_limit(request, limit_for):
 
     e.g. max_subr_cpg
          max_cpg
+         max_contact
          max_frequency
-         callmaxduration
-         maxretry
          max_calltimeout
+         maxretry
+         callmaxduration
     """
     try:
         # DialerSettings is linked with the User

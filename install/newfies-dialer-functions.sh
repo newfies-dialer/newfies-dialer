@@ -278,7 +278,11 @@ func_install_dependencies(){
 
             #Install Supervisor
             pip install supervisor
-
+            
+            # install Node & npm
+            yum -y --enablerepo=epel install npm
+            
+              
             #Audio File Conversion
             yum -y --enablerepo=rpmforge install sox sox-devel ffmpeg ffmpeg-devel mpg123 mpg123-devel libmad libmad-devel libid3tag libid3tag-devel lame lame-devel flac-devel libvorbis-devel
             cd /usr/src/

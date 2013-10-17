@@ -113,6 +113,11 @@ class CustomIndexDashboard(Dashboard):
             models=('dnc.*', ),
         ))
 
+        self.children.append(modules.AppList(
+            _('appointment reminder').title(),
+            models=('apt_reminder.*', ),
+        ))
+
         self.children.append(modules.LinkList(
             _('Reporting'),
             draggable=True,

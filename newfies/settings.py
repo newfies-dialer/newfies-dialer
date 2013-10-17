@@ -218,6 +218,7 @@ INSTALLED_APPS = (
     'dnc',
     'agent',
     'callcenter',
+    'apt_reminder',
     #'raven.contrib.django',
     'apiplayground',
     'frontend_notification',

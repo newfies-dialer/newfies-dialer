@@ -135,7 +135,7 @@ Documentation
 
 Complete documentation :
 
-    - http://www.newfies-dialer.org/docs/
+    - http://docs.newfies-dialer.org/
 
 Beginner's Guide :
 
@@ -147,7 +147,7 @@ Screenshot
 
 * Customer Frontend :
 
-    http://localhost:9080/
+    http://localhost:8000/
     This application provides a User interface for restricted management of
     the User's Campaign, Phonebook, Subscriber. It also provides detailed
     Reporting of calls and message delivery.
@@ -157,7 +157,7 @@ Screenshot
 
 * Admin Dashboard :
 
-    http://localhost:9080/admin/
+    http://localhost:8000/admin/
     This interface provides user (ACL) management, a full control of all
     Campaigns, Phonebooks, Subscribers, Gateway, configuration of the
     Audio Application.

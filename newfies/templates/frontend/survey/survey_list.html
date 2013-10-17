@@ -30,7 +30,6 @@ function delete_button(){
                 <a href="#survey-import"  url="/import_survey/" class="survey-import" data-toggle="modal" data-controls-modal="survey-import" title="{% trans "import survey"|title %}" >
                     {% trans "import survey"|title %}
                 </a>
-                <!--<a href="#survey-freeze" url="/freeze_survey/2/" title="{% trans "freeze survey"|title %}" class="survey-freeze" data-toggle="modal" data-controls-modal="survey-freeze">test</a>-->
                 </li>
                 {% if perms.survey.delete_survey %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete survey"|title %}</a></li>
@@ -81,7 +80,6 @@ function delete_button(){
                                     <a id="id_survey_freeze_{{ row.id }}" href="#survey-freeze" url="/freeze_survey/{{ row.id }}/" {% icon "layers" %} title="{% trans "freeze survey"|title %}" data-toggle="modal" data-controls-modal="survey-freeze"></a>
                                     <!--Survey freeze modal-->
                                     <script type="text/javascript" charset="utf-8">
-
                                         $("#id_survey_freeze_{{ row.id }}").live('click', function(e) {
                                             e.preventDefault();
                                             var url = $(this).attr('url');
@@ -121,7 +119,6 @@ function delete_button(){
         </script>
         <!-- survey-import modal content-->
         <div id="survey-import" class="modal hide fade"></div>
-
 
         <!-- survey-freeze modal content-->
         <div id="survey-freeze" class="modal hide fade"></div>

@@ -44,24 +44,24 @@
             <h3>{% trans "freeze survey"|title %}</h3>
         </div>
         <form method="post" action="/freeze_survey/{{ object_id }}/" enctype="multipart/form-data" >{% csrf_token %}
-             <div class="modal-body">
-                 {% for field in form %}
-                 <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                     <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                     <div class="input">
-                         {{ field }}
-                         {% if field.errors %}
-                             <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                         {% endif %}
-                         <span class="help-block">{{ field.help_text|capfirst }} </span>
-                     </div>
-                 </div>
-                 {% endfor %}
-             </div>
-             <div class="modal-footer">
-                 <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
-                 <a href="#" class="close btn" data-dismiss="modal">{% trans "close"|title %}</a>
-             </div>
+            <div class="modal-body">
+                {% for field in form %}
+                <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    <div class="input">
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ field.help_text|capfirst }} </span>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <div class="modal-footer">
+                <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
+                <a href="#" class="close btn" data-dismiss="modal">{% trans "close"|title %}</a>
+            </div>
         </form>
 
         {% if err_msg %}

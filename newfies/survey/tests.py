@@ -29,11 +29,12 @@ from survey.views import survey_list, survey_add, \
     survey_change, survey_del, section_add, section_change,\
     section_script_change, section_branch_change, \
     section_branch_add, section_delete, section_script_play, \
-    survey_view, survey_campaign_result,\
-    import_survey, export_survey
-from survey.ajax import section_sort
+    survey_view, survey_campaign_result, import_survey, export_survey,\
+    frozen_survey_list, freeze_survey
+#from survey.ajax import section_sort
 
 post_save.disconnect(post_save_add_script, sender=Section_template)
+
 
 class SurveyAdminView(BaseAuthenticatedClient):
     """Test Function to check Survey, SurveyQuestion,
@@ -86,6 +87,18 @@ class SurveyCustomerView(BaseAuthenticatedClient):
                 'section_template.json', 'section.json',
                 'branching.json',
                 ]
+
+    def test_frozen_survey_view_list(self):
+        """Test Function survey view list"""
+        response = self.client.get('/frozen_survey/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/survey/frozen_survey_list.html')
+
+        request = self.factory.get('/frozen_survey/')
+        request.user = self.user
+        request.session = {}
+        response = frozen_survey_list(request)
+        self.assertEqual(response.status_code, 200)
 
     def test_survey_view_list(self):
         """Test Function survey view list"""
@@ -485,6 +498,12 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
         response = self.client.post('/import_survey/',
             data={'survey_file': '', 'name': 'new survey'})
+        self.assertEqual(response.status_code, 200)
+
+    def test_freeze_survey(self):
+        request = self.factory.get('/freeze_survey/1/')
+        request.session = {}
+        response = freeze_survey(request, 1)
         self.assertEqual(response.status_code, 200)
 
 

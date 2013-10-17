@@ -32,7 +32,7 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
     CallTransferSectionForm, BranchingForm, ScriptForm,\
-    SurveyDetailReportForm, SurveyFileImport, ConferenceSectionForm
+    SurveyDetailReportForm, SurveyFileImport, ConferenceSectionForm, FreezeSurveyForm
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME,\
     FROZEN_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
@@ -1382,10 +1382,27 @@ def freeze_survey(request, object_id):
     """
         freeze survey without campaign
     """
-    survey_template = get_object_or_404(
-        Survey_template, pk=object_id, user=request.user)
-    survey_template.copy_survey_template()
+    form = FreezeSurveyForm()
+    if request.method == 'POST':
+        form = FreezeSurveyForm(request.POST)
+        if form.is_valid():
+            survey_template = get_object_or_404(
+                Survey_template, pk=object_id, user=request.user)
+            survey_template.name = request.POST.get('name', survey_template.name)
+            survey_template.copy_survey_template()
 
-    request.session['msg'] = '(%s) is forzen successfully' % survey_template.name
+            request.session['msg'] = '(%s) survey is forzen successfully' % survey_template.name
 
-    return HttpResponseRedirect('/survey/')
+            return HttpResponseRedirect('/survey/')
+        else:
+            request.session['err_msg'] = True
+
+    template = 'frontend/survey/freeze_survey.html'
+    data = {
+        'form': form,
+        'err_msg': request.session.get('err_msg'),
+        'object_id': object_id,
+    }
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))

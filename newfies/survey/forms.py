@@ -357,8 +357,8 @@ class SurveyFileImport(forms.Form):
     """General Form : file upload"""
     name = forms.CharField(label=_('survey name'), required=True)
     survey_file = forms.FileField(label=_("upload File"), required=True,
-        error_messages={'required': 'please upload File'},
-        help_text=_("browse text file"))
+                                  error_messages={'required': 'please upload File'},
+                                  help_text=_("browse text file"))
 
     def clean_csv_file(self):
         """Form Validation :  File extension Check"""
@@ -369,3 +369,11 @@ class SurveyFileImport(forms.Form):
         else:
             raise forms.ValidationError(_(u'document types accepted: %s' %
                                           ' '.join(file_exts)))
+
+
+class FreezeSurveyForm(SurveyFileImport):
+    """General Form : FreezeSurveyForm"""
+    def __init__(self, *args, **kwargs):
+        super(FreezeSurveyForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['name']
+

@@ -1,0 +1,76 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+
+{% block header_files %}
+{% endblock %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block row_fluid %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block container %}
+
+    {% block content %}
+        {% if err_msg %}
+        {% include "frontend/extra_modal_files.html" %}
+            <script type="text/javascript" charset="utf-8">
+                $(window).load(function(){
+                    $('#survey_freeze_modal').modal('show');
+                });
+                var url = '/survey/';
+                $(".close").live('click', function() {
+                    $(location).attr('href', url);
+                });
+                var KEYCODE_ESC = 27;
+                $(document).keyup(function(e) {
+                    if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+                });
+            </script>
+            <!-- modal content-->
+            <div class="modal hide fade" id="survey_freeze_modal">
+
+        {% endif %}
+
+        <div class="modal-header">
+            <a class="close" data-dismiss="modal" >&times;</a>
+            <h3>{% trans "freeze survey"|title %}</h3>
+        </div>
+        <form method="post" action="/freeze_survey/{{ object_id }}/" enctype="multipart/form-data" >{% csrf_token %}
+             <div class="modal-body">
+                 {% for field in form %}
+                 <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                     <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                     <div class="input">
+                         {{ field }}
+                         {% if field.errors %}
+                             <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                         {% endif %}
+                         <span class="help-block">{{ field.help_text|capfirst }} </span>
+                     </div>
+                 </div>
+                 {% endfor %}
+             </div>
+             <div class="modal-footer">
+                 <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
+                 <a href="#" class="close btn" data-dismiss="modal">{% trans "close"|title %}</a>
+             </div>
+        </form>
+
+        {% if err_msg %}
+            </div>
+        {% endif %}
+
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+
+{% endblock %}

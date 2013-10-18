@@ -505,7 +505,7 @@ def customer_dashboard(request, on_index=None):
             'x_is_date': False,
             'x_axis_format': '',
             'tag_script_js': True,
-            'jquery_on_ready': False,
+            'jquery_on_ready': True,
         },
         'final_chartdata': final_chartdata,
         'final_charttype': final_charttype,
@@ -514,13 +514,13 @@ def customer_dashboard(request, on_index=None):
             'x_is_date': True,
             'x_axis_format': '%d %b %Y',
             'tag_script_js': True,
-            'jquery_on_ready': False,
+            'jquery_on_ready': True,
         }
     }
     if on_index == 'yes':
         return data
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def cust_password_reset(request):

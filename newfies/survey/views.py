@@ -839,7 +839,7 @@ def survey_cdr_daily_report(all_call_list):
         max_duration = max([x['duration__sum'] for x in total_data])
         total_duration = sum([x['duration__sum'] for x in total_data])
         total_calls = sum([x['starting_date__count'] for x in total_data])
-        total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_calls
+        total_avg_duration = (sum([x['duration__avg'] for x in total_data]))
 
     survey_cdr_daily_data = {
         'total_data': total_data,

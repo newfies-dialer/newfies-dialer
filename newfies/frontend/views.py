@@ -105,7 +105,7 @@ def login_view(request):
     }
 
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def index(request):
@@ -127,7 +127,7 @@ def index(request):
     }
 
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def pleaselog(request):
@@ -138,7 +138,7 @@ def pleaselog(request):
         'notlogged': True,
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.view_dashboard', login_url='/')
@@ -226,9 +226,9 @@ def customer_dashboard(request, on_index=None):
         # This calls list is used by pie chart
         calls = VoIPCall.objects\
             .filter(callrequest__campaign=selected_campaign,
-                duration__isnull=False,
-                user=request.user,
-                starting_date__range=(start_date, end_date))\
+                    duration__isnull=False,
+                    user=request.user,
+                    starting_date__range=(start_date, end_date))\
             .extra(select=select_data)\
             .values('starting_date', 'disposition')\
             .annotate(Count('starting_date'))\
@@ -260,9 +260,9 @@ def customer_dashboard(request, on_index=None):
         # following calls list is without disposition & group by call date
         calls = VoIPCall.objects\
             .filter(callrequest__campaign=selected_campaign,
-                duration__isnull=False,
-                user=request.user,
-                starting_date__range=(start_date, end_date))\
+                    duration__isnull=False,
+                    user=request.user,
+                    starting_date__range=(start_date, end_date))\
             .extra(select=select_data)\
             .values('starting_date').annotate(Sum('duration'))\
             .annotate(Avg('duration'))\
@@ -532,7 +532,8 @@ def cust_password_reset(request):
     """
     if not request.user.is_authenticated():
         data = {'loginform': LoginForm()}
-        return password_reset(request,
+        return password_reset(
+            request,
             template_name='frontend/registration/password_reset_form.html',
             email_template_name='frontend/registration/password_reset_email.html',
             post_reset_redirect='/password_reset/done/',
@@ -551,8 +552,8 @@ def cust_password_reset_done(request):
     """
     if not request.user.is_authenticated():
         data = {'loginform': LoginForm()}
-        return password_reset_done(request,
-            template_name='frontend/registration/password_reset_done.html',
+        return password_reset_done(
+            request, template_name='frontend/registration/password_reset_done.html',
             extra_context=data)
     else:
         return HttpResponseRedirect("/")
@@ -566,10 +567,11 @@ def cust_password_reset_confirm(request, uidb36=None, token=None):
     """
     if not request.user.is_authenticated():
         data = {'loginform': LoginForm()}
-        return password_reset_confirm(request, uidb36=uidb36, token=token,
-        template_name='frontend/registration/password_reset_confirm.html',
-        post_reset_redirect='/reset/done/',
-        extra_context=data)
+        return password_reset_confirm(
+            request, uidb36=uidb36, token=token,
+            template_name='frontend/registration/password_reset_confirm.html',
+            post_reset_redirect='/reset/done/',
+            extra_context=data)
     else:
         return HttpResponseRedirect("/")
 
@@ -583,8 +585,8 @@ def cust_password_reset_complete(request):
     """
     if not request.user.is_authenticated():
         data = {'loginform': LoginForm()}
-        return password_reset_complete(request,
-        template_name='frontend/registration/password_reset_complete.html',
-        extra_context=data)
+        return password_reset_complete(
+            request, template_name='frontend/registration/password_reset_complete.html',
+            extra_context=data)
     else:
         return HttpResponseRedirect("/")

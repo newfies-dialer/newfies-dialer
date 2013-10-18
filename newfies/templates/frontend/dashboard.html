@@ -9,8 +9,14 @@
     <link media="all" href="{% static 'nvd3/src/nv.d3.css' %}" type="text/css" rel="stylesheet" />
     <script src="{% static 'nvd3/lib/d3.v2.js' %}" type="text/javascript"></script>
     <script src="{% static 'nvd3/nv.d3.js'%}" type="text/javascript"></script>
-    {% load_chart final_charttype final_chartdata final_chartcontainer final_extra %}
-    {% load_chart hangup_analytic_charttype hangup_analytic_chartdata hangup_chartcontainer hangup_extra %}
+
+    <script>
+        var html_string = '<svg></svg>';
+        $('#{{final_chartcontainer}}').empty().append(html_string);
+        $('#{{hangup_chartcontainer}}').empty().append(html_string);
+        {% load_chart final_charttype final_chartdata final_chartcontainer final_extra %}
+        {% load_chart hangup_analytic_charttype hangup_analytic_chartdata hangup_chartcontainer hangup_extra %}
+    </script>
 {% endblock %}
 
 {% block content_header %}

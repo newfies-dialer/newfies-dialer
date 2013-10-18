@@ -504,7 +504,7 @@ def customer_dashboard(request, on_index=None):
         'hangup_extra': {
             'x_is_date': False,
             'x_axis_format': '',
-            'tag_script_js': True,
+            'tag_script_js': False,
             'jquery_on_ready': False,
         },
         'final_chartdata': final_chartdata,
@@ -513,14 +513,14 @@ def customer_dashboard(request, on_index=None):
         'final_extra': {
             'x_is_date': True,
             'x_axis_format': '%d %b %Y',
-            'tag_script_js': True,
+            'tag_script_js': False,
             'jquery_on_ready': False,
         }
     }
     if on_index == 'yes':
         return data
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def cust_password_reset(request):

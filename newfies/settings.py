@@ -60,6 +60,9 @@ CACHES = {
 # system time zone.
 TIME_ZONE = 'America/Chicago'
 
+# set use of timezone true or false
+USE_TZ = True
+
 # Language code for this installation. All choices can be found here:
 # http://www.i18nguy.com/unicode/language-identifiers.html
 LANGUAGE_CODE = 'en-us'
@@ -227,6 +230,11 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'corsheaders',
     'djangobower',
+    #'schedule',
+    #'filer',
+    #'mptt',
+    #'easy_thumbnails',
+    #'calendarium',
 )
 
 # Django extensions

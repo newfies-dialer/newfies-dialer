@@ -14,17 +14,14 @@
 from django.forms import ModelForm
 #from django.contrib.auth.forms import UserChangeForm
 #from django.utils.translation import ugettext as _
-from apt_reminder.models import AR_UserProfile
+from apt_reminder.models import Calender_UserProfile
 
 
-class AR_UserProfileForm(ModelForm):
-    """AgentProfileForm is used to change agent profile"""
+class Calender_UserProfileForm(ModelForm):
+    """Calender_UserProfileForm"""
 
     class Meta:
-        model = AR_UserProfile
-        #exclude = ('',)
+        model = Calender_UserProfile
 
-    #def __init__(self, *args, **kwargs):
-    #    super(AR_UserProfileForm, self).__init__(*args, **kwargs)
 
 

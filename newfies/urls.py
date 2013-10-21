@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.conf.urls import handler404, handler500, \
-    include, patterns
+    include, patterns, url
 from django.conf import settings
 from apirest.urls import urlpatterns as urlpatterns_apirest
 from agent.api_urls import urlpatterns as urlpatterns_agent_apirest
@@ -105,6 +105,7 @@ urlpatterns = patterns('',
         {'document_root': settings.STATIC_ROOT}),
     #(r'^sentry/', include('sentry.web.urls')),
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
+    #url(r'^calendar/', include('calendarium.urls')),
 )
 
 urlpatterns += urlpatterns_apirest

@@ -19,8 +19,8 @@ from user_profile.models import Profile_abstract
 from survey.models import Survey
 
 
-class AR_Setting(models.Model):
-    """This defines the Appointment Reminder settings to apply to a ar_user
+class Calender_Setting(models.Model):
+    """This defines the Calender settings to apply to a ar_user
 
     **Attributes**:
 
@@ -30,7 +30,7 @@ class AR_Setting(models.Model):
         * ``user`` - Newfies User
         * ``survey`` - Frozen Survey
 
-    **Name of DB table**: appointment_reminder_setting
+    **Name of DB table**: calender_setting
     """
     cid_number = models.CharField(max_length=50, blank=False, null=True,
                                   verbose_name=_("CID number"),
@@ -43,48 +43,48 @@ class AR_Setting(models.Model):
                                        help_text=_("call timeout"))
     user = models.ForeignKey(User, blank=True, null=True, verbose_name=_("user"),
                              help_text=_("select user"),
-                             related_name="appointment_reminder_user")
+                             related_name="calender_user")
     survey = models.ForeignKey(Survey, null=True, blank=True,
                                verbose_name=_('frozen survey'),
-                               related_name="appointment_reminder_survey")
+                               related_name="calender_survey")
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return '[%s] %s' % (self.id, self.name)
+        return '[%s] %s' % (self.id, self.cid_name)
 
     class Meta:
-        verbose_name = _("AR setting")
-        verbose_name_plural = _("AR settings")
-        db_table = "appointment_reminder_setting"
+        verbose_name = _("Calender setting")
+        verbose_name_plural = _("calender settings")
+        db_table = "calender_setting"
 
 
-class AR_User(User):
-    """appointment reminder User Model"""
+class Calender_User(User):
+    """Calender User Model"""
 
     class Meta:
         proxy = True
         app_label = 'auth'
-        verbose_name = _('AR user')
-        verbose_name_plural = _('AR users')
+        verbose_name = _('calender user')
+        verbose_name_plural = _('calender users')
 
     def save(self, **kwargs):
         if not self.pk:
             self.is_staff = 0
             self.is_superuser = 0
-        super(AR_User, self).save(**kwargs)
+        super(Calender_User, self).save(**kwargs)
 
-    def is_ar_user(self):
+    def is_calender_user(self):
         try:
-            AR_UserProfile.objects.get(user=self)
+            Calender_UserProfile.objects.get(user=self)
             return True
         except:
             return False
-    User.add_to_class('is_ar_user', is_ar_user)
+    User.add_to_class('is_calender_user', is_calender_user)
 
 
-class AR_UserProfile(Profile_abstract):
+class Calender_UserProfile(Profile_abstract):
     """This defines extra features for the AR_user
 
     **Attributes**:
@@ -94,13 +94,13 @@ class AR_UserProfile(Profile_abstract):
 
     **Name of DB table**: ar_user_profile
     """
-    ar_dialersetting = models.ForeignKey(AR_Setting, null=True, blank=True,
-                                         verbose_name=_('appointment reminder settings'))
+    calender_dialersetting = models.ForeignKey(Calender_Setting, null=True, blank=True,
+                                               verbose_name=_('calender settings'))
 
     class Meta:
-        db_table = 'ar_user_profile'
-        verbose_name = _("AR user profile")
-        verbose_name_plural = _("AR user profiles")
+        db_table = 'calender_user_profile'
+        verbose_name = _("calender user profile")
+        verbose_name_plural = _("calender user profiles")
 
     def __unicode__(self):
         return u"%s" % str(self.user)

@@ -6,6 +6,7 @@ from django.conf import settings
 from django.utils import timezone
 from schedule.conf.settings import CHECK_PERMISSION_FUNC
 
+
 class EventListManager(object):
     """
     This class is responsible for doing functions on a list of events. It is
@@ -26,7 +27,7 @@ class EventListManager(object):
         if after is None:
             after = timezone.now()
         occ_replacer = OccurrenceReplacer(
-            Occurrence.objects.filter(event__in = self.events))
+            Occurrence.objects.filter(event__in=self.events))
         generators = [event._occurrences_after_generator(after) for event in self.events]
         occurrences = []
 
@@ -37,9 +38,10 @@ class EventListManager(object):
                 pass
 
         while True:
-            if len(occurrences) == 0: raise StopIteration
+            if len(occurrences) == 0:
+                raise StopIteration
 
-            generator=occurrences[0][1]
+            generator = occurrences[0][1]
 
             try:
                 next = heapq.heapreplace(occurrences, (generator.next(), generator))[0]
@@ -76,7 +78,7 @@ class OccurrenceReplacer(object):
         """
         Return persisted occurrences which are now in the period
         """
-        return [occ for key,occ in self.lookup.items() if (occ.start < end and occ.end >= start and not occ.cancelled)]
+        return [occ for key, occ in self.lookup.items() if (occ.start < end and occ.end >= start and not occ.cancelled)]
 
 
 class check_event_permissions(object):
@@ -109,12 +111,12 @@ def coerce_date_dict(date_dict):
     """
     keys = ['year', 'month', 'day', 'hour', 'minute', 'second']
     retVal = {
-                'year': 1,
-                'month': 1,
-                'day': 1,
-                'hour': 0,
-                'minute': 0,
-                'second': 0}
+        'year': 1,
+        'month': 1,
+        'day': 1,
+        'hour': 0,
+        'minute': 0,
+        'second': 0}
     modified = False
     for key in keys:
         try:
@@ -123,4 +125,3 @@ def coerce_date_dict(date_dict):
         except KeyError:
             break
     return modified and retVal or {}
-

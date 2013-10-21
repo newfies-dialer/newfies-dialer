@@ -22,6 +22,3 @@ class Calender_UserProfileForm(ModelForm):
 
     class Meta:
         model = Calender_UserProfile
-
-
-

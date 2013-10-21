@@ -18,7 +18,7 @@ from django.utils import timezone
 
 
 class EventManager(models.Manager):
-
+    """Custom manager for the ``Event`` model class."""
     def get_for_object(self, content_object, distinction=None, inherit=True):
         return EventRelation.objects.get_events_for_object(content_object, distinction, inherit)
 
@@ -79,7 +79,6 @@ class Event(models.Model):
         >>> occurrences = event.get_occurrences(datetime.datetime(2008,1,24), datetime.datetime(2008,3,2))
         >>> ["%s to %s" %(o.start, o.end) for o in occurrences]
         []
-`
         """
         persisted_occurrences = self.occurrence_set.all()
         occ_replacer = OccurrenceReplacer(persisted_occurrences)

@@ -30,7 +30,7 @@ class Calender_Setting(models.Model):
         * ``user`` - Newfies User
         * ``survey`` - Frozen Survey
 
-    **Name of DB table**: calender_setting
+    **Name of DB table**: calendar_setting
     """
     cid_number = models.CharField(max_length=50, blank=False, null=True,
                                   verbose_name=_("CID number"),
@@ -43,10 +43,10 @@ class Calender_Setting(models.Model):
                                        help_text=_("call timeout"))
     user = models.ForeignKey(User, blank=True, null=True, verbose_name=_("user"),
                              help_text=_("select user"),
-                             related_name="calender_user")
+                             related_name="calendar_user")
     survey = models.ForeignKey(Survey, null=True, blank=True,
                                verbose_name=_('frozen survey'),
-                               related_name="calender_survey")
+                               related_name="calendar_survey")
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
@@ -56,8 +56,8 @@ class Calender_Setting(models.Model):
 
     class Meta:
         verbose_name = _("Calender setting")
-        verbose_name_plural = _("calender settings")
-        db_table = "calender_setting"
+        verbose_name_plural = _("calendar settings")
+        db_table = "calendar_setting"
 
 
 class Calender_User(User):
@@ -66,8 +66,8 @@ class Calender_User(User):
     class Meta:
         proxy = True
         app_label = 'auth'
-        verbose_name = _('calender user')
-        verbose_name_plural = _('calender users')
+        verbose_name = _('calendar user')
+        verbose_name_plural = _('calendar users')
 
     def save(self, **kwargs):
         if not self.pk:
@@ -75,13 +75,13 @@ class Calender_User(User):
             self.is_superuser = 0
         super(Calender_User, self).save(**kwargs)
 
-    def is_calender_user(self):
+    def is_calendar_user(self):
         try:
             Calender_UserProfile.objects.get(user=self)
             return True
         except:
             return False
-    User.add_to_class('is_calender_user', is_calender_user)
+    User.add_to_class('is_calendar_user', is_calendar_user)
 
 
 class Calender_UserProfile(Profile_abstract):
@@ -94,13 +94,13 @@ class Calender_UserProfile(Profile_abstract):
 
     **Name of DB table**: ar_user_profile
     """
-    calender_dialersetting = models.ForeignKey(Calender_Setting, null=True, blank=True,
-                                               verbose_name=_('calender settings'))
+    calendar_dialersetting = models.ForeignKey(Calender_Setting, null=True, blank=True,
+                                               verbose_name=_('calendar settings'))
 
     class Meta:
-        db_table = 'calender_user_profile'
-        verbose_name = _("calender user profile")
-        verbose_name_plural = _("calender user profiles")
+        db_table = 'calendar_user_profile'
+        verbose_name = _("calendar user profile")
+        verbose_name_plural = _("calendar user profiles")
 
     def __unicode__(self):
         return u"%s" % str(self.user)

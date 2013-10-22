@@ -48,6 +48,7 @@ def sendmail_task(current_mail_id):
         return False
 
     mailtemplate = MailTemplate.objects.get(pk=current_mailspooler.mailtemplate.id)
+    # TODO: replace by contact from phonebook
     c_user = User.objects.get(pk=current_mailspooler.user.id)
     c_user.count_email = c_user.count_email + 1
     c_user.save()

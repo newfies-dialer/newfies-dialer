@@ -15,20 +15,20 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
-from apt_reminder.models import Calender_Setting, Calender_User, Calender_UserProfile
-from apt_reminder.forms import Calender_UserProfileForm
+from apt_reminder.models import Calendar_Setting, Calendar_User, Calendar_UserProfile
+from apt_reminder.forms import Calendar_UserProfileForm
 from common.app_label_renamer import AppLabelRenamer
 AppLabelRenamer(native_app_label=u'apt_reminder', app_label=_('appointment reminder')).main()
 
 
-class Calender_UserProfileInline(admin.StackedInline):
-    model = Calender_UserProfile
-    form = Calender_UserProfileForm
+class Calendar_UserProfileInline(admin.StackedInline):
+    model = Calendar_UserProfile
+    form = Calendar_UserProfileForm
 
 
-class Calender_UserAdmin(UserAdmin):
+class Calendar_UserAdmin(UserAdmin):
     inlines = [
-        Calender_UserProfileInline,
+        Calendar_UserProfileInline,
     ]
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')
@@ -38,12 +38,12 @@ class Calender_UserAdmin(UserAdmin):
         qs = qs.filter(is_staff=False, is_superuser=False)
         return qs
 
-admin.site.register(Calender_User, Calender_UserAdmin)
+admin.site.register(Calendar_User, Calendar_UserAdmin)
 
 
-class Calender_SettingAdmin(admin.ModelAdmin):
+class Calendar_SettingAdmin(admin.ModelAdmin):
     list_display = ('cid_number', 'cid_name', 'call_timeout', 'user', 'survey')
     ordering = ('-cid_number', )
 
 
-admin.site.register(Calender_Setting, Calender_SettingAdmin)
+admin.site.register(Calendar_Setting, Calendar_SettingAdmin)

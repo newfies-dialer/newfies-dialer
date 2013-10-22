@@ -19,7 +19,7 @@ from user_profile.models import Profile_abstract
 from survey.models import Survey
 
 
-class Calender_Setting(models.Model):
+class Calendar_Setting(models.Model):
     """This defines the Calender settings to apply to a ar_user
 
     **Attributes**:
@@ -60,8 +60,8 @@ class Calender_Setting(models.Model):
         db_table = "calendar_setting"
 
 
-class Calender_User(User):
-    """Calender User Model"""
+class Calendar_User(User):
+    """Calendar User Model"""
 
     class Meta:
         proxy = True
@@ -73,29 +73,29 @@ class Calender_User(User):
         if not self.pk:
             self.is_staff = 0
             self.is_superuser = 0
-        super(Calender_User, self).save(**kwargs)
+        super(Calendar_User, self).save(**kwargs)
 
     def is_calendar_user(self):
         try:
-            Calender_UserProfile.objects.get(user=self)
+            Calendar_UserProfile.objects.get(user=self)
             return True
         except:
             return False
     User.add_to_class('is_calendar_user', is_calendar_user)
 
 
-class Calender_UserProfile(Profile_abstract):
+class Calendar_UserProfile(Profile_abstract):
     """This defines extra features for the AR_user
 
     **Attributes**:
 
-        * ``ar_dialersetting`` - appointment reminder settings
+        * ``calendar_setting`` - appointment reminder settings
 
 
     **Name of DB table**: ar_user_profile
     """
-    calendar_dialersetting = models.ForeignKey(Calender_Setting, null=True, blank=True,
-                                               verbose_name=_('calendar settings'))
+    calendar_setting = models.ForeignKey(Calendar_Setting, null=True, blank=True,
+                                         verbose_name=_('calendar settings'))
 
     class Meta:
         db_table = 'calendar_user_profile'

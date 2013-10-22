@@ -10,12 +10,12 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import date
 from django.utils.translation import ugettext, ugettext_lazy as _
 
-from apt_reminder.conf import settings
-from apt_reminder.models.rules import Rule
-from apt_reminder.models.calendars import Calendar
-from apt_reminder.utils import OccurrenceReplacer
+from calendar.conf import settings
+from calendar.models.rules import Rule
+from calendar.models.calendars import Calendar
+from calendar.utils import OccurrenceReplacer
 from django.utils import timezone
-from apt_reminder.constants import EVENT_STATUS
+from calendar.constants import EVENT_STATUS
 import jsonfield
 
 

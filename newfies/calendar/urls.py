@@ -11,14 +11,8 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.forms import ModelForm
-#from django.contrib.auth.forms import UserChangeForm
-#from django.utils.translation import ugettext as _
-from apt_reminder.models import Calendar_UserProfile
+
+from django.conf.urls import patterns
 
 
-class Calendar_UserProfileForm(ModelForm):
-    """Calendar_UserProfileForm"""
-
-    class Meta:
-        model = Calendar_UserProfile
+urlpatterns = patterns('calendar.views',)

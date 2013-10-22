@@ -2,8 +2,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
-from apt_reminder.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT
-from apt_reminder.models.events import Event
+from calendar.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT
+from calendar.models.events import Event
 from survey.modles import Survey
 from dialer_cdr.models import CallRequest
 from mail.models import Mailtemplate

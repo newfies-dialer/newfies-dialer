@@ -115,7 +115,7 @@ class CustomIndexDashboard(Dashboard):
 
         self.children.append(modules.AppList(
             _('appointment reminder').title(),
-            models=('apt_reminder.*', ),
+            models=('calendar.*', ),
         ))
 
         self.children.append(modules.LinkList(

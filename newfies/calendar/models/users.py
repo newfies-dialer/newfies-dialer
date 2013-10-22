@@ -19,7 +19,7 @@ from user_profile.models import Profile_abstract
 from survey.models import Survey
 
 
-class Calendar_Setting(models.Model):
+class CalendarSetting(models.Model):
     """This defines the Calender settings to apply to a ar_user
 
     **Attributes**:
@@ -58,6 +58,7 @@ class Calendar_Setting(models.Model):
         verbose_name = _("Calender setting")
         verbose_name_plural = _("calendar settings")
         db_table = "calendar_setting"
+        app_label = "calendar"
 
 
 class Calendar_User(User):
@@ -94,13 +95,14 @@ class Calendar_UserProfile(Profile_abstract):
 
     **Name of DB table**: ar_user_profile
     """
-    calendar_setting = models.ForeignKey(Calendar_Setting, null=True, blank=True,
+    calendar_setting = models.ForeignKey(CalendarSetting, null=True, blank=True,
                                          verbose_name=_('calendar settings'))
 
     class Meta:
         db_table = 'calendar_user_profile'
         verbose_name = _("calendar user profile")
         verbose_name_plural = _("calendar user profiles")
+        app_label = "calendar"
 
     def __unicode__(self):
         return u"%s" % str(self.user)

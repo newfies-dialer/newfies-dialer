@@ -24,6 +24,7 @@ class SMSTemplate(models.Model):
     class Meta:
         verbose_name = _('SMS template')
         verbose_name_plural = _('SMS templates')
+        app_label = "calendar"
 
     def __unicode__(self):
         return force_unicode(self.template_key)
@@ -80,6 +81,7 @@ class Alarm(models.Model):
     class Meta:
         verbose_name = _('alarm')
         verbose_name_plural = _('alarms')
+        app_label = "calendar"
 
     def __unicode__(self):
         return self.id

@@ -46,7 +46,7 @@ class Calendar(models.Model):
     slug = models.SlugField(_("slug"), max_length=200)
     user = models.ForeignKey(Calendar_User, blank=True, null=True, verbose_name=_("user"),
                              help_text=_("select user"),
-                             related_name="calendar_user")
+                             related_name="calendar user")
     max_concurrent = models.IntegerField(null=True, blank=True, default=0, help_text=_("Max concurrent is not implemented"))
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('date'))
@@ -54,6 +54,7 @@ class Calendar(models.Model):
     class Meta:
         verbose_name = _('calendar')
         verbose_name_plural = _('calendars')
+        app_label = "calendar"
 
     def __unicode__(self):
         return self.name

@@ -6,10 +6,7 @@ from apt_reminder.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT
 from apt_reminder.models.events import Event
 from survey.modles import Survey
 from dialer_cdr.models import CallRequest
-
-
-class Mailtemplate(models.Model):
-    pass
+from mail.models import Mailtemplate
 
 
 class SMSTemplate(models.Model):

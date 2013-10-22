@@ -16,7 +16,7 @@ from django.utils.translation import ugettext as _
 from django.utils.encoding import force_unicode
 from user_profile.models import User
 from mailer import send_html_mail
-from newfies_mailer.constants import MAILSPOOLER_TYPE
+from mod_mailer.constants import MAILSPOOLER_TYPE
 
 
 class MailTemplate(models.Model):

@@ -12,9 +12,9 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from celery.decorators import task, periodic_task
 from django.conf import settings
-from mail.models import MailSpooler, MailTemplate
+from celery.decorators import task, periodic_task
+from mod_mailer.models import MailSpooler, MailTemplate
 from user_profile.models import User
 from datetime import timedelta
 import logging

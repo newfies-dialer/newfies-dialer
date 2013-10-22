@@ -14,7 +14,7 @@
 
 from django.contrib import admin
 # from django.utils.translation import ugettext as _
-from mail.models import MailTemplate, MailSpooler
+from mod_mailer.models import MailTemplate, MailSpooler
 
 
 class MailTemplateAdmin(admin.ModelAdmin):

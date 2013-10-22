@@ -10,11 +10,13 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import date
 from django.utils.translation import ugettext, ugettext_lazy as _
 
-from schedule.conf import settings
-from schedule.models.rules import Rule
-from schedule.models.calendars import Calendar
-from schedule.utils import OccurrenceReplacer
+from apt_reminder.conf import settings
+from apt_reminder.models.rules import Rule
+from apt_reminder.models.calendars import Calendar
+from apt_reminder.utils import OccurrenceReplacer
 from django.utils import timezone
+from apt_reminder.constants import EVENT_STATUS
+import jsonfield
 
 
 class EventManager(models.Manager):
@@ -40,10 +42,17 @@ class Event(models.Model):
     calendar = models.ForeignKey(Calendar, null=True, blank=True)
     objects = EventManager()
 
+    notify_count = models.IntegerField(null=True, blank=True, default=0)
+    data = jsonfield.JSONField(null=True, blank=True, verbose_name=_('additional data (JSON)'),
+                               help_text=_("data in Json format, e.g. {\"cost\": \"40 euro\"}"))
+
+    status = models.IntegerField(choices=list(EVENT_STATUS),
+                                 default=EVENT_STATUS.PENDING,
+                                 verbose_name=_("status"), blank=True, null=True)
+
     class Meta:
         verbose_name = _('event')
         verbose_name_plural = _('events')
-        app_label = 'schedule'
 
     def __unicode__(self):
         date_format = u'%s' % ugettext("DATE_FORMAT")
@@ -339,7 +348,6 @@ class EventRelation(models.Model):
     class Meta:
         verbose_name = _("event relation")
         verbose_name_plural = _("event relations")
-        app_label = 'schedule'
 
     def __unicode__(self):
         return u'%s(%s)-%s' % (self.event.title, self.distinction, self.content_object)
@@ -358,7 +366,6 @@ class Occurrence(models.Model):
     class Meta:
         verbose_name = _("occurrence")
         verbose_name_plural = _("occurrences")
-        app_label = 'schedule'
 
     def __init__(self, *args, **kwargs):
         super(Occurrence, self).__init__(*args, **kwargs)

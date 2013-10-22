@@ -1,11 +1,35 @@
 # -*- coding: utf-8 -*-
-import pytz
 from django.db import models
-from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-import datetime
-from django.utils import timezone
-from .users import Calendar_User
+from django.utils.encoding import force_unicode
+from apt_reminder.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT
+from apt_reminder.models.events import Event
+from survey.modles import Survey
+from dialer_cdr.models import CallRequest
+
+
+class Mailtemplate(models.Model):
+    pass
+
+
+class SMSTemplate(models.Model):
+    """
+    This table store the SMS Template
+    """
+    label = models.CharField(max_length=75,
+                    help_text='SMS template name')
+    template_key = models.CharField(max_length=30, unique=True,
+                    help_text='Unique name used to pick some template for recurring action, such as activation or warning')
+    sender_phonenumber = models.EmailField(max_length=75, help_text='Sender Email')
+    sms_text = models.TextField(max_length=500)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = _('SMS template')
+        verbose_name_plural = _('SMS templates')
+
+    def __unicode__(self):
+        return force_unicode(self.template_key)
 
 
 class Alarm(models.Model):
@@ -15,21 +39,43 @@ class Alarm(models.Model):
     #TODO: maybe integer ?
     daily_start = models.DateTimeField(verbose_name=_('daily start'))
     daily_stop = models.DateTimeField(verbose_name=_('daily stop'))
-    advance_notice = models.IntegerField(null=True, blank=True, default=0)
-    retry_count = models.IntegerField(null=True, blank=True, default=0)
-    retry_delay = models.IntegerField(null=True, blank=True, default=0)
-    sent_count = models.IntegerField(null=True, blank=True, default=0)
-    #TODO: method should be a CHOICE
-    method = models.IntegerField(null=True, blank=True, default=0)
+    advance_notice = models.IntegerField(null=True, blank=True, default=0,
+                                         verbose_name=_('advance notice'))
+    retry_count = models.IntegerField(null=True, blank=True, default=0,
+                                      verbose_name=_('retry count'))
+    retry_delay = models.IntegerField(null=True, blank=True, default=0,
+                                      verbose_name=_('retry delay'))
+    sent_count = models.IntegerField(null=True, blank=True, default=0,
+                                     verbose_name=_('sent count'))
+    method = models.IntegerField(choices=list(ALARM_METHOD),
+                                 default=ALARM_METHOD.CALL,
+                                 verbose_name=_("method"), blank=True, null=True)
 
     # TODO: Add missing fields
-    # ...
-    # ...
-    # ...
-    # ...
-    # ...
+
+    survey = models.ForeignKey(Survey, verbose_name=_("survey"),
+                               related_name="survey")
+    mail_template = models.ForeignKey(Mailtemplate, verbose_name=_("mail template"),
+                                     related_name="mail template")
+    sms_template = models.ForeignKey(SMSTemplate, verbose_name=_("sms template"),
+                                     related_name="sms template")
+    event = models.ForeignKey(Event, verbose_name=_("event"),
+                              related_name="event")
 
     date_start_notice = models.DateTimeField(verbose_name=_('starting date'))
+    status = models.IntegerField(choices=list(ALARM_STATUS),
+                                 default=ALARM_STATUS.PENDING,
+                                 verbose_name=_("status"), blank=True, null=True)
+    result = models.IntegerField(choices=list(ALARM_RESULT),
+                                 verbose_name=_("method"), blank=True, null=True)
+    url_cancel = models.CharField(max_length=250, blank=True, null=True,
+                                verbose_name=_("URL cancel"))
+    phonenumber_sms_cancel = models.CharField(max_length=50, blank=True, null=True,
+                                verbose_name=_("phonenumber SMS cancel"))
+    url_confirm = models.CharField(max_length=250, blank=True, null=True,
+                                verbose_name=_("URL confirm"))
+    phonenumber_transfer = models.CharField(max_length=50, blank=True, null=True,
+                                verbose_name=_("phonenumber transfer"))
 
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('date'))
@@ -58,9 +104,10 @@ class AlarmRequest(models.Model):
     calltime = models.DateTimeField(verbose_name=_('call time'))
     duration = models.IntegerField(null=True, blank=True, default=0)
 
-    # callrequest = models.ForeignKey(CallRequest, blank=True, null=True, verbose_name=_("Call Request"),
-    #                          help_text=_("select call request"),
-    #                          related_name="callrequest_alarm")
+    callrequest = models.ForeignKey(CallRequest, blank=True, null=True,
+                                    verbose_name=_("Call Request"),
+                                    help_text=_("select call request"),
+                                    related_name="callrequest_alarm")
 
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('date'))

@@ -4,9 +4,9 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from calendar.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT
 from calendar.models.events import Event
-from survey.modles import Survey
-from dialer_cdr.models import CallRequest
-from mail.models import Mailtemplate
+from survey.models import Survey
+from dialer_cdr.models import Callrequest
+from mod_mailer.models import MailTemplate
 
 
 class SMSTemplate(models.Model):
@@ -52,7 +52,7 @@ class Alarm(models.Model):
 
     survey = models.ForeignKey(Survey, verbose_name=_("survey"),
                                related_name="survey")
-    mail_template = models.ForeignKey(Mailtemplate, verbose_name=_("mail template"),
+    mail_template = models.ForeignKey(MailTemplate, verbose_name=_("mail template"),
                                      related_name="mail template")
     sms_template = models.ForeignKey(SMSTemplate, verbose_name=_("sms template"),
                                      related_name="sms template")
@@ -101,7 +101,7 @@ class AlarmRequest(models.Model):
     calltime = models.DateTimeField(verbose_name=_('call time'))
     duration = models.IntegerField(null=True, blank=True, default=0)
 
-    callrequest = models.ForeignKey(CallRequest, blank=True, null=True,
+    callrequest = models.ForeignKey(Callrequest, blank=True, null=True,
                                     verbose_name=_("Call Request"),
                                     help_text=_("select call request"),
                                     related_name="callrequest_alarm")

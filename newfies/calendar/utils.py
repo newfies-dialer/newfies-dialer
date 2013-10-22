@@ -1,7 +1,7 @@
 from django.contrib.contenttypes.models import ContentType
 from django.http import HttpResponseRedirect
 from django.conf import settings
-from schedule.conf.settings import CHECK_PERMISSION_FUNC
+from calendar.conf.settings import CHECK_PERMISSION_FUNC
 
 
 class OccurrenceReplacer(object):

@@ -30,3 +30,5 @@ django-genericadmin==0.4
 git+git://github.com/areski/Django-API-Playground.git
 django-bower==4.8
 django-cors-headers==0.12
+#git+git://github.com/hmarr/django-ses.git
+git+git://github.com/pinax/django-mailer

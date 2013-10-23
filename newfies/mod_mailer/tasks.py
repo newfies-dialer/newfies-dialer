@@ -17,8 +17,6 @@ from django.core.cache import cache
 from celery.decorators import task, periodic_task
 from mod_mailer.models import MailSpooler, MailTemplate
 from mod_mailer.constants import MAILSPOOLER_TYPE
-from user_profile.models import User
-#from dialer_contact.models import Contact
 from mailer.engine import send_all
 from mailer.models import Message
 from mailer import send_html_mail
@@ -50,19 +48,14 @@ def sendmail_task(current_mail_id):
         return False
 
     mailtemplate = MailTemplate.objects.get(pk=current_mailspooler.mailtemplate.id)
-    # TODO: replace by contact from phonebook
-    c_user = User.objects.get(pk=current_mailspooler.user.id)
-    #c_contact = Contact.objects.get(phonebook_id=phonebook_id, contact=contact)
-
-    c_user.count_email = c_user.count_email + 1
-    c_user.save()
+    contact_email = current_mailspooler.contact.email
 
     send_html_mail(
         mailtemplate.subject,
         mailtemplate.message_plaintext,
         mailtemplate.message_html,
         mailtemplate.from_email,
-        [c_user.email],
+        [contact_email],
         headers={'From': '%s <%s>' % (mailtemplate.from_name, mailtemplate.from_email)},
     )
 

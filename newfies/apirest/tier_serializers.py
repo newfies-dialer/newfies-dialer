@@ -14,16 +14,16 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import serializers
-from callcenter.models import Queue
+from callcenter.models import Tier
 
 
-class QueueSerializer(serializers.HyperlinkedModelSerializer):
+class TierSerializer(serializers.HyperlinkedModelSerializer):
     """
     **Create**:
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "queue name"}' http://localhost:8000/rest-api/queue/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"level": "2", "position": "1"}' http://localhost:8000/rest-api/tier/
 
         Response::
 
@@ -33,14 +33,14 @@ class QueueSerializer(serializers.HyperlinkedModelSerializer):
             Vary: Accept, Accept-Language, Cookie
             Content-Type: application/json; charset=utf-8
             Content-Language: en-us
-            Location: http://localhost:8000/rest-api/queue/1/
+            Location: http://localhost:8000/rest-api/tier/1/
             Allow: GET, POST, HEAD, OPTIONS
 
     **Read**:
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/queue/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/tier/
 
         Response::
 
@@ -51,23 +51,13 @@ class QueueSerializer(serializers.HyperlinkedModelSerializer):
                 "results": [
                     {
                         "manager": "manager",
-                        "url": "http://127.0.0.1:8000/rest-api/queue/1/",
-                        "name": "Sample queue",
-                        "strategy": 5,
-                        "moh_sound": "",
-                        "record_template": "",
-                        "time_base_score": "queue",
-                        "tier_rules_apply": false,
-                        "tier_rule_wait_second": 300,
-                        "tier_rule_wait_multiply_level": true,
-                        "tier_rule_no_agent_no_wait": false,
-                        "discard_abandoned_after": 14400,
-                        "abandoned_resume_allowed": true,
-                        "max_wait_time": 0,
-                        "max_wait_time_with_no_agent": 120,
-                        "max_wait_time_with_no_agent_time_reached": 5,
-                        "created_date": "2013-10-23T12:34:20.157Z",
-                        "updated_date": "2013-10-23T12:34:20.157Z"
+                        "agent": "agent",
+                        "queue": "Sample queue",
+                        "url": "http://127.0.0.1:8000/rest-api/tier/1/",
+                        "level": 1,
+                        "position": 1,
+                        "created_date": "2013-10-23T13:09:43.311Z",
+                        "updated_date": "2013-10-23T13:09:43.311Z"
                     }
                 ]
             }
@@ -76,7 +66,7 @@ class QueueSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"name": "change name"}' http://localhost:8000/rest-api/queue/%dqueue-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"level": "2"}' http://localhost:8000/rest-api/tier/%dtier-id%/
 
         Response::
 
@@ -89,7 +79,9 @@ class QueueSerializer(serializers.HyperlinkedModelSerializer):
             Content-Language: en-us
     """
     manager = serializers.Field(source='manager')
+    agent = serializers.Field(source='agent')
+    queue = serializers.Field(source='queue')
 
     class Meta:
-        model = Queue
+        model = Tier
 

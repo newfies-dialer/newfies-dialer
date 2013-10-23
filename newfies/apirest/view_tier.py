@@ -16,16 +16,16 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from callcenter.models import Queue
-from apirest.queue_serializers import QueueSerializer
+from callcenter.models import Tier
+from apirest.tier_serializers import TierSerializer
 
 
-class QueueViewSet(viewsets.ModelViewSet):
+class TierViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows queue to be viewed or edited.
+    API endpoint that allows tier to be viewed or edited.
     """
-    queryset = Queue.objects.all()
-    serializer_class = QueueSerializer
+    queryset = Tier.objects.all()
+    serializer_class = TierSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
 
@@ -35,9 +35,9 @@ class QueueViewSet(viewsets.ModelViewSet):
         for the currently authenticated user.
         """
         if self.request.user.is_superuser:
-            queryset = Queue.objects.all()
+            queryset = Tier.objects.all()
         else:
-            queryset = Queue.objects.filter(manager=self.request.user)
+            queryset = Tier.objects.filter(manager=self.request.user)
         return queryset
 
     def pre_save(self, obj):

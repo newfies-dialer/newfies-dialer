@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.conf.urls import handler404, handler500, \
-    include, patterns, url
+    include, patterns
 from django.conf import settings
 from apirest.urls import urlpatterns as urlpatterns_apirest
 from agent.api_urls import urlpatterns as urlpatterns_agent_apirest
@@ -27,33 +27,11 @@ from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
 from frontend_notification.urls import urlpatterns as urlpatterns_frontend_notification
 from agent.urls import urlpatterns as urlpatterns_agent
 from callcenter.urls import urlpatterns as urlpatterns_callcenter
-from api.api_playgrounds.urls import urlpatterns as urlpatterns_api_playgrounds
-from tastypie.api import Api
-
-from api.user_api import UserResource
-from api.gateway_api import GatewayResource
-from api.content_type_api import ContentTypeResource
-from api.phonebook_api import PhonebookResource
-from api.campaign_api import CampaignResource
-from api.bulk_contact_api import BulkContactResource
-from api.campaign_delete_cascade_api import CampaignDeleteCascadeResource
-from api.subscriber_api import SubscriberResource
-from api.subscriber_per_campaign_api import \
-    SubscriberPerCampaignResource
-from api.callrequest_api import CallrequestResource
-#from api.store_cdr_api import CdrResource
-from api.audiofile_api import AudioFileResource
-from api.dnc_api import DNCResource
-from api.dnc_contact_api import DNCContactResource
-
-from survey.api.survey_api import SurveyResource
-from survey.api.survey_section_api import SectionResource
-from survey.api.survey_branching_api import BranchingResource
-from survey.api.survey_aggregate_result_api import ResultAggregateResource
-
-import os
 from django.contrib import admin
 from dajaxice.core import dajaxice_autodiscover
+import os
+
+
 dajaxice_autodiscover()
 
 try:
@@ -62,28 +40,6 @@ except admin.sites.AlreadyRegistered:
     # nose imports the admin.py files during tests, so
     # the models have already been registered.
     pass
-
-# tastypie api
-tastypie_api = Api(api_name='v1')
-tastypie_api.register(UserResource())
-tastypie_api.register(GatewayResource())
-tastypie_api.register(ContentTypeResource())
-tastypie_api.register(PhonebookResource())
-tastypie_api.register(CampaignResource())
-tastypie_api.register(BulkContactResource())
-tastypie_api.register(CampaignDeleteCascadeResource())
-tastypie_api.register(SubscriberResource())
-tastypie_api.register(SubscriberPerCampaignResource())
-tastypie_api.register(CallrequestResource())
-#tastypie_api.register(CdrResource())
-tastypie_api.register(DNCResource())
-tastypie_api.register(DNCContactResource())
-tastypie_api.register(SurveyResource())
-tastypie_api.register(SectionResource())
-tastypie_api.register(BranchingResource())
-tastypie_api.register(ResultAggregateResource())
-tastypie_api.register(AudioFileResource())
-
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -96,8 +52,6 @@ js_info_dict = {
 urlpatterns = patterns('',
     (r'^logout/$', 'frontend.views.logout_view'),
     (r'^admin/', include(admin.site.urls)),
-    (r'^api/', include(tastypie_api.urls)),
-
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     (r'^admin_tools/', include('admin_tools.urls')),
@@ -118,7 +72,6 @@ urlpatterns += urlpatterns_dnc
 urlpatterns += urlpatterns_user_profile
 urlpatterns += urlpatterns_survey
 urlpatterns += urlpatterns_dialer_audio
-urlpatterns += urlpatterns_api_playgrounds
 urlpatterns += urlpatterns_frontend_notification
 urlpatterns += urlpatterns_agent
 urlpatterns += urlpatterns_callcenter

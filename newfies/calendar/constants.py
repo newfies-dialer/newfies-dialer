@@ -17,23 +17,23 @@ from common.utils import Choice
 
 
 class EVENT_STATUS(Choice):
-    PENDING = 1, _('PENDING')
-    COMPLETED = 2, _('COMPLETED')
+    PENDING = 1, _('pending').upper()
+    COMPLETED = 2, _('completed').upper()
 
 
 class ALARM_STATUS(Choice):
-    PENDING = 1, _('PENDING')
-    IN_PROCESS = 2, _('IN_PROCESS')
-    COMPLETED = 3, _('COMPLETED')
+    PENDING = 1, _('pending').upper()
+    IN_PROCESS = 2, _('in_process').upper()
+    COMPLETED = 3, _('completed').upper()
 
 
 class ALARM_RESULT(Choice):
-    CONFIRMED = 1, _('CONFIRMED')
-    CANCELLED = 2, _('CANCELLED')
-    RESCHEDULED = 3, _('RESCHEDULED')
+    CONFIRMED = 1, _('confirmed').upper()
+    CANCELLED = 2, _('cancelled').upper()
+    RESCHEDULED = 3, _('rescheduled').upper()
 
 
 class ALARM_METHOD(Choice):
-    CALL = 1, _('CALL')
-    SMS = 2, _('SMS')
-    EMAIL = 3, _('EMAIL')
+    CALL = 1, _('call').upper()
+    SMS = 2, _('sms').upper()
+    EMAIL = 3, _('email').upper()

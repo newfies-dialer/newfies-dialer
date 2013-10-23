@@ -15,4 +15,4 @@
 from django.conf.urls import patterns
 
 
-urlpatterns = patterns('calendar.views',)
+urlpatterns = patterns('appointment.views',)

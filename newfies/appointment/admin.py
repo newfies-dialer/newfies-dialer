@@ -15,10 +15,10 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
-from calendar.models import Calendar_Setting, Calendar_User, Calendar_UserProfile
-from calendar.forms import Calendar_UserProfileForm
+from appointment.models import Calendar_Setting, Calendar_User, Calendar_UserProfile
+from appointment.forms import Calendar_UserProfileForm
 from common.app_label_renamer import AppLabelRenamer
-AppLabelRenamer(native_app_label=u'calendar', app_label=_('appointment reminder')).main()
+AppLabelRenamer(native_app_label=u'appointment', app_label=_('appointment')).main()
 
 
 class Calendar_UserProfileInline(admin.StackedInline):

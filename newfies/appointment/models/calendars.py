@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
-import pytz
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
-import datetime
 from django.utils import timezone
-from .users import Calendar_User
+from appointment.users import Calendar_User
+import datetime
+import pytz
 
 
 class Calendar(models.Model):
@@ -54,7 +54,7 @@ class Calendar(models.Model):
     class Meta:
         verbose_name = _('calendar')
         verbose_name_plural = _('calendars')
-        app_label = "calendar"
+        app_label = "appointment"
 
     def __unicode__(self):
         return self.name

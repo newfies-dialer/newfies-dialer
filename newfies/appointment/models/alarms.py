@@ -2,8 +2,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
-from calendar.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT
-from calendar.models.events import Event
+from appointment.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT
+from appointment.models.events import Event
 from survey.models import Survey
 from dialer_cdr.models import Callrequest
 from mod_mailer.models import MailTemplate
@@ -24,7 +24,7 @@ class SMSTemplate(models.Model):
     class Meta:
         verbose_name = _('SMS template')
         verbose_name_plural = _('SMS templates')
-        app_label = "calendar"
+        app_label = "appointment"
 
     def __unicode__(self):
         return force_unicode(self.template_key)
@@ -81,7 +81,7 @@ class Alarm(models.Model):
     class Meta:
         verbose_name = _('alarm')
         verbose_name_plural = _('alarms')
-        app_label = "calendar"
+        app_label = "appointment"
 
     def __unicode__(self):
         return self.id

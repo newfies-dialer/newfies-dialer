@@ -58,7 +58,7 @@ class CalendarSetting(models.Model):
         verbose_name = _("Calender setting")
         verbose_name_plural = _("calendar settings")
         db_table = "calendar_setting"
-        app_label = "calendar"
+        app_label = "appointment"
 
 
 class Calendar_User(User):
@@ -102,7 +102,7 @@ class Calendar_UserProfile(Profile_abstract):
         db_table = 'calendar_user_profile'
         verbose_name = _("calendar user profile")
         verbose_name_plural = _("calendar user profiles")
-        app_label = "calendar"
+        app_label = "appointment"
 
     def __unicode__(self):
         return u"%s" % str(self.user)

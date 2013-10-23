@@ -1,7 +1,4 @@
 # -*- coding: utf-8 -*-
-import pytz
-from dateutil import rrule
-
 from django.contrib.contenttypes import generic
 from django.db import models
 from django.db.models import Q
@@ -9,14 +6,15 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import date
 from django.utils.translation import ugettext, ugettext_lazy as _
-
-from calendar.conf import settings
-from calendar.models.rules import Rule
-from calendar.models.calendars import Calendar
-from calendar.utils import OccurrenceReplacer
 from django.utils import timezone
-from calendar.constants import EVENT_STATUS
+from appointment.conf import settings
+from appointment.models.rules import Rule
+from appointment.models.calendars import Calendar
+from appointment.utils import OccurrenceReplacer
+from appointment.constants import EVENT_STATUS
+from dateutil import rrule
 import jsonfield
+import pytz
 
 
 class EventManager(models.Manager):
@@ -31,8 +29,7 @@ class Event(models.Model):
     other models.
     '''
     start = models.DateTimeField(_("start"))
-    end = models.DateTimeField(_("end"),
-        help_text=_("The end time must be later than the start time."))
+    end = models.DateTimeField(_("end"), help_text=_("The end time must be later than the start time."))
     title = models.CharField(_("title"), max_length=255)
     description = models.TextField(_("description"), null=True, blank=True)
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, verbose_name=_("creator"), related_name='creator')
@@ -53,7 +50,7 @@ class Event(models.Model):
     class Meta:
         verbose_name = _('event')
         verbose_name_plural = _('events')
-        app_label = "calendar"
+        app_label = "appointment"
 
     def __unicode__(self):
         date_format = u'%s' % ugettext("DATE_FORMAT")
@@ -349,7 +346,7 @@ class EventRelation(models.Model):
     class Meta:
         verbose_name = _("event relation")
         verbose_name_plural = _("event relations")
-        app_label = "calendar"
+        app_label = "appointment"
 
     def __unicode__(self):
         return u'%s(%s)-%s' % (self.event.title, self.distinction, self.content_object)
@@ -368,7 +365,7 @@ class Occurrence(models.Model):
     class Meta:
         verbose_name = _("occurrence")
         verbose_name_plural = _("occurrences")
-        app_label = "calendar"
+        app_label = "appointment"
 
     def __init__(self, *args, **kwargs):
         super(Occurrence, self).__init__(*args, **kwargs)

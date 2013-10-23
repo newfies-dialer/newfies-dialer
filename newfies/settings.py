@@ -222,7 +222,7 @@ INSTALLED_APPS = (
     'dnc',
     'agent',
     'callcenter',
-    'calendar',
+    'appointment',
     'mod_mailer',
     #'raven.contrib.django',
     'apiplayground',

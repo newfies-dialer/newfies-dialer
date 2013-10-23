@@ -94,7 +94,7 @@ def mailspooler_pending(*args, **kwargs):
     #Acquire lock
     if acquire_lock():
         try:
-            list_pending_mail = MailSpooler.objects.filter(mailspooler_type=1)[:50]
+            list_pending_mail = MailSpooler.objects.filter(mailspooler_type=MAILSPOOLER_TYPE.PENDING)[:50]
             logger.info("Check for pending Mail...")
         except MailSpooler.DoesNotExist:
             logger.info("MailSpooler doesn't exist!")

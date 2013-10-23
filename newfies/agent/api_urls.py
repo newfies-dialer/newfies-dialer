@@ -14,14 +14,13 @@
 from django.conf.urls import patterns, url
 from django.conf.urls import include
 from rest_framework.routers import DefaultRouter
-from agent.api_views import (AgentViewSet, AgentProfileViewSet,
+from agent.api_views import (AgentProfileViewSet,
     AgentPasswordViewSet, obtain_auth_token_login, AgentSubscriberViewSet,
     AgentQueueStatusViewSet)
 
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'agents', AgentViewSet)
 router.register(r'agents_profile', AgentProfileViewSet)
 router.register(r'agents_password', AgentPasswordViewSet, 'agents_password')
 router.register(r'agent_subscriber', AgentSubscriberViewSet, 'agent_subscriber')

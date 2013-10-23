@@ -14,7 +14,7 @@
 from django.forms import ModelForm
 #from django.contrib.auth.forms import UserChangeForm
 #from django.utils.translation import ugettext as _
-from appointment.models import Calendar_UserProfile
+from appointment.models.users import Calendar_UserProfile
 
 
 class Calendar_UserProfileForm(ModelForm):

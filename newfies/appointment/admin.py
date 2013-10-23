@@ -15,7 +15,7 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
-from appointment.models import Calendar_Setting, Calendar_User, Calendar_UserProfile
+from appointment.models.users import CalendarSetting, Calendar_User, Calendar_UserProfile
 from appointment.forms import Calendar_UserProfileForm
 from common.app_label_renamer import AppLabelRenamer
 AppLabelRenamer(native_app_label=u'appointment', app_label=_('appointment')).main()
@@ -41,9 +41,9 @@ class Calendar_UserAdmin(UserAdmin):
 admin.site.register(Calendar_User, Calendar_UserAdmin)
 
 
-class Calendar_SettingAdmin(admin.ModelAdmin):
+class CalendarSettingAdmin(admin.ModelAdmin):
     list_display = ('cid_number', 'cid_name', 'call_timeout', 'user', 'survey')
     ordering = ('-cid_number', )
 
 
-admin.site.register(Calendar_Setting, Calendar_SettingAdmin)
+admin.site.register(CalendarSetting, CalendarSettingAdmin)

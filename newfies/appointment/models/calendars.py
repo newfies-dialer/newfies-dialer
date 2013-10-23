@@ -3,7 +3,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-from appointment.users import Calendar_User
+from appointment.models.users import Calendar_User
 import datetime
 import pytz
 

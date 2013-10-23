@@ -33,6 +33,7 @@ from apirest.view_section_template import SectionTemplateViewSet
 from apirest.view_branching_template import BranchingTemplateViewSet
 from apirest.view_survey_aggregate_result import SurveyAggregateResultViewSet
 from apirest.view_subscriber_per_campaign import SubscriberPerCampaignList
+from apirest.view_queue import QueueViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -49,6 +50,7 @@ router.register(r'callrequest', CallrequestViewSet)
 router.register(r'survey_template', SurveyTemplateViewSet)
 router.register(r'section_template', SectionTemplateViewSet)
 router.register(r'branching_template', BranchingTemplateViewSet)
+router.register(r'queue', QueueViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browseable API.

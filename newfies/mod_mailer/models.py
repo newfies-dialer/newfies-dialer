@@ -53,8 +53,6 @@ class MailSpooler(models.Model):
     This table store the Mail Spooler
     """
     mailtemplate = models.ForeignKey(MailTemplate, verbose_name=_('mail template'))
-    # TODO: user FK should be replaced by a contact from the phonebook
-    #user = models.ForeignKey(User, verbose_name='User')
     contact = models.ForeignKey(Contact, verbose_name=_("contact"))
     created_date = models.DateTimeField(auto_now_add=True)
     parameter = models.CharField(max_length=1000, help_text=_('parameter'),

@@ -36,10 +36,8 @@ class SurveyAggregateResultViewSet(APIView):
         error = {}
         survey_result_kwargs = {}
 
-        cursor = connection.cursor()
         try:
-            survey_result_kwargs['campaign'] =\
-                Campaign.objects.get(id=campaign_id)
+            survey_result_kwargs['campaign'] = Campaign.objects.get(id=campaign_id)
         except:
             error_msg = "Campaign ID does not exists!"
             error['error'] = error_msg

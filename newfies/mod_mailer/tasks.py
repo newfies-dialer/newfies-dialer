@@ -16,6 +16,7 @@ from django.conf import settings
 from django.core.cache import cache
 from celery.decorators import task, periodic_task
 from mod_mailer.models import MailSpooler, MailTemplate
+from mod_mailer.constants import MAILSPOOLER_TYPE
 from user_profile.models import User
 #from dialer_contact.models import Contact
 from mailer.engine import send_all
@@ -44,7 +45,7 @@ def sendmail_task(current_mail_id):
 
     current_mailspooler = MailSpooler.objects.get(id=current_mail_id)
 
-    if current_mailspooler.mailspooler_type != 4:  # not in process
+    if current_mailspooler.mailspooler_type != MAILSPOOLER_TYPE.IN_PROCESS:
         logger.info("ERROR :: Trying to send mail for not spolled MailSpooler")
         return False
 
@@ -65,7 +66,7 @@ def sendmail_task(current_mail_id):
         headers={'From': '%s <%s>' % (mailtemplate.from_name, mailtemplate.from_email)},
     )
 
-    current_mailspooler.mailspooler_type = 2  # Sent
+    current_mailspooler.mailspooler_type = MAILSPOOLER_TYPE.SENT
     current_mailspooler.save()
 
     logger.info(u"Mail Sent - ID:%d" % current_mailspooler.id)
@@ -101,7 +102,7 @@ def mailspooler_pending(*args, **kwargs):
 
         for current_mailspooler in list_pending_mail:
             #To avoid duplicate sending
-            current_mailspooler.mailspooler_type = 4  # In Process
+            current_mailspooler.mailspooler_type = MAILSPOOLER_TYPE.IN_PROCESS  # In Process
             current_mailspooler.save()
             logger.info("Calling Task to send MAIL!")
             sendmail_task.delay(current_mailspooler.id)

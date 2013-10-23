@@ -17,7 +17,7 @@ from common.utils import Choice
 
 
 class MAILSPOOLER_TYPE(Choice):
-    PENDING = 1, _('PENDING')
-    SENT = 2, _('SENT')
-    FAILURE = 3, _('FAILURE')
-    IN_PROCESS = 4, _('IN_PROCESS')
+    PENDING = 1, _('pending').upper()
+    SENT = 2, _('sent').upper()
+    FAILURE = 3, _('failure').upper()
+    IN_PROCESS = 4, _('in_process').upper()

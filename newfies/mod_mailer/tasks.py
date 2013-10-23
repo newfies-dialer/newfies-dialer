@@ -13,15 +13,16 @@
 #
 
 from django.conf import settings
+from django.core.cache import cache
 from celery.decorators import task, periodic_task
 from mod_mailer.models import MailSpooler, MailTemplate
 from user_profile.models import User
-from datetime import timedelta
-import logging
+#from dialer_contact.models import Contact
 from mailer.engine import send_all
 from mailer.models import Message
 from mailer import send_html_mail
-from django.core.cache import cache
+from datetime import timedelta
+import logging
 
 
 LOCK_EXPIRE = 60 * 5  # Lock expires in 5 minutes
@@ -50,6 +51,8 @@ def sendmail_task(current_mail_id):
     mailtemplate = MailTemplate.objects.get(pk=current_mailspooler.mailtemplate.id)
     # TODO: replace by contact from phonebook
     c_user = User.objects.get(pk=current_mailspooler.user.id)
+    #c_contact = Contact.objects.get(phonebook_id=phonebook_id, contact=contact)
+
     c_user.count_email = c_user.count_email + 1
     c_user.save()
 

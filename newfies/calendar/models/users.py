@@ -93,7 +93,7 @@ class Calendar_UserProfile(Profile_abstract):
         * ``calendar_setting`` - appointment reminder settings
 
 
-    **Name of DB table**: ar_user_profile
+    **Name of DB table**: calendar_user_profile
     """
     calendar_setting = models.ForeignKey(CalendarSetting, null=True, blank=True,
                                          verbose_name=_('calendar settings'))

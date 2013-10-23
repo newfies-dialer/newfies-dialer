@@ -114,8 +114,13 @@ class CustomIndexDashboard(Dashboard):
         ))
 
         self.children.append(modules.AppList(
-            _('appointment reminder').title(),
-            models=('calendar.*', ),
+            _('appointment').title(),
+            models=('appointment.*', ),
+        ))
+
+        self.children.append(modules.AppList(
+            _('mod_mailer').title(),
+            models=('mod_mailer.*', ),
         ))
 
         self.children.append(modules.LinkList(

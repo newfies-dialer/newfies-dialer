@@ -9,7 +9,6 @@ django-cache-utils==0.7.2
 django-picklefield==0.3.0
 django-jsonfield==0.8.12
 django-countries==1.5
-django-tastypie==0.9.12
 django-redis-cache==0.9.6
 django-redisboard==0.2.5
 django-admin-sortable==1.4.7
@@ -27,7 +26,6 @@ django-nvd3==0.5.0
 git+git://github.com/Star2Billing/django-notification
 django-frontend-notification==0.1.6
 django-genericadmin==0.4
-git+git://github.com/areski/Django-API-Playground.git
 django-bower==4.8
 django-cors-headers==0.12
 #git+git://github.com/hmarr/django-ses.git

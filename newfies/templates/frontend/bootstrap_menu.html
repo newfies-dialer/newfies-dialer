@@ -152,8 +152,7 @@
                     </li>
                     <li class="divider"></li>
                     {% if perms.user_profile.view_api_explorer %}
-                        <li><a href="/api-explorer/"> {% trans "API Explorer" %}</a></li>
-                        <li><a href="/rest-api/"> {% trans "REST-API Explorer" %}</a></li>
+                        <li><a href="/rest-api/"> {% trans "API Explorer" %}</a></li>
                     {% endif %}
                     <li class="divider"></li>
                     {% if user.is_superuser %}

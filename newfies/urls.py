@@ -59,7 +59,6 @@ urlpatterns = patterns('',
         {'document_root': settings.STATIC_ROOT}),
     #(r'^sentry/', include('sentry.web.urls')),
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
-    #url(r'^calendar/', include('calendarium.urls')),
 )
 
 urlpatterns += urlpatterns_apirest

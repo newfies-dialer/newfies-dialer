@@ -230,11 +230,6 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'corsheaders',
     'djangobower',
-    #'schedule',
-    #'filer',
-    #'mptt',
-    #'easy_thumbnails',
-    #'calendarium',
 )
 
 # Django extensions

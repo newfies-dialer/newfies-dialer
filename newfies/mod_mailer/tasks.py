@@ -15,18 +15,18 @@
 from django.conf import settings
 from django.core.cache import cache
 from celery.decorators import task, periodic_task
+from celery.utils.log import get_task_logger
 from mod_mailer.models import MailSpooler, MailTemplate
 from mod_mailer.constants import MAILSPOOLER_TYPE
 from mailer.engine import send_all
 from mailer.models import Message
 from mailer import send_html_mail
 from datetime import timedelta
-import logging
 
 
 LOCK_EXPIRE = 60 * 5  # Lock expires in 5 minutes
 
-logger = logging.getLogger('sms.filelog')
+logger = get_task_logger(__name__)
 
 
 # allow a sysadmin to pause the sending of mail temporarily.
@@ -38,7 +38,6 @@ def sendmail_task(current_mail_id):
     """
     Task to send SMS
     """
-    logger = sendmail_task.get_logger()
     logger.info("TASK :: sendmail_task")
 
     current_mailspooler = MailSpooler.objects.get(id=current_mail_id)
@@ -73,7 +72,6 @@ def mailspooler_pending(*args, **kwargs):
 
         mailspooler_pending.delay()
     """
-    logger = mailspooler_pending.get_logger()
     logger.info("TASK :: mailspooler_pending_pending")
 
     lock_id = "%s-lock" % ('mailspooler_pending')
@@ -114,7 +112,6 @@ def sendmail_pending(*args, **kwargs):
 
         sendmail_pending.delay()
     """
-    logger = sendmail_pending.get_logger()
     logger.info("TASK :: sendmail_pending")
     if not PAUSE_SEND:
         send_all()
@@ -130,7 +127,6 @@ def sendmail_retry_deferred(*args, **kwargs):
 
         sendmail_retry_deferred.delay()
     """
-    logger = sendmail_retry_deferred.get_logger()
     logger.info("TASK :: sendmail_retry_deferred")
     count = Message.objects.retry_deferred()  # @@@ new_priority not yet supported
     if count and count > 0:

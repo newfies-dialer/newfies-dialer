@@ -55,7 +55,6 @@ def sendmail_task(current_mail_id):
         mailtemplate.message_html,
         mailtemplate.from_email,
         [contact_email],
-        headers={'From': '%s <%s>' % (mailtemplate.from_name, mailtemplate.from_email)},
     )
 
     current_mailspooler.mailspooler_type = MAILSPOOLER_TYPE.SENT

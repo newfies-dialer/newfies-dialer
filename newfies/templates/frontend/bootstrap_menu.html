@@ -1,4 +1,4 @@
-{% load i18n frontend_notification_tags %}
+{% load i18n frontend_notification_tags activelink %}
 
 
 <div class="navbar navbar-fixed-top">
@@ -20,10 +20,10 @@
         <ul class="nav">
 
           <li class="dropdown">
-              <a href="#" class="dropdown-toggle {% if 'dashboard' in module %}active{% endif %}" data-toggle="dropdown">{% trans "dashboard"|title %} <b class="caret"></b></a>
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "dashboard"|title %} <b class="caret"></b></a>
               <ul class="dropdown-menu">
                 {% if perms.dialer_campaign.view_dashboard %}
-                  <li {% if 'dashboard' in module %}class="active"{% endif %}><a href="/dashboard/">{% trans "voice dashboard"|title %}</a></li>
+                  <li class="{% ifactive '/dashboard/' %}active{% endifactive %}"><a href="/dashboard/">{% trans "voice dashboard"|title %}</a></li>
                 {% endif %}
               </ul>
           </li>
@@ -33,7 +33,7 @@
               <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "campaign"|title %} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   {% if perms.dialer_campaign.view_campaign %}
-                    <li {% if 'campaign' in module %}class="active"{% endif %}><a href="/campaign/">{% trans "voice campaign"|title %}</a></li>
+                    <li class="{% ifactive '/campaign/' %}active{% endifactive %}"><a href="/campaign/">{% trans "voice campaign"|title %}</a></li>
                   {% endif %}
                 </ul>
           </li>
@@ -44,11 +44,11 @@
               {% if perms.dialer_campaign.view_campaign %}
                   <ul class="dropdown-menu">
                     {% if perms.dialer_contact.view_phonebook %}
-                      <li {% if 'phonebook' in module %}class="active"{% endif %}><a href="/phonebook/">{% trans "phonebooks"|title %}</a></li>
+                      <li class="{% ifactive '/phonebook/' %}active{% endifactive %}"><a href="/phonebook/">{% trans "phonebooks"|title %}</a></li>
                     {% endif %}
 
                     {% if perms.dialer_contact.view_contact %}
-                      <li {% if 'contact' in module  %}class="active"{% endif %}><a href="/contact/">{% trans "contacts"|title %}</a></li>
+                      <li class="{% ifactive '/contact/' %}active{% endifactive %}"><a href="/contact/">{% trans "contacts"|title %}</a></li>
                     {% endif %}
                   </ul>
               {% endif %}
@@ -61,11 +61,11 @@
               {% if perms.dnc.view_dnc_list %}
                   <ul class="dropdown-menu">
                     {% if perms.dnc.view_dnc_list %}
-                      <li {% if 'dnc_list' in module %}class="active"{% endif %}><a href="/dnc_list/">{% trans "dnc"|upper %} {% trans "list"|title %}</a></li>
+                      <li class="{% ifactive '/dnc_list/' %}active{% endifactive %}"><a href="/dnc_list/">{% trans "dnc"|upper %} {% trans "list"|title %}</a></li>
                     {% endif %}
 
                     {% if perms.dnc.view_dnccontact %}
-                      <li {% if 'dnc_contact' in module  %}class="active"{% endif %}><a href="/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts" %}</a></li>
+                      <li class="{% ifactive '/dnc_contact/' %}active{% endifactive %}"><a href="/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts" %}</a></li>
                     {% endif %}
                   </ul>
               {% endif %}
@@ -77,15 +77,15 @@
 
               <ul class="dropdown-menu">
                 {% if perms.user_profile.view_agent %}
-                  <li {% if 'agent' in module %}class="active"{% endif %}><a href="/agent/">{% trans "agent"|title %}</a></li>
+                  <li class="{% ifactive '/agent/' %}active{% endifactive %}"><a href="/agent/">{% trans "agent"|title %}</a></li>
                 {% endif %}
 
                 {% if perms.user_profile.view_queue %}
-                  <li {% if 'queue' in module  %}class="active"{% endif %}><a href="/queue/">{% trans "queue"|title %}</a></li>
+                  <li class="{% ifactive '/queue/' %}active{% endifactive %}"><a href="/queue/">{% trans "queue"|title %}</a></li>
                 {% endif %}
 
                 {% if perms.user_profile.view_tier %}
-                  <li {% if 'tier' in module  %}class="active"{% endif %}><a href="/tier/">{% trans "tier"|title %}</a></li>
+                  <li class="{% ifactive '/tier/' %}active{% endifactive %}"><a href="/tier/">{% trans "tier"|title %}</a></li>
                 {% endif %}
               </ul>
           </li>
@@ -94,13 +94,13 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "reporting"|title %} <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 {% if perms.dialer_cdr.view_call_detail_report %}
-                    <li {% if 'voipcall_report' in module %}class="active"{% endif %}><a href="/voipcall_report/">{% trans "call detail report"|title %}</a></li>
+                    <li class="{% ifactive '/voipcall_report/' %}active{% endifactive %}"><a href="/voipcall_report/">{% trans "call detail report"|title %}</a></li>
                 {% endif %}
                 {% if perms.survey.view_survey_report %}
-                    <li {% if 'survey_report' in module %}class="active"{% endif %}><a href="/survey_report/">{% trans "survey reports"|title %}</a></li>
+                    <li class="{% ifactive '/survey_report/' %}active{% endifactive %}"><a href="/survey_report/">{% trans "survey reports"|title %}</a></li>
                 {% endif %}
                 {% if perms.dialer_campaign.view_subscriber %}
-                    <li {% if 'subscribers' in module  %}class="active"{% endif %}><a href="/subscribers/">{% trans "subscriber report"|title %}</a></li>
+                    <li class="{% ifactive '/subscribers/' %}active{% endifactive %}"><a href="/subscribers/">{% trans "subscriber report"|title %}</a></li>
                 {% endif %}
             </ul>
           </li>
@@ -109,13 +109,13 @@
             <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "modules"|title %} <b class="caret"></b></a>
             <ul class="dropdown-menu">
                 {% if perms.survey.view_survey %}
-                    <li {% if module == 'survey_list' %}class="active"{% endif %}><a href="/survey/">{% trans "surveys"|title %}</a></li>
+                    <li class="{% ifactive '/survey/' %}active{% endifactive %}"><a href="/survey/">{% trans "surveys"|title %}</a></li>
                 {% endif %}
                 {% if perms.survey.view_frozen_survey %}
-                    <li {% if module == 'frozen_survey_list' %}class="active"{% endif %}><a href="/frozen_survey/">{% trans "frozen surveys"|title %}</a></li>
+                    <li class="{% ifactive '/frozen_survey/' %}active{% endifactive %}"><a href="/frozen_survey/">{% trans "frozen surveys"|title %}</a></li>
                 {% endif %}
                 {% if perms.audiofield.view_audio %}
-                    <li {% if 'audio' in module  %}class="active"{% endif %}><a href="/audio/">{% trans "audio files"|capfirst %}</a></li>
+                    <li class="{% ifactive '/audio/' %}active{% endifactive %}"><a href="/audio/">{% trans "audio files"|capfirst %}</a></li>
                 {% endif %}
                 <li class="divider"></li>
                 <li><a href="http://www.newfies-dialer.org/add-ons" target="_blank">{% trans "add-ons"|title %}</a></li>
@@ -137,10 +137,10 @@
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
-                    <li  {% if action == "tabs-1" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-1">
+                    <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-1">
                         {% trans "account settings"|capfirst %}</a>
                     </li>
-                    <li>
+                    <li class="{% ifactive '/user_notification/' %}active{% endifactive %}">
                         <a href="/user_notification/">{% trans "notifications"|title %}
                             <span class="label label-warning">{{ notice_count }}</span>
                         </a>
@@ -156,7 +156,7 @@
                     {% endif %}
                     <li class="divider"></li>
                     {% if user.is_superuser %}
-                    <li><a href="/admin/"> {% trans "administration"|title %}</a></li>
+                    <li><a href="/admin/" target="_blank"> {% trans "administration"|title %}</a></li>
                     <li class="divider"></li>
                     {% endif %}
                     <li><a href="/logout/">{% trans "log out"|capfirst %}</a></li>

@@ -230,6 +230,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'corsheaders',
     'djangobower',
+    'activelink',
 )
 
 # Django extensions

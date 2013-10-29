@@ -33,4 +33,6 @@ urlpatterns = patterns('dialer_campaign.views',
     (r'^subscribers/$', 'subscriber_list'),
     (r'^subscribers/export_subscriber/$', 'subscriber_export'),
 
+    # Send notification to admin regarding dialer setting
+    (r'^notify/admin/$', 'notify_admin'),
 )

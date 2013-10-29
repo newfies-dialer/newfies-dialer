@@ -30,7 +30,7 @@ from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm, \
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
 from dialer_campaign.function_def import user_dialer_setting_msg
-from common.common_functions import current_view, get_pagination_vars
+from common.common_functions import get_pagination_vars
 import json
 
 
@@ -93,7 +93,6 @@ def agent_dashboard(request):
     template = 'frontend/agent/dashboard.html'
 
     data = {
-        #'module': current_view(request),
     }
 
     return render_to_response(template, data,
@@ -134,7 +133,6 @@ def agent_change_password(request, object_id):
 
     template = 'frontend/agent/change_password.html'
     data = {
-        'module': current_view(request),
         'agent_username': agent_username,
         'user_password_form': user_password_form,
         'msg_pass': msg_pass,
@@ -143,7 +141,7 @@ def agent_change_password(request, object_id):
     request.session['msg'] = ''
     request.session['error_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -232,7 +230,6 @@ def agent_detail_change(request):
 
     template = 'frontend/registration/user_detail_change.html'
     data = {
-        'module': current_view(request),
         'user_detail_form': user_detail_form,
         'user_detail_extened_form': user_detail_extened_form,
         'user_password_form': user_password_form,
@@ -272,7 +269,6 @@ def agent_list(request):
 
     template = 'frontend/agent/list.html'
     data = {
-        'module': current_view(request),
         'msg': request.session.get('msg'),
         'agent_list': agent_list,
         'total_agent': agent_list.count(),
@@ -322,7 +318,6 @@ def agent_add(request):
 
     template = 'frontend/agent/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -422,7 +417,6 @@ def agent_change(request, object_id):
 
     template = 'frontend/agent/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'agent_username_form': agent_username_form,
         'action': 'update',

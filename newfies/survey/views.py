@@ -36,8 +36,8 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME,\
     FROZEN_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
-from common.common_functions import striplist, variable_value, current_view,\
-    ceil_strdate, get_pagination_vars
+from common.common_functions import striplist, variable_value, ceil_strdate,\
+    get_pagination_vars
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import subprocess
@@ -96,7 +96,6 @@ def survey_list(request):
         .filter(user=request.user).order_by(sort_order)
     template = 'frontend/survey/survey_list.html'
     data = {
-        'module': current_view(request),
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
@@ -137,7 +136,6 @@ def survey_add(request):
             return HttpResponseRedirect('/survey/%s/' % (obj.id))
     template = 'frontend/survey/survey_change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
     }
@@ -458,7 +456,6 @@ def section_change(request, id):
         'form': form,
         'survey_id': section.survey_id,
         'section_id': section.id,
-        'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
         'SECTION_TYPE': SECTION_TYPE,
@@ -503,7 +500,6 @@ def section_delete(request, id):
     data = {
         'section_type': section.type,
         'section_id': section.id,
-        'module': current_view(request),
     }
     return render_to_response(template, data,
         context_instance=RequestContext(request))
@@ -542,7 +538,6 @@ def section_script_change(request, id):
         'form': form,
         'survey_id': section.survey_id,
         'section_id': section.id,
-        'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
     }
@@ -646,7 +641,6 @@ def section_branch_add(request):
         'survey_id': section_survey_id,
         'section_type': section_type,
         'section_id': section_id,
-        'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'add',
         'SECTION_TYPE': SECTION_TYPE,
@@ -711,7 +705,6 @@ def section_branch_change(request, id):
         'section_type': branching.section.type,
         'section_id': branching.section.id,
         'branching_id': branching.id,
-        'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
         'SECTION_TYPE': SECTION_TYPE,
@@ -767,7 +760,6 @@ def survey_change(request, object_id):
         'section_list': section_list,
         'branching_list': branching_list,
         'branching_section_list': branching_section_list,
-        'module': current_view(request),
         'action': 'update',
         'form': form,
         'msg': request.session.get('msg'),
@@ -806,7 +798,6 @@ def survey_view(request, object_id):
         'section_list': section_list,
         'branching_list': branching_list,
         'branching_section_list': branching_section_list,
-        'module': current_view(request),
         'action': 'view',
         'msg': request.session.get('msg'),
         'SECTION_TYPE': SECTION_TYPE,
@@ -1036,7 +1027,6 @@ def survey_report(request):
         'total_calls': survey_cdr_daily_data['total_calls'],
         'total_avg_duration': survey_cdr_daily_data['total_avg_duration'],
         'max_duration': survey_cdr_daily_data['max_duration'],
-        'module': current_view(request),
         'msg': request.session.get('msg'),
         'err_msg': request.session.get('err_msg'),
         'form': form,
@@ -1362,7 +1352,6 @@ def frozen_survey_list(request):
 
     template = 'frontend/survey/frozen_survey_list.html'
     data = {
-        'module': current_view(request),
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
         'PAGE_SIZE': PAGE_SIZE,

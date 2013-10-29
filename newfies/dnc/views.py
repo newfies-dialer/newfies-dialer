@@ -25,8 +25,7 @@ from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
 from dialer_campaign.function_def import user_dialer_setting_msg, \
     type_field_chk
-from common.common_functions import current_view,\
-    get_pagination_vars, striplist
+from common.common_functions import get_pagination_vars, striplist
 from common.common_constants import EXPORT_CHOICE
 import tablib
 import csv
@@ -58,7 +57,6 @@ def dnc_list(request):
 
     template = 'frontend/dnc_list/list.html'
     data = {
-        'module': current_view(request),
         'msg': request.session.get('msg'),
         'dnc_list': dnc_list,
         'total_dnc': dnc_list.count(),
@@ -100,7 +98,6 @@ def dnc_add(request):
             return HttpResponseRedirect('/dnc_list/')
     template = 'frontend/dnc_list/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -193,7 +190,7 @@ def dnc_change(request, object_id):
     dnc = get_object_or_404(DNC, pk=object_id, user=request.user)
     form = DNCForm(instance=dnc)
     if request.method == 'POST':
-        if request.POST.get('delete'):            
+        if request.POST.get('delete'):
             return HttpResponseRedirect('/dnc_list/del/%s/' % object_id)
         else:
             form = DNCForm(request.POST, instance=dnc)
@@ -205,7 +202,6 @@ def dnc_change(request, object_id):
 
     template = 'frontend/dnc_list/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'update',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -307,7 +303,6 @@ def dnc_contact_list(request):
 
     template = 'frontend/dnc_contact/list.html'
     data = {
-        'module': current_view(request),
         'phone_number_list': phone_number_list,
         'all_phone_number_list': all_phone_number_list,
         'total_phone_numbers': phone_number_count,
@@ -358,7 +353,6 @@ def dnc_contact_add(request):
 
     template = 'frontend/dnc_contact/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
         'error_msg': error_msg,
@@ -430,7 +424,7 @@ def dnc_contact_change(request, object_id):
     form = DNCContactForm(request.user, instance=dnc_contact)
     if request.method == 'POST':
         # Delete dnc contact
-        if request.POST.get('delete'):            
+        if request.POST.get('delete'):
             return HttpResponseRedirect('/dnc_contact/del/%s/' % object_id)
         else:
             # Update dnc contact
@@ -443,7 +437,6 @@ def dnc_contact_change(request, object_id):
 
     template = 'frontend/dnc_contact/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'update',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -545,7 +538,6 @@ def dnc_contact_import(request):
         'error_msg': error_msg,
         'success_import_list': success_import_list,
         'type_error_import_list': type_error_import_list,
-        'module': current_view(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     })
     template = 'frontend/dnc_contact/import_dnc_contact.html'
@@ -613,7 +605,6 @@ def dnc_contact_export_view(request):
 
     template = 'frontend/dnc_contact/export_dnc_contact.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'update',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),

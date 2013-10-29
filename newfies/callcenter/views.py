@@ -21,7 +21,7 @@ from callcenter.models import Queue, Tier
 from callcenter.constants import QUEUE_COLUMN_NAME, TIER_COLUMN_NAME
 from callcenter.forms import QueueFrontEndForm, TierFrontEndForm
 from dialer_campaign.function_def import user_dialer_setting_msg
-from common.common_functions import current_view, get_pagination_vars
+from common.common_functions import get_pagination_vars
 from survey.models import Section_template
 
 
@@ -51,7 +51,6 @@ def queue_list(request):
 
     template = 'frontend/queue/list.html'
     data = {
-        'module': current_view(request),
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'queue_list': queue_list,
@@ -96,7 +95,6 @@ def queue_add(request):
 
     template = 'frontend/queue/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -209,7 +207,6 @@ def queue_change(request, object_id):
 
     template = 'frontend/queue/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'update',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -244,7 +241,6 @@ def tier_list(request):
 
     template = 'frontend/tier/list.html'
     data = {
-        'module': current_view(request),
         'msg': request.session.get('msg'),
         'tier_list': tier_list,
         'total_tier': tier_list.count(),
@@ -288,7 +284,6 @@ def tier_add(request):
 
     template = 'frontend/tier/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -373,7 +368,6 @@ def tier_change(request, object_id):
 
     template = 'frontend/tier/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'update',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),

@@ -33,7 +33,7 @@ from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
-from common.common_functions import current_view, percentage
+from common.common_functions import percentage
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 import time
@@ -97,7 +97,6 @@ def login_view(request):
         loginform = LoginForm()
 
     data = {
-        'module': current_view(request),
         'loginform': loginform,
         'errorlogin': errorlogin,
         'is_authenticated': request.user.is_authenticated(),
@@ -119,7 +118,6 @@ def index(request):
     template = 'frontend/index.html'
     errorlogin = ''
     data = {
-        'module': current_view(request),
         'user': request.user,
         'loginform': LoginForm(),
         'errorlogin': errorlogin,
@@ -476,7 +474,6 @@ def customer_dashboard(request, on_index=None):
 
     template = 'frontend/dashboard.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'campaign_count': campaign_count,

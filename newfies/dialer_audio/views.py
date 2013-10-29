@@ -23,7 +23,7 @@ from django.utils.translation import ugettext as _
 from dialer_audio.constants import AUDIO_COLUMN_NAME
 from dialer_audio.forms import DialerAudioFileForm
 from audiofield.models import AudioFile
-from common.common_functions import current_view, get_pagination_vars
+from common.common_functions import get_pagination_vars
 import os.path
 
 
@@ -52,7 +52,6 @@ def audio_list(request):
 
     template = 'frontend/audio/audio_list.html'
     data = {
-        'module': current_view(request),
         'audio_list': audio_list,
         'total_audio': audio_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
@@ -65,7 +64,7 @@ def audio_list(request):
     request.session['msg'] = ''
     request.session['error_msg'] = ''
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('audiofield.add_audiofile', login_url='/')
@@ -96,13 +95,12 @@ def audio_add(request):
 
     template = 'frontend/audio/audio_change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
         'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def delete_audio_file(obj):
@@ -178,12 +176,12 @@ def audio_change(request, object_id):
           via the CustomerAudioFileForm & get redirected to the audio list
     """
     obj = get_object_or_404(AudioFile, pk=object_id, user=request.user)
-    form = DialerAudioFileForm(instance=obj)    
+    form = DialerAudioFileForm(instance=obj)
 
     if request.method == 'POST':
-        if request.POST.get('delete'):        
+        if request.POST.get('delete'):
             return HttpResponseRedirect('/audio/del/%s/' % object_id)
-            
+
         form = DialerAudioFileForm(
             request.POST, request.FILES, instance=obj)
         if form.is_valid():
@@ -193,9 +191,8 @@ def audio_change(request, object_id):
     template = 'frontend/audio/audio_change.html'
     data = {
         'form': form,
-        'module': current_view(request),
         'action': 'update',
         'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))

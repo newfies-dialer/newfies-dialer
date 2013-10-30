@@ -96,6 +96,7 @@ class spool_pending_call(Task):
             call_type = CALLREQUEST_TYPE.CANNOT_RETRY
 
         # Check user's dialer setting maxretry
+        # TODO: check obj_campaign.user.userprofile.dialersetting raise DoesNotExist is doesn't exist
         if obj_campaign.user.userprofile.dialersetting:
             if obj_campaign.user.userprofile.dialersetting.maxretry == 0:
                 call_type = CALLREQUEST_TYPE.CANNOT_RETRY

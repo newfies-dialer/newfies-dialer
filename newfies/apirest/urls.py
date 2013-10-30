@@ -40,6 +40,7 @@ from apirest.view_calendar import CalendarViewSet
 from apirest.view_calendar_setting import CalendarSettingViewSet
 from apirest.view_calendar_user import CalendarUserViewSet
 from apirest.view_calendar_user_profile import CalendarUserProfileViewSet
+from apirest.view_rule import RuleViewSet
 
 from agent.api_views import AgentViewSet
 
@@ -68,6 +69,7 @@ router.register(r'calendar', CalendarViewSet)
 router.register(r'calendar-setting', CalendarSettingViewSet)
 router.register(r'calendar-user', CalendarUserViewSet)
 router.register(r'calendar-user-profile', CalendarUserProfileViewSet)
+router.register(r'rule', RuleViewSet)
 
 router.register(r'agents', AgentViewSet)
 

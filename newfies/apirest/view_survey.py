@@ -22,7 +22,7 @@ from survey.models import Survey
 
 class SurveyViewSet(viewsets.ReadOnlyModelViewSet):
     """
-    API endpoint that allows content_type to be viewed or edited.
+    API endpoint that allows survey to be viewed.
     """
     authentication = (BasicAuthentication, SessionAuthentication)
     permission_classes = (IsAuthenticatedOrReadOnly, )

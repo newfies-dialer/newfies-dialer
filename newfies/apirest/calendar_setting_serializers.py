@@ -25,7 +25,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycalendar", "slug": "mycalendar", "max_concurrent": "1"}' http://localhost:8000/rest-api/calendar-settings/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"cid_number": "mycalendar", "cid_name": "cid name", "call_timeout": "1", "survey": "1"}' http://localhost:8000/rest-api/calendar-settings/
 
         Response::
 
@@ -54,11 +54,13 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
                 "results": [
                     {
                         "user": "areski",
-                        "url": "http://127.0.0.1:8000/rest-api/calendar-settings/1/",
-                        "name": "Sample calendar",
-                        "slug": "sample_calendar",
-                        "max_concurrent": 1,
-                        "created_date": "2013-10-30T06:07:57.647Z"
+                        "url": "http://127.0.0.1:8000/rest-api/calendar-setting/1/",
+                        "cid_number": "435345",
+                        "cid_name": "appointment-reminder",
+                        "call_timeout": 3,
+                        "survey": "http://127.0.0.1:8000/rest-api/survey/1/",
+                        "created_date": "2013-10-30T06:28:54.422Z",
+                        "updated_date": "2013-10-30T06:28:54.422Z"
                     }
                 ]
             }
@@ -67,7 +69,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "mylittle phonebook"}' http://localhost:8000/rest-api/calendar-settings/%calendar-settings-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"cid_number": "32423423", "cid_name": "cid name", "call_timeout": "1", "survey": "1"}' http://localhost:8000/rest-api/calendar-settings/%calendar-settings-id%/
 
         Response::
 

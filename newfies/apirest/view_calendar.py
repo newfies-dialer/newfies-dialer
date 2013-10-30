@@ -23,7 +23,7 @@ from appointment.models.users import CalendarUser
 
 class CalendarViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows phonebook to be viewed or edited.
+    API endpoint that allows calendar to be viewed or edited.
     """
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
@@ -32,7 +32,7 @@ class CalendarViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         """
-        This view should return a list of all the phonebooks
+        This view should return a list of all the calendars
         for the currently authenticated user.
         """
         if self.request.user.is_superuser:

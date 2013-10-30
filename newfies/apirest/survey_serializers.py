@@ -23,11 +23,11 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/survey/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/frozen-survey/
 
                 or
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/survey/%survey_id%/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/frozen-survey/%frozen_survey_id%/
 
         Response::
 
@@ -37,7 +37,7 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
                 "previous": null,
                 "results": [
                     {
-                        "url": "http://127.0.0.1:8000/rest-api/survey/1/",
+                        "url": "http://127.0.0.1:8000/rest-api/frozen-survey/1/",
                         "name": "Sample survey campaign",
                         "tts_language": "en",
                         "description": "ok",

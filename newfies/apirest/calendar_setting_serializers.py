@@ -96,7 +96,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
             if survey and survey.find('http://') == -1:
                 try:
                     Survey.objects.get(pk=int(survey), user=request.user)
-                    self.init_data['survey'] = '/rest-api/survey/%s/' % survey
+                    self.init_data['survey'] = '/rest-api/frozen-survey/%s/' % survey
                 except:
                     self.init_data['survey'] = ''
                     pass

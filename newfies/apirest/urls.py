@@ -56,7 +56,7 @@ router.register(r'callrequest', CallrequestViewSet)
 router.register(r'survey_template', SurveyTemplateViewSet)
 
 # frozen survey
-router.register(r'survey', SurveyViewSet)
+router.register(r'frozen-survey', SurveyViewSet)
 
 router.register(r'section_template', SectionTemplateViewSet)
 router.register(r'branching_template', BranchingTemplateViewSet)

@@ -14,11 +14,11 @@
 from django.forms import ModelForm
 #from django.contrib.auth.forms import UserChangeForm
 #from django.utils.translation import ugettext as _
-from appointment.models.users import Calendar_UserProfile
+from appointment.models.users import CalendarUserProfile
 
 
-class Calendar_UserProfileForm(ModelForm):
-    """Calendar_UserProfileForm"""
+class CalendarUserProfileForm(ModelForm):
+    """CalendarUserProfileForm"""
 
     class Meta:
-        model = Calendar_UserProfile
+        model = CalendarUserProfile

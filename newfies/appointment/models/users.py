@@ -61,7 +61,7 @@ class CalendarSetting(models.Model):
         app_label = "appointment"
 
 
-class Calendar_User(User):
+class CalendarUser(User):
     """Calendar User Model"""
 
     class Meta:
@@ -85,7 +85,7 @@ class Calendar_User(User):
     User.add_to_class('is_calendar_user', is_calendar_user)
 
 
-class Calendar_UserProfile(Profile_abstract):
+class CalendarUserProfile(Profile_abstract):
     """This defines extra features for the AR_user
 
     **Attributes**:

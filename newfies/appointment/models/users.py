@@ -74,11 +74,11 @@ class CalendarUser(User):
         if not self.pk:
             self.is_staff = 0
             self.is_superuser = 0
-        super(Calendar_User, self).save(**kwargs)
+        super(CalendarUser, self).save(**kwargs)
 
     def is_calendar_user(self):
         try:
-            Calendar_UserProfile.objects.get(user=self)
+            CalendarUserProfile.objects.get(user=self)
             return True
         except:
             return False

@@ -61,7 +61,7 @@ class CalendarSetting(models.Model):
         app_label = "appointment"
 
 
-class Calendar_User(User):
+class CalendarUser(User):
     """Calendar User Model"""
 
     class Meta:
@@ -74,18 +74,18 @@ class Calendar_User(User):
         if not self.pk:
             self.is_staff = 0
             self.is_superuser = 0
-        super(Calendar_User, self).save(**kwargs)
+        super(CalendarUser, self).save(**kwargs)
 
     def is_calendar_user(self):
         try:
-            Calendar_UserProfile.objects.get(user=self)
+            CalendarUserProfile.objects.get(user=self)
             return True
         except:
             return False
     User.add_to_class('is_calendar_user', is_calendar_user)
 
 
-class Calendar_UserProfile(Profile_abstract):
+class CalendarUserProfile(Profile_abstract):
     """This defines extra features for the AR_user
 
     **Attributes**:

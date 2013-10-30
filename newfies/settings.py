@@ -230,6 +230,7 @@ INSTALLED_APPS = (
     'rest_framework.authtoken',
     'corsheaders',
     'djangobower',
+    'activelink',
 )
 
 # Django extensions
@@ -475,6 +476,7 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Use only in Debug mode. Not in production
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
+MAILER_EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 # ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'

@@ -26,7 +26,6 @@ from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
     UserChangeDetailExtendForm, \
     CheckPhoneNumberForm
-from common.common_functions import current_view
 
 
 @login_required
@@ -127,7 +126,6 @@ def customer_detail_change(request):
 
     template = 'frontend/registration/user_detail_change.html'
     data = {
-        'module': current_view(request),
         'user_detail_form': user_detail_form,
         'user_detail_extened_form': user_detail_extened_form,
         'user_password_form': user_password_form,

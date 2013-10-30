@@ -37,8 +37,8 @@ from dialer_campaign.tasks import collect_subscriber
 from survey.models import Section, Branching, Survey_template
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from common.common_functions import current_view, ceil_strdate, \
-    get_pagination_vars, unset_session_var, getvar
+from common.common_functions import ceil_strdate, getvar,\
+    get_pagination_vars, unset_session_var
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import re
@@ -104,7 +104,7 @@ def notify_admin(request):
     all_admin_user = User.objects.filter(is_superuser=True)
     for user in all_admin_user:
         recipient = user
-        if not request.session['has_notified']:
+        if not 'has_notified' in request.session:
             frontend_send_notification(
                 request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
             # Send mail to ADMINS
@@ -243,7 +243,6 @@ def campaign_list(request):
 
     template = 'frontend/campaign/list.html'
     data = {
-        'module': current_view(request),
         'campaign_list': campaign_list,
         'total_campaign': campaign_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
@@ -332,7 +331,6 @@ def campaign_add(request):
 
     template = 'frontend/campaign/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
         'AMD': settings.AMD,
@@ -457,7 +455,6 @@ def campaign_change(request, object_id):
 
     template = 'frontend/campaign/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'update',
         'error_msg': request.session.get('error_msg'),
@@ -562,7 +559,6 @@ def campaign_duplicate(request, id):
 
     template = 'frontend/campaign/campaign_duplicate.html'
     data = {
-        'module': current_view(request),
         'campaign_id': id,
         'form': form,
         'err_msg': request.session.get('error_msg'),
@@ -714,7 +710,6 @@ def subscriber_list(request):
 
     template = 'frontend/subscriber/list.html'
     data = {
-        'module': current_view(request),
         'subscriber_list': subscriber_list,
         'all_subscriber_list': all_subscriber_list,
         'total_subscribers': subscriber_count,

@@ -3,7 +3,7 @@ from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from django.utils import timezone
-from appointment.models.users import Calendar_User
+from appointment.models.users import CalendarUser
 import datetime
 import pytz
 
@@ -44,7 +44,7 @@ class Calendar(models.Model):
     '''
     name = models.CharField(_("name"), max_length=200)
     slug = models.SlugField(_("slug"), max_length=200)
-    user = models.ForeignKey(Calendar_User, blank=True, null=True, verbose_name=_("user"),
+    user = models.ForeignKey(CalendarUser, blank=True, null=True, verbose_name=_("user"),
                              help_text=_("select user"),
                              related_name="calendar user")
     max_concurrent = models.IntegerField(null=True, blank=True, default=0, help_text=_("Max concurrent is not implemented"))

@@ -15,20 +15,20 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
-from appointment.models.users import CalendarSetting, Calendar_User, Calendar_UserProfile
-from appointment.forms import Calendar_UserProfileForm
+from appointment.models.users import CalendarSetting, CalendarUser, CalendarUserProfile
+from appointment.forms import CalendarUserProfileForm
 from common.app_label_renamer import AppLabelRenamer
 AppLabelRenamer(native_app_label=u'appointment', app_label=_('appointment')).main()
 
 
-class Calendar_UserProfileInline(admin.StackedInline):
-    model = Calendar_UserProfile
-    form = Calendar_UserProfileForm
+class CalendarUserProfileInline(admin.StackedInline):
+    model = CalendarUserProfile
+    form = CalendarUserProfileForm
 
 
-class Calendar_UserAdmin(UserAdmin):
+class CalendarUserAdmin(UserAdmin):
     inlines = [
-        Calendar_UserProfileInline,
+        CalendarUserProfileInline,
     ]
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')
@@ -38,7 +38,7 @@ class Calendar_UserAdmin(UserAdmin):
         qs = qs.filter(is_staff=False, is_superuser=False)
         return qs
 
-admin.site.register(Calendar_User, Calendar_UserAdmin)
+admin.site.register(CalendarUser, CalendarUserAdmin)
 
 
 class CalendarSettingAdmin(admin.ModelAdmin):

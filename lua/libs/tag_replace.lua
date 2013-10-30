@@ -29,15 +29,19 @@ function tag_replace(text, contact)
     if not text or text == '' then
         return ''
     end
-    --decode the json
-    if not contact['additional_vars'] or not string.find(text, "[{|}]") then
+    --check if we got tag {__} in the text
+    if not string.find(text, "[{|}]") then
         return text
     end
     --decode json from additional_vars
-    decdata = decodejson(contact['additional_vars'])
-    if decdata and type(decdata) == "table" then
-        -- Merge Table
-        mcontact = table_merge(contact, decdata)
+    if contact['additional_vars'] then
+        decdata = decodejson(contact['additional_vars'])
+        if decdata and type(decdata) == "table" then
+            -- Merge Table
+            mcontact = table_merge(contact, decdata)
+        else
+            mcontact = contact
+        end
     else
         mcontact = contact
     end

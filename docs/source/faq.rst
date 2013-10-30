@@ -156,27 +156,23 @@ Edit the file /usr/share/newfies-dialer/settings_local.py and find::
 
 2. On the IVR application
 
-Edit the file /usr/share/newfies-lua/libs/settings.lua and find::
+Create a new file /usr/share/newfies-lua/libs/acapela_config.lua and add the following::
 
-    --
-    -- Select the TTS engine, value : flite, acapela
-    --
-    TTS_ENGINE = 'flite'
+    TTS_ENGINE = 'acapela'
 
-    --
-    -- Acapela TTS Settings
-    --
     ACCOUNT_LOGIN = 'EVAL_VAAS'
-    APPLICATION_LOGIN = 'EVAL_YYYYYYY'
-    APPLICATION_PASSWORD = 'XXXXXXXX'
+    APPLICATION_LOGIN = 'EVAL_XXXXXX'
+    APPLICATION_PASSWORD = 'XXXXXX'
 
     SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
     QUALITY = '22k'  -- 22k, 8k, 8ka, 8kmu
-    ACAPELA_GENDER = 'W'
+    ACAPELA_GENDER = 'M'
     ACAPELA_INTONATION = 'NORMAL'
     ACAPELA_LANG = 'EN'
 
-    You will have to change the value of the settings : TTS_ENGINE, ACCOUNT_LOGIN, APPLICATION_LOGIN and APPLICATION_PASSWORD.
+
+    Change the value of the settings : ACCOUNT_LOGIN, APPLICATION_LOGIN, APPLICATION_PASSWORD and optionally, ACAPELA_LANG.
+
 
 
 Finally restart the web UI:::

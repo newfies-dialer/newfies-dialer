@@ -13,7 +13,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.db import connection
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication

@@ -29,6 +29,7 @@ from apirest.view_subscriber import SubscriberViewSet
 from apirest.view_bulk_contact import BulkContactViewSet
 from apirest.view_callrequest import CallrequestViewSet
 from apirest.view_survey_template import SurveyTemplateViewSet
+from apirest.view_survey import SurveyViewSet
 from apirest.view_section_template import SectionTemplateViewSet
 from apirest.view_branching_template import BranchingTemplateViewSet
 from apirest.view_survey_aggregate_result import SurveyAggregateResultViewSet
@@ -36,6 +37,7 @@ from apirest.view_subscriber_per_campaign import SubscriberPerCampaignList
 from apirest.view_queue import QueueViewSet
 from apirest.view_tier import TierViewSet
 from apirest.view_calendar import CalendarViewSet
+from apirest.view_calendar_setting import CalendarSettingViewSet
 
 from agent.api_views import AgentViewSet
 
@@ -52,11 +54,16 @@ router.register(r'contact', ContactViewSet)
 router.register(r'subscriber', SubscriberViewSet)
 router.register(r'callrequest', CallrequestViewSet)
 router.register(r'survey_template', SurveyTemplateViewSet)
+
+# frozen survey
+router.register(r'survey', SurveyViewSet)
+
 router.register(r'section_template', SectionTemplateViewSet)
 router.register(r'branching_template', BranchingTemplateViewSet)
 router.register(r'queue', QueueViewSet)
 router.register(r'tier', TierViewSet)
 router.register(r'calendar', CalendarViewSet)
+router.register(r'calendar-setting', CalendarSettingViewSet)
 
 router.register(r'agents', AgentViewSet)
 

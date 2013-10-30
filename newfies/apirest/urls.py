@@ -38,6 +38,7 @@ from apirest.view_queue import QueueViewSet
 from apirest.view_tier import TierViewSet
 from apirest.view_calendar import CalendarViewSet
 from apirest.view_calendar_setting import CalendarSettingViewSet
+from apirest.view_calendar_user import CalendarUserViewSet
 
 from agent.api_views import AgentViewSet
 
@@ -64,6 +65,7 @@ router.register(r'queue', QueueViewSet)
 router.register(r'tier', TierViewSet)
 router.register(r'calendar', CalendarViewSet)
 router.register(r'calendar-setting', CalendarSettingViewSet)
+router.register(r'calendar-user', CalendarUserViewSet)
 
 router.register(r'agents', AgentViewSet)
 

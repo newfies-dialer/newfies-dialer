@@ -53,6 +53,19 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
                 "results": [
                     {
 
+                        "creator": "areski",
+                        "url": "http://127.0.0.1:8000/rest-api/event/1/",
+                        "start": "2013-10-31T07:51:11Z",
+                        "end": "2013-10-31T07:51:11Z",
+                        "title": "sample event",
+                        "description": "",
+                        "created_on": "2013-10-31T07:51:11Z",
+                        "rule": "http://127.0.0.1:8000/rest-api/rule/1/",
+                        "end_recurring_period": null,
+                        "calendar": "http://127.0.0.1:8000/rest-api/calendar/1/",
+                        "notify_count": 1,
+                        "data": null,
+                        "status": 1
                     }
                 ]
             }

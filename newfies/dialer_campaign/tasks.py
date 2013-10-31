@@ -12,6 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.core.exceptions import DoesNotExist
 from celery.task import PeriodicTask
 from celery.task import Task
 from celery.utils.log import get_task_logger
@@ -96,10 +97,13 @@ class spool_pending_call(Task):
             call_type = CALLREQUEST_TYPE.CANNOT_RETRY
 
         # Check user's dialer setting maxretry
-        # TODO: check obj_campaign.user.userprofile.dialersetting raise DoesNotExist is doesn't exist
-        if obj_campaign.user.userprofile.dialersetting:
+        try:
+            obj_campaign.user.userprofile.dialersetting
             if obj_campaign.user.userprofile.dialersetting.maxretry == 0:
                 call_type = CALLREQUEST_TYPE.CANNOT_RETRY
+        except DoesNotExist:
+            logger.error("Can't find user's dialersetting")
+            return False
 
         debug_query(2)
 

@@ -19,7 +19,7 @@ from common.only_one_task import only_one
 from appointment.models.alarms import Alarm
 #from appointment.models.rules import Rule
 from appointment.models.events import Event
-from appointment.models.constants import EVENT_STATUS, ALARM_STATUS
+from appointment.constants import EVENT_STATUS, ALARM_STATUS
 
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint

@@ -58,7 +58,7 @@ class event_dispatcher(PeriodicTask):
             try:
                 # if event is attached with alarm then perform alarm
                 alarm_id = Alarm.objects.get(event=obj_event).id
-                alarm_dispatcher.delay(obj_event, alarm_id)
+                perform_alarm.delay(obj_event, alarm_id)
             except:
                 pass
 

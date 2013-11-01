@@ -53,18 +53,24 @@ class event_dispatcher(PeriodicTask):
         #TODO:
         # 1) Will list all the event where event.start > NOW() and status = EVENT_STATUS.PENDING
         event_list = Event.objects.filter(start=datetime.now(), status=EVENT_STATUS.PENDING)
-        for event in event_list:
-            print event
+        for obj_event in event_list:
+
+            try:
+                # if event is attached with alarm then perform alarm
+                alarm_id = Alarm.objects.get(event=obj_event).id
+                alarm_dispatcher.delay(obj_event, alarm_id)
+            except:
+                pass
 
             # 2) Then will check if need to create a sub event, see if there is a FK.rule
             #    if so, base on the rule we will create a new event in the future (if the current event
             #    have one or several alarms, the alarms should be copied also)
-            #if event.rule:
+            #if obj_event.rule:
             #    Event.objects.create()
 
             # 3) Mark the event as COMPLETED
-            #event.status = EVENT_STATUS.COMPLETED
-            event.save()
+            #obj_event.status = EVENT_STATUS.COMPLETED
+            obj_event.save()
 
 
 class alarm_dispatcher(PeriodicTask):

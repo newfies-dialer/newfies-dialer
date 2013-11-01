@@ -16,9 +16,10 @@ from celery.task import PeriodicTask
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 from common.only_one_task import only_one
-from appointment.models.rules import Rule
+from appointment.models.alarms import Alarm
+#from appointment.models.rules import Rule
 from appointment.models.events import Event
-from appointment.models.constants import EVENT_STATUS
+from appointment.models.constants import EVENT_STATUS, ALARM_STATUS
 
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint
@@ -85,6 +86,9 @@ class alarm_dispatcher(PeriodicTask):
         logger.info("TASK :: alarm_dispatcher")
 
         #TODO: find the alarms where date_start_notice > NOW() and ALARM_STATUS.PENDING
+        alarm_list = Alarm.objects.filter(date_start_notice=datetime.now(),
+                                          status=ALARM_STATUS.PENDING)
+        print alarm_list
 
         # For each alarms that need to be proceed get the event related and the id
         obj_event = None

@@ -75,9 +75,6 @@ class ContactForm(ModelForm):
 
     class Meta:
         model = Contact
-        fields = ['phonebook', 'contact', 'status', 'last_name', 'first_name',
-                  'email', 'address', 'city', 'state', 'country', 'unit_number',
-                  'additional_vars', 'description']
         widgets = {
             'additional_vars': Textarea(attrs={'cols': 23, 'rows': 3}),
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -85,6 +82,12 @@ class ContactForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = [
+            'phonebook', 'contact', 'status', 'unit_number', 'last_name', 'first_name',
+            'email', 'address', 'city', 'state', 'country', 'description',
+            'additional_vars',
+        ]
+
         # To get user's phonebook list
         if user:
             self.fields['phonebook'].choices = \

@@ -94,13 +94,11 @@ class alarm_dispatcher(PeriodicTask):
         #TODO: find the alarms where date_start_notice > NOW() and ALARM_STATUS.PENDING
         alarm_list = Alarm.objects.filter(date_start_notice=datetime.now(),
                                           status=ALARM_STATUS.PENDING)
-        print alarm_list
 
-        # For each alarms that need to be proceed get the event related and the id
-        obj_event = None
-        alarm_id = None
-
-        perform_alarm.delay(obj_event, alarm_id)
+        for obj_alarm in alarm_list:
+            if obj_alarm.event:
+                # For each alarms that need to be proceed get the event related and the id
+                perform_alarm.delay(obj_alarm.event, obj_alarm.id)
 
 
 @task()

@@ -16,9 +16,14 @@ from celery.task import PeriodicTask
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 from common.only_one_task import only_one
-from datetime import timedelta
+from appointment.models.rules import Rule
+from appointment.models.events import Event
+from appointment.models.constants import EVENT_STATUS
+
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint
+from datetime import datetime, timedelta
+#import time
 
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
@@ -46,10 +51,19 @@ class event_dispatcher(PeriodicTask):
 
         #TODO:
         # 1) Will list all the event where event.start > NOW() and status = EVENT_STATUS.PENDING
-        # 2) Then will check if need to create a sub event, see if there is a FK.rule
-        #    if so, base on the rule we will create a new event in the future (if the current event
-        #    have one or several alarms, the alarms should be copied also)
-        # 3) Mark the event as COMPLETED
+        event_list = Event.objects.filter(start=datetime.now(), status=EVENT_STATUS.PENDING)
+        for event in event_list:
+            print event
+
+            # 2) Then will check if need to create a sub event, see if there is a FK.rule
+            #    if so, base on the rule we will create a new event in the future (if the current event
+            #    have one or several alarms, the alarms should be copied also)
+            #if event.rule:
+            #    Event.objects.create()
+
+            # 3) Mark the event as COMPLETED
+            #event.status = EVENT_STATUS.COMPLETED
+            event.save()
 
 
 class alarm_dispatcher(PeriodicTask):

@@ -13,13 +13,10 @@
 #
 
 from celery.task import PeriodicTask
-from celery.task import Task
+from celery.decorators import task
 from celery.utils.log import get_task_logger
-from dialer_contact.tasks import collect_subscriber
 from common.only_one_task import only_one
-from datetime import datetime, timedelta
-from math import floor
-from common_functions import debug_query
+from datetime import timedelta
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint
 
@@ -29,31 +26,64 @@ LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 logger = get_task_logger(__name__)
 
 
-class event_process(PeriodicTask):
-    """A periodic task that checks the the event
-    for each event it will check if it's necessary to ...
+class event_dispatcher(PeriodicTask):
+    """A periodic task that checks the events that occur and
+    for each event it will do the following ::
+
+        - check if needed to recreate a new event if a Rule is set for the event
+
+        - check if there is an alarm for this event and then perform the alarm
 
     **Usage**:
 
-        event_process.delay()
+        event_dispatcher.delay()
     """
-    # The campaign have to run every minutes in order to control the number
-    # of calls per minute. Cons : new calls might delay 60seconds
     run_every = timedelta(seconds=60)
 
+    @only_one(ikey="event_dispatcher", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger.info("TASK :: event_process")
+        logger.info("TASK :: event_dispatcher")
+
+        #TODO:
+        # 1) Will list all the event where event.start > NOW() and status = EVENT_STATUS.PENDING
+        # 2) Then will check if need to create a sub event, see if there is a FK.rule
+        #    if so, base on the rule we will create a new event in the future (if the current event
+        #    have one or several alarms, the alarms should be copied also)
+        # 3) Mark the event as COMPLETED
 
 
-class repeat_event(Task):
-    @only_one(ikey="repeat_event", timeout=LOCK_EXPIRE)
-    def run(self, event_id):
-        """
-        This will check the repeat rules of an event
+class alarm_dispatcher(PeriodicTask):
+    """A periodic task that checks the alarms that occur and
+    for each alarm it will do the following ::
 
-        **Attributes**:
+        - check if the alarm should be run now
 
-            * ``event_id`` - Event ID
-        """
-        logger = self.get_logger()
-        logger.info("TASK :: repeat_event = %d" % event_id)
+        - check if needed to perform some action based on the alarm type
+
+    **Usage**:
+
+        alarm_dispatcher.delay()
+    """
+    run_every = timedelta(seconds=60)
+
+    @only_one(ikey="alarm_dispatcher", timeout=LOCK_EXPIRE)
+    def run(self, **kwargs):
+        logger.info("TASK :: alarm_dispatcher")
+
+        #TODO: find the alarms where date_start_notice > NOW() and ALARM_STATUS.PENDING
+
+        # For each alarms that need to be proceed get the event related and the id
+        obj_event = None
+        alarm_id = None
+
+        perform_alarm.delay(obj_event, alarm_id)
+
+
+@task()
+def perform_alarm(obj_event, alarm_id):
+    """
+    Task to perform the alarm
+    """
+    logger.info("TASK :: perform_alarm")
+
+    # TODO: this should not be done now, for the moment only print the alarm content

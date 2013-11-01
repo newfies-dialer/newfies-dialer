@@ -34,7 +34,6 @@ class Alarm(models.Model):
     '''
     This is for Alarms / Reminders on events models.
     '''
-    #TODO: maybe integer ?
     daily_start = models.DateTimeField(verbose_name=_('daily start'))
     daily_stop = models.DateTimeField(verbose_name=_('daily stop'))
     advance_notice = models.IntegerField(null=True, blank=True, default=0,
@@ -49,8 +48,6 @@ class Alarm(models.Model):
                                  default=ALARM_METHOD.CALL,
                                  verbose_name=_("method"), blank=True, null=True)
 
-    # TODO: Add missing fields
-
     survey = models.ForeignKey(Survey, verbose_name=_("survey"),
                                related_name="survey")
     mail_template = models.ForeignKey(MailTemplate, verbose_name=_("mail template"),
@@ -61,6 +58,7 @@ class Alarm(models.Model):
                               related_name="event")
 
     date_start_notice = models.DateTimeField(verbose_name=_('starting date'))
+
     status = models.IntegerField(choices=list(ALARM_STATUS),
                                  default=ALARM_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)

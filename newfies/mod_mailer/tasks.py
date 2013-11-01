@@ -13,9 +13,10 @@
 #
 
 from django.conf import settings
-from django.core.cache import cache
 from celery.decorators import task, periodic_task
+from celery.task import PeriodicTask
 from celery.utils.log import get_task_logger
+from common.only_one_task import only_one
 from mod_mailer.models import MailSpooler, MailTemplate
 from mod_mailer.constants import MAILSPOOLER_TYPE
 from mailer.engine import send_all
@@ -36,14 +37,14 @@ PAUSE_SEND = getattr(settings, "MAILER_PAUSE_SEND", False)
 @task()
 def sendmail_task(current_mail_id):
     """
-    Task to send SMS
+    Task to send Mail
     """
     logger.info("TASK :: sendmail_task")
 
     current_mailspooler = MailSpooler.objects.get(id=current_mail_id)
 
     if current_mailspooler.mailspooler_type != MAILSPOOLER_TYPE.IN_PROCESS:
-        logger.info("ERROR :: Trying to send mail for not spolled MailSpooler")
+        logger.info("ERROR :: Trying to send mail which is not set as IN_PROCESS")
         return False
 
     mailtemplate = MailTemplate.objects.get(pk=current_mailspooler.mailtemplate.id)
@@ -60,29 +61,22 @@ def sendmail_task(current_mail_id):
     current_mailspooler.mailspooler_type = MAILSPOOLER_TYPE.SENT
     current_mailspooler.save()
 
-    logger.info(u"Mail Sent - ID:%d" % current_mailspooler.id)
+    logger.info("Mail Sent - ID:%d" % current_mailspooler.id)
 
 
-@periodic_task(run_every=timedelta(seconds=10))  # every 10 seconds
-def mailspooler_pending(*args, **kwargs):
-    """A periodic task that check for spooled mail
+class mailspooler_pending(PeriodicTask):
+    """A periodic task that spool mail that needs to be sent
 
     **Usage**:
 
         mailspooler_pending.delay()
     """
-    logger.info("TASK :: mailspooler_pending_pending")
+    run_every = timedelta(seconds=10)
 
-    lock_id = "%s-lock" % ('mailspooler_pending')
+    @only_one(ikey="mailspooler_pending", timeout=LOCK_EXPIRE)
+    def run(self, **kwargs):
+        logger.info("TASK :: mailspooler_pending")
 
-    # cache.add fails if if the key already exists
-    acquire_lock = lambda: cache.add(lock_id, "true", LOCK_EXPIRE)
-    # memcache delete is very slow, but we have to use it to take
-    # advantage of using add() for atomic locking
-    release_lock = lambda: cache.delete(lock_id)
-
-    #Acquire lock
-    if acquire_lock():
         try:
             list_pending_mail = MailSpooler.objects.filter(mailspooler_type=MAILSPOOLER_TYPE.PENDING)[:50]
             logger.info("Check for pending Mail...")
@@ -97,13 +91,8 @@ def mailspooler_pending(*args, **kwargs):
             logger.info("Calling Task to send MAIL!")
             sendmail_task.delay(current_mailspooler.id)
 
-        #Release lock
-        release_lock()
-    else:
-        logger.error("ERROR :: mailspooler_pending is already being imported by another worker")
 
-
-@periodic_task(run_every=timedelta(seconds=10))  # every 10 seconds
+@periodic_task(run_every=timedelta(seconds=60))  # every 10 seconds
 def sendmail_pending(*args, **kwargs):
     """A periodic task that send pending mail
 

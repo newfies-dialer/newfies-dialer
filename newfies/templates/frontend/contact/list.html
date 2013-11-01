@@ -113,6 +113,7 @@ function delete_button()
                     <th>{% sort_link CONTACT_COLUMN_NAME.contact|capfirst col_name_with_order.contact %}</th>
                     <th>{% sort_link CONTACT_COLUMN_NAME.last_name|capfirst col_name_with_order.last_name %}</th>
                     <th>{% sort_link CONTACT_COLUMN_NAME.first_name|capfirst col_name_with_order.first_name %}</th>
+                    <th>{% sort_link CONTACT_COLUMN_NAME.email|capfirst col_name_with_order.email %}</th>
                     <th>{% sort_link CONTACT_COLUMN_NAME.status|capfirst col_name_with_order.status %}</th>
                     <th>{% sort_link CONTACT_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
                     <th>{% trans 'action'|capfirst %}</th>
@@ -128,6 +129,7 @@ function delete_button()
                             <td>{{ row.contact }}</td>
                             <td>{{ row.last_name }}</td>
                             <td>{{ row.first_name }}</td>
+                            <td>{{ row.email }}</td>
                             <td>{% if row.status == 1 %}
                                     {% trans "ACTIVE" %}
                                 {% else %}
@@ -147,7 +149,7 @@ function delete_button()
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="9" align="center">
+                        <td colspan="10" align="center">
                             {% trans "no records found"|title %}
                         </td>
                     </tr>

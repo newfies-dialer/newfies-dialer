@@ -48,5 +48,6 @@ class CONTACT_COLUMN_NAME(Choice):
     contact = _('contact')
     last_name = _('last name')
     first_name = _('first name')
+    email = _('email')
     status = _('status')
     date = _('date')

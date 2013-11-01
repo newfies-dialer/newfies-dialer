@@ -29,7 +29,7 @@ from dialer_campaign.function_def import check_dialer_setting,\
     dialer_setting_limit, user_dialer_setting_msg, type_field_chk
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from common.common_functions import striplist, current_view, getvar,\
+from common.common_functions import striplist, getvar,\
     get_pagination_vars, unset_session_var
 import csv
 import json
@@ -231,7 +231,7 @@ def contact_list(request):
         * List all contacts from phonebooks belonging to the logged in user
     """
     sort_col_field_list = ['id', 'phonebook', 'contact', 'status',
-        'first_name', 'last_name', 'updated_date']
+        'first_name', 'last_name', 'email', 'updated_date']
     default_sort_field = 'id'
     pagination_data =\
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
@@ -305,7 +305,7 @@ def contact_list(request):
 
     if phonebook_id_list:
         contact_list = Contact.objects.values('id', 'phonebook__name', 'contact',
-            'last_name', 'first_name', 'status', 'updated_date')\
+            'last_name', 'first_name', 'email', 'status', 'updated_date')\
             .filter(phonebook__in=phonebook_id_list)
 
         if kwargs:

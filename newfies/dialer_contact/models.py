@@ -95,7 +95,7 @@ class Contact(Model):
     first_name = models.CharField(max_length=120, blank=True, null=True,
                                   verbose_name=_('first name'))
     email = models.EmailField(blank=True, null=True, verbose_name=_('email'))
-    address = models.TextField(null=True, blank=True,
+    address = models.CharField(max_length=250, null=True, blank=True,
                                verbose_name=_("address"))
     city = models.CharField(max_length=120, blank=True, null=True,
                             verbose_name=_('city'))

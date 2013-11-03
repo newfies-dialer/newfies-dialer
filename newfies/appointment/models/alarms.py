@@ -35,8 +35,8 @@ class Alarm(models.Model):
     '''
     This is for Alarms / Reminders on events models.
     '''
-    daily_start = models.DateTimeField(verbose_name=_('daily start'))
-    daily_stop = models.DateTimeField(verbose_name=_('daily stop'))
+    daily_start = models.TimeField(verbose_name=_('daily start'))
+    daily_stop = models.TimeField(verbose_name=_('daily stop'))
     advance_notice = models.IntegerField(null=True, blank=True, default=0,
                                          verbose_name=_('advance notice'))
     retry_count = models.IntegerField(null=True, blank=True, default=0,
@@ -50,10 +50,13 @@ class Alarm(models.Model):
                                  verbose_name=_("method"), blank=True, null=True)
 
     survey = models.ForeignKey(Survey, verbose_name=_("survey"),
+                               blank=True, null=True,
                                related_name="survey")
     mail_template = models.ForeignKey(MailTemplate, verbose_name=_("mail template"),
-                                     related_name="mail template")
+                                      blank=True, null=True,
+                                      related_name="mail template")
     sms_template = models.ForeignKey(SMSTemplate, verbose_name=_("sms template"),
+                                     blank=True, null=True,
                                      related_name="sms template")
     event = models.ForeignKey(Event, verbose_name=_("event"),
                               related_name="event")
@@ -62,9 +65,9 @@ class Alarm(models.Model):
 
     status = models.IntegerField(choices=list(ALARM_STATUS),
                                  default=ALARM_STATUS.PENDING,
-                                 verbose_name=_("status"), blank=True, null=True)
+                                 verbose_name=_("status"))
     result = models.IntegerField(choices=list(ALARM_RESULT),
-                                 verbose_name=_("method"), blank=True, null=True)
+                                 verbose_name=_("result"), blank=True, null=True)
     url_cancel = models.CharField(max_length=250, blank=True, null=True,
                                 verbose_name=_("URL cancel"))
     phonenumber_sms_cancel = models.CharField(max_length=50, blank=True, null=True,

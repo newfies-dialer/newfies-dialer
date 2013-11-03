@@ -37,3 +37,11 @@ class ALARM_METHOD(Choice):
     CALL = 1, _('call').upper()
     SMS = 2, _('sms').upper()
     EMAIL = 3, _('email').upper()
+
+
+class ALARMREQUEST_STATUS(Choice):
+    PENDING = 1, _("pending").capitalize()
+    IN_PROCESS = 2, _("in_process").capitalize()
+    FAILURE = 3, _("failure").capitalize()
+    RETRY = 4, _("retry").capitalize()
+    SUCCESS = 5, _("success").capitalize()

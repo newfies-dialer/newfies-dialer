@@ -2,7 +2,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
-from appointment.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT
+from appointment.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT, \
+    ALARMREQUEST_STATUS
 from appointment.models.events import Event
 from survey.models import Survey
 from dialer_cdr.models import Callrequest
@@ -17,7 +18,7 @@ class SMSTemplate(models.Model):
                     help_text='SMS template name')
     template_key = models.CharField(max_length=30, unique=True,
                     help_text='Unique name used to pick some template for recurring action, such as activation or warning')
-    sender_phonenumber = models.EmailField(max_length=75, help_text='Sender Email')
+    sender_phonenumber = models.CharField(max_length=75)
     sms_text = models.TextField(max_length=500)
     created_date = models.DateTimeField(auto_now_add=True)
 
@@ -93,11 +94,10 @@ class AlarmRequest(models.Model):
                              help_text=_("select alarm"),
                              related_name="request_alarm")
     date = models.DateTimeField(verbose_name=_('date'))
-
-    #TODO: method should be a CHOICE
-    status = models.IntegerField(null=True, blank=True, default=0)
+    status = models.IntegerField(choices=list(ALARMREQUEST_STATUS),
+                                 default=ALARMREQUEST_STATUS.PENDING,
+                                 verbose_name=_("status"), blank=True, null=True)
     callstatus = models.IntegerField(null=True, blank=True, default=0)
-
     calltime = models.DateTimeField(verbose_name=_('call time'))
     duration = models.IntegerField(null=True, blank=True, default=0)
 
@@ -112,6 +112,7 @@ class AlarmRequest(models.Model):
     class Meta:
         verbose_name = _('alarm request')
         verbose_name_plural = _('alarm requests')
+        app_label = "appointment"
 
     def __unicode__(self):
         return self.id

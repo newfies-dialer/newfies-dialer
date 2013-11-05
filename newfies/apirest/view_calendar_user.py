@@ -33,6 +33,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
     permissions = (IsAuthenticatedOrReadOnly, )
 
     def list(self, request, *args, **kwargs):
+        """get list of all CalendarUser objects"""
         snippets = CalendarUser.objects.all()
         list_data = []
         for c_user in snippets:
@@ -65,3 +66,26 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
             slug='default',
             user=obj,
         )
+
+    def retrieve(self, request, *args, **kwargs):
+        """retrieve CalendarUser object"""
+        self.object = self.get_object()
+        data = dict()
+        try:
+            calendar_name = Calendar.objects.get(user=self.object).name
+        except:
+            calendar_name = ''
+
+        data = {
+            'id': self.object.id,
+            'username': self.object.username,
+            'password': self.object.password,
+            'last_name': self.object.last_name,
+            'first_name': self.object.first_name,
+            'email': self.object.email,
+            #'groups': c_user.groups,
+            'calendar': calendar_name,
+        }
+
+        #serializer = self.get_serializer(self.object)
+        return Response(data)

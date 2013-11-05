@@ -38,9 +38,14 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
         list_data = []
         for c_user in snippets:
             try:
-                calendar_name = Calendar.objects.get(user=c_user).name
+                calendar_obj = Calendar.objects.get(user=c_user)
+                calendar_dict = {
+                    'name': calendar_obj.name,
+                    'slug': calendar_obj.slug,
+                    'max_concurrent': calendar_obj.max_concurrent,
+                }
             except:
-                calendar_name = ''
+                calendar_dict = {}
             data = {
                 'id': c_user.id,
                 'username': c_user.username,
@@ -49,7 +54,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
                 'first_name': c_user.first_name,
                 'email': c_user.email,
                 #'groups': c_user.groups,
-                'calendar': calendar_name,
+                'calendar': calendar_dict,
             }
             list_data.append(data)
 
@@ -72,9 +77,14 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
         self.object = self.get_object()
         data = dict()
         try:
-            calendar_name = Calendar.objects.get(user=self.object).name
+            calendar_obj = Calendar.objects.get(user=self.object)
+            calendar_dict = {
+                'name': calendar_obj.name,
+                'slug': calendar_obj.slug,
+                'max_concurrent': calendar_obj.max_concurrent,
+            }
         except:
-            calendar_name = ''
+            calendar_dict = {}
 
         data = {
             'id': self.object.id,
@@ -84,7 +94,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
             'first_name': self.object.first_name,
             'email': self.object.email,
             #'groups': c_user.groups,
-            'calendar': calendar_name,
+            'calendar': calendar_dict,
         }
 
         #serializer = self.get_serializer(self.object)

@@ -19,6 +19,7 @@ from appointment.models.users import CalendarSetting, CalendarUser, CalendarUser
 from appointment.models.rules import Rule
 from appointment.models.events import Event
 from appointment.models.alarms import Alarm, SMSTemplate, AlarmRequest
+from appointment.models.calendars import Calendar
 from appointment.forms import CalendarUserProfileForm
 from common.app_label_renamer import AppLabelRenamer
 AppLabelRenamer(native_app_label=u'appointment', app_label=_('appointment')).main()
@@ -47,6 +48,11 @@ class CalendarSettingAdmin(admin.ModelAdmin):
     ordering = ('-cid_number', )
 
 
+class CalendarAdmin(admin.ModelAdmin):
+    list_display = ('name', 'slug', 'user', 'max_concurrent')
+    ordering = ('-id', )
+
+
 class RuleAdmin(admin.ModelAdmin):
     list_display = ('name', 'description', 'frequency', 'params')
     ordering = ('-id', )
@@ -73,6 +79,7 @@ class AlarmRequestAdmin(admin.ModelAdmin):
     ordering = ('-id', )
 
 
+admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(CalendarUser, CalendarUserAdmin)
 admin.site.register(CalendarSetting, CalendarSettingAdmin)
 admin.site.register(Rule, RuleAdmin)

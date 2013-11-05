@@ -91,10 +91,8 @@ class alarm_dispatcher(PeriodicTask):
     def run(self, **kwargs):
         logger.info("TASK :: alarm_dispatcher")
 
-        #TODO: find the alarms where date_start_notice > NOW() and ALARM_STATUS.PENDING
         alarm_list = Alarm.objects.filter(date_start_notice=datetime.now(),
                                           status=ALARM_STATUS.PENDING)
-
         for obj_alarm in alarm_list:
             if obj_alarm.event:
                 # For each alarms that need to be proceed get the event related and the id

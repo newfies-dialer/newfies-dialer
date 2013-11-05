@@ -15,6 +15,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
+from django.db.models.signals import post_save
 from user_profile.models import Profile_abstract
 from survey.models import Survey
 

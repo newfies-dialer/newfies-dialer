@@ -17,6 +17,8 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.users import CalendarUser
+from appointment.models.calendars import Calendar
+
 from apirest.calendar_user_serializers import CalendarUserSerializer
 
 
@@ -28,3 +30,11 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
     serializer_class = CalendarUserSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
+
+    def post_save(self, obj, created=False):
+        """Create Calendar object with default name & current Calendar User"""
+        Calendar.objects.create(
+            name='default',
+            slug='default',
+            user=obj,
+        )

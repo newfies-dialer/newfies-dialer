@@ -14,6 +14,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.forms import widgets
 from rest_framework import serializers
 from appointment.models.users import CalendarUser
 
@@ -46,6 +47,11 @@ class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):
                 ]
             }
     """
+    password = serializers.CharField(
+        max_length=64,
+        widget=widgets.PasswordInput
+    )
+
     class Meta:
         model = CalendarUser
-        fields = ('url', 'username', 'last_name', 'first_name', 'email', 'groups')
+        fields = ('url', 'username', 'password', 'last_name', 'first_name', 'email', 'groups')

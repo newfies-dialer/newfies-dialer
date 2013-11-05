@@ -14,6 +14,7 @@
 #
 
 from rest_framework import viewsets
+from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.users import CalendarUser
@@ -30,6 +31,32 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
     serializer_class = CalendarUserSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
+
+    def list(self, request, *args, **kwargs):
+        snippets = CalendarUser.objects.all()
+        list_data = []
+        for c_user in snippets:
+            try:
+                calendar_name = Calendar.objects.get(user=c_user).name
+            except:
+                calendar_name = ''
+            data = {
+                'id': c_user.id,
+                'username': c_user.username,
+                'password': c_user.password,
+                'last_name': c_user.last_name,
+                'first_name': c_user.first_name,
+                'email': c_user.email,
+                #'groups': c_user.groups,
+                'calendar': calendar_name,
+            }
+            list_data.append(data)
+
+        temp_data = ", ".join(str(e) for e in list_data)
+        import ast
+        final_data = ast.literal_eval(temp_data)
+        #serializer = CalendarUserSerializer(snippets, many=True)
+        return Response(final_data)
 
     def post_save(self, obj, created=False):
         """Create Calendar object with default name & current Calendar User"""

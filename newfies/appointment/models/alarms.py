@@ -14,10 +14,9 @@ class SMSTemplate(models.Model):
     """
     This table store the SMS Template
     """
-    label = models.CharField(max_length=75,
-                    help_text='SMS template name')
+    label = models.CharField(max_length=75, help_text=_('SMS template name'))
     template_key = models.CharField(max_length=30, unique=True,
-                    help_text='Unique name used to pick some template for recurring action, such as activation or warning')
+                                    help_text=_('Unique name used to pick some template for recurring action, such as activation or warning'))
     sender_phonenumber = models.CharField(max_length=75)
     sms_text = models.TextField(max_length=500)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -69,16 +68,15 @@ class Alarm(models.Model):
     result = models.IntegerField(choices=list(ALARM_RESULT),
                                  verbose_name=_("result"), blank=True, null=True)
     url_cancel = models.CharField(max_length=250, blank=True, null=True,
-                                verbose_name=_("URL cancel"))
+                                  verbose_name=_("URL cancel"))
     phonenumber_sms_cancel = models.CharField(max_length=50, blank=True, null=True,
-                                verbose_name=_("phonenumber SMS cancel"))
+                                              verbose_name=_("phonenumber SMS cancel"))
     url_confirm = models.CharField(max_length=250, blank=True, null=True,
-                                verbose_name=_("URL confirm"))
+                                   verbose_name=_("URL confirm"))
     phonenumber_transfer = models.CharField(max_length=50, blank=True, null=True,
-                                verbose_name=_("phonenumber transfer"))
+                                            verbose_name=_("phonenumber transfer"))
 
-    created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('date'))
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
 
     class Meta:
         verbose_name = _('alarm')
@@ -86,7 +84,7 @@ class Alarm(models.Model):
         app_label = "appointment"
 
     def __unicode__(self):
-        return self.id
+        return u"%s" % (self.id)
 
 
 class AlarmRequest(models.Model):
@@ -94,8 +92,8 @@ class AlarmRequest(models.Model):
     AlarmRequest : request for Alarms
     '''
     alarm = models.ForeignKey(Alarm, blank=True, null=True, verbose_name=_("alarm"),
-                             help_text=_("select alarm"),
-                             related_name="request_alarm")
+                              help_text=_("select alarm"),
+                              related_name="request_alarm")
     date = models.DateTimeField(verbose_name=_('date'))
     status = models.IntegerField(choices=list(ALARMREQUEST_STATUS),
                                  default=ALARMREQUEST_STATUS.PENDING,
@@ -118,4 +116,4 @@ class AlarmRequest(models.Model):
         app_label = "appointment"
 
     def __unicode__(self):
-        return self.id
+        return u"%s" % (self.id)

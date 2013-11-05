@@ -19,7 +19,7 @@ from common.only_one_task import only_one
 from appointment.models.alarms import Alarm
 #from appointment.models.rules import Rule
 from appointment.models.events import Event
-from appointment.constants import EVENT_STATUS, ALARM_STATUS
+from appointment.constants import EVENT_STATUS, ALARM_STATUS, ALARM_METHOD
 
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint
@@ -50,11 +50,9 @@ class event_dispatcher(PeriodicTask):
     def run(self, **kwargs):
         logger.info("TASK :: event_dispatcher")
 
-        #TODO:
-        # 1) Will list all the event where event.start > NOW() and status = EVENT_STATUS.PENDING
+        # 1) Will list all the events where event.start > NOW() and status = EVENT_STATUS.PENDING
         event_list = Event.objects.filter(start=datetime.now(), status=EVENT_STATUS.PENDING)
         for obj_event in event_list:
-
             try:
                 # if event is attached with alarm then perform alarm
                 alarm_id = Alarm.objects.get(event=obj_event).id
@@ -62,6 +60,7 @@ class event_dispatcher(PeriodicTask):
             except:
                 pass
 
+            #TODO:
             # 2) Then will check if need to create a sub event, see if there is a FK.rule
             #    if so, base on the rule we will create a new event in the future (if the current event
             #    have one or several alarms, the alarms should be copied also)
@@ -97,6 +96,13 @@ class alarm_dispatcher(PeriodicTask):
             if obj_alarm.event:
                 # For each alarms that need to be proceed get the event related and the id
                 perform_alarm.delay(obj_alarm.event, obj_alarm.id)
+
+            #if obj_alarm.method == ALARM_METHOD.CALL:
+            #    # perform CALL
+            #elif obj_alarm.method == ALARM_METHOD.SMS:
+            #    # perform SMS
+            #elif obj_alarm.method == ALARM_METHOD.EMAIL:
+            #    # perform EMAIL
 
 
 @task()

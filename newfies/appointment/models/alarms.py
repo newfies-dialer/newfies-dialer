@@ -84,7 +84,11 @@ class Alarm(models.Model):
         app_label = "appointment"
 
     def __unicode__(self):
-        return u"%s" % (self.id)
+        if self.method:
+            method = dict(ALARM_METHOD)[self.method]
+            return u"%s - method:%s - %s" % (self.id, method, self.event)
+        else:
+            return u"%s - %s" % (self.id, self.event)
 
 
 class AlarmRequest(models.Model):

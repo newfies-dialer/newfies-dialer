@@ -65,8 +65,10 @@ class EventAdmin(admin.ModelAdmin):
 
 
 class AlarmAdmin(admin.ModelAdmin):
-    list_display = ('daily_start', 'advance_notice', 'retry_count', 'method', 'status')
+    list_display = ('id', 'event', 'daily_start', 'daily_stop', 'advance_notice', 'retry_count',
+        'method', 'status', 'result', 'created_date')
     ordering = ('-id', )
+    list_filter = ('event', 'created_date')
 
 
 class SMSTemplateAdmin(admin.ModelAdmin):
@@ -75,7 +77,7 @@ class SMSTemplateAdmin(admin.ModelAdmin):
 
 
 class AlarmRequestAdmin(admin.ModelAdmin):
-    list_display = ('alarm', 'date', 'status', 'callstatus')
+    list_display = ('id', 'alarm', 'date', 'status', 'callstatus', 'callrequest')
     ordering = ('-id', )
 
 

@@ -92,10 +92,7 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
     """
-    survey = serializers.Field(source='survey')
     mail_template = serializers.Field(source='mail_template')
-    sms_template = serializers.Field(source='sms_template')
-    event = serializers.Field(source='event')
 
     class Meta:
         model = Alarm

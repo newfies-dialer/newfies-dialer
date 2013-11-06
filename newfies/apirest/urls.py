@@ -43,7 +43,7 @@ from apirest.view_calendar_user_profile import CalendarUserProfileViewSet
 from apirest.view_rule import RuleViewSet
 from apirest.view_event import EventViewSet
 from apirest.view_alarm import AlarmViewSet
-
+from apirest.view_alarm_request import AlarmRequestViewSet
 from agent.api_views import AgentViewSet
 
 router = routers.DefaultRouter()
@@ -74,6 +74,7 @@ router.register(r'calendar-user-profile', CalendarUserProfileViewSet)
 router.register(r'rule', RuleViewSet)
 router.register(r'event', EventViewSet)
 router.register(r'alarm', AlarmViewSet)
+router.register(r'alarm-request', AlarmRequestViewSet)
 router.register(r'agents', AgentViewSet)
 
 # Wire up our API using automatic URL routing.

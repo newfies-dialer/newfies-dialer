@@ -64,8 +64,24 @@ class event_dispatcher(PeriodicTask):
             # 2) Then will check if need to create a sub event, see if there is a FK.rule
             #    if so, base on the rule we will create a new event in the future (if the current event
             #    have one or several alarms, the alarms should be copied also)
-            #if obj_event.rule:
-            #    Event.objects.create()
+
+            if obj_event.rule:
+                if obj_event.rule.frequency == "YEARLY":
+                    pass
+                elif obj_event.rule.frequency == "MONTHLY":
+                    pass
+                elif obj_event.rule.frequency == "WEEKLY":
+                    pass
+                elif obj_event.rule.frequency == "DAILY":
+                    pass
+                elif obj_event.rule.frequency == "HOURLY":
+                    pass
+                elif obj_event.rule.frequency == "MINUTELY":
+                    pass
+                elif obj_event.rule.frequency == "SECONDLY":
+                    pass
+
+                #Event.objects.create()
 
             # 3) Mark the event as COMPLETED
             #obj_event.status = EVENT_STATUS.COMPLETED

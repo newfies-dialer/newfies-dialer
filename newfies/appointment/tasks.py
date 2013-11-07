@@ -12,6 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.core.exceptions import ObjectDoesNotExist
 from celery.task import PeriodicTask
 from celery.decorators import task
 from celery.utils.log import get_task_logger
@@ -33,12 +34,15 @@ logger = get_task_logger(__name__)
 
 
 class event_dispatcher(PeriodicTask):
-    """A periodic task that checks the events that occur and
-    for each event it will do the following ::
+    """A periodic task that checks for scheduled Event and perform number of
+    tasks for the Event and create the occurence of the next future Event.
 
-        - check if needed to recreate a new event if a Rule is set for the event
+    For each Event found, this PeriodicTask will ::
 
-        - check if there is an alarm for this event and then perform the alarm
+        - check the Rule assigned to the Event and create a new occurence of
+          this event based on the Rule. The new occurence is an other Event object.
+
+        - check if an alarm exists and execute the alarm
 
     **Usage**:
 
@@ -57,7 +61,7 @@ class event_dispatcher(PeriodicTask):
                 # if event is attached with alarm then perform alarm
                 alarm_id = Alarm.objects.get(event=obj_event).id
                 perform_alarm.delay(obj_event, alarm_id)
-            except:
+            except ObjectDoesNotExist:
                 pass
 
             #TODO:

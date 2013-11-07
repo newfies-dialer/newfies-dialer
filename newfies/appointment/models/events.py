@@ -90,6 +90,27 @@ class Event(models.Model):
         final_occurrences += occ_replacer.get_additional_occurrences(start, end)
         return final_occurrences
 
+    def get_next_occurrences(self):
+        """
+        TODO: implement this
+
+        >>> rule = Rule(frequency="MONTHLY", name="Monthly")
+        >>> rule.save()
+        >>> event = Event(rule=rule, start=datetime.datetime(2008,1,1,tzinfo=pytz.utc), end=datetime.datetime(2008,1,2))
+        >>> event.rule
+        <Rule: Monthly>
+        >>> occurrences = event.get_next_occurrences()
+        >>> ["%s to %s" %(o.start, o.end) for o in occurrences]
+        ['2008-02-01 00:00:00+00:00 to 2008-02-02 00:00:00+00:00']
+        """
+
+        # TODO
+        # This will be similar to get_occurrences but this will have per default for start the current date
+        # and for end the current date + 10 years
+        # we will look for the next occurence happening and we will use this to create the next event
+
+        return True  # TODO: return the next occurent
+
     def get_rrule_object(self):
         if self.rule is not None:
             params = self.rule.get_params()

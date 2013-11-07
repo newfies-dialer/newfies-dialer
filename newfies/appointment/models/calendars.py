@@ -44,10 +44,12 @@ class Calendar(models.Model):
     '''
     name = models.CharField(_("name"), max_length=200)
     slug = models.SlugField(_("slug"), max_length=200)
-    user = models.ForeignKey(CalendarUser, blank=True, null=True, verbose_name=_("user"),
+    user = models.ForeignKey(CalendarUser, blank=True, null=True,
+                             verbose_name=_("user"),
                              help_text=_("select user"),
                              related_name="calendar user")
-    max_concurrent = models.IntegerField(null=True, blank=True, default=0, help_text=_("Max concurrent is not implemented"))
+    max_concurrent = models.IntegerField(null=True, blank=True, default=0,
+                                         help_text=_("Max concurrent is not implemented"))
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('date'))
 
@@ -65,14 +67,11 @@ class Calendar(models.Model):
 
     def get_recent(self, amount=5, in_datetime=datetime.datetime.now, tzinfo=pytz.utc):
         """
-        This shortcut function allows you to get events that have started
-        recently.
+        This shortcut function allows you to get events that have started recently.
 
-        amount is the amount of events you want in the queryset. The default is
-        5.
+        amount is the amount of events you want in the queryset. The default is 5.
 
-        in_datetime is the datetime you want to check against.  It defaults to
-        datetime.datetime.now
+        in_datetime is the datetime you want to check against.  It defaults to datetime.datetime.now
         """
         return self.events.order_by('-start').filter(start__lt=timezone.now())[:amount]
 

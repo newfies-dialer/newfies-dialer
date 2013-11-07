@@ -70,6 +70,8 @@ class event_dispatcher(PeriodicTask):
             #    have one or several alarms, the alarms should be copied also)
 
             if obj_event.rule:
+                # we dont need this check here (frequency == "YEARLY"),
+                # instead we will implement method on event get_next_occurrences
                 if obj_event.rule.frequency == "YEARLY":
                     pass
                 elif obj_event.rule.frequency == "MONTHLY":
@@ -85,6 +87,7 @@ class event_dispatcher(PeriodicTask):
                 elif obj_event.rule.frequency == "SECONDLY":
                     pass
 
+                #base on the result of get_next_occurrences we will know when to create the next event
                 #Event.objects.create()
 
             # 3) Mark the event as COMPLETED
@@ -93,12 +96,15 @@ class event_dispatcher(PeriodicTask):
 
 
 class alarm_dispatcher(PeriodicTask):
-    """A periodic task that checks the alarms that occur and
-    for each alarm it will do the following ::
+    """A periodic task that checks for scheduled Alarm and perform number of
+    tasks to trigger the Alarm.
 
-        - check if the alarm should be run now
+    For each Alarm found, this PeriodicTask will ::
 
-        - check if needed to perform some action based on the alarm type
+        - found when the next alarm should be triggered, note the alarm trigger is not
+          related to the date of the event, as an Alarm can happen hours/days before an event
+
+        - run the Alarm actions based on the method/settings of the Alarm
 
     **Usage**:
 
@@ -110,26 +116,33 @@ class alarm_dispatcher(PeriodicTask):
     def run(self, **kwargs):
         logger.info("TASK :: alarm_dispatcher")
 
+        #TODO: Select Alarm where date_start_notice >= now() - 5 minutes
+        #and <= now() + 5 minutes
         alarm_list = Alarm.objects.filter(date_start_notice=datetime.now(),
                                           status=ALARM_STATUS.PENDING)
         for obj_alarm in alarm_list:
             if obj_alarm.event:
                 # For each alarms that need to be proceed get the event related and the id
-                perform_alarm.delay(obj_alarm.event, obj_alarm.id)
-
-            #if obj_alarm.method == ALARM_METHOD.CALL:
-            #    # perform CALL
-            #elif obj_alarm.method == ALARM_METHOD.SMS:
-            #    # perform SMS
-            #elif obj_alarm.method == ALARM_METHOD.EMAIL:
-            #    # perform EMAIL
+                second_towait = 10
+                # TODO fix second_towait => second_towait = Alarm.date_start_notice - now()
+                # if second_towait negatif then set to 0 to be run directly
+                perform_alarm.apply_async(
+                    args=[obj_alarm.event, obj_alarm],
+                    countdown=second_towait)
 
 
 @task()
-def perform_alarm(obj_event, alarm_id):
+def perform_alarm(obj_event, obj_alarm):
     """
     Task to perform the alarm
     """
     logger.info("TASK :: perform_alarm")
 
-    # TODO: this should not be done now, for the moment only print the alarm content
+    #if obj_alarm.method == ALARM_METHOD.CALL:
+    #    # perform CALL
+    #elif obj_alarm.method == ALARM_METHOD.SMS:
+    #    # perform SMS
+    #elif obj_alarm.method == ALARM_METHOD.EMAIL:
+    #    # perform EMAIL
+
+    # TODO: We can start implementing the Email

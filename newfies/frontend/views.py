@@ -457,7 +457,7 @@ def customer_dashboard(request, on_index=None):
                  percentage(total_cancel, total_call_count),
                  percentage(total_congestion, total_call_count),
                  percentage(total_failed, total_call_count),
-                 percentage(total_not_answered, total_call_count),]
+                 percentage(total_not_answered, total_call_count)]
 
         color_list = [
             COLOR_DISPOSITION['ANSWER'],

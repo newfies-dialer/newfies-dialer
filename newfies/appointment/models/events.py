@@ -70,7 +70,7 @@ class Event(models.Model):
         Ensure that if an event has no rule, that it appears only once.
 
         >>> event = Event(start=datetime.datetime(2008,1,1,8,0), end=datetime.datetime(2008,1,1,9,0))
-        >>> occurrences = event.get_occurrences(datetime.datetime(2008,1,24), datetime.datetime(2008,3,2))
+        >>> occurrences = event.get_occurrences(datetime.datetime(2013,1,24), datetime.datetime(2014,3,2))
         >>> ["%s to %s" %(o.start, o.end) for o in occurrences]
         []
         """

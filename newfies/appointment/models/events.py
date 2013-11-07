@@ -10,7 +10,7 @@ from appointment.models.rules import Rule
 from appointment.models.calendars import Calendar
 from appointment.utils import OccurrenceReplacer
 from appointment.constants import EVENT_STATUS
-from dateutil import rrule
+from dateutil.rrule import *
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import jsonfield
@@ -113,9 +113,16 @@ class Event(models.Model):
 
         start = datetime.now()
         end = datetime.now() + relativedelta(years=+10)
-        occurrences = self.get_occurrences(start, end)
-        for o in occurrences:
-            print o
+        if self.rule.frequency:
+            if self.rule.params:
+                print self.rule.params
+
+            #list(rrule(self.rule.frequency, count=3, byweekday=(TU,TH),
+            #dtstart=start))
+
+        #occurrences = self.get_occurrences(start, end)
+        #for o in occurrences:
+        #    print o
 
         return True  # TODO: return the next occurent
 

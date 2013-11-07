@@ -90,6 +90,13 @@ class Alarm(models.Model):
         else:
             return u"%s - %s" % (self.id, self.event)
 
+    def copy_alarm(self):
+        """
+        copy alarm
+        """
+        #Alarm.objects.create()
+        return True
+
 
 class AlarmRequest(models.Model):
     '''

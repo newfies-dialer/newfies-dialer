@@ -70,26 +70,27 @@ class event_dispatcher(PeriodicTask):
             #    if so, base on the rule we will create a new event in the future (if the current event
             #    have one or several alarms, the alarms should be copied also)
 
-            if obj_event.rule:
-                # we dont need this check here (frequency == "YEARLY"),
-                # instead we will implement method on event get_next_occurrences
-                if obj_event.rule.frequency == "YEARLY":
-                    pass
-                elif obj_event.rule.frequency == "MONTHLY":
-                    pass
-                elif obj_event.rule.frequency == "WEEKLY":
-                    pass
-                elif obj_event.rule.frequency == "DAILY":
-                    pass
-                elif obj_event.rule.frequency == "HOURLY":
-                    pass
-                elif obj_event.rule.frequency == "MINUTELY":
-                    pass
-                elif obj_event.rule.frequency == "SECONDLY":
-                    pass
-
+            next_occurrences = obj_event.get_next_occurrences()
+            if next_occurrences:
                 #base on the result of get_next_occurrences we will know when to create the next event
-                #Event.objects.create()
+                pass
+                """
+                Event.objects.create(
+                    start=next_occurrences,
+                    end=next_occurrences,
+                    title=self.title + '_next',
+                    creator=self.creator,
+                    rule=self.creator,
+                    end_recurring_period=self.end_recurring_period,
+                    calendar=self.calendar,
+                    notify_count=self.notify_count,
+                    data=self.data,
+                )
+
+                alarm_list = Alarm.objects.filter(event=self)
+                for obj_alarm in alarm_list:
+                    obj_alarm.copy_alarm()
+                """
 
             # 3) Mark the event as COMPLETED
             #obj_event.status = EVENT_STATUS.COMPLETED

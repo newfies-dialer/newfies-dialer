@@ -11,6 +11,8 @@ from appointment.models.calendars import Calendar
 from appointment.utils import OccurrenceReplacer
 from appointment.constants import EVENT_STATUS
 from dateutil import rrule
+from dateutil.relativedelta import relativedelta
+from datetime import datetime
 import jsonfield
 import pytz
 
@@ -108,6 +110,12 @@ class Event(models.Model):
         # This will be similar to get_occurrences but this will have per default for start the current date
         # and for end the current date + 10 years
         # we will look for the next occurence happening and we will use this to create the next event
+
+        start = datetime.now()
+        end = datetime.now() + relativedelta(years=+10)
+        occurrences = self.get_occurrences(start, end)
+        for o in occurrences:
+            print o
 
         return True  # TODO: return the next occurent
 

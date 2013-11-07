@@ -135,7 +135,6 @@ class alarm_dispatcher(PeriodicTask):
                 if second_towait == 0:
                     perform_alarm.delay(obj_alarm.event, obj_alarm)
                 else:
-                    second_towait = 10
                     perform_alarm.apply_async(
                         args=[obj_alarm.event, obj_alarm], countdown=second_towait)
 

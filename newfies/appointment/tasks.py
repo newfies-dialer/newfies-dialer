@@ -25,6 +25,7 @@ from appointment.constants import EVENT_STATUS, ALARM_STATUS, ALARM_METHOD
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint
 from datetime import datetime, timedelta
+from dateutil.relativedelta import relativedelta
 #import time
 
 
@@ -59,8 +60,8 @@ class event_dispatcher(PeriodicTask):
         for obj_event in event_list:
             try:
                 # if event is attached with alarm then perform alarm
-                alarm_id = Alarm.objects.get(event=obj_event).id
-                perform_alarm.delay(obj_event, alarm_id)
+                obj_alarm = Alarm.objects.get(event=obj_event)
+                perform_alarm.delay(obj_event, obj_alarm)
             except ObjectDoesNotExist:
                 pass
 
@@ -116,19 +117,27 @@ class alarm_dispatcher(PeriodicTask):
     def run(self, **kwargs):
         logger.info("TASK :: alarm_dispatcher")
 
-        #TODO: Select Alarm where date_start_notice >= now() - 5 minutes
-        #and <= now() + 5 minutes
-        alarm_list = Alarm.objects.filter(date_start_notice=datetime.now(),
+        # Select Alarm where date_start_notice >= now() - 5 minutes and <= now() + 5 minutes
+        start_time = datetime.now() + relativedelta(minutes=-5)
+        end_time = datetime.now() + relativedelta(minutes=+5)
+        alarm_list = Alarm.objects.filter(date_start_notice__range=(start_time, end_time),
                                           status=ALARM_STATUS.PENDING)
         for obj_alarm in alarm_list:
             if obj_alarm.event:
                 # For each alarms that need to be proceed get the event related and the id
-                second_towait = 10
+
                 # TODO fix second_towait => second_towait = Alarm.date_start_notice - now()
-                # if second_towait negatif then set to 0 to be run directly
-                perform_alarm.apply_async(
-                    args=[obj_alarm.event, obj_alarm],
-                    countdown=second_towait)
+                # if second_towait negative then set to 0 to be run directly
+                second_towait = (obj_alarm.daysdate_start_notice - datetime.now()).seconds
+                if second_towait < 0:
+                    second_towait = 0
+
+                if second_towait == 0:
+                    perform_alarm.delay(obj_alarm.event, obj_alarm)
+                else:
+                    second_towait = 10
+                    perform_alarm.apply_async(
+                        args=[obj_alarm.event, obj_alarm], countdown=second_towait)
 
 
 @task()

@@ -11,7 +11,7 @@ from appointment.models.calendars import Calendar
 from appointment.utils import OccurrenceReplacer
 from appointment.constants import EVENT_STATUS
 from dateutil.rrule import *
-from dateutil.relativedelta import relativedelta
+# from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import jsonfield
 import pytz
@@ -135,11 +135,11 @@ class Event(models.Model):
 
         return new_event
 
-    #def get_rrule_object(self):
-    #    if self.rule is not None:
-    #        params = self.rule.get_params()
-    #        frequency = 'rrule.%s' % self.rule.frequency
-    #        return rrule.rrule(eval(frequency), dtstart=self.start, **params)
+    # def get_rrule_object(self):
+    #     if self.rule is not None:
+    #         params = self.rule.get_params()
+    #         frequency = 'rrule.%s' % self.rule.frequency
+    #         return rrule(eval(frequency), dtstart=self.start, **params)
 
     def get_rrule_object(self):
         if self.rule is not None:

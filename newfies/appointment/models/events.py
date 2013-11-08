@@ -112,25 +112,23 @@ class Event(models.Model):
         # we will look for the next occurence happening and we will use this to create the next event
 
         start = datetime.now()
-        end = datetime.now() + relativedelta(years=+10)
-        if self.rule.frequency:
-            if self.rule.params:
-                print self.rule.params
+        #end = datetime.now() + relativedelta(years=+10)
+        occurrences_list = self.get_rrule_object()
+        for occ in occurrences_list:
+            if occ.replace(tzinfo=None) > start:
+                return occ  # return the next occurent
 
-            #list(rrule(self.rule.frequency, count=3, byweekday=(TU,TH),
-            #dtstart=start))
-
-        #occurrences = self.get_occurrences(start, end)
-        #for o in occurrences:
-        #    print o
-
-        return True  # TODO: return the next occurent
+    #def get_rrule_object(self):
+    #    if self.rule is not None:
+    #        params = self.rule.get_params()
+    #        frequency = 'rrule.%s' % self.rule.frequency
+    #        return rrule.rrule(eval(frequency), dtstart=self.start, **params)
 
     def get_rrule_object(self):
         if self.rule is not None:
-            params = self.rule.get_params()
-            frequency = 'rrule.%s' % self.rule.frequency
-            return rrule.rrule(eval(frequency), dtstart=self.start, **params)
+            params = self.rule.params
+            frequency = self.rule.frequency
+            return list(rrule(eval(frequency), dtstart=self.start, **params))
 
     def _create_occurrence(self, start, end=None):
         if end is None:

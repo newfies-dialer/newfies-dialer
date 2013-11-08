@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+import jsonfield
 
 freqs = (
     ("YEARLY", _("Yearly")),
@@ -44,7 +45,8 @@ class Rule(models.Model):
     name = models.CharField(_("name"), max_length=32)
     description = models.TextField(_("description"))
     frequency = models.CharField(_("frequency"), choices=freqs, max_length=10)
-    params = models.TextField(_("params"), null=True, blank=True)
+    params = jsonfield.JSONField(null=True, blank=True, verbose_name=_('params)'),
+                                 help_text=_("enter the list of parameters in Json format, e.g. {\"age\": \"32\"}"))
 
     class Meta:
         verbose_name = _('rule')

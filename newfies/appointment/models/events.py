@@ -135,17 +135,17 @@ class Event(models.Model):
 
         return new_event
 
-    # def get_rrule_object(self):
-    #     if self.rule is not None:
-    #         params = self.rule.get_params()
-    #         frequency = 'rrule.%s' % self.rule.frequency
-    #         return rrule(eval(frequency), dtstart=self.start, **params)
-
     def get_rrule_object(self):
         if self.rule is not None:
-            params = self.rule.params
-            frequency = self.rule.frequency
+            params = self.rule.get_params()
+            frequency = 'rrule.%s' % self.rule.frequency
             return rrule(eval(frequency), dtstart=self.start, **params)
+
+    #def new_get_rrule_object(self):
+    #    if self.rule is not None:
+    #        params = self.rule.params
+    #        frequency = self.rule.frequency
+    #        return rrule(eval(frequency), dtstart=self.start, **params)
 
     def _create_occurrence(self, start, end=None):
         if end is None:

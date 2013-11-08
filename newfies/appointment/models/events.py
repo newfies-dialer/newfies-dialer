@@ -10,7 +10,7 @@ from appointment.models.rules import Rule
 from appointment.models.calendars import Calendar
 from appointment.utils import OccurrenceReplacer
 from appointment.constants import EVENT_STATUS
-from dateutil.rrule import *
+from dateutil import rrule
 # from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import jsonfield
@@ -139,7 +139,7 @@ class Event(models.Model):
         if self.rule is not None:
             params = self.rule.get_params()
             frequency = 'rrule.%s' % self.rule.frequency
-            return rrule(eval(frequency), dtstart=self.start, **params)
+            return rrule.rrule(eval(frequency), dtstart=self.start, **params)
 
     #def new_get_rrule_object(self):
     #    if self.rule is not None:

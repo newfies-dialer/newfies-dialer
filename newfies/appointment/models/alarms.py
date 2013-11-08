@@ -59,7 +59,6 @@ class Alarm(models.Model):
                                      related_name="sms template")
     event = models.ForeignKey(Event, verbose_name=_("event"),
                               related_name="event")
-
     date_start_notice = models.DateTimeField(verbose_name=_('starting date'))
 
     status = models.IntegerField(choices=list(ALARM_STATUS),
@@ -94,13 +93,25 @@ class Alarm(models.Model):
         """
         copy alarm
         """
-        # Delete id field for new record
-        del self.__dict__['id']
+        new_alarm = Alarm.objects.create(
+            event=new_event,
+            daily_start=self.daily_start,
+            daily_stop=self.daily_stop,
+            advance_notice=self.advance_notice,
+            retry_count=self.retry_count,
+            retry_delay=self.retry_delay,
+            sent_count=self.sent_count,
+            survey=self.survey,
+            mail_template=self.mail_template,
+            sms_template=self.sms_template,
+            date_start_notice=self.date_start_notice,
+            #result=self.result,
+            #url_cancel=self.url_cancel,
+            #phonenumber_sms_cancel=self.phonenumber_sms_cancel,
+            #url_confirm=self.url_confirm,
+            #phonenumber_transfer=self.phonenumber_transfer,
+          )
 
-        new_alarm = Alarm(**self.__dict__)
-        # Add new value to field if require
-        new_alarm.event = new_event
-        new_alarm.save()
         return new_alarm
 
 

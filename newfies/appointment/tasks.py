@@ -56,7 +56,9 @@ class event_dispatcher(PeriodicTask):
         logger.info("TASK :: event_dispatcher")
 
         # 1) Will list all the events where event.start > NOW() and status = EVENT_STATUS.PENDING
-        event_list = Event.objects.filter(start=datetime.now(), status=EVENT_STATUS.PENDING)
+        #start = datetime(2013, 11, 8, 11, 25, 23)
+        start = datetime.now()
+        event_list = Event.objects.filter(start=start, status=EVENT_STATUS.PENDING)
         for obj_event in event_list:
             try:
                 # if event is attached with alarm then perform alarm

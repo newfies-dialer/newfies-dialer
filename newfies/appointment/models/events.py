@@ -119,13 +119,20 @@ class Event(models.Model):
 
     def copy_event(self, next_occurrence):
         """create new event with next occurrence"""
-        # Delete id field for new record
-        del self.__dict__['id']
 
-        new_event = Event(**self.__dict__)
-        # Add new value to field if require
-        new_event.start = next_occurrence
-        new_event.save()
+        new_event = Event.objects.create(
+            start=next_occurrence,
+            end=self.end,
+            title=self.title,
+            description=self.description,
+            creator=self.creator,
+            rule=self.rule,
+            end_recurring_period=self.end_recurring_period,
+            calendar=self.calendar,
+            notify_count=self.notify_count,
+            data=self.data,
+        )
+
         return new_event
 
     #def get_rrule_object(self):

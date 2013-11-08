@@ -17,7 +17,7 @@ from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
 from appointment.models.users import CalendarSetting, CalendarUser, CalendarUserProfile
 from appointment.models.rules import Rule
-from appointment.models.events import Event
+from appointment.models.events import Event, Occurrence
 from appointment.models.alarms import Alarm, SMSTemplate, AlarmRequest
 from appointment.models.calendars import Calendar
 from appointment.forms import CalendarUserProfileForm
@@ -64,6 +64,12 @@ class EventAdmin(admin.ModelAdmin):
     ordering = ('-id', )
 
 
+class OccurrenceAdmin(admin.ModelAdmin):
+    list_display = ('title', 'event', 'start', 'end', 'cancelled',
+                    'original_start', 'original_end')
+    ordering = ('-id', )
+
+
 class AlarmAdmin(admin.ModelAdmin):
     list_display = ('id', 'event', 'daily_start', 'daily_stop',
                     'advance_notice', 'retry_count', 'method',
@@ -87,6 +93,7 @@ admin.site.register(CalendarUser, CalendarUserAdmin)
 admin.site.register(CalendarSetting, CalendarSettingAdmin)
 admin.site.register(Rule, RuleAdmin)
 admin.site.register(Event, EventAdmin)
+admin.site.register(Occurrence, OccurrenceAdmin)
 admin.site.register(AlarmRequest, AlarmRequestAdmin)
 admin.site.register(Alarm, AlarmAdmin)
 admin.site.register(SMSTemplate, SMSTemplateAdmin)

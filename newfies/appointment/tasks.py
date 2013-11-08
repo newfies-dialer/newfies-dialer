@@ -70,27 +70,14 @@ class event_dispatcher(PeriodicTask):
             #    if so, base on the rule we will create a new event in the future (if the current event
             #    have one or several alarms, the alarms should be copied also)
 
-            next_occurrences = obj_event.get_next_occurrences()
-            if next_occurrences:
+            next_occurrence = obj_event.get_next_occurrence()
+            if next_occurrence:
                 #base on the result of get_next_occurrences we will know when to create the next event
-                pass
-                """
-                Event.objects.create(
-                    start=next_occurrences,
-                    end=next_occurrences,
-                    title=self.title + '_next',
-                    creator=self.creator,
-                    rule=self.creator,
-                    end_recurring_period=self.end_recurring_period,
-                    calendar=self.calendar,
-                    notify_count=self.notify_count,
-                    data=self.data,
-                )
+                new_event = obj_event.copy_event(next_occurrence)
 
-                alarm_list = Alarm.objects.filter(event=self)
+                alarm_list = Alarm.objects.filter(event=obj_event)
                 for obj_alarm in alarm_list:
-                    obj_alarm.copy_alarm()
-                """
+                    obj_alarm.copy_alarm(new_event)
 
             # 3) Mark the event as COMPLETED
             #obj_event.status = EVENT_STATUS.COMPLETED

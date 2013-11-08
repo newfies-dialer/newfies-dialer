@@ -92,7 +92,7 @@ class Event(models.Model):
         final_occurrences += occ_replacer.get_additional_occurrences(start, end)
         return final_occurrences
 
-    def get_next_occurrences(self):
+    def get_next_occurrence(self):
         """
         TODO: implement this
 
@@ -101,9 +101,8 @@ class Event(models.Model):
         >>> event = Event(rule=rule, start=datetime.datetime(2008,1,1,tzinfo=pytz.utc), end=datetime.datetime(2008,1,2))
         >>> event.rule
         <Rule: Monthly>
-        >>> occurrences = event.get_next_occurrences()
-        >>> ["%s to %s" %(o.start, o.end) for o in occurrences]
-        ['2008-02-01 00:00:00+00:00 to 2008-02-02 00:00:00+00:00']
+        >>> event.get_next_occurrence()
+        2008-02-02 00:00:00+00:00
         """
 
         # TODO
@@ -117,6 +116,17 @@ class Event(models.Model):
         for occ in occurrences_list:
             if occ.replace(tzinfo=None) > start:
                 return occ  # return the next occurent
+
+    def copy_event(self, next_occurrence):
+        """create new event with next occurrence"""
+        # Delete id field for new record
+        del self.__dict__['id']
+
+        new_event = Event(**self.__dict__)
+        # Add new value to field if require
+        new_event.start = next_occurrence
+        new_event.save()
+        return new_event
 
     #def get_rrule_object(self):
     #    if self.rule is not None:

@@ -90,12 +90,18 @@ class Alarm(models.Model):
         else:
             return u"%s - %s" % (self.id, self.event)
 
-    def copy_alarm(self):
+    def copy_alarm(self, new_event):
         """
         copy alarm
         """
-        #Alarm.objects.create()
-        return True
+        # Delete id field for new record
+        del self.__dict__['id']
+
+        new_alarm = Alarm(**self.__dict__)
+        # Add new value to field if require
+        new_alarm.event = new_event
+        new_alarm.save()
+        return new_alarm
 
 
 class AlarmRequest(models.Model):

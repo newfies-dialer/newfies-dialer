@@ -112,7 +112,7 @@ class Event(models.Model):
 
         start = datetime.now()
         #end = datetime.now() + relativedelta(years=+10)
-        occurrences_list = self.get_rrule_object()
+        occurrences_list = list(self.get_rrule_object())
         for occ in occurrences_list:
             if occ.replace(tzinfo=None) > start:
                 return occ  # return the next occurent
@@ -145,7 +145,7 @@ class Event(models.Model):
         if self.rule is not None:
             params = self.rule.params
             frequency = self.rule.frequency
-            return list(rrule(eval(frequency), dtstart=self.start, **params))
+            return rrule(eval(frequency), dtstart=self.start, **params)
 
     def _create_occurrence(self, start, end=None):
         if end is None:

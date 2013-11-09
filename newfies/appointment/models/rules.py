@@ -59,7 +59,11 @@ class Rule(models.Model):
         """
         if self.params is None:
             return {}
-        params = self.params.split(';')
+
+        # remove "" from self.params
+        params = self.params.replace('"', '')
+
+        params = params.split(';')
         param_dict = []
         for param in params:
             param = param.split(':')

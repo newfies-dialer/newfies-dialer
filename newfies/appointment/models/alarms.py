@@ -34,6 +34,10 @@ class Alarm(models.Model):
     '''
     This is for Alarms / Reminders on events models.
     '''
+    alarm_phonenumber = models.CharField(max_length=50, blank=True, null=True,
+                                         verbose_name=_("alarm phonenumber"))
+    alarm_email = models.EmailField(blank=True, null=True, verbose_name=_('alarm email'))
+
     daily_start = models.TimeField(verbose_name=_('daily start'))
     daily_stop = models.TimeField(verbose_name=_('daily stop'))
     advance_notice = models.IntegerField(null=True, blank=True, default=0,
@@ -110,7 +114,7 @@ class Alarm(models.Model):
             #phonenumber_sms_cancel=self.phonenumber_sms_cancel,
             #url_confirm=self.url_confirm,
             #phonenumber_transfer=self.phonenumber_transfer,
-          )
+        )
 
         return new_alarm
 

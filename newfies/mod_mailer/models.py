@@ -55,7 +55,7 @@ class MailSpooler(models.Model):
     mailtemplate = models.ForeignKey(MailTemplate, verbose_name=_('mail template'))
     contact_email = models.EmailField(verbose_name=_('contact email'))
     created_date = models.DateTimeField(auto_now_add=True)
-    parameter = models.CharField(max_length=1000, help_text=_('parameter'),
+    parameter = models.CharField(max_length=1000,
                                  verbose_name=_('parameter'), blank=True, null=True)
     mailspooler_type = models.IntegerField(choices=list(MAILSPOOLER_TYPE),
                                            blank=True, null=True, verbose_name=_("type"),

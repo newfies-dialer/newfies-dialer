@@ -42,7 +42,7 @@ class event_dispatcher(PeriodicTask):
     """A periodic task that checks for scheduled Event and perform number of
     tasks for the Event and create the occurence of the next future Event.
 
-    For each Event found, this PeriodicTask will ::
+    For each Event found, the PeriodicTask event_dispatcher will ::
 
         - check the Rule assigned to the Event and create a new occurence of
           this event based on the Rule. The new occurence is an other Event object.
@@ -59,45 +59,45 @@ class event_dispatcher(PeriodicTask):
     def run(self, **kwargs):
         logger.info("TASK :: event_dispatcher")
 
-        # 1) Will list all the events where event.start > NOW() and status = EVENT_STATUS.PENDING
-        #start = datetime(2013, 11, 11, 11, 25, 23)
-        start = datetime.now()
-        event_list = Event.objects.filter(start=start, status=EVENT_STATUS.PENDING)
+        # List all the events where event.start > NOW() - 12 hours and status = EVENT_STATUS.PENDING
+        start = datetime.now() - timedelta(hours=12)
+        event_list = Event.objects.filter(start__gte=start, status=EVENT_STATUS.PENDING)
         for obj_event in event_list:
             try:
-                # if event is attached with alarm then perform alarm
+                # Get and perform alarm
                 obj_alarm = Alarm.objects.get(event=obj_event)
                 perform_alarm.delay(obj_event, obj_alarm)
             except ObjectDoesNotExist:
                 pass
 
-            #TODO:
-            # 2) Then will check if need to create a sub event, see if there is a FK.rule
-            #    if so, base on the rule we will create a new event in the future (if the current event
-            #    have one or several alarms, the alarms should be copied also)
-
+            # Check if need to create a sub event in the future
             next_occurrence = obj_event.get_next_occurrence()
+            print "next_occurrence"
+            print next_occurrence
+
             if next_occurrence:
-                #base on the result of get_next_occurrences we will know when to create the next event
+                # The result of get_next_occurrences help to create the next event
                 new_event = obj_event.copy_event(next_occurrence)
 
+                # Copy the alarm link to the event
                 alarm_list = Alarm.objects.filter(event=obj_event)
                 for obj_alarm in alarm_list:
                     obj_alarm.copy_alarm(new_event)
 
-            # 3) Mark the event as COMPLETED
-            #obj_event.status = EVENT_STATUS.COMPLETED
+            # Mark the event as COMPLETED
+            obj_event.status = EVENT_STATUS.COMPLETED
             obj_event.save()
 
 
 class alarm_dispatcher(PeriodicTask):
-    """A periodic task that checks for scheduled Alarm and perform number of
-    tasks to trigger the Alarm.
+    """A periodic task that checks for scheduled Alarm and trigger the Alarm according
+    to the alarm type, such as phone Call, SMS or Email.
 
-    For each Alarm found, this PeriodicTask will ::
+    For each Alarm found, the PeriodicTask alarm_dispatcher will ::
 
-        - found when the next alarm should be triggered, note the alarm trigger is not
-          related to the date of the event, as an Alarm can happen hours/days before an event
+        - found when the next alarm should be performed. We should notice that alarm
+          trigger date/time is not related to the event date, an alarm can happen
+          hours/days before an event occurs
 
         - run the Alarm actions based on the method/settings of the Alarm
 
@@ -116,10 +116,10 @@ class alarm_dispatcher(PeriodicTask):
         end_time = datetime.now() + relativedelta(minutes=+5)
         alarm_list = Alarm.objects.filter(date_start_notice__range=(start_time, end_time),
                                           status=ALARM_STATUS.PENDING)
+        # Browse all the Alarms found
         for obj_alarm in alarm_list:
+            # Check if there is an existing Event
             if obj_alarm.event:
-                # For each alarms that need to be proceed get the event related and the id
-
                 # TODO fix second_towait => second_towait = Alarm.date_start_notice - now()
                 # if second_towait negative then set to 0 to be run directly
                 second_towait = (obj_alarm.daysdate_start_notice - datetime.now()).seconds
@@ -131,6 +131,9 @@ class alarm_dispatcher(PeriodicTask):
                 else:
                     perform_alarm.apply_async(
                         args=[obj_alarm.event, obj_alarm], countdown=second_towait)
+            else:
+                logger.error("not event link to alarm: %d" % obj_alarm.id)
+                #TODO: Mark Alarm as completed / error
 
 
 @task()

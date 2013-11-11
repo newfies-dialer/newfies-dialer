@@ -35,7 +35,6 @@ class Event(models.Model):
     notify_count = models.IntegerField(null=True, blank=True, default=0)
     data = jsonfield.JSONField(null=True, blank=True, verbose_name=_('additional data (JSON)'),
                                help_text=_("data in Json format, e.g. {\"cost\": \"40 euro\"}"))
-
     status = models.IntegerField(choices=list(EVENT_STATUS),
                                  default=EVENT_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)

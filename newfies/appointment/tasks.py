@@ -20,7 +20,11 @@ from common.only_one_task import only_one
 from appointment.models.alarms import Alarm
 #from appointment.models.rules import Rule
 from appointment.models.events import Event
+from appointment.models.users import CalendarUserProfile
 from appointment.constants import EVENT_STATUS, ALARM_STATUS, ALARM_METHOD
+
+from mod_mailer.models import MailSpooler  #, MailTemplate
+from mod_mailer.constants import MAILSPOOLER_TYPE
 
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint
@@ -138,9 +142,20 @@ def perform_alarm(obj_event, obj_alarm):
 
     #if obj_alarm.method == ALARM_METHOD.CALL:
     #    # perform CALL
+    #    pass
     #elif obj_alarm.method == ALARM_METHOD.SMS:
     #    # perform SMS
     #elif obj_alarm.method == ALARM_METHOD.EMAIL:
-    #    # perform EMAIL
+        # perform EMAIL
+
+        #if event.calendar.user.is_calendar_user():
+        #    phonebook_list = CalendarUserProfile.objects.get(user=event.calendar.user).calendar_setting.survey.campaign.phonebook.all()
+        #
+        #    contact_list = Contact.objects.filter(phonebook__in=phonebook_list)
+
+        #for contact in contact_list:
+        #    MailSpooler.objects.create(
+        #        mailtemplate=obj_alarm.mail_template,
+        #        contact=)
 
     # TODO: We can start implementing the Email

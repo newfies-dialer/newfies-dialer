@@ -71,9 +71,10 @@ class OccurrenceAdmin(admin.ModelAdmin):
 
 
 class AlarmAdmin(admin.ModelAdmin):
-    list_display = ('id', 'event', 'daily_start', 'daily_stop',
-                    'advance_notice', 'retry_count', 'method',
-                    'status', 'result', 'created_date')
+    list_display = ('id', 'event', 'alarm_phonenumber', 'alarm_email',
+                    'daily_start', 'daily_stop', 'advance_notice',
+                    'retry_count', 'method', 'status', 'result',
+                    'created_date')
     ordering = ('-id', )
     list_filter = ('event', 'created_date')
 

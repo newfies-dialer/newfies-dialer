@@ -145,17 +145,11 @@ def perform_alarm(obj_event, obj_alarm):
     #    pass
     #elif obj_alarm.method == ALARM_METHOD.SMS:
     #    # perform SMS
-    #elif obj_alarm.method == ALARM_METHOD.EMAIL:
+    if obj_alarm.method == ALARM_METHOD.EMAIL:
         # perform EMAIL
-
-        #if event.calendar.user.is_calendar_user():
-        #    phonebook_list = CalendarUserProfile.objects.get(user=event.calendar.user).calendar_setting.survey.campaign.phonebook.all()
-        #
-        #    contact_list = Contact.objects.filter(phonebook__in=phonebook_list)
-
-        #for contact in contact_list:
-        #    MailSpooler.objects.create(
-        #        mailtemplate=obj_alarm.mail_template,
-        #        contact=)
-
-    # TODO: We can start implementing the Email
+        if obj_alarm.alarm_email and obj_alarm.mail_template:
+            # create MailSpooler object
+            MailSpooler.objects.create(
+                mailtemplate=obj_alarm.mail_template,
+                contact=obj_alarm.alarm_email
+            )

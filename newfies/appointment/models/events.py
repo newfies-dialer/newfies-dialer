@@ -19,8 +19,7 @@ import pytz
 
 class Event(models.Model):
     '''
-    This model stores meta data for a date.  You can relate this data to many
-    other models.
+    This model stores meta data for a date / an event
     '''
     start = models.DateTimeField(_("start"))
     end = models.DateTimeField(_("end"), help_text=_("The end time must be later than the start time."))
@@ -38,6 +37,15 @@ class Event(models.Model):
     status = models.IntegerField(choices=list(EVENT_STATUS),
                                  default=EVENT_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)
+
+    #TODO: implement parent_event & occ_count
+    #
+    # Keep a trace of the original event of all occurences
+    parent_event = models.ForeignKey('self', null=True, blank=True)
+    # Occurence count, this is an increment that will add 1 on the new event created
+    # This helps to know that an event is the nth created
+    occ_count = models.IntegerField(null=True, blank=True, default=0,
+                                    verbose_name=_("occurrence count"))
 
     class Meta:
         verbose_name = _('event')

@@ -60,7 +60,8 @@ class RuleAdmin(admin.ModelAdmin):
 
 class EventAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'start', 'end', 'creator', 'rule',
-                    'end_recurring_period', 'calendar', 'notify_count', 'status')
+                    'end_recurring_period', 'calendar', 'notify_count', 'status',
+                    'parent_event', 'occ_count')
     ordering = ('-id', )
 
 

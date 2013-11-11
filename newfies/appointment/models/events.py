@@ -25,11 +25,11 @@ class Event(models.Model):
     end = models.DateTimeField(_("end"), help_text=_("The end time must be later than the start time."))
     title = models.CharField(_("title"), max_length=255)
     description = models.TextField(_("description"), null=True, blank=True)
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=True, blank=True, verbose_name=_("creator"), related_name='creator')
+    creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, verbose_name=_("creator"), related_name='creator')
     created_on = models.DateTimeField(_("created on"), default=timezone.now)
     rule = models.ForeignKey(Rule, null=True, blank=True, verbose_name=_("rule"), help_text=_("Select '----' for a one time only event."))
     end_recurring_period = models.DateTimeField(_("end recurring period"), null=True, blank=True, help_text=_("This date is ignored for one time only events."))
-    calendar = models.ForeignKey(Calendar, null=True, blank=True)
+    calendar = models.ForeignKey(Calendar, null=False, blank=False)
 
     notify_count = models.IntegerField(null=True, blank=True, default=0)
     data = jsonfield.JSONField(null=True, blank=True, verbose_name=_('additional data (JSON)'),
@@ -39,9 +39,9 @@ class Event(models.Model):
                                  verbose_name=_("status"), blank=True, null=True)
 
     #TODO: implement parent_event & occ_count
-    #
+
     # Keep a trace of the original event of all occurences
-    parent_event = models.ForeignKey('self', null=True, blank=True)
+    parent_event = models.ForeignKey('self', null=True, blank=True, related_name="parent event")
     # Occurence count, this is an increment that will add 1 on the new event created
     # This helps to know that an event is the nth created
     occ_count = models.IntegerField(null=True, blank=True, default=0,

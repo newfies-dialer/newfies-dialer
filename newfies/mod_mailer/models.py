@@ -53,7 +53,7 @@ class MailSpooler(models.Model):
     This table store the Mail Spooler
     """
     mailtemplate = models.ForeignKey(MailTemplate, verbose_name=_('mail template'))
-    contact = models.ForeignKey(Contact, verbose_name=_("contact"))
+    contact_email = models.EmailField(verbose_name=_('contact email'))
     created_date = models.DateTimeField(auto_now_add=True)
     parameter = models.CharField(max_length=1000, help_text=_('parameter'),
                                  verbose_name=_('parameter'), blank=True, null=True)

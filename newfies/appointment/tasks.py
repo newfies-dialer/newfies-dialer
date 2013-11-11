@@ -149,7 +149,8 @@ def perform_alarm(obj_event, obj_alarm):
         # perform EMAIL
         if obj_alarm.alarm_email and obj_alarm.mail_template:
             # create MailSpooler object
+
             MailSpooler.objects.create(
                 mailtemplate=obj_alarm.mail_template,
-                contact=obj_alarm.alarm_email
+                contact_email=obj_alarm.alarm_email
             )

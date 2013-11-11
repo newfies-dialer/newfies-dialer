@@ -48,14 +48,14 @@ def sendmail_task(current_mail_id):
         return False
 
     mailtemplate = MailTemplate.objects.get(pk=current_mailspooler.mailtemplate.id)
-    contact_email = current_mailspooler.contact.email
+    #contact_email = current_mailspooler.contact.email
 
     send_html_mail(
         mailtemplate.subject,
         mailtemplate.message_plaintext,
         mailtemplate.message_html,
         mailtemplate.from_email,
-        [contact_email],
+        [current_mailspooler.contact_email],
     )
 
     current_mailspooler.mailspooler_type = MAILSPOOLER_TYPE.SENT

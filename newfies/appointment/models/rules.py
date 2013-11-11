@@ -1,5 +1,6 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from dateutil import rrule
 
 freqs = (
     ("YEARLY", _("Yearly")),
@@ -56,6 +57,10 @@ class Rule(models.Model):
         >>> rule = Rule(params = "count:1;bysecond:1;byminute:1,2,4,5")
         >>> rule.get_params()
         {'count': 1, 'byminute': [1, 2, 4, 5], 'bysecond': 1}
+
+        >>> rule = Rule(params = "count:1;bysecond:3;byweekday:TU,WE,TH")
+        >>> rule.get_params()
+        {'bysecond': 1, 'byweekday': (TU, WE, TH), 'count': 1}
         """
         if self.params is None:
             return {}
@@ -68,7 +73,20 @@ class Rule(models.Model):
         for param in params:
             param = param.split(':')
             if len(param) == 2:
-                param = (str(param[0]), [int(p) for p in param[1].split(',')])
+
+                temp_list = []
+                tuple_flag = False
+                for p in param[1].split(','):
+                    if p.isdigit():
+                        temp_list.append(int(p))
+                    else:
+                        tuple_flag = True
+                        temp_list.append(eval('rrule.%s' % str(p)))
+
+                if tuple_flag:
+                    temp_list = tuple(temp_list)
+
+                param = (str(param[0]), temp_list)
                 if len(param[1]) == 1:
                     param = (param[0], param[1][0])
                 param_dict.append(param)

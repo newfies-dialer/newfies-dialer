@@ -25,6 +25,7 @@ class ALARM_STATUS(Choice):
     PENDING = 1, _('pending').upper()
     IN_PROCESS = 2, _('in_process').upper()
     COMPLETED = 3, _('completed').upper()
+    ERROR = 3, _('error').upper()
 
 
 class ALARM_RESULT(Choice):

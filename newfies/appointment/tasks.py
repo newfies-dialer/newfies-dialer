@@ -132,28 +132,37 @@ class alarm_dispatcher(PeriodicTask):
                     perform_alarm.apply_async(
                         args=[obj_alarm.event, obj_alarm], countdown=second_towait)
             else:
-                logger.error("not event link to alarm: %d" % obj_alarm.id)
-                #TODO: Mark Alarm as completed / error
+                logger.error("There is no Event attached to this Alarm: %d" % obj_alarm.id)
+                ## Mark the Alarm as ERROR
+                obj_alarm.status = ALARM_STATUS.ERROR
+                obj_alarm.save()
 
 
 @task()
 def perform_alarm(obj_event, obj_alarm):
     """
-    Task to perform the alarm
+    Task to perform the alarm, this will send the alarms via several mean such
+    as Call, SMS and Email
     """
     logger.info("TASK :: perform_alarm")
 
-    #if obj_alarm.method == ALARM_METHOD.CALL:
-    #    # perform CALL
-    #    pass
-    #elif obj_alarm.method == ALARM_METHOD.SMS:
-    #    # perform SMS
+    if obj_alarm.method == ALARM_METHOD.CALL:
+        # send alarm via CALL
+        print "ALARM_METHOD.CALL"
+
+    elif obj_alarm.method == ALARM_METHOD.SMS:
+        # send alarm via SMS
+        print "ALARM_METHOD.SMS"
+
     if obj_alarm.method == ALARM_METHOD.EMAIL:
-        # perform EMAIL
+        # send alarm via EMAIL
         if obj_alarm.alarm_email and obj_alarm.mail_template:
             # create MailSpooler object
-
             MailSpooler.objects.create(
                 mailtemplate=obj_alarm.mail_template,
                 contact_email=obj_alarm.alarm_email
             )
+
+    ## Mark the Alarm as COMPLETED
+    obj_alarm.status = ALARM_STATUS.COMPLETED
+    obj_alarm.save()

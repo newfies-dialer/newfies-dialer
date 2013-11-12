@@ -37,9 +37,6 @@ class Event(models.Model):
     status = models.IntegerField(choices=list(EVENT_STATUS),
                                  default=EVENT_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)
-
-    #TODO: implement parent_event & occ_count
-
     # Keep a trace of the original event of all occurences
     parent_event = models.ForeignKey('self', null=True, blank=True, related_name="parent event")
     # Occurence count, this is an increment that will add 1 on the new event created
@@ -130,6 +127,9 @@ class Event(models.Model):
             calendar=self.calendar,
             notify_count=self.notify_count,
             data=self.data,
+            # implemented parent_event & occ_count
+            parent_event=self,
+            occ_count=self.occ_count + 1,
         )
 
         return new_event

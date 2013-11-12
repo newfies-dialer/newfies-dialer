@@ -15,6 +15,7 @@ from django.forms import ModelForm
 #from django.contrib.auth.forms import UserChangeForm
 #from django.utils.translation import ugettext as _
 from appointment.models.users import CalendarUserProfile
+from appointment.models.events import Event
 
 
 class CalendarUserProfileForm(ModelForm):
@@ -22,3 +23,10 @@ class CalendarUserProfileForm(ModelForm):
 
     class Meta:
         model = CalendarUserProfile
+
+
+class EventForm(ModelForm):
+    """Admin Event ModelForm"""
+    class Meta:
+        model = Event
+        exclude = ['parent_event']

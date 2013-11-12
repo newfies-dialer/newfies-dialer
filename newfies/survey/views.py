@@ -1095,10 +1095,11 @@ def export_surveycall_report(request):
             result_list = {}
             #We will prepare a dictionary result_list to help exporting the result
             for result in results:
+                column = unicode(result.section.question.replace(',', ' '))
                 if result.record_file and len(result.record_file) > 0:
-                    result_list[result.section.question] = result.record_file
+                    result_list[column.encode('utf-8')] = result.record_file
                 else:
-                    result_list[result.section.question] = result.response
+                    result_list[column.encode('utf-8')] = result.response
 
             #We will build result_row_list which will be a value for each element from column_list
             for ikey in column_list:

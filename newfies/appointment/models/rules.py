@@ -42,10 +42,12 @@ class Rule(models.Model):
         ** bysecond
         ** byeaster
     """
-    name = models.CharField(_("name"), max_length=32)
-    description = models.TextField(_("description"))
-    frequency = models.CharField(_("frequency"), choices=freqs, max_length=10)
-    params = models.TextField(_("params"), null=True, blank=True)
+    name = models.CharField(verbose_name=_("name"), max_length=32)
+    description = models.TextField(verbose_name=_("description"))
+    frequency = models.CharField(verbose_name=_("frequency"), choices=freqs,
+                                 max_length=10)
+    params = models.TextField(verbose_name=_("params"), null=True, blank=True,
+                              help_text=_("example : count:1;bysecond:3;"))
 
     class Meta:
         verbose_name = _('rule')

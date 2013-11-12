@@ -105,6 +105,7 @@ class Alarm(models.Model):
             retry_count=self.retry_count,
             retry_delay=self.retry_delay,
             sent_count=self.sent_count,
+            method=self.method,
             survey=self.survey,
             mail_template=self.mail_template,
             sms_template=self.sms_template,

@@ -98,6 +98,8 @@ class Alarm(models.Model):
         copy alarm
         """
         new_alarm = Alarm.objects.create(
+            alarm_phonenumber=self.alarm_phonenumber,
+            alarm_email=self.alarm_email,
             event=new_event,
             daily_start=self.daily_start,
             daily_stop=self.daily_stop,

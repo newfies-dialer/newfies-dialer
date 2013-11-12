@@ -39,7 +39,8 @@ class CalendarUserAdmin(UserAdmin):
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)
-        qs = qs.filter(is_staff=False, is_superuser=False)
+        calendar_user_list = CalendarUserProfile.objects.values_list('user_id', flat=True).all()
+        qs = qs.filter(id__in=calendar_user_list)
         return qs
 
 

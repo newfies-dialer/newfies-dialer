@@ -107,3 +107,7 @@ class CalendarUserProfile(Profile_abstract):
 
     def __unicode__(self):
         return u"%s" % str(self.user)
+
+
+# Create calendar user profile object
+CalendarUser.profile = property(lambda u: CalendarUserProfile.objects.get_or_create(user=u)[0])

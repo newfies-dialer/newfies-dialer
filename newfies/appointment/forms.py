@@ -16,6 +16,7 @@ from django.contrib.auth.forms import UserChangeForm
 from django.utils.translation import ugettext as _
 from appointment.models.users import CalendarUserProfile, CalendarUser
 from appointment.models.events import Event
+from appointment.models.calendars import Calendar
 
 
 class CalendarUserProfileForm(ModelForm):
@@ -52,4 +53,18 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         self.manager = user
         super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
+
+
+class CalendarForm(ModelForm):
+    """CalendarForm"""
+    class Meta:
+        model = Calendar
+
+    def __init__(self, user, *args, **kwargs):
+        super(CalendarForm, self).__init__(*args, **kwargs)
+
+        calendar_user_list = CalendarUserProfile.objects.values_list(
+            'user_id', flat=True).filter(manager=user).order_by('id')
+        self.fields['user'].choices = CalendarUser.objects.values_list(
+            'id', 'username').filter(id__in=calendar_user_list).order_by('id')
 

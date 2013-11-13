@@ -21,4 +21,10 @@ urlpatterns = patterns('appointment.views',
     (r'^calendar_user/del/(.+)/$', 'calendar_user_del'),
     (r'^calendar_user/password/(.+)/$', 'calendar_user_change_password'),
     (r'^calendar_user/(.+)/$', 'calendar_user_change'),
+
+    # Calendars urls
+    (r'^calendar/$', 'calendar_list'),
+    (r'^calendar/add/$', 'calendar_add'),
+    (r'^calendar/del/(.+)/$', 'calendar_del'),
+    (r'^calendar/(.+)/$', 'calendar_change'),
 )

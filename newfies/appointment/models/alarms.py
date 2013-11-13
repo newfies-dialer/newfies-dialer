@@ -82,6 +82,9 @@ class Alarm(models.Model):
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
 
     class Meta:
+        permissions = (
+            ("view_alarm", _('can see Alarm list')),
+        )
         verbose_name = _('alarm')
         verbose_name_plural = _('alarms')
         app_label = "appointment"
@@ -146,6 +149,9 @@ class AlarmRequest(models.Model):
                                         verbose_name=_('date'))
 
     class Meta:
+        permissions = (
+            ("view_alarm_request", _('can see Alarm request list')),
+        )
         verbose_name = _('alarm request')
         verbose_name_plural = _('alarm requests')
         app_label = "appointment"

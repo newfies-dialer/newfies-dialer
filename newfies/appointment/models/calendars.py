@@ -42,10 +42,10 @@ class Calendar(models.Model):
     >>> event.save()
     >>> calendar.events.add(event)
     '''
-    name = models.CharField(_("name"), max_length=200)
-    slug = models.SlugField(_("slug"), max_length=200)
+    name = models.CharField(verbose_name=_('name'), max_length=200)
+    slug = models.SlugField(verbose_name=_("slug"), max_length=200)
     user = models.ForeignKey(CalendarUser, blank=True, null=True,
-                             verbose_name=_("user"),
+                             verbose_name=_("calendar user"),
                              help_text=_("select user"),
                              related_name="calendar user")
     max_concurrent = models.IntegerField(null=True, blank=True, default=0,
@@ -54,6 +54,9 @@ class Calendar(models.Model):
                                         verbose_name=_('date'))
 
     class Meta:
+        permissions = (
+            ("view_calendar ", _('can see Calendar list')),
+        )
         verbose_name = _('calendar')
         verbose_name_plural = _('calendars')
         app_label = "appointment"

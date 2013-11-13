@@ -45,6 +45,9 @@ class Event(models.Model):
                                     verbose_name=_("occurrence count"))
 
     class Meta:
+        permissions = (
+            ("view_event", _('can see Event list')),
+        )
         verbose_name = _('event')
         verbose_name_plural = _('events')
         app_label = "appointment"

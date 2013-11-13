@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "calendar user"|title %} <small>{% trans "list, add and edit calendar users"|capfirst %}</small></h1>
+    <h1>{% trans "calendars"|title %} <small>{% trans "list, add and edit calendar"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -30,12 +30,12 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                {% if perms.appointment.delete_calendaruserprofile %}
+                {% if perms.appointment.delete_calendar %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
             </ul>
         </div>
-        {% if perms.appointment.add_calendaruserprofile %}
+        {% if perms.appointment.add_calendar %}
             <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}
     </div>
@@ -48,45 +48,46 @@
                 <thead>
                 <tr>
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-                    <th>{% sort_link CALENDAR_USER_COLUMN_NAME.name|capfirst col_name_with_order.user %}</th>
-                    <th>{{ CALENDAR_USER_COLUMN_NAME.calendar_setting|capfirst }}</th>
-                    <th>{{ CALENDAR_USER_COLUMN_NAME.email|capfirst }}</th>
-                    <th>{% sort_link CALENDAR_USER_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
+                    <th>{% sort_link CALENDAR_COLUMN_NAME.name|capfirst col_name_with_order.name %}</th>
+                    <th>{{ CALENDAR_COLUMN_NAME.slug|capfirst }}</th>
+                    <th>{% sort_link CALENDAR_COLUMN_NAME.user|capfirst col_name_with_order.user %}</th>
+                    <th>{% sort_link CALENDAR_COLUMN_NAME.max_concurrent|capfirst col_name_with_order.max_concurrent %}</th>
+                    <th>{% sort_link CALENDAR_COLUMN_NAME.created_date|capfirst col_name_with_order.created_date %}</th>
                     <th>{% trans 'action'|capfirst %}</th>
                 </tr>
                 </thead>
-                {% if calendar_user_list %}
-                    {% autopaginate calendar_user_list PAGE_SIZE %}
-                    {% for row in calendar_user_list %}
+                {% if calendar_list %}
+                    {% autopaginate calendar_list PAGE_SIZE %}
+                    {% for row in calendar_list %}
                         <tr>
                             <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
+                            <td>{{ row.name }}</td>
+                            <td>{{ row.slug }}</td>
                             <td>{{ row.user }}</td>
-                            <td>{{ row.calendar_setting }}</td>
-                            <td>{{ row.user.email }}</td>
-                            <td>{{ row.updated_date }}</td>
+                            <td>{{ row.max_concurrent }}</td>
+                            <td>{{ row.created_date }}</td>
                             <td>
-                                {% if perms.appointment.change_calendaruserprofile %}
-                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update calendar user"|title %}"></a>
+                                {% if perms.appointment.change_calendar %}
+                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update calendar"|title %}"></a>
                                 {% endif %}
-                                {% if perms.appointment.delete_calendaruserprofile %}
-                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete calendar user"|title %}"></a>
+                                {% if perms.appointment.delete_calendar %}
+                                    <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete calendar"|title %}"></a>
                                 {% endif %}
-                                <a id="id_change_password" href="password/{{ row.user_id }}/" {% icon "update" %} title="{% trans "change calendar user password"|title %}"></a>
                             </td>
                         </tr>
                     {% endfor %}
                 {% else %}
                     <tr>
-                        <td colspan="6" align="center">
+                        <td colspan="7" align="center">
                             {% trans "no records found"|title %}
                         </td>
                     </tr>
                 {% endif %}
             </table>
             <div align="right">
-                {% trans "total"|title %} : {{ total_calendar_user }}
+                {% trans "total"|title %} : {{ total_calendar }}
             </div>
-            {% if calendar_user_list %}
+            {% if calendar_list %}
                 {% paginate %}
             {% endif %}
         </form>

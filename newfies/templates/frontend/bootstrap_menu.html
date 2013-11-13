@@ -79,6 +79,11 @@
                   {% if perms.appointment.view_calendar_user %}
                     <li class="{% ifcontains '/calendar_user/' %}active{% endifcontains %}"><a href="/calendar_user/">{% trans "calendar user"|title %}</a></li>
                   {% endif %}
+
+                  {% if perms.calendar.view_calendar %}
+                    <li class="{% ifcontains '/calendar/' %}active{% endifcontains %}"><a href="/calendar/">{% trans "calendars"|title %}</a></li>
+                  {% endif %}
+
                 </ul>
           </li>
 

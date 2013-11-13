@@ -53,3 +53,11 @@ class CALENDAR_USER_COLUMN_NAME(Choice):
     email = _('email')
     calendar_setting = _('calendar setting')
     date = _('date')
+
+
+class CALENDAR_COLUMN_NAME(Choice):
+    name = _('name')
+    slug = _('slug')
+    user = _('calendar user')
+    max_concurrent = _('max_concurrent')
+    created_date = _('date')

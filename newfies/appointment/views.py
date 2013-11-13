@@ -11,9 +11,8 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.conf import settings
-from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+#from django.conf import settings
+#from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404, render
@@ -22,11 +21,11 @@ from django.template.context import RequestContext
 from django.contrib.auth.forms import PasswordChangeForm, \
     UserCreationForm, AdminPasswordChangeForm
 from django.contrib.auth.models import Permission
-from django.views.decorators.csrf import csrf_exempt
-from agent.models import AgentProfile, Agent
-from appointment.constants import CALENDAR_USER_COLUMN_NAME
+#from django.views.decorators.csrf import csrf_exempt
+from appointment.models.calendars import Calendar
+from appointment.constants import CALENDAR_USER_COLUMN_NAME, CALENDAR_COLUMN_NAME
 from appointment.forms import CalendarUserChangeDetailExtendForm, \
-    CalendarUserNameChangeForm
+    CalendarUserNameChangeForm, CalendarForm
 from appointment.models.users import CalendarUserProfile, CalendarUser
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
@@ -260,3 +259,161 @@ def calendar_user_change_password(request, object_id):
     request.session['error_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
+
+@permission_required('calendar.view_calendar', login_url='/')
+@login_required
+def calendar_list(request):
+    """Calendar list for the logged in user
+
+    **Attributes**:
+
+        * ``template`` - frontend/appointment/calendar/list.html
+
+    **Logic Description**:
+
+        * List all calendars which belong to the logged in user.
+    """
+    sort_col_field_list = ['id', 'name', 'user', 'max_concurrent',
+                           'created_date']
+    default_sort_field = 'id'
+    pagination_data = \
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    calendar_user_list = CalendarUserProfile.objects.values_list('user_id', flat=True).filter(manager=request.user).order_by('id')
+
+    calendar_list = Calendar.objects\
+        .filter(user_id__in=calendar_user_list).order_by(sort_order)
+
+    template = 'frontend/appointment/calendar/list.html'
+    data = {
+        'msg': request.session.get('msg'),
+        'calendar_list': calendar_list,
+        'total_calendar': calendar_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'CALENDAR_COLUMN_NAME': CALENDAR_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('calendar.add_calendar', login_url='/')
+@login_required
+def calendar_add(request):
+    """Add a new calendar for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - CalendarForm
+        * ``template`` - frontend/appointment/calendar/change.html
+
+    **Logic Description**:
+
+        * Add new contact belonging to the logged in user
+          via ContactForm & get redirected to the contact list
+    """
+    form = CalendarForm(request.user)
+    error_msg = False
+    # Add contact
+    if request.method == 'POST':
+        form = CalendarForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            request.session["msg"] = _('"%s" is added.') % request.POST['name']
+            return HttpResponseRedirect('/calendar/')
+
+    template = 'frontend/appointment/calendar/change.html'
+    data = {
+        'form': form,
+        'action': 'add',
+        'error_msg': error_msg,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('calendar.delete_calendar', login_url='/')
+@login_required
+def calendar_del(request, object_id):
+    """Delete calendar for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected calendar object
+        * ``object_list`` - Selected calendar objects
+
+    **Logic Description**:
+
+        * Delete selected calendar from the calendar list
+    """
+    if int(object_id) != 0:
+        # When object_id is not 0
+        calendar = get_object_or_404(Calendar, pk=object_id)
+
+        # Delete Calendar
+        request.session["msg"] = _('"%s" is deleted.') % calendar.name
+        calendar.delete()
+    else:
+        # When object_id is 0 (Multiple records delete)
+        values = request.POST.getlist('select')
+        values = ", ".join(["%s" % el for el in values])
+
+        try:
+            calendar_list = Calendar.objects.extra(where=['id IN (%s)' % values])
+            if calendar_list:
+                request.session["msg"] =\
+                    _('%s calendar(s) are deleted.') % calendar_list.count()
+                calendar_list.delete()
+        except:
+            raise Http404
+    return HttpResponseRedirect('/calendar/')
+
+
+@permission_required('calendar.change_calendar', login_url='/')
+@login_required
+def calendar_change(request, object_id):
+    """Update/Delete calendar for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected calendar object
+        * ``form`` - CalendarForm
+        * ``template`` - frontend/appointment/calendar/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected calendar from the calendar list
+          via CalendarForm & get redirected to the calendar list
+    """
+    calendar = get_object_or_404(Calendar, pk=object_id)
+
+    form = CalendarForm(request.user, instance=calendar)
+    if request.method == 'POST':
+        # Delete calendar
+        if request.POST.get('delete'):
+            return HttpResponseRedirect('/calendar/del/%s/' % object_id)
+        else:
+            # Update calendar
+            form = CalendarForm(request.user, request.POST, instance=calendar)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%s" is updated.') % request.POST['name']
+                return HttpResponseRedirect('/calendar/')
+
+    template = 'frontend/appointment/calendar/change.html'
+    data = {
+        'form': form,
+        'action': 'update',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+

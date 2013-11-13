@@ -56,6 +56,9 @@ class CalendarSetting(models.Model):
         return '[%s] %s' % (self.id, self.cid_name)
 
     class Meta:
+        permissions = (
+            ("view_calendar_setting ", _('can see Calendar Setting list')),
+        )
         verbose_name = _("Calender setting")
         verbose_name_plural = _("calendar settings")
         db_table = "calendar_setting"
@@ -103,11 +106,7 @@ class CalendarUserProfile(Profile_abstract):
 
     class Meta:
         permissions = (
-            ("view_event", _('can see Event list')),
-            ("view_alarm", _('can see Alarm list')),
             ("view_calendar_user", _('can see Calendar User list')),
-            ("view_calendar ", _('can see Calendar list')),
-            ("view_calendar_setting ", _('can see Calendar Setting list')),
         )
         db_table = 'calendar_user_profile'
         verbose_name = _("calendar user profile")

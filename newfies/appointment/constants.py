@@ -61,3 +61,12 @@ class CALENDAR_COLUMN_NAME(Choice):
     user = _('calendar user')
     max_concurrent = _('max_concurrent')
     created_date = _('date')
+
+
+class EVENT_COLUMN_NAME(Choice):
+    start = _('start')
+    end = _('end')
+    title = _('title')
+    end_recurring_period = _('end recurring period')
+    calendar = _('calendar')
+    status = _('status')

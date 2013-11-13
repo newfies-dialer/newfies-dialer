@@ -25,5 +25,27 @@ $(function() {
             toDate = new Date(selectedDate.date);
         }
     });
+
+
+    // TODO : fix start & end
+    $('#id_start').datepicker({
+        format: 'yyyy-mm-dd hh-mm-ss'
+    }).on('changeDate', function(selectedDate){
+        if (selectedDate.date.valueOf() > toDate.valueOf()){
+            $('#id_start').datepicker('setValue', fromDate);
+        } else {
+            fromDate = new Date(selectedDate.date);
+        }
+    });
+
+    $('#id_end').datepicker({
+        format: 'yyyy-mm-dd hh-mm-ss'
+    }).on('changeDate', function(selectedDate){
+        if (selectedDate.date.valueOf() < fromDate.valueOf()){
+            $('#id_end').datepicker('setValue', toDate);
+        } else {
+            toDate = new Date(selectedDate.date);
+        }
+    });
 });
 </script>

@@ -1,6 +1,15 @@
 {% extends "frontend/master.html" %}
 {% load i18n %}
 
+{% block extra_files %}
+    {% include "frontend/common_datepicker.html" %}
+    <style type="text/css">
+        td {
+            width: auto;
+        }
+    </style>
+{% endblock %}
+
 {% block content_header %}
     <h1>
         {% if action == 'update' %}
@@ -8,7 +17,7 @@
         {% else %}
             {% trans "add"|title %}
         {% endif %}
-        {% trans "calendar"|title %}
+        {% trans "event"|title %}
         <small></small>
     </h1>
 {% endblock %}

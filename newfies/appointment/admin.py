@@ -20,7 +20,7 @@ from appointment.models.rules import Rule
 from appointment.models.events import Event, Occurrence
 from appointment.models.alarms import Alarm, SMSTemplate, AlarmRequest
 from appointment.models.calendars import Calendar
-from appointment.forms import CalendarUserProfileForm, EventForm
+from appointment.forms import CalendarUserProfileForm, EventAdminForm
 from common.app_label_renamer import AppLabelRenamer
 AppLabelRenamer(native_app_label=u'appointment', app_label=_('appointment')).main()
 
@@ -64,7 +64,7 @@ class EventAdmin(admin.ModelAdmin):
                     'end_recurring_period', 'calendar', 'notify_count', 'status',
                     'parent_event', 'occ_count')
     ordering = ('-id', )
-    form = EventForm
+    form = EventAdminForm
 
 
 class OccurrenceAdmin(admin.ModelAdmin):

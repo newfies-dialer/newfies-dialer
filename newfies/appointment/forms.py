@@ -26,11 +26,29 @@ class CalendarUserProfileForm(ModelForm):
         model = CalendarUserProfile
 
 
-class EventForm(ModelForm):
+class EventAdminForm(ModelForm):
     """Admin Event ModelForm"""
     class Meta:
         model = Event
         exclude = ('parent_event', 'occ_count')
+
+
+class EventForm(EventAdminForm):
+    """Event ModelForm"""
+
+    class Meta:
+        model = Event
+        exclude = ('parent_event', 'occ_count')
+
+    def __init__(self, user, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)
+
+        calendar_user_list = CalendarUserProfile.objects.values_list(
+            'user_id', flat=True).filter(manager=user).order_by('id')
+
+        calendar_list = Calendar.objects.values_list(
+            'id', 'name').filter(user_id__in=calendar_user_list).order_by('id')
+        self.fields['calendar'].choices = calendar_list
 
 
 class CalendarUserNameChangeForm(UserChangeForm):

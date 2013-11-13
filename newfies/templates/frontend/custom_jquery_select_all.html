@@ -112,6 +112,9 @@ $(function () {
             if(document.location.href.search("/calendar/") != -1) {
                 confirm_string = $fields.length +  '{% trans " calendar(s) are going to be deleted?" %}' ;
             }
+            if(document.location.href.search("/event/") != -1) {
+                confirm_string = $fields.length +  '{% trans " event(s) are going to be deleted?" %}' ;
+            }
 
             bootbox.confirm(confirm_string, function(result) {
                 if (result) {

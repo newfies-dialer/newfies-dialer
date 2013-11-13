@@ -23,9 +23,11 @@ from django.contrib.auth.forms import PasswordChangeForm, \
 from django.contrib.auth.models import Permission
 #from django.views.decorators.csrf import csrf_exempt
 from appointment.models.calendars import Calendar
-from appointment.constants import CALENDAR_USER_COLUMN_NAME, CALENDAR_COLUMN_NAME
+from appointment.models.events import Event
+from appointment.constants import CALENDAR_USER_COLUMN_NAME, CALENDAR_COLUMN_NAME,\
+    EVENT_COLUMN_NAME
 from appointment.forms import CalendarUserChangeDetailExtendForm, \
-    CalendarUserNameChangeForm, CalendarForm
+    CalendarUserNameChangeForm, CalendarForm, EventForm
 from appointment.models.users import CalendarUserProfile, CalendarUser
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
@@ -409,6 +411,167 @@ def calendar_change(request, object_id):
                 return HttpResponseRedirect('/calendar/')
 
     template = 'frontend/appointment/calendar/change.html'
+    data = {
+        'form': form,
+        'action': 'update',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('appointment.view_event', login_url='/')
+@login_required
+def event_list(request):
+    """Event list for the logged in user
+
+    **Attributes**:
+
+        * ``template`` - frontend/appointment/event/list.html
+
+    **Logic Description**:
+
+        * List all events which belong to the logged in user.
+    """
+    sort_col_field_list = ['id', 'start', 'end', 'title',
+                           'calendar', 'status']
+    default_sort_field = 'id'
+    pagination_data = \
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    calendar_user_list = CalendarUserProfile.objects.values_list(
+        'user_id', flat=True).filter(manager=request.user).order_by('id')
+
+    calendar_id_list = Calendar.objects.values_list(
+        'id', flat=True).filter(user_id__in=calendar_user_list).order_by('id')
+
+    event_list = Event.objects.filter(
+        calendar_id__in=calendar_id_list).order_by(sort_order)
+
+    template = 'frontend/appointment/event/list.html'
+    data = {
+        'msg': request.session.get('msg'),
+        'event_list': event_list,
+        'total_event': event_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'EVENT_COLUMN_NAME': EVENT_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('appointment.add_event', login_url='/')
+@login_required
+def event_add(request):
+    """Add a new event for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - EventForm
+        * ``template`` - frontend/appointment/event/change.html
+
+    **Logic Description**:
+
+        * Add new event belonging to the logged in user
+          via EventForm & get redirected to the event list
+    """
+    form = EventForm(request.user)
+    error_msg = False
+    # Add event
+    if request.method == 'POST':
+        form = EventForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            request.session["msg"] = _('"%s" is added.') % request.POST['title']
+            return HttpResponseRedirect('/event/')
+
+    template = 'frontend/appointment/event/change.html'
+    data = {
+        'form': form,
+        'action': 'add',
+        'error_msg': error_msg,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('appointment.delete_event', login_url='/')
+@login_required
+def event_del(request, object_id):
+    """Delete event for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected event object
+        * ``object_list`` - Selected event objects
+
+    **Logic Description**:
+
+        * Delete selected event from the event list
+    """
+    if int(object_id) != 0:
+        # When object_id is not 0
+        event = get_object_or_404(Event, pk=object_id)
+
+        # Delete Event
+        request.session["msg"] = _('"%s" is deleted.') % event.title
+        event.delete()
+    else:
+        # When object_id is 0 (Multiple records delete)
+        values = request.POST.getlist('select')
+        values = ", ".join(["%s" % el for el in values])
+
+        try:
+            event_list = Event.objects.extra(where=['id IN (%s)' % values])
+            if event_list:
+                request.session["msg"] =\
+                    _('%s event(s) are deleted.') % event_list.count()
+                event_list.delete()
+        except:
+            raise Http404
+    return HttpResponseRedirect('/event/')
+
+
+@permission_required('appointment.change_event', login_url='/')
+@login_required
+def event_change(request, object_id):
+    """Update/Delete event for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected event object
+        * ``form`` - EventForm
+        * ``template`` - frontend/appointment/event/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected event from the event list
+          via EventForm & get redirected to the event list
+    """
+    event = get_object_or_404(Event, pk=object_id)
+
+    form = EventForm(request.user, instance=event)
+    if request.method == 'POST':
+        # Delete event
+        if request.POST.get('delete'):
+            return HttpResponseRedirect('/event/del/%s/' % object_id)
+        else:
+            # Update event
+            form = EventForm(request.user, request.POST, instance=event)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%s" is updated.') % request.POST['title']
+                return HttpResponseRedirect('/event/')
+
+    template = 'frontend/appointment/event/change.html'
     data = {
         'form': form,
         'action': 'update',

@@ -97,11 +97,18 @@ class CalendarUserProfile(Profile_abstract):
     **Name of DB table**: calendar_user_profile
     """
     manager = models.ForeignKey(Manager, verbose_name=_("manager"), related_name="manager_of_calendar_user",
-                                help_text=_("select manager"))
+                                help_text=_("select manager"), null=True, blank=True)
     calendar_setting = models.ForeignKey(CalendarSetting, null=True, blank=True,
                                          verbose_name=_('calendar settings'))
 
     class Meta:
+        permissions = (
+            ("view_event", _('can see Event list')),
+            ("view_alarm", _('can see Alarm list')),
+            ("view_calendar_user", _('can see Calendar User list')),
+            ("view_calendar ", _('can see Calendar list')),
+            ("view_calendar_setting ", _('can see Calendar Setting list')),
+        )
         db_table = 'calendar_user_profile'
         verbose_name = _("calendar user profile")
         verbose_name_plural = _("calendar user profiles")

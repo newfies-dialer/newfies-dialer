@@ -103,6 +103,12 @@ $(function () {
             if(document.location.href.search("/dnc_contact/") != -1) {
                 confirm_string = $fields.length +  '{% trans " DNC contact(s) are going to be deleted?" %}' ;
             }
+            if(document.location.href.search("/agent/") != -1) {
+                confirm_string = $fields.length +  '{% trans " agent(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/calendar_user/") != -1) {
+                confirm_string = $fields.length +  '{% trans " calendar user(s) are going to be deleted?" %}' ;
+            }
 
             bootbox.confirm(confirm_string, function(result) {
                 if (result) {

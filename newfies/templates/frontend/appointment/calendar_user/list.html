@@ -30,12 +30,12 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                {% if perms.agent.delete_calendaruser %}
+                {% if perms.appointment.delete_calendaruserprofile %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
             </ul>
         </div>
-        {% if perms.agent.add_calendaruser %}
+        {% if perms.appointment.add_calendaruserprofile %}
             <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}
     </div>
@@ -65,10 +65,10 @@
                             <td>{{ row.user.email }}</td>
                             <td>{{ row.updated_date }}</td>
                             <td>
-                                {% if perms.appoinment.change_calendaruser %}
+                                {% if perms.appoinment.change_calendaruserprofile %}
                                     <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update calendar user"|title %}"></a>
                                 {% endif %}
-                                {% if perms.appoinment.delete_calendaruser %}
+                                {% if perms.appoinment.delete_calendaruserprofile %}
                                     <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete calendar user"|title %}"></a>
                                 {% endif %}
                                 <a id="id_change_password" href="password/{{ row.user_id }}/" {% icon "update" %} title="{% trans "change calendar user password"|title %}"></a>

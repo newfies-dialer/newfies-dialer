@@ -16,6 +16,7 @@ from django.conf.urls import handler404, handler500, \
 from django.conf import settings
 from apirest.urls import urlpatterns as urlpatterns_apirest
 from agent.api_urls import urlpatterns as urlpatterns_agent_apirest
+from appointment.urls import urlpatterns as urlpatterns_appointment
 from frontend.urls import urlpatterns as urlpatterns_frontend
 from dialer_contact.urls import urlpatterns as urlpatterns_dialer_contact
 from dialer_campaign.urls import urlpatterns as urlpatterns_dialer_campaign
@@ -74,6 +75,7 @@ urlpatterns += urlpatterns_dialer_audio
 urlpatterns += urlpatterns_frontend_notification
 urlpatterns += urlpatterns_agent
 urlpatterns += urlpatterns_callcenter
+urlpatterns += urlpatterns_appointment
 
 urlpatterns += patterns('',
     (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),

@@ -46,3 +46,10 @@ class ALARMREQUEST_STATUS(Choice):
     FAILURE = 3, _("failure").capitalize()
     RETRY = 4, _("retry").capitalize()
     SUCCESS = 5, _("success").capitalize()
+
+
+class CALENDAR_USER_COLUMN_NAME(Choice):
+    name = _('name')
+    email = _('email')
+    calendar_setting = _('calendar setting')
+    date = _('date')

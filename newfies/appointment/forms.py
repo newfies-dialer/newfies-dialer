@@ -29,4 +29,4 @@ class EventForm(ModelForm):
     """Admin Event ModelForm"""
     class Meta:
         model = Event
-        exclude = ['parent_event']
+        exclude = ('parent_event', 'occ_count')

@@ -434,7 +434,7 @@ def event_list(request):
         * List all events which belong to the logged in user.
     """
     sort_col_field_list = ['id', 'start', 'end', 'title',
-                           'calendar', 'status']
+                           'calendar', 'status', 'created_on']
     default_sort_field = 'id'
     pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)

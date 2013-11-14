@@ -67,6 +67,7 @@ class EVENT_COLUMN_NAME(Choice):
     start = _('start')
     end = _('end')
     title = _('title')
-    end_recurring_period = _('end recurring period')
+    end_recurring_period = _('end period')
     calendar = _('calendar')
     status = _('status')
+    created_on = _('date')

@@ -76,6 +76,10 @@
           <li class="dropdown">
               <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{% trans "appointment "|capfirst %}">{% trans "appointment "|title %} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
+                  {% if perms.appointment.view_calendar_setting %}
+                    <li class="{% ifcontains '/calendar_setting/' %}active{% endifcontains %}"><a href="/calendar_setting/">{% trans "calendar setting"|title %}</a></li>
+                  {% endif %}
+
                   {% if perms.appointment.view_calendar_user %}
                     <li class="{% ifcontains '/calendar_user/' %}active{% endifcontains %}"><a href="/calendar_user/">{% trans "calendar user"|title %}</a></li>
                   {% endif %}

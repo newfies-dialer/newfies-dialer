@@ -20,16 +20,18 @@ from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from django.contrib.auth.forms import PasswordChangeForm, \
     UserCreationForm, AdminPasswordChangeForm
-from django.contrib.auth.models import Permission
+#from django.contrib.auth.models import Permission
 #from django.views.decorators.csrf import csrf_exempt
 from appointment.models.calendars import Calendar
 from appointment.models.events import Event
 from appointment.models.alarms import Alarm
 from appointment.constants import CALENDAR_USER_COLUMN_NAME, CALENDAR_COLUMN_NAME,\
-    EVENT_COLUMN_NAME, ALARM_COLUMN_NAME
+    EVENT_COLUMN_NAME, ALARM_COLUMN_NAME, CALENDAR_SETTING_COLUMN_NAME
 from appointment.forms import CalendarUserChangeDetailExtendForm, \
-    CalendarUserNameChangeForm, CalendarForm, EventForm, AlarmForm
-from appointment.models.users import CalendarUserProfile, CalendarUser
+    CalendarUserNameChangeForm, CalendarForm, EventForm, AlarmForm,\
+    CalendarSettingForm
+from appointment.models.users import CalendarUserProfile, CalendarUser,\
+    CalendarSetting
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
 from dialer_campaign.function_def import user_dialer_setting_msg
@@ -412,6 +414,161 @@ def calendar_change(request, object_id):
                 return HttpResponseRedirect('/calendar/')
 
     template = 'frontend/appointment/calendar/change.html'
+    data = {
+        'form': form,
+        'action': 'update',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('appointment.view_calendar_setting', login_url='/')
+@login_required
+def calendar_setting_list(request):
+    """Calendar setting list for the logged in user
+
+    **Attributes**:
+
+        * ``template`` - frontend/appointment/calendar_setting/list.html
+
+    **Logic Description**:
+
+        * List all calendar settings which belong to the logged in user.
+    """
+    sort_col_field_list = ['id', 'cid_number', 'cid_name', 'call_timeout',
+                           'survey']
+    default_sort_field = 'id'
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    calendar_setting_list = CalendarSetting.objects.filter(user=request.user).order_by(sort_order)
+
+    template = 'frontend/appointment/calendar_setting/list.html'
+    data = {
+        'msg': request.session.get('msg'),
+        'calendar_setting_list': calendar_setting_list,
+        'total_calendar_setting': calendar_setting_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'CALENDAR_SETTING_COLUMN_NAME': CALENDAR_SETTING_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('appointment.add_calendar_setting', login_url='/')
+@login_required
+def calendar_setting_add(request):
+    """Add a new calendar setting for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - CalendarSettingForm
+        * ``template`` - frontend/appointment/calendar_setting/change.html
+
+    **Logic Description**:
+
+        * Add new calendar_setting belonging to the logged in user
+          via ContactSettingForm & get redirected to the calendar_setting list
+    """
+    form = CalendarSettingForm(request.user)
+    error_msg = False
+    # Add calendar_setting
+    if request.method == 'POST':
+        form = CalendarSettingForm(request.user, request.POST)
+        if form.is_valid():
+            obj = form.save(commit=False)
+            obj.user = request.user
+            obj.save()
+            request.session["msg"] = _('"%s" is added.') % obj
+            return HttpResponseRedirect('/calendar_setting/')
+
+    template = 'frontend/appointment/calendar_setting/change.html'
+    data = {
+        'form': form,
+        'action': 'add',
+        'error_msg': error_msg,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('appointment.delete_calendar_setting', login_url='/')
+@login_required
+def calendar_setting_del(request, object_id):
+    """Delete calendar_setting for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected calendar_setting object
+        * ``object_list`` - Selected calendar_setting objects
+
+    **Logic Description**:
+
+        * Delete selected calendar_setting from the calendar_setting list
+    """
+    if int(object_id) != 0:
+        # When object_id is not 0
+        calendar_setting = get_object_or_404(CalendarSetting, pk=object_id)
+
+        # Delete calendar_setting
+        request.session["msg"] = _('"%s" is deleted.') % calendar_setting
+        calendar_setting.delete()
+    else:
+        # When object_id is 0 (Multiple records delete)
+        values = request.POST.getlist('select')
+        values = ", ".join(["%s" % el for el in values])
+
+        try:
+            calendar_setting = CalendarSetting.objects.extra(where=['id IN (%s)' % values])
+            if calendar_setting:
+                request.session["msg"] =\
+                    _('%s calendar setting(s) are deleted.') % calendar_setting.count()
+                calendar_setting.delete()
+        except:
+            raise Http404
+    return HttpResponseRedirect('/calendar_setting/')
+
+
+@permission_required('appointment.change_calendar_setting', login_url='/')
+@login_required
+def calendar_setting_change(request, object_id):
+    """Update/Delete calendar_setting for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected calendar_setting object
+        * ``form`` - CalendarSettingForm
+        * ``template`` - frontend/appointment/calendar_setting/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected calendar_setting from the calendar_setting list
+          via CalendarSettingForm & get redirected to the calendar_setting list
+    """
+    calendar_setting = get_object_or_404(CalendarSetting, pk=object_id)
+
+    form = CalendarSettingForm(request.user, instance=calendar_setting)
+    if request.method == 'POST':
+        # Delete calendar_setting
+        if request.POST.get('delete'):
+            return HttpResponseRedirect('/calendar_setting/del/%s/' % object_id)
+        else:
+            # Update calendar_setting
+            form = CalendarSettingForm(request.user, request.POST, instance=calendar_setting)
+            if form.is_valid():
+                obj = form.save()
+                request.session["msg"] = _('"%s" is updated.') % obj
+                return HttpResponseRedirect('/calendar_setting/')
+
+    template = 'frontend/appointment/calendar_setting/change.html'
     data = {
         'form': form,
         'action': 'update',

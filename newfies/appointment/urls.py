@@ -28,6 +28,12 @@ urlpatterns = patterns('appointment.views',
     (r'^calendar/del/(.+)/$', 'calendar_del'),
     (r'^calendar/(.+)/$', 'calendar_change'),
 
+    # Calendar settings urls
+    (r'^calendar_setting/$', 'calendar_setting_list'),
+    (r'^calendar_setting/add/$', 'calendar_setting_add'),
+    (r'^calendar_setting/del/(.+)/$', 'calendar_setting_del'),
+    (r'^calendar_setting/(.+)/$', 'calendar_setting_change'),
+
     # Events urls
     (r'^event/$', 'event_list'),
     (r'^event/add/$', 'event_add'),

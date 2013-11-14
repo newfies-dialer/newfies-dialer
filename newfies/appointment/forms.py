@@ -14,7 +14,8 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserChangeForm
 from django.utils.translation import ugettext as _
-from appointment.models.users import CalendarUserProfile, CalendarUser
+from appointment.models.users import CalendarUserProfile, CalendarUser,\
+    CalendarSetting
 from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm
@@ -26,6 +27,25 @@ class CalendarUserProfileForm(ModelForm):
 
     class Meta:
         model = CalendarUserProfile
+
+
+class CalendarSettingForm(ModelForm):
+    """CalendarSetting ModelForm"""
+
+    class Meta:
+        model = CalendarSetting
+        exclude = ('user')
+
+    def __init__(self, user, *args, **kwargs):
+        super(CalendarSettingForm, self).__init__(*args, **kwargs)
+
+        list_survey = []
+        list_survey.append((0, '---'))
+        survey_list = Survey.objects.values_list(
+            'id', 'name').filter(user=user).order_by('id')
+        for l in survey_list:
+            list_survey.append((l[0], l[1]))
+        self.fields['survey'].choices = list_survey
 
 
 class EventAdminForm(ModelForm):

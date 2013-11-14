@@ -48,6 +48,13 @@ class ALARMREQUEST_STATUS(Choice):
     SUCCESS = 5, _("success").capitalize()
 
 
+class CALENDAR_SETTING_COLUMN_NAME(Choice):
+    cid_number = _('cid number')
+    cid_name = _('cid name')
+    call_timeout = _('call timeout')
+    survey = _('survey')
+
+
 class CALENDAR_USER_COLUMN_NAME(Choice):
     name = _('name')
     email = _('email')

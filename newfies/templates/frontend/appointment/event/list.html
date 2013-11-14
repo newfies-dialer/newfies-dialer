@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons %}
+{% load i18n pagination_tags common_tags icons appointment_tags %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -67,7 +67,7 @@
                             <td>{{ row.title }}</td>
                             <td>{{ row.end_recurring_period }}</td>
                             <td>{{ row.calendar }}</td>
-                            <td>{{ row.status }}</td>
+                            <td>{{ row.status|event_status }}</td>
                             <td>
                                 {% if perms.appointment.change_event %}
                                     <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update event"|title %}"></a>

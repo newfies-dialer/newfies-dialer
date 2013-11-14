@@ -28,8 +28,7 @@ $(function() {
 
 
     // datetimepicker for start, end & created_on field
-    var today = new Date();
-    var fromDate = new Date(today.getFullYear(), today.getMonth(), today.getHours(), today.getMinutes(), today.getSeconds());
+    var fromDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(),today.getHours(), today.getMinutes(), today.getSeconds());
     var toDate = new Date(today.getFullYear(), today.getMonth(), last_day_of_month, 23, 59, 59);
     $('#id_start').datetimepicker({
         format: 'yyyy-mm-dd hh:ii:ss'
@@ -56,24 +55,30 @@ $(function() {
     });
 
 
+    var toDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(), 23, 59, 59);
+
     $('#id_daily_start').datetimepicker({
         format: 'hh:ii:ss',
-        startView: '0'
+        startView: 0,
+        autoclose: true,
     }).on('changeDate', function(selectedDate){
-        if (selectedDate.date.valueOf() > toDate.valueOf()){
-            $('#id_start').datetimepicker('setValue', fromDate);
-        } else {
+        if (selectedDate.date.valueOf() > toDate){
+            $('#id_daily_start').datetimepicker('setDate', toDate);
+        }
+        else {
             fromDate = new Date(selectedDate.date);
         }
     });
 
     $('#id_daily_stop').datetimepicker({
         format: 'hh:ii:ss',
-        startView: '0'
+        startView: 0,
+        autoclose: true,
     }).on('changeDate', function(selectedDate){
-        if (selectedDate.date.valueOf() < fromDate.valueOf()){
-            $('#id_end').datetimepicker('setValue', toDate);
-        } else {
+        if (selectedDate.date.valueOf() < fromDate){
+            $('#id_daily_stop').datetimepicker('setDate', fromDate);
+        }
+        else {
             toDate = new Date(selectedDate.date);
         }
     });

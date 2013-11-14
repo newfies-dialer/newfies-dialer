@@ -124,8 +124,14 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
         exclude = ('manager', 'user')
 
     def __init__(self, user, *args, **kwargs):
-        self.manager = user
         super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
+
+        list_calendar_setting = []
+        list_calendar_setting.append((0, '---'))
+        calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
+        for l in calendar_setting_list:
+            list_calendar_setting.append((l.id, l.cid_name))
+        self.fields['calendar_setting'].choices = list_calendar_setting
 
 
 class CalendarForm(ModelForm):

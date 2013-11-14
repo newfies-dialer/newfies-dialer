@@ -88,6 +88,10 @@
                     <li class="{% ifcontains '/event/' %}active{% endifcontains %}"><a href="/event/">{% trans "events"|title %}</a></li>
                   {% endif %}
 
+                  {% if perms.appointment.view_alarm %}
+                    <li class="{% ifcontains '/alarm/' %}active{% endifcontains %}"><a href="/alarm/">{% trans "alarms"|title %}</a></li>
+                  {% endif %}
+
                 </ul>
           </li>
 

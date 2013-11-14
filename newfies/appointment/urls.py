@@ -33,4 +33,10 @@ urlpatterns = patterns('appointment.views',
     (r'^event/add/$', 'event_add'),
     (r'^event/del/(.+)/$', 'event_del'),
     (r'^event/(.+)/$', 'event_change'),
+
+    # Alarms urls
+    (r'^alarm/$', 'alarm_list'),
+    (r'^alarm/add/$', 'alarm_add'),
+    (r'^alarm/del/(.+)/$', 'alarm_del'),
+    (r'^alarm/(.+)/$', 'alarm_change'),
 )

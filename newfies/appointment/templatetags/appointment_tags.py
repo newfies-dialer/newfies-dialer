@@ -13,7 +13,7 @@
 #
 
 from django.template.defaultfilters import register
-from appointment.constants import EVENT_STATUS
+from appointment.constants import EVENT_STATUS, ALARM_STATUS
 
 
 @register.filter(name='event_status')
@@ -29,3 +29,16 @@ def event_status(value):
 
     return str(status)
 
+
+@register.filter(name='alarm_status')
+def alarm_status(value):
+    """Alarm Status"""
+    if not value:
+        return ''
+    STATUS = dict(ALARM_STATUS)
+    try:
+        status = STATUS[value].encode('utf-8')
+    except:
+        status = ''
+
+    return str(status)

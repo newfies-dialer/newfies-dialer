@@ -25,7 +25,7 @@ class ALARM_STATUS(Choice):
     PENDING = 1, _('pending').upper()
     IN_PROCESS = 2, _('in_process').upper()
     COMPLETED = 3, _('completed').upper()
-    ERROR = 3, _('error').upper()
+    ERROR = 4, _('error').upper()
 
 
 class ALARM_RESULT(Choice):
@@ -71,3 +71,15 @@ class EVENT_COLUMN_NAME(Choice):
     calendar = _('calendar')
     status = _('status')
     created_on = _('date')
+
+
+class ALARM_COLUMN_NAME(Choice):
+    alarm_phonenumber = _('phonenumber')
+    alarm_email = _('email')
+    daily_start = _('daily start')
+    daily_stop = _('daily stop')
+    method = _('method')
+    survey = _('survey')
+    event = _('event')
+    date_start_notice = _('start notice')
+    status = _('status')

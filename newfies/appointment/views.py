@@ -24,10 +24,11 @@ from django.contrib.auth.models import Permission
 #from django.views.decorators.csrf import csrf_exempt
 from appointment.models.calendars import Calendar
 from appointment.models.events import Event
+from appointment.models.alarms import Alarm
 from appointment.constants import CALENDAR_USER_COLUMN_NAME, CALENDAR_COLUMN_NAME,\
-    EVENT_COLUMN_NAME
+    EVENT_COLUMN_NAME, ALARM_COLUMN_NAME
 from appointment.forms import CalendarUserChangeDetailExtendForm, \
-    CalendarUserNameChangeForm, CalendarForm, EventForm
+    CalendarUserNameChangeForm, CalendarForm, EventForm, AlarmForm
 from appointment.models.users import CalendarUserProfile, CalendarUser
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
@@ -445,11 +446,8 @@ def event_list(request):
     calendar_user_list = CalendarUserProfile.objects.values_list(
         'user_id', flat=True).filter(manager=request.user).order_by('id')
 
-    calendar_id_list = Calendar.objects.values_list(
-        'id', flat=True).filter(user_id__in=calendar_user_list).order_by('id')
-
     event_list = Event.objects.filter(
-        calendar_id__in=calendar_id_list).order_by(sort_order)
+        calendar__user_id__in=calendar_user_list).order_by(sort_order)
 
     template = 'frontend/appointment/event/list.html'
     data = {
@@ -579,4 +577,164 @@ def event_change(request, object_id):
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
+
+@permission_required('appointment.view_alarm', login_url='/')
+@login_required
+def alarm_list(request):
+    """Alarm list for the logged in user
+
+    **Attributes**:
+
+        * ``template`` - frontend/appointment/alarm/list.html
+
+    **Logic Description**:
+
+        * List all alarms which belong to the logged in user.
+    """
+    sort_col_field_list = ['id', 'alarm_phonenumber', 'alarm_email', 'daily_start',
+                           'daily_stop', 'method', 'survey', 'event',
+                           'date_start_notice', 'status']
+    default_sort_field = 'id'
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    calendar_user_list = CalendarUserProfile.objects.values_list(
+        'user_id', flat=True).filter(manager=request.user).order_by('id')
+
+    alarm_list = Alarm.objects.filter(
+        event__calendar__user_id__in=calendar_user_list).order_by(sort_order)
+
+    template = 'frontend/appointment/alarm/list.html'
+    data = {
+        'msg': request.session.get('msg'),
+        'alarm_list': alarm_list,
+        'total_alarm': alarm_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'ALARM_COLUMN_NAME': ALARM_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('appointment.add_alarm', login_url='/')
+@login_required
+def alarm_add(request):
+    """Add a new alarm for the logged in user
+
+    **Attributes**:
+
+        * ``form`` - AlarmForm
+        * ``template`` - frontend/appointment/alarm/change.html
+
+    **Logic Description**:
+
+        * Add new alarm belonging to the logged in user
+          via AlarmForm & get redirected to the alarm list
+    """
+    form = AlarmForm(request.user)
+    error_msg = False
+    # Add alarm
+    if request.method == 'POST':
+        form = AlarmForm(request.user, request.POST)
+        if form.is_valid():
+            form.save()
+            request.session["msg"] = _('"%s" is added.') % request.POST['method']
+            return HttpResponseRedirect('/alarm/')
+
+    template = 'frontend/appointment/alarm/change.html'
+    data = {
+        'form': form,
+        'action': 'add',
+        'error_msg': error_msg,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('appointment.delete_alarm', login_url='/')
+@login_required
+def alarm_del(request, object_id):
+    """Delete alarm for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected alarm object
+        * ``object_list`` - Selected alarm objects
+
+    **Logic Description**:
+
+        * Delete selected alarm from the alarm list
+    """
+    if int(object_id) != 0:
+        # When object_id is not 0
+        alarm = get_object_or_404(Alarm, pk=object_id)
+
+        # Delete Event
+        request.session["msg"] = _('"%s" is deleted.') % alarm.method
+        alarm.delete()
+    else:
+        # When object_id is 0 (Multiple records delete)
+        values = request.POST.getlist('select')
+        values = ", ".join(["%s" % el for el in values])
+
+        try:
+            alarm_list = Alarm.objects.extra(where=['id IN (%s)' % values])
+            if alarm_list:
+                request.session["msg"] =\
+                    _('%s alarm(s) are deleted.') % alarm_list.count()
+                alarm_list.delete()
+        except:
+            raise Http404
+    return HttpResponseRedirect('/alarm/')
+
+
+@permission_required('appointment.change_alarm', login_url='/')
+@login_required
+def alarm_change(request, object_id):
+    """Update/Delete alarm for the logged in user
+
+    **Attributes**:
+
+        * ``object_id`` - Selected alarm object
+        * ``form`` - AlarmForm
+        * ``template`` - frontend/appointment/alarm/change.html
+
+    **Logic Description**:
+
+        * Update/delete selected alarm from the alarm list
+          via AlarmForm & get redirected to the alarm list
+    """
+    alarm = get_object_or_404(Alarm, pk=object_id)
+
+    form = AlarmForm(request.user, instance=alarm)
+    if request.method == 'POST':
+        # Delete alarm
+        if request.POST.get('delete'):
+            return HttpResponseRedirect('/alarm/del/%s/' % object_id)
+        else:
+            # Update alarm
+            form = AlarmForm(request.user, request.POST, instance=alarm)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%s" is updated.') % request.POST['method']
+                return HttpResponseRedirect('/alarm/')
+
+    template = 'frontend/appointment/alarm/change.html'
+    data = {
+        'form': form,
+        'action': 'update',
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+    }
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
 

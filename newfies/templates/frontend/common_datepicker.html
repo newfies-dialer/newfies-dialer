@@ -54,5 +54,28 @@ $(function() {
     $('#id_created_on').datetimepicker({
         format: 'yyyy-mm-dd hh:ii:ss'
     });
+
+
+    $('#id_daily_start').datetimepicker({
+        format: 'hh:ii:ss',
+        startView: '0'
+    }).on('changeDate', function(selectedDate){
+        if (selectedDate.date.valueOf() > toDate.valueOf()){
+            $('#id_start').datetimepicker('setValue', fromDate);
+        } else {
+            fromDate = new Date(selectedDate.date);
+        }
+    });
+
+    $('#id_daily_stop').datetimepicker({
+        format: 'hh:ii:ss',
+        startView: '0'
+    }).on('changeDate', function(selectedDate){
+        if (selectedDate.date.valueOf() < fromDate.valueOf()){
+            $('#id_end').datetimepicker('setValue', toDate);
+        } else {
+            toDate = new Date(selectedDate.date);
+        }
+    });
 });
 </script>

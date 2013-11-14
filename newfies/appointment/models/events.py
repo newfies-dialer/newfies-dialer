@@ -21,17 +21,19 @@ class Event(models.Model):
     '''
     This model stores meta data for a date / an event
     '''
-    start = models.DateTimeField(_("start"))
-    end = models.DateTimeField(_("end"), help_text=_("The end time must be later than the start time."))
-    title = models.CharField(_("title"), max_length=255)
-    description = models.TextField(_("description"), null=True, blank=True)
+    start = models.DateTimeField(verbose_name=_("start"))
+    end = models.DateTimeField(verbose_name=_("end"),
+                               help_text=_("The end time must be later than the start time."))
+    title = models.CharField(verbose_name=_("title"), max_length=255)
+    description = models.TextField(verbose_name=_("description"), null=True, blank=True)
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, verbose_name=_("creator"), related_name='creator')
-    created_on = models.DateTimeField(_("created on"), default=timezone.now)
+    created_on = models.DateTimeField(verbose_name=_("created on"), default=timezone.now)
     rule = models.ForeignKey(Rule, null=True, blank=True, verbose_name=_("rule"), help_text=_("Select '----' for a one time only event."))
-    end_recurring_period = models.DateTimeField(_("end recurring period"), null=True, blank=True, help_text=_("This date is ignored for one time only events."))
+    end_recurring_period = models.DateTimeField(verbose_name=_("end recurring period"), null=True, blank=True, help_text=_("This date is ignored for one time only events."))
     calendar = models.ForeignKey(Calendar, null=False, blank=False)
 
-    notify_count = models.IntegerField(null=True, blank=True, default=0)
+    notify_count = models.IntegerField(verbose_name=_("notify count"),
+                                       null=True, blank=True, default=0)
     data = jsonfield.JSONField(null=True, blank=True, verbose_name=_('additional data (JSON)'),
                                help_text=_("data in Json format, e.g. {\"cost\": \"40 euro\"}"))
     status = models.IntegerField(choices=list(EVENT_STATUS),

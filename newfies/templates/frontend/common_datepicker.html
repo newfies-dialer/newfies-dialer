@@ -27,25 +27,32 @@ $(function() {
     });
 
 
-    // TODO : fix start & end
-    $('#id_start').datepicker({
-        format: 'yyyy-mm-dd hh-mm-ss'
+    // datetimepicker for start, end & created_on field
+    var today = new Date();
+    var fromDate = new Date(today.getFullYear(), today.getMonth(), today.getHours(), today.getMinutes(), today.getSeconds());
+    var toDate = new Date(today.getFullYear(), today.getMonth(), last_day_of_month, 23, 59, 59);
+    $('#id_start').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii:ss'
     }).on('changeDate', function(selectedDate){
         if (selectedDate.date.valueOf() > toDate.valueOf()){
-            $('#id_start').datepicker('setValue', fromDate);
+            $('#id_start').datetimepicker('setValue', fromDate);
         } else {
             fromDate = new Date(selectedDate.date);
         }
     });
 
-    $('#id_end').datepicker({
-        format: 'yyyy-mm-dd hh-mm-ss'
+    $('#id_end').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii:ss'
     }).on('changeDate', function(selectedDate){
         if (selectedDate.date.valueOf() < fromDate.valueOf()){
-            $('#id_end').datepicker('setValue', toDate);
+            $('#id_end').datetimepicker('setValue', toDate);
         } else {
             toDate = new Date(selectedDate.date);
         }
+    });
+
+    $('#id_created_on').datetimepicker({
+        format: 'yyyy-mm-dd hh:ii:ss'
     });
 });
 </script>

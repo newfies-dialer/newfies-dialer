@@ -645,8 +645,8 @@ def alarm_add(request):
     if request.method == 'POST':
         form = AlarmForm(request.user, request.POST)
         if form.is_valid():
-            form.save()
-            request.session["msg"] = _('"%s" is added.') % request.POST['method']
+            obj = form.save()
+            request.session["msg"] = _('"%s" is added.') % obj
             return HttpResponseRedirect('/alarm/')
 
     template = 'frontend/appointment/alarm/change.html'
@@ -725,7 +725,7 @@ def alarm_change(request, object_id):
             form = AlarmForm(request.user, request.POST, instance=alarm)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%s" is updated.') % request.POST['method']
+                request.session["msg"] = _('"%s" is updated.') % alarm
                 return HttpResponseRedirect('/alarm/')
 
     template = 'frontend/appointment/alarm/change.html'

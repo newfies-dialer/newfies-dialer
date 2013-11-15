@@ -14,12 +14,11 @@
 #from django.conf import settings
 #from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import render_to_response, get_object_or_404, render
+from django.http import HttpResponseRedirect, Http404
+from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from django.contrib.auth.forms import PasswordChangeForm, \
-    UserCreationForm, AdminPasswordChangeForm
+from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm
 #from django.contrib.auth.models import Permission
 #from django.views.decorators.csrf import csrf_exempt
 from appointment.models.calendars import Calendar
@@ -29,14 +28,13 @@ from appointment.constants import CALENDAR_USER_COLUMN_NAME, CALENDAR_COLUMN_NAM
     EVENT_COLUMN_NAME, ALARM_COLUMN_NAME, CALENDAR_SETTING_COLUMN_NAME
 from appointment.forms import CalendarUserChangeDetailExtendForm, \
     CalendarUserNameChangeForm, CalendarForm, EventForm, AlarmForm,\
-    CalendarSettingForm
+    CalendarSettingForm, EventSearchForm
 from appointment.models.users import CalendarUserProfile, CalendarUser,\
     CalendarSetting
+from appointment.function_def import get_calendar_user_id_list
 from user_profile.models import Manager
-from user_profile.forms import UserChangeDetailForm
 from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import get_pagination_vars
-import json
 
 
 @permission_required('appointment.view_calendar_user', login_url='/')
@@ -282,16 +280,15 @@ def calendar_list(request):
     sort_col_field_list = ['id', 'name', 'user', 'max_concurrent',
                            'created_date']
     default_sort_field = 'id'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
-    calendar_user_list = CalendarUserProfile.objects.values_list('user_id', flat=True).filter(manager=request.user).order_by('id')
-
-    calendar_list = Calendar.objects\
-        .filter(user_id__in=calendar_user_list).order_by(sort_order)
+    calendar_user_id_list = get_calendar_user_id_list(request.user)
+    calendar_list = Calendar.objects.filter(
+        user_id__in=calendar_user_id_list).order_by(sort_order)
 
     template = 'frontend/appointment/calendar/list.html'
     data = {
@@ -591,6 +588,7 @@ def event_list(request):
 
         * List all events which belong to the logged in user.
     """
+    form = EventSearchForm(request.user)
     sort_col_field_list = ['id', 'start', 'end', 'title',
                            'calendar', 'status', 'created_on']
     default_sort_field = 'id'
@@ -600,14 +598,13 @@ def event_list(request):
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
-    calendar_user_list = CalendarUserProfile.objects.values_list(
-        'user_id', flat=True).filter(manager=request.user).order_by('id')
-
+    calendar_user_id_list = get_calendar_user_id_list(request.user)
     event_list = Event.objects.filter(
-        calendar__user_id__in=calendar_user_list).order_by(sort_order)
+        calendar__user_id__in=calendar_user_id_list).order_by(sort_order)
 
     template = 'frontend/appointment/event/list.html'
     data = {
+        'form': form,
         'msg': request.session.get('msg'),
         'event_list': event_list,
         'total_event': event_list.count(),
@@ -761,11 +758,9 @@ def alarm_list(request):
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
-    calendar_user_list = CalendarUserProfile.objects.values_list(
-        'user_id', flat=True).filter(manager=request.user).order_by('id')
-
+    calendar_user_id_list = get_calendar_user_id_list(request.user)
     alarm_list = Alarm.objects.filter(
-        event__calendar__user_id__in=calendar_user_list).order_by(sort_order)
+        event__calendar__user_id__in=calendar_user_id_list).order_by(sort_order)
 
     template = 'frontend/appointment/alarm/list.html'
     data = {

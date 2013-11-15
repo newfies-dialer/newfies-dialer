@@ -11,6 +11,7 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django import forms
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserChangeForm
 from django.utils.translation import ugettext as _
@@ -19,6 +20,8 @@ from appointment.models.users import CalendarUserProfile, CalendarUser,\
 from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm
+from appointment.function_def import get_calendar_user_id_list, get_calendar_user_list,\
+    get_calendar_list
 from survey.models import Survey
 
 
@@ -84,11 +87,8 @@ class CalendarForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarForm, self).__init__(*args, **kwargs)
-
-        calendar_user_list = CalendarUserProfile.objects.values_list(
-            'user_id', flat=True).filter(manager=user).order_by('id')
-        self.fields['user'].choices = CalendarUser.objects.values_list(
-            'id', 'username').filter(id__in=calendar_user_list).order_by('id')
+        calendar_user_list = get_calendar_user_id_list(user)
+        self.fields['user'].choices = get_calendar_user_list(calendar_user_list)
 
 
 class EventAdminForm(ModelForm):
@@ -112,16 +112,24 @@ class EventForm(ModelForm):
                                 'rule', 'calendar', 'notify_count', 'status',
                                 'data']
 
-        calendar_user_list = CalendarUserProfile.objects.values_list(
-            'user_id', flat=True).filter(manager=user).order_by('id')
+        calendar_user_list = get_calendar_user_id_list(user)
+        self.fields['calendar'].choices = get_calendar_list(calendar_user_list)
 
-        list_calendar = []
-        list_calendar.append((0, '---'))
-        calendar_list = Calendar.objects.values_list(
-            'id', 'name').filter(user_id__in=calendar_user_list).order_by('id')
-        for l in calendar_list:
-            list_calendar.append((l[0], l[1]))
-        self.fields['calendar'].choices = list_calendar
+
+class EventSearchForm(forms.Form):
+    """Event Search Form"""
+    start_date = forms.CharField(label=_('start'), required=False,
+                                 max_length=10)
+    calendar_id = forms.ChoiceField(label=_('calendar'), required=False,
+                                    choices=[('', '---')])
+    calendar_user_id = forms.ChoiceField(label=_('calendar user'), required=False,
+                                         choices=[('', '---')])
+
+    def __init__(self, user, *args, **kwargs):
+        super(EventSearchForm, self).__init__(*args, **kwargs)
+        calendar_user_list = get_calendar_user_id_list(user)
+        self.fields['calendar_id'].choices = get_calendar_list(calendar_user_list)
+        self.fields['calendar_user_id'].choices = get_calendar_user_list(calendar_user_list)
 
 
 class AlarmForm(ModelForm):
@@ -141,8 +149,7 @@ class AlarmForm(ModelForm):
             list_survey.append((l[0], l[1]))
         self.fields['survey'].choices = list_survey
 
-        calendar_user_list = CalendarUserProfile.objects.values_list(
-            'user_id', flat=True).filter(manager=user).order_by('id')
+        calendar_user_list = get_calendar_user_id_list(user)
 
         list_event = []
         list_event.append((0, '---'))

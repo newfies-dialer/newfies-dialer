@@ -231,10 +231,11 @@ def contact_list(request):
         * List all contacts from phonebooks belonging to the logged in user
     """
     sort_col_field_list = ['id', 'phonebook', 'contact', 'status',
-        'first_name', 'last_name', 'email', 'updated_date']
+                           'first_name', 'last_name', 'email',
+                           'updated_date']
     default_sort_field = 'id'
-    pagination_data =\
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']

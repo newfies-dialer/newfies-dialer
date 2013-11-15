@@ -2,6 +2,10 @@
 {% load i18n pagination_tags common_tags icons appointment_tags %}
 
 {% block extra_files %}
+    <link href="{{ STATIC_URL }}newfies/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
+    <script src="{{ STATIC_URL }}newfies/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
+
+    {% include "frontend/common_datepicker.html" %}
     {% include "frontend/custom_jquery_select_all.html" %}
 {% endblock %}
 
@@ -10,6 +14,39 @@
 {% endblock %}
 
 {% block content %}
+<div id="form_collapse" class="collapse">
+    <form class="well form-search" method="POST" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <div class="row">
+            <div class="span12">
+                <div class="row">
+                    {% get_fieldset start_date,calendar_id,calendar_user_id as search_event from form %}
+                    {% for field in search_event %}
+                    <div class="span4 clearfix{% if field.errors %} error{% endif %}">
+                        <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
+                        <div class="input">
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div class="actions">
+            <input class="btn btn-primary" type=submit name=submit value={% trans "search"|title %} />&nbsp;
+        </div>
+    </form>
+</div>
+
+<a class="btn btn-small" id="toggle_btn" href="#" data-toggle="collapse" data-target="#form_collapse">
+    <i class="icon-search"></i> <span>{% trans "search"|title %}</span>
+</a>
 
 <script type="text/javascript">
     function add_button()
@@ -22,6 +59,7 @@
         $('#ListForm').submit();
     }
 </script>
+<p>&nbsp;</p>
 <div class="span12">
     <div class="row">
         <div class="btn-group">

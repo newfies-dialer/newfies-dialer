@@ -118,12 +118,11 @@ class EventForm(ModelForm):
 
 class EventSearchForm(forms.Form):
     """Event Search Form"""
-    start_date = forms.CharField(label=_('start'), required=False,
-                                 max_length=10)
+    start_date = forms.CharField(label=_('start date'), required=False, max_length=20)
     calendar_id = forms.ChoiceField(label=_('calendar'), required=False,
-                                    choices=[('', '---')])
+                                    choices=[('0', '---')])
     calendar_user_id = forms.ChoiceField(label=_('calendar user'), required=False,
-                                         choices=[('', '---')])
+                                         choices=[('0', '---')])
 
     def __init__(self, user, *args, **kwargs):
         super(EventSearchForm, self).__init__(*args, **kwargs)

@@ -34,7 +34,9 @@ from appointment.models.users import CalendarUserProfile, CalendarUser,\
 from appointment.function_def import get_calendar_user_id_list
 from user_profile.models import Manager
 from dialer_campaign.function_def import user_dialer_setting_msg
-from common.common_functions import get_pagination_vars
+from common.common_functions import ceil_strdate, getvar,\
+    get_pagination_vars, unset_session_var
+from datetime import datetime
 
 
 @permission_required('appointment.view_calendar_user', login_url='/')
@@ -588,19 +590,79 @@ def event_list(request):
 
         * List all events which belong to the logged in user.
     """
-    form = EventSearchForm(request.user)
+    today = datetime.now()
+    form = EventSearchForm(request.user,
+                           initial={'start': today.strftime('%Y-%m-%d %H:%M:%S')})
     sort_col_field_list = ['id', 'start', 'end', 'title',
                            'calendar', 'status', 'created_on']
     default_sort_field = 'id'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
+
+    #search_tag = 1
+    start_date = ''
+    calendar_id = ''
+    calendar_user_id = ''
+
+    if request.method == 'POST':
+        form = EventSearchForm(request.user, request.POST)
+        if form.is_valid():
+            field_list = ['start_date', 'calendar_id', 'calendar_user_id',]
+            unset_session_var(request, field_list)
+
+            if request.POST.get('start_date'):
+                # start date
+                start_date = ceil_strdate(request.POST['start_date'], 'start')
+                request.session['session_start_date'] = start_date
+
+            calendar_id = getvar(request, 'calendar_id', setsession=True)
+            calendar_user_id = getvar(request, 'calendar_user_id', setsession=True)
+
+    post_var_with_page = 0
+    try:
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            post_var_with_page = 1
+            start_date = request.session.get('session_start_date')
+            calendar_id = request.session.get('session_calendar_id')
+            calendar_user_id = request.session.get('session_calendar_user_id')
+            form = EventSearchForm(request.user, initial={'start_date': start_date,
+                                                          'calendar_id': calendar_id,
+                                                          'calendar_user_id': calendar_user_id,
+                                                          })
+        else:
+            post_var_with_page = 1
+            if request.method == 'GET':
+                post_var_with_page = 0
+    except:
+        pass
+
+    if post_var_with_page == 0:
+        # default
+        # unset session var
+        field_list = ['start_date', 'calendar_id', 'calendar_user_id']
+        unset_session_var(request, field_list)
+
+    kwargs = {}
+    if start_date:
+        kwargs['start__gte'] = start_date
+
+    if calendar_id and int(calendar_id) != 0:
+        kwargs['calendar_id'] = calendar_id
+
+    #if calendar_user_id and int(calendar_user_id) != 0:
+    #    kwargs['calendar_id'] = calendar_user_id
 
     calendar_user_id_list = get_calendar_user_id_list(request.user)
     event_list = Event.objects.filter(
         calendar__user_id__in=calendar_user_id_list).order_by(sort_order)
+    if kwargs:
+        event_list = event_list.filter(**kwargs)
+    event_list = event_list[start_page:end_page]
 
     template = 'frontend/appointment/event/list.html'
     data = {

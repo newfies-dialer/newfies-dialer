@@ -24,11 +24,10 @@ class Event(models.Model):
     This model stores meta data for a date / an event
     '''
     start = models.DateTimeField(default=(lambda: datetime.now()),
-                                 verbose_name=_("start"),
-                                 help_text=_("date format: YYYY-mm-DD HH:MM:SS"))
-    end = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(days=+1)),
+                                 verbose_name=_("start"))
+    end = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(hours=+1)),
                                verbose_name=_("end"),
-                               help_text=_("date format: YYYY-mm-DD HH:MM:SS. Must be later than the start."))
+                               help_text=_("Must be later than the start."))
     title = models.CharField(verbose_name=_("title"), max_length=255)
     description = models.TextField(verbose_name=_("description"), null=True, blank=True)
     creator = models.ForeignKey(CalendarUser, null=False, blank=False,
@@ -39,8 +38,7 @@ class Event(models.Model):
                                                 default=(lambda: datetime.now() + relativedelta(months=+1)),
                                                 help_text=_("date format: YYYY-mm-DD HH:MM:SS. it is ignored for one time only events."))
     rule = models.ForeignKey(Rule, null=True, blank=True,
-                             verbose_name=_("rule"),
-                             help_text=_("Select '----' for a one time only event."))
+                             verbose_name=_("rule"), help_text=_("one time event."))
     calendar = models.ForeignKey(Calendar, null=False, blank=False)
 
     notify_count = models.IntegerField(verbose_name=_("notify count"),

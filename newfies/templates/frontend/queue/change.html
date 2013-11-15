@@ -16,26 +16,56 @@
 {% block content %}
 
 <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    {% get_fieldset name,strategy,moh_sound,record_template,time_base_score,tier_rule_wait_second,discard_abandoned_after,max_wait_time,max_wait_time_with_no_agent,max_wait_time_with_no_agent_time_reached as form_fields from form %}
+    <div class="span12">
+        <div class="row">
+            {% get_fieldset name,strategy as form_fields from form %}
             {% for field in form_fields.visible_fields %}
-    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-        <div class="input">
-            {{ field }}
-            {% if field.errors %}
-                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-            {% endif %}
-                <span class="help-block">{{ field.help_text|capfirst }} </span>
+            <div class="span6">
+                <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    <div class="input">
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
-
-    <div class="clearfix">
-        <div class="input">
-            {% get_fieldset tier_rules_apply,tier_rule_wait_multiply_level,tier_rule_no_agent_no_wait,abandoned_resume_allowed as boolean_fields from form %}
-            {% for field in boolean_fields %}
-                {{ field }}&nbsp;<label style="display: inline;" for="{{ field.auto_id }}">{{ field.label|title }}</label>&nbsp;
+    <div class="span12">
+        <div class="row">
+            {% get_fieldset moh_sound,record_template,time_base_score,tier_rule_wait_second,discard_abandoned_after,max_wait_time,max_wait_time_with_no_agent,max_wait_time_with_no_agent_time_reached as form_fields from form %}
+            {% for field in form_fields.visible_fields %}
+            <div class="span6">
+                <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    <div class="input">
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                    </div>
+                </div>
+            </div>
             {% endfor %}
+        </div>
+    </div>
+    <div class="span12">
+        <div class="row">
+            <div class="span10">
+                <div class="clearfix">
+                    <div class="input">
+                        {% get_fieldset tier_rules_apply,tier_rule_wait_multiply_level,tier_rule_no_agent_no_wait,abandoned_resume_allowed as boolean_fields from form %}
+                        {% for field in boolean_fields %}
+                            {{ field }}&nbsp;<label style="display: inline;" for="{{ field.auto_id }}">{{ field.label|title }}</label>&nbsp;
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 

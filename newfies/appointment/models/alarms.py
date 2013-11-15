@@ -8,6 +8,7 @@ from appointment.models.events import Event
 from survey.models import Survey
 from dialer_cdr.models import Callrequest
 from mod_mailer.models import MailTemplate
+from datetime import datetime
 
 
 class SMSTemplate(models.Model):
@@ -38,8 +39,10 @@ class Alarm(models.Model):
                                          verbose_name=_("alarm phonenumber"))
     alarm_email = models.EmailField(blank=True, null=True, verbose_name=_('alarm email'))
 
-    daily_start = models.TimeField(verbose_name=_('daily start'))
-    daily_stop = models.TimeField(verbose_name=_('daily stop'))
+    daily_start = models.TimeField(verbose_name=_('daily start'), default='00:00:00',
+                                   help_text=_("time format: HH:MM:SS"))
+    daily_stop = models.TimeField(verbose_name=_('daily stop'), default='23:59:59',
+                                  help_text=_("time format: HH:MM:SS"))
     advance_notice = models.IntegerField(null=True, blank=True, default=0,
                                          verbose_name=_('advance notice'))
     retry_count = models.IntegerField(null=True, blank=True, default=0,
@@ -63,7 +66,8 @@ class Alarm(models.Model):
                                      related_name="sms template")
     event = models.ForeignKey(Event, verbose_name=_("event"),
                               related_name="event")
-    date_start_notice = models.DateTimeField(verbose_name=_('starting date'))
+    date_start_notice = models.DateTimeField(verbose_name=_('starting date notice'),
+                                             default=(lambda: datetime.now()))
 
     status = models.IntegerField(choices=list(ALARM_STATUS),
                                  default=ALARM_STATUS.PENDING,

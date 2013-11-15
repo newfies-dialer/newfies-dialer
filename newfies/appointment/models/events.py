@@ -11,6 +11,7 @@ from appointment.models.calendars import Calendar
 from appointment.utils import OccurrenceReplacer
 from appointment.constants import EVENT_STATUS
 from dateutil import rrule
+from dateutil.relativedelta import relativedelta
 # from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import jsonfield
@@ -21,15 +22,21 @@ class Event(models.Model):
     '''
     This model stores meta data for a date / an event
     '''
-    start = models.DateTimeField(verbose_name=_("start"))
-    end = models.DateTimeField(verbose_name=_("end"),
-                               help_text=_("The end time must be later than the start time."))
+    start = models.DateTimeField(default=(lambda: datetime.now()),
+                                 verbose_name=_("start"),
+                                 help_text=_("date format: YYYY-mm-DD HH:MM:SS"))
+    end = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(days=+1)),
+                               verbose_name=_("end"),
+                               help_text=_("date format: YYYY-mm-DD HH:MM:SS. Must be later than the start."))
     title = models.CharField(verbose_name=_("title"), max_length=255)
     description = models.TextField(verbose_name=_("description"), null=True, blank=True)
     creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, verbose_name=_("creator"), related_name='creator')
     created_on = models.DateTimeField(verbose_name=_("created on"), default=timezone.now)
     rule = models.ForeignKey(Rule, null=True, blank=True, verbose_name=_("rule"), help_text=_("Select '----' for a one time only event."))
-    end_recurring_period = models.DateTimeField(verbose_name=_("end recurring period"), null=True, blank=True, help_text=_("This date is ignored for one time only events."))
+    end_recurring_period = models.DateTimeField(verbose_name=_("end recurring period"),
+                                                null=True, blank=True,
+                                                default=(lambda: datetime.now() + relativedelta(months=+1)),
+                                                help_text=_("date format: YYYY-mm-DD HH:MM:SS. it is ignored for one time only events."))
     calendar = models.ForeignKey(Calendar, null=False, blank=False)
 
     notify_count = models.IntegerField(verbose_name=_("notify count"),

@@ -48,6 +48,49 @@ class CalendarSettingForm(ModelForm):
         self.fields['survey'].choices = list_survey
 
 
+class CalendarUserNameChangeForm(UserChangeForm):
+    """CalendarUserNameChangeForm is used to change CalendarUser username"""
+
+    class Meta:
+        model = CalendarUser
+        fields = ["username"]
+
+    def __init__(self, *args, **kwargs):
+        super(CalendarUserNameChangeForm, self).__init__(*args, **kwargs)
+
+
+class CalendarUserChangeDetailExtendForm(ModelForm):
+    """A form used to change the detail of a CalendarUser in the manager UI."""
+    class Meta:
+        model = CalendarUserProfile
+        exclude = ('manager', 'user')
+
+    def __init__(self, user, *args, **kwargs):
+        super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
+
+        list_calendar_setting = []
+        list_calendar_setting.append((0, '---'))
+        calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
+        for l in calendar_setting_list:
+            list_calendar_setting.append((l.id, l.cid_name))
+        self.fields['calendar_setting'].choices = list_calendar_setting
+
+
+class CalendarForm(ModelForm):
+    """CalendarForm"""
+    class Meta:
+        model = Calendar
+        exclude = ('slug')
+
+    def __init__(self, user, *args, **kwargs):
+        super(CalendarForm, self).__init__(*args, **kwargs)
+
+        calendar_user_list = CalendarUserProfile.objects.values_list(
+            'user_id', flat=True).filter(manager=user).order_by('id')
+        self.fields['user'].choices = CalendarUser.objects.values_list(
+            'id', 'username').filter(id__in=calendar_user_list).order_by('id')
+
+
 class EventAdminForm(ModelForm):
     """Admin Event ModelForm"""
     class Meta:
@@ -105,46 +148,4 @@ class AlarmForm(ModelForm):
             list_event.append((l[0], l[1]))
         self.fields['event'].choices = list_event
 
-
-class CalendarUserNameChangeForm(UserChangeForm):
-    """CalendarUserNameChangeForm is used to change CalendarUser username"""
-
-    class Meta:
-        model = CalendarUser
-        fields = ["username"]
-
-    def __init__(self, *args, **kwargs):
-        super(CalendarUserNameChangeForm, self).__init__(*args, **kwargs)
-
-
-class CalendarUserChangeDetailExtendForm(ModelForm):
-    """A form used to change the detail of a CalendarUser in the manager UI."""
-    class Meta:
-        model = CalendarUserProfile
-        exclude = ('manager', 'user')
-
-    def __init__(self, user, *args, **kwargs):
-        super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
-
-        list_calendar_setting = []
-        list_calendar_setting.append((0, '---'))
-        calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
-        for l in calendar_setting_list:
-            list_calendar_setting.append((l.id, l.cid_name))
-        self.fields['calendar_setting'].choices = list_calendar_setting
-
-
-class CalendarForm(ModelForm):
-    """CalendarForm"""
-    class Meta:
-        model = Calendar
-        exclude = ('slug')
-
-    def __init__(self, user, *args, **kwargs):
-        super(CalendarForm, self).__init__(*args, **kwargs)
-
-        calendar_user_list = CalendarUserProfile.objects.values_list(
-            'user_id', flat=True).filter(manager=user).order_by('id')
-        self.fields['user'].choices = CalendarUser.objects.values_list(
-            'id', 'username').filter(id__in=calendar_user_list).order_by('id')
 

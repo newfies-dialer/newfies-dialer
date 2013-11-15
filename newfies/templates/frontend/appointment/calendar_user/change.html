@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n %}
+{% load i18n common_tags %}
 
 {% block content_header %}
     <h1>
@@ -18,34 +18,62 @@
 <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
 
     {% if action == 'update' %}
-        {% for field in calendar_user_username_form %}
-        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-            <div class="input">{{ field }}
-                {% if field.errors %}
-                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
-                    {% if field.name == 'username' %}
-                    <span class="help-block">{{ field.help_text|capfirst }} </span>
-                    {% endif %}
+        <div class="span12">
+            <div class="row">
+                <div class="span6">
+                    {% get_fieldset username as user_fields from calendar_user_username_form %}
+                    {% for field in user_fields.visible_fields %}
+                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                        <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        <div class="input">
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="row">
+                <div class="span6">
+                    {% get_fieldset password as user_fields from calendar_user_username_form %}
+                    {% for field in user_fields.visible_fields %}
+                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                        <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        <div class="input">
+                            {{ field }}
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
             </div>
         </div>
-        {% endfor %}
-        <div>&nbsp;</div>
     {% endif %}
 
-    {% for field in form %}
-    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-        <div class="input">
-            {{ field }}
-            {% if field.errors %}
-                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-            {% endif %}
-                <span class="help-block">{{ field.help_text|capfirst }} </span>
+    <div class="span12">
+        <div class="row">
+            {% get_fieldset address,city,state,country,zip_code,phone_no,fax,company_name,company_website,language,note,accountcode,calendar_setting as cal_user_fields from form %}
+            {% for field in cal_user_fields.hidden_fields %}
+                {{ field }}
+            {% endfor %}
+            {% for field in cal_user_fields.visible_fields %}
+                <div class="span6">
+                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                        <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        <div class="input">
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
         </div>
     </div>
-    {% endfor %}
 
     <div class="actions">
         {% if action == 'update' %}

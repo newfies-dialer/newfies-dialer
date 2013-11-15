@@ -643,7 +643,9 @@ def event_add(request):
     if request.method == 'POST':
         form = EventForm(request.user, request.POST)
         if form.is_valid():
-            form.save()
+            obj = form.save(commit=False)
+            obj.creator = request.user
+            obj.save()
             request.session["msg"] = _('"%s" is added.') % request.POST['title']
             return HttpResponseRedirect('/event/')
 

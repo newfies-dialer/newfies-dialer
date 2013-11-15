@@ -32,10 +32,26 @@
         <legend>{% trans "event settings"|title %}</legend>
         <div class="span12">
             <div class="row">
-                {% get_fieldset start,end,title,description,creator,created_on,rule,calendar,end_recurring_period,status,notify_count,data as event_fields from form %}
-                {% for field in event_fields.hidden_fields %}
-                    {{ field }}
+                {% get_fieldset start,end,title,description,created_on,end_recurring_period,rule,calendar as event_fields from form %}
+                {% for field in event_fields.visible_fields %}
+                    <div class="span6">
+                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                            <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                            <div class="input">
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ field.help_text|capfirst }} </span>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
+            </div>
+        </div>
+        <div class="span12">
+            <div class="row">
+                {% get_fieldset status,notify_count,data as event_fields from form %}
                 {% for field in event_fields.visible_fields %}
                     <div class="span6">
                         <div class="clearfix{% if field.errors %} control-group error{% endif %}">

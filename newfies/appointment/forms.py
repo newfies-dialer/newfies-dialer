@@ -103,10 +103,14 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('parent_event', 'occ_count')
+        exclude = ('creator', 'parent_event', 'occ_count')
 
     def __init__(self, user, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['start', 'end', 'title', 'description',
+                                'created_on', 'end_recurring_period',
+                                'rule', 'calendar', 'notify_count', 'status',
+                                'data']
 
         calendar_user_list = CalendarUserProfile.objects.values_list(
             'user_id', flat=True).filter(manager=user).order_by('id')

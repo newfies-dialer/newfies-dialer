@@ -24,7 +24,6 @@ from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
 #from dialer_cdr.function_def import get_prefix_obj
 from dialer_gateway.utils import prepare_phonenumber
 from datetime import datetime, timedelta
-from time import sleep
 from common.only_one_task import only_one
 from uuid import uuid1
 from common_functions import debug_query
@@ -85,6 +84,7 @@ def check_retrycall_completion(callrequest):
             countdown=second_towait)
 
 
+#TODO: Move to dialer_cdr/utils.py
 class BufferVoIPCall:
     """
     BufferVoIPCall stores VoIPCall (CDR) into a buffer and allow
@@ -177,6 +177,7 @@ class BufferVoIPCall:
         VoIPCall.objects.bulk_create(self.list_voipcall)
 
 
+#TODO: Move to dialer_cdr/utils.py
 def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
                   hangup_cause_q850='', callerid='', phonenumber='', starting_date='',
                   call_uuid='', duration=0, billsec=0, amd_status='person'):
@@ -184,6 +185,8 @@ def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
     This task will save the voipcall(CDR) to the DB,
     it will also reformat the disposition
     """
+    #TODO: following code is duplicated, see above
+
     used_gateway = callrequest.aleg_gateway
     #Set Leg Type
     if leg == 'aleg':
@@ -265,6 +268,8 @@ def process_callevent(record):
         - Retrieve the callrequest using either callrequest_id or request_uuid
         - create the voipcall, and save different data
     """
+    #TODO: add method in utils parse_callevent
+
     event_name = record[1]
     body = record[2]
     job_uuid = record[3]
@@ -428,9 +433,9 @@ def process_callevent(record):
 
 
 # OPTIMIZATION - TO REVIEW
-def check_callevent():
+def callevent_processing():
     """
-    Check callevent
+    Retrieve callevents and process them
 
     call_event table is created by listener.lua
 
@@ -489,7 +494,7 @@ def check_callevent():
     debug_query(30)
     # buff_voipcall.commit()
     # debug_query(31)
-    logger.debug('End Loop : check_callevent')
+    logger.debug('End Loop : callevent_processing')
 
 
 class task_pending_callevent(PeriodicTask):
@@ -498,7 +503,7 @@ class task_pending_callevent(PeriodicTask):
 
     **Usage**:
 
-        check_callevent.delay()
+        callevent_processing.delay()
     """
     #The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
@@ -509,7 +514,7 @@ class task_pending_callevent(PeriodicTask):
     @only_one(ikey="task_pending_callevent", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.debug("ASK :: task_pending_callevent")
-        check_callevent()
+        callevent_processing()
 
 
 """
@@ -543,6 +548,7 @@ def callrequest_pending(*args, **kwargs):
 """
 
 
+#TODO: Move to dialer_cdr/utils.py
 def esl_dialout(dial_command):
     """
     function to dialout via ESL
@@ -569,7 +575,7 @@ def esl_dialout(dial_command):
 
 
 @task(ignore_result=True)
-def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=0):
+def init_callrequest(callrequest_id, campaign_id, callmaxduration):
     """
     This task read the callrequest, update it as 'In Process'
     then proceed on the call outbound, using the different call engine supported
@@ -582,10 +588,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         * ``ms_addtowait`` - Milliseconds to wait before outbounding the call
 
     """
+    outbound_failure = False
     debug_query(8)
-
-    if ms_addtowait > 0:
-        sleep(ms_addtowait)
 
     #Get CallRequest object
     #use only https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.only
@@ -604,19 +608,17 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 
     debug_query(10)
 
-    if obj_callrequest.aleg_gateway:
-        dialout_phone_number = prepare_phonenumber(
-            obj_callrequest.phone_number,
-            obj_callrequest.aleg_gateway.addprefix,
-            obj_callrequest.aleg_gateway.removeprefix,
-            obj_callrequest.aleg_gateway.status)
-    else:
-        dialout_phone_number = obj_callrequest.phone_number
-    logger.debug("dialout_phone_number : %s" % dialout_phone_number)
-
+    # TODO: move method prepare_phonenumber into the model gateway
+    dialout_phone_number = prepare_phonenumber(
+        obj_callrequest.phone_number,
+        obj_callrequest.aleg_gateway.addprefix,
+        obj_callrequest.aleg_gateway.removeprefix,
+        obj_callrequest.aleg_gateway.status)
     if not dialout_phone_number:
         logger.info("Error with dialout_phone_number - phone_number:%s;cmpg:%d" % (str(obj_callrequest.phone_number), campaign_id))
         return False
+    else:
+        logger.debug("dialout_phone_number : %s" % dialout_phone_number)
 
     debug_query(11)
 
@@ -645,25 +647,6 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
 
     debug_query(13)
-
-    outbound_failure = False
-
-    #Send Call to API
-    #http://ask.github.com/celery/userguide/remote-tasks.html
-
-    """
-    #this could be needed if we want to call a different API / Twilio
-    import httplib, urllib
-    params = urllib.urlencode({'From': '900900000', 'To': '1000',})
-    headers = {"Content-type": "application/x-www-form-urlencoded",
-           "Accept": "text/plain"}
-    conn = httplib.HTTPConnection("127.0.0.1:8000")
-    conn.request("POST", "/api/dialer_cdr/testcall/", params, headers)
-    response = conn.getresponse()
-    print response.status, response.reason
-    data = response.read()
-    conn.close()
-    """
 
     if settings.NEWFIES_DIALER_ENGINE.lower() == 'esl':
         try:
@@ -781,9 +764,6 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     else:
         obj_callrequest.status = CALLREQUEST_STATUS.CALLING
     obj_callrequest.save()
-
-    #lock to limit running process, do so per campaign
-    #http://ask.github.com/celery/cookbook/tasks.html
 
     debug_query(15)
 

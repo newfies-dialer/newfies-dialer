@@ -266,7 +266,7 @@ def calendar_user_change_password(request, object_id):
                               context_instance=RequestContext(request))
 
 
-@permission_required('calendar.view_calendar', login_url='/')
+#@permission_required('appointment.view_calendar', login_url='/')
 @login_required
 def calendar_list(request):
     """Calendar list for the logged in user
@@ -309,7 +309,7 @@ def calendar_list(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('calendar.add_calendar', login_url='/')
+@permission_required('appointment.add_calendar', login_url='/')
 @login_required
 def calendar_add(request):
     """Add a new calendar for the logged in user
@@ -345,7 +345,7 @@ def calendar_add(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('calendar.delete_calendar', login_url='/')
+@permission_required('appointment.delete_calendar', login_url='/')
 @login_required
 def calendar_del(request, object_id):
     """Delete calendar for the logged in user
@@ -382,7 +382,7 @@ def calendar_del(request, object_id):
     return HttpResponseRedirect('/calendar/')
 
 
-@permission_required('calendar.change_calendar', login_url='/')
+@permission_required('appointment.change_calendar', login_url='/')
 @login_required
 def calendar_change(request, object_id):
     """Update/Delete calendar for the logged in user
@@ -423,7 +423,7 @@ def calendar_change(request, object_id):
                               context_instance=RequestContext(request))
 
 
-@permission_required('appointment.view_calendar_setting', login_url='/')
+#@permission_required('appointment.view_calendarsetting', login_url='/')
 @login_required
 def calendar_setting_list(request):
     """Calendar setting list for the logged in user
@@ -462,7 +462,7 @@ def calendar_setting_list(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('appointment.add_calendar_setting', login_url='/')
+@permission_required('appointment.add_calendarsetting', login_url='/')
 @login_required
 def calendar_setting_add(request):
     """Add a new calendar setting for the logged in user
@@ -500,7 +500,7 @@ def calendar_setting_add(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('appointment.delete_calendar_setting', login_url='/')
+@permission_required('appointment.delete_calendarsetting', login_url='/')
 @login_required
 def calendar_setting_del(request, object_id):
     """Delete calendar_setting for the logged in user
@@ -537,7 +537,7 @@ def calendar_setting_del(request, object_id):
     return HttpResponseRedirect('/calendar_setting/')
 
 
-@permission_required('appointment.change_calendar_setting', login_url='/')
+@permission_required('appointment.change_calendarsetting', login_url='/')
 @login_required
 def calendar_setting_change(request, object_id):
     """Update/Delete calendar_setting for the logged in user

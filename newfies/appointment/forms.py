@@ -138,6 +138,7 @@ class CalendarForm(ModelForm):
     """CalendarForm"""
     class Meta:
         model = Calendar
+        exclude = ('slug')
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarForm, self).__init__(*args, **kwargs)

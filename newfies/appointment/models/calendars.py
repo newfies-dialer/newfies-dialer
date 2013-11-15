@@ -2,6 +2,7 @@
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
+from django.template.defaultfilters import slugify
 from django.utils import timezone
 from appointment.models.users import CalendarUser
 import datetime
@@ -55,7 +56,7 @@ class Calendar(models.Model):
 
     class Meta:
         permissions = (
-            ("view_calendar ", _('can see Calendar list')),
+            ("view_calendar ", _('Can see Calendar list')),
         )
         verbose_name = _('calendar')
         verbose_name_plural = _('calendars')
@@ -63,6 +64,10 @@ class Calendar(models.Model):
 
     def __unicode__(self):
         return self.name
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.name)
+        super(Calendar, self).save(*args, **kwargs)
 
     @property
     def events(self):

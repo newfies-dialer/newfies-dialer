@@ -30,12 +30,12 @@
                 <span class="caret"></span>
             </button>
             <ul class="dropdown-menu">
-                {% if perms.appointment.delete_calendar_setting %}
+                {% if perms.appointment.delete_calendarsetting %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
             </ul>
         </div>
-        {% if perms.appointment.add_calendar_setting %}
+        {% if perms.appointment.add_calendarsetting %}
             <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}
     </div>
@@ -65,10 +65,10 @@
                             <td>{{ row.call_timeout }}</td>
                             <td>{{ row.survey }}</td>
                             <td>
-                                {% if perms.appointment.change_calendar_setting %}
+                                {% if perms.appointment.change_calendarsetting %}
                                     <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update calendar_setting"|title %}"></a>
                                 {% endif %}
-                                {% if perms.appointment.delete_calendar_setting %}
+                                {% if perms.appointment.delete_calendarsetting %}
                                     <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete calendar_setting"|title %}"></a>
                                 {% endif %}
                             </td>

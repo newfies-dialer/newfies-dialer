@@ -654,8 +654,8 @@ def event_list(request):
     if calendar_id and int(calendar_id) != 0:
         kwargs['calendar_id'] = calendar_id
 
-    #if calendar_user_id and int(calendar_user_id) != 0:
-    #    kwargs['calendar_id'] = calendar_user_id
+    if calendar_user_id and int(calendar_user_id) != 0:
+        kwargs['creator_id'] = calendar_user_id
 
     calendar_user_id_list = get_calendar_user_id_list(request.user)
     event_list = Event.objects.filter(
@@ -702,9 +702,7 @@ def event_add(request):
     if request.method == 'POST':
         form = EventForm(request.user, request.POST)
         if form.is_valid():
-            obj = form.save(commit=False)
-            obj.creator = request.user
-            obj.save()
+            form.save()
             request.session["msg"] = _('"%s" is added.') % request.POST['title']
             return HttpResponseRedirect('/event/')
 

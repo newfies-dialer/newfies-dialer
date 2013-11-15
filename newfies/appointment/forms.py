@@ -103,17 +103,18 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('creator', 'parent_event', 'occ_count')
+        exclude = ('parent_event', 'occ_count')
 
     def __init__(self, user, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['start', 'end', 'title', 'description',
-                                'created_on', 'end_recurring_period',
+                                'creator', 'created_on', 'end_recurring_period',
                                 'rule', 'calendar', 'notify_count', 'status',
                                 'data']
 
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar'].choices = get_calendar_list(calendar_user_list)
+        self.fields['creator'].choices = get_calendar_user_list(calendar_user_list)
 
 
 class EventSearchForm(forms.Form):

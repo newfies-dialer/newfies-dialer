@@ -8,6 +8,7 @@ from django.utils import timezone
 from appointment.conf import settings
 from appointment.models.rules import Rule
 from appointment.models.calendars import Calendar
+from appointment.models.users import CalendarUser
 from appointment.utils import OccurrenceReplacer
 from appointment.constants import EVENT_STATUS
 from dateutil import rrule
@@ -30,7 +31,8 @@ class Event(models.Model):
                                help_text=_("date format: YYYY-mm-DD HH:MM:SS. Must be later than the start."))
     title = models.CharField(verbose_name=_("title"), max_length=255)
     description = models.TextField(verbose_name=_("description"), null=True, blank=True)
-    creator = models.ForeignKey(settings.AUTH_USER_MODEL, null=False, blank=False, verbose_name=_("creator"), related_name='creator')
+    creator = models.ForeignKey(CalendarUser, null=False, blank=False,
+                                verbose_name=_("calendar user"), related_name='creator')
     created_on = models.DateTimeField(verbose_name=_("created on"), default=timezone.now)
     end_recurring_period = models.DateTimeField(verbose_name=_("end recurring period"),
                                                 null=True, blank=True,

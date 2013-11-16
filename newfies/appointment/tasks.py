@@ -25,7 +25,7 @@ from mod_mailer.models import MailSpooler
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from dialer_cdr.models import Callrequest
-from uuid import uuid1
+from math import floor
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 
 
@@ -186,39 +186,62 @@ class alarmrequest_dispatcher(PeriodicTask):
         start_time = datetime.now() + relativedelta(minutes=-5)
         alarmreq_list = AlarmRequest.objects.filter(date__gte=start_time,
                                           status=ALARMREQUEST_STATUS.PENDING)
+        no_alarmreq = alarmreq_list.count()
+        if no_alarmreq == 0:
+            return False
+
+        # Set time to wait for balanced dispatching of calls
+        #time_to_wait = int(60 / DIV_MIN) / no_subscriber
+        time_to_wait = 6.0 / no_alarmreq
+        count = 0
+
         # Browse all the AlarmRequest found
         for obj_alarmreq in alarmreq_list:
+            # Loop on AlarmRequest and start to the initcall's task
+            count = count + 1
+            second_towait = floor(count * time_to_wait)
+            ms_addtowait = (count * time_to_wait) - second_towait
+            logger.info("Init CallRequest for AlarmRequest in %d seconds (alarmreq:%d)" % (second_towait, obj_alarmreq.id))
+
             # Update in process
             obj_alarmreq.status = ALARM_STATUS.IN_PROCESS
             obj_alarmreq.save()
 
-            # Default call_type
-            call_type = CALLREQUEST_TYPE.ALLOW_RETRY
-            # Check campaign's maxretry
-            if obj_campaign.maxretry == 0:
+            if obj_alarmreq.alarm.maxretry == 0:
                 call_type = CALLREQUEST_TYPE.CANNOT_RETRY
+            else:
+                call_type = CALLREQUEST_TYPE.ALLOW_RETRY
+
+            # TODO: build settings for this
+            calltimeout = 30
+            callmaxduration = 60 * 60
+
+            # TODO
+            # user_profile = obj_alarmreq.alarm.myevent.creator.get_profile()
+            # then user_profile.get_user_settings
+            callerid = ''
+            aleg_gateway = ''
 
             # Create Callrequest to track the call task
             new_callrequest = Callrequest(
                 status=CALLREQUEST_STATUS.PENDING,
                 call_type=call_type,
                 call_time=datetime.now(),
-                timeout=obj_campaign.calltimeout,
-                callerid=obj_campaign.callerid,
-                phone_number=phone_number,
+                timeout=calltimeout,
+                callerid=callerid,
+                phone_number=obj_alarmreq.alarm.alarm_phonenumber,
                 campaign=obj_campaign,
-                aleg_gateway=obj_campaign.aleg_gateway,
+                aleg_gateway=aleg_gateway,
                 content_type=obj_campaign.content_type,
                 object_id=obj_campaign.object_id,
-                user=obj_campaign.user,
-                extra_data=obj_campaign.extra_data,
-                timelimit=obj_campaign.callmaxduration,
-                subscriber=elem_camp_subscriber)
+                user=obj_alarmreq.alarm.myevent.creator,
+                extra_data='',
+                timelimit=callmaxduration)
             new_callrequest.save()
 
-            debug_query(6)
-
             init_callrequest.apply_async(
-                args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait],
+                args=[new_callrequest.id, obj_campaign.id, callmaxduration, ms_addtowait],
                 countdown=second_towait)
 
+            obj_alarmreq.callrequest = new_callrequest
+            obj_alarmreq.save()

@@ -132,7 +132,7 @@ class pending_call_processing(Task):
         count = 0
 
         for elem_camp_subscriber in list_subscriber:
-            """Loop on Subscriber and start the initcall task"""
+            # Loop on Subscriber and start the initcall's task
             count = count + 1
             second_towait = floor(count * time_to_wait)
             ms_addtowait = (count * time_to_wait) - second_towait

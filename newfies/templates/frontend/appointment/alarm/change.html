@@ -58,7 +58,7 @@
         <legend>{% trans "alarm settings"|title %}</legend>
         <div class="span12">
             <div class="row">
-                {% get_fieldset daily_start,daily_stop,advance_notice,retry_count,retry_delay,sent_count,method,status as alarm_fields from form %}
+                {% get_fieldset daily_start,daily_stop,advance_notice,maxretry,retry_delay,num_attempt,method,status as alarm_fields from form %}
                 {% for field in alarm_fields.hidden_fields %}
                     {{ field }}
                 {% endfor %}

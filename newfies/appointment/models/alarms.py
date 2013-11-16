@@ -45,12 +45,12 @@ class Alarm(models.Model):
                                   help_text=_("time format: HH:MM:SS"))
     advance_notice = models.IntegerField(null=True, blank=True, default=0,
                                          verbose_name=_('advance notice'))
-    retry_count = models.IntegerField(null=True, blank=True, default=0,
-                                      verbose_name=_('retry count'))
+    maxretry = models.IntegerField(null=True, blank=True, default=0,
+                                   verbose_name=_('max retry'))
     retry_delay = models.IntegerField(null=True, blank=True, default=0,
                                       verbose_name=_('retry delay'))
-    sent_count = models.IntegerField(null=True, blank=True, default=0,
-                                     verbose_name=_('sent count'))
+    num_attempt = models.IntegerField(null=True, blank=True, default=0,
+                                     verbose_name=_('number of attempts'))
     method = models.IntegerField(choices=list(ALARM_METHOD),
                                  default=ALARM_METHOD.CALL,
                                  verbose_name=_("method"), blank=True, null=True)
@@ -111,9 +111,9 @@ class Alarm(models.Model):
             daily_start=self.daily_start,
             daily_stop=self.daily_stop,
             advance_notice=self.advance_notice,
-            retry_count=self.retry_count,
+            maxretry=self.maxretry,
             retry_delay=self.retry_delay,
-            sent_count=self.sent_count,
+            num_attempt=self.num_attempt,
             method=self.method,
             survey=self.survey,
             mail_template=self.mail_template,
@@ -136,19 +136,18 @@ class AlarmRequest(models.Model):
     alarm = models.ForeignKey(Alarm, blank=True, null=True, verbose_name=_("alarm"),
                               help_text=_("select alarm"),
                               related_name="request_alarm")
-    date = models.DateTimeField(verbose_name=_('date'))
+    date = models.DateTimeField(verbose_name=_('date'),
+                                help_text=_("date when the alarm will be scheduled"))
     status = models.IntegerField(choices=list(ALARMREQUEST_STATUS),
                                  default=ALARMREQUEST_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)
     callstatus = models.IntegerField(null=True, blank=True, default=0)
-    calltime = models.DateTimeField(verbose_name=_('call time'))
     duration = models.IntegerField(null=True, blank=True, default=0)
 
     callrequest = models.ForeignKey(Callrequest, blank=True, null=True,
                                     verbose_name=_("Call Request"),
                                     help_text=_("select call request"),
                                     related_name="callrequest_alarm")
-
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('date'))
 

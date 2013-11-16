@@ -17,20 +17,16 @@ from celery.task import PeriodicTask
 from celery.decorators import task
 from celery.utils.log import get_task_logger
 from common.only_one_task import only_one
-from appointment.models.alarms import Alarm
-#from appointment.models.rules import Rule
+from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.events import Event
-from appointment.models.users import CalendarUserProfile
-from appointment.constants import EVENT_STATUS, ALARM_STATUS, ALARM_METHOD
-
-from mod_mailer.models import MailSpooler  #, MailTemplate
-from mod_mailer.constants import MAILSPOOLER_TYPE
-
-# from celery.task.http import HttpDispatchTask
-# from common_functions import isint
+from appointment.constants import EVENT_STATUS, ALARM_STATUS, \
+    ALARM_METHOD, ALARMREQUEST_STATUS
+from mod_mailer.models import MailSpooler
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
-#import time
+from dialer_cdr.models import Callrequest
+from uuid import uuid1
+from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
@@ -116,19 +112,16 @@ class alarm_dispatcher(PeriodicTask):
         end_time = datetime.now() + relativedelta(minutes=+5)
         alarm_list = Alarm.objects.filter(date_start_notice__range=(start_time, end_time),
                                           status=ALARM_STATUS.PENDING)
-        # Browse all the Alarms found
+        # Browse all the Alarm found
         for obj_alarm in alarm_list:
             # Check if there is an existing Event
             if obj_alarm.event:
-                # TODO fix second_towait => second_towait = Alarm.date_start_notice - now()
-                # if second_towait negative then set to 0 to be run directly
                 second_towait = (obj_alarm.daysdate_start_notice - datetime.now()).seconds
-                if second_towait < 0:
-                    second_towait = 0
-
-                if second_towait == 0:
+                # If second_towait negative then set to 0 to be run directly
+                if second_towait <= 0:
                     perform_alarm.delay(obj_alarm.event, obj_alarm)
                 else:
+                    # Call the Alarm in the future
                     perform_alarm.apply_async(
                         args=[obj_alarm.event, obj_alarm], countdown=second_towait)
             else:
@@ -149,6 +142,10 @@ def perform_alarm(obj_event, obj_alarm):
     if obj_alarm.method == ALARM_METHOD.CALL:
         # send alarm via CALL
         print "ALARM_METHOD.CALL"
+        AlarmRequest.objects.create(
+            alarm=obj_alarm,
+            date=datetime.now(),
+        )
 
     elif obj_alarm.method == ALARM_METHOD.SMS:
         # send alarm via SMS
@@ -166,3 +163,62 @@ def perform_alarm(obj_event, obj_alarm):
     ## Mark the Alarm as COMPLETED
     obj_alarm.status = ALARM_STATUS.COMPLETED
     obj_alarm.save()
+
+
+class alarmrequest_dispatcher(PeriodicTask):
+    """A periodic task that checks for scheduled AlarmRequest and create CallRequests.
+
+    For each AlarmRequest found, the PeriodicTask alarmrequest_dispatcher will ::
+
+        - create new CallRequest
+
+    **Usage**:
+
+        alarmrequest_dispatcher.delay()
+    """
+    run_every = timedelta(seconds=60)
+
+    @only_one(ikey="alarmrequest_dispatcher", timeout=LOCK_EXPIRE)
+    def run(self, **kwargs):
+        logger.info("TASK :: alarmrequest_dispatcher")
+
+        # Select AlarmRequest where date >= now() - 5 minutes
+        start_time = datetime.now() + relativedelta(minutes=-5)
+        alarmreq_list = AlarmRequest.objects.filter(date__gte=start_time,
+                                          status=ALARMREQUEST_STATUS.PENDING)
+        # Browse all the AlarmRequest found
+        for obj_alarmreq in alarmreq_list:
+            # Update in process
+            obj_alarmreq.status = ALARM_STATUS.IN_PROCESS
+            obj_alarmreq.save()
+
+            # Default call_type
+            call_type = CALLREQUEST_TYPE.ALLOW_RETRY
+            # Check campaign's maxretry
+            if obj_campaign.maxretry == 0:
+                call_type = CALLREQUEST_TYPE.CANNOT_RETRY
+
+            # Create Callrequest to track the call task
+            new_callrequest = Callrequest(
+                status=CALLREQUEST_STATUS.PENDING,
+                call_type=call_type,
+                call_time=datetime.now(),
+                timeout=obj_campaign.calltimeout,
+                callerid=obj_campaign.callerid,
+                phone_number=phone_number,
+                campaign=obj_campaign,
+                aleg_gateway=obj_campaign.aleg_gateway,
+                content_type=obj_campaign.content_type,
+                object_id=obj_campaign.object_id,
+                user=obj_campaign.user,
+                extra_data=obj_campaign.extra_data,
+                timelimit=obj_campaign.callmaxduration,
+                subscriber=elem_camp_subscriber)
+            new_callrequest.save()
+
+            debug_query(6)
+
+            init_callrequest.apply_async(
+                args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait],
+                countdown=second_towait)
+

@@ -91,6 +91,7 @@ class pending_call_processing(Task):
 
         debug_query(1)
 
+        #TODO: move this logic of setting call_type after post_save of CallRequest
         # Default call_type
         call_type = CALLREQUEST_TYPE.ALLOW_RETRY
         # Check campaign's maxretry
@@ -161,7 +162,7 @@ class pending_call_processing(Task):
 
             #TODO: idea to speed up, create bluck of 10(Y) and then send a list of callrequest_id to init_callrequest
 
-            # Create a Callrequest Instance to track the call task
+            # Create Callrequest
             new_callrequest = Callrequest(
                 status=CALLREQUEST_STATUS.PENDING,
                 call_type=call_type,

@@ -63,18 +63,19 @@ class campaign_spool_contact(PeriodicTask):
 
 
 # OPTIMIZATION - FINE
-class spool_pending_call(Task):
+class pending_call_processing(Task):
     @only_one(ikey="check_pendingcall", timeout=LOCK_EXPIRE)
     def run(self, campaign_id):
         """
-        This will execute the outbound calls in the campaign
+        This task retrieves the next outbound call to be made for a given campaign,
+        and will create a new callrequest and schedule a task to process those calls
 
         **Attributes**:
 
             * ``campaign_id`` - Campaign ID
         """
         logger = self.get_logger()
-        logger.info("TASK :: spool_pending_call = %d" % campaign_id)
+        logger.info("TASK :: pending_call_processing = %d" % campaign_id)
 
         debug_query(0)
 
@@ -218,7 +219,7 @@ class campaign_running(PeriodicTask):
             logger.info("=> Campaign name %s (id:%s)" %
                         (campaign.name, campaign.id))
             keytask = 'check_campaign_pendingcall-%d' % (campaign.id)
-            spool_pending_call().delay(campaign.id, keytask=keytask)
+            pending_call_processing().delay(campaign.id, keytask=keytask)
         return True
 
 

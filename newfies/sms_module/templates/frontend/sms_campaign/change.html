@@ -1,0 +1,175 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block content_header %}
+    <h1>{% if action == "update" %}
+            {% trans "update"|title %}
+        {% else %}
+            {% trans "add"|title %}
+        {% endif %} {% trans "sms"|upper %} {% trans "campaign"|title %}
+        <small>{% trans "set SMS campaign parameters"|capfirst %}</small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+    <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+        <fieldset>
+            <legend style="width:1130px;">{% trans "general settings"|capfirst %}</legend>
+            <div class="span12">
+                <div class="row">
+                    {% get_fieldset campaign_code,ds_user,name,callerid,sms_gateway,status as campaign_fields from form %}
+                    {% for field in campaign_fields.hidden_fields %}
+                        {{ field }}
+                    {% endfor %}
+                    {% for field in campaign_fields.visible_fields %}
+                        <div class="span6">
+                            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                                <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                <div class="input">
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ field.help_text|capfirst }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="row">
+                    {% get_fieldset text_message,description,phonebook as campaign_fields from form %}
+                    {% for field in campaign_fields.visible_fields %}
+                        <div class="span6">
+                            <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                                <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                <div class="input">
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ field.help_text|capfirst }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            </div>
+        </fieldset>
+
+        <fieldset>
+            <legend style="width:1130px;">{% trans "sms"|upper %} {% trans "settings" %}</legend>
+
+            <div class="span12">
+                <div class="row">
+                {% get_fieldset frequency,maxretry,intervalretry as campaign_settings_fields from form %}
+                {% for field in campaign_settings_fields %}
+                    <div class="span6">
+                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                            <div class="input">
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ field.help_text|capfirst }} </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+                </div>
+            </div>
+
+        </fieldset>
+
+        <fieldset>
+            <legend style="width:1130px;">{% trans "sms"|upper %} {% trans "campaign schedule"|capfirst %}</legend>
+            <div class="span12">
+                <div class="row">
+                    <div class="span6">
+                        <div class="clearfix{% if form.startingdate.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="{{ form.startingdate.auto_id }}">{{ form.startingdate.label|title }}</label>
+                            <div class="input">
+                                {{ form.startingdate }}
+                                {% if form.startingdate.errors %}
+                                    <span class="help-inline">{{ form.startingdate.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.startingdate.help_text|capfirst }} </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="clearfix{% if form.daily_start_time.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="{{ form.daily_start_time.auto_id }}">{{ form.daily_start_time.label|title }}</label>
+                            <div class="input">
+                                {{ form.daily_start_time }}
+                                {% if form.daily_start_time.errors %}
+                                    <span class="help-inline">{{ form.daily_start_time.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.daily_start_time.help_text|capfirst }} </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="span12">
+                <div class="row">
+                    <div class="span6">
+                        <div class="clearfix{% if form.expirationdate.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="{{ form.expirationdate.auto_id }}">{{ form.expirationdate.label|title }}</label>
+                            <div class="input">
+                                {{ form.expirationdate }}
+                                {% if form.expirationdate.errors %}
+                                    <span class="help-inline">{{ form.expirationdate.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.expirationdate.help_text|capfirst }} </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="span6">
+                        <div class="clearfix{% if form.daily_stop_time.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="{{ form.daily_stop_time.auto_id }}">{{ form.daily_stop_time.label|title }}</label>
+                            <div class="input">
+                                {{ form.daily_stop_time }}
+                                {% if form.daily_stop_time.errors %}
+                                    <span class="help-inline">{{ form.daily_stop_time.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.daily_stop_time.help_text|capfirst }} </span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="span12">
+                        <label class="control-label" for="{{ field.auto_id }}">{% trans "week days"|title %}</label>
+                        <div class="input">
+                            {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
+                            {% for field in settings_fields %}
+                                {{ field }}&nbsp;<label style="display: inline;" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+        </fieldset>
+        <br/>
+        <div class="actions">
+              {% if action == 'update' %}
+                <input id="update" type="submit" class="btn btn-primary" value="{% trans 'update'|title %}" />
+              {% else %}
+                <input id="add" type="submit" class="btn btn-primary" value="{% trans 'submit'|title %}" />
+              {% endif %}
+               &nbsp;&nbsp;
+              {% if action == 'update' %}
+                 <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans 'delete'|title %}" />
+              {% endif %}
+        </div>
+    </form>
+
+
+{% endblock %}

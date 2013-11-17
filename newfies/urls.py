@@ -28,6 +28,7 @@ from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
 from frontend_notification.urls import urlpatterns as urlpatterns_frontend_notification
 from agent.urls import urlpatterns as urlpatterns_agent
 from callcenter.urls import urlpatterns as urlpatterns_callcenter
+from sms_module.urls import urlpatterns as urlpatterns_sms_module
 from django.contrib import admin
 from dajaxice.core import dajaxice_autodiscover
 import os
@@ -76,6 +77,7 @@ urlpatterns += urlpatterns_frontend_notification
 urlpatterns += urlpatterns_agent
 urlpatterns += urlpatterns_callcenter
 urlpatterns += urlpatterns_appointment
+urlpatterns += urlpatterns_sms_module
 
 urlpatterns += patterns('',
     (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),

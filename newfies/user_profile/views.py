@@ -26,6 +26,7 @@ from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
     UserChangeDetailExtendForm, \
     CheckPhoneNumberForm
+from sms_module.models import SMSDialerSetting
 
 
 @login_required
@@ -123,6 +124,11 @@ def customer_detail_change(request):
         dialer_set = DialerSetting.objects.get(id=request.user.get_profile().dialersetting_id)
     except:
         dialer_set = ''
+
+    try:
+        sms_dialer_set = SMSDialerSetting.objects.get(dialer_setting=user_detail_extened.dialersetting)
+    except:
+        sms_dialer_set = ''
 
     template = 'frontend/registration/user_detail_change.html'
     data = {

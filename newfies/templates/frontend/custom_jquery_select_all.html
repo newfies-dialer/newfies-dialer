@@ -122,6 +122,18 @@ $(function () {
                 confirm_string = $fields.length +  '{% trans " alarm(s) are going to be deleted?" %}' ;
             }
 
+            if(document.location.href.search("/sms_campaign/") != -1) {
+                if(sms_campaign_stop_flag){
+
+                    $("#ListForm").attr("action", "del/0/?stop_sms_campaign=True");
+                    confirm_string = $fields.length + '{% trans " sms campaign(s) are going to be stopped?" %}';
+                    sms_campaign_stop_flag = false;
+                }
+                else{
+                    confirm_string = $fields.length + '{% trans " sms campaign(s) are going to be deleted?" %}';
+                }
+            }
+
             bootbox.confirm(confirm_string, function(result) {
                 if (result) {
                     currentForm.submit();

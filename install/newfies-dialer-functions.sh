@@ -278,11 +278,11 @@ func_install_dependencies(){
 
             #Install Supervisor
             pip install supervisor
-            
+
             # install Node & npm
             yum -y --enablerepo=epel install npm
-            
-              
+
+
             #Audio File Conversion
             yum -y --enablerepo=rpmforge install sox sox-devel ffmpeg ffmpeg-devel mpg123 mpg123-devel libmad libmad-devel libid3tag libid3tag-devel lame lame-devel flac-devel libvorbis-devel
             cd /usr/src/
@@ -461,9 +461,6 @@ func_prepare_settings(){
     sed -i "s/DB_HOSTNAME/$DB_HOSTNAME/" /etc/odbc.ini
     sed -i "s/DB_PORT/$DB_PORT/" /etc/odbc.ini
 
-    #Load Countries Dialcode
-    #python manage.py load_country_dialcode
-
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
     if [ -z "$IPADDR" ]; then
@@ -484,7 +481,7 @@ func_prepare_settings(){
 
     #Update Authorize local IP
     sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/#'SERVER_IP',/'$IPADR',/g" $INSTALL_DIR/settings_local.py
     sed -i "s/SERVER_IP/$IPADDR/g" $INSTALL_DIR/settings_local.py
 
     case $DIST in
@@ -681,6 +678,13 @@ func_install_frontend(){
     cd $INSTALL_DIR/
     python manage.py syncdb --noinput
     python manage.py migrate
+
+    #Load Countries Dialcode
+    #python manage.py load_country_dialcode
+    wget https://raw.github.com/areski/django-sms-gateway/master/sms/fixtures/example_gateways.json
+    python manage.py loaddata example_gateways.json
+    rm example_gateways.json
+
     clear
     echo ""
     echo "Create a super admin user..."

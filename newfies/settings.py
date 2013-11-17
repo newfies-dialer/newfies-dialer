@@ -231,6 +231,8 @@ INSTALLED_APPS = (
     'corsheaders',
     'djangobower',
     'activelink',
+    'sms',
+    'sms_module',
 )
 
 # Django extensions

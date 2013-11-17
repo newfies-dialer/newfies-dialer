@@ -1,0 +1,15 @@
+[
+    {
+        "pk":1,
+        "model":"sms_module.smsdialersetting",
+        "fields":{
+            "updated_date":"2013-01-07T01:50:32.366",
+            "sms_maxretry":3,
+            "sms_max_number_subscriber_campaign":10000,
+            "sms_max_frequency":100,
+            "dialer_setting":1,
+            "created_date":"2013-01-07T01:50:32.366",
+            "sms_max_number_campaign":10
+        }
+    }
+]

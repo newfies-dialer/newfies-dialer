@@ -102,6 +102,17 @@ class CustomIndexDashboard(Dashboard):
             models=('survey.*', ),
         ))
 
+        self.children.append(modules.AppList(
+            _('SMS Gateway'),
+            models=('sms.*', ),
+        ))
+
+        # append an app list module for "SMS"
+        self.children.append(modules.AppList(
+            _('SMS module'),
+            models=('sms_module.*', ),
+        ))
+
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
             _('audio files').title(),

@@ -23,9 +23,10 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.db.models import Count
 from django.utils.translation import ungettext
+from dialer_campaign.function_def import dialer_setting_limit
 from common.common_functions import variable_value
 from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
-from function_def import check_sms_dialer_setting, sms_dialer_setting_limit,\
+from function_def import check_sms_dialer_setting,\
     sms_record_common_fun, sms_search_admin_form_fun
 from forms import SMSSearchForm
 from genericadmin.admin import GenericAdminModelAdmin
@@ -87,7 +88,7 @@ class SMSCampaignAdmin(GenericAdminModelAdmin):
         # check Max Number of running sms campaigns
         if check_sms_dialer_setting(request, check_for="smscampaign"):
             msg = _("you have too many sms campaigns. Max allowed %(limit)s") \
-                % {'limit': sms_dialer_setting_limit(request, limit_for="smscampaign")}
+                % {'limit': dialer_setting_limit(request, limit_for="smscampaign")}
             messages.error(request, msg)
 
             # campaign limit reached

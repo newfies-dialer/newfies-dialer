@@ -127,6 +127,8 @@ def dialer_setting_limit(request, limit_for):
             return str(dialer_set_obj.maxretry)
         if limit_for == "timeout":
             return str(dialer_set_obj.max_calltimeout)
+        if limit_for == "smscampaign":
+            return str(dialer_set_obj.sms_max_number_campaign)
     except:
         return False
 

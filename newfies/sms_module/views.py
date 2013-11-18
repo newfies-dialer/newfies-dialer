@@ -24,20 +24,20 @@ from django.utils.translation import ugettext as _
 from dialer_contact.models import Contact
 from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.views import tpl_control_icon
-from dialer_campaign.function_def import user_dialer_setting_msg
+from dialer_campaign.function_def import date_range, user_dialer_setting, \
+    user_dialer_setting_msg, dialer_setting_limit
 from frontend.function_def import calculate_date
 from frontend.constants import SEARCH_TYPE
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import get_pagination_vars, ceil_strdate,\
     percentage
-from dialer_campaign.function_def import date_range
+
 from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
 from constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
     SMS_NOTIFICATION_NAME, SMS_REPORT_COLUMN_NAME, COLOR_DISPOSITION,\
     SMS_SUBSCRIBER_STATUS, SMS_MESSAGE_STATUS
 from forms import SMSCampaignForm, SMSDashboardForm, SMSSearchForm
-from function_def import check_sms_dialer_setting, sms_dialer_setting_limit,\
-    sms_attached_with_dialer_settings # sms_record_common_fun
+from function_def import check_sms_dialer_setting
 from tasks import sms_collect_subscriber
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -230,7 +230,7 @@ def sms_campaign_add(request):
           via SMSCampaignForm & get redirected to sms campaign list
     """
     # If dialer setting is not attached with user, redirect to sms campaign list
-    if sms_attached_with_dialer_settings(request):
+    if not user_dialer_setting(request.user):
         request.session['error_msg'] = \
             _("in order to add a sms campaign, you need to have your \
                settings configured properly, please contact the admin.")
@@ -241,7 +241,7 @@ def sms_campaign_add(request):
         # check Max Number of running campaign
         if check_sms_dialer_setting(request, check_for="smscampaign"):
             msg = _("you have too many sms campaigns. Max allowed %(limit)s")\
-                % {'limit': sms_dialer_setting_limit(request, limit_for="smscampaign")}
+                % {'limit': dialer_setting_limit(request, limit_for="smscampaign")}
             request.session['msg'] = msg
 
             # sms campaign limit reached
@@ -341,7 +341,7 @@ def sms_campaign_change(request, object_id):
           via SMSCampaignForm & get redirected to the sms campaign list
     """
     # If dialer setting is not attached with user, redirect to sms campaign list
-    if sms_attached_with_dialer_settings(request):
+    if not user_dialer_setting(request.user):
         return HttpResponseRedirect("/sms_campaign/")
 
     sms_campaign = get_object_or_404(SMSCampaign, pk=object_id, user=request.user)

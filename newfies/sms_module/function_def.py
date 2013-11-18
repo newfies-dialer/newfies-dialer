@@ -117,47 +117,6 @@ def check_sms_dialer_setting(request, check_for, field_value=''):
         return False
 
 
-def sms_dialer_setting_limit(request, limit_for):
-    """Return SMS Dialer Setting's limit
-
-    e.g. sms_max_number_subscriber_campaign
-         sms_max_number_campaign
-         sms_max_frequency
-         sms_maxretry
-    """
-    user_dialersetting = UserProfile.objects.get(
-        user=request.user, dialersetting__isnull=False).dialersetting
-    # DialerSettings link to the User
-    if user_dialersetting:
-
-        if user_dialersetting:
-            if limit_for == "contact":
-                return str(user_dialersetting.sms_max_number_subscriber_campaign)
-            if limit_for == "smscampaign":
-                return str(user_dialersetting.sms_max_number_campaign)
-            if limit_for == "frequency":
-                return str(user_dialersetting.sms_max_frequency)
-            if limit_for == "retry":
-                return str(user_dialersetting.sms_maxretry)
-
-
-def sms_attached_with_dialer_settings(request):
-    """Check user is attached with dialer setting or not"""
-    try:
-        user_dialersetting = UserProfile.objects.get(
-            user=request.user, dialersetting__isnull=False).dialersetting
-        # DialerSettings link to the User
-        if user_dialersetting:
-            # attached with dialer setting
-            return False
-        else:
-            # not attached
-            return True
-    except:
-        # not attached
-        return True
-
-
 def sms_record_common_fun(request):
     """Return Form with Initial data or Array (kwargs) for SMS_Report
     Changelist_view"""

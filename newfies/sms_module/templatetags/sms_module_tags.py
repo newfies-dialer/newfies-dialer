@@ -20,7 +20,7 @@ from sms_module.views import get_url_sms_campaign_status
 
 @register.filter(name='sms_campaign_status')
 def sms_campaign_status(value):
-    """Campaign Status
+    """SMS Campaign Status
 
     >>> sms_campaign_status(1)
     'START'

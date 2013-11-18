@@ -150,6 +150,10 @@ class Callrequest(Model):
     # if the call fails, create a new pending instance and link them
     parent_callrequest = models.ForeignKey('self', null=True, blank=True)
 
+    #AlarmRequest call / if this value is set then this is not a campaign call
+    alarm_request_id = models.IntegerField(default=0, null=True, blank=True,
+                                           verbose_name=_('alarm request id'))
+
     objects = CallRequestManager()
 
     class Meta:

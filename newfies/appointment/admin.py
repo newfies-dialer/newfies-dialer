@@ -88,7 +88,7 @@ class SMSTemplateAdmin(admin.ModelAdmin):
 
 
 class AlarmRequestAdmin(admin.ModelAdmin):
-    list_display = ('id', 'alarm', 'date', 'status', 'callstatus', 'callrequest')
+    list_display = ('id', 'alarm', 'date', 'status', 'callstatus')
     ordering = ('-id', )
 
 

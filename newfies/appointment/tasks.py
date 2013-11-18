@@ -27,6 +27,7 @@ from mod_mailer.models import MailSpooler
 from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from dialer_cdr.models import Callrequest
+from dialer_cdr.tasks import init_callrequest
 from math import floor
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 
@@ -240,7 +241,7 @@ class alarmrequest_dispatcher(PeriodicTask):
                 timeout=calltimeout,
                 callerid=callerid,
                 phone_number=obj_alarmreq.alarm.alarm_phonenumber,
-                campaign=obj_campaign,
+                alarm_request_id=obj_alarmreq.id,
                 aleg_gateway=aleg_gateway,
                 content_type=content_type,
                 object_id=object_id,
@@ -250,7 +251,7 @@ class alarmrequest_dispatcher(PeriodicTask):
             new_callrequest.save()
 
             init_callrequest.apply_async(
-                args=[new_callrequest.id, obj_campaign.id, callmaxduration, ms_addtowait],
+                args=[new_callrequest.id, None, callmaxduration, ms_addtowait, obj_alarmreq.id],
                 countdown=second_towait)
 
             obj_alarmreq.callrequest = new_callrequest

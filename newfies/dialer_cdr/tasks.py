@@ -576,7 +576,7 @@ def esl_dialout(dial_command):
 
 
 @task(ignore_result=True)
-def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=0):
+def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=0, alarm_request_id=None):
     """
     This task read the callrequest, update it as 'In Process'
     then proceed on the call outbound, using the different call engine supported

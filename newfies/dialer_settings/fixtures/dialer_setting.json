@@ -14,7 +14,11 @@
          "maxretry":3,
          "created_date":"2011-10-11 01:33:43",
          "max_frequency":100,
-         "max_calltimeout":45
+         "max_calltimeout":45,
+         "sms_maxretry":3,
+         "sms_max_number_subscriber_campaign":10000,
+         "sms_max_frequency":100,
+         "sms_max_number_campaign":10
       }
    }
 ]

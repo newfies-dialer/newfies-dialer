@@ -37,23 +37,22 @@
             <td>{% trans "blacklist"|title %}</td>
             <td>{{ dialer_set.blacklist }}</td>
         </tr>
-        {% if sms_dialer_set %}
-            <tr>
-                <td>{% trans "maximum SMS per minute"|capfirst %}</td>
-                <td>{{ sms_dialer_set.sms_max_frequency }}</td>
-            </tr>
-            <tr>
-                <td>{% trans "maximum SMS retries"|capfirst %}</td>
-                <td>{{ sms_dialer_set.sms_maxretry }}</td>
-            </tr>
-            <tr>
-                <td>{% trans "maximum SMS campaigns"|capfirst %}</td>
-                <td>{{ sms_dialer_set.sms_max_number_campaign }}</td>
-            </tr>
-            <tr>
-                <td>{% trans "maximum subscribers per SMS campaign"|capfirst %}</td>
-                <td>{{ sms_dialer_set.sms_max_number_subscriber_campaign }}</td>
-            </tr>
-        {% endif %}
+        <tr>
+            <td>{% trans "maximum SMS per minute"|capfirst %}</td>
+            <td>{{ dialer_set.sms_max_frequency }}</td>
+        </tr>
+        <tr>
+            <td>{% trans "maximum SMS retries"|capfirst %}</td>
+            <td>{{ dialer_set.sms_maxretry }}</td>
+        </tr>
+        <tr>
+            <td>{% trans "maximum SMS campaigns"|capfirst %}</td>
+            <td>{{ dialer_set.sms_max_number_campaign }}</td>
+        </tr>
+        <tr>
+            <td>{% trans "maximum subscribers per SMS campaign"|capfirst %}</td>
+            <td>{{ dialer_set.sms_max_number_subscriber_campaign }}</td>
+        </tr>
+
     </table>
 {% endif %}

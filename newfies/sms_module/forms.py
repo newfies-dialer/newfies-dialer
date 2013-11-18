@@ -17,10 +17,11 @@ from django.forms.util import ErrorList
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 
+from dialer_campaign.function_def import user_dialer_setting
 from dialer_contact.forms import SearchForm
 from sms.models.message import MESSAGE_STATUSES
 from models import SMSCampaign, get_unique_code
-from function_def import sms_dialer_setting, field_list
+from function_def import field_list
 from frontend.constants import SEARCH_TYPE
 
 
@@ -73,7 +74,7 @@ class SMSCampaignForm(ModelForm):
         frequency = cleaned_data.get('frequency')
         maxretry = cleaned_data.get('maxretry')
 
-        sms_dialer_set = sms_dialer_setting(ds_user)
+        sms_dialer_set = user_dialer_setting(ds_user)
         if sms_dialer_set:
             if frequency > sms_dialer_set.sms_max_frequency:
                 msg = _('Maximum Frequency limit of %d exceeded.' % sms_dialer_set.sms_max_frequency)

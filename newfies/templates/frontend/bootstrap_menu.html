@@ -26,7 +26,7 @@
                   <li class="{% ifactive '/dashboard/' %}active{% endifactive %}"><a href="/dashboard/">{% trans "voice dashboard"|title %}</a></li>
                 {% endif %}
                 {% if perms.sms_module.view_sms_dashboard %}
-                  <li {% if 'sms_module' in module %}class="active"{% endif %}><a href="/sms_dashboard/">{% trans "sms"|upper %} {% trans "dashboard"|title %}</a></li>
+                  <li class="{% ifactive '/sms_dashboard/' %}active{% endifactive %}"><a href="/sms_dashboard/">{% trans "sms"|upper %} {% trans "dashboard"|title %}</a></li>
                 {% endif %}
               </ul>
           </li>
@@ -39,7 +39,7 @@
                     <li class="{% ifcontains '/campaign/' %}active{% endifcontains %}"><a href="/campaign/">{% trans "voice campaign"|title %}</a></li>
                   {% endif %}
                   {% if perms.sms_module.view_smscampaign %}
-                    <li {% if 'sms_module' in module %}class="active"{% endif %}><a href="/sms_campaign/">{% trans "sms"|upper %} {% trans "campaign"|title %}</a></li>
+                    <li class="{% ifcontains '/sms_campaign/' %}active{% endifcontains %}"><a href="/sms_campaign/">{% trans "sms"|upper %} {% trans "campaign"|title %}</a></li>
                   {% endif %}
                 </ul>
           </li>
@@ -139,7 +139,7 @@
                     <li class="{% ifactive '/subscribers/' %}active{% endifactive %}"><a href="/subscribers/">{% trans "subscriber report"|title %}</a></li>
                 {% endif %}
                 {% if perms.sms_module.view_sms_report %}
-                    <li {% if 'sms_module' in module  %}class="active"{% endif %}><a href="/sms_report/">{% trans "sms"|upper %} {% trans "report"|title %}</a></li>
+                    <li class="{% ifactive '/sms_report/' %}active{% endifactive %}"><a href="/sms_report/">{% trans "sms"|upper %} {% trans "report"|title %}</a></li>
                 {% endif %}
             </ul>
           </li>

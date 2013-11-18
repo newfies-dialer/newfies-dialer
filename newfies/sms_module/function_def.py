@@ -158,23 +158,6 @@ def sms_attached_with_dialer_settings(request):
         return True
 
 
-def sms_dialer_setting(user):
-    """Get SMS Dialer setting for user"""
-    try:
-        user_dialersetting = UserProfile.objects.get(user__username=user).dialersetting
-    except:
-        user_dialersetting = []
-    return user_dialersetting
-
-
-def sms_dialer_setting_msg(user):
-    msg = ''
-    if not sms_dialer_setting(user):
-        msg = _('Your settings are not configured properly, \
-                 Please contact the administrator.')
-    return msg
-
-
 def sms_record_common_fun(request):
     """Return Form with Initial data or Array (kwargs) for SMS_Report
     Changelist_view"""

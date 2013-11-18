@@ -28,7 +28,7 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from frontend.function_def import calculate_date
 from frontend.constants import SEARCH_TYPE
 from frontend_notification.views import frontend_send_notification
-from common.common_functions import current_view, get_pagination_vars, ceil_strdate,\
+from common.common_functions import get_pagination_vars, ceil_strdate,\
     percentage
 from dialer_campaign.function_def import date_range
 from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
@@ -37,7 +37,7 @@ from constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
     SMS_SUBSCRIBER_STATUS, SMS_MESSAGE_STATUS
 from forms import SMSCampaignForm, SMSDashboardForm, SMSSearchForm
 from function_def import check_sms_dialer_setting, sms_dialer_setting_limit,\
-    sms_attached_with_dialer_settings, sms_dialer_setting_msg  # sms_record_common_fun
+    sms_attached_with_dialer_settings # sms_record_common_fun
 from tasks import sms_collect_subscriber
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
@@ -195,7 +195,6 @@ def sms_campaign_list(request):
 
     template = 'frontend/sms_campaign/list.html'
     data = {
-        'module': current_view(request),
         'smscampaign_list': smscampaign_list,
         'total_campaign': smscampaign_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
@@ -204,7 +203,7 @@ def sms_campaign_list(request):
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'info_msg': request.session.get('info_msg'),
-        'dialer_setting_msg': sms_dialer_setting_msg(request.user),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -270,10 +269,9 @@ def sms_campaign_add(request):
 
     template = 'frontend/sms_campaign/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
-        'dialer_setting_msg': sms_dialer_setting_msg(request.user),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(
         template, data, context_instance=RequestContext(request))
@@ -370,10 +368,9 @@ def sms_campaign_change(request, object_id):
 
     template = 'frontend/sms_campaign/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': sms_dialer_setting_msg(request.user),
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(
         template, data, context_instance=RequestContext(request))
@@ -665,7 +662,6 @@ def sms_dashboard(request, on_index=None):
     template = 'frontend/sms_campaign/sms_dashboard.html'
 
     data = {
-        'module': current_view(request),
         'form': form,
         'SEARCH_TYPE': SEARCH_TYPE,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -873,7 +869,6 @@ def sms_report(request):
         'status': status,
         'total_data': total_data.reverse(),
         'total_sms': total_sms,
-        'module': current_view(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
 

@@ -22,7 +22,7 @@ from celery.utils.log import get_task_logger
 from sms.tasks import SendMessage
 from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
 from constants import SMS_SUBSCRIBER_STATUS, SMS_CAMPAIGN_STATUS
-from function_def import sms_dialer_setting
+from dialer_campaign.function_def import user_dialer_setting
 from datetime import datetime, timedelta
 from math import ceil
 
@@ -36,7 +36,7 @@ def get_sms_maxretry(sms_campaign):
         we should use SMS Dialer Setting sms_maxretry
     """
     if sms_campaign.maxretry is None or not sms_campaign.maxretry >= 0:
-        sms_dialer_set = sms_dialer_setting(sms_campaign.user)
+        sms_dialer_set = user_dialer_setting(sms_campaign.user)
         maxretry = int(sms_dialer_set.sms_maxretry)
     else:
         maxretry = int(sms_campaign.maxretry)

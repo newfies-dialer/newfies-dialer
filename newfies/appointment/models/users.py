@@ -37,22 +37,22 @@ class CalendarSetting(models.Model):
 
     **Name of DB table**: calendar_setting
     """
-    cid_number = models.CharField(max_length=50, blank=False, null=True,
+    cid_number = models.CharField(max_length=50, null=False, blank=False,
                                   verbose_name=_("CID number"),
                                   help_text=_("CID number"))
-    cid_name = models.CharField(max_length=50, blank=False, null=True,
+    cid_name = models.CharField(max_length=50, null=False, blank=False,
                                 verbose_name=_("CID name"),
                                 help_text=_("CID name"))
-    call_timeout = models.IntegerField(default='3', blank=True, null=True,
+    call_timeout = models.IntegerField(default='60', null=False, blank=False,
                                        verbose_name=_('call timeout'),
                                        help_text=_("call timeout"))
-    user = models.ForeignKey(User, blank=True, null=True, verbose_name=_("manager"),
+    user = models.ForeignKey(User, blank=False, null=False, verbose_name=_("manager"),
                              help_text=_("select manager"),
                              related_name="manager_user")
-    survey = models.ForeignKey(Survey, null=True, blank=True,
+    survey = models.ForeignKey(Survey, null=False, blank=False,
                                verbose_name=_('frozen survey'),
                                related_name="calendar_survey")
-    aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True,
+    aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False,
                                      verbose_name=_("a-leg gateway"),
                                      help_text=_("select gateway to use to be used"))
 

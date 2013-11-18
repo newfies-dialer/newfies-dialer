@@ -173,7 +173,7 @@ class CampaignSerializer(serializers.HyperlinkedModelSerializer):
                         self.init_data['phonebook'] = ''
                 except:
                     self.init_data['phonebook'] = ''
-                    
+
         if request.method != 'GET':
             if not settings.AMD:
                 del fields['voicemail']

@@ -45,12 +45,12 @@ class CalendarUserAdmin(UserAdmin):
 
 
 class CalendarSettingAdmin(admin.ModelAdmin):
-    list_display = ('cid_number', 'cid_name', 'call_timeout', 'user', 'survey')
+    list_display = ('cid_number', 'cid_name', 'call_timeout', 'user', 'survey', 'aleg_gateway', 'updated_date')
     ordering = ('-cid_number', )
 
 
 class CalendarAdmin(admin.ModelAdmin):
-    list_display = ('name', 'slug', 'user', 'max_concurrent')
+    list_display = ('name', 'user', 'max_concurrent')
     ordering = ('-id', )
 
 

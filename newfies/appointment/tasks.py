@@ -13,6 +13,7 @@
 #
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.contrib.contenttypes.models import ContentType
 from celery.task import PeriodicTask
 from celery.decorators import task
 from celery.utils.log import get_task_logger
@@ -227,12 +228,9 @@ class alarmrequest_dispatcher(PeriodicTask):
             calltimeout = caluser_profile.calendar_setting.call_timeout
             callmaxduration = 60 * 60
             callerid = caluser_profile.calendar_setting.cid_number
-
-            # TODO
-            # user_profile = obj_alarmreq.alarm.myevent.creator.get_profile()
-            # then user_profile.get_user_settings
-
-            aleg_gateway = ''
+            aleg_gateway = caluser_profile.calendar_setting.aleg_gateway
+            content_type = ContentType.objects.filter(model__in=["survey"])
+            object_id = caluser_profile.calendar_setting.survey_id
 
             # Create Callrequest to track the call task
             new_callrequest = Callrequest(
@@ -244,8 +242,8 @@ class alarmrequest_dispatcher(PeriodicTask):
                 phone_number=obj_alarmreq.alarm.alarm_phonenumber,
                 campaign=obj_campaign,
                 aleg_gateway=aleg_gateway,
-                content_type=obj_campaign.content_type,
-                object_id=obj_campaign.object_id,
+                content_type=content_type,
+                object_id=object_id,
                 user=obj_alarmreq.alarm.myevent.creator,
                 extra_data='',
                 timelimit=callmaxduration)

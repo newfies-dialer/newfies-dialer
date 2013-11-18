@@ -95,7 +95,7 @@ def check_sms_dialer_setting(request, check_for, field_value=''):
                 return False
 
             # check for frequency limit
-            if check_for == "frequency":
+            if check_for == "smsfrequency":
                 if field_value > user_dialersetting.sms_max_frequency:
                     # Limit matched or exceeded
                     return True
@@ -103,7 +103,7 @@ def check_sms_dialer_setting(request, check_for, field_value=''):
                 return False
 
             # check for sms retry limit
-            if check_for == "retry":
+            if check_for == "smsretry":
                 if field_value > user_dialersetting.sms_maxretry:
                     # Limit matched or exceeded
                     return True

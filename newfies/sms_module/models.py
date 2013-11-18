@@ -21,7 +21,6 @@ from dateutil.relativedelta import relativedelta
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.models import common_contact_authorization
-from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
 from sms.models import Message
 from sms.models import Gateway
@@ -29,47 +28,6 @@ from constants import SMS_CAMPAIGN_STATUS, SMS_SUBSCRIBER_STATUS
 from datetime import datetime
 from common.intermediate_model_base_class import Model
 from common.common_functions import get_unique_code
-
-
-#TODO: move those settings from SMSDialerSetting to DialerSetting to keep newfies more simple to configure
-class SMSDialerSetting(models.Model):
-    """This defines extra features for the user
-
-    **Attributes**:
-
-        * ``sms_max_frequency`` - Maximum sms per minute.
-        * ``sms_maxretry`` - Maximum sms retries per user
-        * ``sms_max_number_campaign`` - Maximum number of sms campaigns
-        * ``sms_max_number_subscriber_campaign`` - Maximum subscribers per sms campaign
-
-    **Relationships**:
-
-        * ``dialer_setting`` - Foreign key relationship to the DialerSetting model.
-
-    **Name of DB table**: smscampaign_dialer_setting
-    """
-    dialer_setting = models.OneToOneField(DialerSetting)
-
-    # SMS Campaign Settings
-    sms_max_frequency = models.IntegerField(default='100', blank=True, null=True,
-                                            verbose_name=_("Max frequency"),
-                                            help_text=_("Maximum sms per minute"))
-    sms_maxretry = models.IntegerField(default='3', blank=True, null=True,
-                                       verbose_name=_('Max Retries'),
-                                       help_text=_("Maximum sms retries per user."))
-    sms_max_number_campaign = models.IntegerField(
-        default=10, verbose_name=_("Max sms campaigns"),
-        help_text=_("Maximum number of sms campaigns"))
-    sms_max_number_subscriber_campaign = models.IntegerField(
-        default=10000, verbose_name=_("Max subscribers of sms campaigns"),
-        help_text=_("Maximum subscribers per sms campaign"))
-    created_date = models.DateTimeField(auto_now_add=True)
-    updated_date = models.DateTimeField(auto_now=True)
-
-    class Meta:
-        db_table = 'smscampaign_dialer_setting'
-        verbose_name = _("SMS Campaign Dialer Setting")
-        verbose_name_plural = _("SMS Campaign Dialer Settings")
 
 
 class SMSCampaignManager(models.Manager):
@@ -282,8 +240,7 @@ class SMSCampaign(Model):
     def get_active_max_frequency(self):
         """Get the active max frequency"""
         try:
-            dialersetting = UserProfile.objects.get(user=self.user).dialersetting
-            sms_dialersetting = dialersetting.smsdialersetting
+            sms_dialersetting = UserProfile.objects.get(user=self.user).dialersetting
         except UserProfile.DoesNotExist:
             return self.frequency
 

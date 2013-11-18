@@ -109,6 +109,7 @@ def dialer_setting_limit(request, limit_for):
           max_calltimeout
           maxretry
           callmaxduration
+          smscampaign
     """
     try:
         # DialerSettings is linked with the User
@@ -129,6 +130,12 @@ def dialer_setting_limit(request, limit_for):
             return str(dialer_set_obj.max_calltimeout)
         if limit_for == "smscampaign":
             return str(dialer_set_obj.sms_max_number_campaign)
+        if limit_for == "smsfrequency":
+            return str(dialer_set_obj.sms_max_frequency)
+        if limit_for == "smsmaxretry":
+            return str(dialer_set_obj.sms_maxretry)
+        if limit_for == "smssubscriber":
+            return str(dialer_set_obj.sms_max_number_subscriber_campaign)
     except:
         return False
 

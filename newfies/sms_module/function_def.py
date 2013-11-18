@@ -79,7 +79,7 @@ def check_sms_dialer_setting(request, check_for, field_value=''):
                     return False
 
             # check for subscriber per campaign
-            if check_for == "contact":
+            if check_for == "smscontact":
                 # SMS Campaign list for User
                 smscampaign_list = SMSCampaign.objects.filter(user=request.user)
                 for i in smscampaign_list:

@@ -481,7 +481,7 @@ func_prepare_settings(){
 
     #Update Authorize local IP
     sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/#'SERVER_IP',/'$IPADR',/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
     sed -i "s/SERVER_IP/$IPADDR/g" $INSTALL_DIR/settings_local.py
 
     case $DIST in

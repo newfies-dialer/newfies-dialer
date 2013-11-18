@@ -19,6 +19,7 @@ from celery.utils.log import get_task_logger
 from common.only_one_task import only_one
 from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.events import Event
+from appointment.models.users import CalendarUserProfile
 from appointment.constants import EVENT_STATUS, ALARM_STATUS, \
     ALARM_METHOD, ALARMREQUEST_STATUS
 from mod_mailer.models import MailSpooler
@@ -212,14 +213,25 @@ class alarmrequest_dispatcher(PeriodicTask):
             else:
                 call_type = CALLREQUEST_TYPE.ALLOW_RETRY
 
+            try:
+                caluser_profile = CalendarUserProfile.objects.get(user=obj_alarmreq.alarm.event.creator)
+            except CalendarUserProfile.DoesNotExist:
+                logger.error("Error retrieving CalendarUserProfile")
+                return False
+
+            # manager_profile = caluser_profile.manager.get_profile()
+            # manager_profile.dialersetting
+            # Use manager_profile.dialersetting to retrieve some settings
+
             # TODO: build settings for this
-            calltimeout = 30
+            calltimeout = caluser_profile.calendar_setting.call_timeout
             callmaxduration = 60 * 60
+            callerid = caluser_profile.calendar_setting.cid_number
 
             # TODO
             # user_profile = obj_alarmreq.alarm.myevent.creator.get_profile()
             # then user_profile.get_user_settings
-            callerid = ''
+
             aleg_gateway = ''
 
             # Create Callrequest to track the call task

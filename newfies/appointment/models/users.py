@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save
 from user_profile.models import Manager, Profile_abstract
 from survey.models import Survey
+from dialer_gateway.models import Gateway
 
 
 class CalendarSetting(models.Model):
@@ -28,8 +29,11 @@ class CalendarSetting(models.Model):
         * ``cid_number`` - CID number.
         * ``cid_name`` - CID name
         * ``call_timeout`` - call timeout
-        * ``user`` - Newfies User
-        * ``survey`` - Frozen Survey
+        * ``user`` - Newfies User (Manager)
+        * ``survey`` - Foreign key relationship to the Survey
+        * ``aleg_gateway`` - Foreign key relationship to the Gateway model.\
+                             Gateway to use to call the subscriber
+
 
     **Name of DB table**: calendar_setting
     """
@@ -42,12 +46,15 @@ class CalendarSetting(models.Model):
     call_timeout = models.IntegerField(default='3', blank=True, null=True,
                                        verbose_name=_('call timeout'),
                                        help_text=_("call timeout"))
-    user = models.ForeignKey(User, blank=True, null=True, verbose_name=_("user"),
-                             help_text=_("select user"),
-                             related_name="calendar_user")
+    user = models.ForeignKey(User, blank=True, null=True, verbose_name=_("manager"),
+                             help_text=_("select manager"),
+                             related_name="manager_user")
     survey = models.ForeignKey(Survey, null=True, blank=True,
                                verbose_name=_('frozen survey'),
                                related_name="calendar_survey")
+    aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True,
+                                     verbose_name=_("a-leg gateway"),
+                                     help_text=_("select gateway to use to be used"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

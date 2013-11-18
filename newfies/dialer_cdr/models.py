@@ -130,7 +130,7 @@ class Callrequest(Model):
                                  help_text=_("select Campaign"))
     aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True,
                                      verbose_name=_("a-leg gateway"),
-                                     help_text=_("select gateway to use to call the subscriber"))
+                                     help_text=_("select gateway to be used"))
     #used to define the Voice App or the Survey
     content_type = models.ForeignKey(ContentType, verbose_name=_("type"))
     object_id = models.PositiveIntegerField(verbose_name=_("application"))

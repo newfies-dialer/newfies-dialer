@@ -18,7 +18,8 @@ from dialer_contact.models import Phonebook, Contact
 from common.common_functions import variable_value
 from user_profile.models import UserProfile
 from sms.models import Gateway
-from models import SMSCampaign, SMSDialerSetting
+from models import SMSCampaign
+#from dialer_setting.models import DialerSetting
 from constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR
 from datetime import datetime
 
@@ -59,60 +60,58 @@ def check_sms_dialer_setting(request, check_for, field_value=''):
         * ``check_for`` -  for sms campaign or for contact
     """
     try:
-        user_obj = UserProfile.objects.get(
-            user=request.user, dialersetting__isnull=False)
+        user_dialersetting = UserProfile.objects.get(
+            user=request.user, dialersetting__isnull=False).dialersetting
         # DialerSettings link to the User
-        if user_obj:
-            sms_dialer_set_obj = SMSDialerSetting.objects.get(
-                dialer_setting=user_obj.dialersetting)
-            if sms_dialer_set_obj:
-                # check running campaign for User
-                if check_for == "smscampaign":
-                    smscampaign_count = SMSCampaign.objects.filter(
-                        user=request.user).count()
-                    # Total active sms campaign matched with
-                    # sms_max_number_campaign
-                    if smscampaign_count >= sms_dialer_set_obj.sms_max_number_campaign:
-                        # Limit matched or exceeded
-                        return True
-                    else:
-                        # Limit not matched
-                        return False
+        if user_dialersetting:
 
-                # check for subscriber per campaign
-                if check_for == "contact":
-                    # SMS Campaign list for User
-                    smscampaign_list = SMSCampaign.objects.filter(user=request.user)
-                    for i in smscampaign_list:
-                        # Total contacts per campaign
-                        contact_count = Contact.objects.filter(
-                            phonebook__campaign=i.id).count()
-                        # Total active contacts matched with
-                        # sms_max_number_subscriber_campaign
-                        if contact_count >= sms_dialer_set_obj.sms_max_number_subscriber_campaign:
-                            # Limit matched or exceeded
-                            return True
-                        # Limit not matched
+            # check running campaign for User
+            if check_for == "smscampaign":
+                smscampaign_count = SMSCampaign.objects.filter(
+                    user=request.user).count()
+                # Total active sms campaign matched with
+                # sms_max_number_campaign
+                if smscampaign_count >= user_dialersetting.sms_max_number_campaign:
+                    # Limit matched or exceeded
+                    return True
+                else:
+                    # Limit not matched
                     return False
 
-                # check for frequency limit
-                if check_for == "frequency":
-                    if field_value > sms_dialer_set_obj.sms_max_frequency:
+            # check for subscriber per campaign
+            if check_for == "contact":
+                # SMS Campaign list for User
+                smscampaign_list = SMSCampaign.objects.filter(user=request.user)
+                for i in smscampaign_list:
+                    # Total contacts per campaign
+                    contact_count = Contact.objects.filter(
+                        phonebook__campaign=i.id).count()
+                    # Total active contacts matched with
+                    # sms_max_number_subscriber_campaign
+                    if contact_count >= user_dialersetting.sms_max_number_subscriber_campaign:
                         # Limit matched or exceeded
                         return True
-                        # Limit not exceeded
-                    return False
-
-                # check for sms retry limit
-                if check_for == "retry":
-                    if field_value > sms_dialer_set_obj.sms_maxretry:
-                        # Limit matched or exceeded
-                        return True
-                        # Limit not exceeded
-                    return False
-            else:
-                # SMS DialerSettings not link to the DialerSettings
+                    # Limit not matched
                 return False
+
+            # check for frequency limit
+            if check_for == "frequency":
+                if field_value > user_dialersetting.sms_max_frequency:
+                    # Limit matched or exceeded
+                    return True
+                    # Limit not exceeded
+                return False
+
+            # check for sms retry limit
+            if check_for == "retry":
+                if field_value > user_dialersetting.sms_maxretry:
+                    # Limit matched or exceeded
+                    return True
+                    # Limit not exceeded
+                return False
+        else:
+            # SMS DialerSettings not link to the DialerSettings
+            return False
     except:
         # SMS DialerSettings not link to the User
         return False
@@ -126,41 +125,34 @@ def sms_dialer_setting_limit(request, limit_for):
          sms_max_frequency
          sms_maxretry
     """
-    user_obj = UserProfile.objects.get(
-        user=request.user, dialersetting__isnull=False)
+    user_dialersetting = UserProfile.objects.get(
+        user=request.user, dialersetting__isnull=False).dialersetting
     # DialerSettings link to the User
-    if user_obj:
-        sms_dialer_set_obj = SMSDialerSetting.objects.get(
-            dialer_setting=user_obj.dialersetting)
+    if user_dialersetting:
 
-        if sms_dialer_set_obj:
+        if user_dialersetting:
             if limit_for == "contact":
-                return str(sms_dialer_set_obj.sms_max_number_subscriber_campaign)
+                return str(user_dialersetting.sms_max_number_subscriber_campaign)
             if limit_for == "smscampaign":
-                return str(sms_dialer_set_obj.sms_max_number_campaign)
+                return str(user_dialersetting.sms_max_number_campaign)
             if limit_for == "frequency":
-                return str(sms_dialer_set_obj.sms_max_frequency)
+                return str(user_dialersetting.sms_max_frequency)
             if limit_for == "retry":
-                return str(sms_dialer_set_obj.sms_maxretry)
+                return str(user_dialersetting.sms_maxretry)
 
 
 def sms_attached_with_dialer_settings(request):
     """Check user is attached with dialer setting or not"""
     try:
-        user_obj = UserProfile.objects.get(
-            user=request.user, dialersetting__isnull=False)
+        user_dialersetting = UserProfile.objects.get(
+            user=request.user, dialersetting__isnull=False).dialersetting
         # DialerSettings link to the User
-        if user_obj:
-            sms_dialer_set_obj = SMSDialerSetting.objects.get(
-                dialer_setting=user_obj.dialersetting)
-
-            # SMS DialerSettings is exists
-            if sms_dialer_set_obj:
-                # attached with dialer setting
-                return False
-            else:
-                # not attached
-                return True
+        if user_dialersetting:
+            # attached with dialer setting
+            return False
+        else:
+            # not attached
+            return True
     except:
         # not attached
         return True
@@ -169,12 +161,10 @@ def sms_attached_with_dialer_settings(request):
 def sms_dialer_setting(user):
     """Get SMS Dialer setting for user"""
     try:
-        user_profile = UserProfile.objects.get(user__username=user)
-        sms_dialer_setting = SMSDialerSetting.objects.get(
-            dialer_setting=user_profile.dialersetting)
+        user_dialersetting = UserProfile.objects.get(user__username=user).dialersetting
     except:
-        sms_dialer_setting = []
-    return sms_dialer_setting
+        user_dialersetting = []
+    return user_dialersetting
 
 
 def sms_dialer_setting_msg(user):

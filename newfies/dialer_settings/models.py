@@ -66,6 +66,20 @@ class DialerSetting(models.Model):
     whitelist = models.TextField(blank=True, null=True, default='', verbose_name=_("whitelist"),
                                  help_text=_("use regular expressions to whitelist phone numbers"))
 
+    # SMS Campaign Settings
+    sms_max_frequency = models.IntegerField(default='100', blank=True, null=True,
+                                            verbose_name=_("Max frequency"),
+                                            help_text=_("Maximum sms per minute"))
+    sms_maxretry = models.IntegerField(default='3', blank=True, null=True,
+                                       verbose_name=_('Max Retries'),
+                                       help_text=_("Maximum sms retries per user."))
+    sms_max_number_campaign = models.IntegerField(
+        default=10, verbose_name=_("Max sms campaigns"),
+        help_text=_("Maximum number of sms campaigns"))
+    sms_max_number_subscriber_campaign = models.IntegerField(
+        default=10000, verbose_name=_("Max subscribers of sms campaigns"),
+        help_text=_("Maximum subscribers per sms campaign"))
+
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

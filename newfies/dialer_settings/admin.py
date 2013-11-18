@@ -25,7 +25,9 @@ class DialerSettingAdmin(admin.ModelAdmin):
     of a DialerSetting."""
     list_display = ('name', 'max_frequency', 'callmaxduration', 'maxretry',
                     'max_calltimeout', 'max_cpg', 'max_subr_cpg', 'max_contact',
-                    'blacklist', 'whitelist', 'updated_date')
+                    'blacklist', 'whitelist', 'sms_max_frequency',
+                    'sms_maxretry', 'sms_max_number_campaign',
+                    'sms_max_number_subscriber_campaign', 'updated_date')
     #list_filter = ['setting_group']
     search_fields = ('name', )
     ordering = ('-name', )

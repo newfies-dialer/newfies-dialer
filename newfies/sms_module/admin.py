@@ -24,8 +24,7 @@ from django.shortcuts import render_to_response
 from django.db.models import Count
 from django.utils.translation import ungettext
 from common.common_functions import variable_value
-from models import SMSCampaign, SMSCampaignSubscriber, \
-    SMSDialerSetting, SMSMessage
+from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
 from function_def import check_sms_dialer_setting, sms_dialer_setting_limit,\
     sms_record_common_fun, sms_search_admin_form_fun
 from forms import SMSSearchForm
@@ -109,17 +108,6 @@ class SMSCampaignSubscriberAdmin(admin.ModelAdmin):
     ordering = ('id', )
 
 admin.site.register(SMSCampaignSubscriber, SMSCampaignSubscriberAdmin)
-
-
-class SMSDialerSettingAdmin(admin.ModelAdmin):
-    """Allows the administrator to view and modify certain attributes
-    of a SMSCampaignSubscriber."""
-    list_display = ('id', 'dialer_setting', 'sms_max_frequency',
-                    'sms_maxretry', 'sms_max_number_campaign',
-                    'sms_max_number_subscriber_campaign',
-                    'created_date')
-    ordering = ('id', )
-admin.site.register(SMSDialerSetting, SMSDialerSettingAdmin)
 
 
 class SMSMessageAdmin(admin.ModelAdmin):

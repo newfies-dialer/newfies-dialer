@@ -61,10 +61,10 @@ class CampaignForm(ModelForm):
 
     class Meta:
         model = Campaign
-        fields = ['campaign_code', 'name', 'description',
+        fields = ['campaign_code', 'name',
                   'callerid', 'caller_name', 'aleg_gateway',
                   'content_object',   # 'content_type', 'object_id'
-                  'extra_data', 'phonebook',
+                  'extra_data', 'dnc', 'description', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',
                   'completion_maxretry', 'completion_intervalretry',
@@ -74,8 +74,7 @@ class CampaignForm(ModelForm):
                   'saturday', 'sunday', 'ds_user',
                   'selected_phonebook', 'selected_content_object',
                   'voicemail', 'amd_behavior', 'voicemail_audiofile',
-                  'dnc', 'agent_script', 'lead_disposition',
-                  'external_link'
+                  'agent_script', 'lead_disposition', 'external_link'
                   ]
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -85,7 +84,19 @@ class CampaignForm(ModelForm):
         super(CampaignForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        self.fields['description'].widget.attrs['class'] = "input-xlarge"
+
+        change_field_list = [
+            'name', 'description', 'callerid', 'caller_name', 'aleg_gateway',
+            'content_object', 'extra_data', 'phonebook', 'frequency',
+            'callmaxduration', 'maxretry', 'intervalretry', 'calltimeout',
+            'completion_maxretry', 'completion_intervalretry', 'startingdate',
+            'expirationdate', 'daily_start_time', 'daily_stop_time', 'dnc',
+            'voicemail', 'amd_behavior', 'voicemail_audiofile', 'agent_script',
+            'lead_disposition', 'external_link'
+        ]
+        for i in change_field_list:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
         self.fields['agent_script'].widget.attrs['class'] = "input-xlarge"
         self.fields['lead_disposition'].widget.attrs['class'] = "input-xlarge"
         self.fields['external_link'].widget.attrs['class'] = "input-xlarge"

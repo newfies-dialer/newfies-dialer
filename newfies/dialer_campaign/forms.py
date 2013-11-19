@@ -202,7 +202,8 @@ class DuplicateCampaignForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(DuplicateCampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-
+        self.fields['name'].widget.attrs['class'] = "form-control"
+        self.fields['phonebook'].widget.attrs['class'] = "form-control"
         if user:
             list_pb = []
             list_pb.append((0, '---'))

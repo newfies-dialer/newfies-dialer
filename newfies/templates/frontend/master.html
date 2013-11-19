@@ -51,7 +51,7 @@
 <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}newfies/css/datepicker.css" rel="stylesheet">
 <!-- jquery UI css
-<link type="text/css" href="{{ STATIC_URL }}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">-->
+<link type="text/css" href="{{ STATIC_URL }}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet"> -->
 <!-- RTL -->
 <!-- <link href="{{ STATIC_URL }}newfies/bootstrap-2.0.4/css/rtl/bootstrap-rtl.min.css" rel="stylesheet"> -->
 <style type="text/css">
@@ -64,8 +64,8 @@
 
 <!--Override bootstrap
 <link href="{{ STATIC_URL }}newfies/css/override_bootstrap.css" rel="stylesheet">-->
-<!-- Newfies custom css
-<link type="text/css" media="screen" href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet"/>-->
+<!-- Newfies custom css -->
+<link type="text/css" media="screen" href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet"/>
 
 {% endblock %}
 
@@ -73,7 +73,9 @@
     {{ extra_header }}
 {% endblock %}
 
-{% include "frontend/newfies_custom_js.html" %}
+{% block newfies_custom_js %}
+    {% include "frontend/newfies_custom_js.html" %}
+{% endblock %}
 </head>
 
 <body>
@@ -193,12 +195,12 @@
         </div>
 
         {% if user.is_authenticated %}
-        <div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
+        <!--<div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
             <div class="list-group">
                 <a class="list-group-item active" href="#">Link</a>
                 <a class="list-group-item" href="#">Link</a>
             </div>
-        </div>
+        </div>-->
         {% endif %}
     </div>
 

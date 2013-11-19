@@ -78,6 +78,9 @@ class CampaignForm(ModelForm):
                   ]
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
+            'agent_script': Textarea(attrs={'cols': 23, 'rows': 3}),
+            'lead_disposition': Textarea(attrs={'cols': 23, 'rows': 3}),
+            'external_link': Textarea(attrs={'cols': 23, 'rows': 3})
         }
 
     def __init__(self, user, *args, **kwargs):
@@ -96,10 +99,6 @@ class CampaignForm(ModelForm):
         ]
         for i in change_field_list:
             self.fields[i].widget.attrs['class'] = "form-control"
-
-        self.fields['agent_script'].widget.attrs['class'] = "input-xlarge"
-        self.fields['lead_disposition'].widget.attrs['class'] = "input-xlarge"
-        self.fields['external_link'].widget.attrs['class'] = "input-xlarge"
 
         if user:
             self.fields['ds_user'].initial = user

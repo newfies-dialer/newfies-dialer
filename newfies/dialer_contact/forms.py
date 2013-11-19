@@ -109,7 +109,14 @@ class ContactSearchForm(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super(ContactSearchForm, self).__init__(*args, **kwargs)
-         # To get user's phonebook list
+        # To get user's phonebook list
+
+        change_field_list = [
+            'contact_no', 'contact_name', 'phonebook', 'contact_status'
+        ]
+        for i in change_field_list:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
         if user:
             pb_list_user = []
             pb_list_user.append((0, '---'))

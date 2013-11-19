@@ -4,8 +4,8 @@
 {% load i18n %}
 {% if is_paginated %}
 
-  <div class="pagination pagination-centered">
-    <ul>
+  <div class="text-center">
+    <ul class="pagination">
       {% block previouslink %}
         {% if page_obj.has_previous %}
           <li class="prev"><a href="?page{{ page_suffix }}={{ page_obj.previous_page_number }}{{ getvars }}">{{ previous_link_decorator|safe }}{% trans "previous"|title %}</a></li>

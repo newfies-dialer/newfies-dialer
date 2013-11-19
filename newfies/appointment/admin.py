@@ -77,7 +77,7 @@ class AlarmAdmin(admin.ModelAdmin):
     list_display = ('id', 'event', 'alarm_phonenumber', 'alarm_email',
                     'daily_start', 'daily_stop', 'advance_notice',
                     'maxretry', 'method', 'status', 'result',
-                    'created_date')
+                    'created_date', 'date_start_notice')
     ordering = ('-id', )
     list_filter = ('event', 'created_date')
 

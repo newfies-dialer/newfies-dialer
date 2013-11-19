@@ -9,6 +9,7 @@ from survey.models import Survey
 from dialer_cdr.models import Callrequest
 from mod_mailer.models import MailTemplate
 from datetime import datetime
+from django.utils.timezone import utc
 
 
 class SMSTemplate(models.Model):
@@ -66,7 +67,7 @@ class Alarm(models.Model):
                                      related_name="sms template")
     event = models.ForeignKey(Event, verbose_name=_("event"),
                               related_name="event")
-    date_start_notice = models.DateTimeField(verbose_name=_('starting date notice'),
+    date_start_notice = models.DateTimeField(verbose_name=_('alarm date'),
                                              default=(lambda: datetime.now()))
 
     status = models.IntegerField(choices=list(ALARM_STATUS),
@@ -83,7 +84,7 @@ class Alarm(models.Model):
     phonenumber_transfer = models.CharField(max_length=50, blank=True, null=True,
                                             verbose_name=_("phonenumber transfer"))
 
-    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('created date'))
 
     class Meta:
         permissions = (
@@ -99,6 +100,12 @@ class Alarm(models.Model):
             return u"%s - method:%s - %s" % (self.id, method, self.event)
         else:
             return u"%s - %s" % (self.id, self.event)
+
+    def get_time_diff(self):
+        if self.date_start_notice:
+            now = datetime.utcnow().replace(tzinfo=utc)
+            timediff = self.date_start_notice - now
+            return timediff.total_seconds()
 
     def copy_alarm(self, new_event):
         """

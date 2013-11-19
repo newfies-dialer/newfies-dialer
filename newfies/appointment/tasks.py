@@ -33,6 +33,7 @@ from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
+FREQ_DISPATCHER = 6
 
 logger = get_task_logger(__name__)
 
@@ -104,22 +105,25 @@ class alarm_dispatcher(PeriodicTask):
 
         alarm_dispatcher.delay()
     """
-    run_every = timedelta(seconds=60)
+    run_every = timedelta(seconds=FREQ_DISPATCHER)
 
     @only_one(ikey="alarm_dispatcher", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.info("TASK :: alarm_dispatcher")
 
         # Select Alarm where date_start_notice >= now() - 5 minutes and <= now() + 5 minutes
-        start_time = datetime.now() + relativedelta(minutes=-5)
+        start_time = datetime.now() + relativedelta(minutes=-60)
         end_time = datetime.now() + relativedelta(minutes=+5)
         alarm_list = Alarm.objects.filter(date_start_notice__range=(start_time, end_time),
-                                          status=ALARM_STATUS.PENDING)
+                                          status=ALARM_STATUS.PENDING).order_by('date_start_notice')
         # Browse all the Alarm found
         for obj_alarm in alarm_list:
             # Check if there is an existing Event
             if obj_alarm.event:
-                second_towait = (obj_alarm.daysdate_start_notice - datetime.now()).seconds
+                obj_alarm.status = ALARM_STATUS.IN_PROCESS
+                obj_alarm.save()
+
+                second_towait = obj_alarm.get_time_diff()
                 # If second_towait negative then set to 0 to be run directly
                 if second_towait <= 0:
                     perform_alarm.delay(obj_alarm.event, obj_alarm)
@@ -140,7 +144,7 @@ def perform_alarm(obj_event, obj_alarm):
     Task to perform the alarm, this will send the alarms via several mean such
     as Call, SMS and Email
     """
-    logger.info("TASK :: perform_alarm")
+    logger.info("TASK :: perform_alarm -> %s" % obj_alarm.method)
 
     if obj_alarm.method == ALARM_METHOD.CALL:
         # send alarm via CALL
@@ -179,7 +183,7 @@ class alarmrequest_dispatcher(PeriodicTask):
 
         alarmrequest_dispatcher.delay()
     """
-    run_every = timedelta(seconds=60)
+    run_every = timedelta(seconds=FREQ_DISPATCHER)
 
     @only_one(ikey="alarmrequest_dispatcher", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
@@ -205,10 +209,6 @@ class alarmrequest_dispatcher(PeriodicTask):
             second_towait = floor(count * time_to_wait)
             ms_addtowait = (count * time_to_wait) - second_towait
             logger.info("Init CallRequest for AlarmRequest in %d seconds (alarmreq:%d)" % (second_towait, obj_alarmreq.id))
-
-            # Update in process
-            obj_alarmreq.status = ALARM_STATUS.IN_PROCESS
-            obj_alarmreq.save()
 
             if obj_alarmreq.alarm.maxretry == 0:
                 call_type = CALLREQUEST_TYPE.CANNOT_RETRY
@@ -255,4 +255,8 @@ class alarmrequest_dispatcher(PeriodicTask):
                 countdown=second_towait)
 
             obj_alarmreq.callrequest = new_callrequest
+            obj_alarmreq.status = ALARMREQUEST_STATUS.IN_PROCESS
             obj_alarmreq.save()
+            # Increment num_attempt
+            obj_alarmreq.alarm.num_attempt = obj_alarmreq.alarm.num_attempt + 1
+            obj_alarmreq.alarm.save()

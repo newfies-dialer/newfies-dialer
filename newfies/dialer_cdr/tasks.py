@@ -590,27 +590,28 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 
     """
     outbound_failure = False
+    subscriber_id = None
+    contact_id = None
     debug_query(8)
 
     if ms_addtowait > 0:
         sleep(ms_addtowait)
 
-    #Get CallRequest object
-    #use only https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.only
-    # test2 = Callrequest.objects.only('id', 'callerid', 'phone_number', 'status', \
-    #     'request_uuid', 'campaign__id', 'subscriber__id', \
-    #     'aleg_gateway__id', 'aleg_gateway__addprefix', 'aleg_gateway__removeprefix', 'aleg_gateway__status', \
-    #     'aleg_gateway__gateways', 'aleg_gateway__gateway_timeouts', 'aleg_gateway__originate_dial_string', \
-    #     'user__userprofile__accountcode', 'campaign__caller_name', \
-    #     'subscriber__id', 'subscriber__contact__id', 'subscriber__count_attempt', 'subscriber__last_attempt')\
-    #     .select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=4767)
-    obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=callrequest_id)
+    #Survey Call or Alarm Call
+    if campaign_id:
+        #TODO: use only https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.only
+        obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=callrequest_id)
+        subscriber_id = obj_callrequest.subscriber_id
+        contact_id = obj_callrequest.subscriber.contact_id
+    elif alarm_request_id:
+        obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile').get(id=callrequest_id)
+        alarm_request_id = obj_callrequest.alarm_request_id
+    else:
+        logger.info("TASK :: init_callrequest, wrong campaign_id & alarm_request_id")
+        return False
 
     debug_query(9)
-
-    logger.info("TASK :: init_callrequest - status:%s;cmpg:%d" % (str(obj_callrequest.status), campaign_id))
-
-    debug_query(10)
+    logger.info("TASK :: init_callrequest - status:%s;cmpg:%s;alarm:" % (str(obj_callrequest.status), str(campaign_id), str(alarm_request_id)))
 
     # TODO: move method prepare_phonenumber into the model gateway
     dialout_phone_number = prepare_phonenumber(
@@ -619,12 +620,12 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         obj_callrequest.aleg_gateway.removeprefix,
         obj_callrequest.aleg_gateway.status)
     if not dialout_phone_number:
-        logger.info("Error with dialout_phone_number - phone_number:%s;cmpg:%d" % (str(obj_callrequest.phone_number), campaign_id))
+        logger.info("Error with dialout_phone_number - phone_number:%s" % (obj_callrequest.phone_number))
         return False
     else:
         logger.debug("dialout_phone_number : %s" % dialout_phone_number)
 
-    debug_query(11)
+    debug_query(10)
 
     if settings.DIALERDEBUG:
         dialout_phone_number = settings.DIALERDEBUG_PHONENUMBER
@@ -632,12 +633,11 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     #Retrieve the Gateway for the A-Leg
     gateways = obj_callrequest.aleg_gateway.gateways
     gateway_id = obj_callrequest.aleg_gateway.id
-    #gateway_codecs = obj_callrequest.aleg_gateway.gateway_codecs
-    #gateway_retries = obj_callrequest.aleg_gateway.gateway_retries
+    #gateway_codecs / gateway_retries
     gateway_timeouts = obj_callrequest.aleg_gateway.gateway_timeouts
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
 
-    debug_query(12)
+    debug_query(11)
 
     #Sanitize gateways
     gateways = gateways.strip()
@@ -645,12 +645,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         gateways = gateways + '/'
 
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
-    if (obj_callrequest.user.userprofile.accountcode and
-       obj_callrequest.user.userprofile.accountcode > 0):
-        originate_dial_string = originate_dial_string + \
-            ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
+    if obj_callrequest.user.userprofile.accountcode:
+        originate_dial_string = originate_dial_string + ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
 
-    debug_query(13)
+    debug_query(12)
 
     if settings.NEWFIES_DIALER_ENGINE.lower() == 'esl':
         try:
@@ -674,21 +672,17 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 args_list.append("origination_caller_id_name='%s'" % obj_callrequest.campaign.caller_name)
 
             #Add App Vars
-            args_list.append("campaign_id=%d,subscriber_id=%d,used_gateway_id=%s,callrequest_id=%s,contact_id=%s" %
-                (obj_callrequest.campaign_id, obj_callrequest.subscriber_id, gateway_id, obj_callrequest.id, obj_callrequest.subscriber.contact_id))
-
+            args_list.append("campaign_id=%s,subscriber_id=%s,alarm_request_id=%s,used_gateway_id=%s,callrequest_id=%s,contact_id=%s" %
+                (campaign_id, subscriber_id, alarm_request_id, gateway_id, obj_callrequest.id, contact_id))
             args_list.append(originate_dial_string)
 
             #Call Vars
-            callvars = "bridge_early_media=true,originate_timeout=%s,newfiesdialer=true,leg_type=1" % \
-                (gateway_timeouts, )
-
+            callvars = "bridge_early_media=true,originate_timeout=%s,newfiesdialer=true,leg_type=1" % (gateway_timeouts, )
             args_list.append(callvars)
 
             #Default Test
             hangup_on_ring = ''
             send_preanswer = False
-
             # set hangup_on_ring
             try:
                 hangup_on_ring = int(hangup_on_ring)
@@ -696,12 +690,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 hangup_on_ring = -1
             exec_on_media = 1
             if hangup_on_ring >= 0:
-                args_list.append("execute_on_media_%d='sched_hangup +%d ORIGINATOR_CANCEL'"
-                    % (exec_on_media, hangup_on_ring))
+                args_list.append("execute_on_media_%d='sched_hangup +%d ORIGINATOR_CANCEL'" % (exec_on_media, hangup_on_ring))
                 exec_on_media += 1
 
             #TODO: look and test http://wiki.freeswitch.org/wiki/Misc._Dialplan_Tools_queue_dtmf
-
             # Send digits
             if send_digits:
                 if send_preanswer:
@@ -711,7 +703,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 else:
                     args_list.append("execute_on_answer='send_dtmf %s'" % send_digits)
 
-            # set time_limit
+            # Set time_limit
             try:
                 time_limit = int(time_limit)
             except ValueError:
@@ -736,7 +728,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
 
             request_uuid = esl_dialout(dial_command)
-            debug_query(14)
+            debug_query(13)
         except:
             raise
             logger.error('error : ESL')
@@ -749,16 +741,20 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         obj_callrequest.save()
         return False
 
-    #Update Subscriber
-    if not obj_callrequest.subscriber.count_attempt:
-        obj_callrequest.subscriber.count_attempt = 1
-    else:
-        obj_callrequest.subscriber.count_attempt = obj_callrequest.subscriber.count_attempt + 1
-    obj_callrequest.subscriber.last_attempt = datetime.now()
-    #check if the outbound call failed then update Subscriber
-    if outbound_failure:
-        obj_callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
-    obj_callrequest.subscriber.save()
+    #Survey Call or Alarm Call
+    if campaign_id:
+        #Update Subscriber
+        if not obj_callrequest.subscriber.count_attempt:
+            obj_callrequest.subscriber.count_attempt = 1
+        else:
+            obj_callrequest.subscriber.count_attempt = obj_callrequest.subscriber.count_attempt + 1
+        obj_callrequest.subscriber.last_attempt = datetime.now()
+        #check if the outbound call failed then update Subscriber
+        if outbound_failure:
+            obj_callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
+        obj_callrequest.subscriber.save()
+    elif alarm_request_id:
+        logger.info('Nothing to do here :> ' + alarm_request_id)
 
     #Update CallRequest Object
     obj_callrequest.request_uuid = request_uuid
@@ -769,6 +765,6 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         obj_callrequest.status = CALLREQUEST_STATUS.CALLING
     obj_callrequest.save()
 
-    debug_query(15)
+    debug_query(14)
 
     return True

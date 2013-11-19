@@ -245,7 +245,7 @@ class alarmrequest_dispatcher(PeriodicTask):
                 aleg_gateway=aleg_gateway,
                 content_type=content_type,
                 object_id=object_id,
-                user=obj_alarmreq.alarm.myevent.creator,
+                user=obj_alarmreq.alarm.event.creator,
                 extra_data='',
                 timelimit=callmaxduration)
             new_callrequest.save()

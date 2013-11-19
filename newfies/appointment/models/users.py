@@ -37,6 +37,14 @@ class CalendarSetting(models.Model):
 
     **Name of DB table**: calendar_setting
     """
+
+    # callerid = models.CharField(max_length=80, blank=True,
+    #                             verbose_name=_("callerID"),
+    #                             help_text=_("outbound caller-ID"))
+    # caller_name = models.CharField(max_length=80, blank=True,
+    #                                verbose_name=_("caller name"),
+    #                                help_text=_("outbound caller-Name"))
+
     cid_number = models.CharField(max_length=50, null=False, blank=False,
                                   verbose_name=_("CID number"),
                                   help_text=_("CID number"))

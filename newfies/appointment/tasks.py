@@ -111,7 +111,7 @@ class alarm_dispatcher(PeriodicTask):
     def run(self, **kwargs):
         logger.info("TASK :: alarm_dispatcher")
 
-        # Select Alarm where date_start_notice >= now() - 5 minutes and <= now() + 5 minutes
+        # Select Alarm where date_start_notice >= now() - 60 minutes and <= now() + 5 minutes
         start_time = datetime.now() + relativedelta(minutes=-60)
         end_time = datetime.now() + relativedelta(minutes=+5)
         alarm_list = Alarm.objects.filter(date_start_notice__range=(start_time, end_time),
@@ -189,8 +189,8 @@ class alarmrequest_dispatcher(PeriodicTask):
     def run(self, **kwargs):
         logger.info("TASK :: alarmrequest_dispatcher")
 
-        # Select AlarmRequest where date >= now() - 5 minutes
-        start_time = datetime.now() + relativedelta(minutes=-5)
+        # Select AlarmRequest where date >= now() - 60 minutes
+        start_time = datetime.now() + relativedelta(minutes=-60)
         alarmreq_list = AlarmRequest.objects.filter(date__gte=start_time,
                                           status=ALARMREQUEST_STATUS.PENDING)
         no_alarmreq = alarmreq_list.count()
@@ -229,8 +229,9 @@ class alarmrequest_dispatcher(PeriodicTask):
             calltimeout = caluser_profile.calendar_setting.call_timeout
             callmaxduration = 60 * 60
             callerid = caluser_profile.calendar_setting.cid_number
+            caller_name = caluser_profile.calendar_setting.cid_number
             aleg_gateway = caluser_profile.calendar_setting.aleg_gateway
-            content_type = ContentType.objects.filter(model__in=["survey"])
+            content_type = ContentType.objects.get(model__in=["survey"])
             object_id = caluser_profile.calendar_setting.survey_id
 
             # Create Callrequest to track the call task
@@ -240,12 +241,13 @@ class alarmrequest_dispatcher(PeriodicTask):
                 call_time=datetime.now(),
                 timeout=calltimeout,
                 callerid=callerid,
+                caller_name
                 phone_number=obj_alarmreq.alarm.alarm_phonenumber,
                 alarm_request_id=obj_alarmreq.id,
                 aleg_gateway=aleg_gateway,
                 content_type=content_type,
                 object_id=object_id,
-                user=obj_alarmreq.alarm.event.creator,
+                user=caluser_profile.manager,
                 extra_data='',
                 timelimit=callmaxduration)
             new_callrequest.save()

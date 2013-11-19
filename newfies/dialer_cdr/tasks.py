@@ -49,8 +49,6 @@ def check_retrycall_completion(callrequest):
        or callrequest.campaign.completion_maxretry == 0):
         logger.debug("Subscriber completed or limit reached!")
     else:
-        #Let's Init a new callrequest
-
         #Increment subscriber.completion_count_attempt
         if callrequest.subscriber.completion_count_attempt:
             callrequest.subscriber.completion_count_attempt = callrequest.subscriber.completion_count_attempt + 1
@@ -58,7 +56,8 @@ def check_retrycall_completion(callrequest):
             callrequest.subscriber.completion_count_attempt = 1
         callrequest.subscriber.save()
 
-        #init_callrequest -> delay at completion_intervalretry
+        #TODO: Add method in models.Callrequest to create copy
+        # Init new callrequest -> delay at completion_intervalretry
         new_callrequest = Callrequest(
             request_uuid=uuid1(),
             parent_callrequest_id=callrequest.id,
@@ -72,6 +71,7 @@ def check_retrycall_completion(callrequest):
             phone_number=callrequest.phone_number,
             timelimit=callrequest.timelimit,
             callerid=callrequest.callerid,
+            caller_name=callrequest.caller_name,
             timeout=callrequest.timeout,
             content_object=callrequest.content_object,
             subscriber=callrequest.subscriber
@@ -611,7 +611,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         return False
 
     debug_query(9)
-    logger.info("TASK :: init_callrequest - status:%s;cmpg:%s;alarm:" % (str(obj_callrequest.status), str(campaign_id), str(alarm_request_id)))
+    logger.info("TASK :: init_callrequest - status:%s;cmpg:%s;alarm:%s" % (obj_callrequest.status, campaign_id, alarm_request_id))
 
     # TODO: move method prepare_phonenumber into the model gateway
     dialout_phone_number = prepare_phonenumber(
@@ -645,7 +645,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         gateways = gateways + '/'
 
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
-    if obj_callrequest.user.userprofile.accountcode:
+    if obj_callrequest.user.userprofile and obj_callrequest.user.userprofile.accountcode:
         originate_dial_string = originate_dial_string + ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
 
     debug_query(12)
@@ -668,8 +668,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 dialout_phone_number = check_senddigit[0]
 
             args_list.append("origination_caller_id_number=%s" % obj_callrequest.callerid)
-            if obj_callrequest.campaign.caller_name:
-                args_list.append("origination_caller_id_name='%s'" % obj_callrequest.campaign.caller_name)
+            args_list.append("origination_caller_id_name='%s'" % obj_callrequest.caller_name)
 
             #Add App Vars
             args_list.append("campaign_id=%s,subscriber_id=%s,alarm_request_id=%s,used_gateway_id=%s,callrequest_id=%s,contact_id=%s" %

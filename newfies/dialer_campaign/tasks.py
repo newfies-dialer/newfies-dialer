@@ -169,6 +169,7 @@ class pending_call_processing(Task):
                 call_time=datetime.now(),
                 timeout=obj_campaign.calltimeout,
                 callerid=obj_campaign.callerid,
+                caller_name=obj_campaign.caller_name,
                 phone_number=phone_number,
                 campaign=obj_campaign,
                 aleg_gateway=obj_campaign.aleg_gateway,

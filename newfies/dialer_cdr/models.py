@@ -112,8 +112,11 @@ class Callrequest(Model):
                                  blank=True, null=True, db_index=True,
                                  verbose_name=_('status'))
     callerid = models.CharField(max_length=80, blank=True,
-                                verbose_name=_("CallerID"),
-                                help_text=_("callerID used to call the A-Leg"))
+                                verbose_name=_("callerID"),
+                                help_text=_("outbound caller-ID"))
+    caller_name = models.CharField(max_length=80, blank=True,
+                                   verbose_name=_("caller name"),
+                                   help_text=_("outbound caller-Name"))
     phone_number = models.CharField(max_length=80,
                                     verbose_name=_('phone number'))
     timeout = models.IntegerField(blank=True, default=30,

@@ -45,8 +45,8 @@ class CalendarUserAdmin(UserAdmin):
 
 
 class CalendarSettingAdmin(admin.ModelAdmin):
-    list_display = ('cid_number', 'cid_name', 'call_timeout', 'user', 'survey', 'aleg_gateway', 'updated_date')
-    ordering = ('-cid_number', )
+    list_display = ('callerid', 'caller_name', 'call_timeout', 'user', 'survey', 'aleg_gateway', 'updated_date')
+    ordering = ('-callerid', )
 
 
 class CalendarAdmin(admin.ModelAdmin):

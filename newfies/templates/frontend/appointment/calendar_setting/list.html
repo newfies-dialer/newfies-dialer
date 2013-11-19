@@ -48,8 +48,8 @@
                 <thead>
                 <tr>
                     <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-                    <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.cid_number|capfirst col_name_with_order.cid_number %}</th>
-                    <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.cid_name|capfirst col_name_with_order.cid_name %}</th>
+                    <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.callerid|capfirst col_name_with_order.callerid %}</th>
+                    <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.caller_name|capfirst col_name_with_order.caller_name %}</th>
                     <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.call_timeout|capfirst col_name_with_order.call_timeout %}</th>
                     <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.survey|capfirst col_name_with_order.survey %}</th>
                     <th>{% trans 'action'|capfirst %}</th>
@@ -60,8 +60,8 @@
                     {% for row in calendar_setting_list %}
                         <tr>
                             <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
-                            <td>{{ row.cid_number }}</td>
-                            <td>{{ row.cid_name }}</td>
+                            <td>{{ row.callerid }}</td>
+                            <td>{{ row.caller_name }}</td>
                             <td>{{ row.call_timeout }}</td>
                             <td>{{ row.survey }}</td>
                             <td>

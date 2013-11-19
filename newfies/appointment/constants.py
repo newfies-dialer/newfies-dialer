@@ -49,8 +49,8 @@ class ALARMREQUEST_STATUS(Choice):
 
 
 class CALENDAR_SETTING_COLUMN_NAME(Choice):
-    cid_number = _('cid number')
-    cid_name = _('cid name')
+    callerid = _('callerid number')
+    caller_name = _('callerid name')
     call_timeout = _('call timeout')
     survey = _('survey')
 

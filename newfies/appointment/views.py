@@ -435,7 +435,7 @@ def calendar_setting_list(request):
 
         * List all calendar settings which belong to the logged in user.
     """
-    sort_col_field_list = ['id', 'cid_number', 'cid_name', 'call_timeout',
+    sort_col_field_list = ['id', 'callerid', 'caller_name', 'call_timeout',
                            'survey']
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)

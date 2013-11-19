@@ -82,7 +82,7 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
         list_calendar_setting.append((0, '---'))
         calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
         for l in calendar_setting_list:
-            list_calendar_setting.append((l.id, l.cid_name))
+            list_calendar_setting.append((l.id, l.caller_name))
         self.fields['calendar_setting'].choices = list_calendar_setting
 
 

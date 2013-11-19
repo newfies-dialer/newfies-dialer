@@ -46,4 +46,3 @@ def get_calendar_list(calendar_user_list):
         list_calendar.append((l[0], l[1]))
 
     return list_calendar
-

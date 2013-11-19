@@ -26,8 +26,8 @@ class CalendarSetting(models.Model):
 
     **Attributes**:
 
-        * ``cid_number`` - CID number.
-        * ``cid_name`` - CID name
+        * ``callerid`` - CallerID number.
+        * ``caller_name`` - Caller name
         * ``call_timeout`` - call timeout
         * ``user`` - Newfies User (Manager)
         * ``survey`` - Foreign key relationship to the Survey
@@ -37,20 +37,12 @@ class CalendarSetting(models.Model):
 
     **Name of DB table**: calendar_setting
     """
-
-    # callerid = models.CharField(max_length=80, blank=True,
-    #                             verbose_name=_("callerID"),
-    #                             help_text=_("outbound caller-ID"))
-    # caller_name = models.CharField(max_length=80, blank=True,
-    #                                verbose_name=_("caller name"),
-    #                                help_text=_("outbound caller-Name"))
-
-    cid_number = models.CharField(max_length=50, null=False, blank=False,
-                                  verbose_name=_("CID number"),
-                                  help_text=_("CID number"))
-    cid_name = models.CharField(max_length=50, null=False, blank=False,
-                                verbose_name=_("CID name"),
-                                help_text=_("CID name"))
+    callerid = models.CharField(max_length=80, blank=True,
+                                verbose_name=_("callerID"),
+                                help_text=_("outbound caller-ID"))
+    caller_name = models.CharField(max_length=80, blank=True,
+                                   verbose_name=_("caller name"),
+                                   help_text=_("outbound caller-Name"))
     call_timeout = models.IntegerField(default='60', null=False, blank=False,
                                        verbose_name=_('call timeout'),
                                        help_text=_("call timeout"))

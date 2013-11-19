@@ -228,8 +228,8 @@ class alarmrequest_dispatcher(PeriodicTask):
             # TODO: build settings for this
             calltimeout = caluser_profile.calendar_setting.call_timeout
             callmaxduration = 60 * 60
-            callerid = caluser_profile.calendar_setting.cid_number
-            caller_name = caluser_profile.calendar_setting.cid_number
+            callerid = caluser_profile.calendar_setting.callerid
+            caller_name = caluser_profile.calendar_setting.caller_name
             aleg_gateway = caluser_profile.calendar_setting.aleg_gateway
             content_type = ContentType.objects.get(model__in=["survey"])
             object_id = caluser_profile.calendar_setting.survey_id
@@ -241,7 +241,7 @@ class alarmrequest_dispatcher(PeriodicTask):
                 call_time=datetime.now(),
                 timeout=calltimeout,
                 callerid=callerid,
-                caller_name
+                caller_name=caller_name,
                 phone_number=obj_alarmreq.alarm.alarm_phonenumber,
                 alarm_request_id=obj_alarmreq.id,
                 aleg_gateway=aleg_gateway,

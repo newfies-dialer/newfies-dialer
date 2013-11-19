@@ -50,8 +50,8 @@
 <!-- bootstrap css -->
 <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}newfies/css/datepicker.css" rel="stylesheet">
-<!-- jquery UI css -->
-<link type="text/css" href="{{ STATIC_URL }}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
+<!-- jquery UI css
+<link type="text/css" href="{{ STATIC_URL }}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">-->
 <!-- RTL -->
 <!-- <link href="{{ STATIC_URL }}newfies/bootstrap-2.0.4/css/rtl/bootstrap-rtl.min.css" rel="stylesheet"> -->
 <style type="text/css">
@@ -60,12 +60,12 @@
         padding-bottom: 40px;
     }
 </style>
-<link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
+<!--<link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">-->
 
-<!--Override bootstrap-->
-<link href="{{ STATIC_URL }}newfies/css/override_bootstrap.css" rel="stylesheet">
-<!-- Newfies custom css -->
-<link type="text/css" media="screen" href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet"/>
+<!--Override bootstrap
+<link href="{{ STATIC_URL }}newfies/css/override_bootstrap.css" rel="stylesheet">-->
+<!-- Newfies custom css
+<link type="text/css" media="screen" href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet"/>-->
 
 {% endblock %}
 
@@ -85,32 +85,43 @@
 {% block container %}
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
-        <div class="col-xs-12 col-sm-9">
+        {% if user.is_authenticated %}
+            <div class="col-xs-12 col-sm-9">
+        {% else %}
+            <div class="col-xs-12 col-sm-12">
+        {% endif %}
+
     {% block row_fluid %}
         <div class="row">
-        {% if not user.is_authenticated %}
-        <div class="span6">
-            <form class="well form-inline" action="/login/" class="pull-right" method="post">
-            {% csrf_token %}
-            {% for field in loginform %}
-                {{ field }}
-            {% endfor %}
-            <button class="btn" type="submit">{% trans "login"|title %}</button>
-            <a class="btn btn-info" href="/password_reset/">{% trans "forgot password?"|capfirst %}</a>
-        </form>
-        </div>
-        <div class="span6">
-            <form class="well form-inline" action="/i18n/setlang/" method="post" class="pull-right">
-                {% csrf_token %}
-                {% trans "display language"|capfirst %} : <select name="language" id="language-container" class="input-small" >
-                {% for lang in LANGUAGES %}
-                <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
-                {% endfor %}
-                </select>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </form>
-        </div>
-        {% endif %}
+            {% if not user.is_authenticated %}
+            <div class="col-6 col-sm-6 col-lg-6">
+                <form class="form-inline well" role="form" action="/login/" method="post">
+                    {% csrf_token %}
+                    {% for field in loginform %}
+                        <div class="form-group col-xs-3">
+                        {{ field }}
+                        </div>
+                    {% endfor %}
+                    <button class="btn btn-primary" type="submit">{% trans "login"|title %}</button>
+                    <a class="btn btn-info" href="/password_reset/">{% trans "forgot password?"|capfirst %}</a>
+                </form>
+            </div>
+            <div class="col-6 col-sm-6 col-lg-6">
+                <form class="form-inline well" role="form" action="/i18n/setlang/" method="post">
+                    {% csrf_token %}
+                    <div class="select">
+                        <label>
+                        {% trans "display language"|capfirst %} :
+                        <select name="language" id="language-container">
+                            {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
         </div>
     {% endblock %}
 
@@ -143,7 +154,7 @@
         {% if user.is_authenticated %}
             {% if dialer_setting_msg %}
 
-            <div class="alert alert-error">
+            <div class="alert alert-danger">
                 <strong>{% trans "alert"|title %} : </strong>  {{ dialer_setting_msg }}
                 {% if not request.session.has_notified %}
                     {% trans "to send notification to administrator"|capfirst %} <a href="/notify/admin/">{% trans "click here"|capfirst %}</a>
@@ -164,7 +175,7 @@
 
     <!--Error Message of view-->
     {% if error_msg %}
-        <div class="alert alert-error">
+        <div class="alert alert-danger">
             <strong>{% trans "error"|title %} : </strong>  {{ error_msg|capfirst }}
         </div>
     {% endif %}
@@ -181,12 +192,14 @@
     {% endblock %}
         </div>
 
+        {% if user.is_authenticated %}
         <div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
             <div class="list-group">
                 <a class="list-group-item active" href="#">Link</a>
                 <a class="list-group-item" href="#">Link</a>
             </div>
         </div>
+        {% endif %}
     </div>
 
     {% block footer %}

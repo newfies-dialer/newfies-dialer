@@ -18,37 +18,36 @@
 {% endblock %}
 
 {% block content %}
-<div id="label" align="center">
-
-<form class="well form-inline" method="POST" action="." id="id_searchform" name="searchform" enctype="multipart/form-data">{% csrf_token %}
-<p align="center">
-    {{ form.smscampaign }} {{ form.search_type }}
-    <input type="submit" class="btn primary" name="submit" value="{% trans 'submit'|title %}">
-</p>
-
-<table align="center" class="table table-striped table-bordered table-condensed">
-    <thead>
-    <tr>
-        <th>{% trans "SMSCampaign" %}</th>
-        <th>{% trans "total phonebook contacts"|title %}</th>
-        <th>{% trans "total SMSCampaign Contacts"|capfirst %}</th>
-        <th>{% trans "contacted today"|title %}</th>
-    </tr>
-    </thead>
-    <tr>
-        <td class="rounded-foot-left">{{ sms_campaign_count }}</td>
-        <td>{{ total_of_phonebook_contacts }}</td>
-        <td>{{ pb_active_contact_count }}</td>
-        <td class="rounded-foot-right">{{ reached_contact }}</td>
-    </tr>
-</table>
+<form class="well" role="form" method="POST" action="." id="id_searchform" name="searchform" enctype="multipart/form-data">{% csrf_token %}
+    <p class="text-center">
+        {{ form.smscampaign }} {{ form.search_type }}
+        <input type="submit" class="btn btn-primary" name="submit" value="{% trans 'submit'|title %}">
+    </p>
+    <div class="table-responsive">
+        <table class="table table-striped table-bordered table-condensed">
+            <thead>
+            <tr>
+                <th>{% trans "SMSCampaign" %}</th>
+                <th>{% trans "total phonebook contacts"|title %}</th>
+                <th>{% trans "total SMSCampaign Contacts"|capfirst %}</th>
+                <th>{% trans "contacted today"|title %}</th>
+            </tr>
+            </thead>
+            <tr>
+                <td>{{ sms_campaign_count }}</td>
+                <td>{{ total_of_phonebook_contacts }}</td>
+                <td>{{ pb_active_contact_count }}</td>
+                <td>{{ reached_contact }}</td>
+            </tr>
+        </table>
+    </div>
 </form>
 
-</div>
+
 
 {% if total_record %}
     <div class="row">
-        <div class="span12">
+        <div class="col-md-12">
             {% include_container final_chartcontainer 400 '100%' %}
         </div>
     </div>
@@ -56,30 +55,32 @@
     <br/><br/>
 
     <div class="row">
-        <div class="span12">
+        <div class="col-md-12">
             <div class="row">
-                <div class="span6">
+                <div class="col-md-6">
                     {% include_container sms_analytic_chartcontainer 400 500 %}
                 </div>
 
-                <div class="span6">
-                <table style="width: 400px; margin: 50px 0px 0px 0px; background-color: #e6f7fe;" class="bordered-table">
-                <tr>
-                    <th style="color: #111111; width: 120px;" colspan="3">{{ total_sms_count }}  {% trans "total sms"|upper %}</th>
-                </tr>
-                <tr>
-                    <th style="color: {{ sent_color }}">{{ total_sent }}  {% trans "send"|upper %}</th>
-                    <th style="color: {{ unsent_color }}">{{ total_unsent }}  {% trans "unsent"|upper %}</th>
-                    <th style="color: {{ delivered_color }}">{{ total_delivered }}  {% trans "delivered"|upper %}</th>
-                </tr>
-                <tr>
-                    <th style="color: {{ failed_color }}">{{ total_failed }}  {% trans "failed"|upper %}</th>
-                    <th style="color: {{ no_route_color }}">{{ total_no_route }}  {% trans "no route"|upper %}</th>
-                    <th style="color: {{ unauthorized_color }}">{{ total_unauthorized }}  {% trans "unauthorized"|upper %}</th>
-                </tr>
-                </table>
-
-                <div id="hover" style="float: left;"><span style="font-weight: bold; color: rgb(148, 64, 237);"></span></div>
+                <div class="col-md-6">
+                    <div class="table-responsive">
+                        <table style="width: 400px; margin: 50px 0px 0px 0px; background-color: #e6f7fe;" class="table bordered-table">
+                        <tr>
+                            <th style="color: #111111; width: 120px;" colspan="3">{{ total_sms_count }}  {% trans "total sms"|upper %}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: {{ sent_color }}">{{ total_sent }}  {% trans "send"|upper %}</th>
+                            <th style="color: {{ unsent_color }}">{{ total_unsent }}  {% trans "unsent"|upper %}</th>
+                            <th style="color: {{ delivered_color }}">{{ total_delivered }}  {% trans "delivered"|upper %}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: {{ failed_color }}">{{ total_failed }}  {% trans "failed"|upper %}</th>
+                            <th style="color: {{ no_route_color }}">{{ total_no_route }}  {% trans "no route"|upper %}</th>
+                            <th style="color: {{ unauthorized_color }}">{{ total_unauthorized }}  {% trans "unauthorized"|upper %}</th>
+                        </tr>
+                        </table>
+                    </div>
+                    <div id="hover" style="float: left;"><span style="font-weight: bold; color: rgb(148, 64, 237);"></span></div>
+                    </div>
                 </div>
             </div>
         </div>

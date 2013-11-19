@@ -21,11 +21,11 @@ class LoginForm(forms.Form):
     """Client Login Form"""
     user = forms.CharField(max_length=30,
         label=_('username'), required=True)
-    user.widget.attrs['class'] = 'input-small'
+    user.widget.attrs['class'] = 'form-control'
     user.widget.attrs['placeholder'] = 'Username'
     password = forms.CharField(max_length=30, label=_('password'),
         required=True, widget=forms.PasswordInput())
-    password.widget.attrs['class'] = 'input-small'
+    password.widget.attrs['class'] = 'form-control'
     password.widget.attrs['placeholder'] = 'Password'
 
 

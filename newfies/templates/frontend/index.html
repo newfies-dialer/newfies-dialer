@@ -7,27 +7,27 @@
 <!-- Main jumbotron for a primary marketing message or call to action -->
 <div class="jumbotron">
 
-  <img src="{{STATIC_URL}}newfies/images/newfies-dialer.png" height="120" alt="Newfies-Dialer"/>
+    <img src="{{STATIC_URL}}newfies/images/newfies-dialer.png" height="120" alt="Newfies-Dialer"/>
 
-  <p><a href="http://www.newfies-dialer.org/" target="_blank" >Newfies-Dialer</a>  {% trans "is Voice Broadcasting and AutoDialer software to provide information via the phone." %} {% trans "Newfies-Dialer can scale to make millions of calls daily by using realtime call processing across multiple servers in the cloud." %}</p>
+    <p><a href="http://www.newfies-dialer.org/" target="_blank" >Newfies-Dialer</a>  {% trans "is Voice Broadcasting and AutoDialer software to provide information via the phone." %} {% trans "Newfies-Dialer can scale to make millions of calls daily by using realtime call processing across multiple servers in the cloud." %}</p>
 
-  <p><a class="btn primary large" href="http://www.newfies-dialer.org/about-us/contact/">{% trans "learn more"|capfirst %} &raquo;</a></p>
+    <p><a class="btn primary large" href="http://www.newfies-dialer.org/about-us/contact/">{% trans "learn more"|capfirst %} &raquo;</a></p>
 
 </div>
 <div class="row">
-  <div class="span6">
-    <h2>{% trans "support"|title %}</h2>
-    <p>{% trans "Star2Billing S.L. offers consultancy including installation, training and customisation on Newfies-Dialer" %}</p>
-    <p>{% trans "contact us at"|capfirst %} <a href="mailto:newfies-dialer@star2billing.com">newfies-dialer@star2billing.com</a> {% trans "for more information" %}<p>
-    <p><a class="btn" href="http://www.newfies-dialer.org/support/">{% trans "get support"|title %} &raquo;</a></p>
-  </div>
+    <div class="col-6 col-sm-6 col-lg-6">
+        <h2>{% trans "support"|title %}</h2>
+        <p>{% trans "Star2Billing S.L. offers consultancy including installation, training and customisation on Newfies-Dialer" %}</p>
+        <p>{% trans "contact us at"|capfirst %} <a href="mailto:newfies-dialer@star2billing.com">newfies-dialer@star2billing.com</a> {% trans "for more information" %}<p>
+        <p><a class="btn btn-default" href="http://www.newfies-dialer.org/support/">{% trans "get support"|title %} &raquo;</a></p>
+    </div>
 
-  <div class="span6">
-    <h2>{% trans "licensing"|title %}</h2>
-     <p>{% trans "Newfies-Dialer is licensed under" %} <a href="http://www.mozilla.org/MPL/2.0/" target="_blank">MPL V2</a>,
-        {% trans "however an alternative license can be purchased if the MPL V2 license is not suitable for your requirements." %}</p>
-    <p><a class="btn" href="http://www.newfies-dialer.org/support/licensing/">{% trans "View Licensing details" %} &raquo;</a></p>
-  </div>
+    <div class="col-6 col-sm-6 col-lg-6">
+        <h2>{% trans "licensing"|title %}</h2>
+        <p>{% trans "Newfies-Dialer is licensed under" %} <a href="http://www.mozilla.org/MPL/2.0/" target="_blank">MPL V2</a>,
+            {% trans "however an alternative license can be purchased if the MPL V2 license is not suitable for your requirements." %}</p>
+        <p><a class="btn btn-default" href="http://www.newfies-dialer.org/support/licensing/">{% trans "View Licensing details" %} &raquo;</a></p>
+    </div>
 </div>
 
 {% endblock %}

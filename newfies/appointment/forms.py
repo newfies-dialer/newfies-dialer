@@ -20,8 +20,8 @@ from appointment.models.users import CalendarUserProfile, CalendarUser,\
 from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm
-from appointment.function_def import get_calendar_user_id_list, get_calendar_user_list,\
-    get_calendar_list
+from appointment.function_def import get_calendar_user_id_list,\
+    get_calendar_user_list, get_calendar_list
 from survey.models import Survey
 
 
@@ -49,6 +49,13 @@ class CalendarSettingForm(ModelForm):
         for l in survey_list:
             list_survey.append((l[0], l[1]))
         self.fields['survey'].choices = list_survey
+
+        list_gateway = []
+        list_gateway.append((0, '---'))
+        gateway_list = user.get_profile().userprofile_gateway.all()
+        for l in gateway_list:
+            list_gateway.append((l.id, l.name))
+        self.fields['aleg_gateway'].choices = list_gateway
 
 
 class CalendarUserNameChangeForm(UserChangeForm):

@@ -26,16 +26,16 @@
 
         $(".collapse").on('hide', function () {
             $('#toggle_btn span').text('{% trans "search"|title %}');
-            $('#toggle_btn i').toggleClass('icon-search');
-            $('#toggle_btn i').toggleClass('icon-zoom-out');
+            $('#toggle_btn span').toggleClass('glyphicon');
+            $('#toggle_btn span').toggleClass('glyphicon-zoom-in');
         });
         $(".collapse").on('hidden', function() {
             $('#toggle_btn span').text('{% trans "search"|title %}');
         });
         $(".collapse").on('show', function() {
             $('#toggle_btn span').text('{% trans "hide search"|title %}');
-            $('#toggle_btn i').toggleClass('icon-search');
-            $('#toggle_btn i').toggleClass('icon-zoom-out');
+            $('#toggle_btn span').toggleClass('glyphicon');
+            $('#toggle_btn span').toggleClass('glyphicon-zoom-out');
         });
         $(".collapse").on('shown', function() {
             $('#toggle_btn span').text('{% trans "hide search"|title %}');

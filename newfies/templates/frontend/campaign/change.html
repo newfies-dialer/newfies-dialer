@@ -205,14 +205,16 @@
                 {% for field in callcenter_settings_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ field.help_text|capfirst }}
-                            </span>
+                            <div class="col-xs-8">
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">
+                                    {{ field.help_text|capfirst }}
+                                </span>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}

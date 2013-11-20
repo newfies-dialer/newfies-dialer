@@ -52,6 +52,11 @@ class Contact_fileImport(FileImport):
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['phonebook', 'csv_file']
+        change_field_list = [
+            'phonebook', 'csv_file'
+        ]
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's phonebook list
         if user:  # and not user.is_superuser
             self.fields['phonebook'].choices = \
@@ -68,6 +73,11 @@ class PhonebookForm(ModelForm):
         widgets = {
             'description': Textarea(attrs={'cols': 26, 'rows': 3}),
         }
+
+    def __init__(self, *args, **kwargs):
+        super(PhonebookForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class ContactForm(ModelForm):
@@ -87,6 +97,9 @@ class ContactForm(ModelForm):
             'email', 'address', 'city', 'state', 'country', 'description',
             'additional_vars',
         ]
+
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
         # To get user's phonebook list
         if user:

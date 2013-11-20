@@ -24,8 +24,9 @@ class EVENT_STATUS(Choice):
 class ALARM_STATUS(Choice):
     PENDING = 1, _('pending').upper()
     IN_PROCESS = 2, _('in_process').upper()
-    COMPLETED = 3, _('completed').upper()
-    ERROR = 4, _('error').upper()
+    FAILURE = 3, _("failure").upper()
+    RETRY = 4, _('retry').upper()
+    SUCCESS = 5, _('success').upper()
 
 
 class ALARM_RESULT(Choice):
@@ -41,11 +42,11 @@ class ALARM_METHOD(Choice):
 
 
 class ALARMREQUEST_STATUS(Choice):
-    PENDING = 1, _("pending").capitalize()
-    IN_PROCESS = 2, _("in_process").capitalize()
-    FAILURE = 3, _("failure").capitalize()
-    RETRY = 4, _("retry").capitalize()
-    SUCCESS = 5, _("success").capitalize()
+    PENDING = 1, _("pending").upper()
+    IN_PROCESS = 2, _("in_process").upper()
+    FAILURE = 3, _("failure").upper()
+    RETRY = 4, _("retry").upper()
+    SUCCESS = 5, _("success").upper()
 
 
 class CALENDAR_SETTING_COLUMN_NAME(Choice):

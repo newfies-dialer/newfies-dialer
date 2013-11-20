@@ -134,7 +134,7 @@ class alarm_dispatcher(PeriodicTask):
             else:
                 logger.error("There is no Event attached to this Alarm: %d" % obj_alarm.id)
                 ## Mark the Alarm as ERROR
-                obj_alarm.status = ALARM_STATUS.ERROR
+                obj_alarm.status = ALARM_STATUS.FAILURE
                 obj_alarm.save()
 
 
@@ -157,6 +157,9 @@ def perform_alarm(obj_event, obj_alarm):
     elif obj_alarm.method == ALARM_METHOD.SMS:
         # send alarm via SMS
         print "ALARM_METHOD.SMS"
+        # Mark the Alarm as SUCCESS
+        obj_alarm.status = ALARM_STATUS.SUCCESS
+        obj_alarm.save()
 
     if obj_alarm.method == ALARM_METHOD.EMAIL:
         # send alarm via EMAIL
@@ -166,10 +169,10 @@ def perform_alarm(obj_event, obj_alarm):
                 mailtemplate=obj_alarm.mail_template,
                 contact_email=obj_alarm.alarm_email
             )
+        # Mark the Alarm as SUCCESS
+        obj_alarm.status = ALARM_STATUS.SUCCESS
+        obj_alarm.save()
 
-    ## Mark the Alarm as COMPLETED
-    obj_alarm.status = ALARM_STATUS.COMPLETED
-    obj_alarm.save()
 
 
 class alarmrequest_dispatcher(PeriodicTask):

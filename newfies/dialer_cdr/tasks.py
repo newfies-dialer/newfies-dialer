@@ -758,8 +758,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     elif alarm_request_id:
         if outbound_failure:
             obj_alarmreq = AlarmRequest.objects.get(id=alarm_request_id)
-            obj_alarmreq.status = ALARMREQUEST_STATUS.FAILURE
-            obj_alarmreq.save()
+            obj_alarmreq.update_status(ALARMREQUEST_STATUS.FAILURE)
 
     #Update CallRequest Object
     obj_callrequest.request_uuid = request_uuid

@@ -244,11 +244,9 @@ class VoIPCall(models.Model):
         if self.duration:
             min = int(self.duration / 60)
             sec = int(self.duration % 60)
+            return "%02d:%02d" % (min, sec)
         else:
-            min = 0
-            sec = 0
-
-        return "%02d:%02d" % (min, sec)
+            return "00:00"
 
     class Meta:
         permissions = (

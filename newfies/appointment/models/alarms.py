@@ -166,5 +166,12 @@ class AlarmRequest(models.Model):
         verbose_name_plural = _('alarm requests')
         app_label = "appointment"
 
+    def update_status(self, status):
+        self.status = status
+        self.save()
+        if status != ALARMREQUEST_STATUS.PENDING:
+            self.alarm.status = self.status
+            self.alarm.save()
+
     def __unicode__(self):
         return u"%s" % (self.id)

@@ -21,27 +21,28 @@
     // toggle event for forms
     $(function() {
         {% if search_tag == 1 %}
-            $(".collapse").collapse();
+            $(".collapse in").collapse();
         {% endif %}
 
-        $(".collapse").on('hide', function () {
-            $('#toggle_btn span').text('{% trans "search"|title %}');
-            $('#toggle_btn span').toggleClass('glyphicon');
-            $('#toggle_btn span').toggleClass('glyphicon-zoom-in');
+        $(".collapse.in").on('hide.bs.collapse', function () {
+            $('#toggle_btn_i_span').text('{% trans "search"|title %}');
+            $('#toggle_btn_i').attr('class', 'glyphicon glyphicon-zoom-in');
         });
-        $(".collapse").on('hidden', function() {
-            $('#toggle_btn span').text('{% trans "search"|title %}');
+        $(".collapse.in").on('hidden.bs.collapse', function() {
+            $('#toggle_btn_i_span').text('{% trans "search"|title %}');
         });
-        $(".collapse").on('show', function() {
-            $('#toggle_btn span').text('{% trans "hide search"|title %}');
-            $('#toggle_btn span').toggleClass('glyphicon');
-            $('#toggle_btn span').toggleClass('glyphicon-zoom-out');
+
+        $(".collapse.in").on('show.bs.collapse', function() {
+            $('#toggle_btn_i_span').text('{% trans "hide search"|title %}');
+            $('#toggle_btn_i').attr('class', 'glyphicon glyphicon-zoom-out');
         });
-        $(".collapse").on('shown', function() {
-            $('#toggle_btn span').text('{% trans "hide search"|title %}');
+
+        $(".collapse.in").on('shown.bs.collapse', function() {
+            $('#toggle_btn_i_span').text('{% trans "hide search"|title %}');
         });
+
         {% if search_tag == 0 %}
-            $(".collapse").collapse('hide');
+            $(".collapse in").collapse('hide');
         {% endif %}
     });
 </script>

@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n dialer_campaign_tags %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"><![endif]-->
 <!--[if IE 8]><html class="no-js lt-ie9"><![endif]-->
@@ -87,8 +87,13 @@
 {% block container %}
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
+
         {% if user.is_authenticated %}
-            <div class="col-xs-12 col-sm-9">
+            {% if request.path|check_url_for_template_width %}
+                <div class="col-xs-12 col-sm-12">
+            {% else %}
+                <div class="col-xs-12 col-sm-9">
+            {% endif %}
         {% else %}
             <div class="col-xs-12 col-sm-12">
         {% endif %}

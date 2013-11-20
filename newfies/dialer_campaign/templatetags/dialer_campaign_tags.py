@@ -99,3 +99,21 @@ def subscriber_disposition(campaign_id, val):
     lead_disposition string"""
     return get_subscriber_disposition(campaign_id, val)
 
+
+@register.filter(name='check_url_for_template_width')
+def check_url_for_template_width(current_url):
+    """"""
+    full_width_on_requested_path = [
+        '/dashboard/', '/sms_dashboard/',
+        '/campaign/', '/sms_campaign/',
+    ]
+    if current_url == '/':
+        return True
+    else:
+        current_url = str(current_url)
+        for path in full_width_on_requested_path:
+            if path in current_url:
+                return True
+        return False
+
+

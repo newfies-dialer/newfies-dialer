@@ -108,9 +108,7 @@ class Alarm(models.Model):
             return timediff.total_seconds()
 
     def copy_alarm(self, new_event):
-        """
-        copy alarm
-        """
+        #copy alarm
         new_alarm = Alarm.objects.create(
             alarm_phonenumber=self.alarm_phonenumber,
             alarm_email=self.alarm_email,
@@ -132,8 +130,28 @@ class Alarm(models.Model):
             #url_confirm=self.url_confirm,
             #phonenumber_transfer=self.phonenumber_transfer,
         )
-
         return new_alarm
+
+    def retry_alarm(self):
+        """
+        Task to check if Alarm needs to be respooled after it failed
+        """
+        from appointment.tasks import perform_alarm
+        # Use as follow:
+        # if obj_alarmreq.alarm.maxretry >= obj_alarmreq.alarm.num_attempt:
+        #     obj_alarmreq.update_status(ALARMREQUEST_STATUS.RETRY)
+        #     retry_alarm(obj_alarmreq.alarm)
+        #
+        self.status = ALARM_STATUS.IN_PROCESS
+        self.save()
+        second_towait = self.retry_delay
+        # If second_towait negative then set to 0 to be run directly
+        if second_towait <= 0:
+            perform_alarm.delay(self.event, self)
+        else:
+            # Call the Alarm in the future
+            perform_alarm.apply_async(
+                args=[self.event, self], countdown=second_towait)
 
 
 class AlarmRequest(models.Model):

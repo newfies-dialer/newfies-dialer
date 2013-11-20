@@ -174,7 +174,6 @@ def perform_alarm(obj_event, obj_alarm):
         obj_alarm.save()
 
 
-
 class alarmrequest_dispatcher(PeriodicTask):
     """A periodic task that checks for scheduled AlarmRequest and create CallRequests.
 

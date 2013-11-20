@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags pagination_tags icons activelink %}
+{% load i18n common_tags pagination_tags icons %}
 
 {% block extra_files %}
     <script language="javascript" type="text/javascript">
@@ -158,7 +158,7 @@ function delete_button()
                     {% endif %}
                 </table>
             </div>
-            <div align="right">
+            <div class="text-right">
                 {% trans "total"|title %} : {{ total_contacts }}
             </div>
             {% if contact_list %}
@@ -167,17 +167,4 @@ function delete_button()
         </form>
     </div>
 </div>
-{% endblock %}
-
-{% block sidebar_menu %}
-    <div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
-        <div class="list-group">
-            {% if perms.dialer_contact.view_phonebook %}
-                <a class="list-group-item {% ifcontains '/phonebook/' %}active{% endifcontains %}" href="/phonebook/">{% trans "phonebooks"|title %}</a>
-            {% endif %}
-            {% if perms.dialer_contact.view_contact %}
-                <a class="list-group-item {% ifcontains '/contact/' %}active{% endifcontains %}" href="/contact/">{% trans "contacts"|title %}</a>
-            {% endif %}
-        </div>
-    </div>
 {% endblock %}

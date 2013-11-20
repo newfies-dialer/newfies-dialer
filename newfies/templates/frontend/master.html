@@ -199,16 +199,14 @@
     {% endblock %}
         </div>
 
-        {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
+        {% if not request.path|check_url_for_template_width %}
             {% block sidebar_menu %}
-            <!--<div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
-                <div class="list-group">
-                    <a class="list-group-item active" href="#">Link</a>
-                    <a class="list-group-item" href="#">Link</a>
-                </div>
-            </div>-->
+                {% include "frontend/bootstrap_side_menu.html" %}
             {% endblock %}
         {% endif %}
+    {% endif %}
+
     </div>
 
     {% block footer %}

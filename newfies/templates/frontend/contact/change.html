@@ -1,15 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load i18n common_tags %}
 
-{% block extra_files %}
-    <style type="text/css">
-    .add {
-        background:transparent url('{{ STATIC_URL }}newfies/icons/add.png') no-repeat scroll left center;
-        padding:1px 1px 1px 20px;
-    }
-    </style>
-{% endblock %}
-
 {% block content_header %}
     <h1>
         {% if action == 'update' %}
@@ -23,40 +14,48 @@
 
 {% block content %}
 
-<form class="well" method="POST" action="." enctype="multipart/form-data">
+<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="span12">
-        <div class="row">
+    <div class="row">
+        <div class="col-md-12">
             {% get_fieldset phonebook,contact as contact_fields from form %}
             {% for field in contact_fields.visible_fields %}
-                <div class="span6">
-                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                        <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                        <div class="input">
+                <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <div class="col-xs-8">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}
-                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                <span class="help-inline">
+                                    {{ field.errors|removetags:"ul li"|safe }}
+                                </span>
                             {% endif %}
-                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                            <span class="help-block">
+                                {{ field.help_text|capfirst }}
+                            </span>
                         </div>
                     </div>
                 </div>
             {% endfor %}
         </div>
     </div>
-    <div class="span12">
-        <div class="row">
+    <div class="row">
+        <div class="col-md-12">
             {% get_fieldset status,unit_number,last_name,first_name,email,address,city,state,country,unit_number,additional_vars,description as contact_fields from form %}
             {% for field in contact_fields.visible_fields %}
-                <div class="span6">
-                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                        <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                        <div class="input">
+                <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <div class="col-xs-8">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}
-                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                <span class="help-inline">
+                                    {{ field.errors|removetags:"ul li"|safe }}
+                                </span>
                             {% endif %}
-                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                            <span class="help-block">
+                                {{ field.help_text|capfirst }}
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -64,17 +63,15 @@
         </div>
     </div>
 
-    <div class="actions">
-        {% if action == 'update' %}
-            <input id="update" class="btn btn-primary" type="submit" value="{% trans 'update'|title %}" />
-        {% else %}
-            <input id="add" class="btn btn-primary" type="submit" value="{% trans 'submit'|title %}" />
-        {% endif %}
-            &nbsp;&nbsp;
-        {% if action == 'update' %}
-            <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans 'delete'|title %}" />
-        {% endif %}
-    </div>
+    {% if action == 'update' %}
+        <input id="update" class="btn btn-primary" type="submit" value="{% trans 'update'|title %}" />
+    {% else %}
+        <input id="add" class="btn btn-primary" type="submit" value="{% trans 'submit'|title %}" />
+    {% endif %}
+        &nbsp;&nbsp;
+    {% if action == 'update' %}
+        <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans 'delete'|title %}" />
+    {% endif %}
 </form>
 
 {% endblock %}

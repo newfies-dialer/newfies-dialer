@@ -88,16 +88,7 @@ class CampaignForm(ModelForm):
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
 
-        change_field_list = [
-            'name', 'description', 'callerid', 'caller_name', 'aleg_gateway',
-            'content_object', 'extra_data', 'phonebook', 'frequency',
-            'callmaxduration', 'maxretry', 'intervalretry', 'calltimeout',
-            'completion_maxretry', 'completion_intervalretry', 'startingdate',
-            'expirationdate', 'daily_start_time', 'daily_stop_time', 'dnc',
-            'voicemail', 'amd_behavior', 'voicemail_audiofile', 'agent_script',
-            'lead_disposition', 'external_link'
-        ]
-        for i in change_field_list:
+        for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
 
         if user:
@@ -212,8 +203,8 @@ class DuplicateCampaignForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(DuplicateCampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        self.fields['name'].widget.attrs['class'] = "form-control"
-        self.fields['phonebook'].widget.attrs['class'] = "form-control"
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             list_pb = []
             list_pb.append((0, '---'))

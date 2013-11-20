@@ -28,16 +28,18 @@
                     {% for field in campaign_fields.visible_fields %}
                         <div class="col-md-6">
                             <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-inline">
-                                    {{ field.errors|removetags:"ul li"|safe }}
+                            <div class="col-xs-6">
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">
+                                        {{ field.errors|removetags:"ul li"|safe }}
+                                    </span>
+                                {% endif %}
+                                <span class="help-block">
+                                    {{ field.help_text|capfirst }}
                                 </span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ field.help_text|capfirst }}
-                            </span>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -49,16 +51,18 @@
                     {% for field in campaign_fields %}
                         <div class="col-md-6">
                             <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">
-                                        {{ field.errors|removetags:"ul li"|safe }}
+                                <div class="col-xs-6">
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">
+                                            {{ field.errors|removetags:"ul li"|safe }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="help-block">
+                                        {{ field.help_text|capfirst }}
                                     </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
-                                </span>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -74,16 +78,18 @@
                 {% for field in campaign_settings_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-inline">
-                                    {{ field.errors|removetags:"ul li"|safe }}
+                            <div class="col-xs-6">
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">
+                                        {{ field.errors|removetags:"ul li"|safe }}
+                                    </span>
+                                {% endif %}
+                                <span class="help-block">
+                                    {{ field.help_text|capfirst }}
                                 </span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ field.help_text|capfirst }}
-                            </span>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
@@ -99,16 +105,18 @@
                 {% for field in campaign_settings_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-inline">
-                                    {{ field.errors|removetags:"ul li"|safe }}
+                            <div class="col-xs-6">
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">
+                                        {{ field.errors|removetags:"ul li"|safe }}
+                                    </span>
+                                {% endif %}
+                                <span class="help-block">
+                                    {{ field.help_text|capfirst }}
                                 </span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ field.help_text|capfirst }}
-                            </span>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
@@ -119,13 +127,18 @@
         <!--Voicemail settings is not enabled by default-->
         {% if AMD %}
         <legend>{% trans "voicemail settings"|title %}</legend>
-
-        <div class="form-group">
-            <div class="checkbox">
-            {% get_fieldset voicemail as settings_fields from form %}
-            {% for field in settings_fields %}
-                <label style="display: inline;" for="{{ field.auto_id }}">{{ field }}&nbsp;{{ field.label|title }}</label>
-            {% endfor %}
+        <div class="row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <div class="col-xs-6">
+                        <div class="checkbox-inline">
+                        {% get_fieldset voicemail as settings_fields from form %}
+                        {% for field in settings_fields %}
+                            <label for="{{ field.auto_id }}">{{ field }}&nbsp;{{ field.label|title }}</label>
+                        {% endfor %}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div>&nbsp;</div>
@@ -135,16 +148,18 @@
                 {% for field in campaign_fields.visible_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-inline">
-                                    {{ field.errors|removetags:"ul li"|safe }}
+                            <div class="col-xs-6">
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">
+                                        {{ field.errors|removetags:"ul li"|safe }}
+                                    </span>
+                                {% endif %}
+                                <span class="help-block">
+                                    {{ field.help_text|capfirst }}
                                 </span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ field.help_text|capfirst }}
-                            </span>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}
@@ -160,16 +175,18 @@
                     {% for field in date_fields %}
                         <div class="col-md-6">
                             <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">
-                                        {{ field.errors|removetags:"ul li"|safe }}
+                                <div class="col-xs-6">
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">
+                                            {{ field.errors|removetags:"ul li"|safe }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="help-block">
+                                        {{ field.help_text|capfirst }}
                                     </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
-                                </span>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -182,16 +199,18 @@
                     {% for field in date_fields %}
                         <div class="col-md-6">
                             <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">
-                                        {{ field.errors|removetags:"ul li"|safe }}
+                                <div class="col-xs-6">
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">
+                                            {{ field.errors|removetags:"ul li"|safe }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="help-block">
+                                        {{ field.help_text|capfirst }}
                                     </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
-                                </span>
+                                </div>
                             </div>
                         </div>
                     {% endfor %}
@@ -219,16 +238,18 @@
                 {% for field in callcenter_settings_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-inline">
-                                    {{ field.errors|removetags:"ul li"|safe }}
+                            <div class="col-xs-6">
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">
+                                        {{ field.errors|removetags:"ul li"|safe }}
+                                    </span>
+                                {% endif %}
+                                <span class="help-block">
+                                    {{ field.help_text|capfirst }}
                                 </span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ field.help_text|capfirst }}
-                            </span>
+                            </div>
                         </div>
                     </div>
                 {% endfor %}

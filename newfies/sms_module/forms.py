@@ -35,8 +35,8 @@ class SMSCampaignForm(ModelForm):
     class Meta:
         model = SMSCampaign
         fields = ['campaign_code', 'name', 'description',
-                  'callerid', 'status', 'sms_gateway',
-                  'text_message', 'extra_data', 'phonebook',
+                  'callerid', 'status', 'sms_gateway', 'phonebook',
+                  'extra_data', 'text_message',
                   'frequency', 'maxretry', 'intervalretry',
                   'startingdate', 'expirationdate',
                   'daily_start_time', 'daily_stop_time',
@@ -44,12 +44,16 @@ class SMSCampaignForm(ModelForm):
                   'saturday', 'sunday', 'ds_user']
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
+            'extra_data': Textarea(attrs={'cols': 23, 'rows': 3}),
+            'text_message': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
 
     def __init__(self, user, *args, **kwargs):
         super(SMSCampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        self.fields['description'].widget.attrs['class'] = "input-xlarge"
+
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
         if user:
             self.fields['ds_user'].initial = user
@@ -123,6 +127,8 @@ class SMSDashboardForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(SMSDashboardForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['smscampaign', 'search_type']
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's running campaign list
         if user:
             camp_list = []

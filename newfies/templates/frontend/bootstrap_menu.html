@@ -38,17 +38,9 @@
                     </ul>
                 </li>
                 <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "contacts"|title %} <b class="caret"></b></a>
-
-                    <ul class="dropdown-menu">
-                        {% if perms.dialer_contact.view_phonebook %}
-                            <li class="{% ifcontains '/phonebook/' %}active{% endifcontains %}"><a href="/phonebook/">{% trans "phonebooks"|title %}</a></li>
-                        {% endif %}
-
-                        {% if perms.dialer_contact.view_contact %}
-                            <li class="{% ifcontains '/contact/' %}active{% endifcontains %}"><a href="/contact/">{% trans "contacts"|title %}</a></li>
-                        {% endif %}
-                    </ul>
+                    {% if perms.dialer_contact.view_contact %}
+                        <a href="/contact/">{% trans "contacts"|title %}</a>
+                    {% endif %}
                 </li>
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{% trans "do not call"|capfirst %}">{% trans "dnc"|upper %} <b class="caret"></b></a>

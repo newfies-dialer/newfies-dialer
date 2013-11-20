@@ -19,6 +19,8 @@ from celery.task import PeriodicTask
 from django.conf import settings
 from dialer_campaign.constants import SUBSCRIBER_STATUS, AMD_BEHAVIOR
 from dialer_cdr.models import Callrequest, VoIPCall
+from appointment.models.alarms import AlarmRequest
+from appointment.constants import ALARMREQUEST_STATUS
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
     VOIPCALL_AMD_STATUS, LEG_TYPE
 #from dialer_cdr.function_def import get_prefix_obj
@@ -554,7 +556,6 @@ def esl_dialout(dial_command):
     """
     function to dialout via ESL
     """
-    print dial_command
     #Connect to ESL
     import ESL
     c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
@@ -725,19 +726,21 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 (args_str, gateways, dialout_phone_number, settings.ESL_SCRIPT)
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
-
+            logger.warn('dial_command : %s' % dial_command)
             request_uuid = esl_dialout(dial_command)
+            if request_uuid and len(request_uuid) > 0 and request_uuid[:5] == 'error':
+                outbound_failure = True
             debug_query(13)
         except:
             raise
             logger.error('error : ESL')
             outbound_failure = True
-            return False
-        logger.debug('Received RequestUUID :> ' + request_uuid)
+        logger.debug('Received RequestUUID :> %s' % request_uuid)
     else:
         logger.error('No other method supported!')
         obj_callrequest.status = CALLREQUEST_STATUS.FAILURE
         obj_callrequest.save()
+        #ADD if alarm_request_id update AlarmRequest
         return False
 
     #Survey Call or Alarm Call
@@ -753,7 +756,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             obj_callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
         obj_callrequest.subscriber.save()
     elif alarm_request_id:
-        logger.info('Nothing to do here :> ' + alarm_request_id)
+        if outbound_failure:
+            obj_alarmreq = AlarmRequest.objects.get(id=alarm_request_id)
+            obj_alarmreq.status = ALARMREQUEST_STATUS.FAILURE
+            obj_alarmreq.save()
 
     #Update CallRequest Object
     obj_callrequest.request_uuid = request_uuid

@@ -18,7 +18,7 @@ class SMSTemplate(models.Model):
     """
     label = models.CharField(max_length=75, help_text=_('SMS template name'))
     template_key = models.CharField(max_length=30, unique=True,
-                                    help_text=_('Unique name used to pick some template for recurring action, such as activation or warning'))
+        help_text=_('Unique name used to pick some template for recurring action, such as activation or warning'))
     sender_phonenumber = models.CharField(max_length=75)
     sms_text = models.TextField(max_length=500)
     created_date = models.DateTimeField(auto_now_add=True)
@@ -26,20 +26,20 @@ class SMSTemplate(models.Model):
     class Meta:
         verbose_name = _('SMS template')
         verbose_name_plural = _('SMS templates')
-        app_label = "appointment"
+        app_label = 'appointment'
 
     def __unicode__(self):
         return force_unicode(self.template_key)
 
 
 class Alarm(models.Model):
-    '''
+    """
     This is for Alarms / Reminders on events models.
-    '''
+    """
     alarm_phonenumber = models.CharField(max_length=50, blank=True, null=True,
                                          verbose_name=_("alarm phonenumber"))
-    alarm_email = models.EmailField(blank=True, null=True, verbose_name=_('alarm email'))
-
+    alarm_email = models.EmailField(blank=True, null=True,
+                                    verbose_name=_('alarm email'))
     daily_start = models.TimeField(verbose_name=_('daily start'), default='00:00:00',
                                    help_text=_("time format: HH:MM:SS"))
     daily_stop = models.TimeField(verbose_name=_('daily stop'), default='23:59:59',
@@ -55,7 +55,6 @@ class Alarm(models.Model):
     method = models.IntegerField(choices=list(ALARM_METHOD),
                                  default=ALARM_METHOD.CALL,
                                  verbose_name=_("method"), blank=True, null=True)
-
     survey = models.ForeignKey(Survey, verbose_name=_("survey"),
                                blank=True, null=True,
                                related_name="survey")
@@ -69,7 +68,6 @@ class Alarm(models.Model):
                               related_name="event")
     date_start_notice = models.DateTimeField(verbose_name=_('alarm date'),
                                              default=(lambda: datetime.now()))
-
     status = models.IntegerField(choices=list(ALARM_STATUS),
                                  default=ALARM_STATUS.PENDING,
                                  verbose_name=_("status"))
@@ -83,7 +81,6 @@ class Alarm(models.Model):
                                    verbose_name=_("URL confirm"))
     phonenumber_transfer = models.CharField(max_length=50, blank=True, null=True,
                                             verbose_name=_("phonenumber transfer"))
-
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('created date'))
 
     class Meta:
@@ -108,7 +105,9 @@ class Alarm(models.Model):
             return timediff.total_seconds()
 
     def copy_alarm(self, new_event):
-        #copy alarm
+        """
+        Create a copy of the Alarm
+        """
         new_alarm = Alarm.objects.create(
             alarm_phonenumber=self.alarm_phonenumber,
             alarm_email=self.alarm_email,
@@ -155,9 +154,9 @@ class Alarm(models.Model):
 
 
 class AlarmRequest(models.Model):
-    '''
+    """
     AlarmRequest : request for Alarms
-    '''
+    """
     alarm = models.ForeignKey(Alarm, blank=True, null=True, verbose_name=_("alarm"),
                               help_text=_("select alarm"),
                               related_name="request_alarm")

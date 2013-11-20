@@ -486,7 +486,8 @@ class Result(models.Model):
 
 
 class ResultAggregate(models.Model):
-    """This gives survey result aggregate, used to display survey
+    """
+    This gives survey result aggregate, used to display survey
     result in a more efficient way
 
     **Name of DB table**: result_aggregate

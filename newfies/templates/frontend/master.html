@@ -200,12 +200,14 @@
         </div>
 
         {% if user.is_authenticated %}
-        <!--<div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
-            <div class="list-group">
-                <a class="list-group-item active" href="#">Link</a>
-                <a class="list-group-item" href="#">Link</a>
-            </div>
-        </div>-->
+            {% block sidebar_menu %}
+            <!--<div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
+                <div class="list-group">
+                    <a class="list-group-item active" href="#">Link</a>
+                    <a class="list-group-item" href="#">Link</a>
+                </div>
+            </div>-->
+            {% endblock %}
         {% endif %}
     </div>
 

@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons %}
+{% load i18n pagination_tags common_tags icons activelink %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -93,4 +93,17 @@
         </form>
     </div>
 </div>
+{% endblock %}
+
+{% block sidebar_menu %}
+    <div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
+        <div class="list-group">
+            {% if perms.dialer_contact.view_phonebook %}
+                <a class="list-group-item {% ifcontains '/phonebook/' %}active{% endifcontains %}" href="/phonebook/">{% trans "phonebooks"|title %}</a>
+            {% endif %}
+            {% if perms.dialer_contact.view_contact %}
+                <a class="list-group-item {% ifcontains '/contact/' %}active{% endifcontains %}" href="/contact/">{% trans "contacts"|title %}</a>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}

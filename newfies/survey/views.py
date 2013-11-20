@@ -844,7 +844,7 @@ def survey_cdr_daily_report(all_call_list):
 
 
 def get_survey_result(survey_result_kwargs):
-    """Get survey result report from selected survey campaign"""
+    """Get survey result report from the selected Survey"""
     survey_result = ResultAggregate.objects\
         .filter(**survey_result_kwargs)\
         .values('section__question', 'response', 'count')\

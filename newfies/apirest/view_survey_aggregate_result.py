@@ -25,7 +25,7 @@ logger = logging.getLogger('newfies.filelog')
 
 class SurveyAggregateResultViewSet(APIView):
     """
-    List survey aggregate result per campaign
+    List Result aggregate result per survey
     """
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
@@ -35,6 +35,7 @@ class SurveyAggregateResultViewSet(APIView):
         error = {}
         survey_result_kwargs = {}
 
+        # TODO: to fix as we removed campaign, we will use Survey
         try:
             survey_result_kwargs['campaign'] = Campaign.objects.get(id=campaign_id)
         except:

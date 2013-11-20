@@ -241,7 +241,7 @@ function Database:save_result_mem(callrequest_id, section_id, record_file, recor
     self.results[tonumber(section_id)] = {callrequest_id, section_id, record_file, recording_duration, response, os.time()}
 end
 
-function Database:commit_result_mem(campaign_id, survey_id)
+function Database:commit_result_mem(survey_id)
     --Commit all results with one bulk insert to the Database
     local sql_result = ''
     local count = 0
@@ -253,7 +253,7 @@ function Database:commit_result_mem(campaign_id, survey_id)
         sql_result = sql_result.."("..v[1]..", "..v[2]..", '"..v[3].."', "..v[4]..", '"..v[5].."', CURRENT_TIMESTAMP("..v[6].."))"
         --Save Aggregate result
         --TODO: For performance replace this by a celery task which will read 1000 survey_result and aggregate them in block
-        self:set_aggregate_result(campaign_id, survey_id, v[2], v[5], v[4])
+        self:set_aggregate_result(survey_id, v[2], v[5], v[4])
     end
     local sqlquery = "INSERT INTO survey_result "..
         "(callrequest_id, section_id, record_file, recording_duration, response, created_date) VALUES "..sql_result
@@ -266,9 +266,9 @@ function Database:commit_result_mem(campaign_id, survey_id)
     end
 end
 
-function Database:save_result_aggregate(campaign_id, survey_id, section_id, response)
-    local sqlquery = "INSERT INTO survey_resultaggregate (campaign_id, survey_id, section_id, response, count, created_date) "..
-        "VALUES ("..campaign_id..", "..survey_id..", "..section_id..", '"..response.."', 1, NOW())"
+function Database:save_result_aggregate(survey_id, section_id, response)
+    local sqlquery = "INSERT INTO survey_resultaggregate (survey_id, section_id, response, count, created_date) "..
+        "VALUES ("..survey_id..", "..section_id..", '"..response.."', 1, NOW())"
     self:db_debugger("DEBUG", "Save Result Aggregate:"..sqlquery)
     local res = self.dbh:execute(sqlquery)
     if not res then
@@ -290,9 +290,9 @@ function Database:add_dnc(dnc_id, phonenumber)
     end
 end
 
-function Database:update_result_aggregate(campaign_id, survey_id, section_id, response)
+function Database:update_result_aggregate(survey_id, section_id, response)
     local sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
-        " WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..response.."'"
+        " WHERE survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..response.."'"
     self:db_debugger("DEBUG", "Update Result Aggregate:"..sqlquery)
     local res = self.dbh:execute(sqlquery)
     if not res then
@@ -302,8 +302,8 @@ function Database:update_result_aggregate(campaign_id, survey_id, section_id, re
     end
 end
 
-function Database:set_aggregate_result(campaign_id, survey_id, section_id, response, recording_dur)
-    -- save the aggregate result for the campaign / survey
+function Database:set_aggregate_result(survey_id, section_id, response, recording_dur)
+    -- save the aggregate result for the survey
     if recording_dur and tonumber(recording_dur) > 0 then
         recording_dur = tonumber(recording_dur)
         response = 'error to detect recording duration'
@@ -324,12 +324,12 @@ function Database:set_aggregate_result(campaign_id, survey_id, section_id, respo
     --TODO: Replace Insert ResultAggregate by a stored procedure PL/SQL
 
     -- Insert ResultAggregate
-    if self:save_result_aggregate(campaign_id, survey_id, section_id, response) then
+    if self:save_result_aggregate(survey_id, section_id, response) then
         -- no errors in save_result_aggregate
         return true
     else
         -- log error
-        if not self:update_result_aggregate(campaign_id, survey_id, section_id, response) then
+        if not self:update_result_aggregate(survey_id, section_id, response) then
             self:db_debugger("ERROR", "Error update_result_aggregate")
         end
         return true

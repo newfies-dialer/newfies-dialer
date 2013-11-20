@@ -492,8 +492,6 @@ class ResultAggregate(models.Model):
 
     **Name of DB table**: result_aggregate
     """
-    campaign = models.ForeignKey(Campaign, null=True, blank=True,
-                                 verbose_name=_("campaign"))
     survey = models.ForeignKey(Survey, related_name='ResultSum Survey')
     section = models.ForeignKey(Section, related_name='ResultSum Section')
     response = models.CharField(max_length=150, blank=False, db_index=True,
@@ -504,7 +502,7 @@ class ResultAggregate(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("campaign", "survey", "section", "response")
+        unique_together = ("survey", "section", "response")
 
     def __unicode__(self):
         return '[%s] %s = %s' % (self.id, self.section, self.response)

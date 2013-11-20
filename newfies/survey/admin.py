@@ -124,9 +124,9 @@ class ResultAggregateAdmin(admin.ModelAdmin):
 
     """Allows the administrator to view and modify survey aggregated result."""
 
-    list_display = ('id', 'campaign', 'survey', 'section', 'response',
+    list_display = ('id', 'survey', 'section', 'response',
                     'count', 'created_date')
-    search_fields = ['campaign', 'survey']
+    search_fields = ['survey']
     list_filter = ['created_date', 'survey']
     list_display_links = ('id',)
     ordering = ('id', )

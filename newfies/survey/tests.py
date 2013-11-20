@@ -577,7 +577,6 @@ class SurveyModel(TestCase):
         # ResultAggregate model
         self.result_aggregate = ResultAggregate(
             survey=self.survey,
-            campaign_id=1,
             section=self.section,
             count=1,
             response='apple'

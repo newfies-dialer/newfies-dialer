@@ -53,7 +53,7 @@ if false then
     --section_id = section_id + 1
     db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
 
-    db:commit_result_mem(campaign_id, survey_id)
+    db:commit_result_mem(survey_id)
 end
 
 if false then

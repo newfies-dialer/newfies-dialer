@@ -133,7 +133,6 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
                 pass
         #response = '' . join([choice(alpha) for i in range(length)])
         ResultAggregate.objects.create(
-                            campaign=obj_campaign,
                             survey_id=obj_campaign.object_id,
                             section=list_section[section_id],
                             response=choice(RESPONSE),

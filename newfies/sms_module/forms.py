@@ -123,6 +123,8 @@ class SMSDashboardForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         super(SMSDashboardForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['smscampaign', 'search_type']
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's running campaign list
         if user:
             camp_list = []

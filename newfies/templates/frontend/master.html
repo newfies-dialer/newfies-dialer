@@ -89,6 +89,14 @@
     <div class="row row-offcanvas row-offcanvas-right">
 
         {% if user.is_authenticated %}
+            {% if not request.path|check_url_for_template_width %}
+                {% block sidebar_menu %}
+                    {% include "frontend/bootstrap_side_menu.html" %}
+                {% endblock %}
+            {% endif %}
+        {% endif %}
+
+        {% if user.is_authenticated %}
             {% if request.path|check_url_for_template_width %}
                 <div class="col-xs-12 col-sm-12">
             {% else %}
@@ -198,14 +206,6 @@
     <!-- CONTENT BLOCK -->
     {% endblock %}
         </div>
-
-    {% if user.is_authenticated %}
-        {% if not request.path|check_url_for_template_width %}
-            {% block sidebar_menu %}
-                {% include "frontend/bootstrap_side_menu.html" %}
-            {% endblock %}
-        {% endif %}
-    {% endif %}
 
     </div>
 

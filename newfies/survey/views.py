@@ -903,8 +903,7 @@ def survey_report(request):
     sort_col_field_list = ['starting_date', 'phone_number', 'duration',
                            'disposition', 'id']
     default_sort_field = 'starting_date'
-    pagination_data =\
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
@@ -989,7 +988,7 @@ def survey_report(request):
     all_call_list = []
     try:
         campaign_obj = Campaign.objects.get(id=int(campaign_id))
-        survey_result_kwargs['campaign'] = campaign_obj
+        survey_result_kwargs['survey__campaign'] = campaign_obj
 
         survey_result = get_survey_result(survey_result_kwargs)
         kwargs['callrequest__campaign'] = campaign_obj

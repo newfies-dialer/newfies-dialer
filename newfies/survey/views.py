@@ -886,6 +886,7 @@ def survey_report(request):
     tday = datetime.today()
     from_date = tday.strftime("%Y-%m-%d")
     to_date = tday.strftime("%Y-%m-%d")
+
     form = SurveyDetailReportForm(request.user,
                                   initial={'from_date': from_date,
                                            'to_date': to_date})
@@ -910,9 +911,9 @@ def survey_report(request):
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
 
-    campaign_obj = ''
+    survey_id = ''
     action = 'tabs-1'
-
+    campaign_obj = ''
     if request.method == 'POST':
         #search_tag = 1
         form = SurveyDetailReportForm(request.user, request.POST)
@@ -920,7 +921,7 @@ def survey_report(request):
             # set session var value
             request.session['session_from_date'] = ''
             request.session['session_to_date'] = ''
-            request.session['session_campaign_id'] = ''
+            request.session['session_survey_id'] = ''
             request.session['session_surveycalls_kwargs'] = ''
             request.session['session_survey_cdr_daily_data'] = {}
 
@@ -934,18 +935,18 @@ def survey_report(request):
                 to_date = request.POST['to_date']
                 request.session['session_to_date'] = to_date
 
-            campaign_id = variable_value(request, 'campaign')
-            if campaign_id:
-                request.session['session_campaign_id'] = campaign_id
+            survey_id = variable_value(request, 'survey_id')
+            if survey_id:
+                request.session['session_survey_id'] = survey_id
     else:
         rows = []
-        campaign_id = ''
+        survey_id = ''
 
     try:
         if request.GET.get('page') or request.GET.get('sort_by'):
             from_date = request.session.get('session_from_date')
             to_date = request.session.get('session_to_date')
-            campaign_id = request.session.get('session_campaign_id')
+            survey_id = request.session.get('session_survey_id')
             search_tag = request.session.get('session_search_tag')
         else:
             from_date
@@ -961,7 +962,7 @@ def survey_report(request):
         # unset session var value
         request.session['session_from_date'] = from_date
         request.session['session_to_date'] = to_date
-        request.session['session_campaign_id'] = ''
+        request.session['session_survey_id'] = ''
         request.session['session_surveycalls_kwargs'] = ''
         request.session['session_search_tag'] = search_tag
 
@@ -987,10 +988,10 @@ def survey_report(request):
 
     all_call_list = []
     try:
-        campaign_obj = Campaign.objects.get(id=int(campaign_id))
-        survey_result_kwargs['survey__campaign'] = campaign_obj
-
+        survey_result_kwargs['survey_id'] = survey_id
         survey_result = get_survey_result(survey_result_kwargs)
+
+        campaign_obj = Survey.objects.get(id=int(survey_id)).campaign
         kwargs['callrequest__campaign'] = campaign_obj
 
         # List of Survey VoIP call report

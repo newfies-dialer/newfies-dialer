@@ -25,7 +25,7 @@
         <div class="row">
             <div class="span12">
                 <div class="row">
-                    {% get_fieldset campaign,from_date,to_date as campaign_fields from form %}
+                    {% get_fieldset survey_id,from_date,to_date as campaign_fields from form %}
                     {% for field in campaign_fields.visible_fields %}
                         <div class="span4 clearfix{% if field.errors %} control-group error{% endif %}">
                             <label for="{{ field.auto_id }}">{{ field.label|title }}</label>

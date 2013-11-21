@@ -18,7 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
 from dialer_contact.forms import SearchForm
 from survey.models import Survey_template, Section_template, \
-    Branching_template
+    Branching_template, Survey
 from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile
 
@@ -346,11 +346,27 @@ class SurveyReportForm(forms.Form):
             self.fields['campaign'].choices = list
 
 
-class SurveyDetailReportForm(SearchForm, SurveyReportForm):
+class SurveyDetailReportForm(SearchForm):
+
+    survey_id = forms.ChoiceField(label=_('survey'), required=False)
 
     def __init__(self, user, *args, **kwargs):
-        super(SurveyDetailReportForm, self).__init__(user, *args, **kwargs)
-        self.fields.keyOrder = ['campaign', 'from_date', 'to_date']
+        super(SurveyDetailReportForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['survey_id', 'from_date', 'to_date']
+        if user:
+            survey_list = []
+            try:
+                if user.is_superuser:
+                    survey_objs = Survey.objects.values_list('id', 'name').all().order_by('-id')
+                else:
+                    survey_objs = Survey.objects.values_list('id', 'name')\
+                        .filter(user=user).order_by('-id')
+
+                for i in survey_objs:
+                    survey_list.append((i[0], i[1]))
+            except:
+                pass
+            self.fields['survey_id'].choices = survey_list
 
 
 class SurveyFileImport(forms.Form):

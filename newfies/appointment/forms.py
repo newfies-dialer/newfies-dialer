@@ -57,6 +57,9 @@ class CalendarSettingForm(ModelForm):
             list_gateway.append((l.id, l.name))
         self.fields['aleg_gateway'].choices = list_gateway
 
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
 
 class CalendarUserNameChangeForm(UserChangeForm):
     """CalendarUserNameChangeForm is used to change CalendarUser username"""

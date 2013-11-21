@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.conf import settings
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -20,18 +20,18 @@ from django.shortcuts import render_to_response, get_object_or_404, render
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from django.contrib.auth.forms import PasswordChangeForm, \
-    UserCreationForm, AdminPasswordChangeForm
+    AdminPasswordChangeForm
 from django.contrib.auth.models import Permission
-from django.views.decorators.csrf import csrf_exempt
+#from django.views.decorators.csrf import csrf_exempt
 from agent.models import AgentProfile, Agent
 from agent.constants import AGENT_COLUMN_NAME
 from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm, \
-    AgentNameChangeForm
+    AgentNameChangeForm, AgentCreationForm, AgentPasswordChangeForm
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
 from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import get_pagination_vars
-import json
+#import json
 
 
 def agent_login_form(request):
@@ -106,7 +106,7 @@ def agent_change_password(request, object_id):
 
     **Attributes**:
 
-        * ``form`` - AdminPasswordChangeForm
+        * ``form`` - AgentPasswordChangeForm
         * ``template`` - 'frontend/agent/change_password.html',
              'frontend/registration/user_detail_change.html'
 
@@ -120,9 +120,10 @@ def agent_change_password(request, object_id):
     agent_userdetail = get_object_or_404(Agent, pk=object_id)
     agent_username = agent_userdetail.username
 
-    user_password_form = AdminPasswordChangeForm(user=agent_userdetail)
+    user_password_form = AgentPasswordChangeForm(user=agent_userdetail)
+
     if request.method == 'POST':
-        user_password_form = AdminPasswordChangeForm(user=agent_userdetail,
+        user_password_form = AgentPasswordChangeForm(user=agent_userdetail,
                                                      data=request.POST)
         if user_password_form.is_valid():
             user_password_form.save()
@@ -290,17 +291,17 @@ def agent_add(request):
 
     **Attributes**:
 
-        * ``form`` - UserCreationForm
+        * ``form`` - AgentCreationForm
         * ``template`` - frontend/agent/change.html
 
     **Logic Description**:
 
         * Add a new agent which will belong to the logged in manager
-          via the UserCreationForm & get redirected to the agent list
+          via the AgentCreationForm & get redirected to the agent list
     """
-    form = UserCreationForm()
+    form = AgentCreationForm()
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = AgentCreationForm(request.POST)
         if form.is_valid():
             new_agent = form.save()
 
@@ -392,7 +393,8 @@ def agent_change(request, object_id):
     agent_userdetail = get_object_or_404(Agent, pk=agent_profile.user_id)
 
     form = AgentChangeDetailExtendForm(request.user, instance=agent_profile)
-    agent_username_form = AgentNameChangeForm(initial={'username': agent_userdetail.username,
+    agent_username_form = AgentNameChangeForm(initial={
+        'username': agent_userdetail.username,
         'password': agent_userdetail.password})
 
     if request.method == 'POST':
@@ -400,10 +402,12 @@ def agent_change(request, object_id):
             agent_del(request, object_id)
             return HttpResponseRedirect('/agent/')
         else:
-            form = AgentChangeDetailExtendForm(request.user, request.POST, instance=agent_profile)
+            form = AgentChangeDetailExtendForm(request.user, request.POST,
+                                               instance=agent_profile)
 
-            agent_username_form = AgentNameChangeForm(request.POST,
-                initial={'password': agent_userdetail.password}, instance=agent_userdetail)
+            agent_username_form = AgentNameChangeForm(
+                request.POST, initial={'password': agent_userdetail.password},
+                instance=agent_userdetail)
 
             # Save agent username
             if agent_username_form.is_valid():

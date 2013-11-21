@@ -43,16 +43,9 @@
                     {% endif %}
                 </li>
                 <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{% trans "do not call"|capfirst %}">{% trans "dnc"|upper %} <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                      {% if perms.dnc.view_dnc_list %}
-                        <li class="{% ifcontains '/dnc_list/' %}active{% endifcontains %}"><a href="/dnc_list/">{% trans "dnc"|upper %} {% trans "list"|title %}</a></li>
-                      {% endif %}
-
-                      {% if perms.dnc.view_dnccontact %}
-                        <li class="{% ifcontains '/dnc_contact/' %}active{% endifcontains %}"><a href="/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts" %}</a></li>
-                      {% endif %}
-                    </ul>
+                    {% if perms.dnc.view_dnc_list %}
+                        <a href="/dnc_list/">{% trans "dnc"|upper %}</a>
+                    {% endif %}
                 </li>
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{% trans "appointment "|capfirst %}">{% trans "appointment "|title %} <b class="caret"></b></a>
@@ -85,10 +78,6 @@
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{% trans "callcenter"|capfirst %}">{% trans "callcenter"|title %} <b class="caret"></b></a>
                     <ul class="dropdown-menu">
-                      {% if perms.user_profile.view_agent %}
-                        <li class="{% ifcontains '/agent/' %}active{% endifcontains %}"><a href="/agent/">{% trans "agent"|title %}</a></li>
-                      {% endif %}
-
                       {% if perms.user_profile.view_queue %}
                         <li class="{% ifcontains '/queue/' %}active{% endifcontains %}"><a href="/queue/">{% trans "queue"|title %}</a></li>
                       {% endif %}

@@ -14,8 +14,23 @@
 from django.forms import ModelForm
 from django.contrib.auth.forms import UserChangeForm
 from django.utils.translation import ugettext as _
+from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm
 from agent.models import AgentProfile, Agent
 from agent.function_def import manager_list
+
+
+class AgentPasswordChangeForm(AdminPasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(AgentPasswordChangeForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
+
+class AgentCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(AgentCreationForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class AgentNameChangeForm(UserChangeForm):
@@ -27,6 +42,7 @@ class AgentNameChangeForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super(AgentNameChangeForm, self).__init__(*args, **kwargs)
+        self.fields['username'].widget.attrs['class'] = "form-control"
 
 
 class AgentProfileForm(ModelForm):
@@ -39,6 +55,8 @@ class AgentProfileForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(AgentProfileForm, self).__init__(*args, **kwargs)
         self.fields['manager'].choices = manager_list()
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class AgentChangeDetailExtendForm(ModelForm):
@@ -52,6 +70,8 @@ class AgentChangeDetailExtendForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(AgentChangeDetailExtendForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class AgentDetailExtendForm(ModelForm):

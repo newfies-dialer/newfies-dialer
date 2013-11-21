@@ -117,6 +117,8 @@ class CalendarForm(ModelForm):
         super(CalendarForm, self).__init__(*args, **kwargs)
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['user'].choices = get_calendar_user_list(calendar_user_list)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class EventAdminForm(ModelForm):

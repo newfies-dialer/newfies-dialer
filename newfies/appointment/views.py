@@ -229,7 +229,7 @@ def calendar_user_change_password(request, object_id):
 
     **Attributes**:
 
-        * ``form`` - AdminPasswordChangeForm
+        * ``form`` - CalendarUserPasswordChangeForm
         * ``template`` - 'frontend/appointment/calendar_user/change_password.html',
              'frontend/registration/user_detail_change.html'
 
@@ -243,10 +243,10 @@ def calendar_user_change_password(request, object_id):
     calendar_user_userdetail = get_object_or_404(CalendarUser, pk=object_id)
     calendar_user_username = calendar_user_userdetail.username
 
-    user_password_form = AdminPasswordChangeForm(user=calendar_user_userdetail)
+    user_password_form = CalendarUserPasswordChangeForm(user=calendar_user_userdetail)
     if request.method == 'POST':
-        user_password_form = AdminPasswordChangeForm(user=calendar_user_userdetail,
-                                                     data=request.POST)
+        user_password_form = CalendarUserPasswordChangeForm(user=calendar_user_userdetail,
+                                                            data=request.POST)
         if user_password_form.is_valid():
             user_password_form.save()
             request.session["msg"] = _('%s password has been changed.' % calendar_user_username)

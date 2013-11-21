@@ -6,11 +6,6 @@
     <script src="{{ STATIC_URL }}newfies/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 
     {% include "frontend/common_datepicker.html" %}
-    <style type="text/css">
-        td {
-            width: auto;
-        }
-    </style>
 {% endblock %}
 
 {% block content_header %}
@@ -27,94 +22,96 @@
 
 {% block content %}
 
-<form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
 
     <fieldset>
         <legend>{% trans "general settings"|title %}</legend>
-        <div class="span12">
-            <div class="row">
-                {% get_fieldset alarm_phonenumber,alarm_email,survey,mail_template,sms_template,event,date_start_notice as general_fields from form %}
-                {% for field in general_fields.hidden_fields %}
-                    {{ field }}
-                {% endfor %}
-                {% for field in general_fields.visible_fields %}
-                    <div class="span6">
-                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                            <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            <div class="input">
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ field.help_text|capfirst }} </span>
-                            </div>
+        <div class="row">
+            {% get_fieldset alarm_phonenumber,alarm_email,survey,mail_template,sms_template,event,date_start_notice as general_fields from form %}
+            {% for field in general_fields.hidden_fields %}
+                {{ field }}
+            {% endfor %}
+            {% for field in general_fields.visible_fields %}
+                <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="col-xs-8">
+                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-inline">
+                                {{ field.errors|removetags:"ul li"|safe }}
+                            </span>
+                        {% endif %}
+                        <span class="help-block">
+                            {{ field.help_text|capfirst }}
+                        </span>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
     </fieldset>
     <fieldset>
         <legend>{% trans "alarm settings"|title %}</legend>
-        <div class="span12">
-            <div class="row">
-                {% get_fieldset daily_start,daily_stop,advance_notice,maxretry,retry_delay,num_attempt,method,status as alarm_fields from form %}
-                {% for field in alarm_fields.hidden_fields %}
-                    {{ field }}
-                {% endfor %}
-                {% for field in alarm_fields.visible_fields %}
-                    <div class="span6">
-                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                            <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            <div class="input">
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ field.help_text|capfirst }} </span>
-                            </div>
+        <div class="row">
+            {% get_fieldset daily_start,daily_stop,advance_notice,maxretry,retry_delay,num_attempt,method,status as alarm_fields from form %}
+            {% for field in alarm_fields.hidden_fields %}
+                {{ field }}
+            {% endfor %}
+            {% for field in alarm_fields.visible_fields %}
+                <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="col-xs-8">
+                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-inline">
+                                {{ field.errors|removetags:"ul li"|safe }}
+                            </span>
+                        {% endif %}
+                        <span class="help-block">
+                            {{ field.help_text|capfirst }}
+                        </span>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
     </fieldset>
     <fieldset>
         <legend>{% trans "alarm result settings"|title %}</legend>
-        <div class="span12">
-            <div class="row">
-                {% get_fieldset result,url_cancel,phonenumber_sms_cancel,url_confirm,phonenumber_transfer as result_fields from form %}
-                {% for field in result_fields.hidden_fields %}
-                    {{ field }}
-                {% endfor %}
-                {% for field in result_fields.visible_fields %}
-                    <div class="span6">
-                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                            <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            <div class="input">
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ field.help_text|capfirst }} </span>
-                            </div>
+        <div class="row">
+            {% get_fieldset result,url_cancel,phonenumber_sms_cancel,url_confirm,phonenumber_transfer as result_fields from form %}
+            {% for field in result_fields.hidden_fields %}
+                {{ field }}
+            {% endfor %}
+            {% for field in result_fields.visible_fields %}
+                <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="col-xs-8">
+                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-inline">
+                                {{ field.errors|removetags:"ul li"|safe }}
+                            </span>
+                        {% endif %}
+                        <span class="help-block">
+                            {{ field.help_text|capfirst }}
+                        </span>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
     </fieldset>
-    <div class="actions">
-        {% if action == 'update' %}
+
+    {% if action == 'update' %}
         <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
-        {% else %}
+        <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
+    {% else %}
         <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
-        {% endif %}
-        &nbsp;&nbsp;
-        {% if action == 'update' %}
-         <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
-        {% endif %}
-    </div>
+    {% endif %}
 </form>
 
 {% endblock %}

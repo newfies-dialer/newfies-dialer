@@ -6,11 +6,6 @@
     <script src="{{ STATIC_URL }}newfies/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
 
     {% include "frontend/common_datepicker.html" %}
-    <style type="text/css">
-        td {
-            width: auto;
-        }
-    </style>
 {% endblock %}
 
 {% block content_header %}
@@ -27,59 +22,59 @@
 
 {% block content %}
 
-<form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     <fieldset>
         <legend>{% trans "event settings"|title %}</legend>
-        <div class="span12">
-            <div class="row">
-                {% get_fieldset start,end,title,description,creator,created_on,end_recurring_period,rule,calendar,status as event_fields from form %}
-                {% for field in event_fields.visible_fields %}
-                    <div class="span6">
-                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                            <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            <div class="input">
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ field.help_text|capfirst }} </span>
-                            </div>
+        <div class="row">
+            {% get_fieldset start,end,title,description,creator,created_on,end_recurring_period,rule,calendar as event_fields from form %}
+            {% for field in event_fields.visible_fields %}
+                <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="col-xs-8">
+                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-inline">
+                                {{ field.errors|removetags:"ul li"|safe }}
+                            </span>
+                        {% endif %}
+                        <span class="help-block">
+                            {{ field.help_text|capfirst }}
+                        </span>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
-        <div class="span12">
-            <div class="row">
-                {% get_fieldset notify_count,data as event_fields from form %}
-                {% for field in event_fields.visible_fields %}
-                    <div class="span6">
-                        <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                            <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            <div class="input">
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ field.help_text|capfirst }} </span>
-                            </div>
+        <div class="row">
+            {% get_fieldset status,notify_count,data as event_fields from form %}
+            {% for field in event_fields.visible_fields %}
+                <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="col-xs-8">
+                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-inline">
+                                {{ field.errors|removetags:"ul li"|safe }}
+                            </span>
+                        {% endif %}
+                        <span class="help-block">
+                            {{ field.help_text|capfirst }}
+                        </span>
                         </div>
                     </div>
-                {% endfor %}
-            </div>
+                </div>
+            {% endfor %}
         </div>
     <fieldset>
-    <div class="actions">
-        {% if action == 'update' %}
-            <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
-        {% else %}
-            <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
-        {% endif %}
-        &nbsp;&nbsp;
-        {% if action == 'update' %}
-            <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
-        {% endif %}
-    </div>
+
+    {% if action == 'update' %}
+        <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
+        <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
+    {% else %}
+        <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
+    {% endif %}
 </form>
 
 {% endblock %}

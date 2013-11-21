@@ -141,7 +141,8 @@ class EventForm(ModelForm):
                                 'creator', 'created_on', 'end_recurring_period',
                                 'rule', 'calendar', 'notify_count', 'status',
                                 'data']
-
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar'].choices = get_calendar_list(calendar_user_list)
         self.fields['creator'].choices = get_calendar_user_list(calendar_user_list)
@@ -160,6 +161,8 @@ class EventSearchForm(forms.Form):
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar_id'].choices = get_calendar_list(calendar_user_list)
         self.fields['calendar_user_id'].choices = get_calendar_user_list(calendar_user_list)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class AlarmForm(ModelForm):
@@ -170,7 +173,8 @@ class AlarmForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(AlarmForm, self).__init__(*args, **kwargs)
-
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         list_survey = []
         list_survey.append((0, '---'))
         survey_list = Survey.objects.values_list(

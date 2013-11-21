@@ -35,6 +35,12 @@
         {# if perms.appointment.view_calendar #}
             <a class="list-group-item {% ifcontains '/calendar/' %}active{% endifcontains %}" href="/calendar/">{% trans "calendar"|title %}</a>
         {# endif #}
+        {% if perms.appointment.view_event %}
+            <a class="list-group-item {% ifcontains '/event/' %}active{% endifcontains %}" href="/event/">{% trans "event"|title %}</a>
+        {% endif %}
+        {% if perms.appointment.view_alarm %}
+            <a class="list-group-item {% ifcontains '/alarm/' %}active{% endifcontains %}" href="/alarm/">{% trans "alarm"|title %}</a>
+        {% endif %}
 
     </div>
 </div>

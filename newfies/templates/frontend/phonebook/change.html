@@ -18,16 +18,14 @@
 <form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     {% for field in form %}
     <div class="row">
-        <div class="col-md-12">
-            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                <div class="col-xs-6">
-                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                    {{ field }}
-                    {% if field.errors %}
-                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                    {% endif %}
-                        <span class="help-block">{{ field.help_text|capfirst }} </span>
-                </div>
+        <div class="form-group {% if field.errors %}has-error{% endif %}">
+            <div class="col-xs-6">
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                    <span class="help-block">{{ field.help_text|capfirst }} </span>
             </div>
         </div>
     </div>
@@ -35,12 +33,9 @@
 
     {% if action == 'update' %}
         <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
+        <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
     {% else %}
         <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
-    {% endif %}
-
-    {% if action == 'update' %}
-        <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
     {% endif %}
 </form>
 

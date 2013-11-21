@@ -26,12 +26,10 @@
 <br/>
 
 <form class="well" role="form" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
-
     {% for field in form %}
     <div class="row">
-        <div class="col-md-10">
-            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                <div class="col-xs-4">
+        <div class="form-group {% if field.errors %}has-error{% endif %}">
+            <div class="col-xs-4">
                 <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
 
                 {{ field }}
@@ -44,17 +42,11 @@
                     {{ field.help_text|capfirst }}
                 </span>
             </div>
-            </div>
         </div>
     </div>
     {% endfor %}
-    <div class="row">
-        <div class="col-md-10">
-            <div class="col-xs-4">
-                <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
-            </div>
-        </div>
-    </div>
+
+    <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
 </form>
 
 {% if success_import_list %}

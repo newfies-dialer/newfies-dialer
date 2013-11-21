@@ -26,8 +26,12 @@
             <a class="list-group-item {% ifcontains '/tier/' %}active{% endifcontains %}" href="/tier/">{% trans "tier"|title %}</a>
         {% endif %}
 
-        {% if perms.appointment.view_calendarsetting %}
+        {# if perms.appointment.view_calendarsetting #}
             <a class="list-group-item {% ifcontains '/calendar_setting/' %}active{% endifcontains %}" href="/calendar_setting/">{% trans "calendar setting"|title %}</a>
+        {# endif #}
+
+        {% if perms.appointment.view_calendar_user %}
+            <a class="list-group-item {% ifcontains '/calendar_user/' %}active{% endifcontains %}" href="/calendar_user/">{% trans "calendar user"|title %}</a>
         {% endif %}
 
     </div>

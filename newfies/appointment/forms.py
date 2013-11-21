@@ -103,6 +103,9 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
             list_calendar_setting.append((l.id, l.caller_name))
         self.fields['calendar_setting'].choices = list_calendar_setting
 
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
 
 class CalendarForm(ModelForm):
     """CalendarForm"""

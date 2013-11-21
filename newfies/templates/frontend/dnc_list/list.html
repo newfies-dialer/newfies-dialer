@@ -22,14 +22,13 @@
         $('#ListForm').submit();
     }
 </script>
-<div class="span12">
-    <div class="row">
+<div class="row">
+    <div class="col-md-12">
         <div class="btn-group">
-            <button class="btn">{% trans "action"|title %}</button>
-            <button class="btn dropdown-toggle" data-toggle="dropdown">
-                <span class="caret"></span>
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            {% trans "action"|capfirst %} <span class="caret"></span>
             </button>
-            <ul class="dropdown-menu">
+            <ul class="dropdown-menu" role="menu">
                 {% if perms.dnc.delete_dnc %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
@@ -41,48 +40,52 @@
     </div>
 </div>
 
-<div class="span12">
-    <div class="row">
+<br/>
+
+<div class="row">
+    <div class="col-md-12">
         <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
-            <table class="table table-striped table-bordered table-condensed">
-                <thead>
-                <tr>
-                    <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-                    <th>{% sort_link DNC_COLUMN_NAME.id|capfirst col_name_with_order.id %}</th>
-                    <th>{% sort_link DNC_COLUMN_NAME.name|capfirst col_name_with_order.name %}</th>
-                    <th>{% sort_link DNC_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
-                    <th>{{ DNC_COLUMN_NAME.contacts|capfirst }}</th>
-                    <th>{% trans 'action'|capfirst %}</th>
-                </tr>
-                </thead>
-                {% if dnc_list %}
-                    {% autopaginate dnc_list PAGE_SIZE %}
-                    {% for row in dnc_list %}
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
+                        <th>{% sort_link DNC_COLUMN_NAME.id|capfirst col_name_with_order.id %}</th>
+                        <th>{% sort_link DNC_COLUMN_NAME.name|capfirst col_name_with_order.name %}</th>
+                        <th>{% sort_link DNC_COLUMN_NAME.date|capfirst col_name_with_order.updated_date %}</th>
+                        <th>{{ DNC_COLUMN_NAME.contacts|capfirst }}</th>
+                        <th>{% trans 'action'|capfirst %}</th>
+                    </tr>
+                    </thead>
+                    {% if dnc_list %}
+                        {% autopaginate dnc_list PAGE_SIZE %}
+                        {% for row in dnc_list %}
+                            <tr>
+                                <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
+                                <td>{{ row.id }}</td>
+                                <td>{{ row.name }}</td>
+                                <td>{{ row.updated_date }}</td>
+                                <td>{{ row.dnc_contacts_count }}</td>
+                                <td>
+                                    {% if perms.dnc.change_dnc %}
+                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update DNC"|capfirst %}"></a>
+                                    {% endif %}
+                                    {% if perms.dnc.delete_dnc %}
+                                        <a id="id_dnc_delete_confirm" onclick="return get_alert_msg_for_dnc({{ row.id }});"  href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete DNC"|title %}"></a>
+                                    {% endif %}
+                                </td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
                         <tr>
-                            <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
-                            <td>{{ row.id }}</td>
-                            <td>{{ row.name }}</td>
-                            <td>{{ row.updated_date }}</td>
-                            <td>{{ row.dnc_contacts_count }}</td>
-                            <td>
-                                {% if perms.dnc.change_dnc %}
-                                    <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update DNC"|capfirst %}"></a>
-                                {% endif %}
-                                {% if perms.dnc.delete_dnc %}
-                                    <a id="id_dnc_delete_confirm" onclick="return get_alert_msg_for_dnc({{ row.id }});"  href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete DNC"|title %}"></a>
-                                {% endif %}
+                            <td colspan="6" align="center">
+                                {% trans "no records found"|title %}
                             </td>
                         </tr>
-                    {% endfor %}
-                {% else %}
-                    <tr>
-                        <td colspan="6" align="center">
-                            {% trans "no records found"|title %}
-                        </td>
-                    </tr>
-                {% endif %}
-            </table>
-            <div align="right">
+                    {% endif %}
+                </table>
+            </div>
+            <div class="text-right">
                 {% trans "total"|title %} : {{ total_dnc }}
             </div>
             {% if dnc_list %}

@@ -28,18 +28,25 @@ class DNCForm(ModelForm):
         fields = ['name']
         exclude = ('user',)
 
+    def __init__(self, *args, **kwargs):
+        super(DNCForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
 
 class DNCContactSearchForm(forms.Form):
     """Search Form on Contact List"""
     phone_number = forms.CharField(label=_('phone number'), required=False,
-                                 widget=forms.TextInput(attrs={'size': 15}))
+                                   widget=forms.TextInput(attrs={'size': 15}))
     # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
     #                                     choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
     dnc = forms.ChoiceField(label=_('Do Not Call list').title(), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(DNCContactSearchForm, self).__init__(*args, **kwargs)
-         # To get user's dnc list
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+        # To get user's dnc list
         if user:
             dnc_list_user = []
             dnc_list_user.append((0, '---'))
@@ -60,6 +67,8 @@ class DNCContactForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(DNCContactForm, self).__init__(*args, **kwargs)
         # To get user's dnc list
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             self.fields['dnc'].choices = \
                 DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
@@ -74,6 +83,8 @@ class DNCContact_fileImport(FileImport):
     def __init__(self, user, *args, **kwargs):
         super(DNCContact_fileImport, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['dnc_list', 'csv_file']
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's dnc_list list
         if user:  # and not user.is_superuser
             self.fields['dnc_list'].choices = \
@@ -91,6 +102,8 @@ class DNCContact_fileExport(Exportfile):
     def __init__(self, user, *args, **kwargs):
         super(DNCContact_fileExport, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['dnc_list', 'export_to', ]
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's dnc_list list
         if user:  # and not user.is_superuser
             self.fields['dnc_list'].choices = \

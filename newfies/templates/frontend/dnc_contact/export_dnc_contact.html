@@ -1,34 +1,37 @@
 {% extends "frontend/master.html" %}
 {% load i18n %}
 
-{% block extra_files %}
-    <style>
-    .help-inline {
-        padding-left: 55px;
-    }
-    </style>
-{% endblock %}
-
 {% block content_header %}
     <h1>{% trans "export dnc contact"|title %} <small>{% trans "export list of dnc contact"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
-<form class="well" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
-     {% for field in form %}
-     <div class="clearfix{% if field.errors %} error{% endif %}">
-        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-        <div class="input">
-            {{ field }}
-            {% if field.errors %}
-                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-            {% endif %}
-            <span class="help-block">{{ field.help_text|capfirst }} </span>
+    <form class="well" role="form" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group {% if form.dnc_list.errors %}has-error{% endif %}">
+                    <label class="control-label" for="{{ form.dnc_list.auto_id }}">{{ form.dnc_list.label|title }}</label>
+                    {{ form.dnc_list }}
+                    {% if form.dnc_list.errors %}
+                        <span class="help-inline">
+                            {{ form.dnc_list.errors|removetags:"ul li"|safe }}
+                        </span>
+                    {% endif %}
+                    <span class="help-block">
+                        {{ form.dnc_list.help_text|capfirst }}
+                    </span>
+                </div>
+            </div>
+            <div class="col-md-10">
+                <div class="form-group {% if form.export_to.errors %}has-error{% endif %}">
+                    {% for radio in form.export_to %}
+                    <div class="radio-inline">
+                        {{ radio }}
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-     </div>
-     {% endfor %}
-     <div class="actions">
-         <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
-     </div>
-</form>
+        <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
+    </form>
 {% endblock %}

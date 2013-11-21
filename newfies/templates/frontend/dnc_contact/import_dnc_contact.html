@@ -1,22 +1,14 @@
 {% extends "frontend/master.html" %}
 {% load i18n %}
 
-{% block extra_files %}
-    <style>
-    .help-inline {
-        padding-left: 55px;
-    }
-    </style>
-{% endblock %}
-
 {% block content_header %}
     <h1>{% trans "import dnc contact"|title %} <small>{% trans "import list of dnc contact by uploading CSV files"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
-<center>
+<div class="table-responsive">
     <table class="table table-striped table-bordered table-condensed">
-    <caption><center><h3>{% trans "sample file"|title %}</h3></center></caption>
+    <caption><h3>{% trans "sample file"|title %}</h3></caption>
     <thead>
     <tr>
         <th>{% trans "contact number"|title %}</th>
@@ -29,29 +21,44 @@
         <td>650723032</td>
     </tr>
     </table>
-</center>
-<br/><br/>
+</div>
 
-<form class="well" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
-     {% for field in form %}
-     <div class="clearfix{% if field.errors %} error{% endif %}">
-        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-        <div class="input">
-            {{ field }}
-            {% if field.errors %}
-                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-            {% endif %}
-            <span class="help-block">{{ field.help_text|capfirst }} </span>
+<br/>
+
+<form class="well" role="form" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
+
+    {% for field in form %}
+    <div class="row">
+        <div class="col-md-10">
+            <div class="form-group {% if field.errors %}has-error{% endif %}">
+                <div class="col-xs-4">
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-inline">
+                        {{ field.errors|removetags:"ul li"|safe }}
+                    </span>
+                {% endif %}
+                <span class="help-block">
+                    {{ field.help_text|capfirst }}
+                </span>
+            </div>
+            </div>
         </div>
-     </div>
-     {% endfor %}
-
-     <div class="actions">
-         <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
-     </div>
+    </div>
+    {% endfor %}
+    <div class="row">
+        <div class="col-md-10">
+            <div class="col-xs-4">
+                <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
+            </div>
+        </div>
+    </div>
 </form>
 
 {% if success_import_list %}
+<div class="table-responsive">
     <table class="table table-striped table-bordered table-condensed">
         <tr>
             <th>{% trans "subscriber(s) imported"|title %} :</th>
@@ -64,22 +71,25 @@
         </tr>
         {% endfor %}
     </table>
+</div>
 {% endif %}
 
 {% if type_error_import_list %}
 <br/>
-<table class="table table-striped table-bordered table-condensed">
-    <tr>
-        <th>{% trans "type mismatch"|title %} :</th>
-    </tr>
-    {% for row in type_error_import_list %}
-    <tr>
-        <td>
-            {{ row }}
-        </td>
-    </tr>
-    {% endfor %}
-</table>
+<div class="table-responsive">
+    <table class="table table-striped table-bordered table-condensed">
+        <tr>
+            <th>{% trans "type mismatch"|title %} :</th>
+        </tr>
+        {% for row in type_error_import_list %}
+        <tr>
+            <td>
+                {{ row }}
+            </td>
+        </tr>
+        {% endfor %}
+    </table>
+</div>
 {% endif %}
 
 {% endblock %}

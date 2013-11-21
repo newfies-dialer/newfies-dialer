@@ -8,5 +8,13 @@
         {% if perms.dialer_contact.view_contact %}
             <a class="list-group-item {% ifcontains '/contact/' %}active{% endifcontains %}" href="/contact/">{% trans "contacts"|title %}</a>
         {% endif %}
+
+        {% if perms.dnc.view_dnc_list %}
+            <a class="list-group-item {% ifcontains '/dnc_list/' %}active{% endifcontains %}" href="/dnc_list/">{% trans "dnc"|upper %} {% trans "list"|title %}</a>
+        {% endif %}
+        {% if perms.dnc.view_dnccontact %}
+            <a class="list-group-item {% ifcontains '/dnc_contact/' %}active{% endifcontains %}" href="/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts"|title %}</a>
+        {% endif %}
+
     </div>
 </div>

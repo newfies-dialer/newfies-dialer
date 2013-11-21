@@ -352,7 +352,11 @@ class SurveyDetailReportForm(SearchForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyDetailReportForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['survey_id', 'from_date', 'to_date']
+        change_field_list = ['survey_id', 'from_date', 'to_date']
+        for i in change_field_list:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
+        self.fields.keyOrder = change_field_list
         if user:
             survey_list = []
             try:
@@ -392,4 +396,3 @@ class FreezeSurveyForm(SurveyFileImport):
     def __init__(self, *args, **kwargs):
         super(FreezeSurveyForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['name']
-

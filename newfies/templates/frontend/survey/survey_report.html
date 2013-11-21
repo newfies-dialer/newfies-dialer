@@ -20,38 +20,26 @@
     <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="#tabs-3" data-toggle="tab">{% trans "survey daily call report"|capfirst %}</a></li>
 </ul>
 
-<div id="form_collapse" class="collapse">
-    <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+
+<form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <div class="row">
         <div class="row">
-            <div class="span12">
-                <div class="row">
-                    {% get_fieldset survey_id,from_date,to_date as campaign_fields from form %}
-                    {% for field in campaign_fields.visible_fields %}
-                        <div class="span4 clearfix{% if field.errors %} control-group error{% endif %}">
-                            <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            <div class="input">
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ field.help_text|capfirst|safe }} </span>
-                            </div>
-                        </div>
-                    {% endfor %}
+            {% get_fieldset survey_id,from_date,to_date as campaign_fields from form %}
+            {% for field in campaign_fields.visible_fields %}
+                <div class="col-md-4 {% if field.errors %} error{% endif %}">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                    {% endif %}
+                    <span class="help-block">{{ field.help_text|capfirst|safe }} </span>
                 </div>
-            </div>
+            {% endfor %}
         </div>
+    </div>
+    <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}">
+</form>
 
-        <label></label>
-        <div class="actions">
-            <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}">
-        </div>
-    </form>
-</div>
-
-<a class="btn btn-small" id="toggle_btn" href="#" data-toggle="collapse" data-target="#form_collapse">
-    <i class="icon-search"></i> <span>{% trans "search"|title %}</span>
-</a>
 
 <div class="tab-content">
 

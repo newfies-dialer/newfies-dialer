@@ -103,9 +103,6 @@ class UserProfile(Profile_abstract):
     class Meta:
         permissions = (
             ("view_api_explorer", _('can see API-Explorer')),
-            ("view_agent", _('can see Agent list')),
-            ("view_queue", _('can see Queue list')),
-            ("view_tier", _('can see Tier list')),
         )
         db_table = 'user_profile'
         verbose_name = _("user profile")

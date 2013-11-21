@@ -16,8 +16,14 @@
             <a class="list-group-item {% ifcontains '/dnc_contact/' %}active{% endifcontains %}" href="/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts"|title %}</a>
         {% endif %}
 
-        {% if perms.user_profile.view_agent %}
+        {% if perms.agent.view_agent %}
             <a class="list-group-item {% ifcontains '/agent/' %}active{% endifcontains %}" href="/agent/">{% trans "agent"|title %}</a>
+        {% endif %}
+        {% if perms.callcenter.view_queue %}
+            <a class="list-group-item {% ifcontains '/queue/' %}active{% endifcontains %}" href="/queue/">{% trans "queue"|title %}</a>
+        {% endif %}
+        {% if perms.callcenter.view_tier %}
+            <a class="list-group-item {% ifcontains '/tier/' %}active{% endifcontains %}" href="/tier/">{% trans "tier"|title %}</a>
         {% endif %}
 
     </div>

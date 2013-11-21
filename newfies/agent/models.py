@@ -82,6 +82,7 @@ class Agent(User):
     class Meta:
         permissions = (
             ("view_agent_dashboard", _('can see Agent dashboard')),
+            ("view_agent", _('can see Agent list')),
         )
         proxy = True
         app_label = 'auth'

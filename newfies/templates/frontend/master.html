@@ -87,7 +87,7 @@
 {% block container %}
 <div class="container">
     <div class="row row-offcanvas row-offcanvas-right">
-
+        <!--start left side-->
         {% if user.is_authenticated %}
             {% if not request.path|check_url_for_template_width %}
                 {% block sidebar_menu %}
@@ -95,7 +95,9 @@
                 {% endblock %}
             {% endif %}
         {% endif %}
+        <!--end left side-->
 
+        <!--start right side-->
         {% if user.is_authenticated %}
             {% if request.path|check_url_for_template_width %}
                 <div class="col-xs-12 col-sm-12">
@@ -142,17 +144,17 @@
 
 
         {% if errorlogin %}
-        <div class="alert alert-error">
-            <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin|capfirst }}
-        </div>
-        </br>
-        {% else %}
-            {% if notlogged %}
             <div class="alert alert-error">
-                <strong>{% trans "alert"|title %} : </strong>  {% trans "please login by clicking on login button"|capfirst %}
+                <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin|capfirst }}
             </div>
             </br>
-        {% endif %}
+        {% else %}
+            {% if notlogged %}
+                <div class="alert alert-error">
+                    <strong>{% trans "alert"|title %} : </strong>  {% trans "please login by clicking on login button"|capfirst %}
+                </div>
+                </br>
+            {% endif %}
         {% endif %}
 
     {% block header %}
@@ -205,9 +207,9 @@
     {% block content %}
     <!-- CONTENT BLOCK -->
     {% endblock %}
-        </div>
+        </div><!--end right side-->
 
-    </div>
+    </div><!--div row row-offcanvas row-offcanvas-right-->
 
     {% block footer %}
         {% include "frontend/footer.html" %}

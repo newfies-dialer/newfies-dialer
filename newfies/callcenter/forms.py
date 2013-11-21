@@ -39,6 +39,11 @@ class QueueFrontEndForm(ModelForm):
         model = Queue
         exclude = ('manager',)
 
+    def __init__(self, *args, **kwargs):
+        super(QueueFrontEndForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
 
 class TierForm(ModelForm):
     """TierForm is used to change"""
@@ -62,3 +67,5 @@ class TierFrontEndForm(ModelForm):
         super(TierFrontEndForm, self).__init__(*args, **kwargs)
         self.fields['agent'].choices = agentprofile_list(manager_id)
         self.fields['queue'].choices = queue_list(manager_id)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"

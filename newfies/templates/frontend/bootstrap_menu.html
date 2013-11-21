@@ -76,16 +76,9 @@
                 </li>
 
                 <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" title="{% trans "callcenter"|capfirst %}">{% trans "callcenter"|title %} <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                      {% if perms.user_profile.view_queue %}
-                        <li class="{% ifcontains '/queue/' %}active{% endifcontains %}"><a href="/queue/">{% trans "queue"|title %}</a></li>
-                      {% endif %}
-
-                      {% if perms.user_profile.view_tier %}
-                        <li class="{% ifcontains '/tier/' %}active{% endifcontains %}"><a href="/tier/">{% trans "tier"|title %}</a></li>
-                      {% endif %}
-                    </ul>
+                    {% if perms.agent.view_agent %}
+                        <a href="/agent/">{% trans "callcenter"|title %}</a>
+                    {% endif %}
                 </li>
 
                 <li>

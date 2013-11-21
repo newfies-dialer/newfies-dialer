@@ -134,7 +134,7 @@ class Queue(Model):
 
     class Meta:
         permissions = (
-            ("view_queue_list", _('can see Queue list')),
+            ("view_queue", _('can see Queue list')),
         )
         db_table = u'callcenter_queue'
         verbose_name = _("queue")
@@ -188,7 +188,7 @@ class Tier(Model):
 
     class Meta:
         permissions = (
-            ("view_tier_list", _('can see Tier list')),
+            ("view_tier", _('can see Tier list')),
         )
         db_table = u'callcenter_tier'
         verbose_name = _("tier")

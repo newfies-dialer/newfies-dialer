@@ -106,6 +106,12 @@ $(function () {
             if(document.location.href.search("/agent/") != -1) {
                 confirm_string = $fields.length +  '{% trans " agent(s) are going to be deleted?" %}' ;
             }
+            if(document.location.href.search("/queue/") != -1) {
+                confirm_string = $fields.length +  '{% trans " queue(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/tier/") != -1) {
+                confirm_string = $fields.length +  '{% trans " tier(s) are going to be deleted?" %}' ;
+            }
             if(document.location.href.search("/calendar_setting/") != -1) {
                 confirm_string = $fields.length +  '{% trans " calendar setting(s) are going to be deleted?" %}' ;
             }

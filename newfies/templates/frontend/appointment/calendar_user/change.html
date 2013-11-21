@@ -18,72 +18,88 @@
 <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
 
     {% if action == 'update' %}
-        <div class="span12">
-            <div class="row">
-                <div class="span6">
-                    {% get_fieldset username as user_fields from calendar_user_username_form %}
-                    {% for field in user_fields.visible_fields %}
-                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                        <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                        <div class="input">
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ field.help_text|capfirst }} </span>
-                        </div>
+        <div class="row">
+            {% get_fieldset username as calendar_user_fields from calendar_user_username_form %}
+            {% for field in calendar_user_fields.visible_fields %}
+            <div class="col-md-6">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                <div class="col-xs-8">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-inline">
+                            {{ field.errors|removetags:"ul li"|safe }}
+                        </span>
+                    {% endif %}
+                    <span class="help-block">
+                        {{ field.help_text|capfirst }}
+                    </span>
                     </div>
-                    {% endfor %}
-                </div>
-                <div class="span6">
-                    {% get_fieldset password as user_fields from calendar_user_username_form %}
-                    {% for field in user_fields.visible_fields %}
-                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                        <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                        <div class="input">
-                            {{ field }}
-                        </div>
-                    </div>
-                    {% endfor %}
                 </div>
             </div>
-        </div>
-    {% endif %}
-
-    <div class="span12">
-        <div class="row">
-            {% get_fieldset address,city,state,country,zip_code,phone_no,fax,company_name,company_website,language,note,accountcode,calendar_setting as cal_user_fields from form %}
-            {% for field in cal_user_fields.hidden_fields %}
-                {{ field }}
             {% endfor %}
-            {% for field in cal_user_fields.visible_fields %}
-                <div class="span6">
-                    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                        <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                        <div class="input">
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
+
+            {% get_fieldset password as calendar_user_fields from calendar_user_username_form %}
+            {% for field in calendar_user_fields.visible_fields %}
+            <div class="col-md-6">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    {{ field }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% for field in form %}
+            <div class="row">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="col-xs-6">
+                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
                             <span class="help-block">{{ field.help_text|capfirst }} </span>
-                        </div>
                     </div>
                 </div>
-            {% endfor %}
-        </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="row">
+        {% get_fieldset address,city,state,country,zip_code,phone_no,fax,company_name,company_website,language,note,accountcode,calendar_setting as cal_user_fields from form %}
+        {% for field in cal_user_fields.hidden_fields %}
+            {{ field }}
+        {% endfor %}
+        {% for field in cal_user_fields.visible_fields %}
+            <div class="col-md-6">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                <div class="col-xs-8">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-inline">
+                            {{ field.errors|removetags:"ul li"|safe }}
+                        </span>
+                    {% endif %}
+                    <span class="help-block">
+                        {{ field.help_text|capfirst }}
+                    </span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
     </div>
 
-    <div class="actions">
-        {% if action == 'update' %}
-        <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
-        {% else %}
-        <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
-        {% endif %}
-        &nbsp;&nbsp;
-        {% if action == 'update' %}
-         <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
-        {% endif %}
-    </div>
+
+            {% if action == 'update' %}
+                <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
+                <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
+            {% else %}
+                <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
+            {% endif %}
+
 </form>
 
 {% endblock %}

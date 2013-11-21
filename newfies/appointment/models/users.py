@@ -59,7 +59,7 @@ class CalendarSetting(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return '[%s] %s' % (self.id, self.cid_name)
+        return '[%s] %s' % (self.id, self.caller_name)
 
     class Meta:
         permissions = (
@@ -108,7 +108,7 @@ class CalendarUserProfile(Profile_abstract):
     manager = models.ForeignKey(Manager, verbose_name=_("manager"),
                                 help_text=_("select manager"),
                                 related_name="manager_of_calendar_user")
-    calendar_setting = models.ForeignKey(CalendarSetting,
+    calendar_setting = models.ForeignKey(CalendarSetting, null=False, blank=False,
                                          verbose_name=_('calendar settings'))
 
     class Meta:

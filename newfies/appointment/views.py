@@ -28,7 +28,8 @@ from appointment.constants import CALENDAR_USER_COLUMN_NAME, CALENDAR_COLUMN_NAM
     EVENT_COLUMN_NAME, ALARM_COLUMN_NAME, CALENDAR_SETTING_COLUMN_NAME
 from appointment.forms import CalendarUserChangeDetailExtendForm, \
     CalendarUserNameChangeForm, CalendarForm, EventForm, AlarmForm,\
-    CalendarSettingForm, EventSearchForm
+    CalendarSettingForm, EventSearchForm, CalendarUserPasswordChangeForm,\
+    CalendarUserCreationForm
 from appointment.models.users import CalendarUserProfile, CalendarUser,\
     CalendarSetting
 from appointment.function_def import get_calendar_user_id_list
@@ -54,8 +55,8 @@ def calendar_user_list(request):
     """
     sort_col_field_list = ['user', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
@@ -86,7 +87,7 @@ def calendar_user_add(request):
 
     **Attributes**:
 
-        * ``form`` - UserCreationForm
+        * ``form`` - CalendarUserCreationForm
         * ``template`` - frontend/appointment/calendar_user/change.html
 
     **Logic Description**:
@@ -94,15 +95,15 @@ def calendar_user_add(request):
         * Add a new calendar user which will belong to the logged in manager
           via the UserCreationForm & get redirected to the calendar user list
     """
-    form = UserCreationForm()
+    form = CalendarUserCreationForm()
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CalendarUserCreationForm(request.POST)
         if form.is_valid():
             calendar_user = form.save()
 
             calendar_user_profile = CalendarUserProfile.objects.create(
                 user=calendar_user,
-                manager=Manager.objects.get(username=request.user)
+                manager=Manager.objects.get(username=request.user),
             )
 
             request.session["msg"] = _('"%(name)s" added as calendar user.') %\

@@ -13,8 +13,9 @@
 #
 from django import forms
 from django.forms import ModelForm
-from django.contrib.auth.forms import UserChangeForm
 from django.utils.translation import ugettext as _
+from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm,\
+    UserChangeForm
 from appointment.models.users import CalendarUserProfile, CalendarUser,\
     CalendarSetting
 from appointment.models.events import Event
@@ -23,6 +24,20 @@ from appointment.models.alarms import Alarm
 from appointment.function_def import get_calendar_user_id_list,\
     get_calendar_user_list, get_calendar_list
 from survey.models import Survey
+
+
+class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(CalendarUserPasswordChangeForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
+
+class CalendarUserCreationForm(UserCreationForm):
+    def __init__(self, *args, **kwargs):
+        super(CalendarUserCreationForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CalendarUserProfileForm(ModelForm):

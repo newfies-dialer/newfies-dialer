@@ -17,7 +17,14 @@ from django.forms import ModelForm
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from user_profile.models import UserProfile
+from django.contrib.auth.forms import PasswordChangeForm
 # place form definition here
+
+class UserPasswordChangeForm(PasswordChangeForm):
+    def __init__(self, *args, **kwargs):
+        super(UserPasswordChangeForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class UserChangeDetailForm(ModelForm):
@@ -29,8 +36,10 @@ class UserChangeDetailForm(ModelForm):
         fields = ["last_name", "first_name", "email"]
 
     def __init__(self, user, *args, **kwargs):
-        self.user = user
+        #self.user = user
         super(UserChangeDetailForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         self.fields['last_name'].widget.attrs['ng-model'] = "user.last_name"
         self.fields['first_name'].widget.attrs['ng-model'] = "user.first_name"
         self.fields['email'].widget.attrs['ng-model'] = "user.email"
@@ -55,9 +64,10 @@ class UserChangeDetailExtendForm(ModelForm):
         fields = ["address"]
 
     def __init__(self, user, *args, **kwargs):
-        self.user = user
+        #self.user = user
         super(UserChangeDetailExtendForm, self).__init__(*args, **kwargs)
-
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CheckPhoneNumberForm(forms.Form):
@@ -66,6 +76,11 @@ class CheckPhoneNumberForm(forms.Form):
         label=_('phone number'),
         required=True,
         help_text=_("check number is authorised to call"))
+
+    def __init__(self, *args, **kwargs):
+        super(CheckPhoneNumberForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class UserProfileForm(ModelForm):

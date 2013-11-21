@@ -24,7 +24,7 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
-    UserChangeDetailExtendForm, \
+    UserChangeDetailExtendForm, UserPasswordChangeForm,\
     CheckPhoneNumberForm
 
 
@@ -35,7 +35,7 @@ def customer_detail_change(request):
     **Attributes**:
 
         * ``form`` - UserChangeDetailForm, UserChangeDetailExtendForm,
-                        PasswordChangeForm, CheckPhoneNumberForm
+                        UserPasswordChangeForm, CheckPhoneNumberForm
         * ``template`` - 'frontend/registration/user_detail_change.html'
 
     **Logic Description**:
@@ -59,7 +59,7 @@ def customer_detail_change(request):
         UserChangeDetailExtendForm(request.user,
                                    instance=user_detail_extened)
 
-    user_password_form = PasswordChangeForm(user=request.user)
+    user_password_form = UserPasswordChangeForm(user=request.user)
     check_phone_no_form = CheckPhoneNumberForm()
 
     msg_detail = ''
@@ -101,7 +101,7 @@ def customer_detail_change(request):
             else:
                 error_number = _('please correct the errors below.')
         else:  # "change-password"
-            user_password_form = PasswordChangeForm(user=request.user,
+            user_password_form = UserPasswordChangeForm(user=request.user,
                                                     data=request.POST)
             action = 'tabs-2'
             if user_password_form.is_valid():

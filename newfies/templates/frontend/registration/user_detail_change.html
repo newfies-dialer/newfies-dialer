@@ -35,13 +35,18 @@
 	</div>
 
     <div id="tabs-5" align="left" class="tab-pane {% if action == "tabs-5" %}active{% endif %}">
-        <form class="well" action="/i18n/setlang/" method="post" class="pull-right">
+        <form class="form-inline well" role="form" action="/i18n/setlang/" method="post">
             {% csrf_token %}
-            {% trans "select language"|title %} : <select name="language" id="language-container" class="input-small" >
-            {% for lang in LANGUAGES %}
-            <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
-            {% endfor %}
-            </select>
+            <div class="select">
+                <label>
+                {% trans "select language"|capfirst %} :
+                <select name="language" id="language-container">
+                    {% for lang in LANGUAGES %}
+                    <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+                    {% endfor %}
+                </select>
+                </label>
+            </div>
         </form>
     </div>
 

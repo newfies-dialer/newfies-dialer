@@ -1,5 +1,6 @@
 {% load i18n %}
 {% if dialer_set %}
+<div class="table-responsive">
     <table class="table table-striped table-bordered table-condensed">
         <tr>
             <td>{% trans "maximum calls per minute"|title %}</td>
@@ -53,6 +54,6 @@
             <td>{% trans "maximum subscribers per SMS campaign"|capfirst %}</td>
             <td>{{ dialer_set.sms_max_number_subscriber_campaign }}</td>
         </tr>
-
     </table>
+</div>
 {% endif %}

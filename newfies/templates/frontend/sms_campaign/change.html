@@ -1,9 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load i18n common_tags %}
 
-{% block extra_files %}
-{% endblock %}
-
 {% block content_header %}
     <h1>{% if action == "update" %}
             {% trans "update"|title %}
@@ -20,58 +17,54 @@
         <fieldset>
             <legend>{% trans "general settings"|capfirst %}</legend>
             <div class="row">
-                <div class="col-md-12">
-                    {% get_fieldset campaign_code,ds_user,name,callerid,sms_gateway,status as campaign_fields from form %}
-                    {% for field in campaign_fields.hidden_fields %}
-                        {{ field }}
-                    {% endfor %}
-                    {% for field in campaign_fields.visible_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <div class="col-xs-6">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">
-                                        {{ field.errors|removetags:"ul li"|safe }}
-                                    </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
+                {% get_fieldset campaign_code,ds_user,name,callerid,sms_gateway,status as campaign_fields from form %}
+                {% for field in campaign_fields.hidden_fields %}
+                    {{ field }}
+                {% endfor %}
+                {% for field in campaign_fields.visible_fields %}
+                    <div class="col-md-6">
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <div class="col-xs-6">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-inline">
+                                    {{ field.errors|removetags:"ul li"|safe }}
                                 </span>
-                                </div>
+                            {% endif %}
+                            <span class="help-block">
+                                {{ field.help_text|capfirst }}
+                            </span>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
-                <div class="col-md-12">
-                    {% get_fieldset text_message,description,phonebook as campaign_fields from form %}
-                    {% for field in campaign_fields.visible_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <div class="col-xs-6">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">
-                                        {{ field.errors|removetags:"ul li"|safe }}
-                                    </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
+                    </div>
+                {% endfor %}
+
+                {% get_fieldset text_message,description,phonebook as campaign_fields from form %}
+                {% for field in campaign_fields.visible_fields %}
+                    <div class="col-md-6">
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <div class="col-xs-6">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-inline">
+                                    {{ field.errors|removetags:"ul li"|safe }}
                                 </span>
-                                </div>
+                            {% endif %}
+                            <span class="help-block">
+                                {{ field.help_text|capfirst }}
+                            </span>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
         </fieldset>
 
         <fieldset>
             <legend>{% trans "sms"|upper %} {% trans "settings" %}</legend>
             <div class="row">
-                <div class="col-md-12">
                 {% get_fieldset frequency,maxretry,intervalretry as campaign_settings_fields from form %}
                 {% for field in campaign_settings_fields %}
                     <div class="col-md-6">
@@ -91,56 +84,31 @@
                         </div>
                     </div>
                 {% endfor %}
-                </div>
             </div>
-
         </fieldset>
 
         <fieldset>
-            <legend>{% trans "sms"|upper %} {% trans "campaign schedule"|capfirst %}</legend>
+            <legend>{% trans "sms"|upper %} {% trans "campaign" %} {% trans "schedule" %}</legend>
             <div class="row">
-                <div class="col-md-12">
-                    {% get_fieldset startingdate,expirationdate as campaign_settings_fields from form %}
-                    {% for field in campaign_settings_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <div class="col-xs-6">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">
-                                        {{ field.errors|removetags:"ul li"|safe }}
-                                    </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
+                {% get_fieldset startingdate,expirationdate,daily_start_time,daily_stop_time as campaign_settings_fields from form %}
+                {% for field in campaign_settings_fields %}
+                    <div class="col-md-6">
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <div class="col-xs-6">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-inline">
+                                    {{ field.errors|removetags:"ul li"|safe }}
                                 </span>
-                                </div>
+                            {% endif %}
+                            <span class="help-block">
+                                {{ field.help_text|capfirst }}
+                            </span>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
-                <div class="col-md-12">
-                    {% get_fieldset daily_start_time,daily_stop_time as campaign_settings_fields from form %}
-                    {% for field in campaign_settings_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <div class="col-xs-6">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">
-                                        {{ field.errors|removetags:"ul li"|safe }}
-                                    </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
-                                </span>
-                                </div>
-                            </div>
-                        </div>
-                    {% endfor %}
-                </div>
+                    </div>
+                {% endfor %}
             </div>
             <div class="row">
                 <div class="col-md-12">
@@ -158,11 +126,9 @@
         <br/>
         {% if action == 'update' %}
             <input id="update" type="submit" class="btn btn-primary" value="{% trans 'update'|title %}" />
+            <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans 'delete'|title %}" />
         {% else %}
             <input id="add" type="submit" class="btn btn-primary" value="{% trans 'submit'|title %}" />
-        {% endif %}
-        {% if action == 'update' %}
-            <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans 'delete'|title %}" />
         {% endif %}
     </form>
 {% endblock %}

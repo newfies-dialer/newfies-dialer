@@ -22,37 +22,27 @@
 
 {% block content %}
 
-<form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
-<div class="row">
-<div class="span12">
+<form class="well" role="form" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
+
     <div class="row">
         {% get_fieldset name,tts_language,description as survey_fields from form %}
         {% for field in survey_fields.visible_fields %}
-            <div class="span3 clearfix{% if field.errors %} control-group error{% endif %}">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                <div class="input">
-                    {{ field }}
-                    {% if field.errors %}
-                        <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                    {% endif %}
-                    <span class="help-block">{{ field.help_text|capfirst }} </span>
-                </div>
+            <div class="col-md-4 {% if field.errors %} error{% endif %}">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ field.help_text|capfirst }} </span>
             </div>
         {% endfor %}
-
-        <div class="span2 clearfix">
-            <label class="control-label">&nbsp;</label>
-            <div class="input">
-                <div align="center">
-                {% if action == 'add' %}
-                    <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
-                {% endif %}
-                </div>
-            </div>
-        </div>
     </div>
-</div>
-</div>
+
+    {% if action == 'add' %}
+        <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
+    {% endif %}
+
+
 
 {% if action == 'update' %}
 <div class="column">
@@ -383,14 +373,14 @@
 
 {% if action == 'update' %}
     <div class="row">
-        <div class="span10">
+        <div class="col-md-6 text-left">
         {% if perms.survey.add_section %}
             <button data-toggle="modal" href="#section-create-add" class="section-add btn btn-info" url='/section/add/' data-controls-modal='section-create-add'>
                 {% trans "add section"|title %}
             </button>
         {% endif %}
         </div>
-        <div class="span1">
+        <div class="col-md-6 text-right">
             <input id="update" type="submit" class="btn btn-primary" onclick="javascript:document.getElementById('update_form').submit();" value="{% trans "close survey"|title %}" />
         </div>
     </div>
@@ -409,7 +399,7 @@
 
 </script>
 <!--Section add modal content-->
-<div id="section-create-add" class="modal hide fade modal-section">
+<div id="section-create-add" class="modal fade" role="dialog" aria-labelledby="section_create_add">
 </div>
 
 <!--Section branching change modal-->

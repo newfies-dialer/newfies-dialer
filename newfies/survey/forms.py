@@ -117,7 +117,9 @@ class SurveyForm(ModelForm):
         super(SurveyForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['name', 'tts_language', 'description']
         self.fields['description'].widget = forms.TextInput()
-        self.fields['description'].widget.attrs['class'] = 'span3'
+
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class PlayMessageSectionForm(ModelForm):
@@ -131,12 +133,11 @@ class PlayMessageSectionForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(PlayMessageSectionForm, self).__init__(*args, **kwargs)
         self.fields['survey'].widget = forms.HiddenInput()
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].widget.attrs['class'] = 'span3'
-        self.fields['retries'].widget.attrs['class'] = 'span1'
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
-            self.fields['audiofile'].widget.attrs['class'] = 'span2'
 
 
 class MultipleChoiceSectionForm(ModelForm):
@@ -160,12 +161,8 @@ class MultipleChoiceSectionForm(ModelForm):
 
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].widget.attrs['class'] = 'span3'
-        self.fields['retries'].widget.attrs['class'] = 'span1'
-        self.fields['timeout'].widget.attrs['class'] = 'span1'
-
-        for i in range(0, 10):
-            self.fields['key_' + str(i)].widget.attrs['class'] = 'span1'
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class RatingSectionForm(ModelForm):

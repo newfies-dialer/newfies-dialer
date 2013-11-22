@@ -36,6 +36,8 @@ class VoipSearchForm(SearchForm):
 
     def __init__(self, user, *args, **kwargs):
         super(VoipSearchForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's campaign list which are attached with voipcall
         if user:
             leg_type_list = []

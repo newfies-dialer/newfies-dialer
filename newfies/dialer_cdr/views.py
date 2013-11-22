@@ -23,6 +23,7 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
+from user_profile.models import Manager
 from common.common_functions import ceil_strdate, unset_session_var,\
     get_pagination_vars
 from datetime import datetime
@@ -190,7 +191,7 @@ def voipcall_report(request):
         kwargs['leg_type__exact'] = leg_type
 
     if not request.user.is_superuser:
-        kwargs['user'] = request.user
+        kwargs['user_id'] = request.user.id
 
     voipcall_list = VoIPCall.objects.filter(**kwargs)
 

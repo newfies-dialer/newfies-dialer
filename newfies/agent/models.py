@@ -65,6 +65,10 @@ class AgentProfile(Profile_abstract):
     #key = models.CharField(max_length=256, blank=True, default='')
 
     class Meta:
+        permissions = (
+            ("view_agent_dashboard", _('can see Agent dashboard')),
+            ("view_agent", _('can see Agent list')),
+        )
         db_table = 'agent_profile'
         verbose_name = _("agent profile")
         verbose_name_plural = _("agent profiles")
@@ -80,10 +84,6 @@ class Agent(User):
     They don't have access to the admin/manager.
     """
     class Meta:
-        permissions = (
-            ("view_agent_dashboard", _('can see Agent dashboard')),
-            ("view_agent", _('can see Agent list')),
-        )
         proxy = True
         app_label = 'auth'
         verbose_name = _('agent')

@@ -108,7 +108,7 @@ class CalendarUserProfile(Profile_abstract):
     manager = models.ForeignKey(Manager, verbose_name=_("manager"),
                                 help_text=_("select manager"),
                                 related_name="manager_of_calendar_user")
-    calendar_setting = models.ForeignKey(CalendarSetting, null=False, blank=False,
+    calendar_setting = models.ForeignKey(CalendarSetting,
                                          verbose_name=_('calendar settings'))
 
     class Meta:

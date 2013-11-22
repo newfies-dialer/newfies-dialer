@@ -95,15 +95,16 @@ def calendar_user_add(request):
         * Add a new calendar user which will belong to the logged in manager
           via the UserCreationForm & get redirected to the calendar user list
     """
-    form = CalendarUserCreationForm()
+    form = CalendarUserCreationForm(request.user)
     if request.method == 'POST':
-        form = CalendarUserCreationForm(request.POST)
+        form = CalendarUserCreationForm(request.user, request.POST)
         if form.is_valid():
             calendar_user = form.save()
 
             calendar_user_profile = CalendarUserProfile.objects.create(
                 user=calendar_user,
                 manager=Manager.objects.get(username=request.user),
+                calendar_setting_id=request.POST['calendar_setting_id']
             )
 
             request.session["msg"] = _('"%(name)s" added as calendar user.') %\

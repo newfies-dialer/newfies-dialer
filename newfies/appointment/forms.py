@@ -34,8 +34,19 @@ class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
 
 
 class CalendarUserCreationForm(UserCreationForm):
-    def __init__(self, *args, **kwargs):
+    calendar_setting_id = forms.ChoiceField(label=_('calendar setting'),
+                                            required=True,
+                                            choices=[('', '---')])
+
+    def __init__(self, manager, *args, **kwargs):
         super(CalendarUserCreationForm, self).__init__(*args, **kwargs)
+
+        cal_setting_list = []
+        setting_list = CalendarSetting.objects.filter(user=manager)
+        for i in setting_list:
+            cal_setting_list.append((i.id, i.caller_name))
+
+        self.fields['calendar_setting_id'].choices = cal_setting_list
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
 

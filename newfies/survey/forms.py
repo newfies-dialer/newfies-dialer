@@ -178,17 +178,13 @@ class RatingSectionForm(ModelForm):
         super(RatingSectionForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
-            self.fields['audiofile'].widget.attrs['class'] = 'span2'
             self.fields['invalid_audiofile'].choices = self.fields['audiofile'].choices
-            self.fields['invalid_audiofile'].widget.attrs['class'] = 'span2'
 
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].widget.attrs['class'] = 'span3'
-        self.fields['retries'].widget.attrs['class'] = 'span1'
-        self.fields['timeout'].widget.attrs['class'] = 'span1'
-        self.fields['rating_laps'].widget.attrs['class'] = 'span1'
         self.fields['rating_laps'].widget.attrs['maxlength'] = 3
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CaptureDigitsSectionForm(ModelForm):
@@ -205,16 +201,11 @@ class CaptureDigitsSectionForm(ModelForm):
         super(CaptureDigitsSectionForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
-            self.fields['audiofile'].widget.attrs['class'] = 'span2'
 
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].widget.attrs['class'] = 'span3'
-        self.fields['number_digits'].widget.attrs['class'] = 'span1'
-        self.fields['min_number'].widget.attrs['class'] = 'span1'
-        self.fields['max_number'].widget.attrs['class'] = 'span1'
-        self.fields['retries'].widget.attrs['class'] = 'span1'
-        self.fields['timeout'].widget.attrs['class'] = 'span1'
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class RecordMessageSectionForm(ModelForm):
@@ -228,10 +219,11 @@ class RecordMessageSectionForm(ModelForm):
         super(RecordMessageSectionForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
-            self.fields['audiofile'].widget.attrs['class'] = 'span2'
-        self.fields['question'].widget.attrs['class'] = 'span3'
+
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class ConferenceSectionForm(ModelForm):
@@ -245,10 +237,10 @@ class ConferenceSectionForm(ModelForm):
         super(ConferenceSectionForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
-            self.fields['audiofile'].widget.attrs['class'] = 'span2'
-        self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CallTransferSectionForm(ModelForm):
@@ -256,16 +248,17 @@ class CallTransferSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'audiofile', 'phonenumber', 'completed']
+        fields = ['type', 'survey', 'question', 'audiofile', 'phonenumber',
+                  'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(CallTransferSectionForm, self).__init__(*args, **kwargs)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
-            self.fields['audiofile'].widget.attrs['class'] = 'span2'
-        self.fields['question'].widget.attrs['class'] = 'span3'
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class ScriptForm(ModelForm):
@@ -278,7 +271,7 @@ class ScriptForm(ModelForm):
     def __init__(self, *args, **kwargs):
         super(ScriptForm, self).__init__(*args, **kwargs)
         self.fields['script'].widget = forms.Textarea()
-        self.fields['script'].widget.attrs['class'] = 'span4'
+        self.fields['script'].widget.attrs['class'] = "form-control"
 
 
 class BranchingForm(ModelForm):

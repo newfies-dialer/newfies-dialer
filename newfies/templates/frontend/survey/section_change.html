@@ -84,7 +84,7 @@
                         </div>
 
 
-                        {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS or form.type.value|convert_to_int == SECTION_TYPE.CALL_TRANSFER or form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE or form.type.value|convert_to_int == SECTION_TYPE.PLAY_MESSAGE %}
+                        {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS or form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE or form.type.value|convert_to_int == SECTION_TYPE.PLAY_MESSAGE %}
 
                             <div class="row">
                                 <div class="col-md-6">
@@ -192,16 +192,19 @@
                         <!--Rating Section form-->
                         {% if form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION %}
                             <div class="row">
-                                <div class="span2">
-                                    <label class="control-label" for="{{ form.rating_laps.auto_id }}">{{ form.rating_laps.label|title }}</label>
-                                </div>
-                                <div class="span3 clearfix{% if form.rating_laps.errors %} control-group error{% endif %}">
-                                    <div class="input">
-                                        {{ form.rating_laps }}
-                                        {% if form.rating_laps.errors %}
-                                            <span class="help-inline">{{ form.rating_laps.errors|removetags:"ul li"|safe }}</span>
-                                        {% endif %}
-                                        <span class="help-block">{{ form.rating_laps.help_text|capfirst|safe }} </span>
+                                <div class="col-md-12">
+                                    <div class="form-group {% if form.rating_laps.errors %}has-error{% endif %}">
+                                        <div class="col-xs-3">
+                                            <label class="control-label" for="{{ form.rating_laps.auto_id }}">{{ form.rating_laps.label|title }}</label>
+
+                                            {{ form.rating_laps }}
+                                            {% if form.rating_laps.errors %}
+                                                <span class="help-inline">{{ form.rating_laps.errors|removetags:"ul li"|safe }}</span>
+                                            {% endif %}
+                                            <span class="help-block">
+                                            {{ form.rating_laps.help_text|capfirst }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -210,57 +213,57 @@
                         <!--Enter number Section form-->
                         {% if form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS %}
                             <div class="row">
-                                <div class="span2">
-                                    <label class="control-label" for="{{ form.number_digits.auto_id }}">{{ form.number_digits.label|title }}</label>
-                                </div>
-                                <div class="span3 clearfix{% if form.number_digits.errors %} control-group error{% endif %}">
-                                    <div class="input">
-                                        {{ form.number_digits }}
-                                        {% if form.number_digits.errors %}
-                                            <span class="help-inline">{{ form.number_digits.errors|removetags:"ul li"|safe }}</span>
-                                        {% endif %}
-                                        <span class="help-block">{{ form.number_digits.help_text|capfirst|safe }} </span>
+                                <div class="col-md-4">
+                                    <div class="col-xs-12 form-group">
+                                        <div class="checkbox">
+                                            <label>
+                                                {{ form.validate_number }} {{ form.validate_number.label|title }}
+                                            </label>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
-
                             <div class="row">
-                                <div class="span2">
-                                    <label class="control-label" for="{{ form.validate_number.auto_id }}">{{ form.validate_number.label|title }}</label>
-                                </div>
-                                <div class="span3">
-                                    {{ form.validate_number }}
-                                    {% if form.validate_number.errors %}
-                                        <span class="help-inline">{{ form.validate_number.errors|removetags:"ul li"|safe }}</span>
-                                    {% endif %}
-                                    <span class="help-block">{{ form.validate_number.help_text|capfirst|safe }} </span>
-                                </div>
-                            </div>
-
-                            <div class="row">
-                                <div class="span2">
-                                    <label class="control-label" for="{{ form.min_number.auto_id }}">{{ form.min_number.label|title }}</label>
-                                </div>
-                                <div class="span1 clearfix{% if form.min_number.errors %} control-group error{% endif %}">
-                                    <div class="input">
-                                        {{ form.min_number }}
-                                        {% if form.min_number.errors %}
-                                            <span class="help-inline">{{ form.min_number.errors|removetags:"ul li"|safe }}</span>
-                                        {% endif %}
-                                        <span class="help-block">{{ form.min_number.help_text|capfirst|safe }} </span>
+                                <div class="col-md-6">
+                                    <div class="form-group {% if form.number_digits.errors %}has-error{% endif %}">
+                                        <div class="col-xs-10">
+                                            <label class="control-label" for="{{ form.number_digits.auto_id }}">{{ form.number_digits.label|title }}</label>
+                                            {{ form.number_digits }}
+                                            {% if form.number_digits.errors %}
+                                                <span class="help-inline">
+                                                    {{ form.number_digits.errors|removetags:"ul li"|safe }}
+                                                </span>
+                                            {% endif %}
+                                            <span class="help-block">
+                                                {{ form.number_digits.help_text|capfirst }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
 
-                                <div class="span1">
-                                    <label class="control-label" for="{{ form.max_number.auto_id }}">{{ form.max_number.label }}</label>
+                                <div class="col-md-3">
+                                    <div class="form-group {% if form.min_number.errors %}has-error{% endif %}">
+                                        <div class="col-xs-10">
+                                            <label class="control-label" for="{{ form.min_number.auto_id }}"> {{ form.min_number.label|title }}</label>
+                                            {{ form.min_number }}
+                                            {% if form.min_number.errors %}
+                                                <span class="help-inline">{{ form.min_number.errors|removetags:"ul li"|safe }}</span>
+                                            {% endif %}
+                                            <span class="help-block">{{ form.min_number.help_text|capfirst|safe }} </span>
+                                        </div>
+                                    </div>
                                 </div>
-                                <div class="span1 clearfix{% if form.max_number.errors %} control-group error{% endif %}">
-                                    <div class="input">
-                                        {{ form.max_number }}
-                                        {% if form.max_number.errors %}
-                                            <span class="help-inline">{{ form.max_number.errors|removetags:"ul li"|safe }}</span>
-                                        {% endif %}
-                                        <span class="help-block">{{ form.max_number.help_text|capfirst|safe }} </span>
+
+                                <div class="col-md-3">
+                                    <div class="form-group {% if form.max_number.errors %}has-error{% endif %}">
+                                        <div class="col-xs-10">
+                                            <label class="control-label" for="{{ form.max_number.auto_id }}"> {{ form.max_number.label|title }}</label>
+                                            {{ form.max_number }}
+                                            {% if form.max_number.errors %}
+                                                <span class="help-inline">{{ form.max_number.errors|removetags:"ul li"|safe }}</span>
+                                            {% endif %}
+                                            <span class="help-block">{{ form.max_number.help_text|capfirst|safe }} </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -269,16 +272,19 @@
                         <!--Call transfer Section form-->
                         {% if form.type.value|convert_to_int == SECTION_TYPE.CALL_TRANSFER %}
                             <div class="row">
-                                <div class="span2">
-                                    <label class="control-label" for="{{ form.phonenumber.auto_id }}">{{ form.phonenumber.label }}</label>
-                                </div>
-                                <div class="span3 clearfix{% if form.phonenumber.errors %} control-group error{% endif %}">
-                                    <div class="input">
-                                        {{ form.phonenumber }}
-                                        {% if form.phonenumber.errors %}
-                                            <span class="help-inline">{{ form.phonenumber.errors|removetags:"ul li"|safe }}</span>
-                                        {% endif %}
-                                        <span class="help-block">{{ form.phonenumber.help_text|capfirst|safe }} </span>
+                                <div class="col-md-6">
+                                    <div class="form-group {% if form.phonenumber.errors %}has-error{% endif %}">
+                                        <div class="col-xs-12">
+                                            <label class="control-label" for="{{ form.phonenumber.auto_id }}">{{ form.phonenumber.label|title }}</label>
+
+                                            {{ form.phonenumber }}
+                                            {% if form.phonenumber.errors %}
+                                                <span class="help-inline">{{ form.phonenumber.errors|removetags:"ul li"|safe }}</span>
+                                            {% endif %}
+                                            <span class="help-block">
+                                            {{ form.phonenumber.help_text|capfirst }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -287,16 +293,20 @@
                         <!--Conference Section form-->
                         {% if form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE %}
                             <div class="row">
-                                <div class="span2">
-                                    <label class="control-label" for="{{ form.conference.auto_id }}">{{ form.conference.label|title }}</label>
-                                </div>
-                                <div class="span3 clearfix{% if form.conference.errors %} control-group error{% endif %}">
-                                    <div class="input">
-                                        {{ form.conference }}
-                                        {% if form.conference.errors %}
-                                            <span class="help-inline">{{ form.conference.errors|removetags:"ul li"|safe }}</span>
-                                        {% endif %}
-                                        <span class="help-block">{{ form.conference.help_text|capfirst|safe }} </span>
+                                <div class="col-md-6">
+                                    <div class="form-group {% if form.conference.errors %}has-error{% endif %}">
+                                        <div class="col-xs-10">
+                                            <label class="control-label" for="{{ form.conference.auto_id }}">{{ form.conference.label|title }}</label>
+                                            {{ form.conference }}
+                                            {% if form.conference.errors %}
+                                                <span class="help-inline">
+                                                    {{ form.conference.errors|removetags:"ul li"|safe }}
+                                                </span>
+                                            {% endif %}
+                                            <span class="help-block">
+                                                {{ form.conference.help_text|capfirst }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -304,7 +314,7 @@
 
                         <!--Survey complete field -->
                         <div class="row">
-                            <div class="col-md-8">
+                            <div class="col-md-4">
                                 <div class="col-xs-12 form-group">
                                     <div class="checkbox">
                                         <label>

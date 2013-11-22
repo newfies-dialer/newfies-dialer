@@ -4,12 +4,6 @@
 {% block extra_files %}
     {% include "frontend/common_datepicker.html" %}
     {% include "frontend/custom_jquery_select_all.html" %}
-
-    <style type="text/css">
-        td {
-            width: auto;
-        }
-    </style>
 {% endblock %}
 
 {% block content_header %}
@@ -20,8 +14,8 @@
 {% block content %}
 
     <ul class="nav nav-tabs">
-        <li><a href="#tabs-1" data-toggle="tab">{% trans "sms"|upper %}</a></li>
-        <li><a href="#tabs-2" data-toggle="tab">{% trans "daily report"|title %}</a></li>
+        <li class="{% if action == 'tabs-1' %}active{% endif %}"><a href="#tabs-1" data-toggle="tab">{% trans "sms"|upper %}</a></li>
+        <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "daily report"|title %}</a></li>
     </ul>
     <div>&nbsp;</div>
     <div id="form_collapse" class="collapse in">
@@ -50,7 +44,7 @@
     </button>
 
     <div class="tab-content">
-        <div id="tabs-1" class="tab-pane {% if action == 'tabs-1' %}active{% endif %}">
+        <div id="tabs-1" class="tab-pane active">
             <div class="graph_header">
                 {% trans "sms"|upper %} {% trans "detail records"|title %} -
                 <b>

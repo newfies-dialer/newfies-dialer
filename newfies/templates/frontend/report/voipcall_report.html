@@ -12,8 +12,8 @@
 
 {% block content %}
     <ul class="nav nav-tabs">
-        <li><a href="#tabs-1" data-toggle="tab">{% trans "VoIP calls" %}</a></li>
-        <li><a href="#tabs-2" data-toggle="tab">{% trans "daily report"|title %}</a></li>
+        <li class="{% if action == 'tabs-1' %}active{% endif %}"><a href="#tabs-1" data-toggle="tab">{% trans "VoIP calls" %}</a></li>
+        <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "daily report"|title %}</a></li>
     </ul>
     <br/>
     <div id="form_collapse" class="collapse in">
@@ -44,7 +44,6 @@
     </button>
 
     <div class="tab-content">
-
         <div id="tabs-1" class="tab-pane {% if action == 'tabs-1' %}active{% endif %}">
             <div class="graph_header">
                 {% trans "voip call detail records"|title %} -

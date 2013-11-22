@@ -13,9 +13,9 @@
 
 {% block content %}
 <ul class="nav nav-tabs">
-    <li><a href="#tabs-1" data-toggle="tab">{% trans "survey result"|capfirst %}</a></li>
-    <li><a href="#tabs-2" data-toggle="tab">{% trans "survey calls"|capfirst %}</a></li>
-    <li><a href="#tabs-3" data-toggle="tab">{% trans "survey daily call report"|capfirst %}</a></li>
+    <li class="{% if action == 'tabs-1' %}active{% endif %}"><a href="#tabs-1" data-toggle="tab">{% trans "survey result"|capfirst %}</a></li>
+    <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "survey calls"|capfirst %}</a></li>
+    <li class="{% if action == 'tabs-3' %}active{% endif %}"><a href="#tabs-3" data-toggle="tab">{% trans "survey daily call report"|capfirst %}</a></li>
 </ul>
 <div>&nbsp;</div>
 <div id="form_collapse" class="collapse in">

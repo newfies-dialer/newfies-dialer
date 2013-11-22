@@ -2,44 +2,55 @@
 
 <div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
     <div class="list-group">
-        {% if perms.dialer_contact.view_phonebook %}
-            <a class="list-group-item {% ifcontains '/phonebook/' %}active{% endifcontains %}" href="/phonebook/">{% trans "phonebooks"|title %}</a>
-        {% endif %}
-        {% if perms.dialer_contact.view_contact %}
-            <a class="list-group-item {% ifcontains '/contact/' %}active{% endifcontains %}" href="/contact/">{% trans "contacts"|title %}</a>
+
+        {% if "/phonebook/" in request.path or "/contact/" in request.path %}
+            {% if perms.dialer_contact.view_phonebook %}
+                <a class="list-group-item {% ifcontains '/phonebook/' %}active{% endifcontains %}" href="/phonebook/">{% trans "phonebooks"|title %}</a>
+            {% endif %}
+            {% if perms.dialer_contact.view_contact %}
+                <a class="list-group-item {% ifcontains '/contact/' %}active{% endifcontains %}" href="/contact/">{% trans "contacts"|title %}</a>
+            {% endif %}
         {% endif %}
 
-        {% if perms.dnc.view_dnc_list %}
-            <a class="list-group-item {% ifcontains '/dnc_list/' %}active{% endifcontains %}" href="/dnc_list/">{% trans "dnc"|upper %} {% trans "list"|title %}</a>
-        {% endif %}
-        {% if perms.dnc.view_dnccontact %}
-            <a class="list-group-item {% ifcontains '/dnc_contact/' %}active{% endifcontains %}" href="/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts"|title %}</a>
-        {% endif %}
-
-        {% if perms.agent.view_agent %}
-            <a class="list-group-item {% ifcontains '/agent/' %}active{% endifcontains %}" href="/agent/">{% trans "agent"|title %}</a>
-        {% endif %}
-        {% if perms.callcenter.view_queue %}
-            <a class="list-group-item {% ifcontains '/queue/' %}active{% endifcontains %}" href="/queue/">{% trans "queue"|title %}</a>
-        {% endif %}
-        {% if perms.callcenter.view_tier %}
-            <a class="list-group-item {% ifcontains '/tier/' %}active{% endifcontains %}" href="/tier/">{% trans "tier"|title %}</a>
+        {% if "/dnc_list/" in request.path or "/dnc_contact/" in request.path %}
+            {% if perms.dnc.view_dnc_list %}
+                <a class="list-group-item {% ifcontains '/dnc_list/' %}active{% endifcontains %}" href="/dnc_list/">{% trans "dnc"|upper %} {% trans "list"|title %}</a>
+            {% endif %}
+            {% if perms.dnc.view_dnccontact %}
+                <a class="list-group-item {% ifcontains '/dnc_contact/' %}active{% endifcontains %}" href="/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts"|title %}</a>
+            {% endif %}
         {% endif %}
 
-        {# if perms.appointment.view_calendarsetting #}
-            <a class="list-group-item {% ifcontains '/calendar_setting/' %}active{% endifcontains %}" href="/calendar_setting/">{% trans "calendar setting"|title %}</a>
-        {# endif #}
-        {% if perms.appointment.view_calendar_user %}
-            <a class="list-group-item {% ifcontains '/calendar_user/' %}active{% endifcontains %}" href="/calendar_user/">{% trans "calendar user"|title %}</a>
+        {% if "/agent/" in request.path or "/queue/" in request.path or "/tier/" in request.path %}
+            {% if perms.agent.view_agent %}
+                <a class="list-group-item {% ifcontains '/agent/' %}active{% endifcontains %}" href="/agent/">{% trans "agent"|title %}</a>
+            {% endif %}
+            {% if perms.callcenter.view_queue %}
+                <a class="list-group-item {% ifcontains '/queue/' %}active{% endifcontains %}" href="/queue/">{% trans "queue"|title %}</a>
+            {% endif %}
+            {% if perms.callcenter.view_tier %}
+                <a class="list-group-item {% ifcontains '/tier/' %}active{% endifcontains %}" href="/tier/">{% trans "tier"|title %}</a>
+            {% endif %}
         {% endif %}
-        {# if perms.appointment.view_calendar #}
-            <a class="list-group-item {% ifcontains '/calendar/' %}active{% endifcontains %}" href="/calendar/">{% trans "calendar"|title %}</a>
-        {# endif #}
-        {% if perms.appointment.view_event %}
-            <a class="list-group-item {% ifcontains '/event/' %}active{% endifcontains %}" href="/event/">{% trans "event"|title %}</a>
-        {% endif %}
-        {% if perms.appointment.view_alarm %}
-            <a class="list-group-item {% ifcontains '/alarm/' %}active{% endifcontains %}" href="/alarm/">{% trans "alarm"|title %}</a>
+
+        {% if "/calendar_setting/" in request.path or "/calendar_user/" in request.path or "/calendar/" in request.path or "/event/" in request.path or "/alarm/" in request.path %}
+
+            {# if perms.appointment.view_calendarsetting #}
+                <a class="list-group-item {% ifcontains '/calendar_setting/' %}active{% endifcontains %}" href="/calendar_setting/">{% trans "calendar setting"|title %}</a>
+            {# endif #}
+            {% if perms.appointment.view_calendar_user %}
+                <a class="list-group-item {% ifcontains '/calendar_user/' %}active{% endifcontains %}" href="/calendar_user/">{% trans "calendar user"|title %}</a>
+            {% endif %}
+            {# if perms.appointment.view_calendar #}
+                <a class="list-group-item {% ifcontains '/calendar/' %}active{% endifcontains %}" href="/calendar/">{% trans "calendar"|title %}</a>
+            {# endif #}
+            {% if perms.appointment.view_event %}
+                <a class="list-group-item {% ifcontains '/event/' %}active{% endifcontains %}" href="/event/">{% trans "event"|title %}</a>
+            {% endif %}
+            {% if perms.appointment.view_alarm %}
+                <a class="list-group-item {% ifcontains '/alarm/' %}active{% endifcontains %}" href="/alarm/">{% trans "alarm"|title %}</a>
+            {% endif %}
+
         {% endif %}
 
     </div>

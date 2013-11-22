@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n %}
+{% load i18n common_tags %}
 
 {% block header_files %}
 {% endblock %}
@@ -13,6 +13,9 @@
 {% block header %}
 {% endblock %}
 
+{% block newfies_custom_js %}
+{% endblock %}
+
 {% block menu %}
 {% endblock %}
 
@@ -20,13 +23,13 @@
 
     {% block content %}
         {% if err_msg %}
-        {% include "frontend/extra_modal_files.html" %}
+            {% include "frontend/extra_modal_files.html" %}
             <script type="text/javascript" charset="utf-8">
                 $(window).load(function(){
-                    $('#survey_import_modal').modal('show');
+                    $('#survey-import-modal').modal('show');
                 });
                 var url = '/survey/';
-                $(".close").live('click', function() {
+                $("#id_close").live('click', function() {
                     $(location).attr('href', url);
                 });
                 var KEYCODE_ESC = 27;
@@ -35,35 +38,35 @@
                 });
             </script>
             <!-- modal content-->
-            <div class="modal hide fade" id="survey_import_modal">
+            <div class="modal fade" id="survey-import-modal" role="dialog" aria-labelledby="survey_import_modal">
 
         {% endif %}
-
-        <div class="modal-header">
-            <a class="close" data-dismiss="modal" >&times;</a>
-            <h3>{% trans "import survey"|title %}</h3>
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a class="close" data-dismiss="modal" >&times;</a>
+                    <h3>{% trans "import survey"|title %}</h3>
+                </div>
+                <form method="post" role="form" action="/import_survey/" enctype="multipart/form-data" >{% csrf_token %}
+                    <div class="modal-body">
+                        {% for field in form %}
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                            <label for="id_{{ field.name }}" class="control-label">{{ field.label|title }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="{% if field.errors %}has-error{% endif %}">{{ field.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
+                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</button>
+                    </div>
+                </form>
+            </div>
         </div>
-        <form method="post" action="/import_survey/" enctype="multipart/form-data" >{% csrf_token %}
-             <div class="modal-body">
-                 {% for field in form %}
-                 <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-                     <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                     <div class="input">
-                         {{ field }}
-                         {% if field.errors %}
-                             <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                         {% endif %}
-                         <span class="help-block">{{ field.help_text|capfirst }} </span>
-                     </div>
-                 </div>
-                 {% endfor %}
-             </div>
-             <div class="modal-footer">
-                 <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
-                 <a href="#" class="close btn" data-dismiss="modal">{% trans "close"|title %}</a>
-             </div>
-        </form>
-
         {% if err_msg %}
             </div>
         {% endif %}

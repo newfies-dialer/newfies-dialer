@@ -22,25 +22,24 @@
 {% block container %}
 
     {% block content %}
-
         {% if err_msg %}
             {% include "frontend/extra_modal_files.html" %}
             <script type="text/javascript" charset="utf-8">
-            $(function () {
-                $(window).load(function(){
-                    $('#duplicate-campaign').modal('show');
-                });
+                $(function () {
+                    $(window).load(function(){
+                        $('#duplicate-campaign').modal('show');
+                    });
 
-                var url = '/campaign/';
-                $(".close, #id_close").live('click', function() {
-                    $(location).attr('href', url);
-                });
+                    var url = '/campaign/';
+                    $(".close, #id_close").live('click', function() {
+                        $(location).attr('href', url);
+                    });
 
-                var KEYCODE_ESC = 27;
-                $(document).keyup(function(e) {
-                    if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+                    var KEYCODE_ESC = 27;
+                    $(document).keyup(function(e) {
+                        if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+                    });
                 });
-            });
             </script>
             <!-- modal content-->
             <div class="modal fade" id="duplicate-campaign" role="dialog" aria-labelledby="add_duplicate_campaign">
@@ -76,7 +75,6 @@
 
                     <div class="modal-footer" align="right">
                         <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "save"|title %}" />
-                        &nbsp;
                         <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</button>
                     </div>
                 </form>

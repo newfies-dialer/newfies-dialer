@@ -67,5 +67,14 @@
                 <a class="list-group-item {% ifcontains '/sms_report/' %}active{% endifcontains %}" href="/sms_report/">{% trans "sms"|upper %} {% trans "report"|title %}</a>
             {% endif %}
         {% endif %}
+
+        {% if "/frozen_survey/" in request.path or "/survey/" in request.path %}
+            {% if perms.survey.view_survey %}
+                <a class="list-group-item {% ifcontains '/survey/' %}active{% endifcontains %}" href="/survey/">{% trans "surveys"|title %}</a>
+            {% endif %}
+            {% if perms.survey.view_frozen_survey %}
+                <a class="list-group-item {% ifcontains '/frozen_survey/' %}active{% endifcontains %}" href="/frozen_survey/">{% trans "frozen surveys"|title %}</a>
+            {% endif %}
+        {% endif %}
     </div>
 </div>

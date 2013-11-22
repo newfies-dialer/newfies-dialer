@@ -19,4 +19,5 @@ class DialerAudioFileForm(CustomerAudioFileForm):
 
     def __init__(self, *args, **kwargs):
         super(DialerAudioFileForm, self).__init__(*args, **kwargs)
-        self.fields['audio_file'].widget.attrs['class'] = "input-file"
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"

@@ -19,29 +19,29 @@
 
 {% block content %}
 
-<form class="well" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
+<form class="well" role="form" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
     {# audiofield form #}
     {% for field in form %}
-    <div class="clearfix{% if field.errors %} control-group error{% endif %}">
-        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-        <div class="input">
-            {{ field }}
-            {% if field.errors %}
-                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-            {% endif %}
-            <span class="help-block">{{ field.help_text|capfirst }} </span>
+    <div class="row">
+        <div class="form-group {% if field.errors %}has-error{% endif %}">
+            <div class="col-xs-3">
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                    <span class="help-block">{{ field.help_text|capfirst }} </span>
+            </div>
         </div>
     </div>
     {% endfor %}
+    {% if action == 'update' %}
+        <input id="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
+        <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans "delete"|title %}" />
+    {% else %}
+        <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
+    {% endif %}
 
-    <div class="actions">
-         {% if action == 'update' %}
-            <input id="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
-         {% else %}
-            <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
-         {% endif %}
-         <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans "delete"|title %}" />
-    </div>
 </form>
 
 {% endblock %}

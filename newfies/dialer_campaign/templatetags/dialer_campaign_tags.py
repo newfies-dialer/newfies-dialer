@@ -106,7 +106,7 @@ def check_url_for_template_width(current_url):
     full_width_on_requested_path = [
         '/dashboard/', '/sms_dashboard/',
         '/campaign/', '/sms_campaign/',
-        'user_detail_change',
+        'user_detail_change', '/audio/',
     ]
     if current_url == '/':
         return True

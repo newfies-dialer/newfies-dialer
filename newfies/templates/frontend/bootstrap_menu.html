@@ -60,21 +60,9 @@
                 </li>
 
                 <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "reporting"|title %} <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        {% if perms.dialer_cdr.view_call_detail_report %}
-                            <li class="{% ifactive '/voipcall_report/' %}active{% endifactive %}"><a href="/voipcall_report/">{% trans "call detail report"|title %}</a></li>
-                        {% endif %}
-                        {% if perms.survey.view_survey_report %}
-                            <li class="{% ifactive '/survey_report/' %}active{% endifactive %}"><a href="/survey_report/">{% trans "survey reports"|title %}</a></li>
-                        {% endif %}
-                        {% if perms.dialer_campaign.view_subscriber %}
-                            <li class="{% ifactive '/subscribers/' %}active{% endifactive %}"><a href="/subscribers/">{% trans "subscriber report"|title %}</a></li>
-                        {% endif %}
-                        {% if perms.sms_module.view_sms_report %}
-                            <li class="{% ifactive '/sms_report/' %}active{% endifactive %}"><a href="/sms_report/">{% trans "sms"|upper %} {% trans "report"|title %}</a></li>
-                        {% endif %}
-                    </ul>
+                    {% if perms.dialer_cdr.view_call_detail_report %}
+                        <a href="/voipcall_report/">{% trans "reporting"|title %}</a>
+                    {% endif %}
                 </li>
                 <li>
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "modules"|title %} <b class="caret"></b></a>

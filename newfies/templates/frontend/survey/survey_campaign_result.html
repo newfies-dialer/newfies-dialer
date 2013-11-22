@@ -19,8 +19,6 @@
                         <th>{% trans "record file"|title %}</th>
                         <th>{% trans "duration"|title %}</th>
                     </tr>
-                    </thead>
-                    <tbody>
                     {% for record in result %}
                         <tr>
                             <td>{{ record.section.question }}</td>
@@ -39,7 +37,6 @@
                             </td>
                         </tr>
                     {% endfor %}
-                    </tbody>
                 </table>
             </div>
             {% endif %}

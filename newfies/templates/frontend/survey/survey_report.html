@@ -194,7 +194,6 @@
         <h3 class="text-center">{% trans "call detail report summary"|title %}</h3>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-condensed">
-                <thead>
                 <tr>
                     <th>{% trans "date"|title %}</th>
                     <th>{% trans "duration"|title %}</th>
@@ -202,8 +201,6 @@
                     <th>{% trans "calls"|title %}</th>
                     <th><acronym title="{% trans "Average Connection Time" %}">{% trans "ACT" %}</acronym></th>
                 </tr>
-                </thead>
-                <tbody>
                 {% for td in total_data %}
                     <tr>
                         <td>{{ td.starting_date }}</td>
@@ -217,8 +214,6 @@
                         <td>{{ td.duration__avg|conv_min }}</td>
                     </tr>
                 {% endfor %}
-                </tbody>
-                <tfoot>
                 <tr>
                     <td>{% trans "total"|title %}</td>
                     <td>{{ total_duration|conv_min }}</td>
@@ -226,7 +221,6 @@
                     <td>{{ total_calls }}</td>
                     <td>{{ total_avg_duration|conv_min }}</td>
                 </tr>
-                </tfoot>
             </table>
         </div>
     </div>

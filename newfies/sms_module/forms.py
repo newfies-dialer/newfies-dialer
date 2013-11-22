@@ -150,6 +150,8 @@ class SMSSearchForm(SearchForm):
         self.fields.keyOrder = [
             'from_date', 'to_date', 'status', 'smscampaign'
         ]
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             camp_list = []
             camp_list.append((0, '---'))

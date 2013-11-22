@@ -279,7 +279,8 @@ class SubscriberSearchForm(SearchForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SubscriberSearchForm, self).__init__(*args, **kwargs)
-
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             camp_list = []
             camp_list.append((0, _('all').upper()))

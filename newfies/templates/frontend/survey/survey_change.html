@@ -22,8 +22,8 @@
 
 {% block content %}
 
-<form class="well" role="form" method="POST" action="." enctype="multipart/form-data" id="update_form">{% csrf_token %}
-
+<form class="well" role="form" method="POST" action="." enctype="multipart/form-data" id="update_form">
+    {% csrf_token %}
     <div class="row">
         {% get_fieldset name,tts_language,description as survey_fields from form %}
         {% for field in survey_fields.visible_fields %}
@@ -38,10 +38,11 @@
         {% endfor %}
     </div>
 
+    <br/><br/>
+
     {% if action == 'add' %}
         <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
     {% endif %}
-
 
 
 {% if action == 'update' %}
@@ -69,20 +70,20 @@
                     {% if perms.survey.change_section %}
                         $(function() {
                             $("#row"+{{ section.id }}).find(".section-edit")
-                                    .attr("url", "/section/{{ section.id }}/")
-                                    .attr("data-toggle", "modal")
-                                    .attr("href", "#section-update-edit")
-                                    .attr("data-controls-modal", "section-update-edit");
+                                .attr("url", "/section/{{ section.id }}/")
+                                .attr("data-toggle", "modal")
+                                .attr("href", "#section-update-edit")
+                                .attr("data-controls-modal", "section-update-edit");
                         });
                     {% endif %}
 
                     {% if perms.survey.delete_section %}
                         $(function() {
                             $("#row"+{{ section.id }}).find(".section-delete")
-                                    .attr("url", "/section/delete/{{ section.id }}/")
-                                    .attr("data-toggle", "modal")
-                                    .attr("href", "#section-del")
-                                    .attr("data-controls-modal", "section-del");
+                                .attr("url", "/section/delete/{{ section.id }}/")
+                                .attr("data-toggle", "modal")
+                                .attr("href", "#section-del")
+                                .attr("data-controls-modal", "section-del");
                         });
                     {% endif %}
 
@@ -292,20 +293,20 @@
                                             <tr>
                                             {% if branch.section_id == section.id %}
                                                 {% if section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER and section.type != SECTION_TYPE.CONFERENCE and section.type != SECTION_TYPE.DNC %}
-                                                        <td>
-                                                            {% if branch.keys == 'any' %}
-                                                                {% trans "any other key"|title %}
-                                                            {% elif branch.keys == 'invalid' %}
-                                                                {% trans "invalid"|title %}
-                                                            {% elif branch.keys == 'timeout' %}
-                                                                {% trans "timeout"|title %} (no input within {{ section.timeout }}s)
-                                                            {% elif branch.keys %}
-                                                                {% trans "Key" %}&nbsp;
-                                                                {{ branch.keys }}
-                                                            {% else %}
-                                                                {% trans "none"|title %}
-                                                            {% endif %}
-                                                        </td>
+                                                    <td>
+                                                        {% if branch.keys == 'any' %}
+                                                            {% trans "any other key"|title %}
+                                                        {% elif branch.keys == 'invalid' %}
+                                                            {% trans "invalid"|title %}
+                                                        {% elif branch.keys == 'timeout' %}
+                                                            {% trans "timeout"|title %} (no input within {{ section.timeout }}s)
+                                                        {% elif branch.keys %}
+                                                            {% trans "Key" %}&nbsp;
+                                                            {{ branch.keys }}
+                                                        {% else %}
+                                                            {% trans "none"|title %}
+                                                        {% endif %}
+                                                    </td>
                                                 {% endif %}
                                                 <td>
                                                     {% if branch.goto.id %}
@@ -353,15 +354,6 @@
 </div>
 {% endif %}
 
-<!--update section in modal-->
-<script type="text/javascript" charset="utf-8">
-    $(".section-edit").live('click', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('url');
-        var modal_id = $(this).attr('data-controls-modal');
-        $("#" + modal_id).load(url);
-    });
-</script>
 <!-- close survey section modal content-->
 <div id="section-update-edit" class="modal fade" role="dialog" aria-labelledby="section_update_edit">
 </div>
@@ -381,9 +373,28 @@
     </div>
 {% endif %}
 
-<!--Section add modal-->
-<script type="text/javascript" charset="utf-8">
+<!--Section add modal content-->
+<div id="section-create-add" class="modal fade" role="dialog" aria-labelledby="section_create_add"></div>
 
+<!-- modal content-->
+<div id="section-branch" class="modal fade" role="dialog" aria-labelledby="section_branch"></div>
+
+<!-- update script modal content-->
+<div id="script-update-edit" class="modal fade" role="dialog" aria-labelledby="script_update_edit"></div>
+
+<!-- section delete modal content-->
+<div id="section-del" class="modal fade" role="dialog" aria-labelledby="section_del"></div>
+
+<script type="text/javascript" charset="utf-8">
+    // update section in modal
+    $(".section-edit").live('click', function(e) {
+        e.preventDefault();
+        var url = $(this).attr('url');
+        var modal_id = $(this).attr('data-controls-modal');
+        $("#" + modal_id).load(url);
+    });
+
+    // Section add modal
     $(".section-add").live('click', function(e) {
         e.preventDefault();
         var url = $(this).attr('url');
@@ -392,14 +403,7 @@
         $("#" + modal_id).load(url);
     });
 
-</script>
-<!--Section add modal content-->
-<div id="section-create-add" class="modal fade" role="dialog" aria-labelledby="section_create_add">
-</div>
-
-<!--Section branching change modal-->
-<script type="text/javascript" charset="utf-8">
-
+    // Section branching change modal
     $(".section-branch").live('click', function(e) {
         e.preventDefault();
         var url = $(this).attr('url');
@@ -407,13 +411,7 @@
         $("#" + modal_id).load(url);
     });
 
-</script>
-<!-- modal content-->
-<div id="section-branch" class="modal fade" role="dialog" aria-labelledby="section_branch"></div>
-
-<!--Section script update modal-->
-<script type="text/javascript" charset="utf-8">
-
+    // Section script update modal
     $(".script-edit").live('click', function(e) {
         e.preventDefault();
         var url = $(this).attr('url');
@@ -421,26 +419,14 @@
         $("#" + modal_id).load(url);
     })
 
-</script>
-<!-- update script modal content-->
-<div id="script-update-edit" class="modal fade" role="dialog" aria-labelledby="script_update_edit">
-</div>
-
-<!--Section delete modal-->
-<script type="text/javascript" charset="utf-8">
-
+    // Section delete modal
     $(".section-delete").live('click', function(e) {
         e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);
     })
-
 </script>
-
-<!-- section delete modal content-->
-<div id="section-del" class="modal fade" role="dialog" aria-labelledby="section_del">
-</div>
 
 </form>
 

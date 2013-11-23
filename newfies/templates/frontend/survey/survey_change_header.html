@@ -20,7 +20,7 @@
 </style>
 
 <script type="text/javascript">
-    function call_function(branch_id){
+    function call_function(branch_id) {
         var goto_id = $('#id_branching_goto_' + String(branch_id) ).val();
         Dajaxice.survey.default_branching_goto(Dajax.process, {'id': branch_id, 'goto_id': goto_id});
     }
@@ -35,8 +35,8 @@
             update: function(event, ui) {
                 // survey question sorting logic
                 var result = $('.column').sortable('toArray');
-                j=1; // sort order
-                for(i=0; i < (result.length); i++) {
+                j = 1; // sort order
+                for(i = 0; i < (result.length); i++) {
                     section_sort(result[i].split('row')[1], j);
                     j++;
                 }
@@ -94,8 +94,5 @@
             $(this).toggleClass("glyphicon-circle-arrow-up").toggleClass("glyphicon-circle-arrow-down");
             $(this).parents(".portlet:first").find(".portlet-content").toggle();
         });
-
-        //$(".column").disableSelection();
     });
-
 </script>

@@ -144,13 +144,13 @@
 
 
         {% if errorlogin %}
-            <div class="alert alert-error">
+            <div class="alert alert-danger">
                 <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin|capfirst }}
             </div>
             </br>
         {% else %}
             {% if notlogged %}
-                <div class="alert alert-error">
+                <div class="alert alert-danger">
                     <strong>{% trans "alert"|title %} : </strong>  {% trans "please login by clicking on login button"|capfirst %}
                 </div>
                 </br>

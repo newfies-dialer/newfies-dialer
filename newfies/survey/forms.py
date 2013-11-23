@@ -284,7 +284,8 @@ class BranchingForm(ModelForm):
     def __init__(self, survey_id, section_id, *args, **kwargs):
         super(BranchingForm, self).__init__(*args, **kwargs)
         #instance = getattr(self, 'instance', None)
-        self.fields['keys'].widget.attrs['class'] = 'span2'
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         self.fields['section'].widget = forms.HiddenInput()
 
         # multiple choice section

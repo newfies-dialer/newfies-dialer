@@ -13,6 +13,9 @@
 {% block header %}
 {% endblock %}
 
+{% block newfies_custom_js %}
+{% endblock %}
+
 {% block menu %}
 {% endblock %}
 
@@ -24,10 +27,10 @@
         {% include "frontend/extra_modal_files.html" %}
         <script type="text/javascript" charset="utf-8">
             $(window).load(function(){
-                $('#section_modal').modal('show');
+                $('#section-modal').modal('show');
             });
             var url = '/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
-            $(".close").live('click', function() {
+            $("#id_close").live('click', function() {
                 $(location).attr('href', url);
             });
             var KEYCODE_ESC = 27;
@@ -36,90 +39,93 @@
             });
         </script>
     <!-- modal content-->
-    <div class="modal hide fade" id="section_modal">
+    <div class="modal fade" id="section-modal" role="dialog" aria-labelledby="section_modal">
 
     {% endif %}
+    <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <a class="close" data-dismiss="modal" >&times;</a>
+                <h3>{% trans "branch to section"|title %}</h3>
+            </div>
 
-    <div class="modal-header">
-        <a class="close" data-dismiss="modal" >&times;</a>
-        <h3>{% trans "branch to section"|title %}</h3>
+            <form method="POST" action="{% if action == 'update' %}/section/branch/{{ branching_id }}/{% else %}/section/branch/add/?section_id={{ section_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
+                {% csrf_token %}
+
+                {{ form.section }}
+                <!--"keys" is hidden for section_type 1 (voice) & 5(record message)-->
+                <div class="modal-body">
+                    {% if section_type != SECTION_TYPE.HANGUP_SECTION and section_type != SECTION_TYPE.DNC %}
+
+                    {% if section_type == SECTION_TYPE.PLAY_MESSAGE or section_type == SECTION_TYPE.RECORD_MSG or section_type == SECTION_TYPE.CALL_TRANSFER or section_type == SECTION_TYPE.CONFERENCE %}
+                        {{ form.keys }}
+                    {% else %}
+                        <div class="row">
+                            <script type="text/javascript" charset="utf-8">
+                                $("#button-anything").live('click', function() {
+                                    $("#id_keys").attr('value', 'any');
+                                });
+                                $("#button-invalid").live('click', function() {
+                                    $("#id_keys").attr('value', 'invalid');
+                                });
+                            </script>
+                            <div class="span2">
+                                <div class="btn-group" data-toggle="buttons-radio">
+                                    <button type="button" class="btn" id="button-anything">{% trans "any other key"|title %}</button>
+                                    <button type="button" class="btn" id="button-invalid">{% trans "invalid"|title %}</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
+                                <label class="control-label" for="{{ form.keys.auto_id }}">{{ form.keys.label|title }}</label>
+                                <div class="input">
+                                    {{ form.keys }}
+                                    {% if form.keys.errors %}
+                                        <span class="help-inline">{{ form.keys.errors|removetags:"ul li"|safe }}</span>
+                                    {% endif %}
+                                    <span class="help-block">{{ form.keys.help_text|safe }} </span>
+                                </div>
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    <div class="row">
+                        <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">
+                            <label class="control-label" for="{{ form.goto.auto_id }}">{{ form.goto.label|title }}</label>
+                            <div class="input">
+                                {{ form.goto }}
+                                {% if form.goto.errors %}
+                                    <span class="help-inline">{{ form.goto.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ form.goto.help_text|safe }} </span>
+                            </div>
+                        </div>
+                    </div>
+                    {% else %}
+
+                    <div class="row">
+                        <div class="span4 clearfix">
+                            <span class="help-block">{% trans "no branching, this will terminate the call"|capfirst %}</span>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div class="modal-footer">
+                    {% if section_type != SECTION_TYPE.HANGUP_SECTION and section_type != SECTION_TYPE.DNC %}
+                    {% if action == 'update' %}
+                        <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
+                    {% else %}
+                        <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "save"|title %}" />
+                    {% endif %}
+                    &nbsp;
+                    {% endif %}
+                    <a href="#" class="close btn" data-dismiss="modal">{% trans "close"|title %}</a>
+                </div>
+            </form>
+        </div>
     </div>
-
-    <form method="POST" action="{% if action == 'update' %}/section/branch/{{ branching_id }}/{% else %}/section/branch/add/?section_id={{ section_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
-        {% csrf_token %}
-
-        {{ form.section }}
-        <!--"keys" is hidden for section_type 1 (voice) & 5(record message)-->
-        <div class="modal-body">
-            {% if section_type != SECTION_TYPE.HANGUP_SECTION and section_type != SECTION_TYPE.DNC %}
-
-            {% if section_type == SECTION_TYPE.PLAY_MESSAGE or section_type == SECTION_TYPE.RECORD_MSG or section_type == SECTION_TYPE.CALL_TRANSFER or section_type == SECTION_TYPE.CONFERENCE %}
-                {{ form.keys }}
-            {% else %}
-                <div class="row">
-                    <script type="text/javascript" charset="utf-8">
-                        $("#button-anything").live('click', function() {
-                            $("#id_keys").attr('value', 'any');
-                        });
-                        $("#button-invalid").live('click', function() {
-                            $("#id_keys").attr('value', 'invalid');
-                        });
-                    </script>
-                    <div class="span2">
-                        <div class="btn-group" data-toggle="buttons-radio">
-                            <button type="button" class="btn" id="button-anything">{% trans "any other key"|title %}</button>
-                            <button type="button" class="btn" id="button-invalid">{% trans "invalid"|title %}</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="span2 clearfix{% if form.keys.errors %} control-group error{% endif %}">
-                        <label class="control-label" for="{{ form.keys.auto_id }}">{{ form.keys.label|title }}</label>
-                        <div class="input">
-                            {{ form.keys }}
-                            {% if form.keys.errors %}
-                                <span class="help-inline">{{ form.keys.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ form.keys.help_text|safe }} </span>
-                        </div>
-                    </div>
-                </div>
-            {% endif %}
-
-            <div class="row">
-                <div class="span2 clearfix{% if form.goto.errors %} control-group error{% endif %}">
-                    <label class="control-label" for="{{ form.goto.auto_id }}">{{ form.goto.label|title }}</label>
-                    <div class="input">
-                        {{ form.goto }}
-                        {% if form.goto.errors %}
-                            <span class="help-inline">{{ form.goto.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ form.goto.help_text|safe }} </span>
-                    </div>
-                </div>
-            </div>
-            {% else %}
-
-            <div class="row">
-                <div class="span4 clearfix">
-                    <span class="help-block">{% trans "no branching, this will terminate the call"|capfirst %}</span>
-                </div>
-            </div>
-            {% endif %}
-        </div>
-
-        <div class="modal-footer">
-            {% if section_type != SECTION_TYPE.HANGUP_SECTION and section_type != SECTION_TYPE.DNC %}
-            {% if action == 'update' %}
-                <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
-            {% else %}
-                <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "save"|title %}" />
-            {% endif %}
-            &nbsp;
-            {% endif %}
-            <a href="#" class="close btn" data-dismiss="modal">{% trans "close"|title %}</a>
-        </div>
-    </form>
 
 {% if err_msg %}
 </div>

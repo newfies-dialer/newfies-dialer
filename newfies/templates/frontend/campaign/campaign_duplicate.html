@@ -31,7 +31,7 @@
                     });
 
                     var url = '/campaign/';
-                    $(".close, #id_close").live('click', function() {
+                    $("#id_close,#id_close_x").live('click', function() {
                         $(location).attr('href', url);
                     });
 
@@ -42,12 +42,12 @@
                 });
             </script>
             <!-- modal content-->
-            <div class="modal fade" id="duplicate-campaign" role="dialog" aria-labelledby="add_duplicate_campaign">
+            <div class="modal fade" id="duplicate-campaign" role="dialog" aria-labelledby="add_duplicate_campaign" data-backdrop="static">
         {% endif %}
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <a class="close" data-dismiss="modal" >&times;</a>
+                    <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
                     <h3>{% trans "campaign"|title %}
                         <small></small>
                     </h3>

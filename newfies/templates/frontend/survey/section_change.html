@@ -29,7 +29,7 @@
                     $('#section-modal').modal('show');
                 });
                 var url = '/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
-                $("#id_close").live('click', function() {
+                $("#id_close,#id_close_x").live('click', function() {
                     $(location).attr('href', url);
                 });
                 var KEYCODE_ESC = 27;
@@ -41,12 +41,12 @@
                 });
             </script>
             <!-- modal content-->
-            <div class="modal fade modal-section" id="section-modal" role="dialog" aria-labelledby="section_modal">
+            <div class="modal fade" id="section-modal" role="dialog" aria-labelledby="section_modal" data-backdrop="static">
         {% endif %}
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <button id="id_close_x" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                     <h4>
                         {% if action == 'update' %}
                             {% trans "update"|title %}

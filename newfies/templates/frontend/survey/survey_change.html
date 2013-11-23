@@ -330,7 +330,7 @@
                                                 <td class="survey_edit_key">
                                                     {% if branch.section_id|get_branching_count:branch.id > 1 %}
                                                         {% if perms.survey.delete_branching %}
-                                                            <a {% icon_style 'cross' %} href="/section/branch/{{ branch.id }}/?delete=true" class="icon" title="{% trans "delete"|title %}">&nbsp;</a>
+                                                            <a href="/section/branch/{{ branch.id }}/?delete=true" title="{% trans "delete"|title %}"><i class="glyphicon glyphicon-remove"></i></a>
                                                         {% endif %}
                                                     {% endif %}
                                                 </td>

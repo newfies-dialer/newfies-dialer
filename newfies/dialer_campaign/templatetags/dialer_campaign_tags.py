@@ -104,9 +104,8 @@ def subscriber_disposition(campaign_id, val):
 def check_url_for_template_width(current_url):
     """"""
     full_width_on_requested_path = [
-        '/dashboard/', '/sms_dashboard/',
-        '/campaign/', '/sms_campaign/',
-        'user_detail_change', '/audio/',
+        '/dashboard/', '/sms_dashboard/', '/campaign/', '/sms_campaign/',
+        'user_detail_change', '/audio/', '/user_notification/',
     ]
     if current_url == '/':
         return True
@@ -116,5 +115,3 @@ def check_url_for_template_width(current_url):
             if path in current_url:
                 return True
         return False
-
-

@@ -1,126 +1,123 @@
 {% load i18n frontend_notification_tags activelink %}
 
-<nav class="navbar navbar-fixed-top navbar-inverse" role="navigation">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="sr-only"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            <!--<a class="navbar-brand" href="/"><img src="{{STATIC_URL}}newfies/images/newfies-icon.png" /></a> logo_name-->
-            <a class="navbar-brand" href="/">{% trans "Newfies-Dialer" %}</a>
-        </div>
-        <div class="collapse navbar-collapse">
-            {% if user.is_authenticated %}
-            <ul class="nav navbar-nav">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "dashboard"|title %}<b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                        {% if perms.dialer_campaign.view_dashboard %}
-                            <li class="{% ifactive '/dashboard/' %}active{% endifactive %}"><a href="/dashboard/">{% trans "voice dashboard"|title %}</a></li>
-                        {% endif %}
-                        {% if perms.sms_module.view_sms_dashboard %}
-                            <li class="{% ifactive '/sms_dashboard/' %}active{% endifactive %}"><a href="/sms_dashboard/">{% trans "sms"|upper %} {% trans "dashboard"|title %}</a></li>
-                        {% endif %}
-                    </ul>
-                </li>
-                <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "campaign"|title %} <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
-                      {% if perms.dialer_campaign.view_campaign %}
-                        <li class="{% ifcontains '/campaign/' %}active{% endifcontains %}"><a href="/campaign/">{% trans "voice campaign"|title %}</a></li>
-                      {% endif %}
-                      {% if perms.sms_module.view_smscampaign %}
-                        <li class="{% ifcontains '/sms_campaign/' %}active{% endifcontains %}"><a href="/sms_campaign/">{% trans "sms"|upper %} {% trans "campaign"|title %}</a></li>
-                      {% endif %}
-                    </ul>
-                </li>
-                <li>
-                    {% if perms.dialer_contact.view_contact %}
-                        <a href="/contact/">{% trans "contacts"|title %}</a>
-                    {% endif %}
-                </li>
-                <li>
-                    {% if perms.dnc.view_dnc_list %}
-                        <a href="/dnc_list/">{% trans "dnc"|upper %}</a>
-                    {% endif %}
-                </li>
-                <li>
-                    {% if perms.appointment.view_event %}
-                        <a href="/event/">{% trans "appointment"|title %}</a>
-                    {% endif %}
-                </li>
+<!-- Static navbar -->
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+  <div class="container">
+    <div class="navbar-header">
+      <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+        <span class="sr-only">Toggle navigation</span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+        <span class="icon-bar"></span>
+      </button>
+      <!--<a class="navbar-brand" href="/"><img src="{{STATIC_URL}}newfies/images/newfies-icon.png" /></a> logo_name-->
+      <a class="navbar-brand" href="/">{% trans "Newfies-Dialer" %}</a>
+    </div>
 
-                <li>
-                    {% if perms.agent.view_agent %}
-                        <a href="/agent/">{% trans "callcenter"|title %}</a>
+    <div class="navbar-collapse collapse">
+        {% if user.is_authenticated %}
+        <ul class="nav navbar-nav">
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "dashboard"|title %}<b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                    {% if perms.dialer_campaign.view_dashboard %}
+                        <li class="{% ifactive '/dashboard/' %}active{% endifactive %}"><a href="/dashboard/">{% trans "voice dashboard"|title %}</a></li>
                     {% endif %}
-                </li>
-                <li>
+                    {% if perms.sms_module.view_sms_dashboard %}
+                        <li class="{% ifactive '/sms_dashboard/' %}active{% endifactive %}"><a href="/sms_dashboard/">{% trans "sms"|upper %} {% trans "dashboard"|title %}</a></li>
+                    {% endif %}
+                </ul>
+            </li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "campaign"|title %} <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+                  {% if perms.dialer_campaign.view_campaign %}
+                    <li class="{% ifcontains '/campaign/' %}active{% endifcontains %}"><a href="/campaign/">{% trans "voice campaign"|title %}</a></li>
+                  {% endif %}
+                  {% if perms.sms_module.view_smscampaign %}
+                    <li class="{% ifcontains '/sms_campaign/' %}active{% endifcontains %}"><a href="/sms_campaign/">{% trans "sms"|upper %} {% trans "campaign"|title %}</a></li>
+                  {% endif %}
+                </ul>
+            </li>
+            <li>
+                {% if perms.dialer_contact.view_contact %}
+                    <a href="/contact/">{% trans "contact"|title %}</a>
+                {% endif %}
+            </li>
+            <li>
+                {% if perms.dialer_cdr.view_call_detail_report %}
+                    <a href="/voipcall_report/">{% trans "reporting"|title %}</a>
+                {% endif %}
+            </li>
+            <li>
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "modules"|title %} <b class="caret"></b></a>
+                <ul class="dropdown-menu">
+
                     {% if perms.survey.view_survey %}
-                        <a href="/survey/">{% trans "surveys"|title %}</a>
+                        <li class="{% ifcontains '/survey/' %}active{% endifcontains %}"><a href="/survey/">{% trans "survey"|title %}</a></li>
                     {% endif %}
-                </li>
-                <li>
-                    {% if perms.dialer_cdr.view_call_detail_report %}
-                        <a href="/voipcall_report/">{% trans "reporting"|title %}</a>
+
+                    {% if perms.audiofield.view_audio %}
+                        <li class="{% ifcontains '/audio/' %}active{% endifcontains %}"><a href="/audio/">{% trans "audio files"|capfirst %}</a></li>
                     {% endif %}
-                </li>
-                <li>
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "modules"|title %} <b class="caret"></b></a>
-                    <ul class="dropdown-menu">
 
-                        {% if perms.audiofield.view_audio %}
-                            <li class="{% ifcontains '/audio/' %}active{% endifcontains %}"><a href="/audio/">{% trans "audio files"|capfirst %}</a></li>
-                        {% endif %}
-                        <li class="divider"></li>
-                        <li><a href="http://www.newfies-dialer.org/add-ons" target="_blank">{% trans "add-ons"|title %}</a></li>
-                        <li><a href="http://www.newfies-dialer.org/add-ons/sms-module-for-newfies-dialer/" target="_blank">{% trans "SMS (Text Messaging)" %}</a></li>
-                        <li><a href="http://www.newfies-dialer.org/add-ons/voicemail-detection/" target="_blank">{% trans "Voicemail Detection (AMD)" %}</a></li>
-                        <li><a href="http://www.newfies-dialer.org/add-ons/rebranding/" target="_blank">{% trans "rebranding"|title %}</a></li>
-                    </ul>
-                </li>
-            </ul>
+                    {% if perms.dnc.view_dnc_list %}
+                        <li class="{% ifcontains '/dnc_list/' %}active{% endifcontains %}"><a href="/dnc_list/">{% trans "dnc"|upper %}</a></li>
+                    {% endif %}
 
-            {% get_notice_count user as notice_count %}
-            <ul class="nav navbar-nav navbar-right">
-                <li id="fat-menu-1" class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username|capfirst }}
-                        <span class="badge">{{ notice_count }}</span>
+                    {% if perms.appointment.view_event %}
+                        <li class="{% ifcontains '/event/' %}active{% endifcontains %}"><a href="/event/">{% trans "appointment"|title %}</a></li>
+                    {% endif %}
 
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-1">
-                            {% trans "account settings"|capfirst %}</a>
-                        </li>
-                        <li class="{% ifactive '/user_notification/' %}active{% endifactive %}">
-                            <a href="/user_notification/">{% trans "notifications"|title %}
-                                <span class="badge">{{ notice_count }}</span>
-                            </a>
-                        </li>
-                        <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">
-                            {% trans "account limits"|capfirst %}</a></li>
-                        <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-5">
-                            {% trans "change language"|capfirst %}</a>
-                        </li>
-                        <li class="divider"></li>
-                        {% if perms.user_profile.view_api_explorer %}
-                            <li><a href="/rest-api/" target="_blank"> {% trans "API Explorer" %}</a></li>
-                        {% endif %}
-                        <li class="divider"></li>
-                        {% if user.is_superuser %}
-                        <li><a href="/admin/" target="_blank"> {% trans "administration"|title %}</a></li>
-                        <li class="divider"></li>
-                        {% endif %}
-                        <li><a href="/logout/">{% trans "log out"|capfirst %}</a></li>
-                    </ul>
-                </li>
-            </ul>
-            {% endif %}
-        </div><!-- /.nav-collapse -->
-    </div><!-- /.container -->
-</nav><!-- /.navbar -->
+                    {% if perms.agent.view_agent %}
+                        <li class="{% ifcontains '/agent/' %}active{% endifcontains %}"><a href="/agent/">{% trans "callcenter"|title %}</a></li>
+                    {% endif %}
 
+                    <li class="divider"></li>
+                    <li><a href="http://www.newfies-dialer.org/add-ons" target="_blank">{% trans "add-ons"|title %}</a></li>
+                    <li><a href="http://www.newfies-dialer.org/add-ons/sms-module-for-newfies-dialer/" target="_blank">{% trans "SMS (Text Messaging)" %}</a></li>
+                    <li><a href="http://www.newfies-dialer.org/add-ons/voicemail-detection/" target="_blank">{% trans "Voicemail Detection (AMD)" %}</a></li>
+                    <li><a href="http://www.newfies-dialer.org/add-ons/rebranding/" target="_blank">{% trans "rebranding"|title %}</a></li>
+                </ul>
+            </li>
+        </ul>
+
+        {% get_notice_count user as notice_count %}
+        <ul class="nav navbar-nav navbar-right">
+            <li id="fat-menu-1" class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username|capfirst }}
+                    <span class="badge">{{ notice_count }}</span>
+
+                    <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                    <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-1">
+                        {% trans "account settings"|capfirst %}</a>
+                    </li>
+                    <li class="{% ifactive '/user_notification/' %}active{% endifactive %}">
+                        <a href="/user_notification/">{% trans "notifications"|title %}
+                            <span class="badge">{{ notice_count }}</span>
+                        </a>
+                    </li>
+                    <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">
+                        {% trans "account limits"|capfirst %}</a></li>
+                    <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-5">
+                        {% trans "change language"|capfirst %}</a>
+                    </li>
+                    <li class="divider"></li>
+                    {% if perms.user_profile.view_api_explorer %}
+                        <li><a href="/rest-api/" target="_blank"> {% trans "API Explorer" %}</a></li>
+                    {% endif %}
+                    <li class="divider"></li>
+                    {% if user.is_superuser %}
+                    <li><a href="/admin/" target="_blank"> {% trans "administration"|title %}</a></li>
+                    <li class="divider"></li>
+                    {% endif %}
+                    <li><a href="/logout/">{% trans "log out"|capfirst %}</a></li>
+                </ul>
+            </li>
+        </ul>
+        {% endif %}
+    </div><!--/.nav-collapse -->
+  </div>
+</div>

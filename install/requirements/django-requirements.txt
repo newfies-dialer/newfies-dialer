@@ -32,3 +32,4 @@ django-cors-headers==0.12
 git+git://github.com/pinax/django-mailer
 django-activelink==0.4
 git+git://github.com/areski/django-sms-gateway.git
+django-bootstrap3-datetimepicker==2.0.0

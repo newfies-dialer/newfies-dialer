@@ -24,6 +24,7 @@ from appointment.models.alarms import Alarm
 from appointment.function_def import get_calendar_user_id_list,\
     get_calendar_user_list, get_calendar_list
 from survey.models import Survey
+from bootstrap3_datetime.widgets import DateTimePicker
 
 
 class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
@@ -145,6 +146,12 @@ class EventForm(ModelForm):
     class Meta:
         model = Event
         exclude = ('parent_event', 'occ_count')
+        widgets = {
+            'start': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
+            'end': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
+            'end_recurring_period': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
+            'created_on': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
+        }
 
     def __init__(self, user, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
@@ -161,7 +168,8 @@ class EventForm(ModelForm):
 
 class EventSearchForm(forms.Form):
     """Event Search Form"""
-    start_date = forms.CharField(label=_('start date'), required=False, max_length=20)
+    start_date = forms.CharField(label=_('start date'), required=False, max_length=20,
+                                 widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}))
     calendar_id = forms.ChoiceField(label=_('calendar'), required=False,
                                     choices=[('0', '---')])
     calendar_user_id = forms.ChoiceField(label=_('calendar user'), required=False,
@@ -172,7 +180,7 @@ class EventSearchForm(forms.Form):
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar_id'].choices = get_calendar_list(calendar_user_list)
         self.fields['calendar_user_id'].choices = get_calendar_user_list(calendar_user_list)
-        for i in self.fields.keyOrder:
+        for i in ['calendar_id', 'calendar_user_id']:
             self.fields[i].widget.attrs['class'] = "form-control"
 
 
@@ -181,6 +189,9 @@ class AlarmForm(ModelForm):
 
     class Meta:
         model = Alarm
+        widgets = {
+            'date_start_notice': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
+        }
 
     def __init__(self, user, *args, **kwargs):
         super(AlarmForm, self).__init__(*args, **kwargs)

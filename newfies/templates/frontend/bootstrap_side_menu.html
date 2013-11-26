@@ -68,7 +68,7 @@
             {% endif %}
         {% endif %}
 
-        {% if "/frozen_survey/" in request.path or "/survey/" in request.path %}
+        {% if "/frozen_survey/" in request.path or "/survey/" in request.path or "/survey_view/" in request.path %}
             {% if perms.survey.view_survey %}
                 <a class="list-group-item {% ifcontains '/survey/' %}active{% endifcontains %}" href="/survey/">{% trans "surveys"|title %}</a>
             {% endif %}

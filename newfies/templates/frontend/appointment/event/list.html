@@ -2,11 +2,8 @@
 {% load i18n pagination_tags common_tags icons appointment_tags %}
 
 {% block extra_files %}
-    <link href="{{ STATIC_URL }}newfies/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-    <script src="{{ STATIC_URL }}newfies/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-
-    {% include "frontend/common_datepicker.html" %}
     {% include "frontend/custom_jquery_select_all.html" %}
+    {{ form.media }}
 {% endblock %}
 
 {% block content_header %}

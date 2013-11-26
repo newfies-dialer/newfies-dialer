@@ -2,10 +2,7 @@
 {% load i18n common_tags %}
 
 {% block extra_files %}
-    <link href="{{ STATIC_URL }}newfies/bootstrap-datetimepicker/css/bootstrap-datetimepicker.css" rel="stylesheet">
-    <script src="{{ STATIC_URL }}newfies/bootstrap-datetimepicker/js/bootstrap-datetimepicker.js"></script>
-
-    {% include "frontend/common_datepicker.html" %}
+    {{ form.media }}
 {% endblock %}
 
 {% block content_header %}

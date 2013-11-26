@@ -31,10 +31,8 @@ $(function() {
         // datetimepicker for start, end & created_on field
         var fromDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(),today.getHours(), today.getMinutes(), today.getSeconds());
         var toDate = new Date(today.getFullYear(), today.getMonth(), last_day_of_month, 23, 59, 59);
-        $('#id_start').datetimepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            autoclose: true,
-        }).on('changeDate', function(selectedDate){
+
+        $('#id_start').on('changeDate', function(selectedDate){
             if (selectedDate.date.valueOf() > toDate.valueOf()){
                 $('#id_start').datetimepicker('setValue', fromDate);
             } else {
@@ -42,20 +40,12 @@ $(function() {
             }
         });
 
-        $('#id_end').datetimepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            autoclose: true,
-        }).on('changeDate', function(selectedDate){
+        $('#id_end').on('changeDate', function(selectedDate){
             if (selectedDate.date.valueOf() < fromDate.valueOf()){
                 $('#id_end').datetimepicker('setValue', toDate);
             } else {
                 toDate = new Date(selectedDate.date);
             }
-        });
-
-        $('#id_created_on, #id_date_start_notice,#id_end_recurring_period,#id_start_date').datetimepicker({
-            format: 'yyyy-mm-dd hh:ii:ss',
-            autoclose: true,
         });
     {% endif %}
 });

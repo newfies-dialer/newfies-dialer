@@ -18,13 +18,17 @@ from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.constants import STATUS_CHOICE
 #from dialer_contact.constants import CHOICE_TYPE
+from bootstrap3_datetime.widgets import DateTimePicker
 
 
 class SearchForm(forms.Form):
     """General Search Form with From & To date para."""
-    from_date = forms.CharField(label=_('from'), required=False,
-                                max_length=10)
-    to_date = forms.CharField(label=_('to'), required=False, max_length=10)
+    from_date = forms.CharField(label=_('from'), required=False, max_length=10,
+                                widget=DateTimePicker(options={"format": "YYYY-MM-DD",
+                                                               "pickTime": False}))
+    to_date = forms.CharField(label=_('to'), required=False, max_length=10,
+                              widget=DateTimePicker(options={"format": "YYYY-MM-DD",
+                                                             "pickTime": False}))
 
 
 class FileImport(forms.Form):

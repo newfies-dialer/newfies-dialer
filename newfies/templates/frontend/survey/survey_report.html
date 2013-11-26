@@ -2,6 +2,7 @@
 {% load i18n dialer_cdr_tags survey_tags pagination_tags common_tags icons %}
 
 {% block extra_files %}
+    {{ form.media }}
     {% include "frontend/common_datepicker.html" %}
     {% include "common_audiofield.html" %}
     {% include "frontend/custom_jquery_select_all.html" %}

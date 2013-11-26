@@ -1,52 +1,24 @@
 {% load i18n %}
 <script type="text/javascript">
 $(function() {
-    var today = new Date();
-    var last_day_of_month = new Date(today.getFullYear(), today.getMonth()+1, 0).getDate();
 
-    var fromDate = new Date(today.getFullYear(), today.getMonth(), 1);
-    var toDate = new Date(today.getFullYear(), today.getMonth(), last_day_of_month);
-
-    $('#id_from_date').datepicker({
-        format: 'yyyy-mm-dd'
-    }).on('changeDate', function(selectedDate){
-        if (selectedDate.date.valueOf() > toDate.valueOf()){
-            $('#id_from_date').datepicker('setValue', fromDate);
-        } else {
-            fromDate = new Date(selectedDate.date);
-        }
+    $("#id_from_date_picker").on("change.dp",function (e) {
+       $('#id_to_date_picker').data("DateTimePicker").setStartDate(e.date);
     });
-
-    $('#id_to_date').datepicker({
-        format: 'yyyy-mm-dd'
-    }).on('changeDate', function(selectedDate){
-        if (selectedDate.date.valueOf() < fromDate.valueOf()){
-            $('#id_to_date').datepicker('setValue', toDate);
-        } else {
-            toDate = new Date(selectedDate.date);
-        }
+    $("#id_to_date_picker").on("change.dp",function (e) {
+       $('#id_from_date_picker').data("DateTimePicker").setEndDate(e.date);
     });
 
     {% if "/calendar/" in request.path or "/event/" in request.path or "/alarm/" in request.path %}
-        // datetimepicker for start, end & created_on field
-        var fromDate = new Date(today.getFullYear(), today.getMonth(), today.getDate(),today.getHours(), today.getMinutes(), today.getSeconds());
-        var toDate = new Date(today.getFullYear(), today.getMonth(), last_day_of_month, 23, 59, 59);
 
-        $('#id_start').on('changeDate', function(selectedDate){
-            if (selectedDate.date.valueOf() > toDate.valueOf()){
-                $('#id_start').datetimepicker('setValue', fromDate);
-            } else {
-                fromDate = new Date(selectedDate.date);
-            }
+        $("#id_start_picker").on("change.dp",function (e) {
+           $('#id_end_picker').data("DateTimePicker").setStartDate(e.date);
+        });
+        $("#id_end_picker").on("change.dp",function (e) {
+            alert('hello');
+           $('#id_start_picker').data("DateTimePicker").setEndDate(e.date);
         });
 
-        $('#id_end').on('changeDate', function(selectedDate){
-            if (selectedDate.date.valueOf() < fromDate.valueOf()){
-                $('#id_end').datetimepicker('setValue', toDate);
-            } else {
-                toDate = new Date(selectedDate.date);
-            }
-        });
     {% endif %}
 });
 </script>

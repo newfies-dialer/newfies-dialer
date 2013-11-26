@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-11-26 13:34+0100\n"
+"POT-Creation-Date: 2013-11-26 18:27+0100\n"
 "PO-Revision-Date: 2012-03-04 19:32+0200\n"
 "Last-Translator: serhat alpaslan <s.alpaslan@netglobalturkey.com>\n"
 "Language-Team: LANGUAGE <s.alpaslan@netglobalturkey.com>\n"
@@ -19,31 +19,31 @@ msgstr ""
 "X-Poedit-Language: Turkish\n"
 "X-Poedit-Country: TURKEY\n"
 
-#: settings.py:452
+#: settings.py:453
 msgid "English"
 msgstr "İngilizce"
 
-#: settings.py:453
+#: settings.py:454
 msgid "French"
 msgstr ""
 
-#: settings.py:454
+#: settings.py:455
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: settings.py:455
+#: settings.py:456
 msgid "Portuguese"
 msgstr "Portekizce"
 
-#: settings.py:456
+#: settings.py:457
 msgid "Chinese"
 msgstr "Çin"
 
-#: settings.py:457
+#: settings.py:458
 msgid "Turkish"
 msgstr "Türkçe"
 
-#: settings.py:458
+#: settings.py:459
 msgid "Japanese"
 msgstr ""
 
@@ -83,12 +83,12 @@ msgstr "temas"
 
 #: agent/constants.py:22 agent/models.py:54 appointment/constants.py:80
 #: appointment/constants.py:93 appointment/models/alarms.py:73
-#: appointment/models/alarms.py:167 appointment/models/events.py:48
+#: appointment/models/alarms.py:167 appointment/models/events.py:45
 #: callcenter/models.py:100 dialer_campaign/constants.py:57
 #: dialer_campaign/constants.py:71 dialer_campaign/forms.py:276
 #: dialer_campaign/models.py:175 dialer_campaign/models.py:480
 #: dialer_cdr/models.py:113 dialer_contact/constants.py:52
-#: dialer_contact/forms.py:119 dialer_contact/models.py:92
+#: dialer_contact/forms.py:123 dialer_contact/models.py:92
 #: sms_module/constants.py:42 sms_module/constants.py:62
 #: sms_module/forms.py:144 sms_module/models.py:114 sms_module/models.py:398
 #: templates/admin/dialer_contact/contact/import_contact.html:25
@@ -110,9 +110,9 @@ msgstr "durum"
 #: survey/constants.py:34 survey/constants.py:49 survey/models.py:61
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:54
 #: templates/admin/sms_module/smsmessage/sms_report.html:54
-#: templates/frontend/report/voipcall_report.html:133
-#: templates/frontend/sms_campaign/sms_report.html:127
-#: templates/frontend/survey/survey_report.html:198
+#: templates/frontend/report/voipcall_report.html:134
+#: templates/frontend/sms_campaign/sms_report.html:128
+#: templates/frontend/survey/survey_report.html:199
 #, fuzzy
 msgid "date"
 msgstr "Güncelle"
@@ -289,7 +289,7 @@ msgstr ""
 msgid "confirmed"
 msgstr "Silme işlemini onaylıyormusunuz ?"
 
-#: appointment/constants.py:34 appointment/models/events.py:239
+#: appointment/constants.py:34 appointment/models/events.py:236
 msgid "cancelled"
 msgstr ""
 
@@ -316,11 +316,11 @@ msgstr "Aramalar"
 #: templates/frontend/sms_campaign/list.html:9
 #: templates/frontend/sms_campaign/sms_dashboard.html:5
 #: templates/frontend/sms_campaign/sms_dashboard.html:17
-#: templates/frontend/sms_campaign/sms_report.html:10
-#: templates/frontend/sms_campaign/sms_report.html:17
-#: templates/frontend/sms_campaign/sms_report.html:49
-#: templates/frontend/sms_campaign/sms_report.html:113
-#: templates/frontend/sms_campaign/sms_report.html:128
+#: templates/frontend/sms_campaign/sms_report.html:11
+#: templates/frontend/sms_campaign/sms_report.html:18
+#: templates/frontend/sms_campaign/sms_report.html:50
+#: templates/frontend/sms_campaign/sms_report.html:114
+#: templates/frontend/sms_campaign/sms_report.html:129
 msgid "sms"
 msgstr ""
 
@@ -359,7 +359,7 @@ msgstr "Zaman Aşımı"
 msgid "survey"
 msgstr "Anket"
 
-#: appointment/constants.py:62 appointment/forms.py:37
+#: appointment/constants.py:62 appointment/forms.py:38
 #: templates/frontend/bootstrap_side_menu.html:39
 #, fuzzy
 msgid "calendar setting"
@@ -369,8 +369,8 @@ msgstr "Dialer ayarları"
 msgid "slug"
 msgstr ""
 
-#: appointment/constants.py:69 appointment/forms.py:167
-#: appointment/models/calendars.py:49 appointment/models/events.py:34
+#: appointment/constants.py:69 appointment/forms.py:175
+#: appointment/models/calendars.py:49 appointment/models/events.py:31
 #: appointment/models/users.py:80
 #: templates/frontend/bootstrap_side_menu.html:42
 #: templates/frontend/appointment/calendar_user/change.html:11
@@ -380,25 +380,25 @@ msgstr ""
 
 #: appointment/constants.py:70
 #, fuzzy
-msgid "max_concurrent"
+msgid "max concurrent"
 msgstr "Max eşzamanlı çağrı"
 
-#: appointment/constants.py:75 appointment/models/events.py:27
-#: appointment/models/events.py:237 dialer_campaign/models.py:184
+#: appointment/constants.py:75 appointment/models/events.py:24
+#: appointment/models/events.py:234 dialer_campaign/models.py:184
 #: dialer_campaign/views.py:162 sms_module/models.py:120
 #: sms_module/views.py:164
 #, fuzzy
 msgid "start"
 msgstr "Başlatmak"
 
-#: appointment/constants.py:76 appointment/models/events.py:29
-#: appointment/models/events.py:238
+#: appointment/constants.py:76 appointment/models/events.py:26
+#: appointment/models/events.py:235
 #, fuzzy
 msgid "end"
 msgstr "Ganda"
 
-#: appointment/constants.py:77 appointment/models/events.py:31
-#: appointment/models/events.py:235
+#: appointment/constants.py:77 appointment/models/events.py:28
+#: appointment/models/events.py:232
 msgid "title"
 msgstr ""
 
@@ -406,7 +406,7 @@ msgstr ""
 msgid "end period"
 msgstr ""
 
-#: appointment/constants.py:79 appointment/forms.py:165
+#: appointment/constants.py:79 appointment/forms.py:173
 #: appointment/models/calendars.py:61
 #: templates/frontend/bootstrap_side_menu.html:45
 #: templates/frontend/appointment/calendar/change.html:11
@@ -434,9 +434,9 @@ msgid "method"
 msgstr ""
 
 #: appointment/constants.py:91 appointment/models/alarms.py:67
-#: appointment/models/events.py:62 appointment/models/events.py:234
+#: appointment/models/events.py:59 appointment/models/events.py:231
 #: templates/frontend/bootstrap_side_menu.html:48
-#: templates/frontend/appointment/event/change.html:18
+#: templates/frontend/appointment/event/change.html:15
 msgid "event"
 msgstr ""
 
@@ -445,14 +445,14 @@ msgstr ""
 msgid "start notice"
 msgstr "Başlangıç ​​tarihi"
 
-#: appointment/forms.py:164 dialer_campaign/constants.py:53
+#: appointment/forms.py:171 dialer_campaign/constants.py:53
 #: dialer_cdr/constants.py:65 sms_module/constants.py:39
 #, fuzzy
 msgid "start date"
 msgstr "Başlangıç ​​tarihi"
 
 #: appointment/periods.py:277 appointment/periods.py:302
-#: appointment/models/events.py:67
+#: appointment/models/events.py:64
 msgid "DATE_FORMAT"
 msgstr ""
 
@@ -525,7 +525,7 @@ msgid ""
 "activation or warning"
 msgstr ""
 
-#: appointment/models/alarms.py:27
+#: appointment/models/alarms.py:27 appointment/models/alarms.py:64
 #, fuzzy
 msgid "SMS template"
 msgstr "Anketler"
@@ -577,11 +577,6 @@ msgstr "Kampanyalar maksimum sayısı"
 msgid "mail template"
 msgstr "Bildirim türü"
 
-#: appointment/models/alarms.py:64
-#, fuzzy
-msgid "sms template"
-msgstr "Anketler"
-
 #: appointment/models/alarms.py:69
 #, fuzzy
 msgid "alarm date"
@@ -589,7 +584,7 @@ msgstr "Başlangıç ​​tarihi"
 
 #: appointment/models/alarms.py:75
 #: templates/frontend/survey/survey_campaign_result.html:9
-#: templates/frontend/survey/survey_report.html:154
+#: templates/frontend/survey/survey_report.html:155
 #, fuzzy
 msgid "result"
 msgstr "Anketı Raporu"
@@ -624,7 +619,7 @@ msgstr "Anket Güncelle"
 
 #: appointment/models/alarms.py:90 appointment/models/alarms.py:160
 #: templates/frontend/bootstrap_side_menu.html:51
-#: templates/frontend/appointment/alarm/change.html:18
+#: templates/frontend/appointment/alarm/change.html:15
 msgid "alarm"
 msgstr ""
 
@@ -685,11 +680,11 @@ msgstr "Anket Güncelle"
 msgid "calendars"
 msgstr ""
 
-#: appointment/models/events.py:30
+#: appointment/models/events.py:27
 msgid "Must be later than the start."
 msgstr ""
 
-#: appointment/models/events.py:32 appointment/models/events.py:236
+#: appointment/models/events.py:29 appointment/models/events.py:233
 #: appointment/models/rules.py:46 dialer_campaign/models.py:170
 #: dialer_contact/constants.py:40 dialer_gateway/models.py:57
 #: sms_module/models.py:110 survey/constants.py:33 survey/constants.py:47
@@ -700,81 +695,80 @@ msgstr ""
 msgid "description"
 msgstr "tanım"
 
-#: appointment/models/events.py:35
+#: appointment/models/events.py:32
 #, fuzzy
 msgid "created on"
 msgstr "Kampanyası Update"
 
-#: appointment/models/events.py:36
+#: appointment/models/events.py:33
 msgid "end recurring period"
 msgstr ""
 
-#: appointment/models/events.py:39
+#: appointment/models/events.py:36
 #, fuzzy
-msgid ""
-"date format: YYYY-mm-DD HH:MM:SS. it is ignored for one time only events."
+msgid "date format: YYYY-mm-DD HH:MM:SS. Ignored for one time event."
 msgstr "Tarih Biçimi: YYYY-AA-GG SS: DD: SS"
 
-#: appointment/models/events.py:41 appointment/models/rules.py:53
+#: appointment/models/events.py:38 appointment/models/rules.py:53
 msgid "rule"
 msgstr ""
 
-#: appointment/models/events.py:41
+#: appointment/models/events.py:38
 msgid "one time event."
 msgstr ""
 
-#: appointment/models/events.py:44
+#: appointment/models/events.py:41
 #, fuzzy
 msgid "notify count"
 msgstr "Bildirimler"
 
-#: appointment/models/events.py:49
+#: appointment/models/events.py:46
 #, fuzzy
 msgid "additional data (JSON)"
 msgstr "Ek parametreler"
 
-#: appointment/models/events.py:50
+#: appointment/models/events.py:47
 msgid "data in Json format, e.g. {\"cost\": \"40 euro\"}"
 msgstr ""
 
-#: appointment/models/events.py:56
+#: appointment/models/events.py:53
 msgid "occurrence count"
 msgstr ""
 
-#: appointment/models/events.py:60
+#: appointment/models/events.py:57
 #, fuzzy
 msgid "can see Event list"
 msgstr "Anket Güncelle"
 
-#: appointment/models/events.py:63
-#: templates/frontend/appointment/event/list.html:13
+#: appointment/models/events.py:60
+#: templates/frontend/appointment/event/list.html:10
 msgid "events"
 msgstr ""
 
-#: appointment/models/events.py:68
+#: appointment/models/events.py:65
 #, python-format
 msgid "%(title)s: %(start)s - %(end)s"
 msgstr ""
 
-#: appointment/models/events.py:240
+#: appointment/models/events.py:237
 #, fuzzy
 msgid "original start"
 msgstr "Arama biçimi belirleme"
 
-#: appointment/models/events.py:241
+#: appointment/models/events.py:238
 #, fuzzy
 msgid "original end"
 msgstr "Arama biçimi belirleme"
 
-#: appointment/models/events.py:244
+#: appointment/models/events.py:241
 msgid "occurrence"
 msgstr ""
 
-#: appointment/models/events.py:245
+#: appointment/models/events.py:242
 msgid "occurrences"
 msgstr ""
 
-#: appointment/models/events.py:315
+#: appointment/models/events.py:312
 #, python-format
 msgid "%(start)s to %(end)s"
 msgstr ""
@@ -1614,7 +1608,7 @@ msgid "imported phonebook"
 msgstr "Telefon rehberlerinizi listeleyin , ekleyin yada düzenleyin"
 
 #: dialer_campaign/models.py:240 sms_module/constants.py:41
-#: sms_module/models.py:166 templates/frontend/survey/survey_report.html:50
+#: sms_module/models.py:166 templates/frontend/survey/survey_report.html:51
 #, fuzzy
 msgid "total contact"
 msgstr "Kişileri içe Aktar"
@@ -1708,30 +1702,30 @@ msgstr "Kampanya"
 #: templates/frontend/appointment/calendar_setting/list.html:58
 #: templates/frontend/appointment/calendar_user/list.html:29
 #: templates/frontend/appointment/calendar_user/list.html:57
-#: templates/frontend/appointment/event/list.html:58
-#: templates/frontend/appointment/event/list.html:90
+#: templates/frontend/appointment/event/list.html:55
+#: templates/frontend/appointment/event/list.html:87
 #: templates/frontend/audio/audio_list.html:28
 #: templates/frontend/audio/audio_list.html:57
 #: templates/frontend/campaign/list.html:43
 #: templates/frontend/campaign/list.html:79
 #: templates/frontend/contact/list.html:60
 #: templates/frontend/contact/list.html:95
-#: templates/frontend/dnc_contact/list.html:66
-#: templates/frontend/dnc_contact/list.html:100
+#: templates/frontend/dnc_contact/list.html:61
+#: templates/frontend/dnc_contact/list.html:95
 #: templates/frontend/dnc_list/list.html:29
 #: templates/frontend/dnc_list/list.html:57
 #: templates/frontend/phonebook/list.html:30
 #: templates/frontend/phonebook/list.html:57
 #: templates/frontend/queue/list.html:29 templates/frontend/queue/list.html:58
-#: templates/frontend/report/voipcall_report.html:64
+#: templates/frontend/report/voipcall_report.html:65
 #: templates/frontend/sms_campaign/list.html:36
-#: templates/frontend/sms_campaign/sms_report.html:61
-#: templates/frontend/subscriber/list.html:50
+#: templates/frontend/sms_campaign/sms_report.html:62
+#: templates/frontend/subscriber/list.html:51
 #: templates/frontend/survey/frozen_survey_list.html:17
 #: templates/frontend/survey/frozen_survey_list.html:37
 #: templates/frontend/survey/survey_list.html:25
 #: templates/frontend/survey/survey_list.html:56
-#: templates/frontend/survey/survey_report.html:125
+#: templates/frontend/survey/survey_report.html:126
 #: templates/frontend/tier/list.html:30 templates/frontend/tier/list.html:60
 #: templates/frontend/voiceapp/list.html:27
 #: templates/frontend/voiceapp/list.html:56
@@ -1792,7 +1786,7 @@ msgstr "Deneme sayısı"
 
 #: dialer_campaign/models.py:483
 #, fuzzy
-msgid "subscriber_response"
+msgid "subscriber response"
 msgstr "Abone (ler) İçe Aktarıldı."
 
 #: dialer_campaign/models.py:485
@@ -1805,7 +1799,7 @@ msgstr "Detaylı Çağrı Datası"
 msgid "can see subscriber"
 msgstr "Anketi güncelleyin"
 
-#: dialer_campaign/models.py:499 templates/frontend/subscriber/list.html:10
+#: dialer_campaign/models.py:499 templates/frontend/subscriber/list.html:11
 #, fuzzy
 msgid "subscribers"
 msgstr "Kampanya Aboneleri"
@@ -2017,9 +2011,9 @@ msgstr "Geçit"
 
 #: dialer_cdr/constants.py:71 dialer_cdr/models.py:219 survey/constants.py:40
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:55
-#: templates/frontend/report/voipcall_report.html:134
+#: templates/frontend/report/voipcall_report.html:135
 #: templates/frontend/survey/survey_campaign_result.html:20
-#: templates/frontend/survey/survey_report.html:199
+#: templates/frontend/survey/survey_report.html:200
 #, fuzzy
 msgid "duration"
 msgstr "Süre"
@@ -2098,9 +2092,9 @@ msgstr "Bu çağrı isteği ile ilgili Kampanya Abonesi"
 msgid "select Campaign"
 msgstr "Kampanya seç"
 
-#: dialer_cdr/models.py:136
+#: dialer_cdr/models.py:136 dialer_gateway/models.py:90
 #, fuzzy
-msgid "select gateway to be used"
+msgid "select gateway"
 msgstr "Ağ Geçidi seçin"
 
 #: dialer_cdr/models.py:142
@@ -2207,7 +2201,7 @@ msgstr "Çağrı Detay Raporu"
 msgid "VoIP call"
 msgstr "VoIP Çağrı"
 
-#: dialer_cdr/models.py:257 templates/frontend/report/voipcall_report.html:15
+#: dialer_cdr/models.py:257 templates/frontend/report/voipcall_report.html:16
 #, fuzzy
 msgid "VoIP calls"
 msgstr "VoIP Çağrı"
@@ -2300,8 +2294,8 @@ msgstr "Ile biter"
 msgid "ID"
 msgstr ""
 
-#: dialer_contact/constants.py:47 dialer_contact/forms.py:48
-#: dialer_contact/forms.py:118 dialer_contact/models.py:51
+#: dialer_contact/constants.py:47 dialer_contact/forms.py:52
+#: dialer_contact/forms.py:122 dialer_contact/models.py:51
 #: dialer_contact/models.py:87 templates/frontend/phonebook/change.html:11
 #: templates/frontend/phonebook/list.html:9
 #, fuzzy
@@ -2320,43 +2314,43 @@ msgstr "soyadı"
 msgid "first name"
 msgstr "isim"
 
-#: dialer_contact/forms.py:25
+#: dialer_contact/forms.py:26
 msgid "from"
 msgstr ""
 
-#: dialer_contact/forms.py:27
-#: templates/frontend/report/voipcall_report.html:55
-#: templates/frontend/sms_campaign/sms_report.html:55
-#: templates/frontend/sms_campaign/sms_report.html:119
-#: templates/frontend/survey/survey_report.html:119
+#: dialer_contact/forms.py:29
+#: templates/frontend/report/voipcall_report.html:56
+#: templates/frontend/sms_campaign/sms_report.html:56
+#: templates/frontend/sms_campaign/sms_report.html:120
+#: templates/frontend/survey/survey_report.html:120
 msgid "to"
 msgstr "için"
 
-#: dialer_contact/forms.py:32
+#: dialer_contact/forms.py:36
 msgid ""
 "upload CSV file using the pipe \"|\" as the field delimiter, e.g. 1234567890|"
 "surname|forename|email@somewhere.com|test-contact|1|address|city|state|US|"
 "unit|{\"age\":\"32\",\"title\":\"doctor\"}|"
 msgstr ""
 
-#: dialer_contact/forms.py:42 survey/forms.py:387
+#: dialer_contact/forms.py:46 survey/forms.py:387
 #, fuzzy, python-format
 msgid "document types accepted: %s"
 msgstr "Belge türleri kabul edilir: %s"
 
-#: dialer_contact/forms.py:50 dialer_contact/models.py:88
+#: dialer_contact/forms.py:54 dialer_contact/models.py:88
 #, fuzzy
 msgid "select phonebook"
 msgstr "Rehber seçin"
 
-#: dialer_contact/forms.py:112 dialer_contact/models.py:89
+#: dialer_contact/forms.py:116 dialer_contact/models.py:89
 #: templates/frontend/contact/import_contact.html:24
 #: templates/frontend/dnc_contact/import_dnc_contact.html:14
 #, fuzzy
 msgid "contact number"
 msgstr "Numarası İletişim"
 
-#: dialer_contact/forms.py:116
+#: dialer_contact/forms.py:120
 #, fuzzy
 msgid "contact name"
 msgstr "Numarası İletişim"
@@ -2565,11 +2559,6 @@ msgstr ""
 msgid "second used"
 msgstr "Kullanılan Saniye Miktarı"
 
-#: dialer_gateway/models.py:90
-#, fuzzy
-msgid "select gateway"
-msgstr "Ağ Geçidi seçin"
-
 #: dialer_gateway/models.py:91
 #, fuzzy
 msgid "add parameter"
@@ -2695,7 +2684,7 @@ msgstr "Max frekans"
 
 #: dialer_settings/models.py:72
 #, fuzzy
-msgid "Maximum sms per minute"
+msgid "Maximum SMS per minute"
 msgstr "Dakikada maksimum çağrı"
 
 #: dialer_settings/models.py:74
@@ -2705,27 +2694,27 @@ msgstr "En fazla deneme"
 
 #: dialer_settings/models.py:75
 #, fuzzy
-msgid "Maximum sms retries per user."
+msgid "Maximum SMS retries per user."
 msgstr "Kullanıcı başına en fazla deneme."
 
 #: dialer_settings/models.py:77
 #, fuzzy
-msgid "Max sms campaigns"
-msgstr "Maksimum kampanya sayısı"
+msgid "Max SMS campaigns"
+msgstr "Kampanya"
 
 #: dialer_settings/models.py:78
 #, fuzzy
-msgid "Maximum number of sms campaigns"
+msgid "Maximum number of SMS campaigns"
 msgstr "Kampanyalar maksimum sayısı"
 
 #: dialer_settings/models.py:80
 #, fuzzy
-msgid "Max subscribers of sms campaigns"
+msgid "Max subscribers of SMS campaigns"
 msgstr "Kampanya başına maksimum aboneleri"
 
 #: dialer_settings/models.py:81
 #, fuzzy
-msgid "Maximum subscribers per sms campaign"
+msgid "Maximum subscribers per SMS campaign"
 msgstr "Kampanya başına maksimum aboneleri"
 
 #: dialer_settings/models.py:90
@@ -2739,8 +2728,8 @@ msgstr "Dialer ayarları"
 #: templates/frontend/bootstrap_side_menu.html:20
 #: templates/frontend/dnc_contact/change.html:19
 #: templates/frontend/dnc_contact/list.html:16
-#: templates/frontend/dnc_contact/list.html:73
-#: templates/frontend/dnc_contact/list.html:76
+#: templates/frontend/dnc_contact/list.html:68
+#: templates/frontend/dnc_contact/list.html:71
 #: templates/frontend/dnc_list/change.html:11
 #: templates/frontend/dnc_list/list.html:9
 msgid "dnc"
@@ -3113,7 +3102,7 @@ msgstr "Kampanya"
 
 #: sms_module/models.py:104
 #, fuzzy
-msgid "sms campaign code"
+msgid "SMS campaign code"
 msgstr "Kampanya Kodu"
 
 #: sms_module/models.py:105
@@ -3282,7 +3271,7 @@ msgstr "Arama ayarları düzenle"
 #: sms_module/management/__init__.py:51
 #, fuzzy
 msgid ""
-"The sms dialer settings needs to be mapped with dialer settings by the "
+"The SMS Dialer settings needs to be mapped with dialer settings by the "
 "administrator"
 msgstr ""
 "Yönetici kullanıcı için arama ayarlarını tanımlamasını yapması gerekmektedir."
@@ -3355,7 +3344,7 @@ msgstr ""
 msgid "call-date "
 msgstr "Çağrı Kimliği"
 
-#: survey/constants.py:42 templates/frontend/survey/survey_report.html:16
+#: survey/constants.py:42 templates/frontend/survey/survey_report.html:17
 #, fuzzy
 msgid "survey result"
 msgstr "Anketler"
@@ -3448,7 +3437,7 @@ msgstr "Bildirim türü"
 #: survey/models.py:186 templates/frontend/survey/section_change.html:132
 #: templates/frontend/survey/survey_campaign_result.html:17
 #: templates/frontend/survey/survey_change.html:126
-#: templates/frontend/survey/survey_report.html:74
+#: templates/frontend/survey/survey_report.html:75
 #: templates/frontend/survey/survey_view.html:75
 #, fuzzy
 msgid "question"
@@ -3732,19 +3721,18 @@ msgstr "Arama Seçenekleri"
 #: templates/admin/sms_module/smsmessage/sms_report.html:38
 #: templates/frontend/newfies_custom_js.html:28
 #: templates/frontend/newfies_custom_js.html:32
-#: templates/frontend/appointment/event/list.html:33
-#: templates/frontend/appointment/event/list.html:39
+#: templates/frontend/appointment/event/list.html:30
+#: templates/frontend/appointment/event/list.html:36
 #: templates/frontend/contact/list.html:36
 #: templates/frontend/contact/list.html:42
 #: templates/frontend/dnc_contact/list.html:38
-#: templates/frontend/dnc_contact/list.html:44
-#: templates/frontend/report/voipcall_report.html:37
-#: templates/frontend/report/voipcall_report.html:43
-#: templates/frontend/sms_campaign/sms_report.html:38
-#: templates/frontend/sms_campaign/sms_report.html:43
-#: templates/frontend/subscriber/list.html:30
-#: templates/frontend/subscriber/list.html:36
-#: templates/frontend/survey/survey_report.html:41
+#: templates/frontend/report/voipcall_report.html:38
+#: templates/frontend/report/voipcall_report.html:44
+#: templates/frontend/sms_campaign/sms_report.html:39
+#: templates/frontend/sms_campaign/sms_report.html:44
+#: templates/frontend/subscriber/list.html:31
+#: templates/frontend/subscriber/list.html:37
+#: templates/frontend/survey/survey_report.html:42
 #, fuzzy
 msgid "search"
 msgstr "Ara"
@@ -3764,70 +3752,70 @@ msgstr "Reset"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:57
 #: templates/admin/sms_module/smsmessage/change_list.html:63
-#: templates/frontend/report/voipcall_report.html:67
-#: templates/frontend/sms_campaign/sms_report.html:64
-#: templates/frontend/subscriber/list.html:53
-#: templates/frontend/survey/survey_report.html:128
+#: templates/frontend/report/voipcall_report.html:68
+#: templates/frontend/sms_campaign/sms_report.html:65
+#: templates/frontend/subscriber/list.html:54
+#: templates/frontend/survey/survey_report.html:129
 #, fuzzy
 msgid "export to CSV"
 msgstr "CSV Olarak Dışa Aktar"
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:62
 #: templates/admin/sms_module/smsmessage/change_list.html:66
-#: templates/frontend/report/voipcall_report.html:68
-#: templates/frontend/sms_campaign/sms_report.html:65
-#: templates/frontend/subscriber/list.html:54
-#: templates/frontend/survey/survey_report.html:129
+#: templates/frontend/report/voipcall_report.html:69
+#: templates/frontend/sms_campaign/sms_report.html:66
+#: templates/frontend/subscriber/list.html:55
+#: templates/frontend/survey/survey_report.html:130
 msgid "export to XLS"
 msgstr ""
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:67
 #: templates/admin/sms_module/smsmessage/change_list.html:69
-#: templates/frontend/report/voipcall_report.html:69
-#: templates/frontend/sms_campaign/sms_report.html:66
-#: templates/frontend/subscriber/list.html:55
-#: templates/frontend/survey/survey_report.html:130
+#: templates/frontend/report/voipcall_report.html:70
+#: templates/frontend/sms_campaign/sms_report.html:67
+#: templates/frontend/subscriber/list.html:56
+#: templates/frontend/survey/survey_report.html:131
 msgid "export to JSON"
 msgstr ""
 
 #: templates/admin/dialer_cdr/voipcall/change_list.html:72
 #: templates/admin/sms_module/smsmessage/sms_report.html:51
-#: templates/frontend/report/voipcall_report.html:16
-#: templates/frontend/sms_campaign/sms_report.html:18
+#: templates/frontend/report/voipcall_report.html:17
+#: templates/frontend/sms_campaign/sms_report.html:19
 #, fuzzy
 msgid "daily report"
 msgstr "Çağrı Raporu"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:51
-#: templates/frontend/report/voipcall_report.html:129
-#: templates/frontend/survey/survey_report.html:194
+#: templates/frontend/report/voipcall_report.html:130
+#: templates/frontend/survey/survey_report.html:195
 #, fuzzy
 msgid "call detail report summary"
 msgstr "Çağrı Raporu Özeti"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:56
-#: templates/frontend/report/voipcall_report.html:135
-#: templates/frontend/survey/survey_report.html:200
+#: templates/frontend/report/voipcall_report.html:136
+#: templates/frontend/survey/survey_report.html:201
 #, fuzzy
 msgid "graphic"
 msgstr "Grafik"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:57
-#: templates/frontend/report/voipcall_report.html:136
-#: templates/frontend/survey/survey_report.html:201
+#: templates/frontend/report/voipcall_report.html:137
+#: templates/frontend/survey/survey_report.html:202
 #, fuzzy
 msgid "calls"
 msgstr "Aramalar"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:58
-#: templates/frontend/report/voipcall_report.html:137
+#: templates/frontend/report/voipcall_report.html:138
 #, fuzzy
 msgid "average connection time"
 msgstr "Ortalama Bağlantı Zaman"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:58
-#: templates/frontend/report/voipcall_report.html:137
-#: templates/frontend/survey/survey_report.html:202
+#: templates/frontend/report/voipcall_report.html:138
+#: templates/frontend/survey/survey_report.html:203
 msgid "ACT"
 msgstr "ACT"
 
@@ -3838,24 +3826,24 @@ msgstr "ACT"
 #: templates/frontend/appointment/calendar/list.html:92
 #: templates/frontend/appointment/calendar_setting/list.html:90
 #: templates/frontend/appointment/calendar_user/list.html:90
-#: templates/frontend/appointment/event/list.html:125
+#: templates/frontend/appointment/event/list.html:122
 #: templates/frontend/audio/audio_list.html:95
 #: templates/frontend/campaign/list.html:120
 #: templates/frontend/contact/list.html:136
-#: templates/frontend/dnc_contact/list.html:132
+#: templates/frontend/dnc_contact/list.html:127
 #: templates/frontend/dnc_list/list.html:89
 #: templates/frontend/phonebook/list.html:90
 #: templates/frontend/queue/list.html:90
-#: templates/frontend/report/voipcall_report.html:121
-#: templates/frontend/report/voipcall_report.html:153
+#: templates/frontend/report/voipcall_report.html:122
+#: templates/frontend/report/voipcall_report.html:154
 #: templates/frontend/sms_campaign/list.html:104
-#: templates/frontend/sms_campaign/sms_report.html:104
-#: templates/frontend/sms_campaign/sms_report.html:137
-#: templates/frontend/subscriber/list.html:105
+#: templates/frontend/sms_campaign/sms_report.html:105
+#: templates/frontend/sms_campaign/sms_report.html:138
+#: templates/frontend/subscriber/list.html:106
 #: templates/frontend/survey/frozen_survey_list.html:63
 #: templates/frontend/survey/survey_list.html:105
-#: templates/frontend/survey/survey_report.html:95
-#: templates/frontend/survey/survey_report.html:218
+#: templates/frontend/survey/survey_report.html:96
+#: templates/frontend/survey/survey_report.html:219
 #: templates/frontend/tier/list.html:93
 #: templates/frontend/voiceapp/list.html:90
 #, fuzzy
@@ -3868,7 +3856,7 @@ msgid "import contacts"
 msgstr "Kişileri İçe Aktar"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:9
-#: templates/frontend/dnc_contact/list.html:73
+#: templates/frontend/dnc_contact/list.html:68
 #, fuzzy
 msgid "import"
 msgstr "İçe Aktar"
@@ -3894,11 +3882,11 @@ msgstr "KİŞİ DURUMU = ('1'-'AKTIF') ('0'-'PASIF')"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:72
 #: templates/frontend/agent/change.html:105
-#: templates/frontend/appointment/alarm/change.html:113
+#: templates/frontend/appointment/alarm/change.html:110
 #: templates/frontend/appointment/calendar/change.html:38
 #: templates/frontend/appointment/calendar_setting/change.html:70
 #: templates/frontend/appointment/calendar_user/change.html:106
-#: templates/frontend/appointment/event/change.html:76
+#: templates/frontend/appointment/event/change.html:73
 #: templates/frontend/audio/audio_change.html:42
 #: templates/frontend/campaign/change.html:222
 #: templates/frontend/contact/change.html:66
@@ -3914,7 +3902,7 @@ msgstr "KİŞİ DURUMU = ('1'-'AKTIF') ('0'-'PASIF')"
 #: templates/frontend/survey/freeze_survey.html:64
 #: templates/frontend/survey/import_survey.html:64
 #: templates/frontend/survey/survey_change.html:44
-#: templates/frontend/survey/survey_report.html:36
+#: templates/frontend/survey/survey_report.html:37
 #: templates/frontend/tier/change.html:38
 #: templates/frontend/voiceapp/change.html:37
 #, fuzzy
@@ -3958,7 +3946,7 @@ msgstr "Çağrı Detay Raporu"
 #: templates/admin_tools/dashboard/modules/model_list.html:13
 #: templates/frontend/agent/change.html:9
 #: templates/frontend/agent/list.html:38
-#: templates/frontend/appointment/alarm/change.html:16
+#: templates/frontend/appointment/alarm/change.html:13
 #: templates/frontend/appointment/alarm/list.html:40
 #: templates/frontend/appointment/calendar/change.html:9
 #: templates/frontend/appointment/calendar/list.html:39
@@ -3966,8 +3954,8 @@ msgstr "Çağrı Detay Raporu"
 #: templates/frontend/appointment/calendar_setting/list.html:39
 #: templates/frontend/appointment/calendar_user/change.html:9
 #: templates/frontend/appointment/calendar_user/list.html:38
-#: templates/frontend/appointment/event/change.html:16
-#: templates/frontend/appointment/event/list.html:68
+#: templates/frontend/appointment/event/change.html:13
+#: templates/frontend/appointment/event/list.html:65
 #: templates/frontend/audio/audio_change.html:13
 #: templates/frontend/audio/audio_list.html:38
 #: templates/frontend/campaign/change.html:8
@@ -3975,7 +3963,7 @@ msgstr "Çağrı Detay Raporu"
 #: templates/frontend/contact/change.html:9
 #: templates/frontend/contact/list.html:72
 #: templates/frontend/dnc_contact/change.html:18
-#: templates/frontend/dnc_contact/list.html:81
+#: templates/frontend/dnc_contact/list.html:76
 #: templates/frontend/dnc_list/change.html:9
 #: templates/frontend/dnc_list/list.html:38
 #: templates/frontend/phonebook/change.html:9
@@ -4376,23 +4364,23 @@ msgstr ""
 msgid "customer interface"
 msgstr "Müşteri Arayüzü"
 
-#: templates/frontend/master.html:122
+#: templates/frontend/master.html:120
 #, fuzzy
 msgid "login"
 msgstr "Giriş"
 
-#: templates/frontend/master.html:123
+#: templates/frontend/master.html:121
 #, fuzzy
 msgid "forgot password?"
 msgstr "Şifremi Unuttum?"
 
-#: templates/frontend/master.html:131
+#: templates/frontend/master.html:129
 #, fuzzy
 msgid "display language"
 msgstr "Dil Göster"
 
-#: templates/frontend/master.html:148 templates/frontend/master.html.py:154
-#: templates/frontend/master.html:175 templates/frontend/master.html.py:189
+#: templates/frontend/master.html:146 templates/frontend/master.html.py:152
+#: templates/frontend/master.html:173 templates/frontend/master.html.py:187
 #: templates/frontend/agent/agent_detail.html:10
 #: templates/frontend/agent/agent_detail.html:16
 #: templates/frontend/registration/check_user_phone_number.html:5
@@ -4405,36 +4393,36 @@ msgstr "Dil Göster"
 msgid "alert"
 msgstr "Uyarı"
 
-#: templates/frontend/master.html:154
+#: templates/frontend/master.html:152
 #, fuzzy
 msgid "please login by clicking on login button"
 msgstr "Giriş butonuna tıklayarak giriş yapınız"
 
-#: templates/frontend/master.html:163
+#: templates/frontend/master.html:161
 #, fuzzy
 msgid "voice broadcasting solution"
 msgstr "Ses Yayın Çözümü"
 
-#: templates/frontend/master.html:177
+#: templates/frontend/master.html:175
 #, fuzzy
 msgid "to send notification to administrator"
 msgstr "Yöneticiye bildirimde bulunun "
 
-#: templates/frontend/master.html:177
+#: templates/frontend/master.html:175
 #, fuzzy
 msgid "click here"
 msgstr "Buraya tıklayın"
 
-#: templates/frontend/master.html:179
+#: templates/frontend/master.html:177
 #, fuzzy
 msgid "(notification sent)"
 msgstr "(Bildirim gönderildi)"
 
-#: templates/frontend/master.html:196
+#: templates/frontend/master.html:194
 msgid "error"
 msgstr ""
 
-#: templates/frontend/master.html:203
+#: templates/frontend/master.html:201
 msgid "info"
 msgstr ""
 
@@ -4465,16 +4453,16 @@ msgstr ""
 
 #: templates/frontend/agent/change.html:7
 #: templates/frontend/agent/change.html:99
-#: templates/frontend/appointment/alarm/change.html:14
-#: templates/frontend/appointment/alarm/change.html:110
+#: templates/frontend/appointment/alarm/change.html:11
+#: templates/frontend/appointment/alarm/change.html:107
 #: templates/frontend/appointment/calendar/change.html:7
 #: templates/frontend/appointment/calendar/change.html:35
 #: templates/frontend/appointment/calendar_setting/change.html:7
 #: templates/frontend/appointment/calendar_setting/change.html:67
 #: templates/frontend/appointment/calendar_user/change.html:7
 #: templates/frontend/appointment/calendar_user/change.html:100
-#: templates/frontend/appointment/event/change.html:14
-#: templates/frontend/appointment/event/change.html:73
+#: templates/frontend/appointment/event/change.html:11
+#: templates/frontend/appointment/event/change.html:70
 #: templates/frontend/audio/audio_change.html:11
 #: templates/frontend/audio/audio_change.html:39
 #: templates/frontend/campaign/change.html:6
@@ -4510,11 +4498,11 @@ msgid "agent is belong to manager"
 msgstr ""
 
 #: templates/frontend/agent/change.html:100
-#: templates/frontend/appointment/alarm/change.html:111
+#: templates/frontend/appointment/alarm/change.html:108
 #: templates/frontend/appointment/calendar/change.html:36
 #: templates/frontend/appointment/calendar_setting/change.html:68
 #: templates/frontend/appointment/calendar_user/change.html:101
-#: templates/frontend/appointment/event/change.html:74
+#: templates/frontend/appointment/event/change.html:71
 #: templates/frontend/audio/audio_change.html:40
 #: templates/frontend/campaign/change.html:220
 #: templates/frontend/contact/change.html:64
@@ -4546,11 +4534,11 @@ msgstr "Listeleme, ekleme ve kampanyalar düzenlemek"
 #: templates/frontend/appointment/calendar/list.html:34
 #: templates/frontend/appointment/calendar_setting/list.html:33
 #: templates/frontend/appointment/calendar_user/list.html:33
-#: templates/frontend/appointment/event/list.html:62
+#: templates/frontend/appointment/event/list.html:59
 #: templates/frontend/audio/audio_list.html:32
 #: templates/frontend/campaign/list.html:48
 #: templates/frontend/contact/list.html:64
-#: templates/frontend/dnc_contact/list.html:70
+#: templates/frontend/dnc_contact/list.html:65
 #: templates/frontend/dnc_list/list.html:33
 #: templates/frontend/phonebook/list.html:34
 #: templates/frontend/queue/list.html:33
@@ -4581,18 +4569,18 @@ msgstr "Şifrenizi değiştirin"
 #: templates/frontend/appointment/calendar/list.html:85
 #: templates/frontend/appointment/calendar_setting/list.html:83
 #: templates/frontend/appointment/calendar_user/list.html:83
-#: templates/frontend/appointment/event/list.html:118
+#: templates/frontend/appointment/event/list.html:115
 #: templates/frontend/audio/audio_list.html:88
 #: templates/frontend/campaign/list.html:113
 #: templates/frontend/contact/list.html:129
-#: templates/frontend/dnc_contact/list.html:125
+#: templates/frontend/dnc_contact/list.html:120
 #: templates/frontend/dnc_list/list.html:82
 #: templates/frontend/phonebook/list.html:83
 #: templates/frontend/queue/list.html:83
-#: templates/frontend/report/voipcall_report.html:114
+#: templates/frontend/report/voipcall_report.html:115
 #: templates/frontend/sms_campaign/list.html:97
-#: templates/frontend/sms_campaign/sms_report.html:97
-#: templates/frontend/subscriber/list.html:98
+#: templates/frontend/sms_campaign/sms_report.html:98
+#: templates/frontend/subscriber/list.html:99
 #: templates/frontend/survey/frozen_survey_list.html:56
 #: templates/frontend/survey/survey_list.html:98
 #: templates/frontend/tier/list.html:86
@@ -4613,19 +4601,19 @@ msgstr ""
 msgid "no"
 msgstr ""
 
-#: templates/frontend/appointment/alarm/change.html:28
+#: templates/frontend/appointment/alarm/change.html:25
 #: templates/frontend/campaign/change.html:18
 #: templates/frontend/sms_campaign/change.html:18
 #, fuzzy
 msgid "general settings"
 msgstr "Genel ayarlar"
 
-#: templates/frontend/appointment/alarm/change.html:55
+#: templates/frontend/appointment/alarm/change.html:52
 #, fuzzy
 msgid "alarm settings"
 msgstr "Dialer ayarları"
 
-#: templates/frontend/appointment/alarm/change.html:82
+#: templates/frontend/appointment/alarm/change.html:79
 #, fuzzy
 msgid "alarm result settings"
 msgstr "Pano İstatistik Ayarları"
@@ -4698,22 +4686,22 @@ msgstr ""
 msgid "change calendar user password"
 msgstr "Şifrenizi değiştirin"
 
-#: templates/frontend/appointment/event/change.html:27
+#: templates/frontend/appointment/event/change.html:24
 #, fuzzy
 msgid "event settings"
 msgstr "Hesap ayarları"
 
-#: templates/frontend/appointment/event/list.html:13
+#: templates/frontend/appointment/event/list.html:10
 #, fuzzy
 msgid "list, add and edit event"
 msgstr "Anketler ekleyebilir ve düzenleyebilirsiniz, listeleyebilirsiniz"
 
-#: templates/frontend/appointment/event/list.html:107
+#: templates/frontend/appointment/event/list.html:104
 #, fuzzy
 msgid "update event"
 msgstr "Iletişim Güncelle"
 
-#: templates/frontend/appointment/event/list.html:110
+#: templates/frontend/appointment/event/list.html:107
 #, fuzzy
 msgid "delete event"
 msgstr "Seçilen Sil"
@@ -4893,17 +4881,17 @@ msgstr "CSV Dosyalar ile İçe Aktarın"
 msgid "list, add and edit Do Not Call contacts"
 msgstr "Kişileri listeleyin , ekleyin ve güncelleyin"
 
-#: templates/frontend/dnc_contact/list.html:76
+#: templates/frontend/dnc_contact/list.html:71
 #, fuzzy
 msgid "export"
 msgstr "CSV Olarak Dışa Aktar"
 
-#: templates/frontend/dnc_contact/list.html:114
+#: templates/frontend/dnc_contact/list.html:109
 #, fuzzy
 msgid "update dnc contact"
 msgstr "Iletişim Güncelle"
 
-#: templates/frontend/dnc_contact/list.html:117
+#: templates/frontend/dnc_contact/list.html:112
 #, fuzzy
 msgid "delete dnc contact"
 msgstr "Kişiyi sil"
@@ -5147,17 +5135,17 @@ msgstr "Maksimum kampanya sayısı"
 msgid "maximum subscribers per SMS campaign"
 msgstr "Kampanya başına maksimum aboneleri"
 
-#: templates/frontend/report/voipcall_report.html:10
+#: templates/frontend/report/voipcall_report.html:11
 #, fuzzy
 msgid "call reports"
 msgstr "Çağrı Raporları"
 
-#: templates/frontend/report/voipcall_report.html:10
+#: templates/frontend/report/voipcall_report.html:11
 #, fuzzy
 msgid "detailed call data"
 msgstr "Detaylı Çağrı Datası"
 
-#: templates/frontend/report/voipcall_report.html:49
+#: templates/frontend/report/voipcall_report.html:50
 #, fuzzy
 msgid "voip call detail records"
 msgstr "Çağrı Detay Raporu"
@@ -5231,27 +5219,27 @@ msgstr ""
 msgid "unauthorized"
 msgstr ""
 
-#: templates/frontend/sms_campaign/sms_report.html:10
+#: templates/frontend/sms_campaign/sms_report.html:11
 #, fuzzy
 msgid "reports"
 msgstr "Raporlama"
 
-#: templates/frontend/sms_campaign/sms_report.html:10
+#: templates/frontend/sms_campaign/sms_report.html:11
 #, fuzzy
 msgid "detailed sms data"
 msgstr "Detaylı Çağrı Datası"
 
-#: templates/frontend/sms_campaign/sms_report.html:49
+#: templates/frontend/sms_campaign/sms_report.html:50
 #, fuzzy
 msgid "detail records"
 msgstr "Çağrı Detay Raporu"
 
-#: templates/frontend/sms_campaign/sms_report.html:113
+#: templates/frontend/sms_campaign/sms_report.html:114
 #, fuzzy
 msgid "daily report summary"
 msgstr "Çağrı Raporu Özeti"
 
-#: templates/frontend/subscriber/list.html:10
+#: templates/frontend/subscriber/list.html:11
 #, fuzzy
 msgid "list subscribers"
 msgstr "Kampanya Aboneleri"
@@ -5451,57 +5439,57 @@ msgstr "Anketi güncelleyin"
 msgid "export survey"
 msgstr "Anketi güncelleyin"
 
-#: templates/frontend/survey/survey_report.html:11
+#: templates/frontend/survey/survey_report.html:12
 #, fuzzy
 msgid "survey detail report"
 msgstr "Anketı Raporu"
 
-#: templates/frontend/survey/survey_report.html:11
+#: templates/frontend/survey/survey_report.html:12
 #, fuzzy
 msgid "monitor survey reports"
 msgstr "Anket sonuçlarını izle"
 
-#: templates/frontend/survey/survey_report.html:17
+#: templates/frontend/survey/survey_report.html:18
 #, fuzzy
 msgid "survey calls"
 msgstr "Anketler"
 
-#: templates/frontend/survey/survey_report.html:18
+#: templates/frontend/survey/survey_report.html:19
 #, fuzzy
 msgid "survey daily call report"
 msgstr "Anketı Raporu"
 
-#: templates/frontend/survey/survey_report.html:51
+#: templates/frontend/survey/survey_report.html:52
 msgid "total contact that completed Call / Survey"
 msgstr ""
 
-#: templates/frontend/survey/survey_report.html:107
-#: templates/frontend/survey/survey_report.html:164
+#: templates/frontend/survey/survey_report.html:108
+#: templates/frontend/survey/survey_report.html:165
 #, fuzzy
 msgid "no record found"
 msgstr "Kayıt bulunamadı!."
 
-#: templates/frontend/survey/survey_report.html:113
+#: templates/frontend/survey/survey_report.html:114
 #, fuzzy
 msgid "survey call detail records"
 msgstr "Çağrı Detay Raporu"
 
-#: templates/frontend/survey/survey_report.html:155
+#: templates/frontend/survey/survey_report.html:156
 #, fuzzy
 msgid "view details"
 msgstr "Detay değiştirme"
 
-#: templates/frontend/survey/survey_report.html:171
+#: templates/frontend/survey/survey_report.html:172
 msgid "total calls"
 msgstr ""
 
-#: templates/frontend/survey/survey_report.html:202
+#: templates/frontend/survey/survey_report.html:203
 msgid "Average Connection Time"
 msgstr "Ortalama Bağlantı Zaman"
 
 #: templates/frontend/tier/change.html:12
 #, fuzzy
-msgid "tier is belong to manager"
+msgid "tier belongs to manager"
 msgstr "Kampanyası sil"
 
 #: templates/frontend/tier/list.html:9
@@ -5693,6 +5681,30 @@ msgstr "Bu telefon numarası yetkili değil."
 #, fuzzy
 msgid "this phone number is authorized."
 msgstr "Bu telefon numarası yetkilidir."
+
+#, fuzzy
+#~ msgid "sms template"
+#~ msgstr "Anketler"
+
+#, fuzzy
+#~ msgid "select gateway to be used"
+#~ msgstr "Ağ Geçidi seçin"
+
+#, fuzzy
+#~ msgid "Maximum sms per minute"
+#~ msgstr "Dakikada maksimum çağrı"
+
+#, fuzzy
+#~ msgid "Max sms campaigns"
+#~ msgstr "Maksimum kampanya sayısı"
+
+#, fuzzy
+#~ msgid "Maximum subscribers per sms campaign"
+#~ msgstr "Kampanya başına maksimum aboneleri"
+
+#, fuzzy
+#~ msgid "sms campaign code"
+#~ msgstr "Kampanya Kodu"
 
 #, fuzzy
 #~ msgid "this resource allows you to manage branching."

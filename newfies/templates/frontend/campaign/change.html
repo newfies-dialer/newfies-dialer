@@ -24,7 +24,7 @@
                 {% for field in campaign_fields.visible_fields %}
                 <div class="col-md-6">
                     <div class="form-group {% if field.errors %}has-error{% endif %}">
-                    <div class="col-xs-6">
+                    <div class="col-xs-8">
                         <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                         {{ field }}
                         {% if field.errors %}
@@ -45,7 +45,7 @@
                 {% for field in campaign_fields %}
                 <div class="col-md-6">
                     <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-6">
+                        <div class="col-xs-8">
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}
@@ -70,7 +70,7 @@
                 {% for field in campaign_settings_fields %}
                 <div class="col-md-6">
                     <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-6">
+                        <div class="col-xs-8">
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}
@@ -95,7 +95,7 @@
                 {% for field in campaign_settings_fields %}
                 <div class="col-md-6">
                     <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-6">
+                        <div class="col-xs-8">
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}
@@ -118,7 +118,7 @@
         <legend>{% trans "voicemail settings"|title %}</legend>
         <div class="row">
             <div class="form-group">
-                <div class="col-xs-6">
+                <div class="col-xs-8">
                     <div class="checkbox-inline">
                     {% get_fieldset voicemail as settings_fields from form %}
                     {% for field in settings_fields %}
@@ -134,7 +134,7 @@
             {% for field in campaign_fields.visible_fields %}
                 <div class="col-md-6">
                     <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-6">
+                        <div class="col-xs-8">
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}
@@ -159,7 +159,7 @@
                 {% for field in date_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <div class="col-xs-6">
+                            <div class="col-xs-8">
                                 <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                                 {{ field }}
                                 {% if field.errors %}
@@ -182,14 +182,14 @@
                     {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
                     {% for field in settings_fields %}
                     <div class="checkbox-inline">
-                        {{ field }}&nbsp;<label style="display: inline;" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        {{ field }}&nbsp;<label for="{{ field.auto_id }}">{{ field.label|title }}</label>
                     </div>
                     {% endfor %}
 
                 </div>
             </div>
         </fieldset>
-        <br/>
+
         <fieldset>
             <legend>{% trans "callcenter settings"|title %}</legend>
             <div class="row">
@@ -197,7 +197,7 @@
                 {% for field in callcenter_settings_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <div class="col-xs-6">
+                            <div class="col-xs-8">
                                 <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                                 {{ field }}
                                 {% if field.errors %}

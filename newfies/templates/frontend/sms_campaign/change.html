@@ -24,7 +24,7 @@
                 {% for field in campaign_fields.visible_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-6">
+                        <div class="col-xs-8">
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}
@@ -44,7 +44,7 @@
                 {% for field in campaign_fields.visible_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-6">
+                        <div class="col-xs-8">
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}
@@ -69,7 +69,7 @@
                 {% for field in campaign_settings_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-6">
+                        <div class="col-xs-8">
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}
@@ -94,7 +94,7 @@
                 {% for field in campaign_settings_fields %}
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-6">
+                        <div class="col-xs-8">
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}

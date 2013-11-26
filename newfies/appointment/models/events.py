@@ -62,7 +62,7 @@ class Event(models.Model):
 
     def __unicode__(self):
         date_format = u'%s' % ugettext("DATE_FORMAT")
-        return ugettext('%(title)s: %(start)s - %(end)s') % {
+        return '%(title)s: %(start)s - %(end)s' % {
             'title': self.title,
             'start': date(self.start, date_format),
             'end': date(self.end, date_format),

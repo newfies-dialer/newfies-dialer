@@ -46,6 +46,7 @@ Database = oo.class{
     debugger = nil,
     results = {},
     caching = false,
+    event_alarm = nil,
 }
 
 function Database:__init(debug_mode, debugger)
@@ -167,10 +168,12 @@ function Database:load_content_type()
 end
 
 function Database:update_subscriber(subscriber_id, status)
-    local sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
-    self:db_debugger("DEBUG", "Update Subscriber : "..sqlquery)
-    local res = self.dbh:execute(sqlquery)
-    self:update_campaign_completed()
+    if subscriber_id and subscriber_id ~= 'None' then
+        local sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
+        self:db_debugger("DEBUG", "Update Subscriber : "..sqlquery)
+        local res = self.dbh:execute(sqlquery)
+        self:update_campaign_completed()
+    end
 end
 
 function Database:update_campaign_completed()
@@ -185,7 +188,43 @@ function Database:update_callrequest_cpt(callrequest_id)
     local res = self.dbh:execute(sqlquery)
 end
 
-function Database:load_all(campaign_id, contact_id)
+function Database:load_alarm_event(alarm_request_id)
+    local sqlquery = "SELECT event_id, alarm_id, survey_id, manager_id, data FROM appointment_alarmrequest "..
+        "LEFT JOIN appointment_alarm ON appointment_alarm.id=alarm_id "..
+        "LEFT JOIN appointment_event ON appointment_event.id=appointment_alarm.event_id "..
+        "LEFT JOIN calendar_user_profile ON calendar_user_profile.user_id=creator_id "..
+        "WHERE appointment_alarmrequest.id="..alarm_request_id
+    self:db_debugger("DEBUG", "Load Event Data : "..sqlquery)
+    self.event_alarm = self.dbh:get_object(sqlquery)
+
+    local inspect = require 'inspect'
+    print(inspect(self.event_alarm))
+    print(self.event_alarm.manager_id)
+    print(self.event_alarm.alarm_id)
+    self.user_id = self.event_alarm.manager_id
+end
+
+function Database:load_all_alarm_request(alarm_request_id)
+
+    self:load_alarm_event(alarm_request_id)
+    if not self.event_alarm then
+        self:db_debugger("ERROR", "Error: No Event")
+        return false
+    end
+end
+
+function Database:load_all(campaign_id, contact_id, alarm_request_id)
+
+    if contact_id=='None' or campaign_id=='None' then
+        -- ALARM
+        self:load_all_alarm_request(alarm_request_id)
+        self:load_survey_section(self.event_alarm.survey_id)
+        self:load_survey_branching(self.event_alarm.survey_id)
+        self:load_audiofile()
+        return self.event_alarm.survey_id
+    end
+
+    -- CAMPAIGN
     self:load_contact(contact_id)
     if not self.contact then
         self:db_debugger("ERROR", "Error: No Contact")
@@ -219,8 +258,8 @@ end
 
 function Database:check_data()
     --Check if we retrieve Campaign Info
-    if not self.campaign_info then
-        self:db_debugger("ERROR", "campaign_info no valid")
+    if not self.campaign_info and not self.event_alarm then
+        self:db_debugger("ERROR", "campaign_info or event_alarm no valid")
         self.valid_data = false
     end
     --Check if we retrieve List Section
@@ -380,5 +419,19 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
     else
         --Save result to memory
         self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
+    end
+end
+
+function Database:save_alarm_result(alarm_id, digits)
+    local int_digits = tonumber(digits)
+    if alarm_id and int_digits >=0 then
+        local sqlquery = "UPDATE appointment_alarm SET result="..int_digits.." WHERE id="..alarm_id
+        self:db_debugger("DEBUG", "Update Alarm Result:"..sqlquery)
+        local res = self.dbh:execute(sqlquery)
+        if not res then
+            return false
+        else
+            return true
+        end
     end
 end

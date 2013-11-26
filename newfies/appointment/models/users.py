@@ -14,7 +14,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from django.db.models.signals import post_save
+# from django.db.models.signals import post_save
 from user_profile.models import Manager, Profile_abstract
 from survey.models import Survey
 from dialer_gateway.models import Gateway
@@ -33,8 +33,8 @@ class CalendarSetting(models.Model):
         * ``aleg_gateway`` - Foreign key relationship to the Gateway model.\
                              Gateway to use to call the subscriber
 
-
     **Name of DB table**: calendar_setting
+
     """
     callerid = models.CharField(max_length=80, blank=True,
                                 verbose_name=_("callerID"),

@@ -66,16 +66,28 @@ function FSMCall:init()
     self.contact_id = self.session:getVariable("contact_id")
     self.callrequest_id = self.session:getVariable("callrequest_id")
     self.used_gateway_id = self.session:getVariable("used_gateway_id")
+    self.alarm_request_id = self.session:getVariable("alarm_request_id")
 
     --This is needed for Inbound test
     if not self.campaign_id or self.campaign_id == 0 or not self.contact_id then
-        self.campaign_id = 46
-        self.subscriber_id = 39
-        self.contact_id = 39
-        self.callrequest_id = 215
-        self.db.DG_SURVEY_ID = 41
-        --self.db.TABLE_SECTION = 'survey_section_template'
-        --self.db.TABLE_BRANCHING = 'survey_branching_template'
+        local nofs_type = 'alarm'
+        if nofs_type == 'campaign' then
+            -- Campaign Test
+            self.campaign_id = 46
+            self.subscriber_id = 39
+            self.contact_id = 39
+            self.callrequest_id = 215
+            self.db.DG_SURVEY_ID = 41
+            self.alarm_request_id = nil
+        else
+            -- Alarm Test
+            self.campaign_id = 'None'
+            self.subscriber_id = 'None'
+            self.contact_id = 'None'
+            self.callrequest_id = 15390
+            self.db.DG_SURVEY_ID = 74
+            self.alarm_request_id = 9
+        end
     end
 
     call_id = self.uuid..'_'..self.callrequest_id
@@ -83,9 +95,9 @@ function FSMCall:init()
 
     self.db:connect()
     --Load All data
-    self.survey_id = self.db:load_all(self.campaign_id, self.contact_id)
+    self.survey_id = self.db:load_all(self.campaign_id, self.contact_id, self.alarm_request_id)
     if not self.survey_id then
-        self.debugger:msg("ERROR", "Error loading data")
+        self.debugger:msg("ERROR", "Error Survey loading data")
         self:hangupcall()
         return false
     end
@@ -517,6 +529,11 @@ function FSMCall:next_node()
     elseif current_node.type == RATING_SECTION then
         digits = self:getdigitnode(current_node)
         self.debugger:msg("INFO", "result digit => "..digits)
+
+        -- Save the result to Alarm model
+        if self.db.event_alarm and self.db.event_alarm.alarm_id then
+            self.db:save_alarm_result(self.db.event_alarm.alarm_id, digits)
+        end
 
     elseif current_node.type == CAPTURE_DIGITS then
         digits = self:getdigitnode(current_node)

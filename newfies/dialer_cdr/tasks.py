@@ -272,7 +272,7 @@ def process_callevent(record):
         - create the voipcall, and save different data
     """
     #TODO: add method in utils parse_callevent
-
+    app_type = 'campaign'
     event_name = record[1]
     body = record[2]
     job_uuid = record[3]
@@ -313,6 +313,10 @@ def process_callevent(record):
     except:
         logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)
         return True
+
+    logger.error(callrequest)
+    if callrequest.alarm_request_id:
+        app_type = 'alarm'
 
     logger.debug("Find Callrequest id : %d" % callrequest.id)
     debug_query(23)
@@ -722,8 +726,9 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 
             #DEBUG
             #settings.ESL_SCRIPT = '&playback(/usr/local/freeswitch/sounds/en/us/callie/voicemail/8000/vm-record_greeting.wav)'
-            dial_command = "originate {%s}%s%s '%s'" % \
-                (args_str, gateways, dialout_phone_number, settings.ESL_SCRIPT)
+            dial_command = "originate {%s}%s%s '%s'" % (args_str, gateways, dialout_phone_number, settings.ESL_SCRIPT)
+            dial_command = "originate {%s}user/areski '%s'" % (args_str, settings.ESL_SCRIPT)
+
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
             logger.warn('dial_command : %s' % dial_command)

@@ -1,12 +1,14 @@
 {% load i18n %}
 {% if msg_detail %}
+    <br/>
     <div class="alert alert-success">
         <strong>{% trans "alert"|title %} : </strong>  {{ msg_detail|capfirst }}
     </div>
 {% endif %}
 
 {% if error_detail %}
-    <div class="alert alert-error">
+    <br/>
+    <div class="alert alert-danger">
         <strong>{% trans "alert"|title %} : </strong>  {{ error_detail|capfirst }}
     </div>
 {% endif %}

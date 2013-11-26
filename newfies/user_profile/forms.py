@@ -36,22 +36,12 @@ class UserChangeDetailForm(ModelForm):
         fields = ["last_name", "first_name", "email"]
 
     def __init__(self, user, *args, **kwargs):
-        #self.user = user
         super(UserChangeDetailForm, self).__init__(*args, **kwargs)
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         self.fields['last_name'].widget.attrs['ng-model'] = "user.last_name"
         self.fields['first_name'].widget.attrs['ng-model'] = "user.first_name"
         self.fields['email'].widget.attrs['ng-model'] = "user.email"
-
-    def save(self, commit=True):
-        """Saves the detail."""
-        self.user.last_name = self.cleaned_data["last_name"]
-        self.user.first_name = self.cleaned_data["first_name"]
-        self.user.email = self.cleaned_data["email"]
-        if commit:
-            self.user.save()
-        return self.user
 
 
 class UserChangeDetailExtendForm(ModelForm):

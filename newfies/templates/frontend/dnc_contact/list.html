@@ -35,7 +35,7 @@
             </div>
             {% endfor %}
         </div>
-        <input class="btn btn-primary" type=submit name=submit value={% trans "search"|title %} />
+        <input class="btn btn-primary" type="submit" name="submit" value="{% trans 'search'|title %}" />
     </form>
 </div>
 
@@ -69,12 +69,14 @@ function delete_button()
                 {% if perms.dnc.delete_dnccontact %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
+                <li>
+                    <a href="import/">{% trans "dnc"|upper %} {% trans "import"|capfirst %}</a>
+                </li>
+                <li>
+                    <a href="export_view/">{% trans "export"|capfirst %} {% trans "dnc"|upper %}</a>
+                </li>
             </ul>
         </div>
-
-        <a class="btn btn-default" href="import/">{% trans "import"|capfirst %} {% trans "dnc"|upper %}</a>
-        <a class="btn btn-default" href="export_view/">{% trans "export"|capfirst %} {% trans "dnc"|upper %}</a>
-
         {% if perms.dnc.add_dnccontact %}
             <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
         {% endif %}

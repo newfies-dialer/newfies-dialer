@@ -94,7 +94,8 @@ def customer_detail_change(request):
             action = 'tabs-4'
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if check_phone_no_form.is_valid():
-                if not common_contact_authorization(request.user, request.POST['phone_number']):
+                dialersetting = request.user.get_profile().dialersetting
+                if not common_contact_authorization(dialersetting, request.POST['phone_number']):
                     error_number = _('this phone number is not authorized.')
                 else:
                     msg_number = _('this phone number is authorized.')
@@ -102,7 +103,7 @@ def customer_detail_change(request):
                 error_number = _('please correct the errors below.')
         else:  # "change-password"
             user_password_form = UserPasswordChangeForm(user=request.user,
-                                                    data=request.POST)
+                                                        data=request.POST)
             action = 'tabs-2'
             if user_password_form.is_valid():
                 #DEMO / Disable

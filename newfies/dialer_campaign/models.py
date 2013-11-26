@@ -480,7 +480,7 @@ class Subscriber(Model):
                                  verbose_name=_("status"), blank=True, null=True)
     disposition = models.IntegerField(verbose_name=_("disposition"),
                                       blank=True, null=True)
-    collected_data = models.TextField(verbose_name=_('subscriber_response'),
+    collected_data = models.TextField(verbose_name=_('subscriber response'),
                                       blank=True, null=True,
                                       help_text=_("collect user call data"))
     agent = models.ForeignKey(Agent, verbose_name=_("agent"),

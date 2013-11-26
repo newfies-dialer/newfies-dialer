@@ -48,7 +48,7 @@ if "notification" in settings.INSTALLED_APPS:
             SMS_NOTIFICATION_NAME.sms_contact_limit_reached)
         notification.create_notice_type("sms_dialer_setting_configuration",
                                         _("SMS Dialer setting configuration"),
-                                        _("The sms dialer settings needs to be mapped with dialer settings by the administrator"),
+                                        _("The SMS Dialer settings needs to be mapped with dialer settings by the administrator"),
             SMS_NOTIFICATION_NAME.sms_dialer_setting_configuration)
     signals.post_syncdb.connect(create_notice_types, sender=notification)
 else:

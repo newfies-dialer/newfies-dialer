@@ -1,11 +1,9 @@
 # -*- coding: utf-8 -*-
-from django.contrib.contenttypes import generic
 from django.db import models
 from django.core.urlresolvers import reverse
 from django.template.defaultfilters import date
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.utils import timezone
-from appointment.conf import settings
 from appointment.models.rules import Rule
 from appointment.models.calendars import Calendar
 from appointment.models.users import CalendarUser
@@ -13,7 +11,6 @@ from appointment.utils import OccurrenceReplacer
 from appointment.constants import EVENT_STATUS
 from dateutil import rrule
 from dateutil.relativedelta import relativedelta
-# from dateutil.relativedelta import relativedelta
 from datetime import datetime
 import jsonfield
 import pytz

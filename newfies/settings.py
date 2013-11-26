@@ -233,6 +233,7 @@ INSTALLED_APPS = (
     'activelink',
     'sms',
     'sms_module',
+    'bootstrap3_datetime',
 )
 
 # Django extensions

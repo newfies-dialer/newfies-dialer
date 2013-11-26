@@ -24,6 +24,7 @@ from appointment.models.alarms import Alarm
 from appointment.function_def import get_calendar_user_id_list,\
     get_calendar_user_list, get_calendar_list
 from survey.models import Survey
+from bootstrap3_datetime.widgets import DateTimePicker
 
 
 class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
@@ -145,6 +146,13 @@ class EventForm(ModelForm):
     class Meta:
         model = Event
         exclude = ('parent_event', 'occ_count')
+        datetime_widget = DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"})
+        widgets = {
+            'start': datetime_widget,
+            'end': datetime_widget,
+            'end_recurring_period': datetime_widget,
+            'end_recurring_period': datetime_widget,
+        }
 
     def __init__(self, user, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)

@@ -3596,7 +3596,7 @@ msgid "Email address"
 msgstr "Correo electrónico"
 
 #: user_profile/forms.py:63
-msgid "check number is authorised to call"
+msgid "check number is authorized to call"
 msgstr "Número está autorizado a llamar"
 
 #: user_profile/management.py:61

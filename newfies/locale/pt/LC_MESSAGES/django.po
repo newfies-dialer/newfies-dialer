@@ -4034,7 +4034,7 @@ msgstr "Endereço de email"
 
 #: user_profile/forms.py:63
 #, fuzzy
-msgid "check number is authorised to call"
+msgid "check number is authorized to call"
 msgstr "Número do cheque está autorizado a chamar"
 
 #: user_profile/management.py:61

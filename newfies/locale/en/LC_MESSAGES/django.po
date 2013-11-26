@@ -3469,7 +3469,7 @@ msgid "Email address"
 msgstr ""
 
 #: user_profile/forms.py:63
-msgid "check number is authorised to call"
+msgid "check number is authorized to call"
 msgstr ""
 
 #: user_profile/management.py:61

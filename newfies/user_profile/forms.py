@@ -65,7 +65,7 @@ class CheckPhoneNumberForm(forms.Form):
     phone_number = forms.CharField(
         label=_('phone number'),
         required=True,
-        help_text=_("check number is authorised to call"))
+        help_text=_("check number is authorized to call"))
 
     def __init__(self, *args, **kwargs):
         super(CheckPhoneNumberForm, self).__init__(*args, **kwargs)

@@ -4008,7 +4008,7 @@ msgstr "電郵"
 
 #: user_profile/forms.py:63
 #, fuzzy
-msgid "check number is authorised to call"
+msgid "check number is authorized to call"
 msgstr "檢查此號碼為授權撥出"
 
 #: user_profile/management.py:61

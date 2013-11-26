@@ -426,17 +426,17 @@ msgstr "DATE_FORMAT"
 #: appointment/periods.py:278
 #, python-format
 msgid "Week: %(start)s-%(end)s"
-msgstr "Semana:% (start) s-% (final) s"
+msgstr "Semana: %(start)s-%(end)s"
 
 #: appointment/periods.py:303
 #, python-format
 msgid "Day: %(start)s-%(end)s"
-msgstr "Día:% (start) s-% (final) s"
+msgstr "Día: %(start)s-%(end)s"
 
 #: appointment/views.py:110
 #, python-format
 msgid "\"%(name)s\" added as calendar user."
-msgstr "\"%(name)s\", se agregó como usuario del calendario."
+msgstr "\"%(name)s\" se agregó como usuario del calendario."
 
 #: appointment/views.py:161
 #, python-format
@@ -703,7 +703,7 @@ msgstr "ocurrencias"
 #: appointment/models/events.py:312
 #, python-format
 msgid "%(start)s to %(end)s"
-msgstr "% (Start) s en% (fin) s"
+msgstr "%(start)s en %(end)s"
 
 #: appointment/models/rules.py:6
 msgid "Yearly"
@@ -2486,33 +2486,28 @@ msgid "Do Not Call lists"
 msgstr "No Llame listas"
 
 #: dnc/models.py:55
-#, fuzzy
 msgid "dnc contacts"
-msgstr "contacto"
+msgstr "dnc contactos"
 
 #: dnc/models.py:72
 msgid "Do Not Call List"
 msgstr "Lista de No Llamar"
 
 #: dnc/models.py:84
-#, fuzzy
 msgid "can see Do Not Call contact"
-msgstr "Se puede ver Contacto"
+msgstr ""
 
 #: dnc/models.py:87
-#, fuzzy
 msgid "Do Not Call contact"
-msgstr "Total contacto"
+msgstr ""
 
 #: dnc/models.py:88
-#, fuzzy
 msgid "Do Not Call contacts"
-msgstr "contacto"
+msgstr ""
 
 #: dnc/views.py:165
-#, fuzzy, python-format
 msgid "%(count)s dnc list(s) are deleted."
-msgstr "%(count)s contacto(s) se ha eliminado."
+msgstr "%(count)s dnc contacto(s) se ha eliminado."
 
 #: dnc/views.py:351
 #, python-format
@@ -2539,56 +2534,56 @@ msgstr ""
 #: dnc/views.py:532
 #, python-format
 msgid "Duplicate dnc contact(s) %(dup_contact_cnt)s are not inserted!!"
-msgstr "Duplicar contacto dnc (s)% (dup_contact_cnt) s no se insertan!"
+msgstr "Duplicar dnc contacto(s) %(dup_contact_cnt)s no se insertan!"
 
 #: frontend/constants.py:20
 msgid "last 30 days"
-msgstr "Últimos 30 días"
+msgstr "últimos 30 días"
 
 #: frontend/constants.py:21
 msgid "last 7 days"
-msgstr "Últimos 7 días"
+msgstr "últimos 7 días"
 
 #: frontend/constants.py:22
 msgid "yesterday"
-msgstr "Ayer"
+msgstr "ayer"
 
 #: frontend/constants.py:23
 msgid "last 24 hours"
-msgstr "Últimas 24 horas"
+msgstr "últimas 24 horas"
 
 #: frontend/constants.py:24
 msgid "last 12 hours"
-msgstr "Últimas 12 horas"
+msgstr "últimas 12 horas"
 
 #: frontend/constants.py:25
 msgid "last 6 hours"
-msgstr "Últimas 6 horas"
+msgstr "últimas 6 horas"
 
 #: frontend/constants.py:26
 msgid "last hour"
-msgstr "Última hora"
+msgstr "última hora"
 
 #: frontend/forms.py:23
 msgid "username"
-msgstr "Nombre de usuario:"
+msgstr "nombre de usuario"
 
 #: frontend/forms.py:26
 #: templates/frontend/registration/user_detail_change.html:12
 msgid "password"
-msgstr "Contraseña"
+msgstr "contraseña"
 
 #: frontend/views.py:89
 msgid "disabled account"
-msgstr "Cuenta con discapacidad"
+msgstr "cuenta desactivada"
 
 #: frontend/views.py:92
 msgid "invalid login."
-msgstr "Inválida Login."
+msgstr "inválida login."
 
 #: frontend/views.py:95
 msgid "enter valid user credentials."
-msgstr "Introduzca las credenciales de usuario válidas."
+msgstr "introduzca las credenciales de usuario válidas."
 
 #: mod_mailer/constants.py:21
 msgid "sent"
@@ -2952,7 +2947,7 @@ msgstr "No se puede encontrar esta campaña de SMS : %(id)s"
 #: sms_module/management/commands/create_sms.py:81
 #, python-format
 msgid "No of SMS :%(count)s"
-msgstr "No de SMS:% (recuento) s"
+msgstr "No de SMS: %(count)s"
 
 #: sms_module/management/commands/create_sms.py:87
 msgid "\"sms_campaign_id|quantity\" \"sms_campaign_id|quantity\""

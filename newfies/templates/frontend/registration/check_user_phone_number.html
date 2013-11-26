@@ -1,11 +1,13 @@
 {% load i18n %}
 {% if msg_number %}
+    <br/>
     <div class="alert alert-success">
         <strong>{% trans "alert"|title %} : </strong>  {{ msg_number|capfirst }}
     </div>
 {% endif %}
 {% if error_number %}
-    <div class="alert alert-error">
+    <br/>
+    <div class="alert alert-danger">
         <strong>{% trans "alert"|title %} : </strong>  {{ error_number|capfirst }}
     </div>
 {% endif %}

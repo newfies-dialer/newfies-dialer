@@ -61,7 +61,7 @@ class Alarm(models.Model):
     mail_template = models.ForeignKey(MailTemplate, verbose_name=_("mail template"),
                                       blank=True, null=True,
                                       related_name="mail template")
-    sms_template = models.ForeignKey(SMSTemplate, verbose_name=_("sms template"),
+    sms_template = models.ForeignKey(SMSTemplate, verbose_name=_("SMS template"),
                                      blank=True, null=True,
                                      related_name="sms template")
     event = models.ForeignKey(Event, verbose_name=_("event"),

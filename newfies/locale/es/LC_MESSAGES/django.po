@@ -49,9 +49,8 @@ msgstr "Japonés"
 #: appointment/models/users.py:48 appointment/models/users.py:108
 #: callcenter/admin_filters.py:46 callcenter/models.py:95
 #: callcenter/models.py:174 user_profile/models.py:133
-#, fuzzy
 msgid "manager"
-msgstr "Administrador de tareas"
+msgstr "gerente"
 
 #: agent/constants.py:20 appointment/constants.py:60
 #: appointment/constants.py:67 appointment/models/calendars.py:46
@@ -120,9 +119,8 @@ msgstr ""
 #: agent/models.py:42 appointment/models/users.py:49
 #: appointment/models/users.py:109 callcenter/models.py:96
 #: callcenter/models.py:175
-#, fuzzy
 msgid "select manager"
-msgstr "Seleccione idioma"
+msgstr "seleccione gerente"
 
 #: agent/models.py:46 dialer_campaign/constants.py:54
 #: dialer_campaign/models.py:229 dialer_cdr/models.py:138 frontend/forms.py:35
@@ -160,24 +158,20 @@ msgid "busy delay time"
 msgstr ""
 
 #: agent/models.py:69
-#, fuzzy
 msgid "can see Agent dashboard"
-msgstr "puede ver Dashboard Campaña"
+msgstr "puede ver Dashboard Agente"
 
 #: agent/models.py:70
-#, fuzzy
 msgid "can see Agent list"
-msgstr "puede véase Estudio"
+msgstr "puede ver listado de Agente"
 
 #: agent/models.py:73
-#, fuzzy
 msgid "agent profile"
-msgstr "Perfil de usuario"
+msgstr "Perfil de agente"
 
 #: agent/models.py:74
-#, fuzzy
 msgid "agent profiles"
-msgstr "Perfil de usuario"
+msgstr "Perfiles de agente"
 
 #: agent/models.py:89 callcenter/admin_filters.py:20
 #: callcenter/constants.py:38 callcenter/models.py:49 callcenter/models.py:177
@@ -187,16 +181,15 @@ msgstr "Perfil de usuario"
 #: templates/frontend/agent/change.html:11
 #: templates/frontend/agent/list.html:9
 msgid "agent"
-msgstr ""
+msgstr "agente"
 
 #: agent/models.py:90
 msgid "agents"
-msgstr ""
+msgstr "agentes"
 
 #: agent/views.py:130 appointment/views.py:253
-#, fuzzy, python-format
 msgid "%s password has been changed."
-msgstr "Su contraseña se ha cambiado."
+msgstr "%s contraseña se ha cambiado."
 
 #: agent/views.py:133 agent/views.py:219 agent/views.py:230
 #: appointment/views.py:256 user_profile/views.py:92 user_profile/views.py:103
@@ -213,9 +206,8 @@ msgid "your password has been changed."
 msgstr "Su contraseña se ha cambiado."
 
 #: agent/views.py:316
-#, fuzzy, python-format
 msgid "\"%(name)s\" added as agent."
-msgstr "\"%(name)s\", se agregó."
+msgstr "\"%(name)s\", se agregó como agente."
 
 #: agent/views.py:351 appointment/views.py:145 callcenter/views.py:139
 #: callcenter/views.py:315 dialer_audio/views.py:132
@@ -226,9 +218,8 @@ msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" es eliminado."
 
 #: agent/views.py:367
-#, fuzzy, python-format
 msgid "%(count)s agent(s) are deleted."
-msgstr "%(count)s la campaña(s) se ha eliminado."
+msgstr "%(count)s agente(s) se ha eliminado."
 
 #: agent/views.py:418 appointment/views.py:211 callcenter/views.py:204
 #: dialer_campaign/views.py:451 dialer_contact/views.py:205 dnc/views.py:199
@@ -273,9 +264,8 @@ msgid "success"
 msgstr "Éxito"
 
 #: appointment/constants.py:33
-#, fuzzy
 msgid "confirmed"
-msgstr "Confirmar la eliminación?"
+msgstr "confirmar"
 
 #: appointment/constants.py:34 appointment/models/events.py:239
 msgid "cancelled"
@@ -286,9 +276,8 @@ msgid "rescheduled"
 msgstr ""
 
 #: appointment/constants.py:39
-#, fuzzy
 msgid "call"
-msgstr "Llamadas"
+msgstr "llamada"
 
 #: appointment/constants.py:40
 #: templates/admin/sms_module/smsmessage/change_list.html:14
@@ -320,20 +309,17 @@ msgid "email"
 msgstr "Email"
 
 #: appointment/constants.py:53
-#, fuzzy
 msgid "callerid number"
-msgstr "Nombre del remitente"
+msgstr "número de identificación de llamadas"
 
 #: appointment/constants.py:54
-#, fuzzy
 msgid "callerid name"
-msgstr "Nombre del remitente"
+msgstr "nombre de identificación de llamadas"
 
 #: appointment/constants.py:55 appointment/models/users.py:46
 #: appointment/models/users.py:47
-#, fuzzy
 msgid "call timeout"
-msgstr "Tiempo de espera"
+msgstr "tiempo de espera"
 
 #: appointment/constants.py:56 appointment/constants.py:90
 #: appointment/models/alarms.py:58 dialer_campaign/models.py:332
@@ -343,13 +329,12 @@ msgstr "Tiempo de espera"
 #: templates/frontend/survey/survey_change.html:17
 #: templates/frontend/survey/survey_list.html:9
 msgid "survey"
-msgstr "estudio"
+msgstr "encuesta"
 
 #: appointment/constants.py:62 appointment/forms.py:37
 #: templates/frontend/bootstrap_side_menu.html:39
-#, fuzzy
 msgid "calendar setting"
-msgstr "Marcador de configuración"
+msgstr "configuración calendario"
 
 #: appointment/constants.py:68 appointment/models/calendars.py:47
 msgid "slug"
@@ -362,10 +347,9 @@ msgstr ""
 #: templates/frontend/appointment/calendar_user/change.html:11
 #: templates/frontend/appointment/calendar_user/list.html:9
 msgid "calendar user"
-msgstr ""
+msgstr "usuario del calendario"
 
 #: appointment/constants.py:70
-#, fuzzy
 msgid "max_concurrent"
 msgstr "Max llamadas simultáneas"
 
@@ -374,13 +358,12 @@ msgstr "Max llamadas simultáneas"
 #: dialer_campaign/views.py:162 sms_module/models.py:120
 #: sms_module/views.py:164
 msgid "start"
-msgstr "Comienzo"
+msgstr "comienzo"
 
 #: appointment/constants.py:76 appointment/models/events.py:29
 #: appointment/models/events.py:238
-#, fuzzy
 msgid "end"
-msgstr "y"
+msgstr "final"
 
 #: appointment/constants.py:77 appointment/models/events.py:31
 #: appointment/models/events.py:235
@@ -400,23 +383,20 @@ msgid "calendar"
 msgstr ""
 
 #: appointment/constants.py:85
-#, fuzzy
 msgid "phonenumber"
 msgstr "número de teléfono"
 
 #: appointment/constants.py:87 appointment/models/alarms.py:43
-#, fuzzy
 msgid "daily start"
-msgstr "Hora de inicio diaria"
+msgstr "hora de inicio diaria"
 
 #: appointment/constants.py:88 appointment/models/alarms.py:45
-#, fuzzy
 msgid "daily stop"
-msgstr "Hora diaria de paro"
+msgstr "hora diaria de paro"
 
 #: appointment/constants.py:89 appointment/models/alarms.py:57
 msgid "method"
-msgstr ""
+msgstr "methodo"
 
 #: appointment/constants.py:91 appointment/models/alarms.py:67
 #: appointment/models/events.py:62 appointment/models/events.py:234
@@ -426,14 +406,13 @@ msgid "event"
 msgstr ""
 
 #: appointment/constants.py:92
-#, fuzzy
 msgid "start notice"
-msgstr "Comienzo Fecha"
+msgstr "iniciar notificación"
 
 #: appointment/forms.py:164 dialer_campaign/constants.py:53
 #: dialer_cdr/constants.py:65 sms_module/constants.py:39
 msgid "start date"
-msgstr "Comienzo Fecha"
+msgstr "comienzo fecha"
 
 #: appointment/periods.py:277 appointment/periods.py:302
 #: appointment/models/events.py:67
@@ -451,57 +430,47 @@ msgid "Day: %(start)s-%(end)s"
 msgstr ""
 
 #: appointment/views.py:110
-#, fuzzy, python-format
 msgid "\"%(name)s\" added as calendar user."
-msgstr "\"%(name)s\", se agregó."
+msgstr "\"%(name)s\", se agregó como usuario del calendario."
 
 #: appointment/views.py:161
-#, fuzzy, python-format
 msgid "%(count)s calendar user(s) are deleted."
-msgstr "%(count)s contacto(s) se ha eliminado."
+msgstr "%(count)s usuario(s) del calendario se ha eliminado."
 
 #: appointment/views.py:335 appointment/views.py:490 appointment/views.py:708
 #: appointment/views.py:865 dialer_contact/views.py:381
-#, fuzzy, python-format
 msgid "\"%s\" is added."
-msgstr "\"%(name)s\", se agregó."
+msgstr "\"%s\", se agregó."
 
 #: appointment/views.py:368 appointment/views.py:523 appointment/views.py:741
 #: appointment/views.py:898 dialer_contact/views.py:420
-#, fuzzy, python-format
 msgid "\"%s\" is deleted."
-msgstr "\"%(name)s\" es eliminado."
+msgstr "\"%s\" es eliminado."
 
 #: appointment/views.py:379
-#, fuzzy, python-format
 msgid "%s calendar(s) are deleted."
-msgstr "%(count)s contacto(s) se ha eliminado."
+msgstr "%s calendario(s) se ha eliminado."
 
 #: appointment/views.py:414 appointment/views.py:569 appointment/views.py:787
 #: appointment/views.py:944 dialer_contact/views.py:467
-#, fuzzy, python-format
 msgid "\"%s\" is updated."
-msgstr "\"%(name)s\" se ha actualizado."
+msgstr "\"%s\" se ha actualizado."
 
 #: appointment/views.py:534
-#, fuzzy, python-format
 msgid "%s calendar setting(s) are deleted."
-msgstr "%(count)s contacto(s) se ha eliminado."
+msgstr "%s calendario configuración(s) se ha eliminado."
 
 #: appointment/views.py:752
-#, fuzzy, python-format
 msgid "%s event(s) are deleted."
-msgstr "%(count)s contacto(s) se ha eliminado."
+msgstr "%s evento(s) se ha eliminado."
 
 #: appointment/views.py:909
-#, fuzzy, python-format
 msgid "%s alarm(s) are deleted."
-msgstr "%(count)s contacto(s) se ha eliminado."
+msgstr "%s alarma(s) se ha eliminado."
 
 #: appointment/models/alarms.py:19
-#, fuzzy
 msgid "SMS template name"
-msgstr "apellido"
+msgstr "Nombre de la plantilla de SMS"
 
 #: appointment/models/alarms.py:21
 msgid ""
@@ -510,65 +479,50 @@ msgid ""
 msgstr ""
 
 #: appointment/models/alarms.py:27
-#, fuzzy
 msgid "SMS template"
-msgstr "Plantilla Encuesta"
+msgstr "SMS Plantilla"
 
 #: appointment/models/alarms.py:28
-#, fuzzy
 msgid "SMS templates"
-msgstr "Plantillas Encuesta"
+msgstr "SMS Plantillas"
 
 #: appointment/models/alarms.py:40
-#, fuzzy
 msgid "alarm phonenumber"
-msgstr "número de teléfono"
+msgstr "número de teléfono de alarma"
 
 #: appointment/models/alarms.py:42
-#, fuzzy
 msgid "alarm email"
-msgstr "Email"
+msgstr "alarma email"
 
 #: appointment/models/alarms.py:44 appointment/models/alarms.py:46
 #: dialer_campaign/models.py:192 dialer_campaign/models.py:195
 #: sms_module/models.py:127 sms_module/models.py:128
 msgid "time format: HH:MM:SS"
-msgstr "Formato de hora: HH:MM:SS"
+msgstr "formato de hora: HH:MM:SS"
 
 #: appointment/models/alarms.py:48
-#, fuzzy
 msgid "advance notice"
-msgstr "Opciones avanzadas"
+msgstr "aviso anticipado"
 
 #: appointment/models/alarms.py:50
-#, fuzzy
 msgid "max retry"
 msgstr "máximo de reintentos"
 
 #: appointment/models/alarms.py:52
-#, fuzzy
 msgid "retry delay"
-msgstr "Reintentar"
+msgstr "reintentar retraso"
 
 #: appointment/models/alarms.py:54
-#, fuzzy
 msgid "number of attempts"
-msgstr "Número de dígitos"
+msgstr "número de intentos"
 
 #: appointment/models/alarms.py:61 mod_mailer/models.py:55
-#, fuzzy
 msgid "mail template"
-msgstr "Bifurcación plantilla"
-
-#: appointment/models/alarms.py:64
-#, fuzzy
-msgid "sms template"
-msgstr "Plantilla Encuesta"
+msgstr "mail plantilla"
 
 #: appointment/models/alarms.py:69
-#, fuzzy
 msgid "alarm date"
-msgstr "Comienzo Fecha"
+msgstr "Alarma Fecha"
 
 #: appointment/models/alarms.py:75
 #: templates/frontend/survey/survey_campaign_result.html:9
@@ -581,92 +535,80 @@ msgid "URL cancel"
 msgstr ""
 
 #: appointment/models/alarms.py:79
-#, fuzzy
 msgid "phonenumber SMS cancel"
-msgstr "número de teléfono"
+msgstr ""
 
 #: appointment/models/alarms.py:81
 msgid "URL confirm"
 msgstr ""
 
 #: appointment/models/alarms.py:83
-#, fuzzy
 msgid "phonenumber transfer"
-msgstr "número de teléfono"
+msgstr "número de teléfono transferencia"
 
 #: appointment/models/alarms.py:84
-#, fuzzy
 msgid "created date"
-msgstr "crear nueva pasarela"
+msgstr "fecha de creación"
 
 #: appointment/models/alarms.py:88
-#, fuzzy
 msgid "can see Alarm list"
-msgstr "puede véase Estudio"
+msgstr "puede ver lista de Alarma"
 
 #: appointment/models/alarms.py:90 appointment/models/alarms.py:160
 #: templates/frontend/bootstrap_side_menu.html:51
 #: templates/frontend/appointment/alarm/change.html:18
 msgid "alarm"
-msgstr ""
+msgstr "alarma"
 
 #: appointment/models/alarms.py:91
 #: templates/frontend/appointment/alarm/list.html:9
 msgid "alarms"
-msgstr ""
+msgstr "alarmas"
 
 #: appointment/models/alarms.py:161
-#, fuzzy
 msgid "select alarm"
-msgstr "Seleccionar Pasarela"
+msgstr "seleccionar alarma"
 
 #: appointment/models/alarms.py:164
 msgid "date when the alarm will be scheduled"
 msgstr ""
 
 #: appointment/models/alarms.py:172
-#, fuzzy
 msgid "Call Request"
 msgstr "Solicitud de Llamada"
 
 #: appointment/models/alarms.py:173
-#, fuzzy
 msgid "select call request"
-msgstr "Solicitud de Llamada"
+msgstr "Seleccione solicitud de llamada"
 
 #: appointment/models/alarms.py:180
-#, fuzzy
 msgid "can see Alarm request list"
-msgstr "Las solicitudes de llamada"
+msgstr "puede ver solicitudes de alarma"
 
 #: appointment/models/alarms.py:182
-#, fuzzy
 msgid "alarm request"
-msgstr "Solicitud de Llamada"
+msgstr "Solicitud de Alarma"
 
 #: appointment/models/alarms.py:183
-#, fuzzy
 msgid "alarm requests"
-msgstr "Las solicitudes de llamada"
+msgstr "Las solicitudes de Alarmas"
 
 #: appointment/models/calendars.py:50
-#, fuzzy
 msgid "select user"
-msgstr "Seleccione idioma"
+msgstr "seleccione usuario"
 
 #: appointment/models/calendars.py:53
 msgid "Max concurrent is not implemented"
 msgstr ""
 
 #: appointment/models/calendars.py:59
-#, fuzzy
 msgid "Can see Calendar list"
-msgstr "puede véase Estudio"
+msgstr "Puede ver la lista Calendario"
 
 #: appointment/models/calendars.py:62
 #: templates/frontend/appointment/calendar/list.html:9
 msgid "calendars"
-msgstr ""
+msgstr "calendarios"
 
 #: appointment/models/events.py:30
 msgid "Must be later than the start."
@@ -684,16 +626,14 @@ msgid "description"
 msgstr "descripción"
 
 #: appointment/models/events.py:35
-#, fuzzy
 msgid "created on"
-msgstr "crear una nueva ramificación"
+msgstr "creado en"
 
 #: appointment/models/events.py:36
 msgid "end recurring period"
 msgstr ""
 
 #: appointment/models/events.py:39
-#, fuzzy
 msgid ""
 "date format: YYYY-mm-DD HH:MM:SS. it is ignored for one time only events."
 msgstr "Formato de fecha: YYYY-mm-DD HH:MM:SS"
@@ -707,12 +647,10 @@ msgid "one time event."
 msgstr ""
 
 #: appointment/models/events.py:44
-#, fuzzy
 msgid "notify count"
-msgstr "Notificaciones"
+msgstr ""
 
 #: appointment/models/events.py:49
-#, fuzzy
 msgid "additional data (JSON)"
 msgstr "Parámetros adicionales (JSON)"
 
@@ -725,14 +663,13 @@ msgid "occurrence count"
 msgstr ""
 
 #: appointment/models/events.py:60
-#, fuzzy
 msgid "can see Event list"
-msgstr "puede véase Estudio"
+msgstr "puede ver lista de evento"
 
 #: appointment/models/events.py:63
 #: templates/frontend/appointment/event/list.html:13
 msgid "events"
-msgstr ""
+msgstr "eventos"
 
 #: appointment/models/events.py:68
 #, python-format
@@ -740,14 +677,12 @@ msgid "%(title)s: %(start)s - %(end)s"
 msgstr ""
 
 #: appointment/models/events.py:240
-#, fuzzy
 msgid "original start"
-msgstr "Originate string del marcador"
+msgstr ""
 
 #: appointment/models/events.py:241
-#, fuzzy
 msgid "original end"
-msgstr "Originate string del marcador"
+msgstr ""
 
 #: appointment/models/events.py:244
 msgid "occurrence"
@@ -796,18 +731,16 @@ msgid "frequency"
 msgstr "frecuencia"
 
 #: appointment/models/rules.py:49
-#, fuzzy
 msgid "params"
-msgstr "Añadir parámetro"
+msgstr "parámetros"
 
 #: appointment/models/rules.py:50
 msgid "example : count:1;bysecond:3;"
 msgstr ""
 
 #: appointment/models/rules.py:54
-#, fuzzy
 msgid "rules"
-msgstr "Módulos"
+msgstr ""
 
 #: appointment/models/users.py:40 dialer_campaign/models.py:177
 #: dialer_cdr/models.py:115 sms_module/models.py:116
@@ -5121,9 +5054,8 @@ msgid "tier is belong to manager"
 msgstr "devuelve todas las campañas"
 
 #: templates/frontend/tier/list.html:9
-#, fuzzy
 msgid "list, add and edit tiers"
-msgstr "Lista, agregar y editar las encuestas"
+msgstr "Lista, agregar y editar los tercers"
 
 #: templates/frontend/tier/list.html:75
 #, fuzzy
@@ -5214,11 +5146,11 @@ msgstr "Correo electrónico"
 
 #: user_profile/forms.py:68
 msgid "check number is authorized to call"
-msgstr "Número está autorizado a llamar"
+msgstr "número está autorizado a llamar"
 
 #: user_profile/management.py:61
 msgid "the user needs to be mapped with dialer settings by the administrator"
-msgstr "El usuario necesita ser asignada con los ajustes por el administrador"
+msgstr "el usuario necesita ser asignada con los ajustes por el administrador"
 
 #: user_profile/management.py:65 user_profile/management.py:66
 msgid "call request not found"
@@ -5226,11 +5158,11 @@ msgstr "llamada no se encuentran"
 
 #: user_profile/models.py:66
 msgid "zip code"
-msgstr "Código postal"
+msgstr "código postal"
 
 #: user_profile/models.py:70
 msgid "fax Number"
-msgstr "Número de fax"
+msgstr "número de fax"
 
 #: user_profile/models.py:72
 msgid "company name"
@@ -5246,360 +5178,36 @@ msgstr "Lenguaje"
 
 #: user_profile/models.py:77
 msgid "note"
-msgstr ""
+msgstr "nota"
 
 #: user_profile/models.py:105
 msgid "can see API-Explorer"
-msgstr "Se puede ver el Explorador de API-"
+msgstr "puede ver el Explorador de API-"
 
 #: user_profile/models.py:108
 msgid "user profile"
-msgstr "Perfil de usuario"
+msgstr "perfil de usuario"
 
 #: user_profile/models.py:109
 msgid "user profiles"
-msgstr "Perfil de usuario"
+msgstr "perfiles de usuario"
 
 #: user_profile/models.py:134
-#, fuzzy
 msgid "managers"
-msgstr "Administrador de tareas"
+msgstr "gerentes"
 
 #: user_profile/models.py:155
 msgid "admin"
-msgstr "Administración"
+msgstr "admin"
 
 #: user_profile/models.py:156
 msgid "admins"
-msgstr "Administradores"
+msgstr "admin"
 
 #: user_profile/views.py:99
 msgid "this phone number is not authorized."
-msgstr "Este número de teléfono no está autorizado."
+msgstr "este número de teléfono no está autorizado."
 
 #: user_profile/views.py:101
 msgid "this phone number is authorized."
-msgstr "Este número de teléfono está autorizado."
-
-#~ msgid "this resource allows you to manage branching."
-#~ msgstr "este recurso le permite administrar ramificación."
-
-#~ msgid "returns all branching"
-#~ msgstr "devuelve todas las ramas"
-
-#~ msgid "returns a specific branching"
-#~ msgstr "devuelve una ramificación específica"
-
-#~ msgid "create new branching"
-#~ msgstr "crear una nueva ramificación"
-
-#~ msgid "update branching"
-#~ msgstr "actualización branch"
-
-#~ msgid "delete branching"
-#~ msgstr "borrar ramificación"
-
-#~ msgid "bulk contact"
-#~ msgstr "Mass contacto"
-
-#~ msgid "this resource allows you to create bulk contacts."
-#~ msgstr "este recurso le permite crear contactos a granel."
-
-#, fuzzy
-#~ msgid "create new contacts"
-#~ msgstr "crear nueva sección"
-
-#~ msgid "this resource allows you to manage callrequest."
-#~ msgstr "este recurso le permite administrar callrequest."
-
-#~ msgid "returns all callrequests"
-#~ msgstr "devuelve todos callrequests"
-
-#~ msgid "returns a specific callrequest"
-#~ msgstr "devuelve un determinado callrequest"
-
-#~ msgid "create new callrequest"
-#~ msgstr "crear solicitud de llamada"
-
-#~ msgid "campaign delete cascade"
-#~ msgstr "campaña ha llegado a su límite"
-
-#~ msgid "this resource allows you to delete campaign."
-#~ msgstr "este recurso le permite borrar campaña."
-
-#~ msgid "this resource allows you to manage campaign."
-#~ msgstr "este recurso le permite gestionar campañas."
-
-#~ msgid "returns all campaigns"
-#~ msgstr "devuelve todas las campañas"
-
-#~ msgid "returns a specific campaign"
-#~ msgstr "devuelve una campaña específica"
-
-#~ msgid "create new campaign"
-#~ msgstr "crear nueva campaña"
-
-#, fuzzy
-#~ msgid "dnc contact"
-#~ msgstr "contacto"
-
-#, fuzzy
-#~ msgid "this resource allows you to manage DNC contacts."
-#~ msgstr "este recurso le permite administrar secciones."
-
-#, fuzzy
-#~ msgid "returns dnc contacts"
-#~ msgstr "devuelve todas las secciones"
-
-#, fuzzy
-#~ msgid "create new dnc contact"
-#~ msgstr "crear nueva sección"
-
-#, fuzzy
-#~ msgid "this resource allows you to manage DNC list."
-#~ msgstr "este recurso le permite administrar secciones."
-
-#, fuzzy
-#~ msgid "returns all dncs"
-#~ msgstr "devuelve todas las secciones"
-
-#, fuzzy
-#~ msgid "returns a specific dnc"
-#~ msgstr "devuelve una ramificación específica"
-
-#, fuzzy
-#~ msgid "delete dnc"
-#~ msgstr "Eliminar contacto"
-
-#~ msgid "this resource allows you to manage gateways."
-#~ msgstr "este recurso le permite administrar gateways."
-
-#~ msgid "returns all gateways"
-#~ msgstr "devuelve todas las puertas de enlace"
-
-#~ msgid "returns a specific gateway"
-#~ msgstr "devuelve una puerta de enlace específica"
-
-#~ msgid "this resource allows you to manage phonebooks."
-#~ msgstr "este recurso le permite administrar directorios."
-
-#~ msgid "returns all phonebooks"
-#~ msgstr "devuelve todos los directorios telefónicos"
-
-#~ msgid "returns a specific phonebook"
-#~ msgstr "devuelve una directorio telefónico específico"
-
-#~ msgid "create new phonebook"
-#~ msgstr "crear nuevo directorio telefónico"
-
-#~ msgid "this resource allows you to manage sections."
-#~ msgstr "este recurso le permite administrar secciones."
-
-#~ msgid "returns all sections"
-#~ msgstr "devuelve todas las secciones"
-
-#~ msgid "returns a specific section"
-#~ msgstr "devuelve una sección específica"
-
-#~ msgid "create new section"
-#~ msgstr "crear nueva sección"
-
-#~ msgid "this resource allows you to manage store CDR."
-#~ msgstr "Este recurso le permite administrar tienda cdr."
-
-#~ msgid "Store CDR"
-#~ msgstr "Guardar CDR"
-
-#~ msgid "subscriber per campaign"
-#~ msgstr "suscriptores máximo por campaña"
-
-#~ msgid "this resource allows you to manage subscriber per campaign."
-#~ msgstr "este recurso le permite administrar suscriptores por campaña."
-
-#~ msgid "returns specific subscribers per campaign"
-#~ msgstr "devuelve una suscriptor específico por campaña"
-
-#~ msgid "this resource allows you to manage subscriber."
-#~ msgstr "este recurso le permite administrar los abonados."
-
-#~ msgid "survey aggregate result"
-#~ msgstr "encuesta resultado"
-
-#~ msgid "this resource allows you to get survey aggregate result."
-#~ msgstr "este recurso le permite obtener resultados de la encuesta global."
-
-#~ msgid "this resource allows you to manage survey."
-#~ msgstr "este recurso le permite administrar la encuesta."
-
-#~ msgid "returns all surveys"
-#~ msgstr "Devuelve todas las encuestas"
-
-#~ msgid "returns a specific survey"
-#~ msgstr "Devuelve una encuesta específica"
-
-#~ msgid "create new survey"
-#~ msgstr "Editar la encuesta"
-
-#~ msgid "callerID used to call the A-Leg"
-#~ msgstr "CallerID utiliza para llamar a la A-Leg"
-
-#, fuzzy
-#~ msgid "import DNC"
-#~ msgstr "importación"
-
-#~ msgid "customer"
-#~ msgstr "Cliente"
-
-#~ msgid "customers"
-#~ msgstr "Clientes"
-
-#, fuzzy
-#~ msgid "can see Manager interface"
-#~ msgstr "Interfaz del cliente"
-
-#~ msgid "jan"
-#~ msgstr "Ene"
-
-#~ msgid "feb"
-#~ msgstr "Febrero"
-
-#~ msgid "mar"
-#~ msgstr "Estropear"
-
-#~ msgid "apr"
-#~ msgstr "De la aplicación"
-
-#~ msgid "may"
-#~ msgstr "Mai"
-
-#~ msgid "jun"
-#~ msgstr "Jun"
-
-#~ msgid "jul"
-#~ msgstr "Jul"
-
-#~ msgid "aug"
-#~ msgstr "Ago"
-
-#~ msgid "sep"
-#~ msgstr "Sep"
-
-#~ msgid "oct"
-#~ msgstr "Oct"
-
-#~ msgid "nov"
-#~ msgstr "Info"
-
-#~ msgid "dec"
-#~ msgstr "Dic"
-
-#~ msgid "january"
-#~ msgstr "Enero"
-
-#~ msgid "february"
-#~ msgstr "Febrero"
-
-#~ msgid "march"
-#~ msgstr "Marzo"
-
-#~ msgid "april"
-#~ msgstr "Abril"
-
-#~ msgid "august"
-#~ msgstr "Agosto"
-
-#~ msgid "september"
-#~ msgstr "Septiembre"
-
-#~ msgid "october"
-#~ msgstr "Octubre"
-
-#~ msgid "november"
-#~ msgstr "Noviembre"
-
-#~ msgid "december"
-#~ msgstr "Diciembre"
-
-#~ msgid "avg. duration"
-#~ msgstr "Promedio Duración"
-
-#~ msgid "hour"
-#~ msgstr "Última hora"
-
-#~ msgid "upload CSV file, the delimiter have to be "
-#~ msgstr "Cargar archivo CSV, el delimitador que ser"
-
-#, fuzzy
-#~ msgid "can see dnc contact"
-#~ msgstr "Se puede ver Contacto"
-
-#, fuzzy
-#~ msgid "DNC contact"
-#~ msgstr "contacto"
-
-#~ msgid "answer call"
-#~ msgstr "respuesta seg"
-
-#~ msgid "this resource allows you to manage answer call."
-#~ msgstr "este recurso le permite gestionar llamadas respuesta."
-
-#~ msgid "hangup call"
-#~ msgstr "colgar llamada"
-
-#~ msgid "this resource allows you to manage dial callback."
-#~ msgstr ""
-#~ "Este recurso le permite gestionar de devolución de llamada de marcación."
-
-#~ msgid "this resource allows you to manage hangup call."
-#~ msgstr "este recurso le permite gestionar llamadas colgar."
-
-#~ msgid "voice application"
-#~ msgstr "Aplicaciones de Voz"
-
-#~ msgid "this resource allows you to manage voice applications."
-#~ msgstr "Este recurso le permite administrar voiceapps."
-
-#~ msgid "returns all voice applications."
-#~ msgstr "Devuelve todos voiceapps"
-
-#~ msgid "returns a specific voice application."
-#~ msgstr "Devuelve una voiceapp específico"
-
-#~ msgid "create new voice application."
-#~ msgstr "Configurar aplicaciones de voz"
-
-#~ msgid "edit voice application"
-#~ msgstr "Aplicaciones de Voz"
-
-#~ msgid "playaudio"
-#~ msgstr "Audio"
-
-#~ msgid "TTS Language"
-#~ msgstr "TTS Lenguaje"
-
-#~ msgid "Text-to-Speech Language"
-#~ msgstr "Text-to-Speech Language"
-
-#~ msgid "voice application description"
-#~ msgstr "Descripción de la aplicación de voz"
-
-#~ msgid "gateway used if we redirect the call"
-#~ msgstr "Pasarela utilizada si redirigir la llamada"
-
-#~ msgid "The value of 'data' depends on the type of voice application :<br/>"
-#~ msgstr "El valor de \"datos\" depende del tipo de aplicación de voz :<br/>"
-
-#~ msgid "can see voiceapp template"
-#~ msgstr "puede ver Plantilla Voiceapp"
-
-#~ msgid "voice application template"
-#~ msgstr "Plantilla de Aplicación de Voz"
-
-#~ msgid "voice application templates"
-#~ msgstr "Plantilla de Aplicaciones de Voz"
-
-#~ msgid "%(count)s voiceapp(s) are deleted."
-#~ msgstr "%(count)s voz app(s) se ha eliminado."
-
-#~ msgid "ANSWERED"
-#~ msgstr "RESPUESTA"
+msgstr "este número de teléfono está autorizado."

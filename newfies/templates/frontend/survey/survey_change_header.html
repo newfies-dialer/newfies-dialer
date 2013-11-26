@@ -17,6 +17,9 @@
     .ui-sortable-placeholder * { visibility: hidden; }
      /* change span width for response inputs */
     .span5 {width: 160px;}
+    .right-side-icon{
+        float: right;
+    }
 </style>
 
 <script type="text/javascript">
@@ -44,30 +47,12 @@
             handle: '.glyphicon-move'
         });
 
-        //Add Section edit button
+        //Add move button
         $(".portlet")
             .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
             .find(".portlet-header")
             .addClass("ui-widget-header ui-corner-all")
-            .append('<a class="section-edit btn btn-xs" role="button"  href="#" title="{% trans "edit section"|title %}"><i class="glyphicon glyphicon-pencil"></i></a>')
-            .end()
-            .find(".portlet-content");
-
-        //Add Section delete button
-        $(".portlet")
-            .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-            .find(".portlet-header")
-            .addClass("ui-widget-header ui-corner-all")
-            .append('<a class="section-delete btn btn-xs" role="button"  href="#" title="{% trans "delete section"|title %}"><i class="glyphicon glyphicon-remove-circle"></i></a>')
-            .end()
-            .find(".portlet-content");
-
-        //Add Branch button
-        $(".portlet")
-            .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
-            .find(".portlet-header")
-            .addClass("ui-widget-header ui-corner-all")
-            .append('<a class="section-branch btn btn-xs" role="button"  href="#" title="{% trans "branch"|title %}"><i class="glyphicon glyphicon-random"></i></a>')
+            .append('<a class="btn btn-xs right-side-icon" role="button" href="#" title="{% trans "move"|title %}"><i class="glyphicon glyphicon-move"></i></a>')
             .end()
             .find(".portlet-content");
 
@@ -76,16 +61,34 @@
             .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
             .find(".portlet-header")
             .addClass("ui-widget-header ui-corner-all")
-            .append('<a class="btn btn-xs square" role="button"  href="#" title="{% trans "collapse"|title %}"><i class="glyphicon glyphicon-circle-arrow-up"></i></a>')
+            .append('<a class="btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "collapse"|title %}"><i class="glyphicon glyphicon-circle-arrow-up"></i></a>')
             .end()
             .find(".portlet-content");
 
-        //Add move button
+        //Add Section delete button
         $(".portlet")
             .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
             .find(".portlet-header")
             .addClass("ui-widget-header ui-corner-all")
-            .append('<a class="btn btn-xs" role="button" href="#" title="{% trans "move"|title %}"><i class="glyphicon glyphicon-move"></i></a>')
+            .append('<a class="section-delete btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "delete section"|title %}"><i class="glyphicon glyphicon-remove-circle"></i></a>')
+            .end()
+            .find(".portlet-content");
+
+        //Add Branch button
+        $(".portlet")
+            .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+            .find(".portlet-header")
+            .addClass("ui-widget-header ui-corner-all")
+            .append('<a class="section-branch btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "branch"|title %}"><i class="glyphicon glyphicon-random"></i></a>')
+            .end()
+            .find(".portlet-content");
+
+        //Add Section edit button
+        $(".portlet")
+            .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
+            .find(".portlet-header")
+            .addClass("ui-widget-header ui-corner-all")
+            .append('<a class="section-edit btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "edit section"|title %}"><i class="glyphicon glyphicon-pencil"></i></a>')
             .end()
             .find(".portlet-content");
 

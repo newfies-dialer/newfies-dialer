@@ -84,6 +84,8 @@ class CampaignForm(ModelForm):
             'external_link': Textarea(attrs={'cols': 23, 'rows': 3}),
             'startingdate': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
             'expirationdate': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
+            'daily_start_time': DateTimePicker(options={"format": "HH:mm:ss", "pickDate": False}),
+            'daily_stop_time': DateTimePicker(options={"format": "HH:mm:ss", "pickDate": False}),
         }
 
     def __init__(self, user, *args, **kwargs):

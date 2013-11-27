@@ -191,6 +191,8 @@ class AlarmForm(ModelForm):
         model = Alarm
         widgets = {
             'date_start_notice': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
+            'daily_start': DateTimePicker(options={"format": "HH:mm:ss", "pickDate": False}),
+            'daily_stop': DateTimePicker(options={"format": "HH:mm:ss", "pickDate": False}),
         }
 
     def __init__(self, user, *args, **kwargs):

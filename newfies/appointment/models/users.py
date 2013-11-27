@@ -56,6 +56,9 @@ class CalendarSetting(models.Model):
     aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False,
                                      verbose_name=_("a-leg gateway"),
                                      help_text=_("select gateway to use to be used"))
+    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("sms gateway"),
+                                    related_name="sms_gateway",
+                                    help_text=_("select SMS gateway"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

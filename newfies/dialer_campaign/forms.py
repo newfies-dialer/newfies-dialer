@@ -90,8 +90,8 @@ class CampaignForm(ModelForm):
         super(CampaignForm, self).__init__(*args, **kwargs)
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        exclude_list = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                        'saturday', 'sunday',]
+        exclude_list = ['voicemail', 'monday', 'tuesday', 'wednesday',
+                        'thursday', 'friday', 'saturday', 'sunday',]
 
         for i in self.fields.keyOrder:
             if i not in exclude_list:

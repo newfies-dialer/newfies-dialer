@@ -117,14 +117,15 @@
             </div>
             <div class="row">
                 <div class="col-md-12">
-                    {% trans "week days"|title %} :
+                    <div class="col-xs-10">
+                    <b>{% trans "week days"|title %}<b> :<br/>
                     {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
                     {% for field in settings_fields %}
-                    <div class="checkbox-inline">
-                        {{ field }}<label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                    </div>
+                    <label class="checkbox-inline">
+                        {{ field }}{{ field.label|title }}
+                    </label>
                     {% endfor %}
-
+                    </div>
                 </div>
             </div>
         </fieldset>

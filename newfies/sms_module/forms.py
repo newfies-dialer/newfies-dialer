@@ -51,9 +51,12 @@ class SMSCampaignForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(SMSCampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
+        exclude_list = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday',
+                        'saturday', 'sunday',]
 
         for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+            if i not in exclude_list:
+                self.fields[i].widget.attrs['class'] = "form-control"
 
         if user:
             self.fields['ds_user'].initial = user

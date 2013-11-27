@@ -410,7 +410,7 @@ def campaign_change(request, object_id):
         return HttpResponseRedirect("/campaign/")
 
     campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
-
+    print campaign.startingdate
     content_object = "type:%s-id:%s" % \
         (campaign.content_type_id, campaign.object_id)
     form = CampaignForm(request.user,

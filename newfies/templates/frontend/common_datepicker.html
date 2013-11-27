@@ -16,12 +16,6 @@ $(function() {
        $('#id_startingdate_picker').data("DateTimePicker").setEndDate(e.date);
     });
 
-    $("#id_daily_start_time_picker").on("change.dp",function (e) {
-       $('#id_daily_stop_time_picker').data("DateTimePicker").setStartDate(e.date);
-    });
-    $("#id_daily_stop_picker").on("change.dp",function (e) {
-       $('#id_daily_stop_time_picker').data("DateTimePicker").setEndDate(e.date);
-    });
 
     {% if "/calendar/" in request.path or "/event/" in request.path or "/alarm/" in request.path %}
 
@@ -30,13 +24,6 @@ $(function() {
         });
         $("#id_end_picker").on("change.dp",function (e) {
            $('#id_start_picker').data("DateTimePicker").setEndDate(e.date);
-        });
-
-        $("#id_daily_start_picker").on("change.dp",function (e) {
-           $('#id_daily_stop_picker').data("DateTimePicker").setStartDate(e.date);
-        });
-        $("#id_daily_stop_picker").on("change.dp",function (e) {
-           $('#id_daily_start_picker').data("DateTimePicker").setEndDate(e.date);
         });
 
     {% endif %}

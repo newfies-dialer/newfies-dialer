@@ -249,7 +249,7 @@ class Campaign(Model):
                             help_text=_("do not call list"),
                             related_name='DNC')
     #Voicemail
-    voicemail = models.BooleanField(default=False, verbose_name=_('enable voicemail detection'))
+    voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
     amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),
                                  default=AMD_BEHAVIOR.ALWAYS,
                                  verbose_name=_("detection behaviour"), blank=True, null=True)

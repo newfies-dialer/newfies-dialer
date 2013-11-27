@@ -9,6 +9,13 @@ $(function() {
        $('#id_from_date_picker').data("DateTimePicker").setEndDate(e.date);
     });
 
+    $("#id_startingdate_picker").on("change.dp",function (e) {
+       $('#id_expirationdate_picker').data("DateTimePicker").setStartDate(e.date);
+    });
+    $("#id_expirationdate_picker").on("change.dp",function (e) {
+       $('#id_startingdate_picker').data("DateTimePicker").setEndDate(e.date);
+    });
+
     {% if "/calendar/" in request.path or "/event/" in request.path or "/alarm/" in request.path %}
 
         $("#id_start_picker").on("change.dp",function (e) {

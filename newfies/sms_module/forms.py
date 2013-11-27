@@ -23,6 +23,7 @@ from sms.models.message import MESSAGE_STATUSES
 from models import SMSCampaign, get_unique_code
 from function_def import field_list
 from frontend.constants import SEARCH_TYPE
+from bootstrap3_datetime.widgets import DateTimePicker
 
 
 class SMSCampaignForm(ModelForm):
@@ -46,6 +47,8 @@ class SMSCampaignForm(ModelForm):
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
             'extra_data': Textarea(attrs={'cols': 23, 'rows': 3}),
             'text_message': Textarea(attrs={'cols': 23, 'rows': 3}),
+            'startingdate': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
+            'expirationdate': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
         }
 
     def __init__(self, user, *args, **kwargs):

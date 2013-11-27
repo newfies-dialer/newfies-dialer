@@ -1,6 +1,11 @@
 {% extends "frontend/master.html" %}
 {% load i18n common_tags %}
 
+{% block extra_files %}
+    {{ form.media }}
+    {% include "frontend/common_datepicker.html" %}
+{% endblock %}
+
 {% block content_header %}
     <h1>{% if action == "update" %}
             {% trans "update"|title %}

@@ -29,6 +29,7 @@ from agent.function_def import agent_list
 from agent.models import AgentProfile, Agent
 from common.common_functions import get_unique_code
 from dnc.models import DNC
+from bootstrap3_datetime.widgets import DateTimePicker
 
 
 def get_object_choices(available_objects):
@@ -80,7 +81,9 @@ class CampaignForm(ModelForm):
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
             'agent_script': Textarea(attrs={'cols': 23, 'rows': 3}),
             'lead_disposition': Textarea(attrs={'cols': 23, 'rows': 3}),
-            'external_link': Textarea(attrs={'cols': 23, 'rows': 3})
+            'external_link': Textarea(attrs={'cols': 23, 'rows': 3}),
+            'startingdate': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
+            'expirationdate': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
         }
 
     def __init__(self, user, *args, **kwargs):

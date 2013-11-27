@@ -1,7 +1,7 @@
 {% load i18n frontend_notification_tags activelink %}
 
 <!-- Static navbar -->
-<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+<nav class="navbar navbar-inverse navbar-fixed-top" role="navigation">
   <div class="container">
     <div class="navbar-header">
       <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -10,14 +10,13 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <!--<a class="navbar-brand" href="/"><img src="{{STATIC_URL}}newfies/images/newfies-icon.png" /></a> logo_name-->
-      <a class="navbar-brand" href="/">{% trans "Newfies-Dialer" %}</a>
+      <a class="navbar-brand cornerlogo" href="/"><img src="{{STATIC_URL}}newfies/images/newfies-icon.png"/></a>
     </div>
 
     <div class="navbar-collapse collapse">
         {% if user.is_authenticated %}
         <ul class="nav navbar-nav">
-            <li>
+            <li class="{% ifactive '/dashboard/' %}active{% endifactive %}{% ifactive '/sms_dashboard/' %}active{% endifactive %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "dashboard"|title %}<b class="caret"></b></a>
                 <ul class="dropdown-menu">
                     {% if perms.dialer_campaign.view_dashboard %}
@@ -28,7 +27,7 @@
                     {% endif %}
                 </ul>
             </li>
-            <li>
+            <li class="{% ifcontains '/campaign/' %}active{% endifcontains %}{% ifcontains '/sms_campaign/' %}active{% endifcontains %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "campaign"|title %} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
                   {% if perms.dialer_campaign.view_campaign %}
@@ -39,17 +38,18 @@
                   {% endif %}
                 </ul>
             </li>
-            <li>
+            <li class="{% ifcontains '/contact/' %}active{% endifcontains %}">
                 {% if perms.dialer_contact.view_contact %}
                     <a href="/contact/">{% trans "contact"|title %}</a>
                 {% endif %}
             </li>
-            <li>
+            <li class="{% ifcontains '/voipcall_report/' %}active{% endifcontains %}">
                 {% if perms.dialer_cdr.view_call_detail_report %}
                     <a href="/voipcall_report/">{% trans "reporting"|title %}</a>
                 {% endif %}
             </li>
-            <li>
+
+            <li class="{% ifactive '/module/' %}active{% endifactive %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{% trans "modules"|title %} <b class="caret"></b></a>
                 <ul class="dropdown-menu">
 
@@ -75,7 +75,6 @@
 
                     <li class="divider"></li>
                     <li><a href="http://www.newfies-dialer.org/add-ons" target="_blank">{% trans "add-ons"|title %}</a></li>
-                    <li><a href="http://www.newfies-dialer.org/add-ons/sms-module-for-newfies-dialer/" target="_blank">{% trans "SMS (Text Messaging)" %}</a></li>
                     <li><a href="http://www.newfies-dialer.org/add-ons/voicemail-detection/" target="_blank">{% trans "Voicemail Detection (AMD)" %}</a></li>
                     <li><a href="http://www.newfies-dialer.org/add-ons/rebranding/" target="_blank">{% trans "rebranding"|title %}</a></li>
                 </ul>
@@ -84,10 +83,9 @@
 
         {% get_notice_count user as notice_count %}
         <ul class="nav navbar-nav navbar-right">
-            <li id="fat-menu-1" class="dropdown">
+            <li id="fat-menu-1" class="{% ifactive '/user_detail_change/' %}active{% endifactive %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username|capfirst }}
                     <span class="badge">{{ notice_count }}</span>
-
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
@@ -120,4 +118,4 @@
         {% endif %}
     </div><!--/.nav-collapse -->
   </div>
-</div>
+</nav>

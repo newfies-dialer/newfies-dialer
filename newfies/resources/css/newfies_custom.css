@@ -90,3 +90,42 @@ body .modal-section {
 footer {
     margin-top: 50px;
 }
+
+.cornerlogo img {
+    margin-top: -10px;
+    margin-bottom: -10px;
+    height: 40px;
+}
+
+
+.navbar-nav > .active > a, .navbar-nav > .active > a:hover {
+    color: #fff;
+    background-color: #463265;
+}
+
+.navbar-inverse {
+    background-color: #563d7c;
+    border-color: #463265;
+}
+
+.navbar-inverse .navbar-nav > li > a {
+    color: #cdbfe3;
+    text-shadow: 0 -1px 0 rgba(0,0,0,.15);
+}
+.nav > li > a:hover, .nav > li > a:focus {
+    text-decoration: none;
+    background-color: #fff;
+}
+
+.navbar-inverse > .open > a, .navbar-inverse  > .open > a:hover, .navbar-inverse  > .open > a:focus {
+    color: #ffffff;
+    border-color: #463265;
+}
+.navbar-inverse > .open > a, .navbar-inverse  > .open > a:hover, .navbar-inverse  > .open > a:focus {
+    color: #ffffff;
+    background-color: #463265;
+}
+
+.jumbotron {
+    background-color: #F1E8FF;
+}

@@ -18,6 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from user_profile.models import Manager, Profile_abstract
 from survey.models import Survey
 from dialer_gateway.models import Gateway
+from sms.models import Gateway as SMS_Gateway
 
 
 class CalendarSetting(models.Model):
@@ -32,6 +33,7 @@ class CalendarSetting(models.Model):
         * ``survey`` - Foreign key relationship to the Survey
         * ``aleg_gateway`` - Foreign key relationship to the Gateway model.\
                              Gateway to use to call the subscriber
+        * ``sms_gateway`` - Gateway to transport the SMS
 
     **Name of DB table**: calendar_setting
 

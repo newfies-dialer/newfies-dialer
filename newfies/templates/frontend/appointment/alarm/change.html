@@ -78,7 +78,7 @@
     <fieldset>
         <legend>{% trans "alarm result settings"|title %}</legend>
         <div class="row">
-            {% get_fieldset result,url_cancel,phonenumber_sms_cancel,url_confirm,phonenumber_transfer as result_fields from form %}
+            {% get_fieldset result,url_cancel,phonenumber_sms_failure,url_confirm,phonenumber_transfer as result_fields from form %}
             {% for field in result_fields.hidden_fields %}
                 {{ field }}
             {% endfor %}

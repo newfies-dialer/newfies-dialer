@@ -68,7 +68,7 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
                         "status": 1,
                         "result": null,
                         "url_cancel": "",
-                        "phonenumber_sms_cancel": "",
+                        "phonenumber_sms_failure": "",
                         "url_confirm": "",
                         "phonenumber_transfer": "",
                         "created_date": "2013-11-05T06:43:52.118Z"

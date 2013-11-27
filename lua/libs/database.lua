@@ -198,9 +198,9 @@ function Database:load_alarm_event(alarm_request_id)
     self.event_alarm = self.dbh:get_object(sqlquery)
 
     local inspect = require 'inspect'
-    print(inspect(self.event_alarm))
-    print(self.event_alarm.manager_id)
-    print(self.event_alarm.alarm_id)
+    -- print(inspect(self.event_alarm))
+    -- print(self.event_alarm.manager_id)
+    -- print(self.event_alarm.alarm_id)
     self.user_id = self.event_alarm.manager_id
 end
 
@@ -424,7 +424,7 @@ end
 
 function Database:save_alarm_result(alarm_id, digits)
     local int_digits = tonumber(digits)
-    if alarm_id and int_digits >=0 then
+    if alarm_id and int_digits and int_digits >=0 then
         local sqlquery = "UPDATE appointment_alarm SET result="..int_digits.." WHERE id="..alarm_id
         self:db_debugger("DEBUG", "Update Alarm Result:"..sqlquery)
         local res = self.dbh:execute(sqlquery)

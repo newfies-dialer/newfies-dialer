@@ -12,6 +12,7 @@ from datetime import datetime
 from django.utils.timezone import utc
 
 
+#TODO: Move this to SMS module
 class SMSTemplate(models.Model):
     """
     This table store the SMS Template
@@ -73,14 +74,18 @@ class Alarm(models.Model):
                                  verbose_name=_("status"))
     result = models.IntegerField(choices=list(ALARM_RESULT),
                                  verbose_name=_("result"), blank=True, null=True)
+    # URL Cancel is used if an appointment is cancelled, we will need to do a mapping on IVR result
     url_cancel = models.CharField(max_length=250, blank=True, null=True,
                                   verbose_name=_("URL cancel"))
-    phonenumber_sms_cancel = models.CharField(max_length=50, blank=True, null=True,
-                                              verbose_name=_("phonenumber SMS cancel"))
+    # URL Confirm is used if an appointment is confirmed
     url_confirm = models.CharField(max_length=250, blank=True, null=True,
                                    verbose_name=_("URL confirm"))
+    # When transfering for reschedule
     phonenumber_transfer = models.CharField(max_length=50, blank=True, null=True,
                                             verbose_name=_("phonenumber transfer"))
+    #send SMS if all attempts to contact that persons didn't work
+    phonenumber_sms_failure = models.CharField(max_length=50, blank=True, null=True,
+                                              verbose_name=_("phonenumber SMS failure"))
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('created date'))
 
     class Meta:
@@ -125,7 +130,7 @@ class Alarm(models.Model):
             date_start_notice=self.date_start_notice,
             #result=self.result,
             #url_cancel=self.url_cancel,
-            #phonenumber_sms_cancel=self.phonenumber_sms_cancel,
+            #phonenumber_sms_failure=self.phonenumber_sms_failure,
             #url_confirm=self.url_confirm,
             #phonenumber_transfer=self.phonenumber_transfer,
         )

@@ -81,7 +81,7 @@ class SMSCampaign(Model):
         * ``frequency`` - Frequency, speed of the campaign. number of calls/min
         * ``maxretry`` - Max retry allowed per user
         * ``intervalretry`` - Time to wait between retries in seconds
-        * ``aleg_gateway`` - Gateway to use to reach the contact
+        * ``sms_gateway`` - Gateway to transport the SMS
         * ``extra_data`` - Additional data to pass to the application
 
     **Relationships**:
@@ -147,7 +147,7 @@ class SMSCampaign(Model):
 
     sms_gateway = models.ForeignKey(Gateway, verbose_name=_("sms gateway"),
                                     related_name="SMS Gateway",
-                                    help_text=_("select outbound gateway"))
+                                    help_text=_("select SMS gateway"))
     text_message = models.TextField(verbose_name=_('text Message'), blank=True,
                                     null=True, help_text=_("content of the SMS"))
 

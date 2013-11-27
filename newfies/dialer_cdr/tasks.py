@@ -20,7 +20,7 @@ from django.conf import settings
 from dialer_campaign.constants import SUBSCRIBER_STATUS, AMD_BEHAVIOR
 from dialer_cdr.models import Callrequest, VoIPCall
 from appointment.models.alarms import AlarmRequest
-from appointment.constants import ALARMREQUEST_STATUS
+from appointment.constants import ALARMREQUEST_STATUS, ALARM_STATUS
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
     VOIPCALL_AMD_STATUS, LEG_TYPE
 #from dialer_cdr.function_def import get_prefix_obj
@@ -279,15 +279,16 @@ def process_callevent(record):
     call_uuid = record[4]
     #used_gateway_id = record[5]
     callrequest_id = record[6]
-    callerid = record[7]
-    phonenumber = record[8]
-    duration = record[9]
-    billsec = record[10]
-    hangup_cause = record[11]
-    hangup_cause_q850 = record[12]
-    starting_date = record[13]
-    amd_status = record[16]
-    leg = record[17]
+    alarm_request_id = record[7]
+    callerid = record[8]
+    phonenumber = record[9]
+    duration = record[10]
+    billsec = record[11]
+    hangup_cause = record[12]
+    hangup_cause_q850 = record[13]
+    starting_date = record[14]
+    amd_status = record[17]
+    leg = record[18]
 
     if event_name == 'BACKGROUND_JOB':
         #hangup cause come from body
@@ -317,11 +318,12 @@ def process_callevent(record):
     logger.error(callrequest)
     if callrequest.alarm_request_id:
         app_type = 'alarm'
+        alarm_req = AlarmRequest.objects.get(pk=callrequest.alarm_request_id)
 
     logger.debug("Find Callrequest id : %d" % callrequest.id)
     debug_query(23)
 
-    if leg == 'aleg':
+    if leg == 'aleg' and app_type == 'campaign':
         #Update callrequest
         #update_callrequest.delay(callrequest, opt_hangup_cause)
         #Disabled above tasks to reduce amount of tasks
@@ -339,6 +341,22 @@ def process_callevent(record):
 
         callrequest.save()
         callrequest.subscriber.save()
+        debug_query(24)
+    elif leg == 'aleg' and app_type == 'alarm':
+        if opt_hangup_cause == 'NORMAL_CLEARING':
+            callrequest.status = CALLREQUEST_STATUS.SUCCESS
+            alarm_req.status = ALARMREQUEST_STATUS.SUCCESS
+            alarm_req.duration = duration
+            alarm_req.alarm.status = ALARM_STATUS.SUCCESS
+        else:
+            callrequest.status = CALLREQUEST_STATUS.FAILURE
+            alarm_req.status = ALARMREQUEST_STATUS.FAILURE
+            alarm_req.alarm.status = ALARM_STATUS.FAILURE
+        callrequest.hangup_cause = opt_hangup_cause
+
+        callrequest.save()
+        alarm_req.save()
+        alarm_req.alarm.save()
         debug_query(24)
 
     if call_uuid == '':
@@ -454,6 +472,7 @@ def callevent_processing():
         call_uuid varchar(200) NOT NULL,
         used_gateway_id integer,
         callrequest_id integer,
+        alarm_request_id integer,
         callerid varchar(200),
         phonenumber varchar(200),
         duration integer DEFAULT 0,
@@ -478,7 +497,7 @@ def callevent_processing():
     #Replace this for ORM with select_for_update or transaction
 
     sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, "\
-        "callrequest_id, callerid, phonenumber, duration, billsec, hangup_cause, "\
+        "callrequest_id, alarm_request_id, callerid, phonenumber, duration, billsec, hangup_cause, "\
         "hangup_cause_q850, starting_date, status, created_date, amd_status, leg "\
         "FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
 
@@ -762,12 +781,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         obj_callrequest.subscriber.save()
     elif alarm_request_id:
         if outbound_failure:
-            obj_alarmreq = AlarmRequest.objects.get(id=alarm_request_id)
-            if obj_alarmreq.alarm.maxretry >= obj_alarmreq.alarm.num_attempt:
-                obj_alarmreq.update_status(ALARMREQUEST_STATUS.RETRY)
-                obj_alarmreq.alarm.retry_alarm()
-            else:
-                obj_alarmreq.update_status(ALARMREQUEST_STATUS.FAILURE)
+            check_retry_alarm(alarm_request_id)
 
     #Update CallRequest Object
     obj_callrequest.request_uuid = request_uuid
@@ -781,3 +795,17 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     debug_query(14)
 
     return True
+
+
+def check_retry_alarm(alarm_request_id):
+    obj_alarmreq = AlarmRequest.objects.get(id=alarm_request_id)
+    if obj_alarmreq.alarm.maxretry >= obj_alarmreq.alarm.num_attempt:
+        obj_alarmreq.update_status(ALARMREQUEST_STATUS.RETRY)
+        obj_alarmreq.alarm.retry_alarm()
+    else:
+        obj_alarmreq.update_status(ALARMREQUEST_STATUS.FAILURE)
+        #Check phonenumber_sms_failure
+        if obj_alarmreq.alarm.phonenumber_sms_failure:
+            # TODO: send SMS to PN obj_alarmreq.alarm.phonenumber_sms_failure
+            # SMS text will be :
+            # "we haven't been able to reach "obj_alarmreq.alarm.alarm_phonenumber" after trying obj_alarmreq.alarm.num_attempt times"

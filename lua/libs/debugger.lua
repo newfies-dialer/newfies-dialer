@@ -35,7 +35,7 @@ local logger = logging.file(LOGDIR .. "newfieslua_logs_%s.log", "%Y-%m-%d", "%da
 -- logging.FATAL
 -- The FATAL level designates very severe error events that would presumably lead the application to abort.
 --
-logger:setLevel(logging.INFO)
+logger:setLevel(logging.DEBUG)
 
 
 Debugger = oo.class{

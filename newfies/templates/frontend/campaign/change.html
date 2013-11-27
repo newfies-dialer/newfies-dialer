@@ -18,12 +18,13 @@
 
 {% block content %}
     <ul class="nav nav-tabs">
-        <li class="active"><a href="#tabs-1" data-toggle="tab">{% trans "dialer"|title %}</a></li>
+        <li class="active"><a href="#tabs-1" data-toggle="tab">{% trans "general"|title %}</a></li>
+        <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "dialer"|title %}</a></li>
         {% if AMD %}
-        <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "voicemail settings"|title %}</a></li>
+        <li class="{% if action == 'tabs-3' %}active{% endif %}"><a href="#tabs-3" data-toggle="tab">{% trans "voicemail"|title %}</a></li>
         {% endif %}
-        <li class="{% if action == 'tabs-3' %}active{% endif %}"><a href="#tabs-3" data-toggle="tab">{% trans "campaign schedule"|title %}</a></li>
-        <li class="{% if action == 'tabs-4' %}active{% endif %}"><a href="#tabs-4" data-toggle="tab">{% trans "callcenter settings"|title %}</a></li>
+        <li class="{% if action == 'tabs-4' %}active{% endif %}"><a href="#tabs-4" data-toggle="tab">{% trans "schedule"|title %}</a></li>
+        <li class="{% if action == 'tabs-5' %}active{% endif %}"><a href="#tabs-5" data-toggle="tab">{% trans "callcenter"|title %}</a></li>
 
     </ul>
     <form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
@@ -78,6 +79,10 @@
                         {% endfor %}
                     </div>
                 </fieldset>
+            </div>
+
+
+            <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
                 <fieldset>
                     <legend>{% trans "dialer settings"|title %}</legend>
                     <div class="row">
@@ -128,7 +133,7 @@
                 </fieldset>
             </div>
 
-            <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
+            <div id="tabs-3" class="tab-pane {% if action == 'tabs-3' %}active{% endif %}">
                 <div class="row">
                     <div class="col-md-6">
                         <div class="col-xs-10">
@@ -167,7 +172,7 @@
                 </div>
             </div>
 
-            <div id="tabs-3" class="tab-pane {% if action == 'tabs-3' %}active{% endif %}">
+            <div id="tabs-4" class="tab-pane {% if action == 'tabs-4' %}active{% endif %}">
                 <div class="row">
                     {% get_fieldset startingdate,expirationdate,daily_start_time,daily_stop_time as date_fields from form %}
                     {% for field in date_fields %}
@@ -212,7 +217,7 @@
 
             </div>
 
-            <div id="tabs-4" class="tab-pane {% if action == 'tabs-4' %}active{% endif %}">
+            <div id="tabs-5" class="tab-pane {% if action == 'tabs-5' %}active{% endif %}">
                 <div class="row">
                     {% get_fieldset agent_script,lead_disposition,external_link as callcenter_settings_fields from form %}
                     {% for field in callcenter_settings_fields %}

@@ -22,7 +22,6 @@ $(function() {
            $('#id_end_picker').data("DateTimePicker").setStartDate(e.date);
         });
         $("#id_end_picker").on("change.dp",function (e) {
-            alert('hello');
            $('#id_start_picker').data("DateTimePicker").setEndDate(e.date);
         });
 

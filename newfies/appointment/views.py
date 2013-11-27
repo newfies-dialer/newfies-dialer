@@ -137,7 +137,7 @@ def calendar_user_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        # 1) delete calendar_user profile & agent
+        # 1) delete calendar_user profile & calendar_user
         calendar_user_profile = get_object_or_404(
             CalendarUserProfile, pk=object_id, manager_id=request.user.id)
         calendar_user = CalendarUser.objects.get(pk=calendar_user_profile.user_id)
@@ -251,7 +251,7 @@ def calendar_user_change_password(request, object_id):
         if user_password_form.is_valid():
             user_password_form.save()
             request.session["msg"] = _('%s password has been changed.' % calendar_user_username)
-            return HttpResponseRedirect('/agent/')
+            return HttpResponseRedirect('/calendar_user/')
         else:
             error_pass = _('please correct the errors below.')
 

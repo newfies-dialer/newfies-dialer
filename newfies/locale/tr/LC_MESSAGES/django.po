@@ -2,12 +2,12 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: 1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-25 12:55+0200\n"
+"POT-Creation-Date: 2013-11-16 12:32+0100\n"
 "PO-Revision-Date: 2012-03-04 19:32+0200\n"
 "Last-Translator: serhat alpaslan <s.alpaslan@netglobalturkey.com>\n"
 "Language-Team: LANGUAGE <s.alpaslan@netglobalturkey.com>\n"
@@ -19,31 +19,31 @@ msgstr ""
 "X-Poedit-Language: Turkish\n"
 "X-Poedit-Country: TURKEY\n"
 
-#: settings.py:420
+#: settings.py:418
 msgid "English"
 msgstr "İngilizce"
 
-#: settings.py:421
+#: settings.py:419
 msgid "French"
 msgstr ""
 
-#: settings.py:422
+#: settings.py:420
 msgid "Spanish"
 msgstr "İspanyolca"
 
-#: settings.py:423
+#: settings.py:421
 msgid "Portuguese"
 msgstr "Portekizce"
 
-#: settings.py:424
+#: settings.py:422
 msgid "Chinese"
 msgstr "Çin"
 
-#: settings.py:425
+#: settings.py:423
 msgid "Turkish"
 msgstr "Türkçe"
 
-#: settings.py:426
+#: settings.py:424
 msgid "Japanese"
 msgstr ""
 
@@ -141,7 +141,7 @@ msgstr "Kampanya başına maksimum aboneleri"
 
 #: api/api_playgrounds/campaign_delete_cascade_playground.py:31
 #: api/api_playgrounds/campaign_playground.py:221
-#: templates/frontend/campaign/list.html:101
+#: templates/frontend/campaign/list.html:98
 #, fuzzy
 msgid "delete campaign"
 msgstr "Kampanyası sil"
@@ -150,7 +150,7 @@ msgstr "Kampanyası sil"
 #: dialer_campaign/models.py:271 dialer_cdr/forms.py:33 frontend/forms.py:34
 #: survey/forms.py:327 survey/models.py:124 survey/models.py:492
 #: templates/frontend/bootstrap_menu.html:32
-#: templates/frontend/dashboard.html:28
+#: templates/frontend/dashboard.html:30
 #: templates/frontend/campaign/campaign_duplicate.html:46
 #: templates/frontend/campaign/change.html:12
 #: templates/frontend/campaign/list.html:9
@@ -179,7 +179,7 @@ msgid "create new campaign"
 msgstr "Kampanyası Update"
 
 #: api/api_playgrounds/campaign_playground.py:136
-#: templates/frontend/campaign/list.html:98
+#: templates/frontend/campaign/list.html:95
 #, fuzzy
 msgid "update campaign"
 msgstr "Kampanyası Update"
@@ -484,95 +484,124 @@ msgstr "Anketi güncelleyin"
 msgid "delete survey"
 msgstr "Anketi sil"
 
-#: custom_admin_tools/dashboard.py:62
+#: custom_admin_tools/dashboard.py:63
 #, fuzzy
 msgid "general"
 msgstr "Genel ayarlar"
 
-#: custom_admin_tools/dashboard.py:66 dialer_cdr/admin.py:95
+#: custom_admin_tools/dashboard.py:67 dialer_cdr/admin.py:96
 msgid "user"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:70
+#: custom_admin_tools/dashboard.py:71
 #, fuzzy
 msgid "task manager"
 msgstr "Görev Yöneticisi"
 
-#: custom_admin_tools/dashboard.py:74
+#: custom_admin_tools/dashboard.py:75
 #, fuzzy
 msgid "dashboard stats"
 msgstr "Pano İstatistikleri"
 
-#: custom_admin_tools/dashboard.py:77 custom_admin_tools/dashboard.py:196
+#: custom_admin_tools/dashboard.py:78 custom_admin_tools/dashboard.py:209
 #, fuzzy
 msgid "recent actions"
 msgstr "Son Eylemler"
 
-#: custom_admin_tools/dashboard.py:82
+#: custom_admin_tools/dashboard.py:83
 #: templates/frontend/registration/user_detail_change.html:5
 #, fuzzy
 msgid "settings"
 msgstr "Ayarlar"
 
-#: custom_admin_tools/dashboard.py:88
+#: custom_admin_tools/dashboard.py:89
 #, fuzzy
 msgid "VoIP dialer"
 msgstr "Voip Dialer"
 
-#: custom_admin_tools/dashboard.py:95 survey/models.py:134
+#: custom_admin_tools/dashboard.py:96 survey/models.py:134
 #: templates/frontend/bootstrap_menu.html:95
 #, fuzzy
 msgid "surveys"
 msgstr "Anketler"
 
-#: custom_admin_tools/dashboard.py:101
+#: custom_admin_tools/dashboard.py:102
 #: templates/frontend/bootstrap_menu.html:75
 #: templates/frontend/audio/audio_list.html:10
 #, fuzzy
 msgid "audio files"
 msgstr "Ses dosyaları"
 
-#: custom_admin_tools/dashboard.py:106 custom_admin_tools/dashboard.py:185
+#: custom_admin_tools/dashboard.py:107 custom_admin_tools/dashboard.py:198
 #: dnc/admin.py:19 templates/frontend/bootstrap_menu.html:59
 #, fuzzy
 msgid "do not call"
 msgstr "Çağrı zaman aşımı"
 
-#: custom_admin_tools/dashboard.py:133
+#: custom_admin_tools/dashboard.py:112
+#, fuzzy
+msgid "Reporting"
+msgstr "Raporlama"
+
+#: custom_admin_tools/dashboard.py:117
+#, fuzzy
+msgid "Call Daily Report"
+msgstr "Çağrı Raporu"
+
+#: custom_admin_tools/dashboard.py:128
+msgid "Quick links"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:134
+#, fuzzy
+msgid "Newfies-Dialer Website"
+msgstr "Newfies-Dialer"
+
+#: custom_admin_tools/dashboard.py:135
+#, fuzzy
+msgid "Support"
+msgstr "İçe Aktar"
+
+#: custom_admin_tools/dashboard.py:136
+#, fuzzy
+msgid "Add-ons"
+msgstr "Eklentiler"
+
+#: custom_admin_tools/dashboard.py:146
 msgid "Latest Newfies-Dialer News"
 msgstr "Son Newfies-Dialer Haberler"
 
-#: custom_admin_tools/dashboard.py:140
+#: custom_admin_tools/dashboard.py:153
 #, fuzzy
 msgid "dashboard stats settings"
 msgstr "Pano İstatistik Ayarları"
 
-#: custom_admin_tools/dashboard.py:167 dialer_settings/models.py:79
+#: custom_admin_tools/dashboard.py:180 dialer_settings/models.py:77
 #: templates/frontend/campaign/change.html:87 user_profile/models.py:80
 #, fuzzy
 msgid "dialer settings"
 msgstr "Dialer ayarları"
 
-#: custom_admin_tools/dashboard.py:170
+#: custom_admin_tools/dashboard.py:183
 #, fuzzy
 msgid "dialer campaign"
 msgstr "Dialer Kampanya"
 
-#: custom_admin_tools/dashboard.py:173 dialer_contact/admin.py:226
+#: custom_admin_tools/dashboard.py:186 dialer_contact/admin.py:226
 #, fuzzy
 msgid "dialer contact"
 msgstr "Kişiyi sil"
 
-#: custom_admin_tools/dashboard.py:176 dialer_cdr/admin.py:36
+#: custom_admin_tools/dashboard.py:189 dialer_cdr/admin.py:37
 msgid "Dialer CDR"
 msgstr "Dialer CDR"
 
-#: custom_admin_tools/dashboard.py:179 dialer_gateway/models.py:103
+#: custom_admin_tools/dashboard.py:192 dialer_gateway/models.py:103
 #, fuzzy
 msgid "dialer gateway"
 msgstr "Dialer Ağ Geçidi"
 
-#: custom_admin_tools/dashboard.py:182
+#: custom_admin_tools/dashboard.py:195
 #, fuzzy
 msgid "country dialcode"
 msgstr "Ülke"
@@ -656,26 +685,26 @@ msgstr "%(count)s ses (ler) silinir."
 msgid "Dialer Campaign"
 msgstr "Dialer Kampanya"
 
-#: dialer_campaign/admin.py:43 dialer_cdr/admin.py:45
+#: dialer_campaign/admin.py:42 dialer_cdr/admin.py:46
 #: dialer_gateway/admin.py:36
 #, fuzzy
 msgid "standard options"
 msgstr "Standart seçenekler"
 
-#: dialer_campaign/admin.py:51 dialer_cdr/admin.py:51
+#: dialer_campaign/admin.py:50 dialer_cdr/admin.py:52
 #: dialer_gateway/admin.py:41
 #, fuzzy
 msgid "advanced options"
 msgstr "Gelişmiş seçenekler"
 
-#: dialer_campaign/admin.py:94
+#: dialer_campaign/admin.py:93
 #, fuzzy, python-format
 msgid "you have too many campaigns. max allowed %(limit)s"
 msgstr ""
 "Çok fazla kampanyanız bulunmakta.Hesabınıza en fazla %(limit) sınır "
 "tanımlanmıştır."
 
-#: dialer_campaign/admin.py:213
+#: dialer_campaign/admin.py:212
 #: templates/admin/dialer_campaign/subscriber/change_list.html:36
 #, fuzzy
 msgid "subscriber report"
@@ -832,7 +861,7 @@ msgstr "%d Maksimum Retries sınırı aşıldı."
 msgid "maximum timeout limit of %d exceeded."
 msgstr "%d Maksimum zaman aşımı sınırı aşıldı."
 
-#: dialer_campaign/function_def.py:236
+#: dialer_campaign/function_def.py:234
 #, fuzzy
 msgid ""
 "your settings are not configured properly, please contact the administrator."
@@ -1113,8 +1142,8 @@ msgstr "Kampanya"
 
 #: dialer_campaign/models.py:316 templates/frontend/audio/audio_list.html:27
 #: templates/frontend/audio/audio_list.html:53
-#: templates/frontend/campaign/list.html:45
-#: templates/frontend/campaign/list.html:81
+#: templates/frontend/campaign/list.html:42
+#: templates/frontend/campaign/list.html:78
 #: templates/frontend/contact/list.html:85
 #: templates/frontend/contact/list.html:118
 #: templates/frontend/dnc_contact/list.html:82
@@ -1202,7 +1231,7 @@ msgid ""
 msgstr ""
 
 #: dialer_campaign/views.py:106 user_profile/constants.py:26
-#: user_profile/management.py:57
+#: user_profile/management.py:60
 #, fuzzy
 msgid "dialer setting configuration"
 msgstr "Arama ayarları düzenle"
@@ -1285,39 +1314,39 @@ msgstr ""
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" güncellendi."
 
-#: dialer_cdr/admin.py:37
+#: dialer_cdr/admin.py:38
 #, fuzzy
 msgid "VoIP report"
 msgstr "VoIP Raporu"
 
-#: dialer_cdr/admin.py:72 dialer_cdr/admin.py:208
+#: dialer_cdr/admin.py:73 dialer_cdr/admin.py:209
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:14
 #: templates/admin_tools/dashboard/modules/app_list.html:13
 #, fuzzy
 msgid "call report"
 msgstr "Çağrı Raporu"
 
-#: dialer_cdr/admin.py:104
+#: dialer_cdr/admin.py:105
 #, fuzzy
 msgid "gateway used"
 msgstr "Kullanılan Arama Geçidi"
 
-#: dialer_cdr/admin.py:183
+#: dialer_cdr/admin.py:184
 msgid "Database error"
 msgstr "Veritabanı hatası"
 
-#: dialer_cdr/admin.py:197
+#: dialer_cdr/admin.py:198
 #, fuzzy, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] "%(total_count)s seçildiği"
 
-#: dialer_cdr/admin.py:201
+#: dialer_cdr/admin.py:202
 #, fuzzy, python-format
 msgid "0 of %(cnt)s selected"
 msgstr "%(total_count)s seçildiği"
 
-#: dialer_cdr/admin.py:260
+#: dialer_cdr/admin.py:261
 #: templates/admin_tools/dashboard/modules/app_list.html:45
 #: templates/admin_tools/dashboard/modules/model_list.html:26
 #, fuzzy
@@ -1637,16 +1666,14 @@ msgid "Dialer Contact"
 msgstr "Kişi seç"
 
 #: dialer_contact/admin.py:79 dialer_contact/admin.py:118
-#: dialer_contact/views.py:371 dialer_contact/views.py:513
+#: dialer_contact/views.py:370 dialer_contact/views.py:512
 #, fuzzy, python-format
-msgid ""
-"you have too many contacts per campaign. you are allowed a maximum of "
-"%(limit)s"
+msgid "you have too many contacts. you are allowed a maximum of %(limit)s"
 msgstr ""
 "Kampanya için çok fazla kişi girişi yapıldı. En fazla %(limit)s kabul "
 "edilmektedir."
 
-#: dialer_contact/admin.py:172 dialer_contact/views.py:563
+#: dialer_contact/admin.py:172 dialer_contact/views.py:562
 #, fuzzy
 msgid ""
 "invalid value for import! please check the import samples or phonebook is "
@@ -1654,13 +1681,13 @@ msgid ""
 msgstr ""
 "İçe aktarma  için geçersiz değer! İçe aktarılan değerleri kontrol ediniz."
 
-#: dialer_contact/admin.py:177 dialer_contact/views.py:568
+#: dialer_contact/admin.py:177 dialer_contact/views.py:567
 msgid ""
 "invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 "
 "codes (http://en.wikipedia.org/wiki/ISO_3166-1)"
 msgstr ""
 
-#: dialer_contact/admin.py:217 dialer_contact/views.py:613
+#: dialer_contact/admin.py:217 dialer_contact/views.py:612
 #, fuzzy, python-format
 msgid ""
 "%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
@@ -1841,27 +1868,27 @@ msgstr "Kişi seç"
 msgid "%(count)s phonebook(s) are deleted."
 msgstr "%(count)s rehberi (ler) silinir."
 
-#: dialer_contact/views.py:385
+#: dialer_contact/views.py:384
 #, fuzzy, python-format
 msgid "\"%s\" is added."
 msgstr "\"%(name)s\" eklenir."
 
-#: dialer_contact/views.py:389
+#: dialer_contact/views.py:388
 #, fuzzy, python-format
 msgid "\"%s\" cannot be added."
 msgstr "\"%(name)s\" eklenemiyor."
 
-#: dialer_contact/views.py:425
+#: dialer_contact/views.py:424
 #, fuzzy, python-format
 msgid "\"%s\" is deleted."
 msgstr "\"%(name)s\" silinir."
 
-#: dialer_contact/views.py:436
+#: dialer_contact/views.py:435
 #, fuzzy, python-format
 msgid "%s contact(s) are deleted."
 msgstr "%(count)s Kişi (ler) silindi."
 
-#: dialer_contact/views.py:472
+#: dialer_contact/views.py:471
 #, fuzzy, python-format
 msgid "\"%s\" is updated."
 msgstr "\"%(name)s\" güncellendi."
@@ -2062,24 +2089,38 @@ msgstr "Kullanıcı başına en fazla deneme."
 msgid "maximum call timeout in seconds"
 msgstr "Saniyede maksimum arama zaman aşımı"
 
-#: dialer_settings/models.py:56
+#: dialer_settings/models.py:55 dialer_settings/models.py:56
 #, fuzzy
 msgid "maximum number of campaigns"
 msgstr "Kampanyalar maksimum sayısı"
 
-#: dialer_settings/models.py:58
+#: dialer_settings/models.py:57
 #: templates/frontend/registration/user_dialer_settings.html:25
 #, fuzzy
 msgid "maximum subscribers per campaign"
 msgstr "Kampanya başına maksimum aboneleri"
 
-#: dialer_settings/models.py:65
-#: templates/frontend/registration/user_dialer_settings.html:33
+#: dialer_settings/models.py:58
+#, fuzzy
+msgid "maximum subscribers per campaign. Unlimited if the value equal 0"
+msgstr "Kampanya başına maksimum aboneleri"
+
+#: dialer_settings/models.py:60
+#, fuzzy
+msgid "maximum number of contacts"
+msgstr "Kampanyalar maksimum sayısı"
+
+#: dialer_settings/models.py:61
+msgid "maximum number of contacts per user. Unlimited if the value equal 0"
+msgstr ""
+
+#: dialer_settings/models.py:63
+#: templates/frontend/registration/user_dialer_settings.html:37
 #, fuzzy
 msgid "blacklist"
 msgstr "Kara listeye almak"
 
-#: dialer_settings/models.py:66
+#: dialer_settings/models.py:64
 #, fuzzy
 msgid ""
 "use regular expressions to blacklist phone numbers. For example, '^[2-4]"
@@ -2090,18 +2131,18 @@ msgstr ""
 "Örneğin, &#39;^ [2-4] [1] +&#39; 2,3 veya 4 ile başlayan telefon "
 "numaralarını önlemek ve 1 çağrıldığını takip edecektir."
 
-#: dialer_settings/models.py:68
-#: templates/frontend/registration/user_dialer_settings.html:29
+#: dialer_settings/models.py:66
+#: templates/frontend/registration/user_dialer_settings.html:33
 #, fuzzy
 msgid "whitelist"
 msgstr "Beyaz liste"
 
-#: dialer_settings/models.py:69
+#: dialer_settings/models.py:67
 #, fuzzy
 msgid "use regular expressions to whitelist phone numbers"
 msgstr "Beyaz telefon numaraları için normal ifadeleri kullanın"
 
-#: dialer_settings/models.py:78
+#: dialer_settings/models.py:76
 #, fuzzy
 msgid "dialer setting"
 msgstr "Dialer ayarları"
@@ -2751,7 +2792,7 @@ msgstr "ACT"
 
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:77
 #: templates/frontend/audio/audio_list.html:90
-#: templates/frontend/campaign/list.html:121
+#: templates/frontend/campaign/list.html:118
 #: templates/frontend/contact/list.html:157
 #: templates/frontend/dnc_contact/list.html:144
 #: templates/frontend/dnc_list/list.html:86
@@ -2830,7 +2871,7 @@ msgstr "Tip uyuşmazlığı"
 #: templates/frontend/audio/audio_change.html:13
 #: templates/frontend/audio/audio_list.html:38
 #: templates/frontend/campaign/change.html:11
-#: templates/frontend/campaign/list.html:62
+#: templates/frontend/campaign/list.html:59
 #: templates/frontend/contact/change.html:18
 #: templates/frontend/contact/list.html:99
 #: templates/frontend/dnc_contact/change.html:18
@@ -2916,7 +2957,7 @@ msgid "submit bug & feedback"
 msgstr ""
 
 #: templates/frontend/bootstrap_menu.html:24
-#: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:15
+#: templates/frontend/dashboard.html:5 templates/frontend/dashboard.html:17
 #, fuzzy
 msgid "dashboard"
 msgstr "Ön İzleme"
@@ -3072,31 +3113,31 @@ msgstr "Kişi (ler)"
 msgid "please confirm to delete this DNC with"
 msgstr "Bu rehber silmek için teyit edin"
 
-#: templates/frontend/dashboard.html:15
+#: templates/frontend/dashboard.html:17
 #, fuzzy
 msgid "realtime campaign performance monitoring"
 msgstr "Gerçek zamanlı kampanya performans izleme"
 
-#: templates/frontend/dashboard.html:23
+#: templates/frontend/dashboard.html:25
 msgid "Submit"
 msgstr "Sunmak"
 
-#: templates/frontend/dashboard.html:29
+#: templates/frontend/dashboard.html:31
 #, fuzzy
 msgid "total phonebook contacts"
 msgstr "Rehberdeki Toplam Kişi Sayısı"
 
-#: templates/frontend/dashboard.html:30
+#: templates/frontend/dashboard.html:32
 #, fuzzy
 msgid "total campaign contacts"
 msgstr "Toplam Kampanya Kişileri"
 
-#: templates/frontend/dashboard.html:31
+#: templates/frontend/dashboard.html:33
 #, fuzzy
 msgid "contacted today"
 msgstr "Bugün Görüşülen"
 
-#: templates/frontend/dashboard.html:61
+#: templates/frontend/dashboard.html:63
 msgid "TOTAL CALLS"
 msgstr "TOPLAM ARAMALAR"
 
@@ -3302,7 +3343,7 @@ msgid "list, upload and edit audio files"
 msgstr "Listeleme, yükleme ve ses dosyalarını güncelle"
 
 #: templates/frontend/audio/audio_list.html:33
-#: templates/frontend/campaign/list.html:52
+#: templates/frontend/campaign/list.html:49
 #: templates/frontend/contact/list.html:91
 #: templates/frontend/dnc_contact/list.html:88
 #: templates/frontend/dnc_list/list.html:34
@@ -3323,7 +3364,7 @@ msgid "delete audio"
 msgstr "Sesi sil"
 
 #: templates/frontend/audio/audio_list.html:84
-#: templates/frontend/campaign/list.html:115
+#: templates/frontend/campaign/list.html:112
 #: templates/frontend/contact/list.html:151
 #: templates/frontend/dnc_contact/list.html:138
 #: templates/frontend/dnc_list/list.html:80
@@ -3386,7 +3427,7 @@ msgstr "Hafta Gün"
 msgid "list, add and edit campaigns"
 msgstr "Listeleme, ekleme ve kampanyalar düzenlemek"
 
-#: templates/frontend/campaign/list.html:56
+#: templates/frontend/campaign/list.html:53
 #, fuzzy
 msgid "stop selected"
 msgstr "Seçilen Sil"
@@ -3664,6 +3705,11 @@ msgstr "Maksimum deneme"
 #, fuzzy
 msgid "maximum campaigns"
 msgstr "Maksimum kampanya sayısı"
+
+#: templates/frontend/registration/user_dialer_settings.html:29
+#, fuzzy
+msgid "maximum number of contact per user"
+msgstr "Kampanyalar maksimum sayısı"
 
 #: templates/frontend/report/voipcall_report.html:16
 #, fuzzy
@@ -3949,38 +3995,38 @@ msgstr "Newfies kullandığınız için teşekkür ederiz."
 msgid "log in again"
 msgstr "Tekrar giriş yapın"
 
-#: user_profile/constants.py:20 user_profile/management.py:27
-#: user_profile/management.py:28
+#: user_profile/constants.py:20 user_profile/management.py:30
+#: user_profile/management.py:31
 #, fuzzy
 msgid "campaign started"
 msgstr "Kampanya başladı"
 
-#: user_profile/constants.py:21 user_profile/management.py:32
-#: user_profile/management.py:33
+#: user_profile/constants.py:21 user_profile/management.py:35
+#: user_profile/management.py:36
 #, fuzzy
 msgid "campaign paused"
 msgstr "Kampanya duraklatıldı"
 
-#: user_profile/constants.py:22 user_profile/management.py:37
-#: user_profile/management.py:38
+#: user_profile/constants.py:22 user_profile/management.py:40
+#: user_profile/management.py:41
 #, fuzzy
 msgid "campaign aborted"
 msgstr "Kampanya İptal Edildi"
 
-#: user_profile/constants.py:23 user_profile/management.py:42
-#: user_profile/management.py:43
+#: user_profile/constants.py:23 user_profile/management.py:45
+#: user_profile/management.py:46
 #, fuzzy
 msgid "campaign stopped"
 msgstr "Kampanya durdu"
 
-#: user_profile/constants.py:24 user_profile/management.py:47
-#: user_profile/management.py:48
+#: user_profile/constants.py:24 user_profile/management.py:50
+#: user_profile/management.py:51
 #, fuzzy
 msgid "campaign limit reached"
 msgstr "Kampanya limiti aşıldı"
 
-#: user_profile/constants.py:25 user_profile/management.py:52
-#: user_profile/management.py:53
+#: user_profile/constants.py:25 user_profile/management.py:55
+#: user_profile/management.py:56
 #, fuzzy
 msgid "contact limit reached"
 msgstr "İletişim sınırı aşıldı"
@@ -3999,13 +4045,13 @@ msgstr "E-posta adresi"
 msgid "check number is authorised to call"
 msgstr "İzin verilen numaralar için kontrol alanı"
 
-#: user_profile/management.py:58
+#: user_profile/management.py:61
 #, fuzzy
 msgid "the user needs to be mapped with dialer settings by the administrator"
 msgstr ""
 "Yönetici kullanıcı için arama ayarlarını tanımlamasını yapması gerekmektedir."
 
-#: user_profile/management.py:62 user_profile/management.py:63
+#: user_profile/management.py:65 user_profile/management.py:66
 #, fuzzy
 msgid "call request not found"
 msgstr "Çağrı talebi bulunamadı"
@@ -4289,9 +4335,6 @@ msgstr "Parolanız değiştirildi."
 
 #~ msgid "Launch Task : collect_subscriber(%(id)s)"
 #~ msgstr "Görev başlatın: collect_subscriber (%(id)s ler)"
-
-#~ msgid "Call Report"
-#~ msgstr "Çağrı Raporu"
 
 #, fuzzy
 #~ msgid "in progress"

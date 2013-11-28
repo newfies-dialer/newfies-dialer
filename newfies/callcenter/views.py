@@ -24,8 +24,11 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import get_pagination_vars
 from survey.models import Section_template
 
+redirect_url_to_queue_list = '/module/queue/'
+redirect_url_to_tier_list = '/module/tier/'
 
-@permission_required('callcenter.view_queue_list', login_url='/')
+
+@permission_required('callcenter.view_queue', login_url='/')
 @login_required
 def queue_list(request):
     """Queue list for the logged in Manager
@@ -40,8 +43,8 @@ def queue_list(request):
     """
     sort_col_field_list = ['name', 'strategy', 'time_base_score', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
@@ -91,7 +94,7 @@ def queue_add(request):
 
             request.session["msg"] = _('"%(name)s" queue is added.') %\
                 {'name': obj.name}
-            return HttpResponseRedirect('/queue/')
+            return HttpResponseRedirect(redirect_url_to_queue_list)
 
     template = 'frontend/queue/change.html'
     data = {
@@ -168,7 +171,7 @@ def queue_del(request, object_id):
                         % not_deleted_list
         except:
             raise Http404
-    return HttpResponseRedirect('/queue/')
+    return HttpResponseRedirect(redirect_url_to_queue_list)
 
 
 @permission_required('callcenter.change_queue', login_url='/')
@@ -195,7 +198,7 @@ def queue_change(request, object_id):
         # Delete queue
         if request.POST.get('delete'):
             queue_del(request, object_id)
-            return HttpResponseRedirect('/queue/')
+            return HttpResponseRedirect(redirect_url_to_queue_list)
         else:
             # Update queue
             form = QueueFrontEndForm(request.POST, instance=queue)
@@ -203,7 +206,7 @@ def queue_change(request, object_id):
                 obj = form.save()
                 request.session["msg"] = _('"%(name)s" is updated.') \
                     % {'name': obj.name}
-                return HttpResponseRedirect('/queue/')
+                return HttpResponseRedirect(redirect_url_to_queue_list)
 
     template = 'frontend/queue/change.html'
     data = {
@@ -215,7 +218,7 @@ def queue_change(request, object_id):
                               context_instance=RequestContext(request))
 
 
-@permission_required('callcenter.view_tier_list', login_url='/')
+@permission_required('callcenter.view_tier', login_url='/')
 @login_required
 def tier_list(request):
     """Tier list for the logged in Manager
@@ -230,8 +233,7 @@ def tier_list(request):
     """
     sort_col_field_list = ['agent', 'queue', 'level', 'position', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
@@ -280,7 +282,7 @@ def tier_add(request):
 
             request.session["msg"] = _('"%(name)s" tier is added.') %\
                 {'name': obj.id}
-            return HttpResponseRedirect('/tier/')
+            return HttpResponseRedirect(redirect_url_to_tier_list)
 
     template = 'frontend/tier/change.html'
     data = {
@@ -329,7 +331,7 @@ def tier_del(request, object_id):
                 tier_list.delete()
         except:
             raise Http404
-    return HttpResponseRedirect('/tier/')
+    return HttpResponseRedirect(redirect_url_to_tier_list)
 
 
 @permission_required('callcenter.change_tier', login_url='/')
@@ -356,7 +358,7 @@ def tier_change(request, object_id):
         # Delete tier
         if request.POST.get('delete'):
             tier_del(request, object_id)
-            return HttpResponseRedirect('/tier/')
+            return HttpResponseRedirect(redirect_url_to_tier_list)
         else:
             # Update tier
             form = TierFrontEndForm(request.user.id, request.POST, instance=tier)
@@ -364,7 +366,7 @@ def tier_change(request, object_id):
                 form.save()
                 request.session["msg"] = _('"%(id)s" tier is updated.') \
                     % {'id': tier.id}
-                return HttpResponseRedirect('/tier/')
+                return HttpResponseRedirect(redirect_url_to_tier_list)
 
     template = 'frontend/tier/change.html'
     data = {

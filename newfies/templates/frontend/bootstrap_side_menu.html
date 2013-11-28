@@ -23,13 +23,13 @@
 
         {% if "/agent/" in request.path or "/queue/" in request.path or "/tier/" in request.path %}
             {% if perms.agent.view_agent %}
-                <a class="list-group-item {% ifcontains '/agent/' %}active{% endifcontains %}" href="/agent/">{% trans "agent"|title %}</a>
+                <a class="list-group-item {% ifcontains '/agent/' %}active{% endifcontains %}" href="/module/agent/">{% trans "agent"|title %}</a>
             {% endif %}
             {% if perms.callcenter.view_queue %}
-                <a class="list-group-item {% ifcontains '/queue/' %}active{% endifcontains %}" href="/queue/">{% trans "queue"|title %}</a>
+                <a class="list-group-item {% ifcontains '/queue/' %}active{% endifcontains %}" href="/module/queue/">{% trans "queue"|title %}</a>
             {% endif %}
             {% if perms.callcenter.view_tier %}
-                <a class="list-group-item {% ifcontains '/tier/' %}active{% endifcontains %}" href="/tier/">{% trans "tier"|title %}</a>
+                <a class="list-group-item {% ifcontains '/tier/' %}active{% endifcontains %}" href="/module/tier/">{% trans "tier"|title %}</a>
             {% endif %}
         {% endif %}
 

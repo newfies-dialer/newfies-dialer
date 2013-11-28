@@ -54,6 +54,8 @@ class CALENDAR_SETTING_COLUMN_NAME(Choice):
     caller_name = _('callerid name')
     call_timeout = _('call timeout')
     survey = _('survey')
+    aleg_gateway = _('aleg gateway')
+    sms_gateway = _('sms gateway')
 
 
 class CALENDAR_USER_COLUMN_NAME(Choice):

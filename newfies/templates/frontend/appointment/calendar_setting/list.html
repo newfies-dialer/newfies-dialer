@@ -55,6 +55,8 @@
                         <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.caller_name|capfirst col_name_with_order.caller_name %}</th>
                         <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.call_timeout|capfirst col_name_with_order.call_timeout %}</th>
                         <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.survey|capfirst col_name_with_order.survey %}</th>
+                        <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.aleg_gateway|capfirst col_name_with_order.aleg_gateway %}</th>
+                        <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.sms_gateway|capfirst col_name_with_order.sms_gateway %}</th>
                         <th>{% trans 'action'|capfirst %}</th>
                     </tr>
                     </thead>
@@ -67,6 +69,8 @@
                                 <td>{{ row.caller_name }}</td>
                                 <td>{{ row.call_timeout }}</td>
                                 <td>{{ row.survey }}</td>
+                                <td>{{ row.aleg_gateway }}</td>
+                                <td>{{ row.sms_gateway }}</td>
                                 <td>
                                     {% if perms.appointment.change_calendarsetting %}
                                         <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update calendar_setting"|title %}"></a>
@@ -79,7 +83,7 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="6" align="center">
+                            <td colspan="8" align="center">
                                 {% trans "no records found"|title %}
                             </td>
                         </tr>

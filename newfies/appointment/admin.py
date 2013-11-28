@@ -18,7 +18,7 @@ from django.utils.translation import ugettext_lazy as _
 from appointment.models.users import CalendarSetting, CalendarUser, CalendarUserProfile
 from appointment.models.rules import Rule
 from appointment.models.events import Event, Occurrence
-from appointment.models.alarms import Alarm, SMSTemplate, AlarmRequest
+from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.calendars import Calendar
 from appointment.forms import CalendarUserProfileForm, EventAdminForm
 from common.app_label_renamer import AppLabelRenamer
@@ -83,11 +83,6 @@ class AlarmAdmin(admin.ModelAdmin):
     list_filter = ('event', 'created_date')
 
 
-class SMSTemplateAdmin(admin.ModelAdmin):
-    list_display = ('label', 'sms_text', 'created_date')
-    ordering = ('-id', )
-
-
 class AlarmRequestAdmin(admin.ModelAdmin):
     list_display = ('id', 'alarm', 'date', 'status', 'callstatus')
     ordering = ('-id', )
@@ -101,4 +96,3 @@ admin.site.register(Event, EventAdmin)
 admin.site.register(Occurrence, OccurrenceAdmin)
 admin.site.register(AlarmRequest, AlarmRequestAdmin)
 admin.site.register(Alarm, AlarmAdmin)
-admin.site.register(SMSTemplate, SMSTemplateAdmin)

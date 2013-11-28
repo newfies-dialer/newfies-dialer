@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django.utils.encoding import force_unicode
 from appointment.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT, \
     ALARMREQUEST_STATUS
 from appointment.models.events import Event
@@ -10,27 +9,7 @@ from dialer_cdr.models import Callrequest
 from mod_mailer.models import MailTemplate
 from datetime import datetime
 from django.utils.timezone import utc
-
-
-#TODO: Move this to SMS module
-class SMSTemplate(models.Model):
-    """
-    This table store the SMS Template
-    """
-    label = models.CharField(max_length=75, help_text=_('SMS template name'))
-    template_key = models.CharField(max_length=30, unique=True,
-        help_text=_('Unique name used to pick some template for recurring action, such as activation or warning'))
-    sender_phonenumber = models.CharField(max_length=75)
-    sms_text = models.TextField(max_length=500)
-    created_date = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        verbose_name = _('SMS template')
-        verbose_name_plural = _('SMS templates')
-        app_label = 'appointment'
-
-    def __unicode__(self):
-        return force_unicode(self.template_key)
+from sms_module.models import SMSTemplate
 
 
 class Alarm(models.Model):

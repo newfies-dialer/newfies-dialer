@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from django.core.cache import cache
 from django.db.models.signals import post_save
+from django.utils.encoding import force_unicode
 from dateutil.relativedelta import relativedelta
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.constants import CONTACT_STATUS
@@ -455,6 +456,26 @@ class SMSMessage(Message):
         db_table = u'smsmessage'
         verbose_name = _("SMS message")
         verbose_name_plural = _("SMS messages")
+
+
+class SMSTemplate(Model):
+    """
+    This table store the SMS Template
+    """
+    label = models.CharField(max_length=75, help_text=_('SMS template name'))
+    template_key = models.CharField(max_length=30, unique=True,
+                                    help_text=_('Unique name used to pick some template for recurring action, such as activation or warning'))
+    sender_phonenumber = models.CharField(max_length=75)
+    sms_text = models.TextField(max_length=500)
+    created_date = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        db_table = u'sms_template'
+        verbose_name = _('SMS template')
+        verbose_name_plural = _('SMS templates')
+
+    def __unicode__(self):
+        return force_unicode(self.template_key)
 
 
 def post_save_add_contact(sender, **kwargs):

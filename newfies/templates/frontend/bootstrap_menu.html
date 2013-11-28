@@ -58,7 +58,7 @@
                     {% endif %}
 
                     {% if perms.audiofield.view_audio %}
-                        <li class="{% ifcontains '/audio/' %}active{% endifcontains %}"><a href="/audio/">{% trans "audio files"|capfirst %}</a></li>
+                        <li class="{% ifcontains '/audio/' %}active{% endifcontains %}"><a href="/module/audio/">{% trans "audio files"|capfirst %}</a></li>
                     {% endif %}
 
                     {% if perms.dnc.view_dnc_list %}

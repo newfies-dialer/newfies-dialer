@@ -189,18 +189,25 @@ How retry works?
 
 **Answer:** .
 
-There is 2 systems available to retry calls:
+There are 2 systems available to retry calls:
 
-Basic retry::
+Basic Retry::
 
-    Basic retry just look if we have been able to call and reach the person,
-    in other words if the call has been answered, so even if the person pickup
-    the phone for 1 second it will still be considered as successful call,
-    if the call is not answered, busy or cannot be reached it will be considered
-    as Failure and it will retry for the amount of time defined in the campaign.
+    Basic retry checks to see if the call has been answered, even for a very 
+    short duration, this is regarded as a successful call. However if the call
+    is not answered, busy or unreachable, it will be considered as a failed 
+    call, and will be retried as defined in the "Dialer Settings"  section in 
+    the campaign.
 
-Completion retry::
 
-    This feature work with the survey editor, when you edit a survey when adding
-    a section you can set if the section is "Completed", that way we can know if
-    the answered call reached a certain level in the callflow.
+Completion Retry::
+
+    This feature works with the survey editor. When a survey node is created, the
+    "Survey Complete" checkbox can be ticked so that it is clear that the contact
+    reached a certain point in the survey and did not abandon the call early.
+    Usually, one of the last nodes in the survey is ticked as "Survey Complete".
+
+    The Completion Retry interval and number of times to retry is set in the 
+    campaign under the "Dialer Completion Settings" secion. 
+
+ 

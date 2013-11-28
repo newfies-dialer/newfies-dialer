@@ -40,6 +40,13 @@ from common.common_functions import ceil_strdate, getvar,\
 from datetime import datetime
 
 
+redirect_url_to_calendar_user_list = '/module/calendar_user/'
+redirect_url_to_calendar_setting_list = '/module/calendar_setting/'
+redirect_url_to_calendar_list = '/module/calendar/'
+redirect_url_to_event_list = '/module/event/'
+redirect_url_to_alarm_list = '/module/alarm/'
+
+
 @permission_required('appointment.view_calendar_user', login_url='/')
 @login_required
 def calendar_user_list(request):
@@ -109,7 +116,8 @@ def calendar_user_add(request):
 
             request.session["msg"] = _('"%(name)s" added as calendar user.') %\
                 {'name': request.POST['username']}
-            return HttpResponseRedirect('/calendar_user/%s/' % str(calendar_user_profile.id))
+            return HttpResponseRedirect(
+                redirect_url_to_calendar_user_list + '%s/' % str(calendar_user_profile.id))
 
     template = 'frontend/appointment/calendar_user/change.html'
     data = {
@@ -164,7 +172,7 @@ def calendar_user_del(request, object_id):
         except:
             raise Http404
 
-    return HttpResponseRedirect('/calendar_user/')
+    return HttpResponseRedirect(redirect_url_to_calendar_user_list)
 
 
 @permission_required('appointment.change_calendaruserprofile', login_url='/')
@@ -194,7 +202,7 @@ def calendar_user_change(request, object_id):
     if request.method == 'POST':
         if request.POST.get('delete'):
             calendar_user_del(request, object_id)
-            return HttpResponseRedirect('/calendar_user/')
+            return HttpResponseRedirect(redirect_url_to_calendar_user_list)
         else:
             form = CalendarUserChangeDetailExtendForm(request.user, request.POST, instance=calendar_user_profile)
 
@@ -210,7 +218,7 @@ def calendar_user_change(request, object_id):
                     form.save()
                     request.session["msg"] = _('"%(name)s" is updated.') \
                         % {'name': calendar_user_profile.user}
-                    return HttpResponseRedirect('/calendar_user/')
+                    return HttpResponseRedirect(redirect_url_to_calendar_user_list)
 
     template = 'frontend/appointment/calendar_user/change.html'
     data = {
@@ -251,7 +259,7 @@ def calendar_user_change_password(request, object_id):
         if user_password_form.is_valid():
             user_password_form.save()
             request.session["msg"] = _('%s password has been changed.' % calendar_user_username)
-            return HttpResponseRedirect('/calendar_user/')
+            return HttpResponseRedirect(redirect_url_to_calendar_user_list)
         else:
             error_pass = _('please correct the errors below.')
 
@@ -333,7 +341,7 @@ def calendar_add(request):
         if form.is_valid():
             form.save()
             request.session["msg"] = _('"%s" is added.') % request.POST['name']
-            return HttpResponseRedirect('/calendar/')
+            return HttpResponseRedirect(redirect_url_to_calendar_list)
 
     template = 'frontend/appointment/calendar/change.html'
     data = {
@@ -380,7 +388,7 @@ def calendar_del(request, object_id):
                 calendar_list.delete()
         except:
             raise Http404
-    return HttpResponseRedirect('/calendar/')
+    return HttpResponseRedirect(redirect_url_to_calendar_list)
 
 
 @permission_required('appointment.change_calendar', login_url='/')
@@ -405,14 +413,15 @@ def calendar_change(request, object_id):
     if request.method == 'POST':
         # Delete calendar
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/calendar/del/%s/' % object_id)
+            calendar_del(request, object_id)
+            return HttpResponseRedirect(redirect_url_to_calendar_list)
         else:
             # Update calendar
             form = CalendarForm(request.user, request.POST, instance=calendar)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%s" is updated.') % request.POST['name']
-                return HttpResponseRedirect('/calendar/')
+                return HttpResponseRedirect(redirect_url_to_calendar_list)
 
     template = 'frontend/appointment/calendar/change.html'
     data = {
@@ -488,7 +497,7 @@ def calendar_setting_add(request):
             obj.user = request.user
             obj.save()
             request.session["msg"] = _('"%s" is added.') % obj
-            return HttpResponseRedirect('/calendar_setting/')
+            return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
 
     template = 'frontend/appointment/calendar_setting/change.html'
     data = {
@@ -535,7 +544,7 @@ def calendar_setting_del(request, object_id):
                 calendar_setting.delete()
         except:
             raise Http404
-    return HttpResponseRedirect('/calendar_setting/')
+    return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
 
 
 @permission_required('appointment.change_calendarsetting', login_url='/')
@@ -560,14 +569,15 @@ def calendar_setting_change(request, object_id):
     if request.method == 'POST':
         # Delete calendar_setting
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/calendar_setting/del/%s/' % object_id)
+            calendar_setting_del(request, object_id)
+            return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
         else:
             # Update calendar_setting
             form = CalendarSettingForm(request.user, request.POST, instance=calendar_setting)
             if form.is_valid():
                 obj = form.save()
                 request.session["msg"] = _('"%s" is updated.') % obj
-                return HttpResponseRedirect('/calendar_setting/')
+                return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
 
     template = 'frontend/appointment/calendar_setting/change.html'
     data = {
@@ -706,7 +716,7 @@ def event_add(request):
         if form.is_valid():
             form.save()
             request.session["msg"] = _('"%s" is added.') % request.POST['title']
-            return HttpResponseRedirect('/event/')
+            return HttpResponseRedirect(redirect_url_to_event_list)
 
     template = 'frontend/appointment/event/change.html'
     data = {
@@ -753,7 +763,7 @@ def event_del(request, object_id):
                 event_list.delete()
         except:
             raise Http404
-    return HttpResponseRedirect('/event/')
+    return HttpResponseRedirect(redirect_url_to_event_list)
 
 
 @permission_required('appointment.change_event', login_url='/')
@@ -778,14 +788,15 @@ def event_change(request, object_id):
     if request.method == 'POST':
         # Delete event
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/event/del/%s/' % object_id)
+            event_del(request, object_id)
+            return HttpResponseRedirect(redirect_url_to_event_list)
         else:
             # Update event
             form = EventForm(request.user, request.POST, instance=event)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%s" is updated.') % request.POST['title']
-                return HttpResponseRedirect('/event/')
+                return HttpResponseRedirect(redirect_url_to_event_list)
 
     template = 'frontend/appointment/event/change.html'
     data = {
@@ -863,7 +874,7 @@ def alarm_add(request):
         if form.is_valid():
             obj = form.save()
             request.session["msg"] = _('"%s" is added.') % obj
-            return HttpResponseRedirect('/alarm/')
+            return HttpResponseRedirect(redirect_url_to_alarm_list)
 
     template = 'frontend/appointment/alarm/change.html'
     data = {
@@ -910,7 +921,7 @@ def alarm_del(request, object_id):
                 alarm_list.delete()
         except:
             raise Http404
-    return HttpResponseRedirect('/alarm/')
+    return HttpResponseRedirect(redirect_url_to_alarm_list)
 
 
 @permission_required('appointment.change_alarm', login_url='/')
@@ -935,14 +946,15 @@ def alarm_change(request, object_id):
     if request.method == 'POST':
         # Delete alarm
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/alarm/del/%s/' % object_id)
+            alarm_del(request, object_id)
+            return HttpResponseRedirect(redirect_url_to_alarm_list)
         else:
             # Update alarm
             form = AlarmForm(request.user, request.POST, instance=alarm)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%s" is updated.') % alarm
-                return HttpResponseRedirect('/alarm/')
+                return HttpResponseRedirect(redirect_url_to_alarm_list)
 
     template = 'frontend/appointment/alarm/change.html'
     data = {

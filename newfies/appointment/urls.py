@@ -16,33 +16,33 @@ from django.conf.urls import patterns
 
 urlpatterns = patterns('appointment.views',
 
-    (r'^calendar_user/$', 'calendar_user_list'),
-    (r'^calendar_user/add/$', 'calendar_user_add'),
-    (r'^calendar_user/del/(.+)/$', 'calendar_user_del'),
-    (r'^calendar_user/password/(.+)/$', 'calendar_user_change_password'),
-    (r'^calendar_user/(.+)/$', 'calendar_user_change'),
+    (r'^module/calendar_user/$', 'calendar_user_list'),
+    (r'^module/calendar_user/add/$', 'calendar_user_add'),
+    (r'^module/calendar_user/del/(.+)/$', 'calendar_user_del'),
+    (r'^module/calendar_user/password/(.+)/$', 'calendar_user_change_password'),
+    (r'^module/calendar_user/(.+)/$', 'calendar_user_change'),
 
     # Calendars urls
-    (r'^calendar/$', 'calendar_list'),
-    (r'^calendar/add/$', 'calendar_add'),
-    (r'^calendar/del/(.+)/$', 'calendar_del'),
-    (r'^calendar/(.+)/$', 'calendar_change'),
+    (r'^module/calendar/$', 'calendar_list'),
+    (r'^module/calendar/add/$', 'calendar_add'),
+    (r'^module/calendar/del/(.+)/$', 'calendar_del'),
+    (r'^module/calendar/(.+)/$', 'calendar_change'),
 
     # Calendar settings urls
-    (r'^calendar_setting/$', 'calendar_setting_list'),
-    (r'^calendar_setting/add/$', 'calendar_setting_add'),
-    (r'^calendar_setting/del/(.+)/$', 'calendar_setting_del'),
-    (r'^calendar_setting/(.+)/$', 'calendar_setting_change'),
+    (r'^module/calendar_setting/$', 'calendar_setting_list'),
+    (r'^module/calendar_setting/add/$', 'calendar_setting_add'),
+    (r'^module/calendar_setting/del/(.+)/$', 'calendar_setting_del'),
+    (r'^module/calendar_setting/(.+)/$', 'calendar_setting_change'),
 
     # Events urls
-    (r'^event/$', 'event_list'),
-    (r'^event/add/$', 'event_add'),
-    (r'^event/del/(.+)/$', 'event_del'),
-    (r'^event/(.+)/$', 'event_change'),
+    (r'^module/event/$', 'event_list'),
+    (r'^module/event/add/$', 'event_add'),
+    (r'^module/event/del/(.+)/$', 'event_del'),
+    (r'^module/event/(.+)/$', 'event_change'),
 
     # Alarms urls
-    (r'^alarm/$', 'alarm_list'),
-    (r'^alarm/add/$', 'alarm_add'),
-    (r'^alarm/del/(.+)/$', 'alarm_del'),
-    (r'^alarm/(.+)/$', 'alarm_change'),
+    (r'^module/alarm/$', 'alarm_list'),
+    (r'^module/alarm/add/$', 'alarm_add'),
+    (r'^module/alarm/del/(.+)/$', 'alarm_del'),
+    (r'^module/alarm/(.+)/$', 'alarm_change'),
 )

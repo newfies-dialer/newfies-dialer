@@ -47,6 +47,7 @@ import csv
 import os
 
 testdebug = False
+redirect_url_to_survey_list = '/module/survey/'
 
 
 def getaudio_acapela(text, tts_language='en'):
@@ -133,7 +134,8 @@ def survey_add(request):
             obj.save()
             request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}
-            return HttpResponseRedirect('/survey/%s/' % (obj.id))
+            return HttpResponseRedirect(
+                redirect_url_to_survey_list + '%s/' % (obj.id))
     template = 'frontend/survey/survey_change.html'
     data = {
         'form': form,
@@ -198,7 +200,7 @@ def survey_del(request, object_id):
         except:
             raise Http404
 
-    return HttpResponseRedirect('/survey/')
+    return HttpResponseRedirect(redirect_url_to_survey_list)
 
 
 def section_add_form(request, Form, survey, section_type):
@@ -307,7 +309,7 @@ def section_add(request):
                 section_add_form(request, CallTransferSectionForm, survey, SECTION_TYPE.CALL_TRANSFER)
 
         if form_data.get('save_tag'):
-            return HttpResponseRedirect('/survey/%s/#row%s'
+            return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                 % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
         else:
             form = form_data['form']
@@ -446,7 +448,7 @@ def section_change(request, id):
                 ConferenceSectionForm, SECTION_TYPE.CONFERENCE, section)
 
         if form_data.get('save_tag'):
-            return HttpResponseRedirect('/survey/%s/#row%s'
+            return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                 % (section.survey_id, section.id))
         else:
             form = form_data['form']
@@ -494,7 +496,7 @@ def section_delete(request, id):
         # 2) delete section
         section.delete()
         request.session["msg"] = _('section is deleted successfully.')
-        return HttpResponseRedirect('/survey/%s/' % (survey_id))
+        return HttpResponseRedirect(redirect_url_to_survey_list + '%s/' % (survey_id))
 
     template = 'frontend/survey/section_delete_confirmation.html'
     data = {
@@ -528,7 +530,7 @@ def section_script_change(request, id):
         if form.is_valid():
             obj = form.save()
             request.session["msg"] = _('script updated.')
-            return HttpResponseRedirect('/survey/%s/#row%s'
+            return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                 % (obj.survey_id, obj.id))
         else:
             request.session["err_msg"] = True
@@ -629,8 +631,8 @@ def section_branch_add(request):
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('branching is added successfully.')
-                return HttpResponseRedirect('/survey/%s/#row%s'
-                                        % (section.survey_id, section_id))
+                return HttpResponseRedirect(
+                    redirect_url_to_survey_list + '%s/#row%s' % (section.survey_id, section_id))
             else:
                 form._errors["keys"] = _("duplicate record keys with goto.")
                 request.session["err_msg"] = True
@@ -675,7 +677,7 @@ def section_branch_change(request, id):
         section_id = branching_obj.section_id
         branching_obj.delete()
         request.session["msg"] = _('branching is deleted successfully.')
-        return HttpResponseRedirect('/survey/%s/#row%s'
+        return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                                     % (survey_id, section_id))
 
     branching = get_object_or_404(Branching_template, id=int(id),
@@ -691,7 +693,7 @@ def section_branch_change(request, id):
         if form.is_valid():
             form.save()
             request.session["msg"] = _('branching updated.')
-            return HttpResponseRedirect('/survey/%s/#row%s'
+            return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                                         % (branching.section.survey_id,
                                            branching.section_id))
         else:
@@ -744,14 +746,15 @@ def survey_change(request, object_id):
 
     if request.method == 'POST':
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/survey/del/%s/' % object_id)
+            survey_del(request, object_id)
+            return HttpResponseRedirect(redirect_url_to_survey_list)
         else:
             form = SurveyForm(request.POST, request.user, instance=survey)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.')\
                     % {'name': request.POST['name']}
-                return HttpResponseRedirect('/survey/')
+                return HttpResponseRedirect(redirect_url_to_survey_list)
 
     template = 'frontend/survey/survey_change.html'
 
@@ -1309,7 +1312,7 @@ def import_survey(request):
 
             # connect post_save_add_script signal with Section_template
             post_save.connect(post_save_add_script, sender=Section_template)
-            return HttpResponseRedirect('/survey/')
+            return HttpResponseRedirect(redirect_url_to_survey_list)
         else:
             request.session["err_msg"] = True
 
@@ -1383,7 +1386,7 @@ def freeze_survey(request, object_id):
 
             request.session['msg'] = '(%s) survey is forzen successfully' % survey_template.name
 
-            return HttpResponseRedirect('/survey/')
+            return HttpResponseRedirect(redirect_url_to_survey_list)
         else:
             request.session['err_msg'] = True
 

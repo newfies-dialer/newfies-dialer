@@ -181,13 +181,14 @@ def audio_change(request, object_id):
 
     if request.method == 'POST':
         if request.POST.get('delete'):
-            return HttpResponseRedirect(audio_redirect_url + 'del/%s/' % object_id)
-
-        form = DialerAudioFileForm(
-            request.POST, request.FILES, instance=obj)
-        if form.is_valid():
-            form.save()
+            audio_change(request, object_id)
             return HttpResponseRedirect(audio_redirect_url)
+        else:
+            form = DialerAudioFileForm(
+                request.POST, request.FILES, instance=obj)
+            if form.is_valid():
+                form.save()
+                return HttpResponseRedirect(audio_redirect_url)
 
     template = 'frontend/audio/audio_change.html'
     data = {

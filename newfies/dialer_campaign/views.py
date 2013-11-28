@@ -180,12 +180,12 @@ def _return_link(app_name, obj_id):
     link = ''
     # Object view links
     if app_name == 'survey':
-        link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
+        link = '<a href="/module/survey_view/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
             (obj_id, _('survey').title(), tpl_control_icon('zoom.png'))
 
     # Object edit links
     if app_name == 'survey_template':
-        link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
+        link = '<a href="/module/survey/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
             (obj_id, _('edit survey').title(), tpl_control_icon('zoom.png'))
 
     return link

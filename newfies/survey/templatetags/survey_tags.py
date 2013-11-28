@@ -138,6 +138,6 @@ def link_of_survey_view(survey_id):
     """
     create survey view link
     """
-    link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
+    link = '<a href="/module/survey_view/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
         (survey_id, _('view freeze survey').capitalize(), tpl_control_icon('zoom.png'))
     return link

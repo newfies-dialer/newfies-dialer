@@ -192,7 +192,8 @@ def dnc_change(request, object_id):
     form = DNCForm(instance=dnc)
     if request.method == 'POST':
         if request.POST.get('delete'):
-            return HttpResponseRedirect(dnc_list_redirect_url + 'del/%s/' % object_id)
+            dnc_del(request, object_id)
+            return HttpResponseRedirect(dnc_list_redirect_url)
         else:
             form = DNCForm(request.POST, instance=dnc)
             if form.is_valid():
@@ -425,7 +426,8 @@ def dnc_contact_change(request, object_id):
     if request.method == 'POST':
         # Delete dnc contact
         if request.POST.get('delete'):
-            return HttpResponseRedirect(dnc_contact_redirect_url + 'del/%s/' % object_id)
+            dnc_contact_del(request, object_id)
+            return HttpResponseRedirect(dnc_contact_redirect_url)
         else:
             # Update dnc contact
             form = DNCContactForm(request.user, request.POST, instance=dnc_contact)

@@ -33,6 +33,8 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import get_pagination_vars
 #import json
 
+redirect_url_to_agent_list = '/module/agent/'
+
 
 def agent_login_form(request):
     """agent login Page"""
@@ -128,7 +130,7 @@ def agent_change_password(request, object_id):
         if user_password_form.is_valid():
             user_password_form.save()
             request.session["msg"] = _('%s password has been changed.' % agent_username)
-            return HttpResponseRedirect('/agent/')
+            return HttpResponseRedirect(redirect_url_to_agent_list)
         else:
             error_pass = _('please correct the errors below.')
 
@@ -244,7 +246,7 @@ def agent_detail_change(request):
            context_instance=RequestContext(request))
 
 
-@permission_required('user_profile.view_agent', login_url='/')
+@permission_required('agent.view_agent', login_url='/')
 @login_required
 def agent_list(request):
     """Agent list for the logged in Manager
@@ -259,8 +261,8 @@ def agent_list(request):
     """
     sort_col_field_list = ['user', 'status', 'contact', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
@@ -315,7 +317,7 @@ def agent_add(request):
 
             request.session["msg"] = _('"%(name)s" added as agent.') %\
                 {'name': request.POST['username']}
-            return HttpResponseRedirect('/agent/%s/' % str(new_agent_profile.id))
+            return HttpResponseRedirect(redirect_url_to_agent_list + '%s/' % str(new_agent_profile.id))
 
     template = 'frontend/agent/change.html'
     data = {
@@ -370,7 +372,7 @@ def agent_del(request, object_id):
         except:
             raise Http404
 
-    return HttpResponseRedirect('/agent/')
+    return HttpResponseRedirect(redirect_url_to_agent_list)
 
 
 @permission_required('agent.change_agentprofile', login_url='/')
@@ -400,7 +402,7 @@ def agent_change(request, object_id):
     if request.method == 'POST':
         if request.POST.get('delete'):
             agent_del(request, object_id)
-            return HttpResponseRedirect('/agent/')
+            return HttpResponseRedirect(redirect_url_to_agent_list)
         else:
             form = AgentChangeDetailExtendForm(request.user, request.POST,
                                                instance=agent_profile)
@@ -417,7 +419,7 @@ def agent_change(request, object_id):
                     form.save()
                     request.session["msg"] = _('"%(name)s" is updated.') \
                         % {'name': agent_profile.user}
-                    return HttpResponseRedirect('/agent/')
+                    return HttpResponseRedirect(redirect_url_to_agent_list)
 
     template = 'frontend/agent/change.html'
     data = {

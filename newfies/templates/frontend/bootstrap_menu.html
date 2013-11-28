@@ -54,7 +54,7 @@
                 <ul class="dropdown-menu">
 
                     {% if perms.survey.view_survey %}
-                        <li class="{% ifcontains '/survey/' %}active{% endifcontains %}"><a href="/survey/">{% trans "survey"|title %}</a></li>
+                        <li class="{% ifcontains '/survey/' %}active{% endifcontains %}"><a href="/module/survey/">{% trans "survey"|title %}</a></li>
                     {% endif %}
 
                     {% if perms.audiofield.view_audio %}
@@ -66,11 +66,11 @@
                     {% endif %}
 
                     {% if perms.appointment.view_event %}
-                        <li class="{% ifcontains '/event/' %}active{% endifcontains %}"><a href="/event/">{% trans "appointment"|title %}</a></li>
+                        <li class="{% ifcontains '/event/' %}active{% endifcontains %}"><a href="/module/event/">{% trans "appointment"|title %}</a></li>
                     {% endif %}
 
                     {% if perms.agent.view_agent %}
-                        <li class="{% ifcontains '/agent/' %}active{% endifcontains %}"><a href="/agent/">{% trans "callcenter"|title %}</a></li>
+                        <li class="{% ifcontains '/agent/' %}active{% endifcontains %}"><a href="/module/agent/">{% trans "callcenter"|title %}</a></li>
                     {% endif %}
 
                     <li class="divider"></li>

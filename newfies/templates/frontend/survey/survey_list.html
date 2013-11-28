@@ -29,7 +29,7 @@ function delete_button(){
                     <li><a href="#" onclick="delete_button()">{% trans "delete survey"|title %}</a></li>
                 {% endif %}
                 <li>
-                    <a href="#survey-import" url="/import_survey/" class="survey-import" data-toggle="modal" data-controls-modal="survey-import" title="{% trans "import survey"|title %}">{% trans "import survey"|title %}</a>
+                    <a href="#survey-import" url="/module/import_survey/" class="survey-import" data-toggle="modal" data-controls-modal="survey-import" title="{% trans "import survey"|title %}">{% trans "import survey"|title %}</a>
                 </li>
             </ul>
         </div>
@@ -74,11 +74,11 @@ function delete_button(){
                                     {% endif %}
 
                                     {% if perms.survey.export_survey %}
-                                        <a href="/export_survey/{{ row.id }}/" target="_blank" {% icon "database_go" %} title="{% trans "export survey"|title %}"></a>
+                                        <a href="/module/export_survey/{{ row.id }}/" target="_blank" {% icon "database_go" %} title="{% trans "export survey"|title %}"></a>
                                     {% endif %}
 
                                     {% if perms.survey.freeze_survey %}
-                                        <a id="id_survey_freeze_{{ row.id }}" href="#survey-freeze" url="/freeze_survey/{{ row.id }}/" {% icon "layers" %} title="{% trans "freeze survey"|title %}" data-toggle="modal" data-controls-modal="survey-freeze"></a>
+                                        <a id="id_survey_freeze_{{ row.id }}" href="#survey-freeze" url="/module/freeze_survey/{{ row.id }}/" {% icon "layers" %} title="{% trans "freeze survey"|title %}" data-toggle="modal" data-controls-modal="survey-freeze"></a>
                                         <!--Survey freeze modal-->
                                         <script type="text/javascript" charset="utf-8">
                                             $("#id_survey_freeze_{{ row.id }}").live('click', function(e) {

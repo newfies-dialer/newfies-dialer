@@ -98,13 +98,15 @@ footer {
 }
 
 
+/* Purple style */
+
 .navbar-nav > .active > a, .navbar-nav > .active > a:hover {
     color: #fff;
     background-color: #463265;
 }
 
 .navbar-inverse {
-    background-color: #563d7c;
+    background-color: #6E5396;
     border-color: #463265;
 }
 
@@ -129,3 +131,39 @@ footer {
 .jumbotron {
     background-color: #F8F4FF;
 }
+
+a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.active:focus {
+    background-color: #8D73B3;
+    border-color: #6E5396;
+}
+
+.btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
+    color: #ffffff;
+    background-color: #6E5396;
+    border-color: #6E5396;
+}
+
+.btn-primary {
+    color: #ffffff;
+    background-color: #6E5396;
+    border-color: #6E5396;
+}
+
+.nav .caret {
+    border-top-color: #401F72;
+    border-bottom-color: #401F72;
+}
+
+.btn-info, .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info {
+    color: #ffffff;
+    background-color: #8D73B3;
+    border-color: #6E5396;
+}
+
+.navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
+color: #ffffff;
+background-color: #483269;
+}
+
+/* End Purple style */
+/*#563d7c -> 6E5396*/

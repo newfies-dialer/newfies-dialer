@@ -53,19 +53,19 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
 
     def test_audiofile_view_list(self):
         """Test Function to check audio list"""
-        response = self.client.get('/audio/')
+        response = self.client.get('/module/audio/')
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.context['module'], 'audio_list')
         self.assertTemplateUsed(response, 'frontend/audio/audio_list.html')
 
-        request = self.factory.get('/audio/')
+        request = self.factory.get('/module/audio/')
         request.user = self.user
         request.session = {}
         response = audio_list(request)
         self.assertEqual(response.status_code, 200)
 
     def test_audiofile_view_add(self):
-        request = self.factory.post('/audio/add/',
+        request = self.factory.post('/module/audio/add/',
             {'name': 'sample_audio_file',
              'audio_file': audio_file,
              'convert_type': 2,
@@ -81,7 +81,7 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         self.user = User.objects.get(pk=1)
         obj = AudioFile(name='sample_audio', user=self.user)
         obj.save()
-        request = self.factory.post('/audio/%s/' % str(obj.id),
+        request = self.factory.post('/module/audio/%s/' % str(obj.id),
             {'name': 'sample_audio'},
             follow=True)
         request.user = self.user
@@ -89,7 +89,7 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         response = audio_change(request, obj.id)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/audio/%s/' % str(obj.id),
+        request = self.factory.post('/module/audio/%s/' % str(obj.id),
             {'delete': 'true'}, follow=True)
         request.user = self.user
         request.session = {}
@@ -98,7 +98,7 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
 
     def test_audiofile_view_bulk_del(self):
         """Test Function to check audio delete"""
-        request = self.factory.post('/audio/del/', {'select': '1'},
+        request = self.factory.post('/module/audio/del/', {'select': '1'},
             follow=True)
         request.user = self.user
         request.session = {}
@@ -109,7 +109,7 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         self.user = User.objects.get(pk=1)
         obj = AudioFile(name='sample_audio', user=self.user)
         obj.save()
-        request = self.factory.post('/audio/del/%s/' % str(obj.id), {},
+        request = self.factory.post('/module/audio/del/%s/' % str(obj.id), {},
             follow=True)
         request.user = self.user
         request.session = {}

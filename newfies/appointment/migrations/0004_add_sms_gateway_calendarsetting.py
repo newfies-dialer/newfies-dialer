@@ -10,7 +10,7 @@ class Migration(SchemaMigration):
     def forwards(self, orm):
         # Adding field 'CalendarSetting.sms_gateway'
         db.add_column('calendar_setting', 'sms_gateway',
-                      self.gf('django.db.models.fields.related.ForeignKey')(default=0, related_name='sms_gateway', to=orm['sms.Gateway']),
+                      self.gf('django.db.models.fields.related.ForeignKey')(default=1, related_name='sms_gateway', to=orm['sms.Gateway']),
                       keep_default=False)
 
 

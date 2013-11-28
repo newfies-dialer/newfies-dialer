@@ -41,7 +41,7 @@ class CalendarSetting(models.Model):
     callerid = models.CharField(max_length=80, blank=True,
                                 verbose_name=_("callerID"),
                                 help_text=_("outbound caller-ID"))
-    caller_name = models.CharField(max_length=80, blank=True,
+    caller_name = models.CharField(max_length=80,
                                    verbose_name=_("caller name"),
                                    help_text=_("outbound caller-Name"))
     call_timeout = models.IntegerField(default='60', null=False, blank=False,

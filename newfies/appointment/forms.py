@@ -44,6 +44,7 @@ class CalendarUserCreationForm(UserCreationForm):
 
         cal_setting_list = []
         setting_list = CalendarSetting.objects.filter(user=manager)
+
         for i in setting_list:
             cal_setting_list.append((i.id, i.caller_name))
 

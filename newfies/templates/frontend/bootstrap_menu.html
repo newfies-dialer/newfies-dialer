@@ -66,7 +66,7 @@
                     {% endif %}
 
                     {% if perms.appointment.view_event %}
-                        <li class="{% ifcontains '/event/' %}active{% endifcontains %}"><a href="/event/">{% trans "appointment"|title %}</a></li>
+                        <li class="{% ifcontains '/event/' %}active{% endifcontains %}"><a href="/module/event/">{% trans "appointment"|title %}</a></li>
                     {% endif %}
 
                     {% if perms.agent.view_agent %}

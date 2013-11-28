@@ -55,12 +55,12 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
     """
     def test_agent_view_list(self):
         """Test Function to check Agent list"""
-        response = self.client.get('/agent/')
+        response = self.client.get('/module/agent/')
         self.assertEqual(response.context['module'], 'agent_list')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/agent/list.html')
 
-        request = self.factory.get('/agent/')
+        request = self.factory.get('/module/agent/')
         request.user = self.user
         request.session = {}
         response = agent_list(request)
@@ -68,7 +68,7 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
 
     def test_agent_view_add(self):
         """Test Function to check add agent"""
-        response = self.client.get('/agent/add/')
+        response = self.client.get('/module/agent/add/')
         self.assertEqual(response.context['action'], 'add')
         self.assertEqual(response.status_code, 200)
         response = self.client.post('/agent/add/',
@@ -77,7 +77,7 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
                                           'password2': '1234'})
         self.assertEqual(response.status_code, 302)
 
-        request = self.factory.get('/agent/add/')
+        request = self.factory.get('/module/agent/add/')
         request.user = self.user
         request.session = {}
         response = agent_add(request)
@@ -99,25 +99,25 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         # delete agent through agent_change
-        request = self.factory.post('/agent/1/',
+        request = self.factory.post('/module/agent/1/',
                                     data={'delete': True}, follow=True)
         request.user = self.user
         request.session = {}
         response = agent_change(request, 1)
-        self.assertEqual(response['Location'], '/agent/')
+        self.assertEqual(response['Location'], '/module/module/agent/')
         self.assertEqual(response.status_code, 302)
 
     def test_agent_view_delete(self):
         """Test Function to check delete agent"""
-        request = self.factory.get('/agent/del/1/')
+        request = self.factory.get('/module/agent/del/1/')
         request.user = self.user
         request.session = {}
         response = agent_del(request, 1)
         self.assertEqual(response.status_code, 302)
 
-        request = self.factory.post('/agent/del/', {'select': '1'})
+        request = self.factory.post('/module/agent/del/', {'select': '1'})
         request.user = self.user
         request.session = {}
         response = agent_del(request, 0)
-        self.assertEqual(response['Location'], '/agent/')
+        self.assertEqual(response['Location'], '/module/agent/')
         self.assertEqual(response.status_code, 302)

@@ -9,7 +9,9 @@
             {% endif %}
             {% if perms.dialer_contact.view_contact %}
                 <a class="list-group-item {% ifcontains '/contact/' %}active{% endifcontains %}" href="/contact/">{% trans "contacts"|title %}</a>
+                <a class="list-group-item {% ifcontains '/contact/import/' %}active{% endifcontains %}" href="/contact/import/">{% trans "import contacts"|title %}</a>
             {% endif %}
+
         {% endif %}
 
         {% if "/dnc_list/" in request.path or "/dnc_contact/" in request.path %}

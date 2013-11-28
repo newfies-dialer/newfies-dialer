@@ -532,7 +532,9 @@ function FSMCall:next_node()
 
         -- Save the result to Alarm model
         if self.db.event_alarm and self.db.event_alarm.alarm_id then
+            self.db:connect()
             self.db:save_alarm_result(self.db.event_alarm.alarm_id, digits)
+            self.db:disconnect()
         end
 
     elseif current_node.type == CAPTURE_DIGITS then

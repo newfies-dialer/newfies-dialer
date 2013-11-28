@@ -63,9 +63,6 @@ function delete_button()
                 {% if perms.dialer_contact.delete_contact %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
-                <li>
-                    <a href="import/">{% trans "import contact"|title %}</a>
-                </li>
             </ul>
         </div>
         {% if perms.dialer_contact.add_contact %}

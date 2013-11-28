@@ -399,11 +399,9 @@ def process_callevent(record):
         billsec=billsec,
         amd_status=amd_status)
 
-    #TODO: Move this to tasks?
-
     #If the call failed we will check if we want to make a retry call
     #Add condition to retry when it s machine and we want to reach a human
-    if (opt_hangup_cause != 'NORMAL_CLEARING' and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
+    if (app_type == 'campaign' and opt_hangup_cause != 'NORMAL_CLEARING' and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
        (amd_status == 'machine' and callrequest.campaign.voicemail
        and callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
         #Update to Retry Done
@@ -451,12 +449,17 @@ def process_callevent(record):
             init_callrequest.apply_async(
                 args=[new_callrequest.id, callrequest.campaign.id, callrequest.campaign.callmaxduration],
                 countdown=second_towait)
-    else:
-        #The Call is Answered
+
+    elif app_type == 'campaign':
+        #The Call is Answered and it's a campaign call
         logger.debug("Check for completion call")
 
         #Check if we should relaunch a new call to achieve completion
         check_retrycall_completion(callrequest)
+
+    elif opt_hangup_cause != 'NORMAL_CLEARING' and app_type == 'alarm':
+        #
+        check_retry_alarm(alarm_request_id)
 
 
 # OPTIMIZATION - TO REVIEW

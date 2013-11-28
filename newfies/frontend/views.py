@@ -144,8 +144,6 @@ def pleaselog(request):
 def customer_dashboard(request, on_index=None):
     """Customer dashboard gives the following information
 
-        * No of Campaigns for logged in user
-        * Total phonebook contacts
         * Total Campaigns contacts
         * Amount of contact reached today
         * Disposition of calls via pie chart
@@ -160,16 +158,12 @@ def customer_dashboard(request, on_index=None):
     # All campaign for logged in User
     campaign_id_list = Campaign.objects.values_list('id', flat=True)\
         .filter(user=request.user).order_by('id')
-    campaign_count = campaign_id_list.count()
 
     # Contacts count which are active and belong to those phonebook(s) which is
     # associated with all campaign
     pb_active_contact_count = Contact.objects\
         .filter(phonebook__campaign__in=campaign_id_list, status=CONTACT_STATUS.ACTIVE)\
         .count()
-
-    total_of_phonebook_contacts =\
-        Contact.objects.filter(phonebook__user=request.user).count()
 
     form = DashboardForm(request.user)
     logging.debug('Got Campaign list')
@@ -476,8 +470,6 @@ def customer_dashboard(request, on_index=None):
     data = {
         'form': form,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
-        'campaign_count': campaign_count,
-        'total_of_phonebook_contacts': total_of_phonebook_contacts,
         'campaign_phonebook_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
         'total_duration_sum': total_duration_sum,

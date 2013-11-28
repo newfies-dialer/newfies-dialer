@@ -396,7 +396,6 @@ def sms_dashboard(request, on_index=None):
     # All sms_campaign for logged in User
     sms_campaign_id_list = SMSCampaign.objects.values_list('id', flat=True)\
         .filter(user=request.user).order_by('id')
-    sms_campaign_count = sms_campaign_id_list.count()
 
     # Contacts count which are active and belong to those phonebook(s) which is
     # associated with all sms campaign
@@ -404,13 +403,9 @@ def sms_dashboard(request, on_index=None):
         phonebook__smscampaign__in=sms_campaign_id_list,
         status=CONTACT_STATUS.ACTIVE).count()
 
-    total_of_phonebook_contacts = Contact.objects.filter(
-        phonebook__user=request.user).count()
-
     form = SMSDashboardForm(request.user)
 
     total_record = dict()
-
     total_sms_count = 0
     total_unsent = 0
     total_sent = 0
@@ -665,8 +660,6 @@ def sms_dashboard(request, on_index=None):
         'form': form,
         'SEARCH_TYPE': SEARCH_TYPE,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
-        'sms_campaign_count': sms_campaign_count,
-        'total_of_phonebook_contacts': total_of_phonebook_contacts,
         'pb_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
         'total_record': total_record,

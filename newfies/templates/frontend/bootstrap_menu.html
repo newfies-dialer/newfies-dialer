@@ -54,7 +54,7 @@
                 <ul class="dropdown-menu">
 
                     {% if perms.survey.view_survey %}
-                        <li class="{% ifcontains '/survey/' %}active{% endifcontains %}"><a href="/survey/">{% trans "survey"|title %}</a></li>
+                        <li class="{% ifcontains '/survey/' %}active{% endifcontains %}"><a href="/module/survey/">{% trans "survey"|title %}</a></li>
                     {% endif %}
 
                     {% if perms.audiofield.view_audio %}

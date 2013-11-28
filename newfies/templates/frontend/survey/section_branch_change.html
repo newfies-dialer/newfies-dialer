@@ -29,7 +29,7 @@
             $(window).load(function(){
                 $('#section-modal').modal('show');
             });
-            var url = '/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
+            var url = '/module/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
             $("#id_close,#id_close_x").live('click', function() {
                 $(location).attr('href', url);
             });

@@ -17,15 +17,15 @@ from django.conf.urls import patterns
 
 urlpatterns = patterns('survey.views',
     # Survey urls
-    (r'^survey/$', 'survey_list'),
-    (r'^survey/add/$', 'survey_add'),
-    (r'^survey_view/(.+)/$', 'survey_view'),
-    (r'^survey/del/(.+)/$', 'survey_del'),
-    (r'^survey/(.+)/$', 'survey_change'),
-    (r'^export_survey/(.+)/$', 'export_survey'),
-    (r'^import_survey/$', 'import_survey'),
-    (r'^frozen_survey/$', 'frozen_survey_list'),
-    (r'^freeze_survey/(.+)/$', 'freeze_survey'),
+    (r'^module/survey/$', 'survey_list'),
+    (r'^module/survey/add/$', 'survey_add'),
+    (r'^module/survey_view/(.+)/$', 'survey_view'),
+    (r'^module/survey/del/(.+)/$', 'survey_del'),
+    (r'^module/survey/(.+)/$', 'survey_change'),
+    (r'^module/export_survey/(.+)/$', 'export_survey'),
+    (r'^module/import_survey/$', 'import_survey'),
+    (r'^module/frozen_survey/$', 'frozen_survey_list'),
+    (r'^module/freeze_survey/(.+)/$', 'freeze_survey'),
 
     # Section urls
     (r'^section/add/$', 'section_add'),

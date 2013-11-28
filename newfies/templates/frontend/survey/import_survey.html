@@ -28,7 +28,7 @@
                 $(window).load(function(){
                     $('#survey-import-modal').modal('show');
                 });
-                var url = '/survey/';
+                var url = '/module/survey/';
                 $("#id_close,#id_close_x").live('click', function() {
                     $(location).attr('href', url);
                 });
@@ -47,7 +47,7 @@
                     <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
                     <h3>{% trans "import survey"|title %}</h3>
                 </div>
-                <form method="post" role="form" action="/import_survey/" enctype="multipart/form-data" >{% csrf_token %}
+                <form method="post" role="form" action="/module/import_survey/" enctype="multipart/form-data" >{% csrf_token %}
                     <div class="modal-body">
                         {% for field in form %}
                         <div class="form-group {% if field.errors %}has-error{% endif %}">

@@ -319,6 +319,8 @@ def process_callevent(record):
     if callrequest.alarm_request_id:
         app_type = 'alarm'
         alarm_req = AlarmRequest.objects.get(pk=callrequest.alarm_request_id)
+        #Overwrite alarm_request_id as this is equal to 0 when call fails
+        alarm_request_id = callrequest.alarm_request_id
 
     logger.debug("Find Callrequest id : %d" % callrequest.id)
     debug_query(23)
@@ -808,4 +810,4 @@ def check_retry_alarm(alarm_request_id):
             # TODO: send SMS to PN obj_alarmreq.alarm.phonenumber_sms_failure
             # SMS text will be :
             # "we haven't been able to reach "obj_alarmreq.alarm.alarm_phonenumber" after trying obj_alarmreq.alarm.num_attempt times"
-            print "send SMS"
+            print "send SMS Failure alarm"

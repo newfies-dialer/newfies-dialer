@@ -134,14 +134,18 @@
             </div>
 
             <div id="tabs-3" class="tab-pane {% if action == 'tabs-3' %}active{% endif %}">
+
+                <legend>{% trans "voicemail settings"|title %}</legend>
+
                 <div class="row">
                     <div class="col-md-6">
                         <div class="col-xs-10">
                             <div class="btn-group" data-toggle="buttons">
                                 {% get_fieldset voicemail as settings_fields from form %}
                                 {% for field in settings_fields %}
-                                    <label class="btn btn-primary {% if field.value %}active{% endif %}">
-                                        {{ field }} {{ field.label }}
+                                    <b> {{ field.label|title }} </b>
+                                    <label class="btn btn-default {% if field.value %}active{% endif %}">
+                                        {{ field }} Enabled
                                     </label>
                                 {% endfor %}
                             </div>
@@ -188,6 +192,32 @@
             </div>
 
             <div id="tabs-4" class="tab-pane {% if action == 'tabs-4' %}active{% endif %}">
+
+                <legend>{% trans "schedule settings"|title %}</legend>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-xs-10">
+                            <label>{% trans "week days"|title %}<label>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="col-xs-10">
+                            <div class="btn-group" data-toggle="buttons">
+                                {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
+                                {% for field in settings_fields %}
+                                    <label class="btn btn-default {% if field.value %}active{% endif %}">
+                                        {{ field }} {{ field.label }}
+                                    </label>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <br/>
+
                 <div class="row">
                     {% get_fieldset startingdate,expirationdate,daily_start_time,daily_stop_time as date_fields from form %}
                     {% for field in date_fields %}
@@ -210,31 +240,12 @@
                     {% endfor %}
                 </div>
 
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-xs-10">
-                            <label>{% trans "week days"|title %}<label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-xs-10">
-                            <div class="btn-group" data-toggle="buttons">
-                                {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
-                                {% for field in settings_fields %}
-                                    <label class="btn btn-primary {% if field.value %}active{% endif %}">
-                                        {{ field }} {{ field.label }}
-                                    </label>
-                                {% endfor %}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
             <div id="tabs-5" class="tab-pane {% if action == 'tabs-5' %}active{% endif %}">
+
+                <legend>{% trans "callcenter settings"|title %}</legend>
+
                 <div class="row">
                     {% get_fieldset agent_script,lead_disposition,external_link as callcenter_settings_fields from form %}
                     {% for field in callcenter_settings_fields %}

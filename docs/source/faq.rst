@@ -174,9 +174,33 @@ Create a new file /usr/share/newfies-lua/libs/acapela_config.lua and add the fol
     Change the value of the settings : ACCOUNT_LOGIN, APPLICATION_LOGIN, APPLICATION_PASSWORD and optionally, ACAPELA_LANG.
 
 
-
 Finally restart the web UI:::
 
     /etc/init.d/supervisor stop
     and
     /etc/init.d/supervisor start
+
+
+.. _faq-how-retry-works:
+
+
+How retry works?
+----------------
+
+**Answer:** .
+
+There is 2 systems available to retry calls:
+
+Basic retry::
+
+    Basic retry just look if we have been able to call and reach the person,
+    in other words if the call has been answered, so even if the person pickup
+    the phone for 1 second it will still be considered as successful call,
+    if the call is not answered, busy or cannot be reached it will be considered
+    as Failure and it will retry for the amount of time defined in the campaign.
+
+Completion retry::
+
+    This feature work with the survey editor, when you edit a survey when adding
+    a section you can set if the section is "Completed", that way we can know if
+    the answered call reached a certain level in the callflow.

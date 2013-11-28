@@ -62,7 +62,7 @@
                     {% endif %}
 
                     {% if perms.dnc.view_dnc_list %}
-                        <li class="{% ifcontains '/dnc_list/' %}active{% endifcontains %}"><a href="/dnc_list/">{% trans "dnc"|upper %}</a></li>
+                        <li class="{% ifcontains '/dnc_list/' %}active{% endifcontains %}"><a href="/module/dnc_list/">{% trans "dnc"|upper %}</a></li>
                     {% endif %}
 
                     {% if perms.appointment.view_event %}

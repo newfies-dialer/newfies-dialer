@@ -68,7 +68,7 @@ function delete_button()
                     <a href="import/">{% trans "dnc"|upper %} {% trans "import"|capfirst %}</a>
                 </li>
                 <li>
-                    <a href="export_view/">{% trans "export"|capfirst %} {% trans "dnc"|upper %}</a>
+                    <a href="export_view/">{% trans "dnc"|upper %} {% trans "export"|capfirst %}</a>
                 </li>
             </ul>
         </div>
@@ -105,10 +105,10 @@ function delete_button()
                                 <td>{{ row.phone_number }}</td>
                                 <td>{{ row.updated_date }}</td>
                                 <td>
-                                    {% if perms.dnc.change_dnc_contact %}
+                                    {% if perms.dnc.change_dnccontact %}
                                         <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update dnc contact"|title %}"></a>
                                     {% endif %}
-                                    {% if perms.dnc.delete_dnc_contact %}
+                                    {% if perms.dnc.delete_dnccontact %}
                                         <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete dnc contact"|title %}"></a>
                                     {% endif %}
                                 </td>

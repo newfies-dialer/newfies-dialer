@@ -30,6 +30,9 @@ from common.common_constants import EXPORT_CHOICE
 import tablib
 import csv
 
+dnc_list_redirect_url = '/module/dnc_list/'
+dnc_contact_redirect_url = '/module/dnc_contact/'
+
 
 @permission_required('dnc.view_dnc_list', login_url='/')
 @login_required
@@ -46,14 +49,12 @@ def dnc_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
-    dnc_list = DNC.objects\
-        .filter(user=request.user).order_by(sort_order)
+    dnc_list = DNC.objects.filter(user=request.user).order_by(sort_order)
 
     template = 'frontend/dnc_list/list.html'
     data = {
@@ -95,7 +96,7 @@ def dnc_add(request):
             obj.save()
             request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}
-            return HttpResponseRedirect('/dnc_list/')
+            return HttpResponseRedirect(dnc_list_redirect_url)
     template = 'frontend/dnc_list/change.html'
     data = {
         'form': form,
@@ -168,7 +169,7 @@ def dnc_del(request, object_id):
         except:
             raise Http404
 
-    return HttpResponseRedirect('/dnc_list/')
+    return HttpResponseRedirect(dnc_list_redirect_url)
 
 
 @permission_required('dnc.change_dnc', login_url='/')
@@ -191,14 +192,14 @@ def dnc_change(request, object_id):
     form = DNCForm(instance=dnc)
     if request.method == 'POST':
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/dnc_list/del/%s/' % object_id)
+            return HttpResponseRedirect(dnc_list_redirect_url + 'del/%s/' % object_id)
         else:
             form = DNCForm(request.POST, instance=dnc)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.') \
                     % {'name': request.POST['name']}
-                return HttpResponseRedirect('/dnc_list/')
+                return HttpResponseRedirect(dnc_list_redirect_url)
 
     template = 'frontend/dnc_list/change.html'
     data = {
@@ -226,8 +227,7 @@ def dnc_contact_list(request):
     """
     sort_col_field_list = ['id', 'dnc', 'phone_number', 'updated_date']
     default_sort_field = 'id'
-    pagination_data =\
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
@@ -261,8 +261,9 @@ def dnc_contact_list(request):
             post_var_with_page = 1
             phone_number = request.session.get('session_phone_number')
             dnc = request.session.get('session_dnc')
-            form = DNCContactSearchForm(request.user, initial={'phone_number': phone_number,
-                                                            'dnc': dnc})
+            form = DNCContactSearchForm(request.user,
+                                        initial={'phone_number': phone_number,
+                                                 'dnc': dnc})
         else:
             post_var_with_page = 1
             if request.method == 'GET':
@@ -345,7 +346,7 @@ def dnc_contact_add(request):
             form.save()
             request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['phone_number']}
-            return HttpResponseRedirect('/dnc_contact/')
+            return HttpResponseRedirect(dnc_contact_redirect_url)
         else:
             if len(request.POST['phone_number']) > 0:
                 error_msg = _('"%(name)s" cannot be added.') %\
@@ -393,13 +394,12 @@ def dnc_contact_del(request, object_id):
         try:
             dnc_contact_list = DNCContact.objects.extra(where=['id IN (%s)' % values])
             if dnc_contact_list:
-                request.session["msg"] =\
-                    _('%(count)s contact(s) are deleted.')\
+                request.session["msg"] = _('%(count)s contact(s) are deleted.')\
                     % {'count': dnc_contact_list.count()}
                 dnc_contact_list.delete()
         except:
             raise Http404
-    return HttpResponseRedirect('/dnc_contact/')
+    return HttpResponseRedirect(dnc_contact_redirect_url)
 
 
 @permission_required('dnc.change_dnccontact', login_url='/')
@@ -425,7 +425,7 @@ def dnc_contact_change(request, object_id):
     if request.method == 'POST':
         # Delete dnc contact
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/dnc_contact/del/%s/' % object_id)
+            return HttpResponseRedirect(dnc_contact_redirect_url + 'del/%s/' % object_id)
         else:
             # Update dnc contact
             form = DNCContactForm(request.user, request.POST, instance=dnc_contact)
@@ -433,7 +433,7 @@ def dnc_contact_change(request, object_id):
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.') \
                     % {'name': request.POST['phone_number']}
-                return HttpResponseRedirect('/dnc_contact/')
+                return HttpResponseRedirect(dnc_contact_redirect_url)
 
     template = 'frontend/dnc_contact/change.html'
     data = {

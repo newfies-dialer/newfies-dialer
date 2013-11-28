@@ -45,9 +45,12 @@
 <!--bootstrap js-->
 <script src="{{ STATIC_URL }}newfies/bootstrap/js/bootstrap.js"></script>
 <script src="{{ STATIC_URL }}newfies/js/bootbox.min.js"></script>
+<script src="{{ STATIC_URL }}newfies/js/offcanvas.js"></script>
 
 <!-- bootstrap css -->
 <link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}newfies/css/offcanvas.css" rel="stylesheet">
+
 <!-- jquery UI css-->
 <link type="text/css" href="{{ STATIC_URL }}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
 <!-- RTL -->
@@ -101,6 +104,10 @@
                 <div class="col-xs-12 col-sm-12">
             {% else %}
                 <div class="col-xs-12 col-sm-9">
+                    <!--offcanvas side menu toggle button-->
+                    <p class="pull-right visible-xs">
+                        <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">{% trans "side menu"|title %}</button>
+                    </p>
             {% endif %}
         {% else %}
             <div class="col-xs-12 col-sm-12">

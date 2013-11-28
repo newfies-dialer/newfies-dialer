@@ -19,7 +19,7 @@
 #
 
 #Set branch to install develop/master
-BRANCH='master'
+BRANCH='callcenter'
 
 # Identify Linux Distribution type
 func_identify_os() {

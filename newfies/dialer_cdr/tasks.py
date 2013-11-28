@@ -339,6 +339,8 @@ def process_callevent(record):
             callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
         callrequest.hangup_cause = opt_hangup_cause
 
+        # ...
+
         callrequest.save()
         callrequest.subscriber.save()
         debug_query(24)
@@ -574,31 +576,6 @@ def callrequest_pending(*args, **kwargs):
 """
 
 
-#TODO: Move to dialer_cdr/utils.py
-def esl_dialout(dial_command):
-    """
-    function to dialout via ESL
-    """
-    #Connect to ESL
-    import ESL
-    c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
-    # c.connected()
-    ev = c.api("bgapi", str(dial_command))
-    c.disconnect()
-
-    if ev:
-        result = ev.serialize()
-        logger.debug(result)
-        pos = result.find('Job-UUID:')
-        if pos:
-            request_uuid = result[pos + 10:pos + 46]
-        else:
-            request_uuid = 'error'
-    else:
-        request_uuid = 'error'
-    return request_uuid
-
-
 @task(ignore_result=True)
 def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=0, alarm_request_id=None):
     """
@@ -751,7 +728,26 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
             logger.warn('dial_command : %s' % dial_command)
-            request_uuid = esl_dialout(dial_command)
+
+            import ESL
+            c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
+            c.connected()
+            ev = c.api("bgapi", str(dial_command))
+            c.disconnect()
+
+            debug_query(14)
+
+            if ev:
+                result = ev.serialize()
+                logger.debug(result)
+                pos = result.find('Job-UUID:')
+                if pos:
+                    request_uuid = result[pos + 10:pos + 46]
+                else:
+                    request_uuid = 'error'
+            else:
+                request_uuid = 'error'
+
             if request_uuid and len(request_uuid) > 0 and request_uuid[:5] == 'error':
                 outbound_failure = True
             debug_query(13)
@@ -809,3 +805,4 @@ def check_retry_alarm(alarm_request_id):
             # TODO: send SMS to PN obj_alarmreq.alarm.phonenumber_sms_failure
             # SMS text will be :
             # "we haven't been able to reach "obj_alarmreq.alarm.alarm_phonenumber" after trying obj_alarmreq.alarm.num_attempt times"
+            print "send SMS"

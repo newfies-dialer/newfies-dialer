@@ -26,6 +26,8 @@ from audiofield.models import AudioFile
 from common.common_functions import get_pagination_vars
 import os.path
 
+audio_redirect_url = '/module/audio/'
+
 
 @permission_required('audiofield.view_audio', login_url='/')
 @login_required
@@ -42,8 +44,8 @@ def audio_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
-    pagination_data =\
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
@@ -91,7 +93,7 @@ def audio_add(request):
             obj.save()
             request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}
-            return HttpResponseRedirect('/audio/')
+            return HttpResponseRedirect(audio_redirect_url)
 
     template = 'frontend/audio/audio_change.html'
     data = {
@@ -128,8 +130,7 @@ def audio_del(request, object_id):
     if int(object_id) != 0:
         audio = get_object_or_404(
             AudioFile, pk=int(object_id), user=request.user)
-        request.session["msg"] = \
-            _('"%(name)s" is deleted.') % {'name': audio.name}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': audio.name}
 
         # 1) remove audio file from drive
         delete_audio_file(audio)
@@ -157,7 +158,7 @@ def audio_del(request, object_id):
         except:
             raise Http404
 
-    return HttpResponseRedirect('/audio/')
+    return HttpResponseRedirect(audio_redirect_url)
 
 
 @permission_required('audiofield.change_audiofile', login_url='/')
@@ -180,13 +181,13 @@ def audio_change(request, object_id):
 
     if request.method == 'POST':
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/audio/del/%s/' % object_id)
+            return HttpResponseRedirect(audio_redirect_url + 'del/%s/' % object_id)
 
         form = DialerAudioFileForm(
             request.POST, request.FILES, instance=obj)
         if form.is_valid():
             form.save()
-            return HttpResponseRedirect('/audio/')
+            return HttpResponseRedirect(audio_redirect_url)
 
     template = 'frontend/audio/audio_change.html'
     data = {

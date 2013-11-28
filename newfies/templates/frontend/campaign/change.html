@@ -145,7 +145,7 @@
                                 {% for field in settings_fields %}
                                     <b> {{ field.label|title }} </b>
                                     <label class="btn btn-default {% if field.value %}active{% endif %}">
-                                        {{ field }} Enabled
+                                        {{ field }} {% trans "enabled"|title %}
                                     </label>
                                 {% endfor %}
                             </div>

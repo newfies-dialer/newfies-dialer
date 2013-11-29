@@ -314,11 +314,12 @@
 
                         <!--Survey complete field -->
                         <div class="row">
-                            <div class="col-md-4">
-                                <div class="col-xs-12 form-group">
-                                    <div class="checkbox">
-                                        <label>
-                                            {{ form.completed }} {{ form.completed.label|title }}
+                            <div class="col-md-6">
+                                <div class="col-xs-10">
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <b> {{ form.completed.label|title }} </b>
+                                        <label class="btn btn-default {% if form.completed.value %}active{% endif %}">
+                                            {{ form.completed }} {% trans "completed"|title %}
                                         </label>
                                     </div>
                                 </div>

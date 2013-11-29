@@ -33,3 +33,4 @@ git+git://github.com/pinax/django-mailer
 django-activelink==0.4
 git+git://github.com/areski/django-sms-gateway.git
 django-bootstrap3-datetimepicker==2.0.0
+djangorestframework==2.3.9

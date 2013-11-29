@@ -179,7 +179,7 @@ class Section_abstract(Sortable):
     # select section
     type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE),
                                default=SECTION_TYPE.PLAY_MESSAGE,
-                               blank=True, null=True,
+                               #blank=True, null=True,
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting
     question = models.CharField(max_length=500, blank=False,

@@ -28,8 +28,8 @@ def get_audiofile_list(user):
     with default none option"""
     list_af = []
     list_af.append(('', '---'))
-    list = AudioFile.objects.values_list('id', 'name').filter(user=user).order_by('-id')
-    for i in list:
+    af_list = AudioFile.objects.values_list('id', 'name').filter(user=user).order_by('-id')
+    for i in af_list:
         list_af.append((i[0], i[1]))
     return list_af
 

@@ -18,7 +18,7 @@
 # cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
 #
 
-#Set branch to install develop/master
+#Set branch to install develop / master
 BRANCH='callcenter'
 
 # Identify Linux Distribution type

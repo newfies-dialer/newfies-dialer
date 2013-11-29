@@ -26,11 +26,9 @@
 # cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/callcenter/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
 #
 
-#Set branch to install develop/master
+#Set branch to install develop / master / callcenter
 BRANCH="callcenter"
 
-#Install mode can me either CLONE or DOWNLOAD
-INSTALL_MODE='CLONE'
 DATETIME=$(date +"%Y%m%d%H%M%S")
 INSTALL_DIR='/usr/share/newfies'
 LUA_DIR='/usr/share/newfies-lua'
@@ -551,22 +549,22 @@ func_install_source(){
     rm -rf newfies-dialer
     mkdir /var/log/newfies
 
-    case $INSTALL_MODE in
-        'CLONE')
-            git clone git://github.com/Star2Billing/newfies-dialer.git
-            #Install Develop / Master
-            if echo $BRANCH | grep -i "^develop" > /dev/null ; then
-                cd newfies-dialer
-                git checkout -b develop --track origin/develop
-            fi
-        ;;
-    esac
+    git clone git://github.com/Star2Billing/newfies-dialer.git
+    cd newfies-dialer
+
+    #Install branch develop / callcenter
+    if echo $BRANCH | grep -i "^develop" > /dev/null ; then
+        git checkout -b develop --track origin/develop
+    fi
+    if echo $BRANCH | grep -i "^callcenter" > /dev/null ; then
+        git checkout -b callcenter --track origin/callcenter
+    fi
 
     #Copy files
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
     cp -r /usr/src/newfies-dialer/lua $LUA_DIR
     cd $LUA_DIR/libs/
-    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/master/acapela.lua
+    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/$BRANCH/acapela.lua
 
     #Upload audio files
     mkdir -p /usr/share/newfies/usermedia/upload/audiofiles

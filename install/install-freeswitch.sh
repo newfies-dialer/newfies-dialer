@@ -18,7 +18,7 @@
 # cd /usr/src/ ; rm install-freeswitch.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh ; chmod +x install-freeswitch.sh ; ./install-freeswitch.sh
 #
 
-#Set branch to install develop/master
+#Set branch to install develop / master
 BRANCH='callcenter'
 
 FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-conf

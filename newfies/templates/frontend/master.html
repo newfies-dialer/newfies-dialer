@@ -131,14 +131,14 @@
             <div class="col-6 col-sm-6 col-lg-6">
                 <form class="form-inline well" role="form" action="/i18n/setlang/" method="post">
                     {% csrf_token %}
-                    <div class="select">
+                    {% trans "display language"|capfirst %} :
+                    <div class="checkbox">
                         <label>
-                        {% trans "display language"|capfirst %} :
-                        <select name="language" id="language-container">
-                            {% for lang in LANGUAGES %}
-                            <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
-                            {% endfor %}
-                        </select>
+                            <select name="language" id="language-container" class="form-control">
+                                {% for lang in LANGUAGES %}
+                                <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+                                {% endfor %}
+                            </select>
                         </label>
                     </div>
                 </form>

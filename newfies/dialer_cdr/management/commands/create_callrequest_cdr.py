@@ -54,8 +54,6 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
     """
     Create Callrequest
     """
-
-    admin_user = User.objects.get(pk=1)
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:

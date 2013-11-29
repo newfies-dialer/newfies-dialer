@@ -18,7 +18,7 @@ from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 
 from dialer_campaign.function_def import user_dialer_setting
-from dialer_contact.forms import SearchForm
+from dialer_contact.forms import SearchForm, AdminSearchForm
 from sms.models.message import MESSAGE_STATUSES
 from models import SMSCampaign, get_unique_code
 from function_def import field_list
@@ -165,3 +165,25 @@ class SMSSearchForm(SearchForm):
             for i in pb_list:
                 camp_list.append((int(i[0]), i[1]))
             self.fields['smscampaign'].choices = camp_list
+
+
+class AdminSMSSearchForm(AdminSearchForm):
+    """SMS Report Search Parameters"""
+    status = forms.ChoiceField(label=_('status'), choices=message_list,
+                               required=False)
+    smscampaign = forms.ChoiceField(label=_('sms campaign'), required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(AdminSMSSearchForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = [
+            'from_date', 'to_date', 'status', 'smscampaign'
+        ]
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
+        camp_list = []
+        camp_list.append((0, '---'))
+        pb_list = field_list("smscampaign")
+        for i in pb_list:
+            camp_list.append((int(i[0]), i[1]))
+        self.fields['smscampaign'].choices = camp_list

@@ -28,6 +28,8 @@ def field_list(name, user=None):
     """Return List of SMSCampaign"""
     if name == "smscampaign" and user is not None:
         list = SMSCampaign.objects.filter(user=user)
+    if name == "smscampaign" and user is None:
+        list = SMSCampaign.objects.all()
     if name == "phonebook" and user is None:
         list = Phonebook.objects.all()
     if name == "phonebook" and user is not None:

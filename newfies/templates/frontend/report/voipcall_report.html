@@ -142,7 +142,11 @@
                         <td>{{ td.starting_date }}</td>
                         <td>{{ td.duration__sum|conv_min }}</td>
                         <td>{% if max_duration > 0 %}
-                            <img src="{{ STATIC_URL }}newfies/images/spacer.png" width="{{td.duration__sum|cal_width:max_duration}}" style="vertical-align:center; height:15px"/>
+                            <div class="progress progress-striped">
+                                <div class="progress-bar" role="progressbar" aria-valuenow="{{ td.duration__sum|cal_width:max_duration|floatformat:"0" }}" aria-valuemin="0" aria-valuemax="{{ max_duration }}" style="width: {{ td.duration__sum|cal_width:max_duration|floatformat:"0" }}px;">
+                                    <span class="sr-only">{{ td.duration__sum|cal_width:max_duration }}</span>
+                                </div>
+                            </div>
                             {% endif %}
                         </td>
                         <td>{{ td.starting_date__count }}</td>

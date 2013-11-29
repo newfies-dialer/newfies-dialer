@@ -28,7 +28,7 @@ from common.common_functions import variable_value
 from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage, SMSTemplate
 from function_def import check_sms_dialer_setting,\
     sms_record_common_fun, sms_search_admin_form_fun
-from forms import SMSSearchForm
+from forms import AdminSMSSearchForm
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
 import tablib
@@ -146,7 +146,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
 
         **Attributes**:
 
-            * ``form`` - SMSSearchForm
+            * ``form`` - AdminSMSSearchForm
             * ``template`` - admin/sms_module/smsmessage/sms_report.html
 
         **Logic Description**:
@@ -157,7 +157,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
         opts = SMSMessage._meta
 
         query_string = ''
-        form = SMSSearchForm(request.user)
+        form = AdminSMSSearchForm()
         if request.method == 'POST':
             query_string = sms_search_admin_form_fun(request)
             return HttpResponseRedirect(
@@ -175,11 +175,10 @@ class SMSMessageAdmin(admin.ModelAdmin):
                 status = variable_value(request, 'status__exact')
             if request.GET.get('sms_campaign'):
                 smscampaign = variable_value(request, 'sms_campaign')
-            form = SMSSearchForm(request.user,
-                                 initial={'status': status,
-                                          'from_date': from_date,
-                                          'to_date': to_date,
-                                          'smscampaign': smscampaign})
+            form = AdminSMSSearchForm(initial={'status': status,
+                                               'from_date': from_date,
+                                               'to_date': to_date,
+                                               'smscampaign': smscampaign})
 
         ChangeList = self.get_changelist(request)
         try:
@@ -226,9 +225,9 @@ class SMSMessageAdmin(admin.ModelAdmin):
         opts = SMSMessage._meta
         kwargs = {}
 
-        form = SMSSearchForm(request.user)
+        form = AdminSMSSearchForm()
         if request.method == 'POST':
-            form = SMSSearchForm(request.user, request.POST)
+            form = AdminSMSSearchForm(request.POST)
             kwargs = sms_record_common_fun(request)
             request.session['from_date'] = request.POST.get('from_date')
             request.session['to_date'] = request.POST.get('to_date')

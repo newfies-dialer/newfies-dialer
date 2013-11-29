@@ -86,7 +86,7 @@ function FSMCall:init()
             self.contact_id = 'None'
             self.callrequest_id = 15390
             self.db.DG_SURVEY_ID = 74
-            self.alarm_request_id = 9
+            self.alarm_request_id = 15
         end
     end
 

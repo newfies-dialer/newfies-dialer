@@ -145,12 +145,12 @@
 
                                     {% if perms.survey.change_section %}
                                         <a data-toggle="modal" href="#script-update-edit" class="script-edit" url='/section/script/{{ section.id }}/' data-controls-modal='script-update-edit'>
-                                            <i title="{% trans "edit"|title %}" class="icon-edit"></i>
+                                            <i title="{% trans 'edit'|title %}" class="glyphicon glyphicon-edit"></i>
                                         </a>
                                     {% endif %}
                                     {% if section.script %}
                                         <a class="" target="_blank" href='/section/script_play/{{ section.id }}/'>
-                                            <i title="{% trans "play"|title %}" class="icon-play"></i>
+                                            <i title="{% trans 'play'|title %}" class="glyphicon glyphicon-play"></i>
                                         </a>
                                     {% endif %}
                                 {% endif %}

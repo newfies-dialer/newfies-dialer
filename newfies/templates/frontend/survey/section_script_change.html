@@ -27,7 +27,7 @@
                     $('#section-script-modal').modal('show');
                 });
                 var url = '/module/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
-                $(".close").live('click', function() {
+                $("#id_close,#id_close_x").live('click', function() {
                     $(location).attr('href', url);
                 });
                 var KEYCODE_ESC = 27;
@@ -41,7 +41,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <a class="close" data-dismiss="modal" >&times;</a>
+                    <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
                     <h3>{% if action == 'update' %}
                         {% trans "update"|title %}
                     {% else %}
@@ -56,26 +56,29 @@
                 {% csrf_token %}
                     <div class="modal-body">
                         <div class="row">
-                            <div class="span5 clearfix{% if form.script.errors %} control-group error{% endif %}">
-                                <label class="control-label" for="{{ form.script.auto_id }}">{{ form.script.label|title }}</label>
-                                <div class="input">
+                            <div class="form-group {% if form.script.errors %}has-error{% endif %}">
+                                <div class="col-xs-12">
+                                    <label class="control-label" for="{{ form.script.auto_id }}">{{ form.script.label|title }}</label>
                                     {{ form.script }}
                                     {% if form.script.errors %}
-                                        <span class="help-inline">{{ form.script.errors|removetags:"ul li"|safe }}</span>
+                                        <span class="help-inline">
+                                            {{ form.script.errors|removetags:"ul li"|safe }}
+                                        </span>
                                     {% endif %}
-                                    <span class="help-block">{{ form.script.help_text|capfirst|safe }} </span>
+                                    <span class="help-block">
+                                        {{ form.script.help_text|safe }}
+                                    </span>
                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer" align="right">
                         {% if action == 'update' %}
-                            <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
+                            <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans 'update'|title %}" />
                         {% else %}
-                            <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "save"|title %}" />
+                            <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans 'save'|title %}" />
                         {% endif %}
-                        &nbsp;
-                        <a href="#" class="close btn" data-dismiss="modal">{% trans "close"|title %}</a>
+                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</bu
                     </div>
 
                 </form>

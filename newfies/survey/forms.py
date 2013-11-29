@@ -13,7 +13,7 @@
 #
 
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
 from dialer_contact.forms import SearchForm
@@ -267,6 +267,9 @@ class ScriptForm(ModelForm):
     class Meta:
         model = Section_template
         fields = ['script']
+        widgets = {
+            'script': Textarea(attrs={'cols': 23, 'rows': 3}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(ScriptForm, self).__init__(*args, **kwargs)

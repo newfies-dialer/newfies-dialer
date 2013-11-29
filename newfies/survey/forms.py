@@ -267,13 +267,9 @@ class ScriptForm(ModelForm):
     class Meta:
         model = Section_template
         fields = ['script']
-        widgets = {
-            'script': Textarea(attrs={'cols': 23, 'rows': 3}),
-        }
 
     def __init__(self, *args, **kwargs):
         super(ScriptForm, self).__init__(*args, **kwargs)
-        self.fields['script'].widget = forms.Textarea()
         self.fields['script'].widget.attrs['class'] = "form-control"
 
 

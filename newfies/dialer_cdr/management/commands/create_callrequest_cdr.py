@@ -81,7 +81,7 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
         phonenumber = '' . join([choice(chars) for i in range(length)])
         new_callrequest = Callrequest.objects.create(
             request_uuid=uuid1(),
-            user=admin_user,
+            user=obj_campaign.user,
             phone_number=phonenumber,
             campaign=obj_campaign,
             aleg_gateway_id=1,

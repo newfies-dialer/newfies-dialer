@@ -28,8 +28,9 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
-from math import floor
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
+#from user_profile.models import UserProfile
+from math import floor
 
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
@@ -223,6 +224,7 @@ class alarmrequest_dispatcher(PeriodicTask):
                 logger.error("Error retrieving CalendarUserProfile")
                 return False
 
+            #manager_profile = UserProfile.objects.get(user=caluser_profile.manager)
             # manager_profile = caluser_profile.manager.get_profile()
             # manager_profile.dialersetting
             # Use manager_profile.dialersetting to retrieve some settings

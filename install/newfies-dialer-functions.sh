@@ -162,15 +162,6 @@ func_check_dependencies() {
         exit 1
     fi
 
-    #Check django-tastypie
-    grep_pip=`pip freeze| grep django-tastypie`
-    if echo $grep_pip | grep -i "django-tastypie" > /dev/null ; then
-        echo "OK : django-tastypie installed..."
-    else
-        echo "Error : django-tastypie not installed..."
-        exit 1
-    fi
-
     echo ""
     echo "Python dependencies successfully installed!"
     echo ""

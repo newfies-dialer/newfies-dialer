@@ -16,13 +16,22 @@ from django import forms
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
 from dialer_cdr.constants import VOIPCALL_DISPOSITION, LEG_TYPE
-from dialer_contact.forms import SearchForm
+from dialer_contact.forms import SearchForm, AdminSearchForm
 
 
 voip_call_disposition_list = []
 voip_call_disposition_list.append(('all', _('all').upper()))
 for i in VOIPCALL_DISPOSITION:
     voip_call_disposition_list.append((i[0], i[1]))
+
+
+def get_leg_type_list():
+    leg_type_list = []
+    leg_type_list.append(('', _('all').upper()))
+    LEG = dict(LEG_TYPE)
+    for i in LEG:
+        leg_type_list.append((i, LEG[i].encode('utf-8')))
+    return leg_type_list
 
 
 class VoipSearchForm(SearchForm):
@@ -40,12 +49,8 @@ class VoipSearchForm(SearchForm):
             self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's campaign list which are attached with voipcall
         if user:
-            leg_type_list = []
-            leg_type_list.append(('', _('all').upper()))
-            LEG = dict(LEG_TYPE)
-            for i in LEG:
-                leg_type_list.append((i, LEG[i].encode('utf-8')))
-            self.fields['leg_type'].choices = leg_type_list
+
+            self.fields['leg_type'].choices = get_leg_type_list()
 
             campaign_list = []
             campaign_list.append((0, _('all').upper()))
@@ -67,3 +72,27 @@ class VoipSearchForm(SearchForm):
             except:
                 pass
             self.fields['campaign_id'].choices = campaign_list
+
+
+class AdminVoipSearchForm(AdminSearchForm):
+    """VoIP call Report Search Parameters"""
+    status = forms.ChoiceField(label=_('disposition'), required=False,
+                               choices=voip_call_disposition_list)
+    campaign_id = forms.ChoiceField(label=_('campaign'), required=False)
+    leg_type = forms.ChoiceField(choices=list(LEG_TYPE), label=_("leg type"),
+                                 required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(AdminVoipSearchForm, self).__init__(*args, **kwargs)
+        self.fields['leg_type'].choices = get_leg_type_list()
+
+        campaign_list = []
+        campaign_list.append((0, _('all').upper()))
+        content_type_list = ['survey']
+
+        campaign_list = Campaign.objects.values_list('id', 'name')\
+            .filter(content_type__model__in=content_type_list,
+                    has_been_started=True)\
+            .order_by('-id')
+
+        self.fields['campaign_id'].choices = campaign_list

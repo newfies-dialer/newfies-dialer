@@ -25,7 +25,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext
 from django.db.models import Sum, Avg, Count
 from dialer_cdr.models import Callrequest, VoIPCall
-from dialer_cdr.forms import VoipSearchForm
+from dialer_cdr.forms import AdminVoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
     voipcall_search_admin_form_fun
 from common.common_functions import getvar
@@ -133,7 +133,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         **Attributes**:
 
-            * ``form`` - VoipSearchForm
+            * ``form`` - AdminVoipSearchForm
             * ``template`` - admin/dialer_cdr/voipcall/change_list.html
 
         **Logic Description**:
@@ -143,7 +143,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """
         opts = VoIPCall._meta
         query_string = ''
-        form = VoipSearchForm(request.user)
+        form = AdminVoipSearchForm()
         if request.method == 'POST':
             # Session variable get record set with searched option into export file
             request.session['admin_voipcall_record_kwargs'] = voipcall_record_common_fun(request)
@@ -164,12 +164,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
             campaign_id = getvar(request, 'callrequest__campaign_id')
             leg_type = getvar(request, 'leg_type__exact')
 
-            form = VoipSearchForm(request.user,
-                                  initial={'status': status,
-                                           'from_date': from_date,
-                                           'to_date': to_date,
-                                           'campaign_id': campaign_id,
-                                           'leg_type': leg_type})
+            form = AdminVoipSearchForm(initial={'status': status,
+                                                'from_date': from_date,
+                                                'to_date': to_date,
+                                                'campaign_id': campaign_id,
+                                                'leg_type': leg_type})
 
         ChangeList = self.get_changelist(request)
         try:
@@ -214,13 +213,13 @@ class VoIPCallAdmin(admin.ModelAdmin):
         opts = VoIPCall._meta
         kwargs = {}
         if request.method == 'POST':
-            form = VoipSearchForm(request.user, request.POST)
+            form = AdminVoipSearchForm(request.POST)
             kwargs = voipcall_record_common_fun(request)
         else:
             kwargs = voipcall_record_common_fun(request)
             tday = datetime.today()
-            form = VoipSearchForm(request.user, initial={"from_date": tday.strftime("%Y-%m-%d"),
-                                                         "to_date": tday.strftime("%Y-%m-%d")})
+            form = AdminVoipSearchForm(initial={"from_date": tday.strftime("%Y-%m-%d"),
+                                                "to_date": tday.strftime("%Y-%m-%d")})
             if len(kwargs) == 0:
                 kwargs['starting_date__gte'] = datetime(tday.year, tday.month, tday.day,
                                                         0, 0, 0, 0)

@@ -96,7 +96,7 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
         voipcall = VoIPCall.objects.create(
             request_uuid=uuid1(),
             callid=uuid1(),
-            user=admin_user,
+            user=obj_campaign.user,
             callrequest=new_callrequest,
             starting_date=created_date,
             phone_number=phonenumber,

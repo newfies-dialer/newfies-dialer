@@ -462,6 +462,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     logger.info("TASK :: init_callrequest - status:%s;cmpg:%s;alarm:%s" % (obj_callrequest.status, campaign_id, alarm_request_id))
 
     # TODO: move method prepare_phonenumber into the model gateway
+    #obj_callrequest.aleg_gatewayprepare_phonenumber()
     dialout_phone_number = prepare_phonenumber(
         obj_callrequest.phone_number,
         obj_callrequest.aleg_gateway.addprefix,
@@ -651,5 +652,21 @@ def check_retry_alarm(alarm_request_id):
         if obj_alarmreq.alarm.phonenumber_sms_failure:
             # TODO: send SMS to PN obj_alarmreq.alarm.phonenumber_sms_failure
             # SMS text will be :
-            # "we haven't been able to reach "obj_alarmreq.alarm.alarm_phonenumber" after trying obj_alarmreq.alarm.num_attempt times"
+
+            """
+            failure_sms = "we haven't been able to reach '"\
+                + str(obj_alarmreq.alarm.alarm_phonenumber)\
+                + "' after trying " + str(obj_alarmreq.alarm.num_attempt)\
+                + " times"
+            from sms.models import Message
+            from sms.tasks import SendMessage
+            sms_obj = Message.objects.create(
+                content=failure_sms,
+                recipient_number=obj_alarmreq.alarm.phonenumber_sms_failure,
+                sender=obj_alarmreq.alarm.survey.user,
+                content_type=obj_alarmreq.alarm.survey.campaign.content_type,
+                object_id=obj_alarmreq.alarm.survey.campaign.object_id,
+            )
+            SendMessage.delay(sms_obj.id)
+            """
             print "send SMS Failure alarm"

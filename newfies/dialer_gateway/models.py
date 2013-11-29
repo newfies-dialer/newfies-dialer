@@ -109,6 +109,9 @@ class Gateway(Model):
     def __unicode__(self):
             return u"%s" % self.name
 
+    #def prepare_phonenumber(self):
+    #    return True
+
 
 """
 class GatewayGroup(Model):

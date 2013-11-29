@@ -112,27 +112,37 @@
     </div>
 
     <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
-        <div class="graph_header">
-            {% trans "survey call detail records"|title %} -
-            <b>
-                {% if start_date  %}
-                    {{ start_date|date:"jS N Y" }}
-                {% endif %}
-                {% if end_date  %}
-                    {% trans "to" %} {{ end_date|date:"jS N Y" }}
-                {% endif %}
-            </b>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="graph_header">
+                    {% trans "survey call detail records"|title %} -
+                    <b>
+                        {% if start_date  %}
+                            {{ start_date|date:"jS N Y" }}
+                        {% endif %}
+                        {% if end_date  %}
+                            {% trans "to" %} {{ end_date|date:"jS N Y" }}
+                        {% endif %}
+                    </b>
+                </div>
+            </div>
         </div>
-        <div class="btn-group">
-            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-            {% trans "action"|capfirst %} <span class="caret"></span>
-            </button>
-            <ul class="dropdown-menu" role="menu">
-                <li><a href="/export_surveycall_report/?format=csv">{% trans "export to CSV"|capfirst %}</a></li>
-                <li><a href="/export_surveycall_report/?format=xls">{% trans "export to XLS"|capfirst %}</a></li>
-                <li><a href="/export_surveycall_report/?format=json">{% trans "export to JSON"|capfirst %}</a></li>
-            </ul>
+        <p>&nbsp;</p>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="btn-group">
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                    {% trans "action"|capfirst %} <span class="caret"></span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="/export_surveycall_report/?format=csv">{% trans "export to CSV"|capfirst %}</a></li>
+                        <li><a href="/export_surveycall_report/?format=xls">{% trans "export to XLS"|capfirst %}</a></li>
+                        <li><a href="/export_surveycall_report/?format=json">{% trans "export to JSON"|capfirst %}</a></li>
+                    </ul>
+                </div>
+            </div>
         </div>
+
         <div>&nbsp;</div>
         <div class="table-responsive">
             <table class="table table-striped table-bordered table-condensed">

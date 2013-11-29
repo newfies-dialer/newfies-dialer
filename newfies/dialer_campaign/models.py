@@ -248,7 +248,7 @@ class Campaign(Model):
     dnc = models.ForeignKey(DNC, null=True, blank=True, verbose_name=_("DNC"),
                             help_text=_("do not call list"),
                             related_name='DNC')
-    #Voicemail
+    #Voicemail Detection
     voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
     amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),
                                  default=AMD_BEHAVIOR.ALWAYS,

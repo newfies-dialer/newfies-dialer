@@ -19,6 +19,8 @@ from user_profile.models import Manager, Profile_abstract
 from survey.models import Survey
 from dialer_gateway.models import Gateway
 from sms.models import Gateway as SMS_Gateway
+from dialer_campaign.constants import AMD_BEHAVIOR
+from audiofield.models import AudioFile
 
 
 class CalendarSetting(models.Model):
@@ -26,22 +28,32 @@ class CalendarSetting(models.Model):
 
     **Attributes**:
 
-        * ``callerid`` - CallerID number.
+        * ``label`` - Label for the Calendar Setting
+        * ``callerid`` - CallerID number
         * ``caller_name`` - Caller name
         * ``call_timeout`` - call timeout
-        * ``user`` - Newfies User (Manager)
         * ``survey`` - Foreign key relationship to the Survey
         * ``aleg_gateway`` - Foreign key relationship to the Gateway model.\
                              Gateway to use to call the subscriber
         * ``sms_gateway`` - Gateway to transport the SMS
+        * ``voicemail`` - Enable Voicemail Detection
+        * ``amd_behavior`` - Detection Behaviour
+
+    **Relationships**:
+
+        * ``user`` - Foreign key relationship to the a User model. CalendarSetting are assigned to a User
+
+        * ``voicemail_audiofile`` - Foreign key relationship to the a AudioFile model.
 
     **Name of DB table**: calendar_setting
 
     """
-    callerid = models.CharField(max_length=80, blank=True,
+    label = models.CharField(max_length=80, blank=False,
+                             verbose_name=_("label"))
+    callerid = models.CharField(max_length=80,
                                 verbose_name=_("callerID"),
                                 help_text=_("outbound caller-ID"))
-    caller_name = models.CharField(max_length=80,
+    caller_name = models.CharField(max_length=80, blank=True,
                                    verbose_name=_("caller name"),
                                    help_text=_("outbound caller-Name"))
     call_timeout = models.IntegerField(default='60', null=False, blank=False,
@@ -57,14 +69,22 @@ class CalendarSetting(models.Model):
                                      verbose_name=_("a-leg gateway"),
                                      help_text=_("select gateway to use to be used"))
     sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("sms gateway"),
+                                    null=True, blank=True,
                                     related_name="sms_gateway",
                                     help_text=_("select SMS gateway"))
+    #Voicemail Detection
+    voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
+    amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),
+                                 default=AMD_BEHAVIOR.ALWAYS,
+                                 verbose_name=_("detection behaviour"), blank=True, null=True)
+    voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
+                                  verbose_name=_("voicemail audio file"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return '[%s] %s' % (self.id, self.caller_name)
+        return '%s (%d)' % (self.label, self.id)
 
     class Meta:
         permissions = (

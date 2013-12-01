@@ -189,15 +189,18 @@ function Database:update_callrequest_cpt(callrequest_id)
 end
 
 function Database:load_alarm_event(alarm_request_id)
-    local sqlquery = "SELECT event_id, alarm_id, survey_id, manager_id, data FROM appointment_alarmrequest "..
+    local sqlquery = "SELECT event_id, alarm_id, appointment_alarm.survey_id as survey_id, manager_id, data, "..
+        "voicemail, amd_behavior, voicemail_audiofile_id FROM appointment_alarmrequest "..
         "LEFT JOIN appointment_alarm ON appointment_alarm.id=alarm_id "..
         "LEFT JOIN appointment_event ON appointment_event.id=appointment_alarm.event_id "..
         "LEFT JOIN calendar_user_profile ON calendar_user_profile.user_id=creator_id "..
+        "LEFT JOIN calendar_setting ON calendar_setting.id=calendar_setting_id "..
         "WHERE appointment_alarmrequest.id="..alarm_request_id
+
     self:db_debugger("DEBUG", "Load Event Data : "..sqlquery)
     self.event_alarm = self.dbh:get_object(sqlquery)
 
-    local inspect = require 'inspect'
+    -- local inspect = require 'inspect'
     -- print(inspect(self.event_alarm))
     -- print(self.event_alarm.manager_id)
     -- print(self.event_alarm.alarm_id)

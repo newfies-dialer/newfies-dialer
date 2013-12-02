@@ -2,13 +2,6 @@
 {% load i18n common_tags pagination_tags icons %}
 
 {% block extra_files %}
-    <script language="javascript" type="text/javascript">
-        $(document).ready(function() {
-            $("#id_contact_no").keydown(function(event) {
-                numeric(event);
-            });
-        });
-    </script>
     {% include "frontend/custom_jquery_select_all.html" %}
 {% endblock %}
 

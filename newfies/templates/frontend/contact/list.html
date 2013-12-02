@@ -2,13 +2,6 @@
 {% load i18n common_tags pagination_tags icons %}
 
 {% block extra_files %}
-    <script language="javascript" type="text/javascript">
-        $(document).ready(function() {
-            $("#id_contact_no").keydown(function(event) {
-                numeric(event);
-            });
-        });
-    </script>
     {% include "frontend/custom_jquery_select_all.html" %}
 {% endblock %}
 
@@ -18,29 +11,22 @@
 
 {% block content %}
 
-<div id="form_collapse" class="collapse in">
-    <form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-        <div class="row">
-            {% get_fieldset contact_no,contact_name,phonebook,contact_status as search_contact from form %}
-            {% for field in search_contact %}
-            <div class="col-md-4 {% if field.errors %} error{% endif %}">
-                <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
-                <span class="help-block">{{ field.help_text|capfirst }} </span>
-            </div>
-            {% endfor %}
+<form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <div class="row">
+        {% get_fieldset contact_no,contact_name,phonebook,contact_status as search_contact from form %}
+        {% for field in search_contact %}
+        <div class="col-md-3 {% if field.errors %} error{% endif %}">
+            <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
+            {{ field }}
+            {% if field.errors %}
+                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+            {% endif %}
+            <span class="help-block">{{ field.help_text|capfirst }} </span>
         </div>
-        <input class="btn btn-primary" type="submit" name="submit" value={% trans "search"|title %} />
-    </form>
-</div>
-
-<button id="toggle_btn" type="button" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#form_collapse">
-    <i id="toggle_btn_i" class="glyphicon glyphicon-zoom-out"></i>
-    <span id="toggle_btn_i_span">{% trans "search"|title %}</span>
-</button>
+        {% endfor %}
+    </div>
+    <input class="btn btn-primary" type="submit" name="submit" value={% trans "search"|title %} />
+</form>
 
 <script type="text/javascript">
 function add_button()

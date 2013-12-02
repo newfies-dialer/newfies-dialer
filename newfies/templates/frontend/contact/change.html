@@ -58,13 +58,16 @@
             </div>
         {% endfor %}
     </div>
-
-    {% if action == 'update' %}
-        <input id="update" class="btn btn-primary" type="submit" value="{% trans 'update'|title %}" />
-        <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans 'delete'|title %}" />
-    {% else %}
-        <input id="add" class="btn btn-primary" type="submit" value="{% trans 'submit'|title %}" />
-    {% endif %}
+    <div class="row">
+        <div class="col-md-12 text-right">
+            {% if action == 'update' %}
+                <input id="update" class="btn btn-primary" type="submit" value="{% trans 'update'|title %}" />
+                <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans 'delete'|title %}" />
+            {% else %}
+                <input id="add" class="btn btn-primary" type="submit" value="{% trans 'submit'|title %}" />
+            {% endif %}
+        </div>
+    </div>
 </form>
 
 {% endblock %}

@@ -52,7 +52,6 @@
                     <tr>
                         <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
                         <th>{% sort_link CALENDAR_COLUMN_NAME.name|capfirst col_name_with_order.name %}</th>
-                        <th>{{ CALENDAR_COLUMN_NAME.slug|capfirst }}</th>
                         <th>{% sort_link CALENDAR_COLUMN_NAME.user|capfirst col_name_with_order.user %}</th>
                         <th>{% sort_link CALENDAR_COLUMN_NAME.max_concurrent|capfirst col_name_with_order.max_concurrent %}</th>
                         <th>{% sort_link CALENDAR_COLUMN_NAME.created_date|capfirst col_name_with_order.created_date %}</th>
@@ -65,7 +64,6 @@
                             <tr>
                                 <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
                                 <td>{{ row.name }}</td>
-                                <td>{{ row.slug }}</td>
                                 <td>{{ row.user }}</td>
                                 <td>{{ row.max_concurrent }}</td>
                                 <td>{{ row.created_date }}</td>
@@ -81,7 +79,7 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="7" align="center">
+                            <td colspan="6" align="center">
                                 {% trans "no records found"|title %}
                             </td>
                         </tr>

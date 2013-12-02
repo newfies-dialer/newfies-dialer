@@ -44,7 +44,6 @@ class Calendar(models.Model):
     >>> calendar.events.add(event)
     '''
     name = models.CharField(verbose_name=_('name'), max_length=200)
-    slug = models.SlugField(verbose_name=_("slug"), max_length=200)
     user = models.ForeignKey(CalendarUser, blank=True, null=True,
                              verbose_name=_("calendar user"),
                              help_text=_("select user"),
@@ -64,10 +63,6 @@ class Calendar(models.Model):
 
     def __unicode__(self):
         return self.name
-
-    def save(self, *args, **kwargs):
-        self.slug = slugify(self.name)
-        super(Calendar, self).save(*args, **kwargs)
 
     @property
     def events(self):

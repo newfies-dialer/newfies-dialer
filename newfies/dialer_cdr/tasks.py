@@ -12,24 +12,30 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from celery.utils.log import get_task_logger
+from django.contrib.contenttypes.models import ContentType
 from django.db import connection
+from django.conf import settings
+from celery.utils.log import get_task_logger
 from celery.decorators import task
 from celery.task import PeriodicTask
-from django.conf import settings
+
 from dialer_campaign.constants import SUBSCRIBER_STATUS, AMD_BEHAVIOR
 from dialer_cdr.models import Callrequest, VoIPCall
-from appointment.models.alarms import AlarmRequest
-from appointment.constants import ALARMREQUEST_STATUS, ALARM_STATUS
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, \
     VOIPCALL_AMD_STATUS, LEG_TYPE
 from dialer_cdr.utils import voipcall_save  # BufferVoIPCall
+
+from appointment.models.users import CalendarUserProfile
+from appointment.models.alarms import AlarmRequest
+from appointment.constants import ALARMREQUEST_STATUS, ALARM_STATUS
+from sms.models import Message
+from sms.tasks import SendMessage
 #from dialer_cdr.function_def import get_prefix_obj
 from dialer_gateway.utils import prepare_phonenumber
 from datetime import datetime, timedelta
 from common.only_one_task import only_one
-from uuid import uuid1
 from common_functions import debug_query
+from uuid import uuid1
 from time import sleep
 
 
@@ -652,21 +658,18 @@ def check_retry_alarm(alarm_request_id):
         if obj_alarmreq.alarm.phonenumber_sms_failure:
             # TODO: send SMS to PN obj_alarmreq.alarm.phonenumber_sms_failure
             # SMS text will be :
-            """
+
             failure_sms = "we haven't been able to reach '"\
                 + str(obj_alarmreq.alarm.alarm_phonenumber)\
                 + "' after trying " + str(obj_alarmreq.alarm.num_attempt)\
                 + " times"
-            from sms.models import Message
-            from sms.tasks import SendMessage
-            from appointment.models.users import CalendarUserProfile
 
             sms_obj = Message.objects.create(
                 content=failure_sms,
                 recipient_number=obj_alarmreq.alarm.phonenumber_sms_failure,
                 sender=obj_alarmreq.alarm.survey.user,
-                content_type=obj_alarmreq.alarm.survey.campaign.content_type,
-                object_id=obj_alarmreq.alarm.survey.campaign.object_id,
+                content_type=ContentType.objects.get(model='alarmrequest'),
+                object_id=obj_alarmreq.id,
             )
 
             try:
@@ -675,5 +678,5 @@ def check_retry_alarm(alarm_request_id):
                 SendMessage.delay(sms_obj.id, calendar_setting.sms_gateway_id)
             except:
                 SendMessage.delay(sms_obj.id)
-            """
-            print "send SMS Failure alarm"
+
+            print "sent SMS Failure alarm"

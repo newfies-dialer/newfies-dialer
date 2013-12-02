@@ -74,88 +74,82 @@
                 </fieldset>
             </div>
 
-        <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
-            <fieldset>
-                <legend>{% trans "completion settings"|title %}</legend>
-                <div class="row">
-                    {% get_fieldset frequency,maxretry,intervalretry as campaign_settings_fields from form %}
-                    {% for field in campaign_settings_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <div class="col-xs-8">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">
-                                        {{ field.errors|removetags:"ul li"|safe }}
+            <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
+                <fieldset>
+                    <legend>{% trans "completion settings"|title %}</legend>
+                    <div class="row">
+                        {% get_fieldset frequency,maxretry,intervalretry as campaign_settings_fields from form %}
+                        {% for field in campaign_settings_fields %}
+                            <div class="col-md-6">
+                                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                <div class="col-xs-8">
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">
+                                            {{ field.errors|removetags:"ul li"|safe }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="help-block">
+                                        {{ field.help_text|capfirst }}
                                     </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
-                                </span>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    {% endfor %}
-                </div>
-            </fieldset>
-        </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+            </div>
 
-        <div id="tabs-3" class="tab-pane {% if action == 'tabs-3' %}active{% endif %}">
-            <fieldset>
-                <legend>{% trans "schedule settings" %}</legend>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-xs-10">
-                            <label>{% trans "week days"|title %}<label>
-                        </div>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-xs-10">
-                            <div class="btn-group" data-toggle="buttons">
-                                {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
-                                {% for field in settings_fields %}
-                                    <label class="btn btn-default {% if field.value %}active{% endif %}">
-                                        {{ field }} {{ field.label }}
-                                    </label>
-                                {% endfor %}
+            <div id="tabs-3" class="tab-pane {% if action == 'tabs-3' %}active{% endif %}">
+                <fieldset>
+                    <legend>{% trans "schedule settings" %}</legend>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-xs-10">
+                                <label>{% trans "week days"|title %}<label>
                             </div>
                         </div>
                     </div>
-                </div>
-                <div>&nbsp;</div>
-                <div class="row">
-                    {% get_fieldset startingdate,expirationdate,daily_start_time,daily_stop_time as campaign_settings_fields from form %}
-                    {% for field in campaign_settings_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <div class="col-xs-8">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-inline">
-                                        {{ field.errors|removetags:"ul li"|safe }}
-                                    </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
-                                </span>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-xs-10">
+                                <div class="btn-group" data-toggle="buttons">
+                                    {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
+                                    {% for field in settings_fields %}
+                                        <label class="btn btn-default {% if field.value %}active{% endif %}">
+                                            {{ field }} {{ field.label }}
+                                        </label>
+                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
-                    {% endfor %}
-                </div>
-            </fieldset>
+                    </div>
+                    <div>&nbsp;</div>
+                    <div class="row">
+                        {% get_fieldset startingdate,expirationdate,daily_start_time,daily_stop_time as campaign_settings_fields from form %}
+                        {% for field in campaign_settings_fields %}
+                            <div class="col-md-6">
+                                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                <div class="col-xs-8">
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">
+                                            {{ field.errors|removetags:"ul li"|safe }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="help-block">
+                                        {{ field.help_text|capfirst }}
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+            </div>
         </div>
-        <br/>
-        {% if action == 'update' %}
-            <input id="update" type="submit" class="btn btn-primary" value="{% trans 'update'|title %}" />
-            <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans 'delete'|title %}" />
-        {% else %}
-            <input id="add" type="submit" class="btn btn-primary" value="{% trans 'submit'|title %}" />
-        {% endif %}
-        </div>
+        {% include "frontend/common_submit_buttons.html" %}
     </form>
 {% endblock %}

@@ -29,8 +29,9 @@
             </div>
         </div>
     {% endfor %}
-
-    <input type="hidden" name="action" value="tabs-5" />
-    <input type="hidden" name="form-type" value="check-number" />
-    <input type="submit" class="btn btn-primary" value="{% trans 'check'|title %}" />
+    <div class="text-right">
+        <input type="hidden" name="action" value="tabs-5" />
+        <input type="hidden" name="form-type" value="check-number" />
+        <input type="submit" class="btn btn-primary" value="{% trans 'check'|title %}" />
+    </div>
 </form>

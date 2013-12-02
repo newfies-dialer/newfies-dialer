@@ -18,31 +18,4 @@
             this.form.submit();
         });
     });
-    // toggle event for forms
-    $(function() {
-        {% if search_tag == 1 %}
-            $(".collapse in").collapse();
-        {% endif %}
-
-        $(".collapse.in").on('hide.bs.collapse', function () {
-            $('#toggle_btn_i_span').text('{% trans "search"|title %}');
-            $('#toggle_btn_i').attr('class', 'glyphicon glyphicon-zoom-in');
-        });
-        $(".collapse.in").on('hidden.bs.collapse', function() {
-            $('#toggle_btn_i_span').text('{% trans "search"|title %}');
-        });
-
-        $(".collapse.in").on('show.bs.collapse', function() {
-            $('#toggle_btn_i_span').text('{% trans "hide search"|title %}');
-            $('#toggle_btn_i').attr('class', 'glyphicon glyphicon-zoom-out');
-        });
-
-        $(".collapse.in").on('shown.bs.collapse', function() {
-            $('#toggle_btn_i_span').text('{% trans "hide search"|title %}');
-        });
-
-        {% if search_tag == 0 %}
-            $(".collapse in").collapse('hide');
-        {% endif %}
-    });
 </script>

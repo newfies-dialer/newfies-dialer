@@ -11,7 +11,8 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-#from django.conf import settings
+
+from django.conf import settings
 #from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseRedirect, Http404
@@ -446,8 +447,9 @@ def calendar_setting_list(request):
 
         * List all calendar settings which belong to the logged in user.
     """
-    sort_col_field_list = ['id', 'callerid', 'caller_name', 'call_timeout',
-                           'survey', 'aleg_gateway', 'sms_gateway']
+    sort_col_field_list = ['id', 'label', 'callerid', 'caller_name',
+                           'call_timeout', 'survey', 'aleg_gateway',
+                           'sms_gateway']
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
@@ -504,6 +506,7 @@ def calendar_setting_add(request):
         'form': form,
         'action': 'add',
         'error_msg': error_msg,
+        'AMD': settings.AMD,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
@@ -583,6 +586,7 @@ def calendar_setting_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
+        'AMD': settings.AMD,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,

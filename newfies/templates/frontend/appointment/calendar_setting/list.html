@@ -51,6 +51,7 @@
                     <thead>
                     <tr>
                         <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
+                        <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.label|capfirst col_name_with_order.label %}</th>
                         <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.callerid|capfirst col_name_with_order.callerid %}</th>
                         <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.caller_name|capfirst col_name_with_order.caller_name %}</th>
                         <th>{% sort_link CALENDAR_SETTING_COLUMN_NAME.call_timeout|capfirst col_name_with_order.call_timeout %}</th>
@@ -65,6 +66,7 @@
                         {% for row in calendar_setting_list %}
                             <tr>
                                 <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
+                                <td>{{ row.label }}</td>
                                 <td>{{ row.callerid }}</td>
                                 <td>{{ row.caller_name }}</td>
                                 <td>{{ row.call_timeout }}</td>
@@ -83,7 +85,7 @@
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="8" align="center">
+                            <td colspan="9" align="center">
                                 {% trans "no records found"|title %}
                             </td>
                         </tr>

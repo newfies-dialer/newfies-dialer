@@ -75,16 +75,16 @@ class CalendarSetting(models.Model):
     #Voicemail Detection
     voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
     amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),
-                                 default=AMD_BEHAVIOR.ALWAYS,
-                                 verbose_name=_("detection behaviour"), blank=True, null=True)
+                                       default=AMD_BEHAVIOR.ALWAYS,
+                                       verbose_name=_("detection behaviour"), blank=True, null=True)
     voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                  verbose_name=_("voicemail audio file"))
+                                            verbose_name=_("voicemail audio file"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        return '%s (%d)' % (self.label, self.id)
+        return '(%d) %s' % (self.id, self.label)
 
     class Meta:
         permissions = (

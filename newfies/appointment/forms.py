@@ -85,8 +85,10 @@ class CalendarSettingForm(ModelForm):
             list_gateway.append((l.id, l.name))
         self.fields['aleg_gateway'].choices = list_gateway
 
+        exclude_list = ['voicemail']
         for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+            if i not in exclude_list:
+                self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CalendarUserNameChangeForm(UserChangeForm):

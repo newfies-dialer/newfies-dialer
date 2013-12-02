@@ -50,6 +50,7 @@ class ALARMREQUEST_STATUS(Choice):
 
 
 class CALENDAR_SETTING_COLUMN_NAME(Choice):
+    label = _('label')
     callerid = _('callerid number')
     caller_name = _('callerid name')
     call_timeout = _('call timeout')

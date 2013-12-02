@@ -73,6 +73,14 @@ func_install_fs_source() {
     git checkout $FS_VERSION
 
     ./bootstrap.sh
+
+    # !!! virtual memory exhausted: Cannot allocate memory !!!
+    # we need to make more temporary swap space
+    #
+    # dd if=/dev/zero of=/root/fakeswap bs=1024 count=1048576
+    # mkswap /root/fakeswap
+    # swapon /root/fakeswap
+
     ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
     [ -f modules.conf ] && cp modules.conf modules.conf.bak
     sed -i -e \
@@ -95,6 +103,12 @@ func_install_fs_source() {
     -e "s/#xml_int\/mod_xml_cdr/xml_int\/mod_xml_cdr/g" \
     modules.conf
     make && make install && make sounds-install && make moh-install
+
+    # Remove temporary swap
+    #
+    # swapoff /root/fakeswap
+    # rm /root/fakeswap
+
 
     #Set permissions
     chown -R freeswitch:freeswitch /usr/local/freeswitch /etc/freeswitch

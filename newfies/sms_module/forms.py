@@ -55,7 +55,7 @@ class SMSCampaignForm(ModelForm):
         super(SMSCampaignForm, self).__init__(*args, **kwargs)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         exclude_list = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                        'saturday', 'sunday',]
+                        'saturday', 'sunday']
 
         for i in self.fields.keyOrder:
             if i not in exclude_list:
@@ -137,12 +137,13 @@ class SMSDashboardForm(forms.Form):
             self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's running campaign list
         if user:
-            camp_list = []
-            #list.append((0, '---'))
-            pb_list = field_list("smscampaign", user)
-            for i in pb_list:
-                camp_list.append((i[0], i[1]))
-            self.fields['smscampaign'].choices = camp_list
+            campaign_list = SMSCampaign.objects.filter(user=user).order_by('-id')
+
+            campaign_choices = [(0, _('Select campaign'))]
+            for cp in campaign_list:
+                campaign_choices.append((cp.id, unicode(cp.name)))
+
+            self.fields['smscampaign'].choices = campaign_choices
 
 
 class SMSSearchForm(SearchForm):

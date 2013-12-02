@@ -91,7 +91,7 @@ class CampaignForm(ModelForm):
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         exclude_list = ['voicemail', 'monday', 'tuesday', 'wednesday',
-                        'thursday', 'friday', 'saturday', 'sunday',]
+                        'thursday', 'friday', 'saturday', 'sunday']
 
         for i in self.fields.keyOrder:
             if i not in exclude_list:
@@ -233,7 +233,7 @@ class CampaignAdminForm(ModelForm):
                   'daily_stop_time', 'monday', 'tuesday', 'wednesday',
                   'thursday', 'friday', 'saturday', 'sunday',
                   'completion_maxretry', 'completion_intervalretry',
-                  'agent_script', 'lead_disposition',]
+                  'agent_script', 'lead_disposition']
 
     def __init__(self, *args, **kwargs):
         super(CampaignAdminForm, self).__init__(*args, **kwargs)
@@ -317,5 +317,3 @@ class SubscriberSearchForm(SearchForm):
 
             self.fields['campaign_id'].choices = camp_list
             self.fields['agent_id'].choices = agent_list
-
-

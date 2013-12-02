@@ -41,8 +41,13 @@ class QueueFrontEndForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(QueueFrontEndForm, self).__init__(*args, **kwargs)
+        exclude_list = ['tier_rules_apply', 'tier_rule_wait_multiply_level',
+                        'tier_rule_no_agent_no_wait', 'abandoned_resume_allowed'
+                       ]
+
         for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+            if i not in exclude_list:
+                self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class TierForm(ModelForm):

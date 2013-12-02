@@ -1,0 +1,12 @@
+{% load i18n %}
+
+<div class="row">
+    <div class="col-md-12 text-right">
+    {% if action == 'update' %}
+        <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
+        <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
+    {% else %}
+        <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
+    {% endif %}
+    </div>
+</div>

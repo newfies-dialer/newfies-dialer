@@ -43,12 +43,7 @@
         </div>
     </div>
     {% endfor %}
-    {% if action == 'update' %}
-        <input id="update" class="btn btn-primary" type="submit" value="{% trans "update"|title %}" />
-        <input id="delete" class="btn btn-danger" name="delete" type="submit" value="{% trans "delete"|title %}" />
-    {% else %}
-        <input id="add" class="btn btn-primary" type="submit" value="{% trans "submit"|title %}" />
-    {% endif %}
+    {% include "frontend/common_submit_buttons.html" %}
 </form>
 
 {% endblock %}

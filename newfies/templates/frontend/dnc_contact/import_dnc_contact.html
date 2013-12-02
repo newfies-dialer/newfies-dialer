@@ -45,8 +45,9 @@
         </div>
     </div>
     {% endfor %}
-
-    <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
+    <div class="text-right">
+        <input type="submit" class="btn btn-primary" name="submit" value="{% trans 'submit'|title %}" />
+    </div>
 </form>
 
 {% if success_import_list %}

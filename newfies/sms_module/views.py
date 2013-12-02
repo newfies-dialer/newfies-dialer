@@ -34,7 +34,7 @@ from common.common_functions import get_pagination_vars, ceil_strdate,\
 
 from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
 from constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
-    SMS_NOTIFICATION_NAME, SMS_REPORT_COLUMN_NAME, COLOR_DISPOSITION,\
+    SMS_NOTIFICATION_NAME, SMS_REPORT_COLUMN_NAME, COLOR_SMS_DISPOSITION,\
     SMS_SUBSCRIBER_STATUS, SMS_MESSAGE_STATUS
 from forms import SMSCampaignForm, SMSDashboardForm, SMSSearchForm
 from function_def import check_sms_dialer_setting
@@ -531,9 +531,9 @@ def sms_dashboard(request, on_index=None):
         for date in dateList:
             inttime = int(date.strftime("%Y%m%d"))
             # last 7 days | yesterday | last 24 hrs
-            if int(search_type) == SEARCH_TYPE.B_Last_7_days\
-                or int(search_type) == SEARCH_TYPE.C_Yesterday\
-                or int(search_type) == SEARCH_TYPE.D_Last_24_hours:
+            if (int(search_type) == SEARCH_TYPE.B_Last_7_days
+               or int(search_type) == SEARCH_TYPE.C_Yesterday
+               or int(search_type) == SEARCH_TYPE.D_Last_24_hours):
 
                 for option in range(0, 24):
                     day_time = int(str(inttime) + str(option).zfill(2))
@@ -551,8 +551,8 @@ def sms_dashboard(request, on_index=None):
 
             # last 12 hrs | last 6 hrs | last 1 hrs
             elif (int(search_type) == SEARCH_TYPE.E_Last_12_hours
-                or int(search_type) == SEARCH_TYPE.F_Last_6_hours
-                or int(search_type) == SEARCH_TYPE.G_Last_hour):
+                 or int(search_type) == SEARCH_TYPE.F_Last_6_hours
+                 or int(search_type) == SEARCH_TYPE.G_Last_hour):
 
                 for hour in range(0, 24):
                     for minute in range(0, 60):
@@ -627,21 +627,22 @@ def sms_dashboard(request, on_index=None):
 
         # Y-axis order depend upon SMS_MESSAGE_STATUS
         # 'UNSENT', 'SENT', 'DELIVERED', 'FAILED', 'NO_ROUTE', 'UNAUTHORIZED'
-        ydata = [percentage(total_unsent, total_sms_count),
-                 percentage(total_sent, total_sms_count),
-                 percentage(total_delivered, total_sms_count),
-                 percentage(total_failed, total_sms_count),
-                 percentage(total_no_route, total_sms_count),
-                 percentage(total_unauthorized, total_sms_count),
-                ]
+        ydata = [
+            percentage(total_unsent, total_sms_count),
+            percentage(total_sent, total_sms_count),
+            percentage(total_delivered, total_sms_count),
+            percentage(total_failed, total_sms_count),
+            percentage(total_no_route, total_sms_count),
+            percentage(total_unauthorized, total_sms_count),
+        ]
 
         color_list = [
-            COLOR_DISPOSITION['UNSENT'],
-            COLOR_DISPOSITION['SENT'],
-            COLOR_DISPOSITION['DELIVERED'],
-            COLOR_DISPOSITION['FAILED'],
-            COLOR_DISPOSITION['NO_ROUTE'],
-            COLOR_DISPOSITION['UNAUTHORIZED'],
+            COLOR_SMS_DISPOSITION['UNSENT'],
+            COLOR_SMS_DISPOSITION['SENT'],
+            COLOR_SMS_DISPOSITION['DELIVERED'],
+            COLOR_SMS_DISPOSITION['FAILED'],
+            COLOR_SMS_DISPOSITION['NO_ROUTE'],
+            COLOR_SMS_DISPOSITION['UNAUTHORIZED'],
         ]
         extra_serie = {
             "tooltip": {"y_start": "", "y_end": " %"},
@@ -665,18 +666,18 @@ def sms_dashboard(request, on_index=None):
         'total_record': total_record,
         'select_graph_for': select_graph_for,
         'total_sms_count': total_sms_count,
-        'total_unsent':  total_unsent,
+        'total_unsent': total_unsent,
         'total_sent': total_sent,
         'total_delivered': total_delivered,
         'total_failed': total_failed,
         'total_no_route': total_no_route,
         'total_unauthorized': total_unauthorized,
-        'unsent_color': COLOR_DISPOSITION['UNSENT'],
-        'sent_color': COLOR_DISPOSITION['SENT'],
-        'delivered_color': COLOR_DISPOSITION['DELIVERED'],
-        'failed_color': COLOR_DISPOSITION['FAILED'],
-        'no_route_color': COLOR_DISPOSITION['NO_ROUTE'],
-        'unauthorized_color': COLOR_DISPOSITION['UNAUTHORIZED'],
+        'unsent_color': COLOR_SMS_DISPOSITION['UNSENT'],
+        'sent_color': COLOR_SMS_DISPOSITION['SENT'],
+        'delivered_color': COLOR_SMS_DISPOSITION['DELIVERED'],
+        'failed_color': COLOR_SMS_DISPOSITION['FAILED'],
+        'no_route_color': COLOR_SMS_DISPOSITION['NO_ROUTE'],
+        'unauthorized_color': COLOR_SMS_DISPOSITION['UNAUTHORIZED'],
         'final_chartcontainer': 'lineplusbarwithfocuschart_container',
         'final_chartdata': final_chartdata,
         'final_charttype': final_charttype,
@@ -897,14 +898,15 @@ def export_sms_report(request):
         if format == 'json':
             send_date = str(i.send_date)
         gateway = i.gateway.name if i.gateway else ''
-        list_val.append([i.sender,
-                         i.recipient_number,
-                         send_date,
-                         i.uuid,
-                         i.status,
-                         i.status_message,
-                         gateway,
-                        ])
+        list_val.append([
+            i.sender,
+            i.recipient_number,
+            send_date,
+            i.uuid,
+            i.status,
+            i.status_message,
+            gateway,
+        ])
 
     data = tablib.Dataset(*list_val, headers=headers)
 

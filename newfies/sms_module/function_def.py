@@ -11,8 +11,6 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
-from django.utils.translation import ugettext_lazy as _
 from dialer_cdr.function_def import return_query_string
 from dialer_contact.models import Phonebook, Contact
 from common.common_functions import variable_value

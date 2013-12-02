@@ -73,12 +73,12 @@ class SMS_MESSAGE_STATUS(Choice):
     UNAUTHORIZED = 'Unauthorized'
 
 
-# Disposition color
-COLOR_DISPOSITION = {
-    'UNSENT': '#F40C27',
-    'SENT': '#8BEA00',
-    'DELIVERED': '#F40CD5',
-    'FAILED': '#3216B0',
-    'NO_ROUTE': '#F9AA26',
-    'UNAUTHORIZED': '#7E8179'
+# SMS Disposition color
+COLOR_SMS_DISPOSITION = {
+    'UNSENT': '#4DBCE9',
+    'SENT': '#0A9289',
+    'DELIVERED': '#42CD2C',
+    'FAILED': '#DE2213',
+    'NO_ROUTE': '#AF0415',
+    'UNAUTHORIZED': '#E08022'
 }

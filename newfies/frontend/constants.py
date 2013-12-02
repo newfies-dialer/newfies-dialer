@@ -28,10 +28,10 @@ class SEARCH_TYPE(Choice):
 
 # Disposition color
 COLOR_DISPOSITION = {
-    'ANSWER': '#8BEA00',
-    'BUSY': '#F40C27',
-    'NOANSWER': '#F40CD5',
-    'CANCEL': '#3216B0',
-    'CONGESTION': '#F9AA26',
-    'FAILED': '#A61700'
+    'ANSWER': '#42CD2C',
+    'NOANSWER': '#0A9289',
+    'BUSY': '#4DBCE9',
+    'CANCEL': '#E08022',
+    'CONGESTION': '#AF0415',
+    'FAILED': '#DE2213'
 }

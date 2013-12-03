@@ -149,21 +149,23 @@ def perform_alarm(obj_event, obj_alarm):
 
     if obj_alarm.method == ALARM_METHOD.CALL:
         # send alarm via CALL
-        print "ALARM_METHOD.CALL"
+        print "perform_alarm ALARM_METHOD.CALL"
         AlarmRequest.objects.create(
             alarm=obj_alarm,
-            date=datetime.now(),
+            date=datetime.now()
         )
 
     elif obj_alarm.method == ALARM_METHOD.SMS:
         # send alarm via SMS
-        print "ALARM_METHOD.SMS"
+        print "perform_alarm ALARM_METHOD.SMS"
         # Mark the Alarm as SUCCESS
         obj_alarm.status = ALARM_STATUS.SUCCESS
         obj_alarm.save()
 
-    if obj_alarm.method == ALARM_METHOD.EMAIL:
+    elif obj_alarm.method == ALARM_METHOD.EMAIL:
         # send alarm via EMAIL
+        print "perform_alarm ALARM_METHOD.EMAIL"
+
         if obj_alarm.alarm_email and obj_alarm.mail_template:
             # create MailSpooler object
             MailSpooler.objects.create(
@@ -194,10 +196,10 @@ class alarmrequest_dispatcher(PeriodicTask):
 
         # Select AlarmRequest where date >= now() - 60 minutes
         start_time = datetime.now() + relativedelta(minutes=-60)
-        alarmreq_list = AlarmRequest.objects.filter(date__gte=start_time,
-                                          status=ALARMREQUEST_STATUS.PENDING)
+        alarmreq_list = AlarmRequest.objects.filter(date__gte=start_time, status=ALARMREQUEST_STATUS.PENDING)
         no_alarmreq = alarmreq_list.count()
         if no_alarmreq == 0:
+            logger.error("alarmrequest_dispatcher - no alarmreq found!")
             return False
 
         # Set time to wait for balanced dispatching of calls

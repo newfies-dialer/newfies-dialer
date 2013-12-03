@@ -19,7 +19,7 @@ urlpatterns = patterns('survey.views',
     # Survey urls
     (r'^module/survey/$', 'survey_list'),
     (r'^module/survey/add/$', 'survey_add'),
-    (r'^module/survey_view/(.+)/$', 'survey_view'),
+    (r'^module/sealed_survey_view/(.+)/$', 'sealed_survey_view'),
     (r'^module/survey/del/(.+)/$', 'survey_del'),
     (r'^module/survey/(.+)/$', 'survey_change'),
     (r'^module/export_survey/(.+)/$', 'export_survey'),

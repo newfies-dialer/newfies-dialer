@@ -29,7 +29,7 @@ from survey.views import survey_list, survey_add, \
     survey_change, survey_del, section_add, section_change,\
     section_script_change, section_branch_change, \
     section_branch_add, section_delete, section_script_play, \
-    survey_view, survey_campaign_result, import_survey, export_survey,\
+    sealed_survey_view, survey_campaign_result, import_survey, export_survey,\
     frozen_survey_list, freeze_survey
 #from survey.ajax import section_sort
 
@@ -90,11 +90,11 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_frozen_survey_view_list(self):
         """Test Function survey view list"""
-        response = self.client.get('/frozen_survey/')
+        response = self.client.get('/sealed_survey/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/survey/frozen_survey_list.html')
+        self.assertTemplateUsed(response, 'frontend/survey/sealed_survey_list.html')
 
-        request = self.factory.get('/frozen_survey/')
+        request = self.factory.get('/sealed_survey/')
         request.user = self.user
         request.session = {}
         response = frozen_survey_list(request)
@@ -397,10 +397,10 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view(self):
         """Test Function survey view"""
-        request = self.factory.get('/survey_view/1/')
+        request = self.factory.get('/sealed_survey_view/1/')
         request.user = self.user
         request.session = {}
-        response = survey_view(request, 1)
+        response = sealed_survey_view(request, 1)
         self.assertEqual(response.status_code, 200)
 
     def test_section_script_change(self):

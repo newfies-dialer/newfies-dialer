@@ -78,7 +78,7 @@ function delete_button(){
                                     {% endif %}
 
                                     {% if perms.survey.seal_survey %}
-                                        <a id="id_survey_seal_{{ row.id }}" href="#survey-seal" url="/module/seal_survey/{{ row.id }}/" {% icon "layers" %} title="{% trans 'seal survey'|title %}" data-toggle="modal" data-controls-modal="survey-seal"></a>
+                                        <a id="id_survey_seal_{{ row.id }}" href="#survey-seal" url="/module/sealed_survey_view/{{ row.id }}/" {% icon "layers" %} title="{% trans 'seal survey'|title %}" data-toggle="modal" data-controls-modal="survey-seal"></a>
                                         <!--Survey seal modal-->
                                         <script type="text/javascript" charset="utf-8">
                                             $("#id_survey_seal_{{ row.id }}").live('click', function(e) {

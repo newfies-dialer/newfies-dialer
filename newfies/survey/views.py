@@ -774,8 +774,8 @@ def survey_change(request, object_id):
 
 
 @login_required
-def survey_view(request, object_id):
-    """View locked survey
+def sealed_survey_view(request, object_id):
+    """View sealed survey
 
     **Logic Description**:
 
@@ -793,7 +793,7 @@ def survey_view(request, object_id):
     branching_section_list =\
         branching_list.values_list('section_id', flat=True).distinct()
 
-    template = 'frontend/survey/survey_view.html'
+    template = 'frontend/survey/sealed_survey_view.html'
 
     data = {
         'survey_obj_id': object_id,

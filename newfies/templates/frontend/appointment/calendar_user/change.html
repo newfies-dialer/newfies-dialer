@@ -68,7 +68,7 @@
 
 
     <div class="row">
-        {% get_fieldset address,city,state,country,zip_code,phone_no,fax,company_name,company_website,language,note,accountcode,calendar_setting as cal_user_fields from form %}
+        {% get_fieldset calendar_setting,accountcode,address,city,state,country,zip_code,phone_no,fax,company_name,company_website,language,note as cal_user_fields from form %}
         {% for field in cal_user_fields.hidden_fields %}
             {{ field }}
         {% endfor %}

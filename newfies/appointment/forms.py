@@ -45,8 +45,9 @@ class CalendarUserCreationForm(UserCreationForm):
         cal_setting_list = []
         setting_list = CalendarSetting.objects.filter(user=manager)
 
+        cal_setting_list.append(('', _('select calendar setting').title()))
         for i in setting_list:
-            cal_setting_list.append((i.id, i.caller_name))
+            cal_setting_list.append((i.id, i.label))
 
         self.fields['calendar_setting_id'].choices = cal_setting_list
         for i in self.fields.keyOrder:
@@ -112,10 +113,10 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
         super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
 
         list_calendar_setting = []
-        list_calendar_setting.append((0, '---'))
+        list_calendar_setting.append((0, _('select calendar setting').title()))
         calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
         for l in calendar_setting_list:
-            list_calendar_setting.append((l.id, l.caller_name))
+            list_calendar_setting.append((l.id, l.label))
         self.fields['calendar_setting'].choices = list_calendar_setting
 
         for i in self.fields.keyOrder:
@@ -217,5 +218,3 @@ class AlarmForm(ModelForm):
         for l in event_list:
             list_event.append((l[0], l[1]))
         self.fields['event'].choices = list_event
-
-

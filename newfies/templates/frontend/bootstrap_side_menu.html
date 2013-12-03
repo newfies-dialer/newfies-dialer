@@ -71,12 +71,12 @@
             {% endif %}
         {% endif %}
 
-        {% if "/frozen_survey/" in request.path or "/survey/" in request.path or "/survey_view/" in request.path %}
+        {% if "/sealed_survey/" in request.path or "/survey/" in request.path or "/survey_view/" in request.path %}
             {% if perms.survey.view_survey %}
                 <a class="list-group-item {% ifcontains '/survey/' %}active{% endifcontains %}" href="/module/survey/">{% trans "surveys"|title %}</a>
             {% endif %}
-            {% if perms.survey.view_frozen_survey %}
-                <a class="list-group-item {% ifcontains '/frozen_survey/' %}active{% endifcontains %}" href="/module/frozen_survey/">{% trans "frozen surveys"|title %}</a>
+            {% if perms.survey.view_sealed_survey %}
+                <a class="list-group-item {% ifcontains '/sealed_survey/' %}active{% endifcontains %}" href="/module/sealed_survey/">{% trans "sealed surveys"|title %}</a>
             {% endif %}
         {% endif %}
     </div>

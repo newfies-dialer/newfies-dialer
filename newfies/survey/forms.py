@@ -387,10 +387,10 @@ class SurveyFileImport(forms.Form):
                                           ' '.join(file_exts)))
 
 
-class FreezeSurveyForm(SurveyFileImport):
-    """General Form : FreezeSurveyForm"""
+class SealSurveyForm(SurveyFileImport):
+    """General Form : SealSurveyForm"""
     def __init__(self, *args, **kwargs):
-        super(FreezeSurveyForm, self).__init__(*args, **kwargs)
+        super(SealSurveyForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['name']
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"

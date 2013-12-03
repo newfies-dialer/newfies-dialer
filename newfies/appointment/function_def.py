@@ -15,6 +15,13 @@ from appointment.models.users import CalendarUserProfile, CalendarUser
 from appointment.models.calendars import Calendar
 
 
+def get_all_calendar_user_id_list():
+    """get calendar user id list for logged in user"""
+    calendar_user_list = CalendarUserProfile.objects.values_list(
+        'user_id', flat=True).all().order_by('id')
+    return calendar_user_list
+
+
 def get_calendar_user_id_list(user):
     """get calendar user id list for logged in user"""
     calendar_user_list = CalendarUserProfile.objects.values_list(

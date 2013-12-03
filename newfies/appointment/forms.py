@@ -22,7 +22,7 @@ from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm
 from appointment.function_def import get_calendar_user_id_list,\
-    get_calendar_user_list, get_calendar_list
+    get_calendar_user_list, get_calendar_list, get_all_calendar_user_id_list
 from survey.models import Survey
 from bootstrap3_datetime.widgets import DateTimePicker
 
@@ -146,8 +146,7 @@ class AdminCalendarForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(AdminCalendarForm, self).__init__(*args, **kwargs)
-        calendar_user_list = CalendarUserProfile.objects.values_list(
-            'user_id', flat=True).all().order_by('id')
+        calendar_user_list = get_all_calendar_user_id_list()
         self.fields['user'].choices = get_calendar_user_list(calendar_user_list)
 
 
@@ -159,8 +158,7 @@ class EventAdminForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EventAdminForm, self).__init__(*args, **kwargs)
-        calendar_user_list = CalendarUserProfile.objects.values_list(
-            'user_id', flat=True).all().order_by('id')
+        calendar_user_list = get_all_calendar_user_id_list()
         self.fields['creator'].choices = get_calendar_user_list(calendar_user_list)
 
 

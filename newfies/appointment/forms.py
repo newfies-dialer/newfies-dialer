@@ -112,6 +112,10 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
 
+        self.fields.keyOrder = ['calendar_setting', 'accountcode', 'address', 'city',
+            'state', 'country', 'zip_code', 'phone_no', 'fax', 'company_name',
+            'company_website', 'language', 'note']
+
         list_calendar_setting = []
         list_calendar_setting.append((0, _('select calendar setting').title()))
         calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')

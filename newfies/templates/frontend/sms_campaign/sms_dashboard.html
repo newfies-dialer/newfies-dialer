@@ -67,15 +67,15 @@
                 <div class="col-md-6">
                     <div class="table-responsive">
                         <table class="table table-bordered table-hover">
-                            <tr>
+                            <tr class="success">
                                 <th colspan="3">{{ total_sms_count }}  {% trans "total sms"|upper %}</th>
                             </tr>
-                            <tr>
+                            <tr class="success">
                                 <th style="color: {{ sent_color }}">{{ total_sent }}  {% trans "sent"|upper %}</th>
                                 <th style="color: {{ unsent_color }}">{{ total_unsent }}  {% trans "unsent"|upper %}</th>
                                 <th style="color: {{ delivered_color }}">{{ total_delivered }}  {% trans "delivered"|upper %}</th>
                             </tr>
-                            <tr>
+                            <tr class="success">
                                 <th style="color: {{ failed_color }}">{{ total_failed }}  {% trans "failed"|upper %}</th>
                                 <th style="color: {{ no_route_color }}">{{ total_no_route }}  {% trans "no route"|upper %}</th>
                                 <th style="color: {{ unauthorized_color }}">{{ total_unauthorized }}  {% trans "unauthorized"|upper %}</th>

@@ -66,15 +66,15 @@
             <div class="col-md-6">
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover">
-                        <tr>
+                        <tr class="success">
                             <th colspan="3">{{ total_call_count }}  {% trans "TOTAL CALLS" %}</th>
                         </tr>
-                        <tr>
+                        <tr class="success">
                             <th style="color: {{ answered_color }}">{{ total_answered }}  {{ VOIPCALL_DISPOSITION.ANSWER }}</th>
                             <th style="color: {{ busy_color }}">{{ total_busy }}  {{ VOIPCALL_DISPOSITION.BUSY }}</th>
                             <th style="color: {{ not_answered_color }}">{{ total_not_answered }}  {{ VOIPCALL_DISPOSITION.NOANSWER }}</th>
                         </tr>
-                        <tr>
+                        <tr class="success">
                             <th style="color: {{ cancel_color }}">{{ total_cancel }}  {{ VOIPCALL_DISPOSITION.CANCEL }}</th>
                             <th style="color: {{ congestion_color }}">{{ total_congestion }}  {{ VOIPCALL_DISPOSITION.CONGESTION }}</th>
                             <th style="color: {{ failed_color }}">{{ total_failed }}  {{ VOIPCALL_DISPOSITION.FAILED }}</th>

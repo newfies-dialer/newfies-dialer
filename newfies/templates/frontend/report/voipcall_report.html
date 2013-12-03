@@ -17,10 +17,10 @@
         <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "daily report"|title %}</a></li>
     </ul>
     <br/>
+
     <div id="form_collapse" class="collapse in">
         <form class="well form-search" role="form" method="POST" action="." enctype="multipart/form-data">
             {% csrf_token %}
-
             <div class="row">
                 {% get_fieldset from_date,to_date,status,campaign_id,leg_type as campaign_fields from form %}
                 {% for field in campaign_fields.visible_fields %}
@@ -35,11 +35,11 @@
                 {% endfor %}
             </div>
 
-            <input type="submit" value="{% trans "search"|title %}" class="btn btn-primary"/>
-
+            <input type="submit" value="{% trans 'open search'|title %}" class="btn btn-primary"/>
         </form>
     </div>
-    <button id="toggle_btn" type="button" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#form_collapse">
+
+    <button id="toggle_btn" type="button" class="btn btn-default btn-sm showdetails" data-toggle="collapse" data-target="#form_collapse">
         <i id="toggle_btn_i" class="glyphicon glyphicon-zoom-out"></i>
         <span id="toggle_btn_i_span">{% trans "show search"|title %}</span>
     </button>

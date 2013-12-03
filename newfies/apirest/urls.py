@@ -60,8 +60,8 @@ router.register(r'subscriber', SubscriberViewSet)
 router.register(r'callrequest', CallrequestViewSet)
 router.register(r'survey_template', SurveyTemplateViewSet)
 
-# frozen survey
-router.register(r'frozen-survey', SurveyViewSet)
+# sealed survey
+router.register(r'sealed-survey', SurveyViewSet)
 
 router.register(r'section_template', SectionTemplateViewSet)
 router.register(r'branching_template', BranchingTemplateViewSet)

@@ -66,22 +66,22 @@ function delete_button(){
                                 <td>{{ row.updated_date }}</td>
                                 <td>
                                     {% if perms.survey.change_survey %}
-                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update survey"|title %}"></a>
+                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans 'update survey'|title %}"></a>
                                     {% endif %}
 
                                     {% if perms.survey.delete_survey %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete survey"|title %}"></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans 'delete survey'|title %}"></a>
                                     {% endif %}
 
                                     {% if perms.survey.export_survey %}
-                                        <a href="/module/export_survey/{{ row.id }}/" target="_blank" {% icon "database_go" %} title="{% trans "export survey"|title %}"></a>
+                                        <a href="/module/export_survey/{{ row.id }}/" target="_blank" {% icon "database_go" %} title="{% trans 'export survey'|title %}"></a>
                                     {% endif %}
 
-                                    {% if perms.survey.freeze_survey %}
-                                        <a id="id_survey_freeze_{{ row.id }}" href="#survey-freeze" url="/module/freeze_survey/{{ row.id }}/" {% icon "layers" %} title="{% trans "freeze survey"|title %}" data-toggle="modal" data-controls-modal="survey-freeze"></a>
-                                        <!--Survey freeze modal-->
+                                    {% if perms.survey.seal_survey %}
+                                        <a id="id_survey_seal_{{ row.id }}" href="#survey-seal" url="/module/seal_survey/{{ row.id }}/" {% icon "layers" %} title="{% trans 'seal survey'|title %}" data-toggle="modal" data-controls-modal="survey-seal"></a>
+                                        <!--Survey seal modal-->
                                         <script type="text/javascript" charset="utf-8">
-                                            $("#id_survey_freeze_{{ row.id }}").live('click', function(e) {
+                                            $("#id_survey_seal_{{ row.id }}").live('click', function(e) {
                                                 e.preventDefault();
                                                 var url = $(this).attr('url');
                                                 var modal_id = $(this).attr('data-controls-modal');
@@ -122,8 +122,8 @@ function delete_button(){
         <!-- survey-import modal content-->
         <div id="survey-import" class="modal fade" role="dialog" aria-labelledby="survey_import"></div>
 
-        <!-- survey-freeze modal content-->
-        <div id="survey-freeze" class="modal fade" role="dialog" aria-labelledby="survey_freeze"></div>
+        <!-- survey-seal modal content-->
+        <div id="survey-seal" class="modal fade" role="dialog" aria-labelledby="survey_seal"></div>
 
     </div>
 </div>

@@ -65,7 +65,7 @@ def create_sms(smscampaign_id, quantity):
         new_sms = SMSMessage.objects.create(
             content='this is test',
             recipient_number=phonenumber,
-            sender=admin_user,
+            sender=obj_campaign.user,
             sender_number=phonenumber,
             send_date=send_date,
             delivery_date=delivery_date,

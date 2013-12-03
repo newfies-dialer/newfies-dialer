@@ -26,7 +26,7 @@
         {% include "frontend/extra_modal_files.html" %}
             <script type="text/javascript" charset="utf-8">
                 $(window).load(function(){
-                    $('#survey-freeze-modal').modal('show');
+                    $('#survey-seal-modal').modal('show');
                 });
                 var url = '/module/survey/';
                 $("#id_close,#id_close_x").live('click', function() {
@@ -38,16 +38,16 @@
                 });
             </script>
             <!-- modal content-->
-            <div class="modal fade" id="survey-freeze-modal" role="dialog" aria-labelledby="survey_freeze_modal" data-backdrop="static">
+            <div class="modal fade" id="survey-seal-modal" role="dialog" aria-labelledby="survey_seal_modal" data-backdrop="static">
 
         {% endif %}
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
-                    <h3>{% trans "freeze survey"|title %}</h3>
+                    <h3>{% trans "seal survey"|title %}</h3>
                 </div>
-                <form method="post" role="form" action="/module/freeze_survey/{{ object_id }}/" enctype="multipart/form-data" >{% csrf_token %}
+                <form method="post" role="form" action="/module/seal_survey/{{ object_id }}/" enctype="multipart/form-data" >{% csrf_token %}
                     <div class="modal-body">
                         {% for field in form %}
                         <div class="form-group {% if field.errors %}has-error{% endif %}">

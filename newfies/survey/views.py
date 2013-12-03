@@ -32,9 +32,9 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
     CallTransferSectionForm, BranchingForm, ScriptForm,\
-    SurveyDetailReportForm, SurveyFileImport, ConferenceSectionForm, FreezeSurveyForm
+    SurveyDetailReportForm, SurveyFileImport, ConferenceSectionForm, SealSurveyForm
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME,\
-    FROZEN_SURVEY_COLUMN_NAME
+    SEALED_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
 from common.common_functions import striplist, variable_value, ceil_strdate,\
     get_pagination_vars
@@ -1329,18 +1329,18 @@ def import_survey(request):
         context_instance=RequestContext(request))
 
 
-@permission_required('survey.view_frozen_survey', login_url='/')
+@permission_required('survey.view_sealed_survey', login_url='/')
 @login_required
-def frozen_survey_list(request):
+def sealed_survey_list(request):
     """Survey list for the logged in user
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/frozen_survey_list.html
+        * ``template`` - frontend/survey/sealed_survey_list.html
 
     **Logic Description**:
 
-        * List all frozen surveys which belong to the logged in user.
+        * List all sealed surveys which belong to the logged in user.
     """
     sort_col_field_list = ['id', 'name', 'updated_date', 'campaign']
     default_sort_field = 'id'
@@ -1354,12 +1354,12 @@ def frozen_survey_list(request):
         .values('id', 'name', 'description', 'updated_date', 'campaign__name')\
         .filter(user=request.user).order_by(sort_order)
 
-    template = 'frontend/survey/frozen_survey_list.html'
+    template = 'frontend/survey/sealed_survey_list.html'
     data = {
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
-        'FROZEN_SURVEY_COLUMN_NAME': FROZEN_SURVEY_COLUMN_NAME,
+        'SEALED_SURVEY_COLUMN_NAME': SEALED_SURVEY_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
     }
@@ -1369,28 +1369,28 @@ def frozen_survey_list(request):
                               context_instance=RequestContext(request))
 
 
-@permission_required('survey.freeze_survey', login_url='/')
+@permission_required('survey.seal_survey', login_url='/')
 @login_required
-def freeze_survey(request, object_id):
+def seal_survey(request, object_id):
     """
-        freeze survey without campaign
+        seal survey without campaign
     """
-    form = FreezeSurveyForm()
+    form = SealSurveyForm()
     if request.method == 'POST':
-        form = FreezeSurveyForm(request.POST)
+        form = SealSurveyForm(request.POST)
         if form.is_valid():
             survey_template = get_object_or_404(
                 Survey_template, pk=object_id, user=request.user)
             survey_template.name = request.POST.get('name', survey_template.name)
             survey_template.copy_survey_template()
 
-            request.session['msg'] = '(%s) survey is forzen successfully' % survey_template.name
+            request.session['msg'] = '(%s) survey is sealed successfully' % survey_template.name
 
             return HttpResponseRedirect(redirect_url_to_survey_list)
         else:
             request.session['err_msg'] = True
 
-    template = 'frontend/survey/freeze_survey.html'
+    template = 'frontend/survey/seal_survey.html'
     data = {
         'form': form,
         'err_msg': request.session.get('err_msg'),

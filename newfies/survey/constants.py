@@ -42,7 +42,7 @@ class SURVEY_CALL_RESULT_NAME(Choice):
     result = _('survey result')
 
 
-class FROZEN_SURVEY_COLUMN_NAME(Choice):
+class SEALED_SURVEY_COLUMN_NAME(Choice):
     name = _('name')
     description = _('description')
     campaign = _('campaign')

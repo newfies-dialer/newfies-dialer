@@ -48,7 +48,7 @@
     </div>
 </div>
 
-{% if total_record %}
+{% if form.smscampaign.value and form.smscampaign.value != '0' %}
     <div class="row">
         <div class="col-md-12">
             {% include_container final_chartcontainer 400 '100%' %}
@@ -66,20 +66,20 @@
 
                 <div class="col-md-6">
                     <div class="table-responsive">
-                        <table style="width: 400px; margin: 50px 0px 0px 0px; background-color: #e6f7fe;" class="table bordered-table">
-                        <tr>
-                            <th style="color: #111111; width: 120px;" colspan="3">{{ total_sms_count }}  {% trans "total sms"|upper %}</th>
-                        </tr>
-                        <tr>
-                            <th style="color: {{ sent_color }}">{{ total_sent }}  {% trans "sent"|upper %}</th>
-                            <th style="color: {{ unsent_color }}">{{ total_unsent }}  {% trans "unsent"|upper %}</th>
-                            <th style="color: {{ delivered_color }}">{{ total_delivered }}  {% trans "delivered"|upper %}</th>
-                        </tr>
-                        <tr>
-                            <th style="color: {{ failed_color }}">{{ total_failed }}  {% trans "failed"|upper %}</th>
-                            <th style="color: {{ no_route_color }}">{{ total_no_route }}  {% trans "no route"|upper %}</th>
-                            <th style="color: {{ unauthorized_color }}">{{ total_unauthorized }}  {% trans "unauthorized"|upper %}</th>
-                        </tr>
+                        <table class="table table-bordered table-hover">
+                            <tr class="success">
+                                <th colspan="3">{{ total_sms_count }}  {% trans "total sms"|upper %}</th>
+                            </tr>
+                            <tr class="success">
+                                <th style="color: {{ sent_color }}">{{ total_sent }}  {% trans "sent"|upper %}</th>
+                                <th style="color: {{ unsent_color }}">{{ total_unsent }}  {% trans "unsent"|upper %}</th>
+                                <th style="color: {{ delivered_color }}">{{ total_delivered }}  {% trans "delivered"|upper %}</th>
+                            </tr>
+                            <tr class="success">
+                                <th style="color: {{ failed_color }}">{{ total_failed }}  {% trans "failed"|upper %}</th>
+                                <th style="color: {{ no_route_color }}">{{ total_no_route }}  {% trans "no route"|upper %}</th>
+                                <th style="color: {{ unauthorized_color }}">{{ total_unauthorized }}  {% trans "unauthorized"|upper %}</th>
+                            </tr>
                         </table>
                     </div>
                     <div id="hover" style="float: left;"><span style="font-weight: bold; color: rgb(148, 64, 237);"></span></div>

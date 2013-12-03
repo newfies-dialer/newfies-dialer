@@ -451,7 +451,8 @@ def sms_dashboard(request, on_index=None):
 
         # This calls list is used by pie chart
         list_sms = SMSMessage.objects.filter(
-            sender=request.user, sms_campaign=selected_sms_campaign,
+            sender=request.user,
+            sms_campaign_id=selected_sms_campaign,
             send_date__range=(start_date, end_date))\
             .extra(select=select_data)\
             .values('send_date', 'status')\
@@ -476,7 +477,8 @@ def sms_dashboard(request, on_index=None):
             total_sms_count += i['send_date__count']
 
         list_sms = SMSMessage.objects.filter(
-            sender=request.user, sms_campaign=selected_sms_campaign,
+            sender=request.user,
+            sms_campaign_id=selected_sms_campaign,
             send_date__range=(start_date, end_date))\
             .extra(select=select_data).values('send_date')\
             .annotate(Count('send_date')).order_by('send_date')

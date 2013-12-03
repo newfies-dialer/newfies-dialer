@@ -127,8 +127,8 @@ class Survey(Survey_abstract):
     class Meta:
         permissions = (
             ("view_survey", _('can see survey')),
-            ("view_frozen_survey", _('can see frozen survey')),
-            ("freeze_survey", _('can freeze survey')),
+            ("view_sealed_survey", _('can see sealed survey')),
+            ("seal_survey", _('can seal survey')),
             ("export_survey", _('can export survey')),
             ("import_survey", _('can import survey')),
             ("view_survey_report", _('can see survey report'))

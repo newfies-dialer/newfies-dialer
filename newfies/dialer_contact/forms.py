@@ -96,16 +96,15 @@ class ContactForm(ModelForm):
     class Meta:
         model = Contact
         widgets = {
-            'additional_vars': Textarea(attrs={'cols': 23, 'rows': 3}),
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
 
     def __init__(self, user, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = [
-            'phonebook', 'contact', 'status', 'unit_number', 'last_name', 'first_name',
-            'email', 'address', 'city', 'state', 'country', 'description',
-            'additional_vars',
+            'phonebook', 'contact', 'last_name', 'first_name', 'status', 'email',
+            'unit_number', 'address', 'city', 'state', 'country',
+            'description', 'additional_vars'
         ]
 
         for i in self.fields.keyOrder:

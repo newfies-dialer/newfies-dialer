@@ -13,51 +13,83 @@
 {% endblock %}
 
 {% block content %}
-
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#tabs-1" data-toggle="tab">{% trans "general"|title %}</a></li>
+    <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "advanced data"|title %}</a></li>
+</ul>
 <form class="well" role="form" method="POST" action="." enctype="multipart/form-data">
     {% csrf_token %}
-    <div class="row">
-        {% get_fieldset phonebook,contact as contact_fields from form %}
-        {% for field in contact_fields.visible_fields %}
-            <div class="col-md-6">
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
-                    <div class="col-xs-8">
-                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                        {{ field }}
-                        {% if field.errors %}
-                            <span class="help-inline">
-                                {{ field.errors|removetags:"ul li"|safe }}
-                            </span>
-                        {% endif %}
-                        <span class="help-block">
-                            {{ field.help_text|capfirst }}
-                        </span>
+    <div class="tab-content">
+        <div id="tabs-1" class="tab-pane active">
+            <div class="row">
+                {% get_fieldset phonebook,contact as contact_fields from form %}
+                {% for field in contact_fields.visible_fields %}
+                    <div class="col-md-6">
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                            <div class="col-xs-8">
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">
+                                        {{ field.errors|removetags:"ul li"|safe }}
+                                    </span>
+                                {% endif %}
+                                <span class="help-block">
+                                    {{ field.help_text|capfirst }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
-    </div>
-    <div class="row">
-        {% get_fieldset status,unit_number,last_name,first_name,email,address,city,state,country,unit_number,additional_vars,description as contact_fields from form %}
-        {% for field in contact_fields.visible_fields %}
-            <div class="col-md-6">
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
-                    <div class="col-xs-8">
-                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                        {{ field }}
-                        {% if field.errors %}
-                            <span class="help-inline">
-                                {{ field.errors|removetags:"ul li"|safe }}
-                            </span>
-                        {% endif %}
-                        <span class="help-block">
-                            {{ field.help_text|capfirst }}
-                        </span>
+            <div class="row">
+                {% get_fieldset status,last_name,first_name,email as contact_fields from form %}
+                {% for field in contact_fields.visible_fields %}
+                    <div class="col-md-6">
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                            <div class="col-xs-8">
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">
+                                        {{ field.errors|removetags:"ul li"|safe }}
+                                    </span>
+                                {% endif %}
+                                <span class="help-block">
+                                    {{ field.help_text|capfirst }}
+                                </span>
+                            </div>
+                        </div>
                     </div>
-                </div>
+                {% endfor %}
             </div>
-        {% endfor %}
+        </div>
+
+        <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
+            <div class="row">
+                {% get_fieldset unit_number,address,city,state,country,unit_number,additional_vars,description as contact_fields from form %}
+                {% for field in contact_fields.visible_fields %}
+                    <div class="col-md-6">
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                            <div class="col-xs-8">
+                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-inline">
+                                        {{ field.errors|removetags:"ul li"|safe }}
+                                    </span>
+                                {% endif %}
+                                <span class="help-block">
+                                    {{ field.help_text|capfirst }}
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
     </div>
+    <br/>
     {% include "frontend/common_submit_buttons.html" %}
 </form>
 

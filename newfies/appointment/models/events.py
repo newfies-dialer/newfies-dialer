@@ -20,13 +20,13 @@ class Event(models.Model):
     '''
     This model stores meta data for a date / an event
     '''
+    title = models.CharField(verbose_name=_("label"), max_length=255)
+    description = models.TextField(verbose_name=_("description"), null=True, blank=True)
     start = models.DateTimeField(default=(lambda: datetime.now()),
                                  verbose_name=_("start"))
     end = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(hours=+1)),
                                verbose_name=_("end"),
                                help_text=_("Must be later than the start."))
-    title = models.CharField(verbose_name=_("title"), max_length=255)
-    description = models.TextField(verbose_name=_("description"), null=True, blank=True)
     creator = models.ForeignKey(CalendarUser, null=False, blank=False,
                                 verbose_name=_("calendar user"), related_name='creator')
     created_on = models.DateTimeField(verbose_name=_("created on"), default=timezone.now)

@@ -131,7 +131,6 @@ class CalendarForm(ModelForm):
     """CalendarForm"""
     class Meta:
         model = Calendar
-        exclude = ('slug')
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarForm, self).__init__(*args, **kwargs)
@@ -141,11 +140,28 @@ class CalendarForm(ModelForm):
             self.fields[i].widget.attrs['class'] = "form-control"
 
 
+class AdminCalendarForm(ModelForm):
+    class Meta:
+        model = Calendar
+
+    def __init__(self, *args, **kwargs):
+        super(AdminCalendarForm, self).__init__(*args, **kwargs)
+        calendar_user_list = CalendarUserProfile.objects.values_list(
+            'user_id', flat=True).all().order_by('id')
+        self.fields['user'].choices = get_calendar_user_list(calendar_user_list)
+
+
 class EventAdminForm(ModelForm):
     """Admin Event ModelForm"""
     class Meta:
         model = Event
         exclude = ('parent_event', 'occ_count')
+
+    def __init__(self, *args, **kwargs):
+        super(EventAdminForm, self).__init__(*args, **kwargs)
+        calendar_user_list = CalendarUserProfile.objects.values_list(
+            'user_id', flat=True).all().order_by('id')
+        self.fields['creator'].choices = get_calendar_user_list(calendar_user_list)
 
 
 class EventForm(ModelForm):

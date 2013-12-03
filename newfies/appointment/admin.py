@@ -15,12 +15,14 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
 from django.utils.translation import ugettext_lazy as _
-from appointment.models.users import CalendarSetting, CalendarUser, CalendarUserProfile
+from appointment.models.users import CalendarSetting, CalendarUser,\
+    CalendarUserProfile
 from appointment.models.rules import Rule
 from appointment.models.events import Event, Occurrence
 from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.calendars import Calendar
-from appointment.forms import CalendarUserProfileForm, EventAdminForm
+from appointment.forms import CalendarUserProfileForm, EventAdminForm,\
+    AdminCalendarForm
 from common.app_label_renamer import AppLabelRenamer
 AppLabelRenamer(native_app_label=u'appointment', app_label=_('appointment')).main()
 
@@ -53,6 +55,7 @@ class CalendarSettingAdmin(admin.ModelAdmin):
 class CalendarAdmin(admin.ModelAdmin):
     list_display = ('name', 'user', 'max_concurrent')
     ordering = ('-id', )
+    form = AdminCalendarForm
 
 
 class RuleAdmin(admin.ModelAdmin):

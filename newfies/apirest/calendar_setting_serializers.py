@@ -20,6 +20,7 @@ from appointment.models.users import CalendarSetting
 from survey.models import Survey
 from audiofield.models import AudioFile
 from dialer_gateway.models import Gateway
+from sms.models import Gateway as SMS_Gateway
 
 
 class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
@@ -28,7 +29,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "cal_setting", "callerid": "mycalendar", "caller_name": "cid name", "call_timeout": "1", "survey": "1", "aleg_gateway": "1"}' http://localhost:8000/rest-api/calendar-setting/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "cal_setting", "callerid": "mycalendar", "caller_name": "cid name", "call_timeout": "1", "survey": "1", "aleg_gateway": "1", "sms_gateway": "1"}' http://localhost:8000/rest-api/calendar-setting/
 
         Response::
 
@@ -78,7 +79,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"callerid": "32423423", "caller_name": "cid name", "call_timeout": "1", "survey": "1"}' http://localhost:8000/rest-api/calendar-setting/%calendar-setting-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"aleg_gateway": "1"}' http://localhost:8000/rest-api/calendar-setting/%calendar-setting-id%/
 
         Response::
 
@@ -113,10 +114,19 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
             aleg_gateway = self.init_data.get('aleg_gateway')
             if aleg_gateway and aleg_gateway.find('http://') == -1:
                 try:
-                    Gateway.objects.get(pk=int(aleg_gateway), user=request.user)
+                    Gateway.objects.get(pk=int(aleg_gateway))
                     self.init_data['aleg_gateway'] = '/rest-api/gateway/%s/' % aleg_gateway
                 except:
                     self.init_data['aleg_gateway'] = ''
+                    pass
+
+            sms_gateway = self.init_data.get('sms_gateway')
+            if sms_gateway and sms_gateway.find('http://') == -1:
+                try:
+                    SMS_Gateway.objects.get(pk=int(sms_gateway))
+                    self.init_data['sms_gateway'] = '/rest-api/sms_gateway/%s/' % sms_gateway
+                except:
+                    self.init_data['sms_gateway'] = ''
                     pass
 
             if settings.AMD:

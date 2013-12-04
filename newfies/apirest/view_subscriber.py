@@ -26,6 +26,8 @@ import logging
 logger = logging.getLogger('newfies.filelog')
 
 
+#TODO: Add more documentation on this API
+
 class SubscriberViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows campaigns to be viewed or edited.
@@ -51,6 +53,8 @@ class SubscriberViewSet(viewsets.ModelViewSet):
         """Customize create"""
         phonebook_id = request.POST.get('phonebook_id')
         obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+
+        #TODO: Add all field for contact in the API
 
         #this method will also create a record into Subscriber
         #this is defined in signal post_save_add_contact

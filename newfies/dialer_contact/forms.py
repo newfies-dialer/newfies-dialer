@@ -62,15 +62,18 @@ class Contact_fileImport(FileImport):
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['phonebook', 'csv_file']
-        change_field_list = [
-            'phonebook', 'csv_file'
-        ]
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's phonebook list
         if user:  # and not user.is_superuser
-            self.fields['phonebook'].choices = \
-                Phonebook.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            phonebok_list = Phonebook.objects.filter(user=user).order_by('id')
+            result_list = []
+            for phonebok in phonebok_list:
+                contacts_in_phonebok = phonebok.phonebook_contacts()
+                pb_string = phonebok.name + " - " + str(contacts_in_phonebok)
+                result_list.append((phonebok.id, pb_string))
+
+            self.fields['phonebook'].choices = result_list
 
 
 class PhonebookForm(ModelForm):

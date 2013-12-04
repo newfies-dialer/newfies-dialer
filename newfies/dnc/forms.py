@@ -86,9 +86,16 @@ class DNCContact_fileImport(FileImport):
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's dnc_list list
-        if user:  # and not user.is_superuser
-            self.fields['dnc_list'].choices = \
-                DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+        # and not user.is_superuser
+        if user:
+            dnc_list = DNC.objects.filter(user=user).order_by('id')
+            result_list = []
+            for dnc in dnc_list:
+                contacts_in_dnc = dnc.dnc_contacts_count()
+                dnc_string = dnc.name + " - " + str(contacts_in_dnc)
+                result_list.append((dnc.id, dnc_string))
+
+            self.fields['dnc_list'].choices = result_list
             self.fields['csv_file'].label = _('upload CSV file')
 
 

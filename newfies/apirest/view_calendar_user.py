@@ -41,7 +41,6 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
                 calendar_obj = Calendar.objects.get(user=c_user)
                 calendar_dict = {
                     'name': calendar_obj.name,
-                    'slug': calendar_obj.slug,
                     'max_concurrent': calendar_obj.max_concurrent,
                 }
             except:
@@ -68,7 +67,6 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
         """Create Calendar object with default name & current Calendar User"""
         Calendar.objects.create(
             name='default',
-            slug='default',
             user=obj,
         )
 
@@ -80,7 +78,6 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
             calendar_obj = Calendar.objects.get(user=self.object)
             calendar_dict = {
                 'name': calendar_obj.name,
-                'slug': calendar_obj.slug,
                 'max_concurrent': calendar_obj.max_concurrent,
             }
         except:

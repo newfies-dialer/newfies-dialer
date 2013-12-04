@@ -124,7 +124,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
             if sms_gateway and sms_gateway.find('http://') == -1:
                 try:
                     SMS_Gateway.objects.get(pk=int(sms_gateway))
-                    self.init_data['sms_gateway'] = '/rest-api/sms_gateway/%s/' % sms_gateway
+                    self.init_data['sms_gateway'] = '/rest-api/sms-gateway/%s/' % sms_gateway
                 except:
                     self.init_data['sms_gateway'] = ''
                     pass

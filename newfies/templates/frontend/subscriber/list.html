@@ -44,6 +44,7 @@ function delete_button()
 }
 </script>
 <div>&nbsp;</div>
+{% if subscriber_list %}
 <div class="row">
     <div class="col-md-12">
         <div class="btn-group">
@@ -60,7 +61,7 @@ function delete_button()
 </div>
 
 <br/>
-
+{% endif %}
 <div class="row">
     <div class="col-md-12">
         <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}

@@ -897,14 +897,14 @@ def export_sms_report(request):
     list_val = []
     for i in qs:
         send_date = i.send_date
-        if format == 'json':
+        if format == 'json' or format == 'xls':
             send_date = str(i.send_date)
         gateway = i.gateway.name if i.gateway else ''
         list_val.append([
-            i.sender,
+            i.sender.username,
             i.recipient_number,
             send_date,
-            i.uuid,
+            str(i.uuid),
             i.status,
             i.status_message,
             gateway,

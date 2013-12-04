@@ -275,7 +275,7 @@ def export_voipcall_report(request):
             amd_status = i.amd_status if settings.AMD else ''
 
             starting_date = i.starting_date
-            if format == 'json':
+            if format == 'json' or format == 'xls':
                 starting_date = str(i.starting_date)
 
             list_val.append((i.user.username,

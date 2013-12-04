@@ -1098,7 +1098,7 @@ def export_surveycall_report(request):
             for ikey in column_list:
                 if ikey in column_list_base:
                     #This is not a Section result
-                    if ikey == 'starting_date' and format == 'json':
+                    if ikey == 'starting_date' and format == 'json' or format == 'xls':
                         starting_date = str(voipcall.__dict__[ikey])
                         result_row_list.append(starting_date)
                     else:

@@ -762,10 +762,10 @@ def subscriber_export(request):
         list_val = []
         for i in subscriber_list:
             updated_date = i.updated_date
-            if format == 'json':
+            if format == 'json' or format == 'xls':
                 updated_date = str(i.updated_date)
 
-            list_val.append((i.contact,
+            list_val.append((i.contact.contact,
                              updated_date,
                              i.count_attempt,
                              i.completion_count_attempt,

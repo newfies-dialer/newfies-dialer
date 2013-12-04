@@ -19,6 +19,8 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.users import CalendarUser
 from appointment.models.calendars import Calendar
+from appointment.function_def import get_calendar_user_id_list, \
+    get_all_calendar_user_id_list
 
 from apirest.calendar_user_serializers import CalendarUserSerializer
 
@@ -34,7 +36,12 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
 
     def list(self, request, *args, **kwargs):
         """get list of all CalendarUser objects"""
-        snippets = CalendarUser.objects.all()
+        if self.request.user.is_superuser:
+            calendar_user_list = get_all_calendar_user_id_list()
+        else:
+            calendar_user_list = get_calendar_user_id_list(request.user)
+
+        snippets = CalendarUser.objects.filter(id__in=calendar_user_list).order_by('id')
         list_data = []
         for c_user in snippets:
             try:

@@ -47,10 +47,6 @@ class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):
                 ]
             }
     """
-    password = serializers.CharField(
-        max_length=64,
-        widget=widgets.PasswordInput
-    )
 
     class Meta:
         model = CalendarUser

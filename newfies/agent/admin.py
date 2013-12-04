@@ -17,6 +17,7 @@ from django.contrib.auth.admin import UserAdmin
 from agent.models import Agent, AgentProfile
 from agent.forms import AgentProfileForm
 from agent.admin_filters import ManagerFilter
+from appointment.function_def import get_all_calendar_user_id_list
 
 
 class AgentProfileInline(admin.StackedInline):
@@ -34,7 +35,8 @@ class AgentAdmin(UserAdmin):
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)
-        qs = qs.filter(is_staff=False, is_superuser=False)
+        calendar_user_list = get_all_calendar_user_id_list()
+        qs = qs.filter(is_staff=False, is_superuser=False).exclude(id__in=calendar_user_list)
         return qs
 
 admin.site.register(Agent, AgentAdmin)

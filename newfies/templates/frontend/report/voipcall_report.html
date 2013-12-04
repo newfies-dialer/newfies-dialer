@@ -12,12 +12,6 @@
 {% endblock %}
 
 {% block content %}
-    <ul class="nav nav-tabs">
-        <li class="{% if action == 'tabs-1' %}active{% endif %}"><a href="#tabs-1" data-toggle="tab">{% trans "VoIP calls" %}</a></li>
-        <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "daily report"|title %}</a></li>
-    </ul>
-    <br/>
-
     <div id="form_collapse" class="collapse in">
         <form class="well form-search" role="form" method="POST" action="." enctype="multipart/form-data">
             {% csrf_token %}
@@ -35,7 +29,7 @@
                 {% endfor %}
             </div>
 
-            <input type="submit" value="{% trans 'open search'|title %}" class="btn btn-primary"/>
+            <input type="submit" value="{% trans 'search'|title %}" class="btn btn-primary"/>
         </form>
     </div>
 
@@ -43,6 +37,13 @@
         <i id="toggle_btn_i" class="glyphicon glyphicon-zoom-out"></i>
         <span id="toggle_btn_i_span">{% trans "show search"|title %}</span>
     </button>
+
+    <div>&nbsp;</div>
+
+    <ul class="nav nav-tabs">
+        <li class="{% if action == 'tabs-1' %}active{% endif %}"><a href="#tabs-1" data-toggle="tab">{% trans "VoIP calls" %}</a></li>
+        <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "daily report"|title %}</a></li>
+    </ul>
 
     <div class="tab-content">
         <div id="tabs-1" class="tab-pane {% if action == 'tabs-1' %}active{% endif %}">

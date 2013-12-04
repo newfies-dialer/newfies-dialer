@@ -24,7 +24,7 @@
     <fieldset>
         <legend>{% trans "general settings"|title %}</legend>
         <div class="row">
-            {% get_fieldset alarm_phonenumber,alarm_email,survey,mail_template,sms_template,event,date_start_notice as general_fields from form %}
+            {% get_fieldset alarm_phonenumber,alarm_email,event,method,survey,mail_template,sms_template,date_start_notice as general_fields from form %}
             {% for field in general_fields.hidden_fields %}
                 {{ field }}
             {% endfor %}
@@ -51,7 +51,7 @@
     <fieldset>
         <legend>{% trans "alarm settings"|title %}</legend>
         <div class="row">
-            {% get_fieldset daily_start,daily_stop,advance_notice,maxretry,retry_delay,num_attempt,method,status as alarm_fields from form %}
+            {% get_fieldset daily_start,daily_stop,advance_notice,maxretry,retry_delay as alarm_fields from form %}
             {% for field in alarm_fields.hidden_fields %}
                 {{ field }}
             {% endfor %}
@@ -76,7 +76,7 @@
         </div>
     </fieldset>
     <fieldset>
-        <legend>{% trans "alarm result settings"|title %}</legend>
+        <legend>{% trans "result settings"|title %}</legend>
         <div class="row">
             {% get_fieldset result,url_cancel,phonenumber_sms_failure,url_confirm,phonenumber_transfer as result_fields from form %}
             {% for field in result_fields.hidden_fields %}

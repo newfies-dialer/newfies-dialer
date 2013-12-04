@@ -214,7 +214,7 @@ class ContactAdmin(admin.ModelAdmin):
 
                 #check if there is contact imported
                 if contact_cnt > 0:
-                    msg = _('%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s row(s) !!')\
+                    msg = _('%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s row(s)!')\
                         % {'contact_cnt': contact_cnt, 'total_rows': total_rows}
         else:
             form = Contact_fileImport(request.user)

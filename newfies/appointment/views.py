@@ -628,7 +628,7 @@ def event_list(request):
     if request.method == 'POST':
         form = EventSearchForm(request.user, request.POST)
         if form.is_valid():
-            field_list = ['start_date', 'calendar_id', 'calendar_user_id',]
+            field_list = ['start_date', 'calendar_id', 'calendar_user_id']
             unset_session_var(request, field_list)
 
             if request.POST.get('start_date'):

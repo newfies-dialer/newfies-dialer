@@ -17,7 +17,6 @@ from django.http import HttpResponseRedirect, HttpResponse, \
     Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
-from django.conf import settings
 from django.utils.translation import ugettext as _
 from dnc.models import DNC, DNCContact
 from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
@@ -526,7 +525,7 @@ def dnc_contact_import(request):
 
         #check if there is contact imported
         if contact_cnt > 0:
-            msg = _('%(contact_cnt)s dnc contact(s) are uploaded successfully out of %(total_rows)s row(s) !!') \
+            msg = _('%(contact_cnt)s dnc contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
                 % {'contact_cnt': contact_cnt,
                    'total_rows': total_rows}
 

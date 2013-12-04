@@ -2230,9 +2230,9 @@ msgstr ""
 #: dialer_contact/admin.py:217 dialer_contact/views.py:607
 #, fuzzy, python-format
 msgid ""
-"%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
-"row(s) !!"
-msgstr "%(contact_cnt)s 聯絡人上傳成功, 超過 %(total_rows)s 列 !!"
+"%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s "
+"row(s)!
+msgstr "%(contact_cnt)s 聯絡人上傳成功, 超過 %(total_rows)s 列!
 
 #: dialer_contact/admin.py:227
 #: templates/frontend/contact/import_contact.html:13
@@ -2801,9 +2801,9 @@ msgstr ""
 #: dnc/views.py:527
 #, fuzzy, python-format
 msgid ""
-"%(contact_cnt)s dnc contact(s) are uploaded successfully out of "
-"%(total_rows)s row(s) !!"
-msgstr "%(contact_cnt)s 聯絡人上傳成功, 超過 %(total_rows)s 列 !!"
+"%(contact_cnt)s dnc contact(s) have been uploaded successfully out of "
+"%(total_rows)s row(s)!
+msgstr "%(contact_cnt)s 聯絡人上傳成功, 超過 %(total_rows)s 列!
 
 #: dnc/views.py:532
 #, python-format
@@ -4791,7 +4791,7 @@ msgstr "電話訂戶狀態 = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 #: templates/frontend/contact/import_contact.html:96
 #: templates/frontend/dnc_contact/import_dnc_contact.html:56
 #, fuzzy
-msgid "subscriber(s) imported"
+msgid "contact(s) imported (display max 100)"
 msgstr "電話用戶已匯入"
 
 #: templates/frontend/contact/list.html:16

@@ -23,7 +23,7 @@
     <fieldset>
         <legend>{% trans "event settings"|title %}</legend>
         <div class="row">
-            {% get_fieldset start,end,title,description,creator,created_on,end_recurring_period,rule,calendar as event_fields from form %}
+            {% get_fieldset title,calendar,start,end,creator,end_recurring_period,rule as event_fields from form %}
             {% for field in event_fields.visible_fields %}
                 <div class="col-md-6">
                     <div class="form-group {% if field.errors %}has-error{% endif %}">
@@ -44,7 +44,7 @@
             {% endfor %}
         </div>
         <div class="row">
-            {% get_fieldset status,notify_count,data as event_fields from form %}
+            {% get_fieldset description,data as event_fields from form %}
             {% for field in event_fields.visible_fields %}
                 <div class="col-md-6">
                     <div class="form-group {% if field.errors %}has-error{% endif %}">

@@ -158,6 +158,7 @@ class EventAdminForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(EventAdminForm, self).__init__(*args, **kwargs)
+
         calendar_user_list = get_all_calendar_user_id_list()
         self.fields['creator'].choices = get_calendar_user_list(calendar_user_list)
 
@@ -177,10 +178,9 @@ class EventForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['start', 'end', 'title', 'description',
-                                'creator', 'created_on', 'end_recurring_period',
-                                'rule', 'calendar', 'notify_count', 'status',
-                                'data']
+        self.fields.keyOrder = ['title', 'status', 'calendar', 'creator', 'rule', 'start', 'end', 'end_recurring_period',
+            'description', 'data']
+
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         calendar_user_list = get_calendar_user_id_list(user)
@@ -217,6 +217,9 @@ class AlarmForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(AlarmForm, self).__init__(*args, **kwargs)
+
+        self.fields.keyOrder = ['date_start_notice', 'event', 'alarm_phonenumber', 'alarm_email', 'method', 'status', 'survey', 'mail_template', 'sms_template', 'daily_start', 'daily_stop', 'advance_notice', 'maxretry', 'retry_delay', 'url_cancel', 'phonenumber_sms_failure', 'url_confirm', 'phonenumber_transfer']
+
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         list_survey = []

@@ -2249,8 +2249,8 @@ msgstr ""
 #: dialer_contact/admin.py:217 dialer_contact/views.py:607
 #, fuzzy, python-format
 msgid ""
-"%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
-"row(s) !!"
+"%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s "
+"row(s)!
 msgstr ""
 "%(total_rows)s 行中 %(contact_cnt)s コンタクトのアップロードが成功しました"
 
@@ -2828,8 +2828,8 @@ msgstr ""
 #: dnc/views.py:527
 #, fuzzy, python-format
 msgid ""
-"%(contact_cnt)s dnc contact(s) are uploaded successfully out of "
-"%(total_rows)s row(s) !!"
+"%(contact_cnt)s dnc contact(s) have been uploaded successfully out of "
+"%(total_rows)s row(s)!
 msgstr ""
 "%(total_rows)s 行中 %(contact_cnt)s コンタクトのアップロードが成功しました"
 
@@ -4839,7 +4839,7 @@ msgstr "参加者ステータス = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 #: templates/frontend/contact/import_contact.html:96
 #: templates/frontend/dnc_contact/import_dnc_contact.html:56
 #, fuzzy
-msgid "subscriber(s) imported"
+msgid "contact(s) imported (display max 100)"
 msgstr "参加者がインポートされました"
 
 #: templates/frontend/contact/list.html:16

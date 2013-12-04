@@ -2230,8 +2230,8 @@ msgstr ""
 #: dialer_contact/admin.py:217 dialer_contact/views.py:607
 #, fuzzy, python-format
 msgid ""
-"%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
-"row(s) !!"
+"%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s "
+"row(s)!
 msgstr ""
 "%(contact_cnt)s Contact (s) vengono caricati con successo di %(total_rows)s "
 "riga(s)!"
@@ -2809,8 +2809,8 @@ msgstr ""
 #: dnc/views.py:527
 #, fuzzy, python-format
 msgid ""
-"%(contact_cnt)s dnc contact(s) are uploaded successfully out of "
-"%(total_rows)s row(s) !!"
+"%(contact_cnt)s dnc contact(s) have been uploaded successfully out of "
+"%(total_rows)s row(s)!
 msgstr ""
 "%(contact_cnt)s Contact (s) vengono caricati con successo di %(total_rows)s "
 "riga(s)!"
@@ -4747,7 +4747,7 @@ msgstr ""
 #: templates/frontend/contact/import_contact.html:96
 #: templates/frontend/dnc_contact/import_dnc_contact.html:56
 #, fuzzy
-msgid "subscriber(s) imported"
+msgid "contact(s) imported (display max 100)"
 msgstr "Campagna abbonati"
 
 #: templates/frontend/contact/list.html:16

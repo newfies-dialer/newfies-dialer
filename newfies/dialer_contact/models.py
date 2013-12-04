@@ -84,8 +84,7 @@ class Contact(Model):
 
     **Name of DB table**: dialer_contact
     """
-    phonebook = models.ForeignKey(Phonebook, verbose_name=_('phonebook'),
-                                  help_text=_("select phonebook"))
+    phonebook = models.ForeignKey(Phonebook, verbose_name=_('phonebook'))
     contact = models.CharField(max_length=90, verbose_name=_('contact number'))
     status = models.IntegerField(choices=list(CONTACT_STATUS),
                                  default=CONTACT_STATUS.ACTIVE,

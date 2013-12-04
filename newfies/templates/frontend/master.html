@@ -174,8 +174,8 @@
     {% endblock %}
 
         {% if user.is_authenticated %}
-            {% if dialer_setting_msg %}
 
+            {% if dialer_setting_msg %}
             <div class="alert alert-danger">
                 <strong>{% trans "alert"|title %} : </strong>  {{ dialer_setting_msg }}
                 {% if not request.session.has_notified %}
@@ -184,14 +184,13 @@
                     {% trans "(notification sent)" %}
                 {% endif %}
             </div>
-
             {% endif %}
         {% endif %}
 
     <!--Success Message of view-->
     {% if msg %}
         <div class="alert alert-success">
-            <strong>{% trans "alert"|title %} : </strong>  {{ msg|capfirst }}
+            <strong>{% trans "Notification"|title %} : </strong>  {{ msg|capfirst }}
         </div>
     {% endif %}
 

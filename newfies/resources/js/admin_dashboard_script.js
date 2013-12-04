@@ -64,7 +64,7 @@ function call_report_graph(call_type, report_type)
             plot_graph(temp_json, '1');
         },
         error: function() {
-            alert("No Data found !!");
+            alert("No Data found!);
         }
     });
 }

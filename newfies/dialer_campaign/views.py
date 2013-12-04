@@ -72,7 +72,7 @@ def update_campaign_status_cust(request, pk, status):
 
     #Check if no phonebook attached
     if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
-        request.session['error_msg'] = _('error : you have to assign a phonebook to your campaign before starting it')
+        request.session['error_msg'] = _('you mush assign a phonebook to your campaign before starting it')
     else:
         recipient = request.user
         frontend_send_notification(request, status, recipient)
@@ -360,10 +360,10 @@ def campaign_del(request, object_id):
         if stop_campaign:
             campaign.status = CAMPAIGN_STATUS.END
             campaign.save()
-            request.session["msg"] = _('"%(name)s" is stopped.')\
+            request.session["msg"] = _('the campaign "%(name)s" has been stopped.')\
                 % {'name': campaign.name}
         else:
-            request.session["msg"] = _('"%(name)s" is deleted.')\
+            request.session["msg"] = _('the campaign "%(name)s" has been deleted.')\
                 % {'name': campaign.name}
             campaign.delete()
     else:
@@ -377,10 +377,10 @@ def campaign_del(request, object_id):
             if campaign_list:
                 if stop_campaign:
                     campaign_list.update(status=CAMPAIGN_STATUS.END)
-                    request.session["msg"] = _('%(count)s campaign(s) are stopped.')\
+                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.')\
                         % {'count': campaign_list.count()}
                 else:
-                    request.session["msg"] = _('%(count)s campaign(s) are deleted.')\
+                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.')\
                         % {'count': campaign_list.count()}
                     campaign_list.delete()
         except:
@@ -447,7 +447,7 @@ def campaign_change(request, object_id):
                 obj.object_id = contenttype['object_id']
                 obj.save()
 
-                request.session["msg"] = _('"%(name)s" is updated.') \
+                request.session["msg"] = _('the campaign "%(name)s" is updated.') \
                     % {'name': request.POST['name']}
                 request.session['error_msg'] = ''
                 return HttpResponseRedirect('/campaign/')

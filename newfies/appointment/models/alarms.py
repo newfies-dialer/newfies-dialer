@@ -17,19 +17,20 @@ class Alarm(models.Model):
     This is for Alarms / Reminders on events models.
     """
     alarm_phonenumber = models.CharField(max_length=50, blank=True, null=True,
-                                         verbose_name=_("alarm phonenumber"))
+                                         verbose_name=_("notify to phonenumber"))
     alarm_email = models.EmailField(blank=True, null=True,
-                                    verbose_name=_('alarm email'))
-    daily_start = models.TimeField(verbose_name=_('daily start'), default='00:00:00',
-                                   help_text=_("time format: HH:MM:SS"))
-    daily_stop = models.TimeField(verbose_name=_('daily stop'), default='23:59:59',
-                                  help_text=_("time format: HH:MM:SS"))
+                                    verbose_name=_('notify to email'))
+    daily_start = models.TimeField(verbose_name=_('daily start'), default='00:00:00')
+    daily_stop = models.TimeField(verbose_name=_('daily stop'), default='23:59:59')
     advance_notice = models.IntegerField(null=True, blank=True, default=0,
-                                         verbose_name=_('advance notice'))
+                                         verbose_name=_('advance notice'),
+                                         help_text=_("Seconds to start processing an alarm before the alarm date/time"))
     maxretry = models.IntegerField(null=True, blank=True, default=0,
-                                   verbose_name=_('max retry'))
+                                   verbose_name=_('max retry'),
+                                   help_text=_("Amount of time to retry for this alarm"))
     retry_delay = models.IntegerField(null=True, blank=True, default=0,
-                                      verbose_name=_('retry delay'))
+                                      verbose_name=_('retry delay'),
+                                      help_text=_("Time to wait between each alarm re-attempt"))
     num_attempt = models.IntegerField(null=True, blank=True, default=0,
                                      verbose_name=_('number of attempts'))
     method = models.IntegerField(choices=list(ALARM_METHOD),
@@ -38,20 +39,20 @@ class Alarm(models.Model):
     survey = models.ForeignKey(Survey, verbose_name=_("survey"),
                                blank=True, null=True,
                                related_name="survey")
-    mail_template = models.ForeignKey(MailTemplate, verbose_name=_("mail template"),
+    mail_template = models.ForeignKey(MailTemplate, verbose_name=_("mail"),
                                       blank=True, null=True,
                                       related_name="mail template")
-    sms_template = models.ForeignKey(SMSTemplate, verbose_name=_("SMS template"),
+    sms_template = models.ForeignKey(SMSTemplate, verbose_name=_("SMS"),
                                      blank=True, null=True,
                                      related_name="sms template")
-    event = models.ForeignKey(Event, verbose_name=_("event"),
+    event = models.ForeignKey(Event, verbose_name=_("related to event"),
                               related_name="event")
     date_start_notice = models.DateTimeField(verbose_name=_('alarm date'),
                                              default=(lambda: datetime.now()))
     status = models.IntegerField(choices=list(ALARM_STATUS),
                                  default=ALARM_STATUS.PENDING,
                                  verbose_name=_("status"))
-    result = models.IntegerField(choices=list(ALARM_RESULT),
+    result = models.IntegerField(choices=list(ALARM_RESULT), default=0,
                                  verbose_name=_("result"), blank=True, null=True)
     # URL Cancel is used if an appointment is cancelled, we will need to do a mapping on IVR result
     url_cancel = models.CharField(max_length=250, blank=True, null=True,

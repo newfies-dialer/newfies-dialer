@@ -2006,8 +2006,8 @@ msgstr "valor no válido para el código de país, que tiene que ser un válido 
 #: dialer_contact/admin.py:217 dialer_contact/views.py:607
 #, python-format
 msgid ""
-"%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
-"row(s) !!"
+"%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s "
+"row(s)!
 msgstr ""
 "%(contact_cnt)s Contact(s) son uploaded éxito de %(total_rows)s fila(s)!"
 
@@ -2526,8 +2526,8 @@ msgstr "Algunos de los datos importados no eran válidos!"
 #: dnc/views.py:527
 #, fuzzy, python-format
 msgid ""
-"%(contact_cnt)s dnc contact(s) are uploaded successfully out of "
-"%(total_rows)s row(s) !!"
+"%(contact_cnt)s dnc contact(s) have been uploaded successfully out of "
+"%(total_rows)s row(s)!
 msgstr ""
 "%(contact_cnt)s Contact(s) son uploaded éxito de %(total_rows)s fila(s)!"
 
@@ -4327,7 +4327,7 @@ msgstr "SUSCRIPTOR ESTADO = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 
 #: templates/frontend/contact/import_contact.html:96
 #: templates/frontend/dnc_contact/import_dnc_contact.html:56
-msgid "subscriber(s) imported"
+msgid "contact(s) imported (display max 100)"
 msgstr "Suscriptor(s) importado"
 
 #: templates/frontend/contact/list.html:16

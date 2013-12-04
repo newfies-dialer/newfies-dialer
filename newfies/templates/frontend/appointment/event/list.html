@@ -80,10 +80,8 @@
                         <th>{% sort_link EVENT_COLUMN_NAME.start|capfirst col_name_with_order.start %}</th>
                         <th>{% sort_link EVENT_COLUMN_NAME.end|capfirst col_name_with_order.end %}</th>
                         <th>{% sort_link EVENT_COLUMN_NAME.title|capfirst col_name_with_order.title %}</th>
-                        <th>{% sort_link EVENT_COLUMN_NAME.end_recurring_period|capfirst col_name_with_order.end_recurring_period %}</th>
                         <th>{% sort_link EVENT_COLUMN_NAME.calendar|capfirst col_name_with_order.calendar %}</th>
                         <th>{% sort_link EVENT_COLUMN_NAME.status|capfirst col_name_with_order.status %}</th>
-                        <th>{% sort_link EVENT_COLUMN_NAME.created_on|capfirst col_name_with_order.created_on %}</th>
                         <th>{% trans 'action'|capfirst %}</th>
                     </tr>
                     </thead>
@@ -95,10 +93,8 @@
                                 <td>{{ row.start }}</td>
                                 <td>{{ row.end }}</td>
                                 <td>{{ row.title }}</td>
-                                <td>{{ row.end_recurring_period }}</td>
                                 <td>{{ row.calendar }}</td>
                                 <td>{{ row.status|event_status }}</td>
-                                <td>{{ row.created_on }}</td>
                                 <td>
                                     {% if perms.appointment.change_event %}
                                         <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update event"|title %}"></a>

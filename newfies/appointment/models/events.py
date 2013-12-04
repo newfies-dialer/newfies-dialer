@@ -33,9 +33,9 @@ class Event(models.Model):
     end_recurring_period = models.DateTimeField(verbose_name=_("end recurring period"),
                                                 null=True, blank=True,
                                                 default=(lambda: datetime.now() + relativedelta(months=+1)),
-                                                help_text=_("date format: YYYY-mm-DD HH:MM:SS. Ignored for one time event."))
+                                                help_text=_("Used if the event will reoccur."))
     rule = models.ForeignKey(Rule, null=True, blank=True,
-                             verbose_name=_("rule"), help_text=_("one time event."))
+                             verbose_name=_("rule"), help_text=_("Reoccuring rules."))
     calendar = models.ForeignKey(Calendar, null=False, blank=False)
 
     notify_count = models.IntegerField(verbose_name=_("notify count"),

@@ -2254,8 +2254,8 @@ msgstr ""
 #: dialer_contact/admin.py:217 dialer_contact/views.py:607
 #, fuzzy, python-format
 msgid ""
-"%(contact_cnt)s contact(s) are uploaded successfully out of %(total_rows)s "
-"row(s) !!"
+"%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s "
+"row(s)!
 msgstr ""
 "%(contact_cnt)s Contact(s) sont téléchargés avec succès sur %(total_rows)s "
 "rangée (s)!"
@@ -2841,8 +2841,8 @@ msgstr ""
 #: dnc/views.py:527
 #, fuzzy, python-format
 msgid ""
-"%(contact_cnt)s dnc contact(s) are uploaded successfully out of "
-"%(total_rows)s row(s) !!"
+"%(contact_cnt)s dnc contact(s) have been uploaded successfully out of "
+"%(total_rows)s row(s)!
 msgstr ""
 "%(contact_cnt)s Contact(s) sont téléchargés avec succès sur %(total_rows)s "
 "rangée (s)!"
@@ -4851,7 +4851,7 @@ msgstr "ABONNÉ STATUS = ('1 '-' ACTIVE ') ('0' - 'INACTIF')"
 #: templates/frontend/contact/import_contact.html:96
 #: templates/frontend/dnc_contact/import_dnc_contact.html:56
 #, fuzzy
-msgid "subscriber(s) imported"
+msgid "contact(s) imported (display max 100)"
 msgstr "Souscripteur (s) importé"
 
 #: templates/frontend/contact/list.html:16

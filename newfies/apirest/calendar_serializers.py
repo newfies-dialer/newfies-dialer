@@ -16,6 +16,8 @@
 
 from rest_framework import serializers
 from appointment.models.calendars import Calendar
+from appointment.models.users import CalendarUser
+from appointment.function_def import get_calendar_user_id_list
 
 
 class CalendarSerializer(serializers.HyperlinkedModelSerializer):
@@ -24,7 +26,7 @@ class CalendarSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycalendar", "slug": "mycalendar", "max_concurrent": "1"}' http://localhost:8000/rest-api/calendar/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycalendar", "max_concurrent": "1"}' http://localhost:8000/rest-api/calendar/
 
         Response::
 
@@ -52,12 +54,11 @@ class CalendarSerializer(serializers.HyperlinkedModelSerializer):
                 "previous": null,
                 "results": [
                     {
-                        "user": "areski",
                         "url": "http://127.0.0.1:8000/rest-api/calendar/1/",
-                        "name": "Sample calendar",
-                        "slug": "sample_calendar",
-                        "max_concurrent": 1,
-                        "created_date": "2013-10-30T06:07:57.647Z"
+                        "name": "calendar_I",
+                        "user": "http://127.0.0.1:8000/rest-api/calendar-user/3/",
+                        "max_concurrent": 0,
+                        "created_date": "2013-12-02T07:48:21.136Z"
                     }
                 ]
             }
@@ -78,8 +79,15 @@ class CalendarSerializer(serializers.HyperlinkedModelSerializer):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
     """
-    user = serializers.Field(source='user')
 
     class Meta:
         model = Calendar
 
+    def get_fields(self, *args, **kwargs):
+        """filter calendar user field"""
+        fields = super(CalendarSerializer, self).get_fields(*args, **kwargs)
+        request = self.context['request']
+        calendar_user_list = get_calendar_user_id_list(request.user)
+        fields['user'].queryset = CalendarUser.objects.filter(id__in=calendar_user_list).order_by('id')
+
+        return fields

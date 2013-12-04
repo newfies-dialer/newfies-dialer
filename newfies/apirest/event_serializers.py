@@ -16,6 +16,8 @@
 
 from rest_framework import serializers
 from appointment.models.events import Event
+from appointment.models.users import CalendarUser
+from appointment.function_def import get_calendar_user_id_list
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
@@ -53,19 +55,21 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
                 "results": [
                     {
 
-                        "creator": "areski",
                         "url": "http://127.0.0.1:8000/rest-api/event/1/",
-                        "start": "2013-10-31T07:51:11Z",
-                        "end": "2013-10-31T07:51:11Z",
-                        "title": "sample event",
+                        "title": "cal-event",
                         "description": "",
-                        "created_on": "2013-10-31T07:51:11Z",
-                        "rule": "http://127.0.0.1:8000/rest-api/rule/1/",
-                        "end_recurring_period": null,
+                        "start": "2013-12-02T07:48:27Z",
+                        "end": "2013-12-02T08:48:27Z",
+                        "creator": "http://127.0.0.1:8000/rest-api/calendar-user/3/",
+                        "created_on": "2013-12-02T07:48:27Z",
+                        "end_recurring_period": "2014-01-02T07:48:27Z",
+                        "rule": null,
                         "calendar": "http://127.0.0.1:8000/rest-api/calendar/1/",
-                        "notify_count": 1,
+                        "notify_count": 0,
+                        "status": 1,
                         "data": null,
-                        "status": 1
+                        "parent_event": null,
+                        "occ_count": 0
                     }
                 ]
             }
@@ -86,8 +90,15 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
     """
-    creator = serializers.Field(source='creator')
 
     class Meta:
         model = Event
 
+    def get_fields(self, *args, **kwargs):
+        """filter content_type field"""
+        fields = super(EventSerializer, self).get_fields(*args, **kwargs)
+        request = self.context['request']
+        calendar_user_list = get_calendar_user_id_list(request.user)
+        fields['creator'].queryset = CalendarUser.objects.filter(id__in=calendar_user_list).order_by('id')
+
+        return fields

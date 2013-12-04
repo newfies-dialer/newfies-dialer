@@ -53,14 +53,20 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
                 "previous": null,
                 "results": [
                     {
-                        "user": "areski",
+                        "user": "manager",
                         "url": "http://127.0.0.1:8000/rest-api/calendar-setting/1/",
-                        "callerid": "435345",
-                        "caller_name": "appointment-reminder",
-                        "call_timeout": 3,
-                        "survey": "http://127.0.0.1:8000/rest-api/survey/1/",
-                        "created_date": "2013-10-30T06:28:54.422Z",
-                        "updated_date": "2013-10-30T06:28:54.422Z"
+                        "label": "cal_setting_label",
+                        "callerid": "32423",
+                        "caller_name": "cal_serting",
+                        "call_timeout": 60,
+                        "survey": "http://127.0.0.1:8000/rest-api/sealed-survey/1/",
+                        "aleg_gateway": "http://127.0.0.1:8000/rest-api/gateway/1/",
+                        "sms_gateway": "http://127.0.0.1:8000/rest-api/gateway/1/",
+                        "voicemail": false,
+                        "amd_behavior": null,
+                        "voicemail_audiofile": null,
+                        "created_date": "2013-12-02T07:20:54.490Z",
+                        "updated_date": "2013-12-02T12:18:52.385Z"
                     }
                 ]
             }
@@ -96,7 +102,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
             if survey and survey.find('http://') == -1:
                 try:
                     Survey.objects.get(pk=int(survey), user=request.user)
-                    self.init_data['survey'] = '/rest-api/frozen-survey/%s/' % survey
+                    self.init_data['survey'] = '/rest-api/sealed-survey/%s/' % survey
                 except:
                     self.init_data['survey'] = ''
                     pass

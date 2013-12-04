@@ -18,7 +18,7 @@ from apirest.calendar_serializers import CalendarSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.calendars import Calendar
-from appointment.models.users import CalendarUser
+from appointment.function_def import get_calendar_user_id_list
 
 
 class CalendarViewSet(viewsets.ModelViewSet):
@@ -38,9 +38,7 @@ class CalendarViewSet(viewsets.ModelViewSet):
         if self.request.user.is_superuser:
             queryset = Calendar.objects.all()
         else:
-            queryset = Calendar.objects.filter(
-                user=CalendarUser.objects.get(username=self.request.user))
+            calendar_user_list = get_calendar_user_id_list(self.request.user)
+            queryset = Calendar.objects.filter(user_id__in=calendar_user_list)
         return queryset
 
-    def pre_save(self, obj):
-        obj.user = CalendarUser.objects.get(username=self.request.user)

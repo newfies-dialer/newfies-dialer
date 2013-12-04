@@ -18,6 +18,7 @@ from apirest.event_serializers import EventSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.events import Event
+from appointment.function_def import get_calendar_user_id_list
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -30,15 +31,9 @@ class EventViewSet(viewsets.ModelViewSet):
     permissions = (IsAuthenticatedOrReadOnly, )
 
     def get_queryset(self):
-        """
-        This view should return a list of all the events
-        for the currently authenticated user.
-        """
         if self.request.user.is_superuser:
             queryset = Event.objects.all()
         else:
-            queryset = Event.objects.filter(creator=self.request.user)
+            calendar_user_list = get_calendar_user_id_list(self.request.user)
+            queryset = Event.objects.filter(creator_id__in=calendar_user_list)
         return queryset
-
-    def pre_save(self, obj):
-        obj.creator = self.request.user

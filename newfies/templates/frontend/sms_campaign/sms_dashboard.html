@@ -64,24 +64,33 @@
                     {% include_container sms_analytic_chartcontainer 400 500 %}
                 </div>
 
-                <div class="col-md-6">
-                    <div class="table-responsive">
-                        <table class="table table-bordered table-hover">
-                            <tr class="success">
-                                <th colspan="3">{{ total_sms_count }}  {% trans "total sms"|upper %}</th>
-                            </tr>
-                            <tr class="success">
-                                <th style="color: {{ sent_color }}">{{ total_sent }}  {% trans "sent"|upper %}</th>
-                                <th style="color: {{ unsent_color }}">{{ total_unsent }}  {% trans "unsent"|upper %}</th>
-                                <th style="color: {{ delivered_color }}">{{ total_delivered }}  {% trans "delivered"|upper %}</th>
-                            </tr>
-                            <tr class="success">
-                                <th style="color: {{ failed_color }}">{{ total_failed }}  {% trans "failed"|upper %}</th>
-                                <th style="color: {{ no_route_color }}">{{ total_no_route }}  {% trans "no route"|upper %}</th>
-                                <th style="color: {{ unauthorized_color }}">{{ total_unauthorized }}  {% trans "unauthorized"|upper %}</th>
-                            </tr>
-                        </table>
-                    </div>
+                <!-- Add the extra clearfix for only the required viewport -->
+                <div class="clearfix visible-xs visible-sm"><hr/></div>
+
+                <div class="col-md-4 col-md-offset-2">
+                    <table class="table table-bordered table-hover">
+                        <tr>
+                            <th colspan="3">{{ total_sms_count }}  {% trans "total sms"|upper %}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: {{ sent_color }}">{{ total_sent }}  {% trans "sent"|upper %}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: {{ unsent_color }}">{{ total_unsent }}  {% trans "unsent"|upper %}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: {{ delivered_color }}">{{ total_delivered }}  {% trans "delivered"|upper %}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: {{ failed_color }}">{{ total_failed }}  {% trans "failed"|upper %}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: {{ no_route_color }}">{{ total_no_route }}  {% trans "no route"|upper %}</th>
+                        </tr>
+                        <tr>
+                            <th style="color: {{ unauthorized_color }}">{{ total_unauthorized }}  {% trans "unauthorized"|upper %}</th>
+                        </tr>
+                    </table>
                     <div id="hover" style="float: left;"><span style="font-weight: bold; color: rgb(148, 64, 237);"></span></div>
                     </div>
                 </div>

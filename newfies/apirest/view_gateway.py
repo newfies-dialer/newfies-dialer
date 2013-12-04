@@ -20,7 +20,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from dialer_gateway.models import Gateway
 
 
-class GatewayViewSet(viewsets.ModelViewSet):
+class GatewayViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows gateway to be viewed or edited.
     """
@@ -28,14 +28,3 @@ class GatewayViewSet(viewsets.ModelViewSet):
     serializer_class = GatewaySerializer
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
-
-    def get_queryset(self):
-        """
-        This view should return a list of all the gateways
-        for the currently authenticated user.
-        """
-        if self.request.user.is_superuser:
-            queryset = Gateway.objects.all()
-        else:
-            queryset = self.request.user.get_profile().userprofile_gateway.all()
-        return queryset

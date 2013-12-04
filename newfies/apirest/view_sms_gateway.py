@@ -20,7 +20,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from sms.models import Gateway as SMS_Gateway
 
 
-class SMSGatewayViewSet(viewsets.ModelViewSet):
+class SMSGatewayViewSet(viewsets.ReadOnlyModelViewSet):
     """
     API endpoint that allows gateway to be viewed or edited.
     """

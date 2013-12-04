@@ -15,6 +15,7 @@
 #
 
 from rest_framework import serializers
+from appointment.models.calendars import Calendar
 from appointment.models.events import Event
 from appointment.models.users import CalendarUser
 from appointment.function_def import get_calendar_user_id_list
@@ -100,5 +101,6 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         request = self.context['request']
         calendar_user_list = get_calendar_user_id_list(request.user)
         fields['creator'].queryset = CalendarUser.objects.filter(id__in=calendar_user_list).order_by('id')
+        fields['calendar'].queryset = Calendar.objects.filter(user_id__in=calendar_user_list).order_by('id')
 
         return fields

@@ -16,6 +16,10 @@
 
 from rest_framework import serializers
 from appointment.models.alarms import Alarm
+from appointment.models.events import Event
+from appointment.models.users import CalendarUser
+from appointment.function_def import get_calendar_user_id_list
+from survey.models import Survey
 
 
 class AlarmSerializer(serializers.HyperlinkedModelSerializer):
@@ -92,7 +96,14 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
     """
-    mail_template = serializers.Field(source='mail_template')
-
     class Meta:
         model = Alarm
+
+    def get_fields(self, *args, **kwargs):
+        """filter content_type field"""
+        fields = super(AlarmSerializer, self).get_fields(*args, **kwargs)
+        request = self.context['request']
+        calendar_user_list = get_calendar_user_id_list(request.user)
+        fields['event'].queryset = Event.objects.filter(calendar__user_id__in=calendar_user_list).order_by('id')
+        fields['survey'].queryset = Survey.objects.filter(user=request.user)
+        return fields

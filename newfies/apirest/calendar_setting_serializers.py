@@ -14,9 +14,12 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.conf import settings
 from rest_framework import serializers
 from appointment.models.users import CalendarSetting
 from survey.models import Survey
+from audiofield.models import AudioFile
+from dialer_gateway.models import Gateway
 
 
 class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,7 +28,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"callerid": "mycalendar", "caller_name": "cid name", "call_timeout": "1", "survey": "1"}' http://localhost:8000/rest-api/calendar-settings/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "cal_setting", "callerid": "mycalendar", "caller_name": "cid name", "call_timeout": "1", "survey": "1", "aleg_gateway": "1"}' http://localhost:8000/rest-api/calendar-setting/
 
         Response::
 
@@ -41,9 +44,9 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/calendar-settings/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/calendar-setting/
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/calendar-settings/%calendar-settings-id%/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/calendar-setting/%calendar-setting-id%/
 
         Response::
 
@@ -75,7 +78,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"callerid": "32423423", "caller_name": "cid name", "call_timeout": "1", "survey": "1"}' http://localhost:8000/rest-api/calendar-settings/%calendar-settings-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"callerid": "32423423", "caller_name": "cid name", "call_timeout": "1", "survey": "1"}' http://localhost:8000/rest-api/calendar-setting/%calendar-setting-id%/
 
         Response::
 
@@ -107,7 +110,29 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
                     self.init_data['survey'] = ''
                     pass
 
+            aleg_gateway = self.init_data.get('aleg_gateway')
+            if aleg_gateway and aleg_gateway.find('http://') == -1:
+                try:
+                    Gateway.objects.get(pk=int(aleg_gateway), user=request.user)
+                    self.init_data['aleg_gateway'] = '/rest-api/gateway/%s/' % aleg_gateway
+                except:
+                    self.init_data['aleg_gateway'] = ''
+                    pass
+
+            if settings.AMD:
+                voicemail_audiofile = self.init_data.get('voicemail_audiofile')
+                if voicemail_audiofile and voicemail_audiofile.find('http://') == -1:
+                    try:
+                        AudioFile.objects.get(pk=int(survey), user=request.user)
+                        self.init_data['voicemail_audiofile'] = '/rest-api/audio_files/%s/' % voicemail_audiofile
+                    except:
+                        self.init_data['voicemail_audiofile'] = ''
+                        pass
+
         if request.method != 'GET':
             fields['survey'].queryset = Survey.objects.filter(user=request.user)
+
+        fields['aleg_gateway'].queryset = request.user.get_profile().userprofile_gateway.all()
+        fields['voicemail_audiofile'].queryset = AudioFile.objects.filter(user=request.user)
 
         return fields

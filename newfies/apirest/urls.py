@@ -22,6 +22,7 @@ from apirest.view_audiofile import AudioFileViewSet
 from apirest.view_dnc import DNCViewSet
 from apirest.view_dnc_contact import DNCContactViewSet
 from apirest.view_gateway import GatewayViewSet
+from apirest.view_sms_gateway import SMSGatewayViewSet
 from apirest.view_phonebook import PhonebookViewSet
 from apirest.view_contact import ContactViewSet
 from apirest.view_campaign import CampaignViewSet
@@ -53,6 +54,7 @@ router.register(r'audio_files', AudioFileViewSet)
 router.register(r'dnc', DNCViewSet)
 router.register(r'dnc_contact', DNCContactViewSet)
 router.register(r'gateway', GatewayViewSet)
+router.register(r'sms_gateway', SMSGatewayViewSet)
 router.register(r'content_type', ContentTypeViewSet)
 router.register(r'phonebook', PhonebookViewSet)
 router.register(r'contact', ContactViewSet)

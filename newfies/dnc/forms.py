@@ -92,7 +92,8 @@ class DNCContact_fileImport(FileImport):
             result_list = []
             for dnc in dnc_list:
                 contacts_in_dnc = dnc.dnc_contacts_count()
-                dnc_string = dnc.name + " - " + str(contacts_in_dnc)
+                nbcontact = " - (nb contact= %d)" % (contacts_in_dnc)
+                dnc_string = dnc.name + nbcontact
                 result_list.append((dnc.id, dnc_string))
 
             self.fields['dnc_list'].choices = result_list

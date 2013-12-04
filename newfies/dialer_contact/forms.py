@@ -66,12 +66,13 @@ class Contact_fileImport(FileImport):
             self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's phonebook list
         if user:  # and not user.is_superuser
-            phonebok_list = Phonebook.objects.filter(user=user).order_by('id')
+            phonebook_list = Phonebook.objects.filter(user=user).order_by('id')
             result_list = []
-            for phonebok in phonebok_list:
-                contacts_in_phonebok = phonebok.phonebook_contacts()
-                pb_string = phonebok.name + " - " + str(contacts_in_phonebok)
-                result_list.append((phonebok.id, pb_string))
+            for phonebook in phonebook_list:
+                contacts_in_phonebook = phonebook.phonebook_contacts()
+                nbcontact = " - (nb contact= %d)" % (contacts_in_phonebook)
+                pb_string = phonebook.name + nbcontact
+                result_list.append((phonebook.id, pb_string))
 
             self.fields['phonebook'].choices = result_list
 

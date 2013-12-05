@@ -17,6 +17,7 @@ from rest_framework import serializers
 from dialer_campaign.models import Subscriber
 from dialer_contact.models import Phonebook
 from dialer_campaign.function_def import dialer_setting_limit, check_dialer_setting
+from django_countries.countries import COUNTRIES
 
 
 class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
@@ -88,6 +89,12 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
     first_name = serializers.CharField(required=False, max_length=100)
     email = serializers.EmailField(required=False, max_length=100)
     address = serializers.CharField(required=False, max_length=100)
+    city = serializers.CharField(required=False, max_length=100)
+    state = serializers.CharField(required=False, max_length=100)
+    unit_number = serializers.CharField(required=False, max_length=100)
+    description = serializers.CharField(required=False, max_length=100)
+    #additional_vars = serializers.CharField(required=False, max_length=100)
+    country = serializers.ChoiceField(required=False, choices=COUNTRIES)
     #status = serializers.ChoiceField(required=False, choices=list(CONTACT_STATUS), default=CONTACT_STATUS.ACTIVE)
     phonebook_id = serializers.IntegerField(required=True)
 
@@ -96,7 +103,8 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'contact', 'campaign', 'last_attempt',
                   'count_attempt', 'completion_count_attempt',
                   'duplicate_contact', 'last_name', 'first_name',
-                  'email', 'phonebook_id', 'status', 'address')
+                  'email', 'phonebook_id', 'status',
+                  )
 
     def get_fields(self):
         """filter field"""
@@ -104,8 +112,7 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
 
         if self.object is not None:
             field_list = [
-                'last_name', 'first_name', 'email',
-                'phonebook_id', 'address',
+                'last_name', 'first_name', 'email', 'phonebook_id',
             ]
             for i in field_list:
                 del fields[i]
@@ -124,13 +131,19 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
 
                 fields['contact'] = serializers.CharField(required=True, max_length=100)
                 fields['address'] = serializers.CharField(required=True, max_length=100)
+                fields['city'] = serializers.CharField(required=True, max_length=100)
+                fields['state'] = serializers.CharField(required=True, max_length=100)
+                fields['country'] = serializers.ChoiceField(required=False, choices=COUNTRIES)
+                fields['description'] = serializers.CharField(required=True, max_length=100)
+                fields['unit_number'] = serializers.CharField(required=True, max_length=100)
+                #fields['additional_vars'] = serializers.CharField(required=True, max_length=100)
 
             if request.method == 'PUT' or request.method == 'PATCH':
                 #fields['contact'].queryset = Contact.objects.filter(pk=self.object.contact_id)
                 #fields['campaign'].queryset = Campaign.objects.filter(pk=self.object.campaign_id)
                 field_list = [
                     'contact', 'campaign', 'last_attempt',
-                    'completion_count_attempt', 'address',
+                    'completion_count_attempt',
                 ]
                 for i in field_list:
                     del fields[i]
@@ -147,14 +160,13 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
 
         if request.method == 'POST':
             if check_dialer_setting(request, check_for="contact"):
-                raise serializers.ValidationError("You have too many contacts per campaign. You are allowed a maximum of %s" %
-                    dialer_setting_limit(request, limit_for="contact"))
+                raise serializers.ValidationError(
+                    "You have too many contacts per campaign. You are allowed a maximum of %s" % dialer_setting_limit(request, limit_for="contact"))
 
-            #TODO: Enforce the user
             phonebook_id = request.POST.get('phonebook_id')
             if phonebook_id:
                 try:
-                    Phonebook.objects.get(id=phonebook_id)
+                    Phonebook.objects.get(id=phonebook_id, user=request.user)
                 except Phonebook.DoesNotExist:
                     raise serializers.ValidationError("Phonebook is not selected!")
             else:
@@ -162,10 +174,10 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
 
         if request.method == 'PUT' or request.method == 'PATCH':
             try:
-                #TODO: Enforce the user
                 subscriber = Subscriber.objects\
                     .get(duplicate_contact=request.POST.get('duplicate_contact'),
-                         campaign=self.object.campaign)
+                         campaign=self.object.campaign,
+                         campaign__user=request.user)
                 subscriber.status = request.POST.get('status')
                 subscriber.save()
             except:

@@ -51,8 +51,12 @@ class SubscriberViewSet(viewsets.ModelViewSet):
 
     def create(self, request):
         """Customize create"""
-        phonebook_id = request.POST.get('phonebook_id')
-        obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+        try:
+            phonebook_id = request.POST.get('phonebook_id')
+            obj_phonebook = Phonebook.objects.get(
+                id=phonebook_id, user=request.user)
+        except:
+            return Response({'error': 'phonebook id is not valid'})
 
         #TODO: Add all field for contact in the API
 
@@ -65,6 +69,11 @@ class SubscriberViewSet(viewsets.ModelViewSet):
             email=request.POST.get('email'),
             description=request.POST.get('description'),
             address=request.POST.get('address'),
+            city=request.POST.get('city'),
+            state=request.POST.get('state'),
+            country=request.POST.get('country'),
+            unit_number=request.POST.get('unit_number'),
+            #additional_vars=request.POST.get('additional_vars'),
             status=CONTACT_STATUS.ACTIVE,  # default active
             phonebook=obj_phonebook)
 
@@ -93,9 +102,8 @@ class SubscriberViewSet(viewsets.ModelViewSet):
                 common_phonebook_list = list(set(imported_phonebook) & set(phonebook_list))
                 if common_phonebook_list:
                     contact_list = Contact.objects\
-                        .filter(
-                            phonebook__in=common_phonebook_list,
-                            status=CONTACT_STATUS.ACTIVE)
+                        .filter(phonebook__in=common_phonebook_list,
+                                status=CONTACT_STATUS.ACTIVE)
                     for con_obj in contact_list:
                         try:
                             Subscriber.objects.create(

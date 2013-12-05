@@ -87,6 +87,7 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
     last_name = serializers.CharField(required=False, max_length=100)
     first_name = serializers.CharField(required=False, max_length=100)
     email = serializers.EmailField(required=False, max_length=100)
+    address = serializers.CharField(required=False, max_length=100)
     #status = serializers.ChoiceField(required=False, choices=list(CONTACT_STATUS), default=CONTACT_STATUS.ACTIVE)
     phonebook_id = serializers.IntegerField(required=True)
 
@@ -95,38 +96,45 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
         fields = ('id', 'contact', 'campaign', 'last_attempt',
                   'count_attempt', 'completion_count_attempt',
                   'duplicate_contact', 'last_name', 'first_name',
-                  'email', 'phonebook_id', 'status')
+                  'email', 'phonebook_id', 'status', 'address')
 
     def get_fields(self):
         """filter field"""
         fields = super(SubscriberSerializer, self).get_fields()
 
         if self.object is not None:
-            del fields['last_name']
-            del fields['first_name']
-            del fields['email']
-            del fields['phonebook_id']
+            field_list = [
+                'last_name', 'first_name', 'email',
+                'phonebook_id', 'address',
+            ]
+            for i in field_list:
+                del fields[i]
 
         if self.context != {}:
             request = self.context['request']
             if request.method == 'POST':
                 #del fields['contact']
-                del fields['campaign']
-                del fields['last_attempt']
-                del fields['count_attempt']
-                del fields['completion_count_attempt']
-                del fields['duplicate_contact']
-                del fields['status']
+                field_list = [
+                    'campaign', 'last_attempt', 'count_attempt',
+                    'completion_count_attempt', 'duplicate_contact',
+                    'status'
+                ]
+                for i in field_list:
+                    del fields[i]
+
                 fields['contact'] = serializers.CharField(required=True, max_length=100)
+                fields['address'] = serializers.CharField(required=True, max_length=100)
 
             if request.method == 'PUT' or request.method == 'PATCH':
                 #fields['contact'].queryset = Contact.objects.filter(pk=self.object.contact_id)
                 #fields['campaign'].queryset = Campaign.objects.filter(pk=self.object.campaign_id)
-                del fields['contact']
-                del fields['campaign']
-                del fields['last_attempt']
-                del fields['count_attempt']
-                del fields['completion_count_attempt']
+                field_list = [
+                    'contact', 'campaign', 'last_attempt',
+                    'completion_count_attempt', 'address',
+                ]
+                for i in field_list:
+                    del fields[i]
+
                 #del fields['duplicate_contact']
 
         return fields

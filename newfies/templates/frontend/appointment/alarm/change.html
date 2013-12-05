@@ -27,7 +27,7 @@
     <div class="tab-content">
         <div id="tabs-1" class="tab-pane active">
             <div class="row">
-                {% get_fieldset alarm_phonenumber,alarm_email,event,method,survey,mail_template,sms_template,date_start_notice,status as general_fields from form %}
+                {% get_fieldset alarm_phonenumber,alarm_email,event,method,survey,mail_template,sms_template,date_start_notice as general_fields from form %}
                 {% for field in general_fields.hidden_fields %}
                     {{ field }}
                 {% endfor %}

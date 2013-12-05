@@ -64,6 +64,7 @@ class SubscriberViewSet(viewsets.ModelViewSet):
             first_name=request.POST.get('first_name'),
             email=request.POST.get('email'),
             description=request.POST.get('description'),
+            address=request.POST.get('address'),
             status=CONTACT_STATUS.ACTIVE,  # default active
             phonebook=obj_phonebook)
 

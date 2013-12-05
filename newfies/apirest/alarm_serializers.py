@@ -17,7 +17,6 @@
 from rest_framework import serializers
 from appointment.models.alarms import Alarm
 from appointment.models.events import Event
-from appointment.models.users import CalendarUser
 from appointment.function_def import get_calendar_user_id_list
 from survey.models import Survey
 

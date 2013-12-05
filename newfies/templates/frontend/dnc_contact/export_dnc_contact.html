@@ -28,7 +28,7 @@
                 <div class="btn-group" data-toggle="buttons">
                     {% for choice in form.export_to.field.choices %}
                     <label class="btn btn-default">
-                        <input name='{{ form.export_to.name }}' id='{{ form.export_to.auto_id }}_{{ forloop.counter0 }}' type='radio'value='{{ choice.0 }}' {% if not form.is_bound %}{% ifequal form.export_to.field.initial choice.0 %} checked='checked' {% endifequal %} {% else %}{% ifequal form.export_to.data choice.0 %} checked='checked' {% endifequal %}{% endif %}/> {{ choice.1 }}
+                        <input name='{{ form.export_to.name }}' type='radio'value='{{ choice.0 }}'/> {{ choice.1 }}
                     </label>
                     {% endfor %}
                 </div>

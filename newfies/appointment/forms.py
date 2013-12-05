@@ -168,7 +168,7 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('parent_event', 'occ_count')
+        exclude = ('status', 'parent_event', 'occ_count')
         widgets = {
             'start': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
             'end': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
@@ -178,8 +178,10 @@ class EventForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['title', 'status', 'calendar', 'creator', 'rule', 'start', 'end', 'end_recurring_period',
-            'description', 'data']
+        self.fields.keyOrder = [
+            'title', 'calendar', 'creator', 'rule', 'start', 'end',
+            'end_recurring_period', 'description', 'data'
+        ]
 
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
@@ -211,6 +213,7 @@ class AlarmForm(ModelForm):
 
     class Meta:
         model = Alarm
+        exclude = ('status')
         widgets = {
             'date_start_notice': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
         }
@@ -220,7 +223,7 @@ class AlarmForm(ModelForm):
 
         self.fields.keyOrder = [
             'date_start_notice', 'event', 'alarm_phonenumber', 'alarm_email',
-            'method', 'status', 'survey', 'mail_template', 'sms_template',
+            'method', 'survey', 'mail_template', 'sms_template',
             'daily_start', 'daily_stop', 'advance_notice', 'maxretry',
             'result', 'retry_delay', 'url_cancel', 'phonenumber_sms_failure',
             'url_confirm', 'phonenumber_transfer']

@@ -1,4 +1,7 @@
 
+// TODO: check if we need this, it might be better to replace this by input field number
+// http://dev.w3.org/html5/markup/input.number.html
+
 function numeric(event)
 {
 	// Allow only backspace and delete

@@ -14,13 +14,13 @@
 
         {% endif %}
 
-        {% if "/dnc_list/" in request.path or "/dnc_contact/" in request.path %}
+        {% if "/dnc_list/" in request.path or "/dnc_contact/" in request.path or "/dnc_contact_import/" in request.path %}
             {% if perms.dnc.view_dnc_list %}
                 <a class="list-group-item {% ifcontains '/dnc_list/' %}active{% endifcontains %}" href="/module/dnc_list/">{% trans "dnc"|upper %} {% trans "list"|title %}</a>
             {% endif %}
             {% if perms.dnc.view_dnccontact %}
                 <a class="list-group-item {% ifcontains '/dnc_contact/' %}active{% endifcontains %}" href="/module/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts"|title %}</a>
-                <a class="list-group-item {% ifcontains '/dnc_contact/import/' %}active{% endifcontains %}" href="/module/dnc_contact/import/">{% trans "import"|title %} {% trans "dnc"|upper %} {% trans "contacts"|title %}</a>
+                <a class="list-group-item {% ifcontains '/dnc_contact_import/' %}active{% endifcontains %}" href="/module/dnc_contact_import/">{% trans "import"|title %} {% trans "dnc"|upper %} {% trans "contacts"|title %}</a>
             {% endif %}
         {% endif %}
 

@@ -26,7 +26,7 @@ urlpatterns = patterns('dnc.views',
     # DNC Contacts urls
     (r'^module/dnc_contact/$', 'dnc_contact_list'),
     (r'^module/dnc_contact/add/$', 'dnc_contact_add'),
-    (r'^module/dnc_contact/import/$', 'dnc_contact_import'),
+    (r'^module/dnc_contact_import/$', 'dnc_contact_import'),
     (r'^module/dnc_contact/export/$', 'dnc_contact_export'),
     (r'^module/dnc_contact/export_view/$', 'dnc_contact_export_view'),
     (r'^module/dnc_contact/del/(.+)/$', 'dnc_contact_del'),

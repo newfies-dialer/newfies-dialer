@@ -206,14 +206,14 @@ class DNCCustomerView(BaseAuthenticatedClient):
 
     def test_dnc_contact_view_import(self):
         """Test Function to check import dnc Contact"""
-        response = self.client.get('/module/dnc_contact/import/')
+        response = self.client.get('/module/dnc_contact_import/')
         self.assertTrue(response.context['form'],
                         DNCContact_fileImport(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
-                                'frontend/dnc_contact/import_dnc_contact.html')
+                                'frontend/dnc_contact_import_dnc_contact.html')
 
-        response = self.client.post('/module/dnc_contact/import/',
+        response = self.client.post('/module/dnc_contact_import/',
                                     data={'dnc_list': '1',
                                           'csv_file': csv_file})
         self.assertEqual(response.status_code, 200)
@@ -222,12 +222,12 @@ class DNCCustomerView(BaseAuthenticatedClient):
             settings.APPLICATION_DIR +
             '/dialer_audio/fixtures/sample_audio_file.mp3', 'r'
         )
-        response = self.client.post('/module/dnc_contact/import/',
+        response = self.client.post('/module/dnc_contact_import/',
                                     data={'dnc_list': '1',
                                           'csv_file': new_file})
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.get('/module/dnc_contact/import/')
+        request = self.factory.get('/module/dnc_contact_import/')
         request.user = self.user
         request.session = {}
         response = dnc_contact_import(request)

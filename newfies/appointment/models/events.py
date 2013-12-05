@@ -17,9 +17,9 @@ import pytz
 
 
 class Event(models.Model):
-    '''
-    This model stores meta data for a date / an event
-    '''
+    """
+    This model stores meta data for a event
+    """
     title = models.CharField(verbose_name=_("label"), max_length=255)
     description = models.TextField(verbose_name=_("description"), null=True, blank=True)
     start = models.DateTimeField(default=(lambda: datetime.now()),

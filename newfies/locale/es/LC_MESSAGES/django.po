@@ -2097,7 +2097,7 @@ msgstr "Seleccione Directorio Telefónico"
 
 #: dialer_contact/forms.py:116 dialer_contact/models.py:89
 #: templates/frontend/contact/import_contact.html:24
-#: templates/frontend/dnc_contact/import_dnc_contact.html:14
+#: templates/frontend/dnc_contact_import_dnc_contact.html:14
 msgid "contact number"
 msgstr "Teléfono de contacto"
 
@@ -3457,7 +3457,7 @@ msgstr "importación"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:18
 #: templates/frontend/contact/import_contact.html:21
-#: templates/frontend/dnc_contact/import_dnc_contact.html:11
+#: templates/frontend/dnc_contact_import_dnc_contact.html:11
 msgid "sample file"
 msgstr "Ejemplo de archivo"
 
@@ -3486,7 +3486,7 @@ msgstr "CONTACTO DE ESTADO = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 #: templates/frontend/contact/import_contact.html:89
 #: templates/frontend/dnc_contact/change.html:50
 #: templates/frontend/dnc_contact/export_dnc_contact.html:35
-#: templates/frontend/dnc_contact/import_dnc_contact.html:49
+#: templates/frontend/dnc_contact_import_dnc_contact.html:49
 #: templates/frontend/dnc_list/change.html:41
 #: templates/frontend/phonebook/change.html:38
 #: templates/frontend/queue/change.html:84
@@ -3507,7 +3507,7 @@ msgstr "Contacto(s) importados"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:114
 #: templates/frontend/contact/import_contact.html:114
-#: templates/frontend/dnc_contact/import_dnc_contact.html:74
+#: templates/frontend/dnc_contact_import_dnc_contact.html:74
 msgid "type mismatch"
 msgstr "Tipo desajuste"
 
@@ -4326,7 +4326,7 @@ msgid "SUBSCRIBER STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 msgstr "SUSCRIPTOR ESTADO = ('1'-'ACTIVE') ('0'-'INACTIVE')"
 
 #: templates/frontend/contact/import_contact.html:96
-#: templates/frontend/dnc_contact/import_dnc_contact.html:56
+#: templates/frontend/dnc_contact_import_dnc_contact.html:56
 msgid "contact(s) imported (display max 100)"
 msgstr "Suscriptor(s) importado"
 
@@ -4365,12 +4365,12 @@ msgstr "Actualización de contacto"
 msgid "export list of dnc contact"
 msgstr "Eliminar contacto"
 
-#: templates/frontend/dnc_contact/import_dnc_contact.html:5
+#: templates/frontend/dnc_contact_import_dnc_contact.html:5
 #, fuzzy
 msgid "import dnc contact"
 msgstr "Importación de contacto"
 
-#: templates/frontend/dnc_contact/import_dnc_contact.html:5
+#: templates/frontend/dnc_contact_import_dnc_contact.html:5
 #, fuzzy
 msgid "import list of dnc contact by uploading CSV files"
 msgstr "Importar lista de contactos mediante la subida de archivos CSV"

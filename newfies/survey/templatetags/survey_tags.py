@@ -79,9 +79,9 @@ def que_res_string(val):
                 result_string += new_string.encode('utf-8')
         else:
             que_res = i.encode('utf-8').split("*|*")
-            result_string +=\
+            result_string += \
                 '<tr><td>%s</td><td class="survey_result_key">%s</td></tr>' %\
-            (que_res[0], que_res[1])
+                (que_res[0], que_res[1])
 
     result_string += '</table>'
     return result_string
@@ -109,10 +109,10 @@ def get_branching_goto_field(section_id, selected_value):
             q_string = i.script
 
         if selected_value == i.id:
-            option_list += '<option value="%s" selected=selected>Goto: %s</option>' %\
+            option_list += '<option value="%s" selected=selected>Goto: %s</option>' % \
                            (str(i.id), (q_string))
         else:
-            option_list += '<option value="%s">Goto: %s</option>' %\
+            option_list += '<option value="%s">Goto: %s</option>' % \
                            (str(i.id), (q_string))
 
     return option_list
@@ -123,7 +123,7 @@ def get_branching_count(section_id, branch_id):
     """
     calculate branching count
     """
-    branch_list = Branching_template\
+    branch_list = Branching_template \
         .objects.values_list('id', flat=True).filter(section_id=section_id)\
         .order_by('id')
     branch_count = branch_list.count()

@@ -218,7 +218,12 @@ class AlarmForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(AlarmForm, self).__init__(*args, **kwargs)
 
-        self.fields.keyOrder = ['date_start_notice', 'event', 'alarm_phonenumber', 'alarm_email', 'method', 'status', 'survey', 'mail_template', 'sms_template', 'daily_start', 'daily_stop', 'advance_notice', 'maxretry', 'retry_delay', 'url_cancel', 'phonenumber_sms_failure', 'url_confirm', 'phonenumber_transfer']
+        self.fields.keyOrder = [
+            'date_start_notice', 'event', 'alarm_phonenumber', 'alarm_email',
+            'method', 'status', 'survey', 'mail_template', 'sms_template',
+            'daily_start', 'daily_stop', 'advance_notice', 'maxretry',
+            'result', 'retry_delay', 'url_cancel', 'phonenumber_sms_failure',
+            'url_confirm', 'phonenumber_transfer']
 
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"

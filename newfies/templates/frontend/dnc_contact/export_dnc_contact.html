@@ -25,6 +25,7 @@
         </div>
         <div class="row">
             <div class="col-md-4">
+                <b>{% trans "export to"|capfirst %} :</b>
                 <div class="btn-group" data-toggle="buttons">
                     {% for choice in form.export_to.field.choices %}
                     <label class="btn btn-default">

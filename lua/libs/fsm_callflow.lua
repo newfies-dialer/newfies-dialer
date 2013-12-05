@@ -444,7 +444,10 @@ function FSMCall:next_node()
             session:execute("bind_meta_app","0 a o hangup::normal_clearing")
 
             session:setAutoHangup(false)
-            callerid = self.db.campaign_info.callerid
+            -- callerid = self.db.campaign_info.callerid
+            -- CallerID display at transfer will be the contact's phonenumber
+            callerid = self.destination_number
+            caller_id_name = self.destination_number
             originate_timeout = self.db.campaign_info.calltimeout
             leg_timeout = self.db.campaign_info.calltimeout
 
@@ -460,7 +463,7 @@ function FSMCall:next_node()
 
             self.actionresult = 'phonenumber: '..current_node.phonenumber
             dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..
-                ",origination_caller_id_name="..callerid..",originate_timeout="..originate_timeout..
+                ",origination_caller_id_name="..caller_id_name..",originate_timeout="..originate_timeout..
                 ",leg_timeout="..leg_timeout..",legtype=bleg,callrequest_id="..self.callrequest_id..
                 ",used_gateway_id="..self.used_gateway_id.."}"..dialstr
 

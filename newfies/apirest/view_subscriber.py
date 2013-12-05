@@ -45,7 +45,8 @@ class SubscriberViewSet(viewsets.ModelViewSet):
         if self.request.user.is_superuser:
             queryset = Subscriber.objects.all()
         else:
-            queryset = Subscriber.objects.filter(campaign__user=self.request.user)
+            queryset = Subscriber.objects.filter(
+                campaign__user=self.request.user)
         serializer = SubscriberSerializer(queryset, many=True)
         return Response(serializer.data)
 
@@ -58,10 +59,16 @@ class SubscriberViewSet(viewsets.ModelViewSet):
         except:
             return Response({'error': 'phonebook id is not valid'})
 
-        #TODO: Add all field for contact in the API
-
         #this method will also create a record into Subscriber
         #this is defined in signal post_save_add_contact
+        add_var = ''
+        if request.POST.get('additional_vars'):
+            try:
+                import json
+                add_var = json.loads(str(request.POST.get('additional_vars')))
+            except:
+                return Response({'error': 'additional_vars is not valid format'})
+
         Contact.objects.create(
             contact=request.POST.get('contact'),
             last_name=request.POST.get('last_name'),
@@ -73,13 +80,12 @@ class SubscriberViewSet(viewsets.ModelViewSet):
             state=request.POST.get('state'),
             country=request.POST.get('country'),
             unit_number=request.POST.get('unit_number'),
-            #additional_vars=request.POST.get('additional_vars'),
+            additional_vars=add_var,
             status=CONTACT_STATUS.ACTIVE,  # default active
             phonebook=obj_phonebook)
 
         # Insert the contact to the subscriber also for
         # each campaign using this phonebook
-
         campaign_obj = Campaign.objects.filter(
             phonebook=obj_phonebook,
             user=request.user)

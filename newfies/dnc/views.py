@@ -602,7 +602,7 @@ def dnc_contact_export_view(request):
     if request.method == 'POST':
         dnc_list_id = request.POST['dnc_list']
         export_to = request.POST['export_to']
-        return HttpResponseRedirect('/dnc_contact/export/?format=' + export_to + '&dnc_list_id=' + dnc_list_id)
+        return HttpResponseRedirect(dnc_contact_redirect_url + 'export/?format=' + export_to + '&dnc_list_id=' + dnc_list_id)
 
     template = 'frontend/dnc_contact/export_dnc_contact.html'
     data = {

@@ -74,6 +74,20 @@ class DNCContactForm(ModelForm):
                 DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
 
 
+def get_dnc_list(user):
+    """get dnc list for ``dnc_list`` field which is used by DNCContact_fileImport
+    & DNCContact_fileExport
+    """
+    dnc_list = DNC.objects.filter(user=user).order_by('id')
+    result_list = []
+    for dnc in dnc_list:
+        contacts_in_dnc = dnc.dnc_contacts_count()
+        nbcontact = " - (nb contact= %d)" % (contacts_in_dnc)
+        dnc_string = dnc.name + nbcontact
+        result_list.append((dnc.id, dnc_string))
+    return result_list
+
+
 class DNCContact_fileImport(FileImport):
     """Admin Form : Import CSV file with dnc list"""
     dnc_list = forms.ChoiceField(label=_("dnc list"),
@@ -88,15 +102,7 @@ class DNCContact_fileImport(FileImport):
         # To get user's dnc_list list
         # and not user.is_superuser
         if user:
-            dnc_list = DNC.objects.filter(user=user).order_by('id')
-            result_list = []
-            for dnc in dnc_list:
-                contacts_in_dnc = dnc.dnc_contacts_count()
-                nbcontact = " - (nb contact= %d)" % (contacts_in_dnc)
-                dnc_string = dnc.name + nbcontact
-                result_list.append((dnc.id, dnc_string))
-
-            self.fields['dnc_list'].choices = result_list
+            self.fields['dnc_list'].choices = get_dnc_list(user)
             self.fields['csv_file'].label = _('upload CSV file')
 
 
@@ -110,9 +116,7 @@ class DNCContact_fileExport(Exportfile):
     def __init__(self, user, *args, **kwargs):
         super(DNCContact_fileExport, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['dnc_list', 'export_to', ]
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.fields['dnc_list'].widget.attrs['class'] = "form-control"
         # To get user's dnc_list list
         if user:  # and not user.is_superuser
-            self.fields['dnc_list'].choices = \
-                DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            self.fields['dnc_list'].choices = get_dnc_list(user)

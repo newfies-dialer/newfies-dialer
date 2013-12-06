@@ -14,7 +14,6 @@
 
 from django.template.defaultfilters import register
 from django.utils.translation import ugettext_lazy as _
-from dialer_campaign.views import tpl_control_icon
 from survey.views import survey_audio_recording
 from survey.models import Section_template, Branching_template
 from survey.constants import SECTION_TYPE
@@ -138,6 +137,6 @@ def link_of_survey_view(survey_id):
     """
     create survey view link
     """
-    link = '<a href="/module/sealed_survey_view/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
-        (survey_id, _('view sealed survey').capitalize(), tpl_control_icon('zoom.png'))
+    link = '<a href="/module/sealed_survey_view/%s/" target="_blank" title="%s"><i class="fa fa-search"></i></a>' % \
+        (survey_id, _('view sealed survey').capitalize())
     return link

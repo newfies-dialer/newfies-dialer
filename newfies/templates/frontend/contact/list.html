@@ -98,10 +98,10 @@ function delete_button()
                                 <td>{{ row.updated_date }}</td>
                                 <td>
                                     {% if perms.dialer_contact.change_contact %}
-                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update contact"|title %}"></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update contact'|title %}"><i class="fa fa-edit fa-fw"></i></a>
                                     {% endif %}
                                     {% if perms.dialer_contact.delete_contact %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete contact"|title %}"></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans "delete contact"|title %}"><i class="fa fa-trash-o fa-fw"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

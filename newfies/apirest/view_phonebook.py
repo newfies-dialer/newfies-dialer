@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from apirest.phonebook_serializers import PhonebookSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Phonebook
 
@@ -27,7 +27,7 @@ class PhonebookViewSet(viewsets.ModelViewSet):
     queryset = Phonebook.objects.all()
     serializer_class = PhonebookSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (DjangoModelPermissions, )
 
     def get_queryset(self):
         """

@@ -4,9 +4,8 @@
     <div class="col-md-12 text-right">
     {% if action == 'update' %}
         <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
-        <input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans "delete"|title %}" />
-        <!-- using button submit doesn't work for all cases / try delete a campaign that have no survey assigned for instance -->
-        <button type="submit" id="delete" name="delete" class="btn btn-danger">
+        <!--<input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans 'delete'|title %}" />-->
+        <button type="submit" id="delete" name="delete" class="btn btn-danger" value="delete">
             <i class="fa fa-trash-o fa-lg"></i> {% trans "delete"|title %}
         </button>
     {% else %}

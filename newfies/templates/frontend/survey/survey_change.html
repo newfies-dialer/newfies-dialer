@@ -145,12 +145,12 @@
 
                                     {% if perms.survey.change_section %}
                                         <a data-toggle="modal" href="#script-update-edit" class="script-edit" url='/section/script/{{ section.id }}/' data-controls-modal='script-update-edit'>
-                                            <i title="{% trans 'edit'|title %}" class="glyphicon glyphicon-edit"></i>
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                     {% endif %}
                                     {% if section.script %}
                                         <a class="" target="_blank" href='/section/script_play/{{ section.id }}/'>
-                                            <i title="{% trans 'play'|title %}" class="glyphicon glyphicon-play"></i>
+                                            <i title="{% trans 'play'|title %}" class="fa fa-play"></i>
                                         </a>
                                     {% endif %}
                                 {% endif %}
@@ -330,7 +330,7 @@
                                                 <td class="survey_edit_key">
                                                     {% if branch.section_id|get_branching_count:branch.id > 1 %}
                                                         {% if perms.survey.delete_branching %}
-                                                            <a href="/section/branch/{{ branch.id }}/?delete=true" title="{% trans "delete"|title %}"><i class="glyphicon glyphicon-remove"></i></a>
+                                                            <a href="/section/branch/{{ branch.id }}/?delete=true" title="{% trans 'delete'|title %}"><i class="fa fa-trash-o"></i></a>
                                                         {% endif %}
                                                     {% endif %}
                                                 </td>

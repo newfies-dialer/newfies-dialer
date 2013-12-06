@@ -44,7 +44,7 @@
                     j++;
                 }
             },
-            handle: '.glyphicon-move'
+            handle: '.fa-arrows-alt'
         });
 
         //Add move button
@@ -52,7 +52,7 @@
             .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
             .find(".portlet-header")
             .addClass("ui-widget-header ui-corner-all")
-            .append('<a class="btn btn-xs right-side-icon" role="button" href="#" title="{% trans "move"|title %}"><i class="glyphicon glyphicon-move"></i></a>')
+            .append('<a class="btn btn-xs right-side-icon" role="button" href="#" title="{% trans "move"|title %}"><i class="fa fa-arrows-alt"></i></a>')
             .end()
             .find(".portlet-content");
 
@@ -61,7 +61,7 @@
             .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
             .find(".portlet-header")
             .addClass("ui-widget-header ui-corner-all")
-            .append('<a class="btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "collapse"|title %}"><i class="glyphicon glyphicon-circle-arrow-up"></i></a>')
+            .append('<a class="btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "collapse"|title %}"><i class="fa fa-arrow-circle-up"></i></a>')
             .end()
             .find(".portlet-content");
 
@@ -70,7 +70,7 @@
             .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
             .find(".portlet-header")
             .addClass("ui-widget-header ui-corner-all")
-            .append('<a class="section-delete btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "delete section"|title %}"><i class="glyphicon glyphicon-remove-circle"></i></a>')
+            .append('<a class="section-delete btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "delete section"|title %}"><i class="fa fa-trash-o"></i></a>')
             .end()
             .find(".portlet-content");
 
@@ -79,7 +79,7 @@
             .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
             .find(".portlet-header")
             .addClass("ui-widget-header ui-corner-all")
-            .append('<a class="section-branch btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "branch"|title %}"><i class="glyphicon glyphicon-random"></i></a>')
+            .append('<a class="section-branch btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "branch"|title %}"><i class="fa fa-random"></i></a>')
             .end()
             .find(".portlet-content");
 
@@ -88,13 +88,13 @@
             .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
             .find(".portlet-header")
             .addClass("ui-widget-header ui-corner-all")
-            .append('<a class="section-edit btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "edit section"|title %}"><i class="glyphicon glyphicon-pencil"></i></a>')
+            .append('<a class="section-edit btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "edit section"|title %}"><i class="fa fa-pencil fa-fw"></i></a>')
             .end()
             .find(".portlet-content");
 
         //Handle toggle click to show and hide section details
-        $(".portlet-header .btn-xs .glyphicon-circle-arrow-up").click(function() {
-            $(this).toggleClass("glyphicon-circle-arrow-up").toggleClass("glyphicon-circle-arrow-down");
+        $(".portlet-header .btn-xs .fa-arrow-circle-up").click(function() {
+            $(this).toggleClass("fa-arrow-circle-up").toggleClass("fa-arrow-circle-down");
             $(this).parents(".portlet:first").find(".portlet-content").toggle();
         });
     });

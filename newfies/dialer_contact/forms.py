@@ -122,6 +122,7 @@ class ContactForm(ModelForm):
 
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
+    #TODO: when moving to 1.6 check https://docs.djangoproject.com/en/1.6/ref/forms/widgets/#numberinput
     contact_no = forms.CharField(label=_('contact number'), required=False,
                                  widget=forms.TextInput(attrs={'size': 15}))
     # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,

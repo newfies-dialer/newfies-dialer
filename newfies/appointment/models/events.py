@@ -150,6 +150,8 @@ class Event(models.Model):
             params = self.rule.get_params()
             frequency = 'rrule.%s' % self.rule.frequency
             return rrule.rrule(eval(frequency), dtstart=self.start, **params)
+        else:
+            return []
 
     def _create_occurrence(self, start, end=None):
         if end is None:

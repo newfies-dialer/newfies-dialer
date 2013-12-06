@@ -3,13 +3,16 @@
 <div class="row">
     <div class="col-md-12 text-right">
     {% if action == 'update' %}
-        <input id="update" type="submit" class="btn btn-primary" value="{% trans "update"|title %}" />
-        <!--<input id="delete" name="delete" class="btn btn-danger" type="submit" value="{% trans 'delete'|title %}" />-->
+        <button type="submit" id="update" name="update" class="btn btn-primary" value="update">
+            <i class="fa fa-edit fa-lg"></i> {% trans "update"|title %}
+        </button>
         <button type="submit" id="delete" name="delete" class="btn btn-danger" value="delete">
             <i class="fa fa-trash-o fa-lg"></i> {% trans "delete"|title %}
         </button>
     {% else %}
-        <input id="add" type="submit" class="btn btn-primary" value="{% trans "submit"|title %}" />
+        <button type="submit" id="add" name="add" class="btn btn-primary" value="submit">
+            <i class="fa fa-plus fa-lg"></i> {% trans "submit"|title %}
+        </button>
     {% endif %}
     </div>
 </div>

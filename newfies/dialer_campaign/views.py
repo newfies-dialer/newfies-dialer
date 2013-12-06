@@ -180,13 +180,13 @@ def _return_link(app_name, obj_id):
     link = ''
     # Object view links
     if app_name == 'survey':
-        link = '<a href="/module/sealed_survey_view/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
-            (obj_id, _('survey').title(), tpl_control_icon('zoom.png'))
+        link = '<a href="/module/sealed_survey_view/%s/" target="_blank" title="%s"><i class="fa fa-search fa-fw"></i></a>' % \
+            (obj_id, _('survey').title())
 
     # Object edit links
     if app_name == 'survey_template':
-        link = '<a href="/module/survey/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
-            (obj_id, _('edit survey').title(), tpl_control_icon('zoom.png'))
+        link = '<a href="/module/survey/%s/" target="_blank" title="%s"><i class="fa fa-search fa-fw"></i></a>' % \
+            (obj_id, _('edit survey').title())
 
     return link
 
@@ -211,9 +211,8 @@ def get_campaign_survey_view(campaign_object):
 
 def make_duplicate_campaign(campaign_object_id):
     """Create link to make duplicate campaign"""
-    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s></a>' \
-           % (campaign_object_id, _('duplicate this campaign').capitalize(),
-              tpl_control_icon('layers.png'))
+    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s"><i class="fa fa-copy fa-fw"></i></a>' \
+           % (campaign_object_id, _('duplicate this campaign').capitalize())
     return link
 
 

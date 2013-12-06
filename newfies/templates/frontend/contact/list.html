@@ -101,7 +101,7 @@ function delete_button()
                                         <a href="{{ row.id }}/" title="{% trans 'update contact'|title %}"><i class="fa fa-edit fa-fw"></i></a>
                                     {% endif %}
                                     {% if perms.dialer_contact.delete_contact %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans "delete contact"|title %}"><i class="fa fa-trash-o fa-fw"></i></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete contact'|title %}"><i class="fa fa-trash-o fa-fw"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

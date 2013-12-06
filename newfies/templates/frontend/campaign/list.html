@@ -93,10 +93,14 @@
                                 <td class="survey_edit_key">{{ row.status|get_campaign_status|safe }}</td>
                                 <td>
                                     {% if perms.dialer_campaign.change_campaign %}
-                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update campaign"|title %}"></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update campaign'|title %}">
+                                            <i class="fa fa-edit fa-fw"></i>
+                                        </a>
                                     {% endif %}
                                     {% if perms.dialer_campaign.delete_campaign %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete campaign"|title %}"></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete campaign'|title %}">
+                                        <i class="fa fa-trash-o fa-fw"></i>
+                                    </a>
                                     {% endif %}
 
                                     {{ row.id|create_duplicate_campaign|safe }}

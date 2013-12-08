@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 #
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
@@ -11,9 +13,13 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-import newfies_dialer
-from django.conf import settings
 
+# :copyright: (c) 2011-2013 by Arezqui Belaid.
+# :license: MPL 2.0, see COPYING for more details.
 
-def newfies_version(request):
-    return {'newfies_version': newfies_dialer.__version__, 'SURVEYDEV': settings.SURVEYDEV}
+VERSION = (3, 0, 0, "")
+__version__ = ".".join(map(str, VERSION[0:3])) + "".join(VERSION[3:])
+__author__ = "Arezqui Belaid"
+__contact__ = "info@star2billing.com"
+__homepage__ = "http://www.newfies-dialer.org"
+__docformat__ = "restructuredtext"

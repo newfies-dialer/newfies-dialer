@@ -26,7 +26,7 @@ MANAGERS = ADMINS
 
 SERVER_EMAIL = 'newfies@localhost.com'
 
-APPLICATION_DIR = os.path.dirname(globals()['__file__'])
+APPLICATION_DIR = os.path.dirname(globals()['__file__']) + '/../'
 
 DATABASES = {
     'default': {
@@ -159,7 +159,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.request",
 )
 
-ROOT_URLCONF = 'urls'
+ROOT_URLCONF = 'newfies_dialer.urls'
 
 TEMPLATE_DIRS = (
     # Put strings here, like "/home/html/django_templates" or
@@ -183,15 +183,14 @@ INSTALLED_APPS = (
     'admin_tools.theming',
     'admin_tools.menu',
     'admin_tools.dashboard',
+    'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
-    'django.contrib.sites',
     'django.contrib.messages',
+    'django.contrib.sites',
     'django.contrib.staticfiles',
-    # Uncomment the next line to enable the admin:
-    'django.contrib.admin',
-    'django.contrib.markup',
+    # 'django.contrib.markup',
     'django_countries',
     'admin_tools_stats',
     'genericadmin',
@@ -304,27 +303,6 @@ except ImportError:
     pass
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('dilla',)
-
-# SMS MODULE
-"""
-try:
-    import sms
-except ImportError:
-    pass
-else:
-    INSTALLED_APPS = INSTALLED_APPS + ('sms',)
-
-try:
-    import sms_module
-except ImportError:
-    pass
-else:
-    INSTALLED_APPS = INSTALLED_APPS + ('sms_module',)
-"""
-
-#API PLAYGROUND
-#==============
-API_PLAYGROUND_FEEDBACK = False
 
 #No of records per page
 #=======================

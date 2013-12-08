@@ -66,7 +66,7 @@ class CalendarSettingForm(ModelForm):
 
     class Meta:
         model = CalendarSetting
-        exclude = ('user')
+        exclude = ('user',)
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarSettingForm, self).__init__(*args, **kwargs)
@@ -107,7 +107,7 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
     """A form used to change the detail of a CalendarUser in the manager UI."""
     class Meta:
         model = CalendarUserProfile
-        exclude = ('manager', 'user')
+        exclude = ('manager', 'user',)
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
@@ -154,7 +154,7 @@ class EventAdminForm(ModelForm):
     """Admin Event ModelForm"""
     class Meta:
         model = Event
-        exclude = ('parent_event', 'occ_count')
+        exclude = ('parent_event', 'occ_count',)
 
     def __init__(self, *args, **kwargs):
         super(EventAdminForm, self).__init__(*args, **kwargs)
@@ -168,7 +168,7 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('status', 'parent_event', 'occ_count')
+        exclude = ('status', 'parent_event', 'occ_count',)
         widgets = {
             'start': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
             'end': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
@@ -213,7 +213,7 @@ class AlarmForm(ModelForm):
 
     class Meta:
         model = Alarm
-        exclude = ('status')
+        exclude = ('status',)
         widgets = {
             'date_start_notice': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
         }

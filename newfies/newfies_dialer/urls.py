@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.conf.urls import handler404, handler500, \
-    include, patterns
+    include, patterns, url
 from django.conf import settings
 from apirest.urls import urlpatterns as urlpatterns_apirest
 from agent.api_urls import urlpatterns as urlpatterns_agent_apirest
@@ -29,19 +29,13 @@ from frontend_notification.urls import urlpatterns as urlpatterns_frontend_notif
 from agent.urls import urlpatterns as urlpatterns_agent
 from callcenter.urls import urlpatterns as urlpatterns_callcenter
 from sms_module.urls import urlpatterns as urlpatterns_sms_module
-from django.contrib import admin
 from dajaxice.core import dajaxice_autodiscover
+from django.contrib import admin
 import os
 
 
+admin.autodiscover()
 dajaxice_autodiscover()
-
-try:
-    admin.autodiscover()
-except admin.sites.AlreadyRegistered:
-    # nose imports the admin.py files during tests, so
-    # the models have already been registered.
-    pass
 
 js_info_dict = {
     'domain': 'djangojs',
@@ -53,7 +47,6 @@ js_info_dict = {
 
 urlpatterns = patterns('',
     (r'^logout/$', 'frontend.views.logout_view'),
-    (r'^admin/', include(admin.site.urls)),
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     (r'^admin_tools/', include('admin_tools.urls')),

@@ -14,7 +14,10 @@ django-redisboard==0.2.5
 django-admin-sortable==1.4.7
 django-tagging==0.3.1
 django-dajax==0.9.2
-django-dajaxice==0.5.5
+#django-dajaxice==0.5.5
+#django-dajaxice doesn't support Django 1.6
+git+git://github.com/ifanrx/django-dajaxice.git
+django-dajaxice-ng==0.5.6
 linaro-django-pagination==2.0.2
 django-admin-tools==0.5.1
 django-country-dialcode==0.4.8

@@ -63,7 +63,7 @@ class CampaignForm(ModelForm):
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name',
-                  'callerid', 'caller_name', 'aleg_gateway',
+                  'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
                   'content_object',   # 'content_type', 'object_id'
                   'extra_data', 'dnc', 'description', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
@@ -227,7 +227,7 @@ class CampaignAdminForm(ModelForm):
         model = Campaign
         fields = ['campaign_code', 'name', 'description', 'user', 'status',
                   'callerid', 'caller_name', 'startingdate', 'expirationdate',
-                  'aleg_gateway', 'content_type', 'object_id', 'extra_data',
+                  'aleg_gateway', 'sms_gateway', 'content_type', 'object_id', 'extra_data',
                   'phonebook', 'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout', 'daily_start_time',
                   'daily_stop_time', 'monday', 'tuesday', 'wednesday',

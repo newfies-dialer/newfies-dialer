@@ -86,7 +86,7 @@
                 <fieldset>
                     <legend>{% trans "dialer settings"|title %}</legend>
                     <div class="row">
-                        {% get_fieldset aleg_gateway,frequency,callmaxduration,maxretry,intervalretry,calltimeout as campaign_settings_fields from form %}
+                        {% get_fieldset aleg_gateway,sms_gateway,frequency,callmaxduration,maxretry,intervalretry,calltimeout as campaign_settings_fields from form %}
                         {% for field in campaign_settings_fields %}
                         <div class="col-md-6">
                             <div class="form-group {% if field.errors %}has-error{% endif %}">

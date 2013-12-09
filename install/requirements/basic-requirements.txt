@@ -6,7 +6,7 @@ pyparsing==1.5.6
 python-dateutil==2.1
 uuid==1.30
 wsgiref==0.1.2
-redis==2.7.2
+redis==2.8.0
 celery==3.0.23
 pytz==2012j
 kombu==2.4.8

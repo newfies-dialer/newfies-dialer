@@ -10,7 +10,7 @@ django-picklefield==0.3.0
 django-jsonfield==0.8.12
 django-countries==1.5
 django-redis-cache==0.9.6
-django-redisboard==0.2.5
+django-redisboard==0.2.7
 django-admin-sortable==1.4.7
 django-tagging==0.3.1
 django-dajax==0.9.2

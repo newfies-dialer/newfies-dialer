@@ -23,7 +23,7 @@
     {% block content %}
 
         {% if err_msg %}
-            {% include "frontend/extra_modal_files.html" %}
+            {% include "frontend/extra_modal_header.html" %}
             <script type="text/javascript" charset="utf-8">
                 $(window).load(function(){
                     $('#section-modal').modal('show');
@@ -348,6 +348,7 @@
                                 </div>
                             </div>
                         </div>
+
                         <!--invalid_audiofile-->
                         {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION %}
                             <div class="row">

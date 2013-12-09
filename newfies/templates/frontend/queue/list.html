@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons callcenter_tags %}
+{% load i18n pagination_tags common_tags callcenter_tags %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -69,10 +69,10 @@
                                 <td>{{ row.updated_date }}</td>
                                 <td>
                                     {% if perms.callcenter.change_queue %}
-                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update queue"|title %}"></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update queue'|title %}"><i class="fa fa-edit"></i></a>
                                     {% endif %}
                                     {% if perms.callcenter.delete_queue %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete queue"|title %}"></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete queue'|title %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

@@ -32,7 +32,8 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
     CallTransferSectionForm, BranchingForm, ScriptForm,\
-    SurveyDetailReportForm, SurveyFileImport, ConferenceSectionForm, SealSurveyForm
+    SMSSectionForm, SurveyDetailReportForm, SurveyFileImport,\
+    ConferenceSectionForm, SealSurveyForm
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME,\
     SEALED_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
@@ -308,6 +309,11 @@ def section_add(request):
             form_data =\
                 section_add_form(request, CallTransferSectionForm, survey, SECTION_TYPE.CALL_TRANSFER)
 
+        # SMS Section
+        if int(request.POST.get('type')) == SECTION_TYPE.SMS:
+            form_data =\
+                section_add_form(request, SMSSectionForm, survey, SECTION_TYPE.SMS)
+
         if form_data.get('save_tag'):
             return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                 % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
@@ -406,6 +412,9 @@ def section_change(request, id):
     elif section.type == SECTION_TYPE.CALL_TRANSFER:
         #CALL_TRANSFER
         form = CallTransferSectionForm(request.user, instance=section)
+    elif section.type == SECTION_TYPE.SMS:
+        #SMS
+        form = SMSSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
 
@@ -414,38 +423,43 @@ def section_change(request, id):
         if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE or
             int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION or
             int(request.POST.get('type')) == SECTION_TYPE.DNC):
-            form_data = section_update_form(request,
-                PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
+            form_data = section_update_form(
+                request, PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
 
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
-            form_data = section_update_form(request,
-                MultipleChoiceSectionForm, SECTION_TYPE.MULTI_CHOICE, section)
+            form_data = section_update_form(
+                request, MultipleChoiceSectionForm, SECTION_TYPE.MULTI_CHOICE, section)
 
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
-            form_data = section_update_form(request,
-                RatingSectionForm, SECTION_TYPE.RATING_SECTION, section)
+            form_data = section_update_form(
+                request, RatingSectionForm, SECTION_TYPE.RATING_SECTION, section)
 
         # Capture Digits Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
-            form_data = section_update_form(request,
-                CaptureDigitsSectionForm, SECTION_TYPE.CAPTURE_DIGITS, section)
+            form_data = section_update_form(
+                request, CaptureDigitsSectionForm, SECTION_TYPE.CAPTURE_DIGITS, section)
 
         # Record Message Section Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
-            form_data = section_update_form(request,
-                RecordMessageSectionForm, SECTION_TYPE.RECORD_MSG, section)
+            form_data = section_update_form(
+                request, RecordMessageSectionForm, SECTION_TYPE.RECORD_MSG, section)
 
         # Call Transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
-            form_data = section_update_form(request,
-                CallTransferSectionForm, SECTION_TYPE.CALL_TRANSFER, section)
+            form_data = section_update_form(
+                request, CallTransferSectionForm, SECTION_TYPE.CALL_TRANSFER, section)
 
         # Conference Section
         if int(request.POST.get('type')) == SECTION_TYPE.CONFERENCE:
-            form_data = section_update_form(request,
-                ConferenceSectionForm, SECTION_TYPE.CONFERENCE, section)
+            form_data = section_update_form(
+                request, ConferenceSectionForm, SECTION_TYPE.CONFERENCE, section)
+
+        # SMS
+        if int(request.POST.get('type')) == SECTION_TYPE.SMS:
+            form_data = section_update_form(
+                request, SMSSectionForm, SECTION_TYPE.SMS, section)
 
         if form_data.get('save_tag'):
             return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'

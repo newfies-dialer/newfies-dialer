@@ -26,6 +26,7 @@ class SECTION_TYPE(Choice):
     HANGUP_SECTION = 7, _('hangup').capitalize()
     CONFERENCE = 8, _('conference').capitalize()
     DNC = 9, _('dnc').upper()
+    SMS = 10, _('sms').upper()
 
 
 class SURVEY_COLUMN_NAME(Choice):

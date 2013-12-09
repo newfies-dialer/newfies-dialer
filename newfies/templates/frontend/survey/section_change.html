@@ -311,6 +311,29 @@
                             </div>
                         {% endif %}
 
+
+                        <!--SMS Section form-->
+                        {% if form.type.value|convert_to_int == SECTION_TYPE.SMS %}
+                            <div class="row">
+                                <div class="col-md-10">
+                                    <div class="form-group {% if form.sms_text.errors %}has-error{% endif %}">
+                                        <div class="col-xs-10">
+                                            <label class="control-label" for="{{ form.sms_text.auto_id }}">{{ form.sms_text.label|title }}</label>
+                                            {{ form.sms_text }}
+                                            {% if form.sms_text.errors %}
+                                                <span class="help-inline">
+                                                    {{ form.sms_text.errors|removetags:"ul li"|safe }}
+                                                </span>
+                                            {% endif %}
+                                            <span class="help-block">
+                                                {{ form.sms_text.help_text|capfirst }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endif %}
+
                         <!--Survey complete field -->
                         <div class="row">
                             <div class="col-md-6">

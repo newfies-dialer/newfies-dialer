@@ -531,7 +531,8 @@ def post_save_add_script(sender, **kwargs):
         if (obj.type == SECTION_TYPE.PLAY_MESSAGE
            or obj.type == SECTION_TYPE.RECORD_MSG
            or obj.type == SECTION_TYPE.CALL_TRANSFER
-           or obj.type == SECTION_TYPE.CONFERENCE):
+           or obj.type == SECTION_TYPE.CONFERENCE
+           or obj.type == SECTION_TYPE.SMS):
             Branching_template.objects.create(keys=0, section_id=obj.id, goto_id='')
 
         if obj.type == SECTION_TYPE.MULTI_CHOICE or \

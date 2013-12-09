@@ -58,7 +58,7 @@
             <div class="modal-body">
                 {% if section_type != SECTION_TYPE.HANGUP_SECTION and section_type != SECTION_TYPE.DNC %}
 
-                {% if section_type == SECTION_TYPE.PLAY_MESSAGE or section_type == SECTION_TYPE.RECORD_MSG or section_type == SECTION_TYPE.CALL_TRANSFER or section_type == SECTION_TYPE.CONFERENCE %}
+                {% if section_type == SECTION_TYPE.PLAY_MESSAGE or section_type == SECTION_TYPE.RECORD_MSG or section_type == SECTION_TYPE.CALL_TRANSFER or section_type == SECTION_TYPE.CONFERENCE or section_type == SECTION_TYPE.SMS %}
                     {{ form.keys }}
                 {% else %}
                     <div class="row">

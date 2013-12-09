@@ -13,7 +13,7 @@
 #
 
 from django import forms
-from django.forms import ModelForm, Textarea
+from django.forms import ModelForm
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
 from dialer_contact.forms import SearchForm
@@ -261,6 +261,24 @@ class CallTransferSectionForm(ModelForm):
             self.fields[i].widget.attrs['class'] = "form-control"
 
 
+class SMSSectionForm(ModelForm):
+    """SMSSectionForm ModelForm"""
+
+    class Meta:
+        model = Section_template
+        fields = ['type', 'survey', 'question', 'retries',
+                  'audiofile', 'completed', 'sms_text']
+
+    def __init__(self, user, *args, **kwargs):
+        super(SMSSectionForm, self).__init__(*args, **kwargs)
+        self.fields['survey'].widget = forms.HiddenInput()
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+        if user:
+            self.fields['audiofile'].choices = get_audiofile_list(user)
+
+
 class ScriptForm(ModelForm):
     """ScriptForm ModelForm"""
 
@@ -302,7 +320,8 @@ class BranchingForm(ModelForm):
         if (obj_section.type == SECTION_TYPE.PLAY_MESSAGE
            or obj_section.type == SECTION_TYPE.RECORD_MSG
            or obj_section.type == SECTION_TYPE.CALL_TRANSFER
-           or obj_section.type == SECTION_TYPE.CONFERENCE):
+           or obj_section.type == SECTION_TYPE.CONFERENCE
+           or obj_section.type == SECTION_TYPE.SMS):
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 

@@ -210,6 +210,15 @@
                                 {% endif %}
                             </div>
                         {% endif %}
+
+                        <!--SMS text -->
+                        {% if section.type == SECTION_TYPE.SMS %}
+                            <div class="col-md-8">
+                                {% if section.sms_text %}
+                                    {% trans "sms"|title %} {% trans "text"|title %} : {{ section.sms_text }} <br/>
+                                {% endif %}
+                            </div>
+                        {% endif %}
                     </div>
 
                     <!--branching-->

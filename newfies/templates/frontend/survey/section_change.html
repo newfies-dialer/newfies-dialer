@@ -83,8 +83,7 @@
                             </div>
                         </div>
 
-
-                        {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS or form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE or form.type.value|convert_to_int == SECTION_TYPE.PLAY_MESSAGE %}
+                        {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS or form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE %}
 
                             <div class="row">
                                 <div class="col-md-6">

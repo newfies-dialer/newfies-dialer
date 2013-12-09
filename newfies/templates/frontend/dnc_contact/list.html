@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags pagination_tags icons %}
+{% load i18n common_tags pagination_tags %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -96,10 +96,14 @@ function delete_button()
                                 <td>{{ row.updated_date }}</td>
                                 <td>
                                     {% if perms.dnc.change_dnccontact %}
-                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update dnc contact"|title %}"></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update dnc contact'|title %}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
                                     {% endif %}
                                     {% if perms.dnc.delete_dnccontact %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete dnc contact"|title %}"></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete dnc contact'|title %}">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
                                     {% endif %}
                                 </td>
                             </tr>

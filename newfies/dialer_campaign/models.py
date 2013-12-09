@@ -28,6 +28,7 @@ from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from audiofield.models import AudioFile
 from user_profile.models import UserProfile
+from sms.models import Gateway as SMS_Gateway
 from dnc.models import DNC
 from agent.models import Agent
 from datetime import datetime
@@ -141,6 +142,7 @@ class Campaign(Model):
         * ``has_been_duplicated`` - campaign duplicated flag
         * ``voicemail`` - Enable Voicemail Detection
         * ``amd_behavior`` - Detection Behaviour
+        * ``sms_gateway`` - Gateway to transport the SMS
 
     **Relationships**:
 
@@ -226,6 +228,10 @@ class Campaign(Model):
     aleg_gateway = models.ForeignKey(Gateway, verbose_name=_("A-Leg gateway"),
                                      related_name="A-Leg Gateway",
                                      help_text=_("select outbound gateway"))
+    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("sms gateway"),
+                                    null=True, blank=True,
+                                    related_name="campaign_sms_gateway",
+                                    help_text=_("select SMS gateway"))
     content_type = models.ForeignKey(ContentType, verbose_name=_("type"),
                                      limit_choices_to={"model__in": ["survey_template"]})
     object_id = models.PositiveIntegerField(verbose_name=_("application"))

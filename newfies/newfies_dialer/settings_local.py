@@ -35,7 +35,7 @@ APPLICATION_DIR = os.path.dirname(globals()['__file__'])
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'newfiesdb',
+        'NAME': 'newfiesdb2',
         'USER': 'newfiesuser',
         'PASSWORD': 'password',
         'HOST': 'localhost',

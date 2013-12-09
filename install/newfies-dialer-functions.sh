@@ -669,6 +669,7 @@ func_install_frontend(){
     #Prepare Django DB / Migrate / Create User ...
     cd $INSTALL_DIR/
     python manage.py syncdb --noinput
+    python manage.py migrate dialer_campaign
     python manage.py migrate
 
     #Load Countries Dialcode

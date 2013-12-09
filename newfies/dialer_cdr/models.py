@@ -71,11 +71,9 @@ class Callrequest(Model):
 
     **Relationships**:
 
-        * ``user`` - Foreign key relationship to the User model.\
-        Each campaign assigned to a User
+        * ``user`` - Foreign key relationship to the User model. Each campaign assigned to a User
 
-        * ``content_type`` - Defines the application \
-        (``voip_app`` or ``survey``) \
+        * ``content_type`` - Defines the application  (``voip_app`` or ``survey``) \
         to use when the call is established on the A-Leg
 
         * ``object_id`` - Defines the object of content_type application
@@ -86,8 +84,7 @@ class Callrequest(Model):
         * ``aleg_gateway`` - Foreign key relationship to the Gateway model.\
         Gateway to use to call the subscriber
 
-        * ``subscriber`` - Foreign key relationship to\
-        the Subscriber Model.
+        * ``subscriber`` - Foreign key relationship to the Subscriber Model.
 
         * ``campaign`` - Foreign key relationship to the Campaign model.
 

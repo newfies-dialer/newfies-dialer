@@ -22,6 +22,7 @@ from dialer_campaign.function_def import (user_dialer_setting,
 from dialer_contact.models import Phonebook
 from audiofield.models import AudioFile
 from dnc.models import DNC
+from sms.models import Gateway as SMS_Gateway
 
 
 class CampaignSerializer(serializers.HyperlinkedModelSerializer):
@@ -30,7 +31,7 @@ class CampaignSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "2013-06-13 13:13:33", "expirationdate": "2013-06-14 13:13:33", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "/rest-api/gateway/1/", "content_type": "/rest-api/content_type/49/", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1", "voicemail": "True", "amd_behavior": "1", "voicemail_audiofile": "1", "dnc": "/rest-api/dnc/1/", "phonebook": "1"}' http://localhost:8000/rest-api/campaigns/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "2013-06-13 13:13:33", "expirationdate": "2013-06-14 13:13:33", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "/rest-api/gateway/1/", "sms_gateway": "/rest-api/sms-gateway/1/", "content_type": "/rest-api/content_type/49/", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1", "voicemail": "True", "amd_behavior": "1", "voicemail_audiofile": "1", "dnc": "/rest-api/dnc/1/", "phonebook": "1"}' http://localhost:8000/rest-api/campaigns/
 
         Response::
 
@@ -145,7 +146,7 @@ class CampaignSerializer(serializers.HyperlinkedModelSerializer):
             'frequency', 'callmaxduration', 'maxretry', 'intervalretry',
             'calltimeout', 'daily_start_time', 'daily_stop_time',
             'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-            'saturday', 'sunday', 'completion_maxretry',
+            'saturday', 'sunday', 'completion_maxretry', 'sms_gateway',
             'completion_intervalretry', 'agent_script', 'lead_disposition',
         )
 
@@ -183,6 +184,7 @@ class CampaignSerializer(serializers.HyperlinkedModelSerializer):
                 fields['voicemail_audiofile'].queryset = AudioFile.objects.filter(user=request.user)
 
             fields['aleg_gateway'].queryset = request.user.get_profile().userprofile_gateway.all()
+            fields['sms_gateway'].queryset = SMS_Gateway.objects.all()
             fields['dnc'].queryset = DNC.objects.filter(user=request.user)
             fields['phonebook'].queryset = Phonebook.objects.filter(user=request.user)
 

@@ -15,7 +15,7 @@ from dialer_cdr.function_def import return_query_string
 from dialer_contact.models import Phonebook, Contact
 from common.common_functions import variable_value
 from user_profile.models import UserProfile
-from sms.models import Gateway
+from sms.models import Gateway as SMS_Gateway
 from models import SMSCampaign
 #from dialer_setting.models import DialerSetting
 from constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR
@@ -33,7 +33,7 @@ def field_list(name, user=None):
     if name == "phonebook" and user is not None:
         list = Phonebook.objects.filter(user=user)
     if name == "gateway" and user is not None:
-        list = Gateway.objects.all()
+        list = SMS_Gateway.objects.all()
     return ((l.id, l.name) for l in list)
 
 

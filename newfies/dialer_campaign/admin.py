@@ -43,9 +43,9 @@ class CampaignAdmin(GenericAdminModelAdmin):
         (_('standard options').capitalize(), {
             'fields': ('campaign_code', 'name', 'description', 'callerid',
                        'user', 'status', 'startingdate', 'expirationdate',
-                       'aleg_gateway', 'content_type', 'object_id',
-                       'extra_data', 'phonebook', 'voicemail', 'amd_behavior',
-                       'voicemail_audiofile'
+                       'aleg_gateway', 'sms_gateway', 'content_type',
+                       'object_id', 'extra_data', 'phonebook', 'voicemail',
+                       'amd_behavior', 'voicemail_audiofile'
                        ),
         }),
         (_('advanced options').capitalize(), {
@@ -62,9 +62,9 @@ class CampaignAdmin(GenericAdminModelAdmin):
     )
     list_display = ('id', 'name', 'content_type', 'campaign_code', 'user',
                     'startingdate', 'expirationdate', 'frequency',
-                    'callmaxduration', 'maxretry', 'aleg_gateway', 'status',
-                    'update_campaign_status', 'totalcontact', 'completed',
-                    'subscriber_detail', 'progress_bar')
+                    'callmaxduration', 'maxretry', 'aleg_gateway', 'sms_gateway',
+                    'status', 'update_campaign_status', 'totalcontact',
+                    'completed', 'subscriber_detail', 'progress_bar')
 
     list_display_links = ('id', 'name', )
     #list_filter doesn't display correctly too many elements in list_display

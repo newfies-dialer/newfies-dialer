@@ -57,6 +57,7 @@ class DialerCampaignView(BaseAuthenticatedClient):
                 "intervalretry": "3000",
                 "calltimeout": "60",
                 "aleg_gateway": "1",
+                "sms_gateway": "",
                 "user": "1",
                 "content_object": "type:32-id:1",
                 "extra_data": "2000"})
@@ -126,6 +127,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
+            "sms_gateway": "",
             "content_object": "type:43-id:1",
             "extra_data": "2000",
             "ds_user": self.user}, follow=True)
@@ -142,6 +144,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
+            "sms_gateway": "",
             "content_object": "type:43-id:1",
             "extra_data": "2000",
             "ds_user": self.user}, follow=True)
@@ -161,6 +164,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
+            "sms_gateway": "",
             "content_object": "type:43-id:1",
             "extra_data": "2000",
             "ds_user": self.user}, follow=True)
@@ -417,6 +421,7 @@ class DialerCampaignModel(TestCase):
             "intervalretry": "2000",
             "calltimeout": "60",
             "aleg_gateway": "1",
+            "sms_gateway": "",
             "content_object": "type:32-id:1",
             "extra_data": "2000",
             "ds_user": self.user})

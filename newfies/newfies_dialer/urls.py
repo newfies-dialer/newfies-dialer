@@ -47,6 +47,7 @@ js_info_dict = {
 
 urlpatterns = patterns('',
     (r'^logout/$', 'frontend.views.logout_view'),
+    (r'^admin/', include(admin.site.urls)),
     (r'^i18n/', include('django.conf.urls.i18n')),
     (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
     (r'^admin_tools/', include('admin_tools.urls')),

@@ -167,6 +167,7 @@ class Section_abstract(Sortable):
         * ``phonenumber`` - phonenumber to dialout / call transfer
         * ``completed`` - reaching this section will mark the subscriber as completed
         * ``conference`` - Conference Room
+        * ``sms_text`` - text to send via SMS
 
     **Relationships**:
 
@@ -239,6 +240,10 @@ class Section_abstract(Sortable):
     conference = models.CharField(max_length=50,
                                   null=True, blank=True,
                                   verbose_name=_("conference"))
+
+    sms_text = models.CharField(max_length=200,
+                                null=True, blank=True,
+                                help_text=_('text that will be send via SMS to the contact'))
 
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,

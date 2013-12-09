@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags pagination_tags icons %}
+{% load i18n common_tags pagination_tags %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -98,10 +98,10 @@ function delete_button()
                                 <td>{{ row.updated_date }}</td>
                                 <td>
                                     {% if perms.dialer_contact.change_contact %}
-                                        <a href="{{ row.id }}/" title="{% trans 'update contact'|title %}"><i class="fa fa-edit fa-fw"></i></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update contact'|title %}"><i class="fa fa-edit"></i></a>
                                     {% endif %}
                                     {% if perms.dialer_contact.delete_contact %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete contact'|title %}"><i class="fa fa-trash-o fa-fw"></i></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete contact'|title %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

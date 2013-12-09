@@ -67,19 +67,19 @@ function delete_button(){
                                 <td>
                                     {% if perms.survey.change_survey %}
                                         <a href="{{ row.id }}/" title="{% trans 'update survey'|title %}">
-                                            <i class="fa fa-edit fa-fw"></i>
+                                            <i class="fa fa-edit"></i>
                                         </a>
                                     {% endif %}
 
                                     {% if perms.survey.delete_survey %}
                                         <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete survey'|title %}">
-                                            <i class="fa fa-trash-o fa-fw"></i>
+                                            <i class="fa fa-trash-o"></i>
                                         </a>
                                     {% endif %}
 
                                     {% if perms.survey.export_survey %}
                                         <a href="/module/export_survey/{{ row.id }}/" target="_blank" title="{% trans 'export survey'|title %}">
-                                            <i class="fa fa-share-square-o"></i>
+                                            <i class="fa fa-download"></i>
                                         </a>
                                     {% endif %}
 

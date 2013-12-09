@@ -23,7 +23,9 @@
     {% block content %}
 
         {% if err_msg %}
+
             {% include "frontend/extra_modal_header.html" %}
+
             <script type="text/javascript" charset="utf-8">
                 $(window).load(function(){
                     $('#section-modal').modal('show');
@@ -386,6 +388,8 @@
         {% if err_msg %}
             </div>
         {% endif %}
+
+    {% include "frontend/extra_modal_footer.html" %}
 
     {% endblock %}
 

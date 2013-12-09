@@ -13,7 +13,7 @@
 #
 
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
 from dialer_contact.forms import SearchForm
@@ -268,6 +268,9 @@ class SMSSectionForm(ModelForm):
         model = Section_template
         fields = ['type', 'survey', 'question', 'retries',
                   'audiofile', 'completed', 'sms_text']
+        widgets = {
+            'sms_text': Textarea(attrs={'cols': 23, 'rows': 2}),
+        }
 
     def __init__(self, user, *args, **kwargs):
         super(SMSSectionForm, self).__init__(*args, **kwargs)

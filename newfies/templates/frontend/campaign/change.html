@@ -86,7 +86,7 @@
                 <fieldset>
                     <legend>{% trans "dialer settings"|title %}</legend>
                     <div class="row">
-                        {% get_fieldset aleg_gateway,sms_gateway,frequency,callmaxduration,maxretry,intervalretry,calltimeout as campaign_settings_fields from form %}
+                        {% get_fieldset aleg_gateway,frequency,callmaxduration,maxretry,intervalretry,calltimeout as campaign_settings_fields from form %}
                         {% for field in campaign_settings_fields %}
                         <div class="col-md-6">
                             <div class="form-group {% if field.errors %}has-error{% endif %}">
@@ -130,6 +130,30 @@
                     </div>
                     {% endfor %}
                 </div>
+                </fieldset>
+                <fieldset>
+                    <legend>{% trans "SMS settings"|title %}</legend>
+                    <div class="row">
+                        {% get_fieldset sms_gateway as campaign_settings_fields from form %}
+                        {% for field in campaign_settings_fields %}
+                        <div class="col-md-6">
+                            <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                <div class="col-xs-8">
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-inline">
+                                            {{ field.errors|removetags:"ul li"|safe }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="help-block">
+                                        {{ field.help_text|capfirst }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
                 </fieldset>
             </div>
 

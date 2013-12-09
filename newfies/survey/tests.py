@@ -23,7 +23,7 @@ from survey.models import Survey, Survey_template, Section,\
 from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
-    CallTransferSectionForm, ScriptForm,\
+    CallTransferSectionForm, ScriptForm, SMSSectionForm,\
     SurveyDetailReportForm
 from survey.views import survey_list, survey_add, \
     survey_change, survey_del, section_add, section_change,\
@@ -366,6 +366,22 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
+        request = self.factory.post('/section/1/',
+            {'type': 10, 'question': 'test question',
+             'update': 'true', 'sms_text': 'this is test sms'}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = section_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/section/1/',
+            {'type': 10, 'question': 'xyz', 'sms_text': 'this is test sms'},
+            follow=True)
+        request.user = self.user
+        request.session = {}
+        response = section_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
     def test_section_script_play(self):
         """Test Function survey section script play"""
         request = self.factory.get('/section/script_play/1/')
@@ -638,6 +654,14 @@ class SurveyModel(TestCase):
         obj.type = 6
         obj.question = "test question"
         obj.phonenumber = 1234567890
+        obj.survey = self.survey_template
+        obj.save()
+
+        form = SMSSectionForm(self.user)
+        obj = form.save(commit=False)
+        obj.type = 10
+        obj.question = "sms question"
+        obj.sms_text = "this is test sms"
         obj.survey = self.survey_template
         obj.save()
 

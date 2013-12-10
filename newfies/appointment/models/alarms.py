@@ -85,7 +85,7 @@ class Alarm(models.Model):
 
     def get_time_diff(self):
         if self.date_start_notice:
-            now = datetime.utcnow().replace(tzinfo=utc)
+            now = datetime.utcnow()#.replace(tzinfo=utc)
             timediff = self.date_start_notice - now
             return timediff.total_seconds()
 

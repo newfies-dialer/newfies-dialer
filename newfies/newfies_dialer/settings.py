@@ -153,11 +153,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.core.context_processors.csrf",
+    "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "context_processors.newfies_version",
     #needed by Sentry
     "django.core.context_processors.request",
 )
+
+SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
 ROOT_URLCONF = 'newfies_dialer.urls'
 
@@ -309,7 +312,8 @@ else:
 PAGE_SIZE = 10
 
 # AUTH MODULE SETTINGS
-AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
+#AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
+#AUTH_USER_MODEL = 'user_profile.UserProfile'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/pleaselog/'
 

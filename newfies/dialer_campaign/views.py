@@ -131,10 +131,6 @@ def get_url_campaign_status(id, status):
     Helper to display campaign status button on the grid
     """
     #Store html for campaign control button
-    #control_play_style = tpl_control_icon('control_play_blue.png')
-    #control_pause_style = tpl_control_icon('control_pause_blue.png')
-    #control_abort_style = tpl_control_icon('control_abort_blue.png')
-    #control_stop_style = tpl_control_icon('control_stop_blue.png')
     control_play_style = tpl_control_icon('fa-play')
     control_pause_style = tpl_control_icon('fa-pause')
     control_abort_style = tpl_control_icon('fa-eject')

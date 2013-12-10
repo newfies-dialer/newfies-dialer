@@ -19,7 +19,7 @@
 #
 
 #Set branch to install develop / master
-BRANCH='callcenter'
+BRANCH='appointment'
 
 FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-conf
 FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-init

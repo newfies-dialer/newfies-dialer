@@ -24,7 +24,7 @@
 #
 
 #Set branch to install develop / master
-BRANCH='callcenter'
+BRANCH='appointment'
 
 #Get Scripts dependencies
 cd /usr/src/

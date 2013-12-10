@@ -123,7 +123,7 @@ def tpl_control_icon(icon):
     """
     function to produce control html icon
     """
-    return '<i class="fa %s"></i>' % (icon)
+    return '<span class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa %s fa-stack-1x fa-inverse"></i></span>' % (icon)
 
 
 def get_url_campaign_status(id, status):

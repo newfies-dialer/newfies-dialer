@@ -123,7 +123,8 @@ def tpl_control_icon(icon):
     """
     function to produce control html icon
     """
-    return 'style="text-decoration:none;background-image:url(%snewfies/icons/%s);"' % (settings.STATIC_URL, icon)
+    #return 'style="text-decoration:none;background-image:url(%snewfies/icons/%s);"' % (settings.STATIC_URL, icon)
+    return '<i class="fa %s"></i>' % (icon)
 
 
 def get_url_campaign_status(id, status):
@@ -131,10 +132,14 @@ def get_url_campaign_status(id, status):
     Helper to display campaign status button on the grid
     """
     #Store html for campaign control button
-    control_play_style = tpl_control_icon('control_play_blue.png')
-    control_pause_style = tpl_control_icon('control_pause_blue.png')
-    control_abort_style = tpl_control_icon('control_abort_blue.png')
-    control_stop_style = tpl_control_icon('control_stop_blue.png')
+    #control_play_style = tpl_control_icon('control_play_blue.png')
+    #control_pause_style = tpl_control_icon('control_pause_blue.png')
+    #control_abort_style = tpl_control_icon('control_abort_blue.png')
+    #control_stop_style = tpl_control_icon('control_stop_blue.png')
+    control_play_style = tpl_control_icon('fa-play-circle-o')
+    control_pause_style = tpl_control_icon('fa-pause')
+    control_abort_style = tpl_control_icon('fa-eject')
+    control_stop_style = tpl_control_icon('fa-stop')
 
     #set different url for the campaign status
     url_cpg_status = 'update_campaign_status_cust/%s' % str(id)
@@ -146,23 +151,29 @@ def get_url_campaign_status(id, status):
     #according to the current status, disable link and change the button color
     if status == CAMPAIGN_STATUS.START:
         url_cpg_start = '#'
-        control_play_style = tpl_control_icon('control_play.png')
+        control_play_style = tpl_control_icon('fa-play-circle-o')
     elif status == CAMPAIGN_STATUS.PAUSE:
         url_cpg_pause = '#'
-        control_pause_style = tpl_control_icon('control_pause.png')
+        control_pause_style = tpl_control_icon('fa-pause')
     elif status == CAMPAIGN_STATUS.ABORT:
         url_cpg_abort = '#'
-        control_abort_style = tpl_control_icon('control_abort.png')
+        control_abort_style = tpl_control_icon('fa-eject')
     elif status == CAMPAIGN_STATUS.END:
         url_cpg_stop = '#'
-        control_stop_style = tpl_control_icon('control_stop.png')
+        control_stop_style = tpl_control_icon('fa-stop')
 
     #return all the html button for campaign status management
-    return "<a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a>" % \
+    #return "<a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a>" % \
+    #    (url_cpg_start, _("start").capitalize(), control_play_style,
+    #    url_cpg_pause, _("pause").capitalize(), control_pause_style,
+    #    url_cpg_abort, _("abort").capitalize(), control_abort_style,
+    #    url_cpg_stop, _("stop").capitalize(), control_stop_style)
+
+    return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
         (url_cpg_start, _("start").capitalize(), control_play_style,
-        url_cpg_pause, _("pause").capitalize(), control_pause_style,
-        url_cpg_abort, _("abort").capitalize(), control_abort_style,
-        url_cpg_stop, _("stop").capitalize(), control_stop_style)
+         url_cpg_pause, _("pause").capitalize(), control_pause_style,
+         url_cpg_abort, _("abort").capitalize(), control_abort_style,
+         url_cpg_stop, _("stop").capitalize(), control_stop_style)
 
 
 def get_app_name(app_label, model_name, object_id):
@@ -180,12 +191,12 @@ def _return_link(app_name, obj_id):
     link = ''
     # Object view links
     if app_name == 'survey':
-        link = '<a href="/module/sealed_survey_view/%s/" target="_blank" title="%s"><i class="fa fa-search fa-fw"></i></a>' % \
+        link = '<a href="/module/sealed_survey_view/%s/" target="_blank" title="%s"><i class="fa fa-search"></i></a>' % \
             (obj_id, _('survey').title())
 
     # Object edit links
     if app_name == 'survey_template':
-        link = '<a href="/module/survey/%s/" target="_blank" title="%s"><i class="fa fa-search fa-fw"></i></a>' % \
+        link = '<a href="/module/survey/%s/" target="_blank" title="%s"><i class="fa fa-search"></i></a>' % \
             (obj_id, _('edit survey').title())
 
     return link
@@ -211,7 +222,7 @@ def get_campaign_survey_view(campaign_object):
 
 def make_duplicate_campaign(campaign_object_id):
     """Create link to make duplicate campaign"""
-    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s"><i class="fa fa-copy fa-fw"></i></a>' \
+    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
            % (campaign_object_id, _('duplicate this campaign').capitalize())
     return link
 

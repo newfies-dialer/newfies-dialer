@@ -68,12 +68,18 @@
                                 <td>{{ row.updated_date }}</td>
                                 <td>
                                     {% if perms.agent.change_agentprofile %}
-                                        <a href="{{ row.id }}/" title="{% trans 'update agent'|title %}"><i class="fa fa-edit"></i></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update agent'|title %}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
                                     {% endif %}
                                     {% if perms.agent.delete_agentprofile %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete agent'|title %}"><i class="fa fa-trash-o"></i></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete agent'|title %}">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
                                     {% endif %}
-                                    <a id="id_change_password" href="password/{{ row.user_id }}/" title="{% trans 'change agent password'|title %}"><i class="fa fa-sign-in"></i></a>
+                                    <a id="id_change_password" href="password/{{ row.user_id }}/" title="{% trans 'change agent password'|title %}">
+                                        <i class="fa fa-sign-in"></i>
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}

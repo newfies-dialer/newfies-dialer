@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons appointment_tags %}
+{% load i18n pagination_tags common_tags appointment_tags %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -97,10 +97,14 @@
                                 <td>{{ row.status|event_status }}</td>
                                 <td>
                                     {% if perms.appointment.change_event %}
-                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update event"|title %}"></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update event'|title %}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
                                     {% endif %}
                                     {% if perms.appointment.delete_event %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete event"|title %}"></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete event'|title %}">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
                                     {% endif %}
                                 </td>
                             </tr>

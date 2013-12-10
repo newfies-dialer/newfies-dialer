@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons %}
+{% load i18n pagination_tags common_tags %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -68,12 +68,18 @@
                                 <td>{{ row.updated_date }}</td>
                                 <td>
                                     {% if perms.appointment.change_calendaruserprofile %}
-                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update calendar user"|title %}"></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update calendar user'|title %}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
                                     {% endif %}
                                     {% if perms.appointment.delete_calendaruserprofile %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete calendar user"|title %}"></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete calendar user'|title %}">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
                                     {% endif %}
-                                    <a id="id_change_password" href="password/{{ row.user_id }}/" {% icon "update" %} title="{% trans "change calendar user password"|title %}"></a>
+                                    <a id="id_change_password" href="password/{{ row.user_id }}/" title="{% trans 'change calendar user password'|title %}">
+                                        <i class="fa fa-sign-in"></i>
+                                    </a>
                                 </td>
                             </tr>
                         {% endfor %}

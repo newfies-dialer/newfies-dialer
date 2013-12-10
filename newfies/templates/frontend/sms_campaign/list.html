@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons sms_module_tags %}
+{% load i18n pagination_tags common_tags sms_module_tags %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -82,10 +82,14 @@
                                 <td class="survey_edit_key">{{ row.status|get_sms_campaign_status|safe }}</td>
                                 <td>
                                     {% if perms.sms_module.change_smscampaign %}
-                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update sms campaign"|capfirst %}"></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update sms campaign'|capfirst %}">
+                                            <i class="fa fa-edit"></i>
+                                        </a>
                                     {% endif %}
                                     {% if perms.sms_module.delete_smscampaign %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete sms campaign"|capfirst %}"></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete sms campaign'|capfirst %}">
+                                            <i class="fa fa-trash-o"></i>
+                                        </a>
                                     {% endif %}
                                     {% get_sms_campaign_status_url row.id row.status %}
                                 </td>

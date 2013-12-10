@@ -309,7 +309,7 @@ else:
 PAGE_SIZE = 10
 
 # AUTH MODULE SETTINGS
-AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
+#AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/pleaselog/'
 

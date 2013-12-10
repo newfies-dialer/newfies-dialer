@@ -17,6 +17,7 @@ from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import CAMPAIGN_STATUS,\
     CAMPAIGN_STATUS_COLOR, SUBSCRIBER_STATUS
+from user_profile.models import UserProfile
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
 from datetime import timedelta
@@ -231,7 +232,7 @@ def get_campaign_status_name(id):
 def user_dialer_setting(user):
     """Get Dialer setting for user"""
     try:
-        dialer_set = user.get_profile().dialersetting
+        dialer_set = UserProfile.objects.get(user=user).dialersetting
     except:
         dialer_set = []
     return dialer_set

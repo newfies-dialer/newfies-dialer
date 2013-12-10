@@ -27,7 +27,7 @@ from django.db.models import get_model
 from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm,\
-    SubscriberSearchForm
+    SubscriberSearchForm, CampaignSearchForm
 from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME,\
     SUBSCRIBER_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
@@ -229,6 +229,7 @@ def campaign_list(request):
 
         * List all campaigns belonging to the logged in user
     """
+    form = CampaignSearchForm(request.user)
     request.session['pagination_path'] = request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
     sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
@@ -242,6 +243,7 @@ def campaign_list(request):
 
     template = 'frontend/campaign/list.html'
     data = {
+        'form': form,
         'campaign_list': campaign_list,
         'total_campaign': campaign_list.count(),
         'PAGE_SIZE': PAGE_SIZE,

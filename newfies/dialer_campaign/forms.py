@@ -32,6 +32,17 @@ from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
 
 
+def get_campaign_phonebook_list(user):
+    """Return phonebook list of logged in user"""
+    list_pb = []
+    list_pb.append((0, '---'))
+    pb_list = Phonebook.objects.values_list('id', 'name')\
+        .filter(user=user).order_by('id')
+    for l in pb_list:
+        list_pb.append((l[0], l[1]))
+    return list_pb
+
+
 def get_object_choices(available_objects):
     """Function is used to get object_choices for
     ``content_object`` field in campaign form"""
@@ -100,15 +111,9 @@ class CampaignForm(ModelForm):
         if user:
             self.fields['ds_user'].initial = user
             list_gw = []
-            list_pb = []
             dnc_list = []
 
-            list_pb.append((0, '---'))
-            list = Phonebook.objects.values_list('id', 'name')\
-                .filter(user=user).order_by('id')
-            for l in list:
-                list_pb.append((l[0], l[1]))
-            self.fields['phonebook'].choices = list_pb
+            self.fields['phonebook'].choices = get_campaign_phonebook_list(user)
 
             list = user.get_profile().userprofile_gateway.all()
             gw_list = ((l.id, l.name) for l in list)
@@ -212,13 +217,7 @@ class DuplicateCampaignForm(ModelForm):
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
-            list_pb = []
-            list_pb.append((0, '---'))
-            list = Phonebook.objects.values_list('id', 'name')\
-                .filter(user=user).order_by('id')
-            for l in list:
-                list_pb.append((l[0], l[1]))
-            self.fields['phonebook'].choices = list_pb
+            self.fields['phonebook'].choices = get_campaign_phonebook_list(user)
 
 
 class CampaignAdminForm(ModelForm):
@@ -317,3 +316,22 @@ class SubscriberSearchForm(SearchForm):
 
             self.fields['campaign_id'].choices = camp_list
             self.fields['agent_id'].choices = agent_list
+
+
+campaign_status_list = []
+campaign_status_list.append(('all', _('all').upper()))
+for i in CAMPAIGN_STATUS:
+    campaign_status_list.append((i[0], i[1]))
+
+
+class CampaignSearchForm(forms.Form):
+    phonebook_id = forms.ChoiceField(label=_("phonebook"),)
+    status = forms.ChoiceField(label=_("status"), choices=campaign_status_list,)
+
+    def __init__(self, user, *args, **kwargs):
+        super(CampaignSearchForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+        if user:
+            self.fields['phonebook_id'].choices = get_campaign_phonebook_list(user)
+

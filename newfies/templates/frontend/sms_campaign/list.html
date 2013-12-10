@@ -78,8 +78,7 @@
                                 <td>{{ row.startingdate }}</td>
                                 <td>{{ row.sms_gateway }}</td>
                                 <td>{{ row.totalcontact }}</td>
-                                <td>{{ row.status|get_sms_campaign_status|safe }}
-                                {% get_sms_campaign_status_url row.id row.status %}
+                                <td>{% get_sms_campaign_status_url row.id row.status %} - {{ row.status|get_sms_campaign_status|safe }}
                                 </td>
                                 <td>
                                     {% if perms.sms_module.change_smscampaign %}

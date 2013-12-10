@@ -108,8 +108,8 @@
                                 <td>{% get_app_name row.content_type.app_label row.content_type.model row.object_id %}</td>
                                 <td class="survey_edit_key">{{ row.totalcontact }}</td>
                                 <td>
-                                    {{ row.status|get_campaign_status|safe }}
                                     {% get_campaign_status_url row.id row.status %}
+                                    - {{ row.status|get_campaign_status|safe }}
                                 </td>
                                 <td>
                                     {% if perms.dialer_campaign.change_campaign %}
@@ -122,8 +122,6 @@
                                     {{ row.id|create_duplicate_campaign|safe }}
 
                                     {% get_campaign_app_view row %}
-
-
                                 </td>
                             </tr>
                         {% endfor %}

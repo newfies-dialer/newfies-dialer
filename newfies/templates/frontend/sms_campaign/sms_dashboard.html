@@ -14,7 +14,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "sms"|upper %} {% trans "dashboard"|title %} <small>{% trans "realtime sms campaign performance monitoring"|title %}</small></h1>
+    <h1>{% trans "SMS" %} {% trans "dashboard"|title %} <small>{% trans "realtime SMS campaign performance monitoring"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -24,7 +24,7 @@
         <table class="table table-striped table-bordered table-condensed">
             <thead>
             <tr>
-                <th>{% trans "SMSCampaign Contacts"|capfirst %}</th>
+                <th>{% trans "SMS Campaign Contacts" %}</th>
                 <th>{% trans "contacted today"|title %}</th>
             </tr>
             </thead>

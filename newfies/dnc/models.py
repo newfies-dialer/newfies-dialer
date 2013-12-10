@@ -52,7 +52,7 @@ class DNC(models.Model):
         """This will return a count of the contacts in the dnc"""
         return DNCContact.objects.filter(dnc=self.id).count()
     dnc_contacts_count.allow_tags = True
-    dnc_contacts_count.short_description = _('dnc contacts')
+    dnc_contacts_count.short_description = _('DNC contacts')
 
 
 class DNCContact(models.Model):

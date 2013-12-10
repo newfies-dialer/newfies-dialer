@@ -51,8 +51,8 @@ class CalendarSetting(models.Model):
     label = models.CharField(max_length=80, blank=False,
                              verbose_name=_("label"))
     callerid = models.CharField(max_length=80,
-                                verbose_name=_("callerID"),
-                                help_text=_("outbound caller-ID"))
+                                verbose_name=_("Caller ID Number"),
+                                help_text=_("outbound Caller ID"))
     caller_name = models.CharField(max_length=80, blank=True,
                                    verbose_name=_("caller name"),
                                    help_text=_("outbound caller-Name"))
@@ -68,7 +68,7 @@ class CalendarSetting(models.Model):
     aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False,
                                      verbose_name=_("a-leg gateway"),
                                      help_text=_("select gateway to use to be used"))
-    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("sms gateway"),
+    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"),
                                     null=False, blank=False,
                                     related_name="sms_gateway",
                                     help_text=_("select SMS gateway"))

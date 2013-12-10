@@ -193,10 +193,10 @@ class Section_abstract(Sortable):
                                   verbose_name=_("audio File"))
     retries = models.IntegerField(max_length=1, null=True, blank=True,
                                   verbose_name=_("retries"), default=0,
-                                  help_text=_('retries this section until it\'s valid'))
+                                  help_text=_('retries until valid input'))
     timeout = models.IntegerField(max_length=2, null=True, blank=True,
                                   verbose_name=_("timeout"), default=5,
-                                  help_text=_('timeout in seconds to press the key(s)'))
+                                  help_text=_('timeout in seconds'))
     # Multi-choice
     key_0 = models.CharField(max_length=100, null=True, blank=True,
                              verbose_name=_("key") + " 0")
@@ -239,7 +239,7 @@ class Section_abstract(Sortable):
     #Conference Room
     conference = models.CharField(max_length=50,
                                   null=True, blank=True,
-                                  verbose_name=_("conference"))
+                                  verbose_name=_("conference number"))
 
     sms_text = models.CharField(max_length=200,
                                 null=True, blank=True,

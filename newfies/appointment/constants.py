@@ -51,18 +51,18 @@ class ALARMREQUEST_STATUS(Choice):
 
 class CALENDAR_SETTING_COLUMN_NAME(Choice):
     label = _('label')
-    callerid = _('callerid number')
-    caller_name = _('callerid name')
-    call_timeout = _('call timeout')
+    callerid = _('caller ID Number')
+    caller_name = _('caller ID Name')
+    call_timeout = _('call Timeout')
     survey = _('survey')
-    aleg_gateway = _('aleg gateway')
-    sms_gateway = _('sms gateway')
+    aleg_gateway = _('A-leg Gateway')
+    sms_gateway = _('SMS Gateway')
 
 
 class CALENDAR_USER_COLUMN_NAME(Choice):
     name = _('name')
     email = _('email')
-    calendar_setting = _('calendar setting')
+    calendar_setting = _('Calendar Setting')
     date = _('date')
 
 

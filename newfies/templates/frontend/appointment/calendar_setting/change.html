@@ -22,7 +22,7 @@
         <div class="col-md-6">
             <div class="form-group {% if field.errors %}has-error{% endif %}">
             <div class="col-xs-8">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
                 {{ field }}
                 {% if field.errors %}
                     <span class="help-inline">
@@ -43,7 +43,7 @@
         <div class="col-md-6">
             <div class="form-group {% if field.errors %}has-error{% endif %}">
             <div class="col-xs-8">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
                 {{ field }}
                 {% if field.errors %}
                     <span class="help-inline">
@@ -65,9 +65,9 @@
                     <div class="btn-group" data-toggle="buttons">
                         {% get_fieldset voicemail as calendarsetting_fields from form %}
                         {% for field in calendarsetting_fields %}
-                            <b> {{ field.label|title }} </b>
+                            <b> {{ field.label|capfirst }} </b>
                             <label class="btn btn-default {% if field.value %}active{% endif %}">
-                                {{ field }} {% trans "enabled"|title %}
+                                {{ field }} {% trans "enabled"|capfirst %}
                             </label>
                         {% endfor %}
                     </div>
@@ -81,7 +81,7 @@
                 <div class="col-md-6">
                     <div class="form-group {% if field.errors %}has-error{% endif %}">
                         <div class="col-xs-8">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
                             {{ field }}
                             {% if field.errors %}
                                 <span class="help-inline">

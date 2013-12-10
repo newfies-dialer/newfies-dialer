@@ -89,10 +89,10 @@ def get_dnc_list(user):
 
 
 class DNCContact_fileImport(FileImport):
-    """Admin Form : Import CSV file with dnc list"""
-    dnc_list = forms.ChoiceField(label=_("dnc list"),
+    """Admin Form : Import CSV file with DNC list"""
+    dnc_list = forms.ChoiceField(label=_("DNC list"),
                                  required=True,
-                                 help_text=_("select dnc list"))
+                                 help_text=_("select DNC list"))
 
     def __init__(self, user, *args, **kwargs):
         super(DNCContact_fileImport, self).__init__(*args, **kwargs)
@@ -110,8 +110,8 @@ class DNCContact_fileExport(Exportfile):
     """
     DNC Contact Export
     """
-    dnc_list = forms.ChoiceField(label=_("dnc list"), required=True,
-                                 help_text=_("select dnc list"))
+    dnc_list = forms.ChoiceField(label=_("DNC list"), required=True,
+                                 help_text=_("select DNC list"))
 
     def __init__(self, user, *args, **kwargs):
         super(DNCContact_fileExport, self).__init__(*args, **kwargs)

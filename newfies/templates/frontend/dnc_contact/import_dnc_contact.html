@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content_header %}
-    <h1>{% trans "import dnc contact"|title %} <small>{% trans "import list of dnc contact by uploading CSV files"|capfirst %}</small></h1>
+    <h1>{% trans "import DNC contact"|capfirst %} <small>{% trans "import list of DNC contact by uploading CSV files"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -30,7 +30,7 @@
     <div class="row">
         <div class="form-group {% if field.errors %}has-error{% endif %}">
             <div class="col-xs-4">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
 
                 {{ field }}
                 {% if field.errors %}
@@ -46,7 +46,7 @@
     </div>
     {% endfor %}
     <div class="text-right">
-        <input type="submit" class="btn btn-primary" name="submit" value="{% trans 'submit'|title %}" />
+        <input type="submit" class="btn btn-primary" name="submit" value="{% trans 'submit'|capfirst %}" />
     </div>
 </form>
 

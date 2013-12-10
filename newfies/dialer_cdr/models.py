@@ -109,8 +109,8 @@ class Callrequest(Model):
                                  blank=True, null=True, db_index=True,
                                  verbose_name=_('status'))
     callerid = models.CharField(max_length=80, blank=True,
-                                verbose_name=_("callerID"),
-                                help_text=_("outbound caller-ID"))
+                                verbose_name=_("Caller ID Number"),
+                                help_text=_("outbound Caller ID"))
     caller_name = models.CharField(max_length=80, blank=True,
                                    verbose_name=_("caller name"),
                                    help_text=_("outbound caller-Name"))

@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons %}
+{% load i18n pagination_tags common_tags %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -69,10 +69,10 @@
                                 <td>{{ row.contact_count }}</td>
                                 <td>
                                     {% if perms.dialer_contact.change_phonebook %}
-                                        <a href="{{ row.id }}/" {% icon "page_edit" %} title="{% trans "update phonebook"|title %}"></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update phonebook'|title %}"><i class="fa fa-edit"></i></a>
                                     {% endif %}
                                     {% if perms.dialer_contact.delete_phonebook %}
-                                        <a id="id_phonebook_delete_confirm" onclick="return get_alert_msg_for_phonebook({{ row.id }});"  href="del/{{ row.id }}/" {% icon "delete" %} title="{% trans "delete phonebook"|title %}"></a>
+                                        <a id="id_phonebook_delete_confirm" onclick="return get_alert_msg_for_phonebook({{ row.id }});"  href="del/{{ row.id }}/" title="{% trans 'delete phonebook'|title %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

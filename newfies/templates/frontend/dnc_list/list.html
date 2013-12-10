@@ -68,14 +68,10 @@
                                 <td>{{ row.dnc_contacts_count }}</td>
                                 <td>
                                     {% if perms.dnc.change_dnc %}
-                                        <a href="{{ row.id }}/" title="{% trans 'update DNC'|capfirst %}">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update DNC'|capfirst %}"><i class="fa fa-edit"></i></a>
                                     {% endif %}
                                     {% if perms.dnc.delete_dnc %}
-                                        <a id="id_dnc_delete_confirm" onclick="return get_alert_msg_for_dnc({{ row.id }});"  href="del/{{ row.id }}/" title="{% trans 'delete DNC'|title %}">
-                                            <i class="fa fa-trash-o"></i>
-                                        </a>
+                                        <a id="id_dnc_delete_confirm" onclick="return get_alert_msg_for_dnc({{ row.id }});"  href="del/{{ row.id }}/" title="{% trans 'delete DNC'|title %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

@@ -75,14 +75,10 @@
                                 <td>{{ row.sms_gateway }}</td>
                                 <td>
                                     {% if perms.appointment.change_calendarsetting %}
-                                        <a href="{{ row.id }}/" title="{% trans 'update calendar setting'|title %}">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update calendar setting'|title %}"><i class="fa fa-edit"></i></a>
                                     {% endif %}
                                     {% if perms.appointment.delete_calendarsetting %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete calendar setting'|title %}">
-                                            <i class="fa fa-trash-o"></i>
-                                        </a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete calendar setting'|title %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

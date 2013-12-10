@@ -97,14 +97,10 @@
                                 <td>{{ row.status|event_status }}</td>
                                 <td>
                                     {% if perms.appointment.change_event %}
-                                        <a href="{{ row.id }}/" title="{% trans 'update event'|title %}">
-                                            <i class="fa fa-edit"></i>
-                                        </a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update event'|title %}"><i class="fa fa-edit"></i></a>
                                     {% endif %}
                                     {% if perms.appointment.delete_event %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete event'|title %}">
-                                            <i class="fa fa-trash-o"></i>
-                                        </a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete event'|title %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

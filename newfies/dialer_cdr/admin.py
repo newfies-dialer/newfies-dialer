@@ -29,7 +29,7 @@ from dialer_cdr.forms import AdminVoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
     voipcall_search_admin_form_fun
 from common.common_functions import getvar
-from common.app_label_renamer import AppLabelRenamer
+# from common.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
 import tablib

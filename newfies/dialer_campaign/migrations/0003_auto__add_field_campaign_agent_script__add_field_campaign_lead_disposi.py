@@ -18,14 +18,12 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.TextField')(null=True, blank=True),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting field 'Campaign.agent_script'
         db.delete_column(u'dialer_campaign', 'agent_script')
 
         # Deleting field 'Campaign.lead_disposition'
         db.delete_column(u'dialer_campaign', 'lead_disposition')
-
 
     models = {
         u'audiofield.audiofile': {

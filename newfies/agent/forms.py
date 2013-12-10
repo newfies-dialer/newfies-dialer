@@ -50,7 +50,7 @@ class AgentProfileForm(ModelForm):
 
     class Meta:
         model = AgentProfile
-        exclude = ('is_agent',)
+        exclude = ('is_agent', )
 
     def __init__(self, *args, **kwargs):
         super(AgentProfileForm, self).__init__(*args, **kwargs)
@@ -61,6 +61,7 @@ class AgentProfileForm(ModelForm):
 
 class AgentChangeDetailExtendForm(ModelForm):
     """A form used to change the detail of a agent in the manager UI."""
+
     class Meta:
         model = AgentProfile
         fields = ["type", "call_timeout", "contact", "status",
@@ -76,6 +77,7 @@ class AgentChangeDetailExtendForm(ModelForm):
 
 class AgentDetailExtendForm(ModelForm):
     """A form used to change the detail of a agent in the Agent UI."""
+
     class Meta:
         model = AgentProfile
         #fields = ["address", "city", "state", "country", "zip_code",

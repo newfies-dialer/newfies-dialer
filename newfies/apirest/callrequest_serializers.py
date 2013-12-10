@@ -106,6 +106,7 @@ class CallrequestSerializer(serializers.HyperlinkedModelSerializer):
 
     """
     user = serializers.Field(source='user')
+
     class Meta:
         model = Callrequest
 

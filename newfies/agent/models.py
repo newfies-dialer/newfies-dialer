@@ -83,6 +83,7 @@ class Agent(User):
     Agents are user that have access to the Agent interface.
     They don't have access to the admin/manager.
     """
+
     class Meta:
         proxy = True
         app_label = 'auth'
@@ -138,10 +139,8 @@ def post_delete_agentprofile(sender, **kwargs):
     """
     common_signal(kwargs['instance'].manager_id)
 
-
 post_save.connect(post_save_agentprofile, sender=AgentProfile)
 post_delete.connect(post_delete_agentprofile, sender=AgentProfile)
-
 
 # Create an easy way to use the user profile
 # using user.profile will get or create a user profile

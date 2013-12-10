@@ -55,7 +55,7 @@ class BulkContactViewSet(APIView):
                 error['error'] = 'Data set is empty'
 
             if check_dialer_setting(request, check_for="contact"):
-                error['error'] = "You have too many contacts per campaign. You are allowed a maximum of %s" %\
+                error['error'] = "You have too many contacts per campaign. You are allowed a maximum of %s" % \
                     dialer_setting_limit(request, limit_for="contact")
 
             phonebook_id = request.DATA.get('phonebook_id')
@@ -84,7 +84,7 @@ class BulkContactViewSet(APIView):
             if dup_count == 0:
                 new_contact = Contact.objects.create(
                     phonebook=obj_phonebook,
-                    contact=phoneno,)
+                    contact=phoneno, )
                 new_contact_count = new_contact_count + 1
                 new_contact.save()
             else:

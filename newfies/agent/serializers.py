@@ -16,7 +16,6 @@ from agent.models import Agent, AgentProfile
 from django import forms
 from dialer_campaign.models import Subscriber
 
-
 HIDDEN_PASSWORD_STRING = '<hidden>'
 
 
@@ -53,7 +52,6 @@ class AgentProfileSerializer(serializers.ModelSerializer):
             is_superuser=False)
         return fields
 
-
 # # Serializers
 # class AgentProfileSerializer(serializers.HyperlinkedModelSerializer):
 #     #user = serializers.Field(source='user.username')
@@ -63,7 +61,6 @@ class AgentProfileSerializer(serializers.ModelSerializer):
 #     class Meta:
 #         model = AgentProfile
 #         #fields = ('is_agent', 'call_timeout', 'type', 'contact', 'status', 'user')
-
 
 class AgentSerializer(serializers.HyperlinkedModelSerializer):
     #api_key = serializers.Field(source='api_key')
@@ -108,6 +105,7 @@ class AgentSubscriberSerializer(serializers.HyperlinkedModelSerializer):
                 }
             ]
     """
+
     class Meta:
         model = Subscriber
         fields = ('id', 'status', 'disposition',

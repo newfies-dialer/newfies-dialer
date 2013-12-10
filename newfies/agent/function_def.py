@@ -18,7 +18,7 @@ from agent.models import AgentProfile, Agent
 def manager_list():
     """Return all managers of the system"""
     manager_list = []
-    list = Manager.objects.values_list('id', 'username')\
+    list = Manager.objects.values_list('id', 'username') \
         .filter(is_staff=True, is_superuser=False, is_active=True).order_by('id')
     for l in list:
         manager_list.append((l[0], l[1]))
@@ -42,7 +42,7 @@ def agent_list():
     """Return all agent of the system"""
     agent_list = []
     agent_id_list = AgentProfile.objects.values_list('user_id', flat=True).all()
-    list = Agent.objects.values_list('id', 'username')\
+    list = Agent.objects.values_list('id', 'username') \
         .filter(id__in=agent_id_list).order_by('id')
     for l in list:
         agent_list.append((l[0], l[1]))

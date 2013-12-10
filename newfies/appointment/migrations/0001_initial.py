@@ -144,7 +144,6 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal('appointment', ['AlarmRequest'])
 
-
     def backwards(self, orm):
         # Deleting model 'CalendarSetting'
         db.delete_table('calendar_setting')
@@ -169,7 +168,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'AlarmRequest'
         db.delete_table(u'appointment_alarmrequest')
-
 
     models = {
         'appointment.alarm': {

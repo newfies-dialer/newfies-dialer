@@ -22,8 +22,8 @@ from dialer_campaign.tasks import collect_subscriber
 
 class Command(BaseCommand):
     args = 'phonebook_id, list_of_phonenumber'
-    help = "Create a new contact for a given phonenumber and phonebook\n"\
-           "--------------------------------------------------------------\n"\
+    help = "Create a new contact for a given phonenumber and phonebook\n" \
+           "--------------------------------------------------------------\n" \
            "python manage.py create_subscriber --phonebook_id=1 --list_of_phonenumber=123456,9867456"
 
     option_list = BaseCommand.option_list + (

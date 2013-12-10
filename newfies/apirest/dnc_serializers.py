@@ -76,5 +76,6 @@ class DNCSerializer(serializers.HyperlinkedModelSerializer):
             Content-Language: en-us
     """
     user = serializers.Field(source='user')
+
     class Meta:
         model = DNC

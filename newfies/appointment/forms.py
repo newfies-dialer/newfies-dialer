@@ -14,14 +14,14 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
-from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm,\
+from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm, \
     UserChangeForm
-from appointment.models.users import CalendarUserProfile, CalendarUser,\
+from appointment.models.users import CalendarUserProfile, CalendarUser, \
     CalendarSetting
 from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm
-from appointment.function_def import get_calendar_user_id_list,\
+from appointment.function_def import get_calendar_user_id_list, \
     get_calendar_user_list, get_calendar_list, get_all_calendar_user_id_list
 from survey.models import Survey
 from bootstrap3_datetime.widgets import DateTimePicker
@@ -66,7 +66,7 @@ class CalendarSettingForm(ModelForm):
 
     class Meta:
         model = CalendarSetting
-        exclude = ('user',)
+        exclude = ('user', )
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarSettingForm, self).__init__(*args, **kwargs)
@@ -105,9 +105,10 @@ class CalendarUserNameChangeForm(UserChangeForm):
 
 class CalendarUserChangeDetailExtendForm(ModelForm):
     """A form used to change the detail of a CalendarUser in the manager UI."""
+
     class Meta:
         model = CalendarUserProfile
-        exclude = ('manager', 'user',)
+        exclude = ('manager', 'user', )
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
@@ -129,6 +130,7 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
 
 class CalendarForm(ModelForm):
     """CalendarForm"""
+
     class Meta:
         model = Calendar
 
@@ -152,9 +154,10 @@ class AdminCalendarForm(ModelForm):
 
 class EventAdminForm(ModelForm):
     """Admin Event ModelForm"""
+
     class Meta:
         model = Event
-        exclude = ('parent_event', 'occ_count',)
+        exclude = ('parent_event', 'occ_count', )
 
     def __init__(self, *args, **kwargs):
         super(EventAdminForm, self).__init__(*args, **kwargs)
@@ -168,7 +171,7 @@ class EventForm(ModelForm):
 
     class Meta:
         model = Event
-        exclude = ('status', 'parent_event', 'occ_count',)
+        exclude = ('status', 'parent_event', 'occ_count', )
         widgets = {
             'start': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
             'end': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
@@ -213,7 +216,7 @@ class AlarmForm(ModelForm):
 
     class Meta:
         model = Alarm
-        exclude = ('status',)
+        exclude = ('status', )
         widgets = {
             'date_start_notice': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
         }

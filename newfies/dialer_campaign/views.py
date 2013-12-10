@@ -26,18 +26,18 @@ from django.contrib.contenttypes.models import ContentType
 from django.db.models import get_model
 from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm,\
+from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm, \
     SubscriberSearchForm, CampaignSearchForm
-from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME,\
+from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME, \
     SUBSCRIBER_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
-    user_dialer_setting, user_dialer_setting_msg, get_subscriber_status,\
+    user_dialer_setting, user_dialer_setting_msg, get_subscriber_status, \
     get_subscriber_disposition
 from dialer_campaign.tasks import collect_subscriber
 from survey.models import Section, Branching, Survey_template
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from common.common_functions import ceil_strdate, getvar,\
+from common.common_functions import ceil_strdate, getvar, \
     get_pagination_vars, unset_session_var
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -109,7 +109,7 @@ def notify_admin(request):
                 request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
             # Send mail to ADMINS
             subject = _('dialer setting configuration').title()
-            message = _('Notification - User Dialer Setting. The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
+            message = _('Notification - User Dialer Setting. The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') % \
                 {'user': request.user, 'user_id': request.user.id}
             # mail_admins() is a shortcut for sending an email to the site admins,
             # as defined in the ADMINS setting
@@ -233,7 +233,7 @@ def campaign_list(request):
     request.session['pagination_path'] = request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
     sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
-    pagination_data =\
+    pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
@@ -373,7 +373,7 @@ def campaign_add(request):
 
             form.save_m2m()
 
-            request.session["msg"] = _('"%(name)s" added.') %\
+            request.session["msg"] = _('"%(name)s" added.') % \
                 {'name': request.POST['name']}
             return HttpResponseRedirect('/campaign/')
 
@@ -408,10 +408,10 @@ def campaign_del(request, object_id):
         if stop_campaign:
             campaign.status = CAMPAIGN_STATUS.END
             campaign.save()
-            request.session["msg"] = _('the campaign "%(name)s" has been stopped.')\
+            request.session["msg"] = _('the campaign "%(name)s" has been stopped.') \
                 % {'name': campaign.name}
         else:
-            request.session["msg"] = _('the campaign "%(name)s" has been deleted.')\
+            request.session["msg"] = _('the campaign "%(name)s" has been deleted.') \
                 % {'name': campaign.name}
             campaign.delete()
     else:
@@ -419,16 +419,16 @@ def campaign_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         try:
-            campaign_list = Campaign.objects\
-                .filter(user=request.user)\
+            campaign_list = Campaign.objects \
+                .filter(user=request.user) \
                 .extra(where=['id IN (%s)' % values])
             if campaign_list:
                 if stop_campaign:
                     campaign_list.update(status=CAMPAIGN_STATUS.END)
-                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.')\
+                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') \
                         % {'count': campaign_list.count()}
                 else:
-                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.')\
+                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') \
                         % {'count': campaign_list.count()}
                     campaign_list.delete()
         except:
@@ -465,7 +465,7 @@ def campaign_change(request, object_id):
                         initial={'content_object': content_object})
 
     if campaign.status == CAMPAIGN_STATUS.START:
-        request.session['info_msg'] =\
+        request.session['info_msg'] = \
             _('the campaign is started, you can only edit Dialer settings and Campaign schedule')
 
     if request.method == 'POST':
@@ -486,7 +486,7 @@ def campaign_change(request, object_id):
                 # while campaign status is running
                 if campaign.status == CAMPAIGN_STATUS.START:
                     if request.POST.get('selected_phonebook'):
-                        selected_phonebook = str(request.POST.get('selected_phonebook'))\
+                        selected_phonebook = str(request.POST.get('selected_phonebook')) \
                             .split(',')
                         obj.phonebook = Phonebook.objects.filter(id__in=selected_phonebook)
 
@@ -633,7 +633,7 @@ def subscriber_list(request):
                            'completion_count_attempt', 'status',
                            'disposition', 'collected_data', 'agent']
     default_sort_field = 'id'
-    pagination_data =\
+    pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
@@ -743,7 +743,6 @@ def subscriber_list(request):
     if kwargs:
         subscriber_list = subscriber_list.filter(**kwargs)
         request.session['subscriber_list_kwargs'] = kwargs
-
     #if contact_name:
     #    # Search on contact name
     #    q = (Q(last_name__icontains=contact_name) |
@@ -820,7 +819,7 @@ def subscriber_export(request):
                              get_subscriber_status(i.status),
                              get_subscriber_disposition(i.campaign_id, i.disposition),
                              i.collected_data,
-                             i.agent,))
+                             i.agent, ))
 
         data = tablib.Dataset(*list_val, headers=headers)
 

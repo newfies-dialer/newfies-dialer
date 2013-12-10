@@ -11,6 +11,7 @@ class OccurrenceReplacer(object):
     have been stored in the datebase replace, in the list you are returning,
     the generated ones that are equivalent.  This class makes this easier.
     """
+
     def __init__(self, persisted_occurrences):
         lookup = [((occ.event, occ.original_start, occ.original_end), occ) for
             occ in persisted_occurrences]

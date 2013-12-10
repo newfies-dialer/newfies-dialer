@@ -25,7 +25,6 @@ from dialer_campaign.constants import SUBSCRIBER_STATUS
 import logging
 logger = logging.getLogger('newfies.filelog')
 
-
 #TODO: Add more documentation on this API
 
 class SubscriberViewSet(viewsets.ModelViewSet):
@@ -81,7 +80,7 @@ class SubscriberViewSet(viewsets.ModelViewSet):
             country=request.POST.get('country'),
             unit_number=request.POST.get('unit_number'),
             additional_vars=add_var,
-            status=CONTACT_STATUS.ACTIVE,  # default active
+            status=CONTACT_STATUS.ACTIVE, # default active
             phonebook=obj_phonebook)
 
         # Insert the contact to the subscriber also for
@@ -98,8 +97,8 @@ class SubscriberViewSet(viewsets.ModelViewSet):
                 imported_phonebook = map(int,
                     c_campaign.imported_phonebook.split(','))
 
-            phonebook_list = c_campaign.phonebook\
-                .values_list('id', flat=True)\
+            phonebook_list = c_campaign.phonebook \
+                .values_list('id', flat=True) \
                 .all()
             phonebook_list = map(int, phonebook_list)
 
@@ -107,7 +106,7 @@ class SubscriberViewSet(viewsets.ModelViewSet):
             if phonebook_list:
                 common_phonebook_list = list(set(imported_phonebook) & set(phonebook_list))
                 if common_phonebook_list:
-                    contact_list = Contact.objects\
+                    contact_list = Contact.objects \
                         .filter(phonebook__in=common_phonebook_list,
                                 status=CONTACT_STATUS.ACTIVE)
                     for con_obj in contact_list:
@@ -115,7 +114,7 @@ class SubscriberViewSet(viewsets.ModelViewSet):
                             Subscriber.objects.create(
                                 contact=con_obj,
                                 duplicate_contact=con_obj.contact,
-                                status=SUBSCRIBER_STATUS.PENDING,  # PENDING
+                                status=SUBSCRIBER_STATUS.PENDING, # PENDING
                                 campaign=c_campaign)
                         except:
                             error_msg = "Duplicate Subscriber"

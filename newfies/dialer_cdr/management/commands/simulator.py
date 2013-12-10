@@ -98,7 +98,6 @@ def create_contact_subscriber(campaign, phonebook_id, agent_id):
 
         #Get Subscriber
         subscriber = Subscriber.objects.get(contact=new_contact, campaign_id=campaign.id)
-
         #Simulate the process of them being called and moved to the queue of the agent
 
         subscriber.status = SUBSCRIBER_STATUS.SENT
@@ -142,8 +141,8 @@ def create_contact_subscriber(campaign, phonebook_id, agent_id):
 
 class Command(BaseCommand):
     args = 'scenario'
-    help = "Simulator\n"\
-           "---------------------------\n"\
+    help = "Simulator\n" \
+           "---------------------------\n" \
            "python manage.py simulator --scenario=1"
 
     option_list = BaseCommand.option_list + (

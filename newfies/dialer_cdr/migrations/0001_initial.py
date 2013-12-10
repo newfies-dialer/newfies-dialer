@@ -64,14 +64,12 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'dialer_cdr', ['VoIPCall'])
 
-
     def backwards(self, orm):
         # Deleting model 'Callrequest'
         db.delete_table(u'dialer_callrequest')
 
         # Deleting model 'VoIPCall'
         db.delete_table('dialer_cdr')
-
 
     models = {
         u'audiofield.audiofile': {

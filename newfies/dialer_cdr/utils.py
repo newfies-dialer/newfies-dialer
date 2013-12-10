@@ -175,4 +175,3 @@ def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
         hangup_cause_q850=hangup_cause_q850,
         amd_status=amd_status_id)
     new_voipcall.save()
-

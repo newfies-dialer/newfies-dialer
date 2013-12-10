@@ -366,7 +366,7 @@ class Campaign(Model):
 
     def get_active_contact(self):
         """Get all the active Contacts from the phonebook"""
-        list_contact =\
+        list_contact = \
             Contact.objects.filter(phonebook__campaign=self.id, status=CONTACT_STATUS.ACTIVE).all()
         if not list_contact:
             return False
@@ -384,15 +384,15 @@ class Campaign(Model):
             'subscriber_count_key_campaign_id_' + str(self.id))
 
         if subscriber_count is None:
-            list_contact = Contact.objects.values_list('id', flat=True)\
+            list_contact = Contact.objects.values_list('id', flat=True) \
                 .filter(phonebook__campaign=self.id)
 
             subscriber_count = 0
             try:
-                subscriber_count += Subscriber.objects\
+                subscriber_count += Subscriber.objects \
                     .filter(contact__in=list_contact,
                             campaign=self.id,
-                            status=SUBSCRIBER_STATUS.SENT)\
+                            status=SUBSCRIBER_STATUS.SENT) \
                     .count()
             except:
                 pass
@@ -434,8 +434,8 @@ class Campaign(Model):
         #TODO: Improve this part with a PL/SQL
 
         #We cannot use select_related here as it's not compliant with locking the rows
-        list_subscriber = Subscriber.objects.select_for_update()\
-            .filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING)\
+        list_subscriber = Subscriber.objects.select_for_update() \
+            .filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING) \
             .all()[:limit]
         if not list_subscriber:
             return (False, 0)

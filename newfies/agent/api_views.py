@@ -38,12 +38,10 @@ from dialer_cdr.constants import CALLREQUEST_STATUS
 from callcenter.models import CallAgent
 import json
 
-
 #review security
 #make sure to display and allow change only on agent / not admin
 
 #TODO Add TokenAuthentication / SessionAuthentication
-
 
 class AgentViewSet(viewsets.ModelViewSet):
     """
@@ -51,17 +49,17 @@ class AgentViewSet(viewsets.ModelViewSet):
     """
     queryset = Agent.objects.filter(is_staff=False, is_superuser=False)
     serializer_class = AgentSerializer
-    authentication_classes = (SessionAuthentication, TokenAuthentication,)
-    permission_classes = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication, TokenAuthentication, )
+    permission_classes = (permissions.IsAuthenticated, )
 
 
 class AgentPasswordViewSet(viewsets.ModelViewSet):
     """
     This viewset automatically provides `list` and `detail` actions.
     """
-    authentication_classes = (SessionAuthentication, TokenAuthentication,)
+    authentication_classes = (SessionAuthentication, TokenAuthentication, )
     permission_classes = (permissions.IsAuthenticated,
-                          IsOwnerOrReadOnly,)
+                          IsOwnerOrReadOnly, )
     queryset = Agent.objects.all()
     serializer_class = AgentPasswordSerializer
 
@@ -73,8 +71,8 @@ class AgentProfileViewSet(viewsets.ModelViewSet):
     queryset = AgentProfile.objects.filter(user__is_staff=False,
                                            user__is_superuser=False)
     serializer_class = AgentProfileSerializer
-    authentication = (SessionAuthentication, TokenAuthentication,)
-    permissions = (permissions.IsAuthenticated,)
+    authentication = (SessionAuthentication, TokenAuthentication, )
+    permissions = (permissions.IsAuthenticated, )
     lookup_field = ('user_id')
 
 
@@ -84,8 +82,8 @@ class AgentSubscriberViewSet(viewsets.ModelViewSet):
     """
     queryset = Subscriber.objects.all()
     serializer_class = AgentSubscriberSerializer
-    permissions = (permissions.IsAuthenticated,)
-    authentication_classes = (SessionAuthentication, TokenAuthentication,)
+    permissions = (permissions.IsAuthenticated, )
+    authentication_classes = (SessionAuthentication, TokenAuthentication, )
 
 
 def get_last_callrequest():
@@ -101,8 +99,8 @@ def get_last_callrequest():
 
 
 class AgentQueueStatusViewSet(APIView):
-    authentication_classes = (SessionAuthentication, TokenAuthentication,)
-    permissions = (permissions.IsAuthenticated,)
+    authentication_classes = (SessionAuthentication, TokenAuthentication, )
+    permissions = (permissions.IsAuthenticated, )
 
     def get(self, request, agent_id=0, format=None):
         error = {}
@@ -115,9 +113,9 @@ class AgentQueueStatusViewSet(APIView):
             return Response(error)
 
         try:
-            call_agent = CallAgent.objects\
-                .filter(agent__user_id=agent_id)\
-                .exclude(callrequest__status=CALLREQUEST_STATUS.SUCCESS)\
+            call_agent = CallAgent.objects \
+                .filter(agent__user_id=agent_id) \
+                .exclude(callrequest__status=CALLREQUEST_STATUS.SUCCESS) \
                 .order_by('-id')[0]
         except:
             # empty response
@@ -203,8 +201,8 @@ class AgentAuthTokenSerializer(serializers.Serializer):
 class ObtainAuthTokenLogin(APIView):
     throttle_classes = ()
     permission_classes = ()
-    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser,)
-    renderer_classes = (renderers.JSONRenderer,)
+    parser_classes = (parsers.FormParser, parsers.MultiPartParser, parsers.JSONParser, )
+    renderer_classes = (renderers.JSONRenderer, )
     serializer_class = AgentAuthTokenSerializer
     model = Token
 

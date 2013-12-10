@@ -36,7 +36,7 @@ def get_campaign_phonebook_list(user):
     """Return phonebook list of logged in user"""
     list_pb = []
     list_pb.append((0, '---'))
-    pb_list = Phonebook.objects.values_list('id', 'name')\
+    pb_list = Phonebook.objects.values_list('id', 'name') \
         .filter(user=user).order_by('id')
     for l in pb_list:
         list_pb.append((l[0], l[1]))
@@ -64,7 +64,7 @@ class CampaignForm(ModelForm):
     campaign_code = forms.CharField(widget=forms.HiddenInput)
     ds_user = forms.CharField(widget=forms.HiddenInput)
 
-    content_object = forms.ChoiceField(label=_("application"),)
+    content_object = forms.ChoiceField(label=_("application"), )
 
     selected_phonebook = forms.CharField(widget=forms.HiddenInput,
                                          required=False)
@@ -75,7 +75,7 @@ class CampaignForm(ModelForm):
         model = Campaign
         fields = ['campaign_code', 'name',
                   'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
-                  'content_object',   # 'content_type', 'object_id'
+                  'content_object', # 'content_type', 'object_id'
                   'extra_data', 'dnc', 'description', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',
@@ -119,7 +119,7 @@ class CampaignForm(ModelForm):
             gw_list = ((l.id, l.name) for l in list)
 
             dnc_list.append(('', '---'))
-            list = DNC.objects.values_list('id', 'name')\
+            list = DNC.objects.values_list('id', 'name') \
                 .filter(user=user).order_by('id')
             for l in list:
                 dnc_list.append((l[0], l[1]))
@@ -222,6 +222,7 @@ class DuplicateCampaignForm(ModelForm):
 
 class CampaignAdminForm(ModelForm):
     """Admin Campaign ModelForm"""
+
     class Meta:
         model = Campaign
         fields = ['campaign_code', 'name', 'description', 'user', 'status',
@@ -267,7 +268,6 @@ class SubscriberAdminForm(ModelForm):
         super(SubscriberAdminForm, self).__init__(*args, **kwargs)
         self.fields['agent'].choices = agent_list()
 
-
 subscriber_status_list = []
 subscriber_status_list.append(('all', _('all').upper()))
 for i in SUBSCRIBER_STATUS:
@@ -290,10 +290,10 @@ class SubscriberSearchForm(SearchForm):
             camp_list = []
             camp_list.append((0, _('all').upper()))
             if user.is_superuser:
-                campaign_list = Campaign.objects.values_list('id', 'name')\
+                campaign_list = Campaign.objects.values_list('id', 'name') \
                     .all().order_by('-id')
             else:
-                campaign_list = Campaign.objects.values_list('id', 'name')\
+                campaign_list = Campaign.objects.values_list('id', 'name') \
                     .filter(user=user).order_by('-id')
 
             for i in campaign_list:
@@ -303,20 +303,19 @@ class SubscriberSearchForm(SearchForm):
             agent_list.append((0, _('all').upper()))
 
             if user.is_superuser:
-                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True)\
+                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True) \
                     .filter(is_agent=True)
             else:
-                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True)\
+                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True) \
                     .filter(is_agent=True, manager=user)
 
-            a_list = Agent.objects.values_list('id', 'username')\
+            a_list = Agent.objects.values_list('id', 'username') \
                 .filter(id__in=agent_profile_list)
             for i in a_list:
                 agent_list.append((i[0], i[1]))
 
             self.fields['campaign_id'].choices = camp_list
             self.fields['agent_id'].choices = agent_list
-
 
 campaign_status_list = []
 campaign_status_list.append(('all', _('all').upper()))
@@ -325,8 +324,8 @@ for i in CAMPAIGN_STATUS:
 
 
 class CampaignSearchForm(forms.Form):
-    phonebook_id = forms.ChoiceField(label=_("phonebook"),)
-    status = forms.ChoiceField(label=_("status"), choices=campaign_status_list,)
+    phonebook_id = forms.ChoiceField(label=_("phonebook"), )
+    status = forms.ChoiceField(label=_("status"), choices=campaign_status_list, )
 
     def __init__(self, user, *args, **kwargs):
         super(CampaignSearchForm, self).__init__(*args, **kwargs)
@@ -334,4 +333,3 @@ class CampaignSearchForm(forms.Form):
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             self.fields['phonebook_id'].choices = get_campaign_phonebook_list(user)
-

@@ -18,14 +18,12 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.IntegerField')(default=0, null=True, blank=True),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting field 'Callrequest.caller_name'
         db.delete_column(u'dialer_callrequest', 'caller_name')
 
         # Deleting field 'Callrequest.alarm_request_id'
         db.delete_column(u'dialer_callrequest', 'alarm_request_id')
-
 
     models = {
         u'audiofield.audiofile': {

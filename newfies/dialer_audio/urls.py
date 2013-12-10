@@ -14,7 +14,6 @@
 
 from django.conf.urls import patterns
 
-
 urlpatterns = patterns('dialer_audio.views',
     # Audio urls
     (r'^module/audio/$', 'audio_list'),

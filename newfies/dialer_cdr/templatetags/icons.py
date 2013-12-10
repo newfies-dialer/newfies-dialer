@@ -25,7 +25,7 @@ def icon(icon_name):
     >>> icon('test')
     'class="icon" style="text-decoration:none;background-image:url(/static/newfies/icons/test.png);"'
     """
-    return 'class="icon" style="text-decoration:none;background-image:url(%snewfies/icons/%s.png);"'\
+    return 'class="icon" style="text-decoration:none;background-image:url(%snewfies/icons/%s.png);"' \
            % (settings.STATIC_URL, icon_name)
 register.simple_tag(icon)
 
@@ -49,6 +49,6 @@ def icon_style(icon_name):
     >>> icon_style('test')
     'style="text-decoration:none;background-image:url(/static/newfies/icons/test.png);"'
     """
-    return 'style="text-decoration:none;background-image:url(%snewfies/icons/%s.png);"'\
+    return 'style="text-decoration:none;background-image:url(%snewfies/icons/%s.png);"' \
            % (settings.STATIC_URL, icon_name)
 register.simple_tag(icon_style)

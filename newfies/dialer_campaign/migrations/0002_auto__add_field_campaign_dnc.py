@@ -13,11 +13,9 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.related.ForeignKey')(blank=True, related_name='DNC', null=True, to=orm['dnc.DNC']),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting field 'Campaign.dnc'
         db.delete_column(u'dialer_campaign', 'dnc_id')
-
 
     models = {
         u'audiofield.audiofile': {

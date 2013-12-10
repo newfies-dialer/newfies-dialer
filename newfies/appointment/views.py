@@ -25,21 +25,20 @@ from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm
 from appointment.models.calendars import Calendar
 from appointment.models.events import Event
 from appointment.models.alarms import Alarm
-from appointment.constants import CALENDAR_USER_COLUMN_NAME, CALENDAR_COLUMN_NAME,\
+from appointment.constants import CALENDAR_USER_COLUMN_NAME, CALENDAR_COLUMN_NAME, \
     EVENT_COLUMN_NAME, ALARM_COLUMN_NAME, CALENDAR_SETTING_COLUMN_NAME
 from appointment.forms import CalendarUserChangeDetailExtendForm, \
-    CalendarUserNameChangeForm, CalendarForm, EventForm, AlarmForm,\
-    CalendarSettingForm, EventSearchForm, CalendarUserPasswordChangeForm,\
+    CalendarUserNameChangeForm, CalendarForm, EventForm, AlarmForm, \
+    CalendarSettingForm, EventSearchForm, CalendarUserPasswordChangeForm, \
     CalendarUserCreationForm
-from appointment.models.users import CalendarUserProfile, CalendarUser,\
+from appointment.models.users import CalendarUserProfile, CalendarUser, \
     CalendarSetting
 from appointment.function_def import get_calendar_user_id_list
 from user_profile.models import Manager
 from dialer_campaign.function_def import user_dialer_setting_msg
-from common.common_functions import ceil_strdate, getvar,\
+from common.common_functions import ceil_strdate, getvar, \
     get_pagination_vars, unset_session_var
 from datetime import datetime
-
 
 redirect_url_to_calendar_user_list = '/module/calendar_user/'
 redirect_url_to_calendar_setting_list = '/module/calendar_setting/'
@@ -69,7 +68,7 @@ def calendar_user_list(request):
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
-    calendar_user_list = CalendarUserProfile.objects\
+    calendar_user_list = CalendarUserProfile.objects \
         .filter(manager=request.user).order_by(sort_order)
 
     template = 'frontend/appointment/calendar_user/list.html'
@@ -115,7 +114,7 @@ def calendar_user_add(request):
                 calendar_setting_id=request.POST['calendar_setting_id']
             )
 
-            request.session["msg"] = _('"%(name)s" added as calendar user.') %\
+            request.session["msg"] = _('"%(name)s" added as calendar user.') % \
                 {'name': request.POST['username']}
             return HttpResponseRedirect(
                 redirect_url_to_calendar_user_list + '%s/' % str(calendar_user_profile.id))
@@ -151,7 +150,7 @@ def calendar_user_del(request, object_id):
             CalendarUserProfile, pk=object_id, manager_id=request.user.id)
         calendar_user = CalendarUser.objects.get(pk=calendar_user_profile.user_id)
 
-        request.session["msg"] = _('"%(name)s" is deleted.')\
+        request.session["msg"] = _('"%(name)s" is deleted.') \
             % {'name': calendar_user}
         calendar_user.delete()
     else:
@@ -160,14 +159,14 @@ def calendar_user_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete all calendar users belonging to a managers
-            calendar_user_list = CalendarUserProfile.objects\
-                .filter(manager_id=request.user.id)\
+            calendar_user_list = CalendarUserProfile.objects \
+                .filter(manager_id=request.user.id) \
                 .extra(where=['id IN (%s)' % values])
 
             if calendar_user_list:
                 user_list = calendar_user_list.values_list('user_id', flat=True)
                 calendar_users = CalendarUser.objects.filter(pk__in=user_list)
-                request.session["msg"] = _('%(count)s calendar user(s) are deleted.')\
+                request.session["msg"] = _('%(count)s calendar user(s) are deleted.') \
                     % {'count': calendar_user_list.count()}
                 calendar_users.delete()
         except:
@@ -384,7 +383,7 @@ def calendar_del(request, object_id):
         try:
             calendar_list = Calendar.objects.extra(where=['id IN (%s)' % values])
             if calendar_list:
-                request.session["msg"] =\
+                request.session["msg"] = \
                     _('%s calendar(s) are deleted.') % calendar_list.count()
                 calendar_list.delete()
         except:
@@ -542,7 +541,7 @@ def calendar_setting_del(request, object_id):
         try:
             calendar_setting = CalendarSetting.objects.extra(where=['id IN (%s)' % values])
             if calendar_setting:
-                request.session["msg"] =\
+                request.session["msg"] = \
                     _('%s calendar setting(s) are deleted.') % calendar_setting.count()
                 calendar_setting.delete()
         except:
@@ -762,7 +761,7 @@ def event_del(request, object_id):
         try:
             event_list = Event.objects.extra(where=['id IN (%s)' % values])
             if event_list:
-                request.session["msg"] =\
+                request.session["msg"] = \
                     _('%s event(s) are deleted.') % event_list.count()
                 event_list.delete()
         except:
@@ -920,7 +919,7 @@ def alarm_del(request, object_id):
         try:
             alarm_list = Alarm.objects.extra(where=['id IN (%s)' % values])
             if alarm_list:
-                request.session["msg"] =\
+                request.session["msg"] = \
                     _('%s alarm(s) are deleted.') % alarm_list.count()
                 alarm_list.delete()
         except:
@@ -968,5 +967,3 @@ def alarm_change(request, object_id):
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
-
-

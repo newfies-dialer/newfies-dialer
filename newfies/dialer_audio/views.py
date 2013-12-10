@@ -91,7 +91,7 @@ def audio_add(request):
             obj = form.save(commit=False)
             obj.user = request.user
             obj.save()
-            request.session["msg"] = _('"%(name)s" added.') %\
+            request.session["msg"] = _('"%(name)s" added.') % \
                 {'name': request.POST['name']}
             return HttpResponseRedirect(audio_redirect_url)
 
@@ -142,11 +142,11 @@ def audio_del(request, object_id):
             values = request.POST.getlist('select')
             values = ", ".join(["%s" % el for el in values])
 
-            audio_list = AudioFile.objects\
-                .filter(user=request.user)\
+            audio_list = AudioFile.objects \
+                .filter(user=request.user) \
                 .extra(where=['id IN (%s)' % values])
 
-            request.session["msg"] = _('%(count)s audio(s) are deleted.')\
+            request.session["msg"] = _('%(count)s audio(s) are deleted.') \
                 % {'count': audio_list.count()}
 
             # 1) remove audio file from drive

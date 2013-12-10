@@ -13,7 +13,6 @@
 #
 from django.conf.urls import patterns
 
-
 urlpatterns = patterns('dialer_campaign.views',
     #  Campaign urls
     (r'^campaign/$', 'campaign_list'),

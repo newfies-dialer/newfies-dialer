@@ -53,6 +53,7 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
         response = agent_detail_change(request)
         self.assertEqual(response.status_code, 200)
     """
+
     def test_agent_view_list(self):
         """Test Function to check Agent list"""
         response = self.client.get('/module/agent/')

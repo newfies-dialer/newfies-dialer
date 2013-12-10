@@ -60,7 +60,7 @@ class UserSerializer(serializers.HyperlinkedModelSerializer):
                 ]
             }
     """
+
     class Meta:
         model = User
         fields = ('url', 'username', 'last_name', 'first_name', 'email', 'groups')
-

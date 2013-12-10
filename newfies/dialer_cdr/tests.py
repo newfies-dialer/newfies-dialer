@@ -137,7 +137,6 @@ class DialerCdrCeleryTaskTestCase(TestCase):
     #    result = init_callrequest.delay(self.callrequest.id, 1, self.callrequest.campaign.callmaxduration)
     #    self.assertEqual(result.successful(), True)
 
-
 class DialerCdrModel(TestCase):
     """Test Callrequest, VoIPCall models"""
 

@@ -49,7 +49,6 @@ class AudioFileSerializer(serializers.HyperlinkedModelSerializer):
     """
     audio_file = serializers.FileField(required=True)
     user = serializers.Field(source='user')
+
     class Meta:
         model = AudioFile
-
-

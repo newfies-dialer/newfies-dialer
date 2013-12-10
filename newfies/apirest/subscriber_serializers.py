@@ -148,7 +148,6 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
                 ]
                 for i in field_list:
                     del fields[i]
-
                 #del fields['duplicate_contact']
 
         return fields
@@ -175,7 +174,7 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
 
         if request.method == 'PUT' or request.method == 'PATCH':
             try:
-                subscriber = Subscriber.objects\
+                subscriber = Subscriber.objects \
                     .get(duplicate_contact=request.POST.get('duplicate_contact'),
                          campaign=self.object.campaign,
                          campaign__user=request.user)

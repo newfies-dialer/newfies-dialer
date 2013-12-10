@@ -38,7 +38,6 @@ from common_functions import debug_query
 from uuid import uuid1
 from time import sleep
 
-
 logger = get_task_logger(__name__)
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
@@ -151,13 +150,13 @@ def process_callevent(record):
 
     try:
         if callrequest_id == 0:
-            callrequest = Callrequest.objects\
-                .select_related('aleg_gateway', 'subscriber', 'campaign')\
+            callrequest = Callrequest.objects \
+                .select_related('aleg_gateway', 'subscriber', 'campaign') \
                 .get(request_uuid=request_uuid.strip(' \t\n\r'))
         else:
             #mainly coming here
-            callrequest = Callrequest.objects\
-                .select_related('aleg_gateway', 'subscriber', 'campaign')\
+            callrequest = Callrequest.objects \
+                .select_related('aleg_gateway', 'subscriber', 'campaign') \
                 .get(id=callrequest_id)
     except:
         logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)
@@ -188,7 +187,6 @@ def process_callevent(record):
             callrequest.status = CALLREQUEST_STATUS.FAILURE
             callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
         callrequest.hangup_cause = opt_hangup_cause
-
         # ...
 
         callrequest.save()
@@ -217,7 +215,6 @@ def process_callevent(record):
         callerid = callrequest.callerid
     if phonenumber == '':
         phonenumber = callrequest.phone_number
-
     #Create those in Bulk - add in a buffer until reach certain number
     # buff_voipcall.save(
     #     obj_callrequest=callrequest,
@@ -347,13 +344,12 @@ def callevent_processing():
     debug_query(20)
 
     cursor = connection.cursor()
-
     #TODO (Areski)
     #Replace this for ORM with select_for_update or transaction
 
-    sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, "\
-        "callrequest_id, alarm_request_id, callerid, phonenumber, duration, billsec, hangup_cause, "\
-        "hangup_cause_q850, starting_date, status, created_date, amd_status, leg "\
+    sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, " \
+        "callrequest_id, alarm_request_id, callerid, phonenumber, duration, billsec, hangup_cause, " \
+        "hangup_cause_q850, starting_date, status, created_date, amd_status, leg " \
         "FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
 
     cursor.execute(sql_statement)
@@ -389,6 +385,7 @@ class task_pending_callevent(PeriodicTask):
     #The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
     run_every = timedelta(seconds=15)
+
     #run_every = timedelta(seconds=15)
 
     #TODO: problem of the lock if it's a cloud, it won't be shared
@@ -396,7 +393,6 @@ class task_pending_callevent(PeriodicTask):
     def run(self, **kwargs):
         logger.debug("ASK :: task_pending_callevent")
         callevent_processing()
-
 
 """
 from celery.decorators import periodic_task
@@ -659,9 +655,9 @@ def check_retry_alarm(alarm_request_id):
             # TODO: send SMS to PN obj_alarmreq.alarm.phonenumber_sms_failure
             # SMS text will be :
 
-            failure_sms = "we haven't been able to reach '"\
-                + str(obj_alarmreq.alarm.alarm_phonenumber)\
-                + "' after trying " + str(obj_alarmreq.alarm.num_attempt)\
+            failure_sms = "we haven't been able to reach '" \
+                + str(obj_alarmreq.alarm.alarm_phonenumber) \
+                + "' after trying " + str(obj_alarmreq.alarm.num_attempt) \
                 + " times"
 
             sms_obj = Message.objects.create(

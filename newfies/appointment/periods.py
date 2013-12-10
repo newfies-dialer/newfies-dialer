@@ -28,6 +28,7 @@ class Period(object):
     This class represents a period of time. It can return a set of occurrences
     based on its events, and its time period (start and end).
     '''
+
     def __init__(self, events, start, end, parent_persisted_occurrences=None,
                  occurrence_pool=None, tzinfo=pytz.utc):
         self.start = start
@@ -162,6 +163,7 @@ class Month(Period):
     The month period has functions for retrieving the week periods within this period
     and day periods within the date.
     """
+
     def __init__(self, events, date=None, parent_persisted_occurrences=None,
                  occurrence_pool=None, tzinfo=pytz.utc):
         self.tzinfo = tzinfo
@@ -227,6 +229,7 @@ class Week(Period):
     """
     The Week period that has functions for retrieving Day periods within it
     """
+
     def __init__(self, events, date=None, parent_persisted_occurrences=None,
                  occurrence_pool=None, tzinfo=pytz.utc):
         self.tzinfo = tzinfo

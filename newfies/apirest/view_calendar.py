@@ -41,4 +41,3 @@ class CalendarViewSet(viewsets.ModelViewSet):
             calendar_user_list = get_calendar_user_id_list(self.request.user)
             queryset = Calendar.objects.filter(user_id__in=calendar_user_list)
         return queryset
-

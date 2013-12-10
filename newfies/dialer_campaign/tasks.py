@@ -31,7 +31,6 @@ from common_functions import debug_query
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint
 
-
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 DIV_MIN = 10  # This will divide the minutes by that value and allow to not wait too long for the calls
 

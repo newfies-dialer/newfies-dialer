@@ -49,7 +49,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
                        ),
         }),
         (_('advanced options').capitalize(), {
-            'classes': ('collapse',),
+            'classes': ('collapse', ),
             'fields': ('frequency', 'callmaxduration', 'maxretry',
                        'intervalretry', 'calltimeout', 'imported_phonebook',
                        'daily_start_time', 'daily_stop_time',
@@ -70,7 +70,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
     #list_filter doesn't display correctly too many elements in list_display
     #list_filter = ['user', 'status', 'created_date']
     ordering = ('-id', )
-    filter_horizontal = ('phonebook',)
+    filter_horizontal = ('phonebook', )
 
     def get_urls(self):
         urls = super(CampaignAdmin, self).get_urls()
@@ -170,11 +170,11 @@ class SubscriberAdmin(admin.ModelAdmin):
                     kwargs['campaign_id'] = campaign_id
 
                 select_data = {"updated_date": "SUBSTR(CAST(updated_date as CHAR(30)),1,10)"}
-                subscriber = Subscriber.objects\
-                    .filter(**kwargs)\
-                    .extra(select=select_data)\
-                    .values('updated_date', 'status')\
-                    .annotate(Count('updated_date'))\
+                subscriber = Subscriber.objects \
+                    .filter(**kwargs) \
+                    .extra(select=select_data) \
+                    .values('updated_date', 'status') \
+                    .annotate(Count('updated_date')) \
                     .order_by('updated_date')
 
                 for i in subscriber:

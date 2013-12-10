@@ -18,7 +18,6 @@ from agent.api_views import (AgentProfileViewSet,
     AgentPasswordViewSet, obtain_auth_token_login, AgentSubscriberViewSet,
     AgentQueueStatusViewSet)
 
-
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
 router.register(r'agents_profile', AgentProfileViewSet)

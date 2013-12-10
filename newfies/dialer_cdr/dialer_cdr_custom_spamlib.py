@@ -17,7 +17,6 @@ from dilla import spam
 import random
 import logging
 
-
 log = logging.getLogger('dilla')
 
 

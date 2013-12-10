@@ -95,6 +95,7 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
     """
+
     class Meta:
         model = Alarm
 

@@ -50,14 +50,14 @@ class CallrequestAdmin(GenericAdminModelAdmin):
                        'content_type', 'object_id', ),
         }),
         (_('advanced options').capitalize(), {
-            'classes': ('collapse',),
+            'classes': ('collapse', ),
             'fields': ('extra_data', 'extra_dial_string', 'subscriber', 'completed'),
         }),
     )
     #If we try to display user / content_type low the performance
     list_display = ('id', 'request_uuid', 'aleg_uuid', 'call_time',
                     'status', 'callerid', 'phone_number', 'call_type',
-                    'completed', 'num_attempt', 'last_attempt_time',)
+                    'completed', 'num_attempt', 'last_attempt_time', )
     list_display_links = ('id', 'request_uuid', )
     list_filter = ['callerid', 'call_time', 'status', 'call_type', 'campaign']
     ordering = ('-id', )
@@ -74,9 +74,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
     list_display = ('id', 'leg_type', 'callid', 'callerid', 'phone_number',
                     'starting_date', 'min_duration', 'billsec', 'disposition',
                     'hangup_cause', 'hangup_cause_q850')
-    valid_lookups = ('callrequest__campaign_id',)
+    valid_lookups = ('callrequest__campaign_id', )
     if settings.AMD:
-        list_display += ('amd_status',)
+        list_display += ('amd_status', )
     ordering = ('-id', )
 
     def lookup_allowed(self, lookup, *args, **kwargs):
@@ -88,9 +88,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """User link to user profile"""
 
         if obj.user.is_staff:
-            url = reverse('admin:auth_staff_change', args=(obj.user_id,))
+            url = reverse('admin:auth_staff_change', args=(obj.user_id, ))
         else:
-            url = reverse('admin:auth_customer_change', args=(obj.user_id,))
+            url = reverse('admin:auth_customer_change', args=(obj.user_id, ))
         return '<a href="%s"><b>%s</b></a>' % (url, obj.user)
     user_link.allow_tags = True
     user_link.short_description = _('user').capitalize()
@@ -99,7 +99,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """Used gateway link to edit gateway detail"""
         if obj.used_gateway:
             url = reverse('admin:dialer_gateway_gateway_change',
-                          args=(obj.used_gateway.id,))
+                          args=(obj.used_gateway.id, ))
             return '<a href="%s">%s</a>' % (url, obj.used_gateway)
     used_gateway_link.allow_tags = True
     used_gateway_link.short_description = _('gateway used').capitalize()
@@ -226,12 +226,12 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
         # Get Total Records from VoIPCall Report table for Daily Call Report
-        total_data = VoIPCall.objects.extra(select=select_data)\
-            .values('starting_date')\
-            .filter(**kwargs)\
-            .annotate(Count('starting_date'))\
-            .annotate(Sum('duration'))\
-            .annotate(Avg('duration'))\
+        total_data = VoIPCall.objects.extra(select=select_data) \
+            .values('starting_date') \
+            .filter(**kwargs) \
+            .annotate(Count('starting_date')) \
+            .annotate(Sum('duration')) \
+            .annotate(Avg('duration')) \
             .order_by('-starting_date')
 
         # Following code will count total voip calls, duration

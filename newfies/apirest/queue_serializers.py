@@ -92,4 +92,3 @@ class QueueSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Queue
-

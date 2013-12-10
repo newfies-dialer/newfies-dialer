@@ -25,6 +25,7 @@ class ContentTypeSerializer(serializers.HyperlinkedModelSerializer):
 
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/content_type/
     """
+
     class Meta:
         model = ContentType
         fields = ('url', 'name', 'app_label', 'model')

@@ -32,7 +32,6 @@ from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 #from user_profile.models import UserProfile
 from math import floor
 
-
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 FREQ_DISPATCHER = 6
 

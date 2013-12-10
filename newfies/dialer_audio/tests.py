@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from django.conf import settings
 from common.utils import BaseAuthenticatedClient
 from audiofield.models import AudioFile
-from dialer_audio.views import audio_list, audio_add,\
+from dialer_audio.views import audio_list, audio_add, \
     audio_change, audio_del
 
 audio_file = open(

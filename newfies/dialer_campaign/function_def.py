@@ -15,7 +15,7 @@
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Contact
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_campaign.constants import CAMPAIGN_STATUS,\
+from dialer_campaign.constants import CAMPAIGN_STATUS, \
     CAMPAIGN_STATUS_COLOR, SUBSCRIBER_STATUS
 from user_profile.models import UserProfile
 from dateutil.rrule import rrule, DAILY, HOURLY
@@ -264,7 +264,7 @@ def get_subscriber_disposition(campaign_id, val):
     dsp_dict = {}
     dsp_count = 1
     try:
-        dsp_array = Campaign.objects.get(pk=campaign_id)\
+        dsp_array = Campaign.objects.get(pk=campaign_id) \
             .lead_disposition.split(',')
         for i in dsp_array:
             dsp_dict[dsp_count] = i.strip()

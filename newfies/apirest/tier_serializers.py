@@ -84,4 +84,3 @@ class TierSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Tier
-

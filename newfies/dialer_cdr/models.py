@@ -162,7 +162,7 @@ class Callrequest(Model):
         verbose_name_plural = _("call requests")
 
     def __unicode__(self):
-            return u"%s [%s]" % (self.id, self.request_uuid)
+        return u"%s [%s]" % (self.id, self.request_uuid)
 
 
 class VoIPCall(models.Model):
@@ -254,4 +254,4 @@ class VoIPCall(models.Model):
         verbose_name_plural = _("VoIP calls")
 
     def __unicode__(self):
-            return u"%d - %s" % (self.id, self.callid)
+        return u"%d - %s" % (self.id, self.callid)

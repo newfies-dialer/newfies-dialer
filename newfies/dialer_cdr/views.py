@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.decorators import login_required,\
+from django.contrib.auth.decorators import login_required, \
     permission_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -24,7 +24,7 @@ from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
 from user_profile.models import Manager
-from common.common_functions import ceil_strdate, unset_session_var,\
+from common.common_functions import ceil_strdate, unset_session_var, \
     get_pagination_vars
 from datetime import datetime
 import tablib
@@ -35,11 +35,11 @@ def get_voipcall_daily_data(voipcall_list):
     select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
     # Get Total Rrecords from VoIPCall Report table for Daily Call Report
-    total_data = voipcall_list.extra(select=select_data)\
-        .values('starting_date')\
-        .annotate(Count('starting_date'))\
-        .annotate(Sum('duration'))\
-        .annotate(Avg('duration'))\
+    total_data = voipcall_list.extra(select=select_data) \
+        .values('starting_date') \
+        .annotate(Count('starting_date')) \
+        .annotate(Sum('duration')) \
+        .annotate(Avg('duration')) \
         .order_by('-starting_date')
 
     # Following code will count total voip calls, duration
@@ -86,7 +86,7 @@ def voipcall_report(request):
                            'used_gateway', 'callerid', 'callid', 'phone_number',
                            'duration', 'billsec', 'amd_status']
     default_sort_field = 'starting_date'
-    pagination_data =\
+    pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']

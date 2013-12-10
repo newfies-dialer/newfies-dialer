@@ -14,13 +14,13 @@
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from appointment.models.users import CalendarSetting, CalendarUser,\
+from appointment.models.users import CalendarSetting, CalendarUser, \
     CalendarUserProfile
 from appointment.models.rules import Rule
 from appointment.models.events import Event, Occurrence
 from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.calendars import Calendar
-from appointment.forms import CalendarUserProfileForm, EventAdminForm,\
+from appointment.forms import CalendarUserProfileForm, EventAdminForm, \
     AdminCalendarForm
 
 
@@ -86,7 +86,6 @@ class AlarmAdmin(admin.ModelAdmin):
 class AlarmRequestAdmin(admin.ModelAdmin):
     list_display = ('id', 'alarm', 'date', 'status', 'callstatus')
     ordering = ('-id', )
-
 
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(CalendarUser, CalendarUserAdmin)

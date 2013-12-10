@@ -23,7 +23,6 @@ class Migration(SchemaMigration):
                       self.gf('jsonfield.fields.JSONField')(null=True, blank=True),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting field 'Subscriber.collected_data'
         db.delete_column(u'dialer_subscriber', 'collected_data')
@@ -33,7 +32,6 @@ class Migration(SchemaMigration):
 
         # Deleting field 'Campaign.external_link'
         db.delete_column(u'dialer_campaign', 'external_link')
-
 
     models = {
         u'audiofield.audiofile': {

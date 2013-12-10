@@ -31,7 +31,7 @@ class AgentAdmin(UserAdmin):
     ]
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'manager_name', 'last_login')
-    list_filter = (ManagerFilter,)
+    list_filter = (ManagerFilter, )
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)

@@ -48,5 +48,6 @@ class SurveySerializer(serializers.HyperlinkedModelSerializer):
                 ]
             }
     """
+
     class Meta:
         model = Survey

@@ -77,4 +77,3 @@ class DNCContactSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = DNCContact
         fields = ('url', 'dnc', 'phone_number')
-

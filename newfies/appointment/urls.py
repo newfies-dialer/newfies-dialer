@@ -13,7 +13,6 @@
 #
 from django.conf.urls import patterns
 
-
 urlpatterns = patterns('appointment.views',
 
     (r'^module/calendar_user/$', 'calendar_user_list'),

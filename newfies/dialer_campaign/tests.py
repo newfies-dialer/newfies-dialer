@@ -22,7 +22,7 @@ from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add, \
     campaign_change, campaign_del, notify_admin, \
     update_campaign_status_admin, \
-    get_url_campaign_status, campaign_duplicate, subscriber_list,\
+    get_url_campaign_status, campaign_duplicate, subscriber_list, \
     subscriber_export
 from dialer_campaign.tasks import campaign_running, \
     collect_subscriber, campaign_expire_check
@@ -65,13 +65,13 @@ class DialerCampaignView(BaseAuthenticatedClient):
 
     def test_admin_subscriber_view_list(self):
         """Test Function to check admin subscriber list"""
-        response =\
+        response = \
             self.client.get('/admin/dialer_campaign/subscriber/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_subscriber_view_add(self):
         """Test Function to check admin subscriber add"""
-        response =\
+        response = \
             self.client.get('/admin/dialer_campaign/subscriber/add/')
         self.failUnlessEqual(response.status_code, 200)
 
@@ -286,7 +286,6 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
                 'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',
                 ]
-
     #def test_check_campaign_pendingcall(self):
     #    """Test that the ``check_campaign_pendingcall``
     #    task runs with no errors, and returns the correct result."""

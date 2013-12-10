@@ -44,9 +44,9 @@ class SurveyAggregateResultViewSet(APIView):
             logger.error(error_msg)
             return Response(error)
 
-        survey_result = ResultAggregate.objects\
-            .filter(**survey_result_kwargs)\
-            .values('section__question', 'response', 'count')\
+        survey_result = ResultAggregate.objects \
+            .filter(**survey_result_kwargs) \
+            .values('section__question', 'response', 'count') \
             .order_by('section')
 
         return Response(survey_result)

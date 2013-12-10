@@ -26,7 +26,6 @@ import datetime
 import random
 import bisect
 
-
 VOIPCALL_DISPOSITION = [('ANSWER', 80), ('BUSY', 10), ('NOANSWER', 20), ('CANCEL', 5), ('CONGESTION', 4), ('FAILED', 10)]
 SURVEY_RESULT_QUE = [
     'Please rank our support from 1 to 9, 1 being low and 9 being high',
@@ -143,8 +142,8 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
 
 class Command(BaseCommand):
     args = 'campaign_id, no_of_record, delta_day'
-    help = "Generate random call-requests and CDRs for a given campaign_id\n"\
-           "--------------------------------------------------------------\n"\
+    help = "Generate random call-requests and CDRs for a given campaign_id\n" \
+           "--------------------------------------------------------------\n" \
            "python manage.py create_callrequest_cdr --campaign_id=1 --number-call=100 --delta-day=0"
 
     option_list = BaseCommand.option_list + (

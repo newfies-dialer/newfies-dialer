@@ -16,7 +16,7 @@ from django.db.models import get_model
 from django.template.defaultfilters import register
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_campaign.views import make_duplicate_campaign
-from dialer_campaign.function_def import get_campaign_status_name, get_subscriber_disposition,\
+from dialer_campaign.function_def import get_campaign_status_name, get_subscriber_disposition, \
     get_subscriber_status
 from dialer_campaign.views import get_campaign_survey_view, get_url_campaign_status
 

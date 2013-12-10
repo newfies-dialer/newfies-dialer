@@ -275,8 +275,8 @@ def campaign_list(request):
         unset_session_var(request, field_list)
 
     kwargs = {}
-    #if phonebook_id and phonebook_id != '0':
-    #    kwargs['phonebook_id__in'] = [phonebook_id]
+    if phonebook_id and phonebook_id != '0':
+        kwargs['phonebook__id__in'] = [int(phonebook_id)]
 
     if status and status != 'all':
         kwargs['status'] = status

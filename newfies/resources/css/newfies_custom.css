@@ -97,9 +97,8 @@ footer {
     height: 40px;
 }
 
-a:hover,
-a:focus {
-  text-decoration: none;
+a:hover.a_icon, a:focus.a_icon {
+    text-decoration: none;
 }
 
 /* Purple style */

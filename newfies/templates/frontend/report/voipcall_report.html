@@ -82,7 +82,7 @@
                     <thead>
                     <tr>
                         <th>{% sort_link CDR_REPORT_COLUMN_NAME.date|capfirst col_name_with_order.starting_date %}</th>
-                        <th>{% sort_link CDR_REPORT_COLUMN_NAME.call_id|capfirst col_name_with_order.callid %}</th>
+                        <!-- <th>{% sort_link CDR_REPORT_COLUMN_NAME.call_id|capfirst col_name_with_order.callid %}</th> -->
                         <th>{% sort_link CDR_REPORT_COLUMN_NAME.leg|capfirst col_name_with_order.leg_type %}</th>
                         <th>{% sort_link CDR_REPORT_COLUMN_NAME.caller_id|capfirst col_name_with_order.callerid %}</th>
                         <th>{% sort_link CDR_REPORT_COLUMN_NAME.phone_no|capfirst col_name_with_order.phone_number %}</th>
@@ -100,7 +100,7 @@
                         {% for row in voipcall_list %}
                             <tr>
                                 <td>{{ row.starting_date }}</td>
-                                <td>{{ row.callid }}</td>
+                                <!-- <td>{{ row.callid }}</td> -->
                                 <td>{{ row.leg_type|leg_type_name }}</td>
                                 <td>{{ row.callerid }}</td>
                                 <td>{{ row.phone_number }}</td>

@@ -20,7 +20,8 @@ from survey.models import Survey, Section, Branching, \
     Result, ResultAggregate
 from adminsortable.admin import SortableAdmin, SortableTabularInline
 from common.app_label_renamer import AppLabelRenamer
-AppLabelRenamer(native_app_label=u'survey', app_label=_('Survey')).main()
+
+# AppLabelRenamer(native_app_label=u'survey', app_label=_('Survey')).main()
 
 
 #Templates Section, Survey and Branching for Admin

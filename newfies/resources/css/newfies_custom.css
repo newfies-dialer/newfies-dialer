@@ -166,3 +166,17 @@ background-color: #483269;
 
 /* End Purple style */
 /*#563d7c -> 6E5396*/
+
+
+/* Add square around icons */
+.icon-square {
+    padding: 1px 2px 1px 1px;
+    color: white;
+    background-color: #428bca;
+}
+
+.icon-small {
+    font-size:10px;
+    color: #428bca;
+}
+/* END - Add circle around icons */

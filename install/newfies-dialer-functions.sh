@@ -669,6 +669,7 @@ func_install_frontend(){
     #Prepare Django DB / Migrate / Create User ...
     cd $INSTALL_DIR/
     python manage.py syncdb --noinput
+    python manage.py migrate dialer_settings
     python manage.py migrate dialer_contact
     python manage.py migrate sms
     python manage.py migrate dialer_campaign

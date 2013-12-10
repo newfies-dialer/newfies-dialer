@@ -238,14 +238,61 @@ def campaign_list(request):
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
 
-    campaign_list = Campaign.objects.filter(user=request.user).order_by(sort_order)
+    phonebook_id = ''
+    status = 'all'
+
+    if request.method == 'POST':
+        form = CampaignSearchForm(request.user, request.POST)
+        if form.is_valid():
+            field_list = ['phonebook_id', 'status']
+            unset_session_var(request, field_list)
+
+            phonebook_id = getvar(request, 'phonebook_id', setsession=True)
+            status = getvar(request, 'status', setsession=True)
+
+    post_var_with_page = 0
+    try:
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            post_var_with_page = 1
+            phonebook_id = request.session.get('session_phonebook_id')
+            status = request.session.get('session_status')
+            form = CampaignSearchForm(request.user, initial={'status': status,
+                                                             'phonebook_id': phonebook_id})
+        else:
+            post_var_with_page = 1
+            if request.method == 'GET':
+                post_var_with_page = 0
+    except:
+        pass
+
+    if post_var_with_page == 0:
+        # default
+        # unset session var
+        field_list = ['status', 'phonebook_id']
+        unset_session_var(request, field_list)
+
+    kwargs = {}
+    #if phonebook_id and phonebook_id != '0':
+    #    kwargs['phonebook_id__in'] = [phonebook_id]
+
+    if status and status != 'all':
+        kwargs['status'] = status
+
+    campaign_list = Campaign.objects.filter(user=request.user)
+    campaign_count = campaign_list.count()
+    if kwargs:
+        all_campaign_list = campaign_list.filter(**kwargs).order_by(sort_order)
+        campaign_list = all_campaign_list[start_page:end_page]
+        campaign_count = all_campaign_list.count()
 
     template = 'frontend/campaign/list.html'
     data = {
         'form': form,
         'campaign_list': campaign_list,
-        'total_campaign': campaign_list.count(),
+        'total_campaign': campaign_count,
         'PAGE_SIZE': PAGE_SIZE,
         'CAMPAIGN_COLUMN_NAME': CAMPAIGN_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

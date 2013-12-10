@@ -79,7 +79,9 @@
                                 <td>{{ row.startingdate }}</td>
                                 <td>{{ row.sms_gateway }}</td>
                                 <td>{{ row.totalcontact }}</td>
-                                <td class="survey_edit_key">{{ row.status|get_sms_campaign_status|safe }}</td>
+                                <td>{{ row.status|get_sms_campaign_status|safe }}
+                                {% get_sms_campaign_status_url row.id row.status %}
+                                </td>
                                 <td>
                                     {% if perms.sms_module.change_smscampaign %}
                                         <a href="{{ row.id }}/" title="{% trans 'update sms campaign'|capfirst %}"><i class="fa fa-edit"></i></a>
@@ -87,7 +89,6 @@
                                     {% if perms.sms_module.delete_smscampaign %}
                                         <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete sms campaign'|capfirst %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
-                                    {% get_sms_campaign_status_url row.id row.status %}
                                 </td>
                             </tr>
                         {% endfor %}

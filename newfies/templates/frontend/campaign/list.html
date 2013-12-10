@@ -107,7 +107,10 @@
                                 <td class="survey_edit_key">{{ row.content_type }}</td>
                                 <td>{% get_app_name row.content_type.app_label row.content_type.model row.object_id %}</td>
                                 <td class="survey_edit_key">{{ row.totalcontact }}</td>
-                                <td class="survey_edit_key">{{ row.status|get_campaign_status|safe }}</td>
+                                <td>
+                                    {{ row.status|get_campaign_status|safe }}
+                                    {% get_campaign_status_url row.id row.status %}
+                                </td>
                                 <td>
                                     {% if perms.dialer_campaign.change_campaign %}
                                         <a href="{{ row.id }}/" title="{% trans 'update campaign'|title %}"><i class="fa fa-edit"></i></a>
@@ -120,7 +123,7 @@
 
                                     {% get_campaign_app_view row %}
 
-                                    {% get_campaign_status_url row.id row.status %}
+
                                 </td>
                             </tr>
                         {% endfor %}

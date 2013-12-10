@@ -123,7 +123,6 @@ def tpl_control_icon(icon):
     """
     function to produce control html icon
     """
-    #return 'style="text-decoration:none;background-image:url(%snewfies/icons/%s);"' % (settings.STATIC_URL, icon)
     return '<i class="fa %s"></i>' % (icon)
 
 
@@ -136,7 +135,7 @@ def get_url_campaign_status(id, status):
     #control_pause_style = tpl_control_icon('control_pause_blue.png')
     #control_abort_style = tpl_control_icon('control_abort_blue.png')
     #control_stop_style = tpl_control_icon('control_stop_blue.png')
-    control_play_style = tpl_control_icon('fa-play-circle-o')
+    control_play_style = tpl_control_icon('fa-play')
     control_pause_style = tpl_control_icon('fa-pause')
     control_abort_style = tpl_control_icon('fa-eject')
     control_stop_style = tpl_control_icon('fa-stop')
@@ -151,7 +150,7 @@ def get_url_campaign_status(id, status):
     #according to the current status, disable link and change the button color
     if status == CAMPAIGN_STATUS.START:
         url_cpg_start = '#'
-        control_play_style = tpl_control_icon('fa-play-circle-o')
+        control_play_style = tpl_control_icon('fa-play')
     elif status == CAMPAIGN_STATUS.PAUSE:
         url_cpg_pause = '#'
         control_pause_style = tpl_control_icon('fa-pause')
@@ -163,12 +162,6 @@ def get_url_campaign_status(id, status):
         control_stop_style = tpl_control_icon('fa-stop')
 
     #return all the html button for campaign status management
-    #return "<a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a>" % \
-    #    (url_cpg_start, _("start").capitalize(), control_play_style,
-    #    url_cpg_pause, _("pause").capitalize(), control_pause_style,
-    #    url_cpg_abort, _("abort").capitalize(), control_abort_style,
-    #    url_cpg_stop, _("stop").capitalize(), control_stop_style)
-
     return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
         (url_cpg_start, _("start").capitalize(), control_play_style,
          url_cpg_pause, _("pause").capitalize(), control_pause_style,

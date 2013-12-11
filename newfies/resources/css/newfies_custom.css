@@ -98,33 +98,18 @@ footer {
 }
 
 /* Purple style */
-
-.navbar-nav > .active > a, .navbar-nav > .active > a:hover {
-    color: #fff;
-    background-color: #463265;
-}
-
 .navbar-inverse {
     background-color: #6E5396;
     border-color: #463265;
 }
 
-.navbar-inverse .navbar-nav > li > a {
-    color: #cdbfe3;
-    text-shadow: 0 -1px 0 rgba(0,0,0,.15);
-}
-.nav > li > a:hover, .nav > li > a:focus {
-    text-decoration: none;
-    background-color: #fff;
+.dropdown-menu > .active > a, .dropdown-menu > .active > a:hover, .dropdown-menu > .active > a:focus {
+    background-color: #6E5396;
 }
 
-.navbar-inverse > .open > a, .navbar-inverse  > .open > a:hover, .navbar-inverse  > .open > a:focus {
-    color: #ffffff;
-    border-color: #463265;
-}
-.navbar-inverse > .open > a, .navbar-inverse  > .open > a:hover, .navbar-inverse  > .open > a:focus {
-    color: #ffffff;
-    background-color: #463265;
+.navbar-inverse .navbar-nav > li > a {
+    color: #CDBFE3;
+    text-shadow: 0 -1px 0 rgba(0,0,0,.15);
 }
 
 .jumbotron {
@@ -138,8 +123,8 @@ a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.acti
 
 .btn-primary:hover, .btn-primary:focus, .btn-primary:active, .btn-primary.active, .open .dropdown-toggle.btn-primary {
     color: #ffffff;
-    background-color: #6E5396;
-    border-color: #6E5396;
+    background-color: #8D73B3;
+    border-color: #8D73B3;
 }
 
 .btn-primary {
@@ -149,8 +134,8 @@ a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.acti
 }
 
 .nav .caret {
-    border-top-color: #401F72;
-    border-bottom-color: #401F72;
+    border-top-color: #463265;
+    border-bottom-color: #463265;
 }
 
 .btn-info, .btn-info:hover, .btn-info:focus, .btn-info:active, .btn-info.active, .open .dropdown-toggle.btn-info {
@@ -160,12 +145,35 @@ a.list-group-item.active, a.list-group-item.active:hover, a.list-group-item.acti
 }
 
 .navbar-inverse .navbar-nav > .active > a, .navbar-inverse .navbar-nav > .active > a:hover, .navbar-inverse .navbar-nav > .active > a:focus {
-color: #ffffff;
-background-color: #483269;
+    color: #ffffff;
+    background-color: #463265;
+}
+
+.navbar-inverse .navbar-nav > .open > a, .navbar-inverse .navbar-nav > .open > a:hover, .navbar-inverse .navbar-nav > .open > a:focus {
+    color: #ffffff;
+    background-color: #463265;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus {
+    background-color: #8D73B3;
+    border-color: #463265;
+}
+
+a {
+    color: #6E5396;
+}
+
+a:hover, a:focus {
+    color: #463265;
+    text-decoration: underline;
 }
 
 /* End Purple style */
-/*#563d7c -> 6E5396*/
+
+/*#563d7c -> 6E5396
+463265 ; 6E5396 ; 8D73B3 ; CDBFE3 ; F8F4FF
+
+*/
 
 
 /* Add square around icons */

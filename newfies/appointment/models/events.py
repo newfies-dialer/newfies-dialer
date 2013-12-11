@@ -26,16 +26,16 @@ class Event(models.Model):
                                  verbose_name=_("start"))
     end = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(hours=+1)),
                                verbose_name=_("end"),
-                               help_text=_("Must be later than the start."))
+                               help_text=_("Must be later than the start"))
     creator = models.ForeignKey(CalendarUser, null=False, blank=False,
                                 verbose_name=_("calendar user"), related_name='creator')
     created_on = models.DateTimeField(verbose_name=_("created on"), default=timezone.now)
     end_recurring_period = models.DateTimeField(verbose_name=_("end recurring period"),
                                                 null=True, blank=True,
                                                 default=(lambda: datetime.now() + relativedelta(months=+1)),
-                                                help_text=_("Used if the event will reoccur."))
+                                                help_text=_("Used if the event reoccurs"))
     rule = models.ForeignKey(Rule, null=True, blank=True,
-                             verbose_name=_("rule"), help_text=_("Reoccuring rules."))
+                             verbose_name=_("rule"), help_text=_("Reoccuring rules"))
     calendar = models.ForeignKey(Calendar, null=False, blank=False)
 
     notify_count = models.IntegerField(verbose_name=_("notify count"),
@@ -44,7 +44,7 @@ class Event(models.Model):
                                  default=EVENT_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)
     data = jsonfield.JSONField(null=True, blank=True, verbose_name=_('additional data (JSON)'),
-                               help_text=_("data in Json format, e.g. {\"cost\": \"40 euro\"}"))
+                               help_text=_("data in JSON format, e.g. {\"cost\": \"40 euro\"}"))
     # Keep a trace of the original event of all occurences
     parent_event = models.ForeignKey('self', null=True, blank=True, related_name="parent event")
     # Occurence count, this is an increment that will add 1 on the new event created

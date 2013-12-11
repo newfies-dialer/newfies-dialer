@@ -17,7 +17,7 @@ class Alarm(models.Model):
     This is for Alarms / Reminders on events models.
     """
     alarm_phonenumber = models.CharField(max_length=50, blank=True, null=True,
-                                         verbose_name=_("notify to phonenumber"))
+                                         verbose_name=_("notify to phone number"))
     alarm_email = models.EmailField(blank=True, null=True,
                                     verbose_name=_('notify to email'))
     daily_start = models.TimeField(verbose_name=_('daily start'), default='00:00:00')

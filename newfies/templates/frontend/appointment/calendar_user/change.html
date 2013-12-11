@@ -9,7 +9,8 @@
             {% trans "add"|title %}
         {% endif %}
         {% trans "calendar user"|title %}
-        <small>{% trans "calendar user is belong to manager"|capfirst %}</small>
+        <br/>
+        <small>{% trans "those users will be authorized to created calendars, events and alarms"|capfirst %}</small>
     </h1>
 {% endblock %}
 
@@ -53,7 +54,7 @@
         {% for field in form %}
             <div class="row">
                 <div class="form-group {% if field.errors %}has-error{% endif %}">
-                    <div class="col-xs-6">
+                    <div class="col-md-8 col-xs-6">
                         <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
                         {{ field }}
                         {% if field.errors %}

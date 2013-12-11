@@ -114,7 +114,7 @@ def customer_detail_change(request):
                 error_pass = _('please correct the errors below.')
 
     try:
-        dialer_set = DialerSetting.objects.get(id=request.user.get_profile().dialersetting_id)
+        dialer_set = user_detail_extened.dialersetting
     except:
         dialer_set = ''
 

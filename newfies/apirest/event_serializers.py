@@ -118,6 +118,15 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
                     self.init_data['calendar'] = ''
                     pass
 
+            parent_event = self.init_data.get('parent_event')
+            if parent_event and parent_event.find('http://') == -1:
+                try:
+                    Event.objects.get(pk=parent_event)
+                    self.init_data['parent_event'] = '/rest-api/event/%s/' % parent_event
+                except:
+                    self.init_data['parent_event'] = ''
+                    pass
+
         calendar_user_list = get_calendar_user_id_list(request.user)
         fields['creator'].queryset = CalendarUser.objects.filter(id__in=calendar_user_list).order_by('id')
         fields['calendar'].queryset = Calendar.objects.filter(user_id__in=calendar_user_list).order_by('id')

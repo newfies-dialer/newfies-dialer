@@ -27,7 +27,7 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycalendar", "slug": "mycalendar", "max_concurrent": "1"}' http://localhost:8000/rest-api/alarm/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"alarm_phonenumber": "123456789", "alarm_email": "xyz@gmail.com"}' http://localhost:8000/rest-api/alarm/
 
         Response::
 
@@ -103,6 +103,25 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
         """filter content_type field"""
         fields = super(AlarmSerializer, self).get_fields(*args, **kwargs)
         request = self.context['request']
+        if request.method != 'GET' and self.init_data is not None:
+            event = self.init_data.get('event')
+            if event and event.find('http://') == -1:
+                try:
+                    Event.objects.get(pk=event)
+                    self.init_data['event'] = '/rest-api/event/%s/' % event
+                except:
+                    self.init_data['event'] = ''
+                    pass
+
+            survey = self.init_data.get('survey')
+            if survey and survey.find('http://') == -1:
+                try:
+                    Survey.objects.get(pk=survey, user=request.user)
+                    self.init_data['survey'] = '/rest-api/sealed-survey/%s/' % survey
+                except:
+                    self.init_data['survey'] = ''
+                    pass
+
         calendar_user_list = get_calendar_user_id_list(request.user)
         fields['event'].queryset = Event.objects.filter(calendar__user_id__in=calendar_user_list).order_by('id')
         fields['survey'].queryset = Survey.objects.filter(user=request.user)

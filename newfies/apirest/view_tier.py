@@ -18,6 +18,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from callcenter.models import Tier
 from apirest.tier_serializers import TierSerializer
+from user_profile.models import Manager
 
 
 class TierViewSet(viewsets.ModelViewSet):
@@ -41,4 +42,4 @@ class TierViewSet(viewsets.ModelViewSet):
         return queryset
 
     def pre_save(self, obj):
-        obj.manager = self.request.user
+        obj.manager = Manager.objects.get(username=self.request.user)

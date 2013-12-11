@@ -16,17 +16,17 @@
 from rest_framework import viewsets
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from callcenter.models import Queue
-from apirest.queue_serializers import QueueSerializer
+from apirest.agent_profile_serializers import AgentProfileSerializer
+from agent.models import AgentProfile
 from user_profile.models import Manager
 
 
-class QueueViewSet(viewsets.ModelViewSet):
+class AgentProfileViewSet(viewsets.ModelViewSet):
     """
-    API endpoint that allows queue to be viewed or edited.
+    API endpoint that allows agent profile user to be viewed or edited.
     """
-    queryset = Queue.objects.all()
-    serializer_class = QueueSerializer
+    queryset = AgentProfile.objects.filter(is_agent=True)
+    serializer_class = AgentProfileSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
 
@@ -36,9 +36,9 @@ class QueueViewSet(viewsets.ModelViewSet):
         for the currently authenticated user.
         """
         if self.request.user.is_superuser:
-            queryset = Queue.objects.all()
+            queryset = AgentProfile.objects.all()
         else:
-            queryset = Queue.objects.filter(manager=self.request.user)
+            queryset = AgentProfile.objects.filter(manager=self.request.user)
         return queryset
 
     def pre_save(self, obj):

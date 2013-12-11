@@ -32,16 +32,23 @@ class GatewayAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Gateway."""
 
+    # fieldsets = (
+    #     (_('standard options').capitalize(), {
+    #         'fields': ('name', 'description', 'gateways', 'gateway_codecs',
+    #             'gateway_timeouts', 'gateway_retries',
+    #             'originate_dial_string', 'status'),
+    #     }),
+    #     (_('advanced options').capitalize(), {
+    #         'classes': ('collapse',),
+    #         'fields': ('addprefix', 'removeprefix', 'failover', 'addparameter',
+    #                    'maximum_call', )
+    #     }),
+    # )
     fieldsets = (
         (_('standard options').capitalize(), {
-            'fields': ('name', 'description', 'gateways', 'gateway_codecs',
-                'gateway_timeouts', 'gateway_retries',
-                'originate_dial_string', 'status'),
-        }),
-        (_('advanced options').capitalize(), {
-            'classes': ('collapse',),
-            'fields': ('addprefix', 'removeprefix', 'failover', 'addparameter',
-                       'maximum_call', )
+            'fields': ('name', 'description', 'gateways',
+                'gateway_timeouts', 'originate_dial_string', 'status',
+                'addprefix', 'removeprefix', 'addparameter'),
         }),
     )
     list_display = ('id', 'name', 'gateways', 'addprefix',

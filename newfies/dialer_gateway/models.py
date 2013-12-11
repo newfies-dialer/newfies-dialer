@@ -30,7 +30,7 @@ class Gateway(Model):
         * ``addprefix`` - Add prefix.
         * ``removeprefix`` - Remove prefix.
         * ``gateways`` - "user/,user/", # Gateway string to try dialing \
-        separated by comma. First in the list will be tried first
+            separated by comma. First in the list will be tried first
         * ``gateway_codecs`` - "'PCMA,PCMU','PCMA,PCMU'", \
         # Codec string as needed by FS for each gateway separated by comma
         * ``gateway_timeouts`` - "10,10", \
@@ -61,15 +61,15 @@ class Gateway(Model):
     removeprefix = models.CharField(verbose_name=_('remove prefix'),
                    max_length=60, blank=True)
     gateways = models.CharField(max_length=500, verbose_name=_("gateways"),
-                help_text=_('example : "sofia/gateway/myprovider/" or 2 for failover "sofia/gateway/myprovider/, user/", # Gateway string to try dialing separated by comma. First in list will be tried first'))
+                help_text=_('Gateway string to dial, ie "sofia/gateway/myprovider/"'))
 
     gateway_codecs = models.CharField(max_length=500, blank=True,
         verbose_name=_("gateway codecs"),
-        help_text=_('"\'PCMA,PCMU\',\'PCMA,PCMU\'", # codec string as needed by FS for each gateway separated by comma'))
+        help_text=_('codec string as needed by FS, ie "PCMA,PCMU"'))
 
     gateway_timeouts = models.CharField(max_length=500, blank=True,
         verbose_name=_("gateway timeouts"),
-        help_text=_('"10,10", # seconds to timeout in string for each gateway separated by comma'))
+        help_text=_('timeout in seconds, ie "10"'))
 
     gateway_retries = models.CharField(max_length=500, blank=True,
         verbose_name=_("gateway retries"),

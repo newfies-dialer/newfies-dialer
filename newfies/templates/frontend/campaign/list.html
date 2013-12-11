@@ -10,23 +10,30 @@
 {% endblock %}
 
 {% block content %}
-<form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    <div class="row">
-        {% get_fieldset phonebook_id,status as search from form %}
-        {% for field in search %}
-        <div class="col-md-3 {% if field.errors %} error{% endif %}">
-            <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
-            {{ field }}
-            {% if field.errors %}
-                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-            {% endif %}
-            <span class="help-block">{{ field.help_text|capfirst }} </span>
+<div id="form_collapse" class="collapse in">
+    <form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+        <div class="row">
+            {% get_fieldset phonebook_id,status as search from form %}
+            {% for field in search %}
+            <div class="col-md-3 {% if field.errors %} error{% endif %}">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ field.help_text|capfirst }} </span>
+            </div>
+            {% endfor %}
         </div>
-        {% endfor %}
-    </div>
-    <input class="btn btn-primary" type="submit" name="submit" value={% trans "search"|title %} />
-</form>
+        <input class="btn btn-primary" type="submit" name="submit" value={% trans "search"|title %} />
+    </form>
+</div>
 
+<button id="toggle_btn" type="button" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#form_collapse">
+    <i id="toggle_btn_i" class="glyphicon glyphicon-zoom-out"></i>
+    <span id="toggle_btn_i_span">{% trans "show search"|title %}</span>
+</button>
+<div>&nbsp;</div>
 <script type="text/javascript" charset="utf-8">
     function add_button() {
         window.location = 'add/';

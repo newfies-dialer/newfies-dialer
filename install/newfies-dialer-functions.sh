@@ -547,8 +547,8 @@ func_install_source(){
     if echo $BRANCH | grep -i "^develop" > /dev/null ; then
         git checkout -b develop --track origin/develop
     fi
-    if echo $BRANCH | grep -i "^callcenter" > /dev/null ; then
-        git checkout -b callcenter --track origin/callcenter
+    if echo $BRANCH | grep -i "^appointment" > /dev/null ; then
+        git checkout -b appointment --track origin/appointment
     fi
 
     #Copy files

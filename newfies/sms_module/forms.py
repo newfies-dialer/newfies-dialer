@@ -28,6 +28,19 @@ from dialer_campaign.forms import get_phonebook_list, \
     campaign_status_list as sms_campaign_status_list
 
 
+def get_smscampaign_list(user=None):
+    """get list of smscampaign"""
+    camp_list = []
+    camp_list.append((0, '---'))
+    if user is None:
+        pb_list = field_list("smscampaign")
+    else:
+        pb_list = field_list("smscampaign", user)
+    for i in pb_list:
+        camp_list.append((int(i[0]), i[1]))
+    return camp_list
+
+
 class SMSCampaignForm(ModelForm):
     """SMSCampaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
@@ -133,19 +146,6 @@ class SMSDashboardForm(forms.Form):
                 campaign_choices.append((cp.id, unicode(cp.name)))
 
             self.fields['smscampaign'].choices = campaign_choices
-
-
-def get_smscampaign_list(user=None):
-    """get list of smscampaign"""
-    camp_list = []
-    camp_list.append((0, '---'))
-    if user is None:
-        pb_list = field_list("smscampaign")
-    else:
-        pb_list = field_list("smscampaign", user)
-    for i in pb_list:
-        camp_list.append((int(i[0]), i[1]))
-    return camp_list
 
 
 class SMSSearchForm(SearchForm):

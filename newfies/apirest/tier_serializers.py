@@ -14,7 +14,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import serializers
-from callcenter.models import Tier
+from callcenter.models import Queue, Tier
 from agent.models import AgentProfile
 
 
@@ -101,5 +101,6 @@ class TierSerializer(serializers.HyperlinkedModelSerializer):
                     pass
 
         fields['agent'].queryset = AgentProfile.objects.filter(manager=request.user)
+        fields['queue'].queryset = Queue.objects.filter(manager=request.user)
 
         return fields

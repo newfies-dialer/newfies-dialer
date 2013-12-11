@@ -15,7 +15,9 @@
 #
 
 from rest_framework import serializers
-from appointment.models.alarms import AlarmRequest
+from appointment.models.alarms import Alarm, AlarmRequest
+from dialer_cdr.models import Callrequest
+from appointment.function_def import get_calendar_user_id_list
 
 
 class AlarmRequestSerializer(serializers.HyperlinkedModelSerializer):
@@ -84,3 +86,32 @@ class AlarmRequestSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = AlarmRequest
+
+    def get_fields(self, *args, **kwargs):
+        """filter content_type field"""
+        fields = super(AlarmRequestSerializer, self).get_fields(*args, **kwargs)
+        request = self.context['request']
+        if request.method != 'GET' and self.init_data is not None:
+            callrequest = self.init_data.get('callrequest')
+            if callrequest and callrequest.find('http://') == -1:
+                try:
+                    Callrequest.objects.get(pk=callrequest, campaign__user=request.user)
+                    self.init_data['callrequest'] = '/rest-api/callrequest/%s/' % callrequest
+                except:
+                    self.init_data['callrequest'] = ''
+                    pass
+
+            alarm = self.init_data.get('alarm')
+            if alarm and alarm.find('http://') == -1:
+                try:
+                    Alarm.objects.get(pk=alarm)
+                    self.init_data['alarm'] = '/rest-api/alarm/%s/' % alarm
+                except:
+                    self.init_data['alarm'] = ''
+                    pass
+
+        calendar_user_list = get_calendar_user_id_list(request.user)
+        fields['alarm'].queryset = Alarm.objects.filter(event__creator_id__in=calendar_user_list)
+        fields['callrequest'].queryset = Callrequest.objects.filter(campaign__user=request.user)
+        return fields
+

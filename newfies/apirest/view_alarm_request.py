@@ -18,6 +18,7 @@ from apirest.alarm_request_serializers import AlarmRequestSerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.alarms import AlarmRequest
+from appointment.function_def import get_calendar_user_id_list
 
 
 class AlarmRequestViewSet(viewsets.ModelViewSet):
@@ -37,5 +38,6 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
         if self.request.user.is_superuser:
             queryset = AlarmRequest.objects.all()
         else:
-            queryset = AlarmRequest.objects.filter(alarm__survey__user=self.request.user)
+            calendar_user_list = get_calendar_user_id_list(self.request.user)
+            queryset = AlarmRequest.objects.filter(alarm__event__creator_id__in=calendar_user_list)
         return queryset

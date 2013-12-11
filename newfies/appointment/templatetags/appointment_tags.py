@@ -13,32 +13,40 @@
 #
 
 from django.template.defaultfilters import register
-from appointment.constants import EVENT_STATUS, ALARM_STATUS
+from appointment.constants import EVENT_STATUS, ALARM_STATUS, ALARM_METHOD
 
 
 @register.filter(name='event_status')
 def event_status(value):
-    """Event Status"""
+    """Event Status Templatetag"""
     if not value:
         return ''
     STATUS = dict(EVENT_STATUS)
     try:
-        status = STATUS[value].encode('utf-8')
+        return STATUS[value].encode('utf-8')
     except:
-        status = ''
-
-    return str(status)
+        return ''
 
 
 @register.filter(name='alarm_status')
 def alarm_status(value):
-    """Alarm Status"""
+    """Alarm Status Templatetag"""
     if not value:
         return ''
     STATUS = dict(ALARM_STATUS)
     try:
-        status = STATUS[value].encode('utf-8')
+        return STATUS[value].encode('utf-8')
     except:
-        status = ''
+        return ''
 
-    return str(status)
+
+@register.filter(name='alarm_method')
+def alarm_method(value):
+    """Alarm Method Templatetag"""
+    if not value:
+        return ''
+    METHOD = dict(ALARM_METHOD)
+    try:
+        return METHOD[value].encode('utf-8')
+    except:
+        return ''

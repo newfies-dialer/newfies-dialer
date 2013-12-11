@@ -84,7 +84,7 @@ class EVENT_COLUMN_NAME(Choice):
 
 
 class ALARM_COLUMN_NAME(Choice):
-    alarm_phonenumber = _('phonenumber')
+    alarm_phonenumber = _('phone number')
     alarm_email = _('email')
     daily_start = _('daily start')
     daily_stop = _('daily stop')

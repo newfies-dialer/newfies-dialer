@@ -53,14 +53,14 @@
                     <thead>
                     <tr>
                         <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-                        <th>{% sort_link ALARM_COLUMN_NAME.alarm_phonenumber|capfirst col_name_with_order.alarm_phonenumber %}</th>
-                        <th>{% sort_link ALARM_COLUMN_NAME.alarm_email|capfirst col_name_with_order.alarm_email %}</th>
-                        <th>{% sort_link ALARM_COLUMN_NAME.daily_start|capfirst col_name_with_order.daily_start %}</th>
-                        <th>{% sort_link ALARM_COLUMN_NAME.daily_stop|capfirst col_name_with_order.daily_stop %}</th>
+                        <th>{% sort_link ALARM_COLUMN_NAME.date_start_notice|title col_name_with_order.date_start_notice %}</th>
+                        <th>{% sort_link ALARM_COLUMN_NAME.alarm_phonenumber|title col_name_with_order.alarm_phonenumber %}</th>
+                        {# <th>{% sort_link ALARM_COLUMN_NAME.alarm_email|capfirst col_name_with_order.alarm_email %}</th> #}
+                        {# <th>{% sort_link ALARM_COLUMN_NAME.daily_start|title col_name_with_order.daily_start %}</th> #}
+                        {# <th>{% sort_link ALARM_COLUMN_NAME.daily_stop|title col_name_with_order.daily_stop %}</th> #}
                         <th>{% sort_link ALARM_COLUMN_NAME.method|capfirst col_name_with_order.method %}</th>
                         <th>{% sort_link ALARM_COLUMN_NAME.survey|capfirst col_name_with_order.survey %}</th>
                         <th>{% sort_link ALARM_COLUMN_NAME.event|capfirst col_name_with_order.event %}</th>
-                        <th>{% sort_link ALARM_COLUMN_NAME.date_start_notice|capfirst col_name_with_order.date_start_notice %}</th>
                         <th>{% sort_link ALARM_COLUMN_NAME.status|capfirst col_name_with_order.status %}</th>
                         <th>{% trans 'action'|capfirst %}</th>
                     </tr>
@@ -70,14 +70,14 @@
                         {% for row in alarm_list %}
                             <tr>
                                 <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
+                                <td>{{ row.date_start_notice }}</td>
                                 <td>{{ row.alarm_phonenumber }}</td>
-                                <td>{{ row.alarm_email }}</td>
-                                <td>{{ row.daily_start }}</td>
-                                <td>{{ row.daily_stop }}</td>
-                                <td>{{ row.method }}</td>
+                                {# <td>{{ row.alarm_email }}</td> #}
+                                {# <td>{{ row.daily_start }}</td> #}
+                                {# <td>{{ row.daily_stop }}</td> #}
+                                <td>{{ row.method|alarm_method }}</td>
                                 <td>{{ row.survey }}</td>
                                 <td>{{ row.event }}</td>
-                                <td>{{ row.date_start_notice }}</td>
                                 <td>{{ row.status|alarm_status }}</td>
                                 <td>
                                     {% if perms.appointment.change_alarm %}

@@ -62,10 +62,9 @@ class Event(models.Model):
 
     def __unicode__(self):
         date_format = u'%s' % ugettext("DATE_FORMAT")
-        return '%(title)s: %(start)s - %(end)s' % {
+        return '%(title)s: %(start)s' % {
             'title': self.title,
             'start': date(self.start, date_format),
-            'end': date(self.end, date_format),
         }
 
     def get_absolute_url(self):

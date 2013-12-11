@@ -23,7 +23,7 @@ class DNCSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "my dnc", "user": "/rest-api/users/1/"}' http://localhost:8000/rest-api/dnc/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "my dnc", "user": "/rest-api/users/1/"}' http://localhost:8000/rest-api/dnc-list/
 
         Response::
 
@@ -40,7 +40,7 @@ class DNCSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/dnc/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/dnc-list/
 
         Response::
 
@@ -63,7 +63,7 @@ class DNCSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "sample dnc"}' http://localhost:8000/rest-api/dnc/%dnc-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "sample dnc"}' http://localhost:8000/rest-api/dnc-list/%dnc-id%/
 
         Response::
 

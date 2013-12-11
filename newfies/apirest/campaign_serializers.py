@@ -23,6 +23,7 @@ from dialer_contact.models import Phonebook
 from audiofield.models import AudioFile
 from dnc.models import DNC
 from sms.models import Gateway as SMS_Gateway
+from user_profile.models import UserProfile
 
 
 class CampaignSerializer(serializers.HyperlinkedModelSerializer):
@@ -183,7 +184,7 @@ class CampaignSerializer(serializers.HyperlinkedModelSerializer):
             else:
                 fields['voicemail_audiofile'].queryset = AudioFile.objects.filter(user=request.user)
 
-            fields['aleg_gateway'].queryset = request.user.get_profile().userprofile_gateway.all()
+            fields['aleg_gateway'].queryset = UserProfile.objects.get(user=request.user).userprofile_gateway.all()
             fields['sms_gateway'].queryset = SMS_Gateway.objects.all()
             fields['dnc'].queryset = DNC.objects.filter(user=request.user)
             fields['phonebook'].queryset = Phonebook.objects.filter(user=request.user)

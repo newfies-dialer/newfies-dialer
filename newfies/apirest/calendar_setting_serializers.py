@@ -21,6 +21,7 @@ from survey.models import Survey
 from audiofield.models import AudioFile
 from dialer_gateway.models import Gateway
 from sms.models import Gateway as SMS_Gateway
+from user_profile.models import UserProfile
 
 
 class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
@@ -142,7 +143,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
         if request.method != 'GET':
             fields['survey'].queryset = Survey.objects.filter(user=request.user)
 
-        fields['aleg_gateway'].queryset = request.user.get_profile().userprofile_gateway.all()
+        fields['aleg_gateway'].queryset = UserProfile.objects.get(user=request.user).userprofile_gateway.all()
         fields['voicemail_audiofile'].queryset = AudioFile.objects.filter(user=request.user)
 
         return fields

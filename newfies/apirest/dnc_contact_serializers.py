@@ -14,7 +14,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import serializers
-from dnc.models import DNCContact
+from dnc.models import DNC, DNCContact
 
 
 class DNCContactSerializer(serializers.HyperlinkedModelSerializer):
@@ -23,7 +23,7 @@ class DNCContactSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"phone_number": "12345", "dnc": "/rest-api/dnc/1/"}' http://localhost:8000/rest-api/dnc_contact/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"phone_number": "12345", "dnc": "/rest-api/dnc-list/1/"}' http://localhost:8000/rest-api/dnc-contact/
 
         Response::
 
@@ -40,7 +40,7 @@ class DNCContactSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/dnc_contact/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/dnc-contact/
 
         Response::
 
@@ -50,8 +50,8 @@ class DNCContactSerializer(serializers.HyperlinkedModelSerializer):
                 "previous": null,
                 "results": [
                     {
-                        "url": "http://127.0.0.1:8000/rest-api/dnc_contact/1/",
-                        "dnc": "http://127.0.0.1:8000/rest-api/dnc/1/",
+                        "url": "http://127.0.0.1:8000/rest-api/dnc-contact/1/",
+                        "dnc": "http://127.0.0.1:8000/rest-api/dnc-list/1/",
                         "phone_number": "12345"
                     }
                 ]
@@ -61,7 +61,7 @@ class DNCContactSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"phone_number": "54353432"}' http://localhost:8000/rest-api/dnc_contact/%dnc-contact-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PUT --data '{"phone_number": "54353432"}' http://localhost:8000/rest-api/dnc-contact/%dnc-contact-id%/
 
         Response::
 
@@ -77,3 +77,23 @@ class DNCContactSerializer(serializers.HyperlinkedModelSerializer):
     class Meta:
         model = DNCContact
         fields = ('url', 'dnc', 'phone_number')
+
+    def get_fields(self, *args, **kwargs):
+        """filter survey field"""
+        fields = super(DNCContactSerializer, self).get_fields(*args, **kwargs)
+        request = self.context['request']
+
+        if request.method != 'GET' and self.init_data is not None:
+            dnc = self.init_data.get('dnc')
+            if dnc and dnc.find('http://') == -1:
+                try:
+                    DNC.objects.get(pk=int(dnc))
+                    self.init_data['dnc'] = '/rest-api/dnc-list/%s/' % dnc
+                except:
+                    self.init_data['dnc'] = ''
+                    pass
+
+        if request.method != 'GET':
+            fields['dnc'].queryset = DNC.objects.filter(user=request.user)
+
+        return fields

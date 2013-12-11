@@ -14,7 +14,7 @@
 #
 
 from rest_framework import serializers
-from dialer_contact.models import Contact
+from dialer_contact.models import Phonebook, Contact
 
 
 class ContactSerializer(serializers.HyperlinkedModelSerializer):
@@ -91,3 +91,23 @@ class ContactSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = Contact
+
+    def get_fields(self, *args, **kwargs):
+        """filter survey field"""
+        fields = super(ContactSerializer, self).get_fields(*args, **kwargs)
+        request = self.context['request']
+
+        if request.method != 'GET' and self.init_data is not None:
+            phonebook = self.init_data.get('phonebook')
+            if phonebook and phonebook.find('http://') == -1:
+                try:
+                    Phonebook.objects.get(pk=int(phonebook))
+                    self.init_data['phonebook'] = '/rest-api/phonebook/%s/' % phonebook
+                except:
+                    self.init_data['phonebook'] = ''
+                    pass
+
+        if request.method != 'GET':
+            fields['phonebook'].queryset = Phonebook.objects.filter(user=request.user)
+
+        return fields

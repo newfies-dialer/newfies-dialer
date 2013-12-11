@@ -46,6 +46,7 @@ from apirest.view_event import EventViewSet
 from apirest.view_alarm import AlarmViewSet
 from apirest.view_alarm_request import AlarmRequestViewSet
 from agent.api_views import AgentViewSet
+from apirest.view_agent_profile import AgentProfileViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -78,6 +79,7 @@ router.register(r'event', EventViewSet)
 router.register(r'alarm', AlarmViewSet)
 router.register(r'alarm-request', AlarmRequestViewSet)
 router.register(r'agents', AgentViewSet)
+router.register(r'agent-profile', AgentProfileViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browseable API.

@@ -13,12 +13,12 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.contrib.auth.models import User
 from rest_framework import serializers
-from callcenter.models import Tier
 from agent.models import AgentProfile
 
 
-class TierSerializer(serializers.HyperlinkedModelSerializer):
+class AgentProfileSerializer(serializers.HyperlinkedModelSerializer):
     """
     **Create**:
 
@@ -80,26 +80,26 @@ class TierSerializer(serializers.HyperlinkedModelSerializer):
             Content-Language: en-us
     """
     manager = serializers.Field(source='manager')
-    #agent = serializers.Field(source='agent')
 
     class Meta:
-        model = Tier
+        model = AgentProfile
 
     def get_fields(self, *args, **kwargs):
         """filter field"""
-        fields = super(TierSerializer, self).get_fields(*args, **kwargs)
+        fields = super(AgentProfileSerializer, self).get_fields(*args, **kwargs)
         request = self.context['request']
 
         if request.method != 'GET' and self.init_data is not None:
-            agent = self.init_data.get('agent')
-            if agent and agent.find('http://') == -1:
+            user = self.init_data.get('user')
+            if user and user.find('http://') == -1:
                 try:
-                    AgentProfile.objects.get(pk=int(agent), manager=request.user)
-                    self.init_data['agent'] = '/rest-api/agent-profile/%s/' % agent
+                    User.objects.get(pk=int(user))
+                    self.init_data['user'] = '/rest-api/users/%s/' % user
                 except:
-                    self.init_data['agent'] = ''
+                    self.init_data['user'] = ''
                     pass
 
-        fields['agent'].queryset = AgentProfile.objects.filter(manager=request.user)
+        fields['user'].queryset = User.objects.filter(is_staff=False, is_superuser=False)
 
         return fields
+

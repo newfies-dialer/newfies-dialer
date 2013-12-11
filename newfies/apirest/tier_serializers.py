@@ -100,6 +100,15 @@ class TierSerializer(serializers.HyperlinkedModelSerializer):
                     self.init_data['agent'] = ''
                     pass
 
+            queue = self.init_data.get('queue')
+            if queue and queue.find('http://') == -1:
+                try:
+                    Queue.objects.get(pk=int(queue), manager=request.user)
+                    self.init_data['queue'] = '/rest-api/queue/%s/' % queue
+                except:
+                    self.init_data['queue'] = ''
+                    pass
+
         fields['agent'].queryset = AgentProfile.objects.filter(manager=request.user)
         fields['queue'].queryset = Queue.objects.filter(manager=request.user)
 

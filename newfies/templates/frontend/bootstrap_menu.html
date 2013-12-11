@@ -69,7 +69,7 @@
                         <li class="{% ifcontains '/calendar_setting/' %}active{% endifcontains %}"><a href="/module/calendar_setting/">{% trans "appointment"|title %}</a></li>
                     {% endif %}
 
-                    {% if perms.agent.view_agent %}
+                    {% if perms.agent.view_agent and false %}
                         <li class="{% ifcontains '/agent/' %}active{% endifcontains %}"><a href="/module/agent/">{% trans "callcenter"|title %}</a></li>
                     {% endif %}
 

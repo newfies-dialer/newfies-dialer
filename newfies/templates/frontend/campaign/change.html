@@ -24,7 +24,7 @@
         <li class="{% if action == 'tabs-3' %}active{% endif %}"><a href="#tabs-3" data-toggle="tab">{% trans "voicemail"|title %}</a></li>
         {% endif %}
         <li class="{% if action == 'tabs-4' %}active{% endif %}"><a href="#tabs-4" data-toggle="tab">{% trans "schedule"|title %}</a></li>
-        <li class="{% if action == 'tabs-5' %}active{% endif %}"><a href="#tabs-5" data-toggle="tab">{% trans "callcenter"|title %}</a></li>
+        {# <li class="{% if action == 'tabs-5' %}active{% endif %}"><a href="#tabs-5" data-toggle="tab">{% trans "callcenter"|title %}</a></li> #}
 
     </ul>
     <form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
@@ -168,7 +168,7 @@
                                 {% get_fieldset voicemail as settings_fields from form %}
                                 {% for field in settings_fields %}
                                     <label for="{{ field.auto_id }}">{{ field.label|title }}</label><br/>
-                                    <div class="make-switch">
+                                    <div class="make-switch switch-small">
                                     {{ field }}
                                     </div>
                                 {% endfor %}
@@ -205,19 +205,17 @@
                 <legend>{% trans "schedule settings"|title %}</legend>
 
                 <div class="row">
-                    <div class="col-md-12">
-                        <div class="col-xs-10">
-                            <label>{% trans "week days"|title %}<label>
-                        </div>
+                    <div class="col-md-12 col-xs-12">
+                        <label>{% trans "week days"|title %}<label>
                     </div>
                 </div>
                 <div class="row">
-                    <div class="col-md-12 col-xs-10">
+                    <div class="col-md-12 col-xs-6">
                         {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
                         {% for field in settings_fields %}
                         <div class="col-md-1">
                             <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                            <div class="make-switch switch-mini">
+                            <div class="make-switch switch-small">
                             {{ field }}
                             </div>
                         </div>

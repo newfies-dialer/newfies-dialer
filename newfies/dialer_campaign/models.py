@@ -183,18 +183,14 @@ class Campaign(Model):
                                    help_text=_("outbound caller-Name"))
     #General Starting & Stopping date
     startingdate = models.DateTimeField(default=(lambda: datetime.now()),
-                                        verbose_name=_('start'),
-                                        help_text=_("date format: YYYY-mm-DD HH:MM:SS"))
+                                        verbose_name=_('start'))
     expirationdate = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(days=+1)),
-                                          verbose_name=_('finish'),
-                                          help_text=_("date format: YYYY-mm-DD HH:MM:SS"))
+                                          verbose_name=_('finish'))
     #Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00',
-                                        verbose_name=_('daily start time'),
-                                        help_text=_("time format: HH:MM:SS"))
+                                        verbose_name=_('daily start time'))
     daily_stop_time = models.TimeField(default='23:59:59',
-                                       verbose_name=_('daily stop time'),
-                                       help_text=_("time format: HH:MM:SS"))
+                                       verbose_name=_('daily stop time'))
     monday = models.BooleanField(default=True, verbose_name=_('monday'))
     tuesday = models.BooleanField(default=True, verbose_name=_('tuesday'))
     wednesday = models.BooleanField(default=True, verbose_name=_('wednesday'))

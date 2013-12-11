@@ -66,7 +66,7 @@
                         {% get_fieldset voicemail as settings_fields from form %}
                         {% for field in settings_fields %}
                             <label for="{{ field.auto_id }}">{{ field.label|title }}</label><br/>
-                            <div class="make-switch">
+                            <div class="make-switch switch-small">
                             {{ field }}
                             </div>
                         {% endfor %}

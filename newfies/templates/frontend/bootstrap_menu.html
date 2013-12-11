@@ -23,7 +23,7 @@
                         <li class="{% ifactive '/dashboard/' %}active{% endifactive %}"><a href="/dashboard/">{% trans "voice dashboard"|title %}</a></li>
                     {% endif %}
                     {% if perms.sms_module.view_sms_dashboard %}
-                        <li class="{% ifactive '/sms_dashboard/' %}active{% endifactive %}"><a href="/sms_dashboard/">{% trans "sms"|upper %} {% trans "dashboard"|title %}</a></li>
+                        <li class="{% ifactive '/sms_dashboard/' %}active{% endifactive %}"><a href="/sms_dashboard/">{% trans "SMS" %} {% trans "dashboard"|title %}</a></li>
                     {% endif %}
                 </ul>
             </li>
@@ -34,7 +34,7 @@
                     <li class="{% ifcontains '/campaign/' %}active{% endifcontains %}"><a href="/campaign/">{% trans "voice campaign"|title %}</a></li>
                   {% endif %}
                   {% if perms.sms_module.view_smscampaign %}
-                    <li class="{% ifcontains '/sms_campaign/' %}active{% endifcontains %}"><a href="/sms_campaign/">{% trans "sms"|upper %} {% trans "campaign"|title %}</a></li>
+                    <li class="{% ifcontains '/sms_campaign/' %}active{% endifcontains %}"><a href="/sms_campaign/">{% trans "SMS" %} {% trans "campaign"|title %}</a></li>
                   {% endif %}
                 </ul>
             </li>
@@ -92,17 +92,17 @@
                     <li {% if action == "tabs-1" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-1">
                         {% trans "account settings"|capfirst %}</a>
                     </li>
+                    <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">
+                        {% trans "account limits"|capfirst %}</a></li>
+                    <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-5">
+                        {% trans "language"|capfirst %}</a>
+                    </li>
+                    <li class="divider"></li>
                     <li class="{% ifactive '/user_notification/' %}active{% endifactive %}">
                         <a href="/user_notification/">{% trans "notifications"|title %}
                             <span class="badge">{{ notice_count }}</span>
                         </a>
                     </li>
-                    <li {% if action == "tabs-3" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-3">
-                        {% trans "account limits"|capfirst %}</a></li>
-                    <li {% if action == "tabs-5" %}class="active"{% endif %}><a href="/user_detail_change/?action=tabs-5">
-                        {% trans "change language"|capfirst %}</a>
-                    </li>
-                    <li class="divider"></li>
                     {% if perms.user_profile.view_api_explorer %}
                         <li><a href="/rest-api/" target="_blank"> {% trans "API Explorer" %}</a></li>
                     {% endif %}

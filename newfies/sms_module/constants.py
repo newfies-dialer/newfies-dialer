@@ -58,9 +58,9 @@ class SMS_NOTIFICATION_NAME(Choice):
 class SMS_REPORT_COLUMN_NAME(Choice):
     send_date = _('send date').title()
     recipient_number = _('recipient').title()
-    uuid = _('uuid').title()
+    uuid = _('UUID')
     status = _('status').title()
-    status_msg = _('status msg.').title()
+    status_msg = _('status msg').title()
     gateway = _('gateway').title()
 
 

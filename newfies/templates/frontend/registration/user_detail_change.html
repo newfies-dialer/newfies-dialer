@@ -2,7 +2,7 @@
 {% load i18n %}
 
 {% block content_header %}
-    <h1>{% trans "settings"|title %} <small>{% trans "password, notifications, account limits and number check"|capfirst %}</small></h1>
+    <h1>{% trans "settings"|title %} <small>{% trans "Password, account limits, phone number verification and language"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -11,8 +11,8 @@
     <li class="{% if action == 'tabs-1' %}active{% endif %}"><a href="#tabs-1" data-toggle="tab">{% trans "account"|title %}</a></li>
     <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "password"|title %}</a></li>
     <li class="{% if action == 'tabs-3' %}active{% endif %}"><a href="#tabs-3" data-toggle="tab">{% trans "account limits"|title %}</a></li>
-    <li class="{% if action == 'tabs-4' %}active{% endif %}"><a href="#tabs-4" data-toggle="tab">{% trans "number check"|title %}</a></li>
-    <li class="{% if action == 'tabs-5' %}active{% endif %}"><a href="#tabs-5" data-toggle="tab">{% trans "change language"|title %}</a></li>
+    <li class="{% if action == 'tabs-4' %}active{% endif %}"><a href="#tabs-4" data-toggle="tab">{% trans "phone number"|title %}</a></li>
+    <li class="{% if action == 'tabs-5' %}active{% endif %}"><a href="#tabs-5" data-toggle="tab">{% trans "language"|title %}</a></li>
 </ul>
 <div class="tab-content">
 
@@ -39,8 +39,8 @@
             {% csrf_token %}
             <div class="row">
                 <div class="form-group">
-                    <div class="col-xs-3">
-                        <label>{% trans "select language"|capfirst %}</label>
+                    <div class="col-md-3 col-xs-8">
+                        <label>{% trans "change the language"|capfirst %}</label>
                         <select name="language" id="language-container" class="form-control">
                             {% for lang in LANGUAGES %}
                             <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>

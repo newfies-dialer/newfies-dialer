@@ -96,9 +96,9 @@ This is the list of standard tags that will be automatically replaced:
     {city}
     {contact}  // This is the phone number
 
-If you need more flexibility, you can use the "Additional Parameters (Json)" field which allow you to add custom key-values that will be replaced.
+If you need more flexibility, you can use the "Additional Parameters (JSON)" field which allow you to add custom key-values that will be replaced.
 
-For example, let's add this in "Additional Parameters (Json)":
+For example, let's add this in "Additional Parameters (JSON)":
     {"company_name": "Canonical", "bonus" : "200", "currency" : "euro"}
 
 When you create a survey with a node that plays TTS, you can easily replace the key-values in the text.
@@ -193,10 +193,10 @@ There are 2 systems available to retry calls:
 
 Basic Retry::
 
-    Basic retry checks to see if the call has been answered, even for a very 
+    Basic retry checks to see if the call has been answered, even for a very
     short duration, this is regarded as a successful call. However if the call
-    is not answered, busy or unreachable, it will be considered as a failed 
-    call, and will be retried as defined in the "Dialer Settings"  section in 
+    is not answered, busy or unreachable, it will be considered as a failed
+    call, and will be retried as defined in the "Dialer Settings"  section in
     the campaign.
 
 
@@ -207,7 +207,7 @@ Completion Retry::
     reached a certain point in the survey and did not abandon the call early.
     Usually, one of the last nodes in the survey is ticked as "Survey Complete".
 
-    The Completion Retry interval and number of times to retry is set in the 
-    campaign under the "Dialer Completion Settings" secion. 
+    The Completion Retry interval and number of times to retry is set in the
+    campaign under the "Dialer Completion Settings" secion.
 
- 
+

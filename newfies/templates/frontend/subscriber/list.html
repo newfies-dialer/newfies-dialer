@@ -72,7 +72,7 @@ function delete_button()
                         <th>{% sort_link SUBSCRIBER_COLUMN_NAME.contact|capfirst col_name_with_order.contact %}</th>
                         <th>{% sort_link SUBSCRIBER_COLUMN_NAME.updated_date|capfirst col_name_with_order.updated_date %}</th>
                         <th>{% sort_link SUBSCRIBER_COLUMN_NAME.count_attempt|capfirst col_name_with_order.count_attempt %}</th>
-                        <th>{% sort_link SUBSCRIBER_COLUMN_NAME.completion_count_attempt|capfirst col_name_with_order.completion_count_attempt %}</th>
+                        <th>{% sort_link SUBSCRIBER_COLUMN_NAME.completion_count_attempt|title col_name_with_order.completion_count_attempt %}</th>
                         <th>{% sort_link SUBSCRIBER_COLUMN_NAME.status|capfirst col_name_with_order.status %}</th>
                         <th>{% sort_link SUBSCRIBER_COLUMN_NAME.disposition|capfirst col_name_with_order.disposition %}</th>
                         <th>{{ SUBSCRIBER_COLUMN_NAME.collected_data|capfirst }}</th>

@@ -41,14 +41,14 @@
     <div>&nbsp;</div>
 
     <ul class="nav nav-tabs">
-        <li class="{% if action == 'tabs-1' %}active{% endif %}"><a href="#tabs-1" data-toggle="tab">{% trans "VoIP calls" %}</a></li>
+        <li class="{% if action == 'tabs-1' %}active{% endif %}"><a href="#tabs-1" data-toggle="tab">{% trans "calls"|title %}</a></li>
         <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "daily report"|title %}</a></li>
     </ul>
 
     <div class="tab-content">
         <div id="tabs-1" class="tab-pane {% if action == 'tabs-1' %}active{% endif %}">
             <div class="graph_header">
-                {% trans "voip call detail records"|title %} -
+                {% trans "call detail records"|title %} -
                 <b>
                     {% if start_date  %}
                         {{ start_date|date:"jS N Y" }}

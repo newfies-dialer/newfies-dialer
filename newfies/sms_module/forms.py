@@ -127,7 +127,7 @@ for i in MESSAGE_STATUSES:
 
 class SMSDashboardForm(forms.Form):
     """SMSDashboard Form"""
-    smscampaign = forms.ChoiceField(label=_('sms campaign'), required=False)
+    smscampaign = forms.ChoiceField(label=_('SMS Campaign'), required=False)
     search_type = forms.ChoiceField(label=_('type'), required=False,
                                     initial=SEARCH_TYPE.D_Last_24_hours,
                                     choices=list(SEARCH_TYPE))
@@ -152,7 +152,7 @@ class SMSSearchForm(SearchForm):
     """SMS Report Search Parameters"""
     status = forms.ChoiceField(label=_('status'), choices=message_list,
                                required=False)
-    smscampaign = forms.ChoiceField(label=_('sms campaign'), required=False)
+    smscampaign = forms.ChoiceField(label=_('SMS Campaign'), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(SMSSearchForm, self).__init__(*args, **kwargs)
@@ -169,7 +169,7 @@ class AdminSMSSearchForm(AdminSearchForm):
     """SMS Report Search Parameters"""
     status = forms.ChoiceField(label=_('status'), choices=message_list,
                                required=False)
-    smscampaign = forms.ChoiceField(label=_('sms campaign'), required=False)
+    smscampaign = forms.ChoiceField(label=_('SMS Campaign'), required=False)
 
     def __init__(self, *args, **kwargs):
         super(AdminSMSSearchForm, self).__init__(*args, **kwargs)

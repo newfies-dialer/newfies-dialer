@@ -130,9 +130,9 @@ class Campaign(Model):
         * ``callmaxduration`` - Max retry allowed per user
         * ``maxretry`` - Max retry allowed per user
         * ``intervalretry`` - Time to wait between retries in seconds
-        * ``completion_maxretry`` - Amount of retries until a contact is completed
-        * ``completion_intervalretry`` - Time delay in seconds before retrying \
-        contact for completion
+        * ``completion_maxretry`` - Number of retries until a contact completes survey
+        * ``completion_intervalretry`` - Time delay in seconds before retrying contact \
+            to complete survey
         * ``calltimeout`` - Number of seconds to timeout on calls
         * ``aleg_gateway`` - Gateway to use to reach the contact
         * ``extra_data`` - Additional data to pass to the application
@@ -179,8 +179,8 @@ class Campaign(Model):
                                 verbose_name=_("Caller ID Number"),
                                 help_text=_("outbound Caller ID"))
     caller_name = models.CharField(max_length=80, blank=True,
-                                   verbose_name=_("caller name"),
-                                   help_text=_("outbound caller-Name"))
+                                   verbose_name=_("Caller Name"),
+                                   help_text=_("outbound Caller Name"))
     #General Starting & Stopping date
     startingdate = models.DateTimeField(default=(lambda: datetime.now()),
                                         verbose_name=_('start'))
@@ -214,10 +214,10 @@ class Campaign(Model):
                                         help_text=_("time delay in seconds before retrying contact"))
     completion_maxretry = models.IntegerField(default='0', blank=True, null=True,
                                               verbose_name=_('completion max retries'),
-                                              help_text=_("amount of retries until a contact is completed"))
+                                              help_text=_("number of retries until a contact completes survey"))
     completion_intervalretry = models.IntegerField(default='900', blank=True, null=True,
                                                    verbose_name=_('completion time between retries'),
-                                                   help_text=_("time delay in seconds before retrying contact for completion"))
+                                                   help_text=_("time delay in seconds before retrying contact to complete survey"))
     calltimeout = models.IntegerField(default='45', blank=True, null=True,
                                       verbose_name=_('timeout on call'),
                                       help_text=_("connection timeout in seconds"))

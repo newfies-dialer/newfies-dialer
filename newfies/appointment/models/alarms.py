@@ -62,10 +62,10 @@ class Alarm(models.Model):
                                    verbose_name=_("URL confirm"))
     # When transfering for reschedule
     phonenumber_transfer = models.CharField(max_length=50, blank=True, null=True,
-                                            verbose_name=_("phonenumber transfer"))
+                                            verbose_name=_("phone number transfer"))
     #send SMS if all attempts to contact that persons didn't work
     phonenumber_sms_failure = models.CharField(max_length=50, blank=True, null=True,
-                                              verbose_name=_("phonenumber SMS failure"))
+                                              verbose_name=_("phone number SMS failure"))
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('created date'))
 
     class Meta:

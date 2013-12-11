@@ -32,7 +32,7 @@ from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
 
 
-def get_campaign_phonebook_list(user):
+def get_phonebook_list(user):
     """Return phonebook list of logged in user"""
     list_pb = []
     list_pb.append((0, '---'))
@@ -113,7 +113,7 @@ class CampaignForm(ModelForm):
             list_gw = []
             dnc_list = []
 
-            self.fields['phonebook'].choices = get_campaign_phonebook_list(user)
+            self.fields['phonebook'].choices = get_phonebook_list(user)
 
             list = user.get_profile().userprofile_gateway.all()
             gw_list = ((l.id, l.name) for l in list)
@@ -217,7 +217,7 @@ class DuplicateCampaignForm(ModelForm):
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
-            self.fields['phonebook'].choices = get_campaign_phonebook_list(user)
+            self.fields['phonebook'].choices = get_phonebook_list(user)
 
 
 class CampaignAdminForm(ModelForm):
@@ -332,4 +332,4 @@ class CampaignSearchForm(forms.Form):
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
-            self.fields['phonebook_id'].choices = get_campaign_phonebook_list(user)
+            self.fields['phonebook_id'].choices = get_phonebook_list(user)

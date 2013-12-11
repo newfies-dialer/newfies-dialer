@@ -30,13 +30,13 @@ from frontend.function_def import calculate_date
 from frontend.constants import SEARCH_TYPE
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import get_pagination_vars, ceil_strdate,\
-    percentage
-
+    percentage, getvar, unset_session_var
 from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
 from constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
     SMS_NOTIFICATION_NAME, SMS_REPORT_COLUMN_NAME, COLOR_SMS_DISPOSITION,\
     SMS_SUBSCRIBER_STATUS, SMS_MESSAGE_STATUS
-from forms import SMSCampaignForm, SMSDashboardForm, SMSSearchForm
+from forms import SMSCampaignForm, SMSDashboardForm, SMSSearchForm,\
+    SMSCampaignSearchForm
 from function_def import check_sms_dialer_setting
 from tasks import sms_collect_subscriber
 from datetime import datetime
@@ -181,6 +181,7 @@ def sms_campaign_list(request):
 
         * List all sms campaigns belonging to the logged in user
     """
+    form = SMSCampaignSearchForm(request.user)
     sort_col_field_list = ['id', 'name', 'startingdate', 'status',
                            'totalcontact']
     default_sort_field = 'id'
@@ -189,14 +190,62 @@ def sms_campaign_list(request):
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
 
-    smscampaign_list = SMSCampaign.objects.filter(
-        user=request.user).order_by(sort_order)
+    phonebook_id = ''
+    status = 'all'
+    search_tag = 1
+    if request.method == 'POST':
+        form = SMSCampaignSearchForm(request.user, request.POST)
+        if form.is_valid():
+            field_list = ['phonebook_id', 'status']
+            unset_session_var(request, field_list)
+
+            phonebook_id = getvar(request, 'phonebook_id', setsession=True)
+            status = getvar(request, 'status', setsession=True)
+
+    post_var_with_page = 0
+    try:
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            post_var_with_page = 1
+            phonebook_id = request.session.get('session_phonebook_id')
+            status = request.session.get('session_status')
+            form = SMSCampaignSearchForm(request.user, initial={'status': status,
+                                                                'phonebook_id': phonebook_id})
+        else:
+            post_var_with_page = 1
+            if request.method == 'GET':
+                post_var_with_page = 0
+    except:
+        pass
+
+    if post_var_with_page == 0:
+        # default
+        # unset session var
+        field_list = ['status', 'phonebook_id']
+        unset_session_var(request, field_list)
+
+    kwargs = {}
+    if phonebook_id and phonebook_id != '0':
+        kwargs['phonebook__id__in'] = [int(phonebook_id)]
+
+    if status and status != 'all':
+        kwargs['status'] = status
+
+    smscampaign_list = SMSCampaign.objects.filter(user=request.user)
+    smscampaign_count = smscampaign_list.count()
+    if kwargs:
+        all_smscampaign_list = smscampaign_list.filter(**kwargs).order_by(sort_order)
+        smscampaign_list = all_smscampaign_list[start_page:end_page]
+        smscampaign_count = all_smscampaign_list.count()
 
     template = 'frontend/sms_campaign/list.html'
     data = {
+        'form': form,
         'smscampaign_list': smscampaign_list,
-        'total_campaign': smscampaign_list.count(),
+        'search_tag': search_tag,
+        'total_campaign': smscampaign_count,
         'PAGE_SIZE': PAGE_SIZE,
         'SMS_CAMPAIGN_COLUMN_NAME': SMS_CAMPAIGN_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],

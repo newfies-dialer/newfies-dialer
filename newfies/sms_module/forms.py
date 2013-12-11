@@ -24,6 +24,8 @@ from models import SMSCampaign, get_unique_code
 from function_def import field_list
 from frontend.constants import SEARCH_TYPE
 from bootstrap3_datetime.widgets import DateTimePicker
+from dialer_campaign.forms import get_phonebook_list, \
+    campaign_status_list as sms_campaign_status_list
 
 
 class SMSCampaignForm(ModelForm):
@@ -63,13 +65,7 @@ class SMSCampaignForm(ModelForm):
 
         if user:
             self.fields['ds_user'].initial = user
-            list_pb = []
-
-            list_pb.append((0, '---'))
-            pb_list = field_list("phonebook", user)
-            for i in pb_list:
-                list_pb.append((i[0], i[1]))
-            self.fields['phonebook'].choices = list_pb
+            self.fields['phonebook'].choices = get_phonebook_list(user)
 
     def clean(self):
         cleaned_data = self.cleaned_data
@@ -139,6 +135,19 @@ class SMSDashboardForm(forms.Form):
             self.fields['smscampaign'].choices = campaign_choices
 
 
+def get_smscampaign_list(user=None):
+    """get list of smscampaign"""
+    camp_list = []
+    camp_list.append((0, '---'))
+    if user is None:
+        pb_list = field_list("smscampaign")
+    else:
+        pb_list = field_list("smscampaign", user)
+    for i in pb_list:
+        camp_list.append((int(i[0]), i[1]))
+    return camp_list
+
+
 class SMSSearchForm(SearchForm):
     """SMS Report Search Parameters"""
     status = forms.ChoiceField(label=_('status'), choices=message_list,
@@ -153,12 +162,7 @@ class SMSSearchForm(SearchForm):
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
-            camp_list = []
-            camp_list.append((0, '---'))
-            pb_list = field_list("smscampaign", user)
-            for i in pb_list:
-                camp_list.append((int(i[0]), i[1]))
-            self.fields['smscampaign'].choices = camp_list
+            self.fields['smscampaign'].choices = get_smscampaign_list(user)
 
 
 class AdminSMSSearchForm(AdminSearchForm):
@@ -174,10 +178,17 @@ class AdminSMSSearchForm(AdminSearchForm):
         ]
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
+        self.fields['smscampaign'].choices = get_smscampaign_list()
 
-        camp_list = []
-        camp_list.append((0, '---'))
-        pb_list = field_list("smscampaign")
-        for i in pb_list:
-            camp_list.append((int(i[0]), i[1]))
-        self.fields['smscampaign'].choices = camp_list
+
+class SMSCampaignSearchForm(forms.Form):
+    phonebook_id = forms.ChoiceField(label=_("phonebook"), )
+    status = forms.ChoiceField(label=_("status"),
+                               choices=sms_campaign_status_list, )
+
+    def __init__(self, user, *args, **kwargs):
+        super(SMSCampaignSearchForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+        if user:
+            self.fields['phonebook_id'].choices = get_phonebook_list(user)

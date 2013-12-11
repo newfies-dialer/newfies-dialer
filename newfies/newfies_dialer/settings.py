@@ -98,7 +98,7 @@ MEDIA_ROOT = os.path.join(os.path.dirname(__file__), 'usermedia')
 # URL that handles the media served from MEDIA_ROOT. Make sure to use a
 # trailing slash if there is a path component (optional in other cases).
 # Examples: "http://media.lawrence.com", "http://example.com/media/"
-MEDIA_URL = '/mediafiles/'
+MEDIA_URL = '/usermedia/'
 
 # Additional locations of static files
 STATICFILES_DIRS = (

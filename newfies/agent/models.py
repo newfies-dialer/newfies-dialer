@@ -120,7 +120,7 @@ def common_signal(manager_id):
     """common_signal for agentprofile model for post_save & post_delete"""
     # from utils.callcenter_config_xml import create_callcenter_config_xml
     # create_callcenter_config_xml(manager_id)
-    print "commented the above for test"
+    pass
 
 
 def post_save_agentprofile(sender, **kwargs):

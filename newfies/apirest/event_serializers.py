@@ -27,7 +27,9 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "myrule", "frequency": "YEARLY", "params": "1", "creator": "/rest-api/calendar-user/3/", "calendar": "/rest-api/calendar/3/"}' http://localhost:8000/rest-api/event/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"title": "event_title", "start": "2013-12-10 12:34:43", "end": "2013-12-15 14:43:32", "creator": "http://127.0.0.1:8000/rest-api/calendar-user/4/", "end_recurring_period": "2013-12-27 12:23:34", "calendar": "http://127.0.0.1:8000/rest-api/calendar/1/", "status": "1"}' http://localhost:8000/rest-api/event/
+
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"title": "event_title", "start": "2013-12-10 12:34:43", "end": "2013-12-15 14:43:32", "creator": "4", "end_recurring_period": "2013-12-27 12:23:34", "calendar": "1", "status": "1"}' http://localhost:8000/rest-api/event/
 
         Response::
 
@@ -99,6 +101,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         """filter content_type field"""
         fields = super(EventSerializer, self).get_fields(*args, **kwargs)
         request = self.context['request']
+        calendar_user_list = get_calendar_user_id_list(request.user)
         if request.method != 'GET' and self.init_data is not None:
             creator = self.init_data.get('creator')
             if creator and creator.find('http://') == -1:
@@ -112,7 +115,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
             calendar = self.init_data.get('calendar')
             if calendar and calendar.find('http://') == -1:
                 try:
-                    Calendar.objects.get(pk=calendar, user_id=creator)
+                    Calendar.objects.get(pk=calendar, user_id__in=calendar_user_list)
                     self.init_data['calendar'] = '/rest-api/calendar/%s/' % calendar
                 except:
                     self.init_data['calendar'] = ''
@@ -121,13 +124,12 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
             parent_event = self.init_data.get('parent_event')
             if parent_event and parent_event.find('http://') == -1:
                 try:
-                    Event.objects.get(pk=parent_event)
+                    Event.objects.get(pk=parent_event, calendar__user_id__in=calendar_user_list)
                     self.init_data['parent_event'] = '/rest-api/event/%s/' % parent_event
                 except:
                     self.init_data['parent_event'] = ''
                     pass
 
-        calendar_user_list = get_calendar_user_id_list(request.user)
         fields['creator'].queryset = CalendarUser.objects.filter(id__in=calendar_user_list).order_by('id')
         fields['calendar'].queryset = Calendar.objects.filter(user_id__in=calendar_user_list).order_by('id')
 

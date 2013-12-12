@@ -41,7 +41,9 @@
     <br/><br/>
 
     {% if action == 'add' %}
-        <input id="add" type="submit" class="btn btn-primary" value="{% trans 'save'|title %}" />
+        <button type="submit" class="btn btn-primary" value="{% trans 'save'|title %}">
+            <i class="fa fa-save fa-lg"></i> {% trans "save"|title %}
+        </button>
     {% endif %}
 
 

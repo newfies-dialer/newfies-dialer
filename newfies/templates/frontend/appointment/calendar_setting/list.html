@@ -36,7 +36,9 @@
         </div>
 
         {% if perms.appointment.add_calendarsetting %}
-            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|title %}</a>
+            <button type="button" class="btn btn-info" onclick="add_button()">
+                <i class="fa fa-plus fa-lg"></i> {% trans "add"|title %}
+            </button>
         {% endif %}
     </div>
 </div>

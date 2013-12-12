@@ -78,7 +78,9 @@
             </ul>
         </div>
         {% if perms.dialer_campaign.add_campaign %}
-            <a class="btn btn-info" href="#" onclick="add_button()">{% trans "add"|capfirst %}</a>
+            <button type="button" class="btn btn-info" onclick="add_button()">
+                <i class="fa fa-plus fa-lg"></i> {% trans "add"|title %}
+            </button>
         {% endif %}
     </div>
 </div>

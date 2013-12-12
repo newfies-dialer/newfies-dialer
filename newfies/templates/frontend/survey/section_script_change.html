@@ -74,9 +74,13 @@
                     </div>
                     <div class="modal-footer" align="right">
                         {% if action == 'update' %}
-                            <input id="id_update" name="update" class="btn btn-primary" type="submit" value="{% trans 'update'|title %}" />
+                            <button type="submit" id="id_update" name="update" class="btn btn-primary" value="update">
+                                <i class="fa fa-edit fa-lg"></i> {% trans "update"|title %}
+                            </button>
                         {% else %}
-                            <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans 'save'|title %}" />
+                            <button type="submit" id="id_add" name="add" class="btn btn-primary" value="{% trans 'save'|title %}">
+                                <i class="fa fa-save fa-lg"></i> {% trans "save"|title %}
+                            </button>
                         {% endif %}
                         <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</bu
                     </div>

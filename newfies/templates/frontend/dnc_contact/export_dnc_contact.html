@@ -36,7 +36,9 @@
             </div>
         </div>
         <div class="text-right">
-            <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
+            <button type="submit" name="submit" class="btn btn-primary" value="submit">
+                <i class="fa fa-save fa-lg"></i> {% trans "save"|capfirst %}
+            </button>
         </div>
     </form>
 {% endblock %}

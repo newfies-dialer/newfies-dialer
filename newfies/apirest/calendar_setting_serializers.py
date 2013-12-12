@@ -30,7 +30,9 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "cal_setting", "callerid": "mycalendar", "caller_name": "cid name", "call_timeout": "1", "survey": "1", "aleg_gateway": "1", "sms_gateway": "1"}' http://localhost:8000/rest-api/calendar-setting/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "calendar_setting", "callerid": "123456", "caller_name": "xyz", "user": "http://127.0.0.1:8000/rest-api/user/2/", "survey": "http://127.0.0.1:8000/rest-api/sealed-survey/1/", "aleg_gateway": "http://127.0.0.1:8000/rest-api/gateway/1/", "sms_gateway": "http://127.0.0.1:8000/sms-gateway/1/"}' http://localhost:8000/rest-api/calendar-setting/
+
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "calendar_setting", "callerid": "123456", "caller_name": "xyz", "user": "2", "survey": "1", "aleg_gateway": "1", "sms_gateway": "1"}' http://localhost:8000/rest-api/calendar-setting/
 
         Response::
 

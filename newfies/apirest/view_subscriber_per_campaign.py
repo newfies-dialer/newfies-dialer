@@ -19,9 +19,6 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from dialer_campaign.models import Campaign
-import logging
-
-logger = logging.getLogger('newfies.filelog')
 
 
 class SubscriberPerCampaignList(APIView):
@@ -40,7 +37,6 @@ class SubscriberPerCampaignList(APIView):
         except:
             error_msg = "Campaign ID does not exists!"
             error['error'] = error_msg
-            logger.error(error_msg)
             return Response(error)
 
         if contact_id and contact_id > 0:

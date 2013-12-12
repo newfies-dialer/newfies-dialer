@@ -91,6 +91,7 @@ class SMSGatewaySerializer(serializers.HyperlinkedModelSerializer):
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
     """
+    _default_view_name = '%(app_label)s-%(model_name)s-detail'
 
     class Meta:
         model = SMS_Gateway

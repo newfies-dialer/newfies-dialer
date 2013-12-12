@@ -32,7 +32,7 @@ def check_dialer_setting(request, check_for, field_value=''):
     """
     try:
         # DialerSettings is linked with the User
-        dialer_set_obj = request.user.get_profile().dialersetting
+        dialer_set_obj = UserProfile.objects.get(user=request.user).dialersetting
         if dialer_set_obj:
             # check running campaign for User
             if check_for == "campaign":
@@ -114,7 +114,7 @@ def dialer_setting_limit(request, limit_for):
     """
     try:
         # DialerSettings is linked with the User
-        dialer_set_obj = request.user.get_profile().dialersetting
+        dialer_set_obj = UserProfile.objects.get(user=request.user).dialersetting
         if limit_for == "contact":
             return str(dialer_set_obj.max_contact)
         if limit_for == "subscriber":

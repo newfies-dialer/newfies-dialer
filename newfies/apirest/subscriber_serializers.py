@@ -95,7 +95,7 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
     description = serializers.CharField(required=False, max_length=100)
     additional_vars = serializers.CharField(required=False, max_length=100)
     country = serializers.ChoiceField(required=False, choices=COUNTRIES)
-    #status = serializers.ChoiceField(required=False, choices=list(CONTACT_STATUS), default=CONTACT_STATUS.ACTIVE)
+    #status = serializers.ChoiceField(required=False)
     phonebook_id = serializers.IntegerField(required=True)
 
     class Meta:
@@ -130,12 +130,12 @@ class SubscriberSerializer(serializers.HyperlinkedModelSerializer):
                     del fields[i]
 
                 fields['contact'] = serializers.CharField(required=True, max_length=100)
-                fields['address'] = serializers.CharField(required=True, max_length=100)
-                fields['city'] = serializers.CharField(required=True, max_length=100)
-                fields['state'] = serializers.CharField(required=True, max_length=100)
+                fields['address'] = serializers.CharField(required=False, max_length=100)
+                fields['city'] = serializers.CharField(required=False, max_length=100)
+                fields['state'] = serializers.CharField(required=False, max_length=100)
                 fields['country'] = serializers.ChoiceField(required=False, choices=COUNTRIES)
-                fields['description'] = serializers.CharField(required=True, max_length=100)
-                fields['unit_number'] = serializers.CharField(required=True, max_length=100)
+                fields['description'] = serializers.CharField(required=False, max_length=100)
+                fields['unit_number'] = serializers.CharField(required=False, max_length=100)
                 fields['additional_vars'] = serializers.CharField(required=False, max_length=100,
                     help_text="enter the list of parameters in Json format, e.g. {\"age\": \"32\"}")
 

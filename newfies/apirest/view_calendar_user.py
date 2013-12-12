@@ -17,12 +17,13 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from appointment.models.users import CalendarUser
+from appointment.models.users import CalendarUser, CalendarUserProfile,\
+    CalendarSetting
 from appointment.models.calendars import Calendar
 from appointment.function_def import get_calendar_user_id_list, \
     get_all_calendar_user_id_list
-
 from apirest.calendar_user_serializers import CalendarUserSerializer
+from user_profile.models import Manager
 
 
 class CalendarUserViewSet(viewsets.ModelViewSet):
@@ -33,6 +34,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
     serializer_class = CalendarUserSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
+
 
     def list(self, request, *args, **kwargs):
         """get list of all CalendarUser objects"""
@@ -71,7 +73,16 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
         return Response(final_data)
 
     def post_save(self, obj, created=False):
-        """Create Calendar object with default name & current Calendar User"""
+        """Create Calendar User object with default name & current Calendar User"""
+        obj.set_password(self.request.DATA['password'])
+        obj.save()
+
+        CalendarUserProfile.objects.create(
+            user=obj,
+            manager=Manager.objects.get(username=self.request.user),
+            calendar_setting=CalendarSetting.objects.filter(user=self.request.user)[0]
+        )
+
         Calendar.objects.create(
             name='default',
             user=obj,

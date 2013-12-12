@@ -27,7 +27,9 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"alarm_phonenumber": "123456789", "alarm_email": "xyz@gmail.com"}' http://localhost:8000/rest-api/alarm/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"alarm_phonenumber": "1234567", "alarm_email": "xyz@gmail.com", "daily_start": "12:34:43", "daily_stop": "14:43:32", "method": "1", "survey": "http://127.0.0.1:8000/rest-api/sealed-survey/1/", "event": "http://127.0.0.1:8000/rest-api/event/1/", "result": "1"}' http://localhost:8000/rest-api/alarm/
+
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"alarm_phonenumber": "1234567", "alarm_email": "xyz@gmail.com", "daily_start": "12:34:43", "daily_stop": "14:43:32", "method": "1", "survey": "1", "event": "1", "result": "1"}' http://localhost:8000/rest-api/alarm/
 
         Response::
 
@@ -83,7 +85,7 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "mylittle phonebook"}' http://localhost:8000/rest-api/alarm/%alarm-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"alarm_phonenumber": "1234567", "alarm_email": "xyz@gmail.com", "daily_start": "12:34:43", "daily_stop": "14:43:32", "method": "1", "survey": "1", "event": "1", "result": "1"}' http://localhost:8000/rest-api/alarm/%alarm-id%/
 
         Response::
 
@@ -103,11 +105,12 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
         """filter content_type field"""
         fields = super(AlarmSerializer, self).get_fields(*args, **kwargs)
         request = self.context['request']
+        calendar_user_list = get_calendar_user_id_list(request.user)
         if request.method != 'GET' and self.init_data is not None:
             event = self.init_data.get('event')
             if event and event.find('http://') == -1:
                 try:
-                    Event.objects.get(pk=event)
+                    Event.objects.get(pk=event, calendar__user_id__in=calendar_user_list)
                     self.init_data['event'] = '/rest-api/event/%s/' % event
                 except:
                     self.init_data['event'] = ''
@@ -122,7 +125,6 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
                     self.init_data['survey'] = ''
                     pass
 
-        calendar_user_list = get_calendar_user_id_list(request.user)
         fields['event'].queryset = Event.objects.filter(calendar__user_id__in=calendar_user_list).order_by('id')
         fields['survey'].queryset = Survey.objects.filter(user=request.user)
         return fields

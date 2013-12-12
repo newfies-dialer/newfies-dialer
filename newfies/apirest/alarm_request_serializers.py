@@ -107,7 +107,7 @@ class AlarmRequestSerializer(serializers.HyperlinkedModelSerializer):
             alarm = self.init_data.get('alarm')
             if alarm and alarm.find('http://') == -1:
                 try:
-                    Alarm.objects.filter(pk=alarm, event__creator_id__in=calendar_user_list)
+                    Alarm.objects.get(pk=alarm, event__creator_id__in=calendar_user_list)
                     self.init_data['alarm'] = '/rest-api/alarm/%s/' % alarm
                 except:
                     self.init_data['alarm'] = ''

@@ -29,8 +29,6 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
 
             curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"alarm_phonenumber": "1234567", "alarm_email": "xyz@gmail.com", "daily_start": "12:34:43", "daily_stop": "14:43:32", "method": "1", "survey": "http://127.0.0.1:8000/rest-api/sealed-survey/1/", "event": "http://127.0.0.1:8000/rest-api/event/1/", "result": "1"}' http://localhost:8000/rest-api/alarm/
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"alarm_phonenumber": "1234567", "alarm_email": "xyz@gmail.com", "daily_start": "12:34:43", "daily_stop": "14:43:32", "method": "1", "survey": "1", "event": "1", "result": "1"}' http://localhost:8000/rest-api/alarm/
-
         Response::
 
             HTTP/1.0 201 CREATED
@@ -106,24 +104,6 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
         fields = super(AlarmSerializer, self).get_fields(*args, **kwargs)
         request = self.context['request']
         calendar_user_list = get_calendar_user_id_list(request.user)
-        if request.method != 'GET' and self.init_data is not None:
-            event = self.init_data.get('event')
-            if event and event.find('http://') == -1:
-                try:
-                    Event.objects.get(pk=event, calendar__user_id__in=calendar_user_list)
-                    self.init_data['event'] = '/rest-api/event/%s/' % event
-                except:
-                    self.init_data['event'] = ''
-                    pass
-
-            survey = self.init_data.get('survey')
-            if survey and survey.find('http://') == -1:
-                try:
-                    Survey.objects.get(pk=survey, user=request.user)
-                    self.init_data['survey'] = '/rest-api/sealed-survey/%s/' % survey
-                except:
-                    self.init_data['survey'] = ''
-                    pass
 
         fields['event'].queryset = Event.objects.filter(calendar__user_id__in=calendar_user_list).order_by('id')
         fields['survey'].queryset = Survey.objects.filter(user=request.user)

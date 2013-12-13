@@ -19,8 +19,6 @@ from rest_framework import serializers
 from appointment.models.users import CalendarSetting
 from survey.models import Survey
 from audiofield.models import AudioFile
-from dialer_gateway.models import Gateway
-from sms.models import Gateway as SMSGateway
 from user_profile.models import UserProfile
 
 
@@ -31,8 +29,6 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
         CURL Usage::
 
             curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "calendar_setting", "callerid": "123456", "caller_name": "xyz", "user": "http://127.0.0.1:8000/rest-api/user/2/", "survey": "http://127.0.0.1:8000/rest-api/sealed-survey/1/", "aleg_gateway": "http://127.0.0.1:8000/rest-api/gateway/1/", "sms_gateway": "http://127.0.0.1:8000/rest-api/sms-gateway/1/"}' http://localhost:8000/rest-api/calendar-setting/
-
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "calendar_setting", "callerid": "123456", "caller_name": "xyz", "user": "2", "survey": "1", "aleg_gateway": "1", "sms_gateway": "1"}' http://localhost:8000/rest-api/calendar-setting/
 
         Response::
 
@@ -100,58 +96,17 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = CalendarSetting
-        fields = ('url', 'label', 'callerid', 'caller_name', 'call_timeout',
-                  'user', 'survey', 'aleg_gateway', 'sms_gateway', 'voicemail',
-                  'amd_behavior', 'voicemail_audiofile')
-
 
     def get_fields(self, *args, **kwargs):
         """filter survey field"""
         fields = super(CalendarSettingSerializer, self).get_fields(*args, **kwargs)
         request = self.context['request']
 
-        if request.method != 'GET' and self.init_data is not None:
-            survey = self.init_data.get('survey')
-            if survey and survey.find('http://') == -1:
-                try:
-                    Survey.objects.get(pk=int(survey), user=request.user)
-                    self.init_data['survey'] = '/rest-api/sealed-survey/%s/' % survey
-                except:
-                    self.init_data['survey'] = ''
-                    pass
-
-            aleg_gateway = self.init_data.get('aleg_gateway')
-            if aleg_gateway and aleg_gateway.find('http://') == -1:
-                try:
-                    Gateway.objects.get(pk=int(aleg_gateway))
-                    self.init_data['aleg_gateway'] = '/rest-api/gateway/%s/' % aleg_gateway
-                except:
-                    self.init_data['aleg_gateway'] = ''
-                    pass
-
-            sms_gateway = self.init_data.get('sms_gateway')
-            if sms_gateway and sms_gateway.find('http://') == -1:
-                try:
-                    SMSGateway.objects.get(pk=int(sms_gateway))
-                    self.init_data['sms_gateway'] = '/rest-api/sms-gateway/%s/' % sms_gateway
-                except:
-                    self.init_data['sms_gateway'] = ''
-                    pass
-
-            if settings.AMD:
-                voicemail_audiofile = self.init_data.get('voicemail_audiofile')
-                if voicemail_audiofile and voicemail_audiofile.find('http://') == -1:
-                    try:
-                        AudioFile.objects.get(pk=int(survey), user=request.user)
-                        self.init_data['voicemail_audiofile'] = '/rest-api/audio_files/%s/' % voicemail_audiofile
-                    except:
-                        self.init_data['voicemail_audiofile'] = ''
-                        pass
-
         if request.method != 'GET':
             fields['survey'].queryset = Survey.objects.filter(user=request.user)
 
         fields['aleg_gateway'].queryset = UserProfile.objects.get(user=request.user).userprofile_gateway.all()
-        fields['voicemail_audiofile'].queryset = AudioFile.objects.filter(user=request.user)
+        if settings.AMD:
+            fields['voicemail_audiofile'].queryset = AudioFile.objects.filter(user=request.user)
 
         return fields

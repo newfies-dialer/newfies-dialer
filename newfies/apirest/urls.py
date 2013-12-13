@@ -45,12 +45,14 @@ from apirest.view_rule import RuleViewSet
 from apirest.view_event import EventViewSet
 from apirest.view_alarm import AlarmViewSet
 from apirest.view_alarm_request import AlarmRequestViewSet
+from apirest.view_sms_campaign import SMSCampaignViewSet
 #from agent.api_views import AgentViewSet
 #from apirest.view_agent_profile import AgentProfileViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'campaigns', CampaignViewSet)
+router.register(r'sms-campaigns', SMSCampaignViewSet)
 router.register(r'audio-files', AudioFileViewSet)
 router.register(r'dnc-list', DNCViewSet)
 router.register(r'dnc-contact', DNCContactViewSet)

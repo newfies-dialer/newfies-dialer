@@ -83,7 +83,7 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"alarm_phonenumber": "1234567", "alarm_email": "xyz@gmail.com", "daily_start": "12:34:43", "daily_stop": "14:43:32", "method": "1", "survey": "1", "event": "1", "result": "1"}' http://localhost:8000/rest-api/alarm/%alarm-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"alarm_phonenumber": "1234567", "alarm_email": "xyz@gmail.com", "daily_start": "12:34:43", "daily_stop": "14:43:32", "method": "1", "survey": "http://127.0.0.1:8000/rest-api/sealed-survey/1/", "event": "http://127.0.0.1:8000/rest-api/event/1/", "result": "1"}' http://localhost:8000/rest-api/alarm/%alarm-id%/
 
         Response::
 
@@ -94,6 +94,13 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
             Content-Length: 0
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
+
+    **Delete**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/alarm/%alarm-id%/
+
     """
 
     class Meta:

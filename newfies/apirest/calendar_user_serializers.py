@@ -50,4 +50,5 @@ class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):
 
     class Meta:
         model = CalendarUser
-        fields = ('url', 'username', 'password', 'last_name', 'first_name', 'email', 'groups')
+        fields = ('url', 'username', 'password', 'last_name', 'first_name',
+                  'email', 'groups')

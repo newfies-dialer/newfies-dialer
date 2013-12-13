@@ -20,9 +20,9 @@ from agent.api_views import (AgentProfileViewSet,
 
 # Create a router and register our viewsets with it.
 router = DefaultRouter()
-router.register(r'agents_profile', AgentProfileViewSet)
-router.register(r'agents_password', AgentPasswordViewSet, 'agents_password')
-router.register(r'agent_subscriber', AgentSubscriberViewSet, 'agent_subscriber')
+router.register(r'agents-profile', AgentProfileViewSet)
+router.register(r'agents-password', AgentPasswordViewSet, 'agents_password')
+router.register(r'agent-subscriber', AgentSubscriberViewSet, 'agent_subscriber')
 
 # # The API URLs are now determined automatically by the router.
 # # Additionally, we include the login URLs for the browseable API.
@@ -32,7 +32,7 @@ urlpatterns = patterns('',
     url(r'^agent-rest-api/api-auth/', include('rest_framework.urls',
                                namespace='rest_framework')),
 
-    url(r'^agent-rest-api/agent_queue_status/(?P<agent_id>[0-9]+)/$', AgentQueueStatusViewSet.as_view(), name="agent_queue_status"),
+    url(r'^agent-rest-api/agent-queue-status/(?P<agent_id>[0-9]+)/$', AgentQueueStatusViewSet.as_view(), name="agent_queue_status"),
 )
 
 # curl -i -X POST http://127.0.0.1:8000/api/api-token-auth/ -d "username=testagent&password=testagent"

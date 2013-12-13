@@ -18,6 +18,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.users import CalendarUserProfile
 from apirest.calendar_user_profile_serializers import CalendarUserProfileSerializer
+from user_profile.models import Manager
 
 
 class CalendarUserProfileViewSet(viewsets.ModelViewSet):
@@ -29,3 +30,6 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
     lookup_field = ('user_id')
+
+    def pre_save(self, obj):
+        obj.manager = Manager.objects.get(username=self.request.user)

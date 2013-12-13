@@ -13,9 +13,10 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.contrib.auth.models import User
+
 from rest_framework import serializers
-from agent.models import AgentProfile
+from agent.models import Agent, AgentProfile
+from appointment.function_def import get_calendar_user_id_list
 
 
 class AgentProfileSerializer(serializers.HyperlinkedModelSerializer):
@@ -88,18 +89,8 @@ class AgentProfileSerializer(serializers.HyperlinkedModelSerializer):
         """filter field"""
         fields = super(AgentProfileSerializer, self).get_fields(*args, **kwargs)
         request = self.context['request']
-
-        if request.method != 'GET' and self.init_data is not None:
-            user = self.init_data.get('user')
-            if user and user.find('http://') == -1:
-                try:
-                    User.objects.get(pk=int(user))
-                    self.init_data['user'] = '/rest-api/users/%s/' % user
-                except:
-                    self.init_data['user'] = ''
-                    pass
-
-        fields['user'].queryset = User.objects.filter(is_staff=False, is_superuser=False)
+        calendar_user_list = get_calendar_user_id_list(request.user)
+        fields['user'].queryset = Agent.objects.filter(is_staff=False, is_superuser=False).exclude(id__in=calendar_user_list)
 
         return fields
 

@@ -32,8 +32,12 @@ class CalendarUserProfileSerializer(serializers.ModelSerializer):
         request = self.context['request']
         calendar_user_list = get_calendar_user_id_list(request.user)
         agent_id_list = AgentProfile.objects.values_list('user_id', flat=True).filter(manager=request.user)
-        fields['user'].queryset = CalendarUser.objects\
-            .filter(is_staff=False, is_superuser=False)\
-            .exclude(id__in=calendar_user_list)\
-            .exclude(id__in=agent_id_list).order_by('id')
+        if not self.object:
+            fields['user'].queryset = CalendarUser.objects\
+                .filter(is_staff=False, is_superuser=False)\
+                .exclude(id__in=calendar_user_list)\
+                .exclude(id__in=agent_id_list).order_by('id')
+        else:
+            fields['user'].queryset = CalendarUser.objects.filter(pk=self.object.user_id)
+
         return fields

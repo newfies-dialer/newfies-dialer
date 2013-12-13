@@ -78,7 +78,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"aleg_gateway": "1"}' http://localhost:8000/rest-api/calendar-setting/%calendar-setting-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"label": "calendar_setting", "callerid": "123456", "caller_name": "xyz", "user": "http://127.0.0.1:8000/rest-api/user/2/", "survey": "http://127.0.0.1:8000/rest-api/sealed-survey/1/", "aleg_gateway": "http://127.0.0.1:8000/rest-api/gateway/1/", "sms_gateway": "http://127.0.0.1:8000/rest-api/sms-gateway/1/"}' http://localhost:8000/rest-api/calendar-setting/%calendar-setting-id%/
 
         Response::
 
@@ -89,6 +89,12 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
             Content-Length: 0
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
+
+    **Delete**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/calendar-setting/%calendar-setting-id%/
     """
     user = serializers.Field(source='user')
     sms_gateway = serializers.HyperlinkedRelatedField(

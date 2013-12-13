@@ -79,7 +79,7 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "mylittle phonebook"}' http://localhost:8000/rest-api/event/%event-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"title": "event_title", "start": "2013-12-10 12:34:43", "end": "2013-12-15 14:43:32", "creator": "http://127.0.0.1:8000/rest-api/calendar-user/4/", "end_recurring_period": "2013-12-27 12:23:34", "calendar": "http://127.0.0.1:8000/rest-api/calendar/1/", "status": "1"}' http://localhost:8000/rest-api/event/%event-id%/
 
         Response::
 
@@ -90,6 +90,12 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
             Content-Length: 0
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
+
+    **Delete**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/event/%event-id%/
     """
 
     class Meta:

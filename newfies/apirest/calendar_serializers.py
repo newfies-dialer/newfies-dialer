@@ -67,7 +67,7 @@ class CalendarSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "mylittle phonebook"}' http://localhost:8000/rest-api/calendar/%calendar-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "mycalendar", "max_concurrent": "1", "user": "http://127.0.0.1:8000/rest-api/calendar-user/4/"}' http://localhost:8000/rest-api/calendar/%calendar-id%/
 
         Response::
 
@@ -78,6 +78,13 @@ class CalendarSerializer(serializers.HyperlinkedModelSerializer):
             Content-Length: 0
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
+
+
+    **Delete**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/calendar/%calendar-id%/
     """
 
     class Meta:

@@ -14,7 +14,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.forms import widgets
 from rest_framework import serializers
 from appointment.models.users import CalendarUser
 
@@ -46,6 +45,12 @@ class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):
                     }
                 ]
             }
+
+    **Delete**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/calendar-user/%calendar-user-id%/
     """
 
     class Meta:

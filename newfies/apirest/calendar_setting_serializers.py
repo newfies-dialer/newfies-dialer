@@ -20,7 +20,7 @@ from appointment.models.users import CalendarSetting
 from survey.models import Survey
 from audiofield.models import AudioFile
 from dialer_gateway.models import Gateway
-from sms.models import Gateway as SMS_Gateway
+from sms.models import Gateway as SMSGateway
 from user_profile.models import UserProfile
 
 
@@ -30,7 +30,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "calendar_setting", "callerid": "123456", "caller_name": "xyz", "user": "http://127.0.0.1:8000/rest-api/user/2/", "survey": "http://127.0.0.1:8000/rest-api/sealed-survey/1/", "aleg_gateway": "http://127.0.0.1:8000/rest-api/gateway/1/", "sms_gateway": "http://127.0.0.1:8000/sms-gateway/1/"}' http://localhost:8000/rest-api/calendar-setting/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "calendar_setting", "callerid": "123456", "caller_name": "xyz", "user": "http://127.0.0.1:8000/rest-api/user/2/", "survey": "http://127.0.0.1:8000/rest-api/sealed-survey/1/", "aleg_gateway": "http://127.0.0.1:8000/rest-api/gateway/1/", "sms_gateway": "http://127.0.0.1:8000/rest-api/sms-gateway/1/"}' http://localhost:8000/rest-api/calendar-setting/
 
             curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"label": "calendar_setting", "callerid": "123456", "caller_name": "xyz", "user": "2", "survey": "1", "aleg_gateway": "1", "sms_gateway": "1"}' http://localhost:8000/rest-api/calendar-setting/
 
@@ -95,9 +95,15 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
             Content-Language: en-us
     """
     user = serializers.Field(source='user')
+    sms_gateway = serializers.HyperlinkedRelatedField(
+        read_only=False, view_name='sms-gateway-detail')
 
     class Meta:
         model = CalendarSetting
+        fields = ('url', 'label', 'callerid', 'caller_name', 'call_timeout',
+                  'user', 'survey', 'aleg_gateway', 'sms_gateway', 'voicemail',
+                  'amd_behavior', 'voicemail_audiofile')
+
 
     def get_fields(self, *args, **kwargs):
         """filter survey field"""
@@ -126,7 +132,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
             sms_gateway = self.init_data.get('sms_gateway')
             if sms_gateway and sms_gateway.find('http://') == -1:
                 try:
-                    SMS_Gateway.objects.get(pk=int(sms_gateway))
+                    SMSGateway.objects.get(pk=int(sms_gateway))
                     self.init_data['sms_gateway'] = '/rest-api/sms-gateway/%s/' % sms_gateway
                 except:
                     self.init_data['sms_gateway'] = ''

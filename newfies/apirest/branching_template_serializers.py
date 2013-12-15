@@ -22,7 +22,7 @@ class BranchingTemplateSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"keys": "20", "section": "/rest-api/section_template/1/", "goto": "/rest-api/section_template/2/"}' http://localhost:8000/rest-api/branching_template/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"keys": "20", "section": "/rest-api/section-template/1/", "goto": "/rest-api/section-template/2/"}' http://localhost:8000/rest-api/branching-template/
 
         Response::
 
@@ -39,11 +39,11 @@ class BranchingTemplateSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/branching_template/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/branching-template/
 
                 or
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/branching_template/%branching_template_id%/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/branching-template/%branching-template-id%/
 
         Response::
 
@@ -53,11 +53,11 @@ class BranchingTemplateSerializer(serializers.HyperlinkedModelSerializer):
                 "previous": null,
                 "results": [
                     {
-                        "url": "http://127.0.0.1:8000/rest-api/branching_template/1/",
+                        "url": "http://127.0.0.1:8000/rest-api/branching-template/1/",
                         "keys": "0",
                         "created_date": "2013-06-13T12:42:28.531",
                         "updated_date": "2013-06-13T12:42:28.531",
-                        "section": "http://127.0.0.1:8000/rest-api/section_template/1/",
+                        "section": "http://127.0.0.1:8000/rest-api/section-template/1/",
                         "goto": null
                     }
                 ]
@@ -67,7 +67,7 @@ class BranchingTemplateSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"keys": "3", "survey": "/rest-api/section_template/1/"}' http://localhost:8000/rest-api/branching_template/%branching-template-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"keys": "3", "survey": "/rest-api/section_template/1/"}' http://localhost:8000/rest-api/branching-template/%branching-template-id%/
 
         Response::
 

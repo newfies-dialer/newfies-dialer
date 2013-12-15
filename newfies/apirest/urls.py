@@ -45,29 +45,31 @@ from apirest.view_rule import RuleViewSet
 from apirest.view_event import EventViewSet
 from apirest.view_alarm import AlarmViewSet
 from apirest.view_alarm_request import AlarmRequestViewSet
-from agent.api_views import AgentViewSet
-from apirest.view_agent_profile import AgentProfileViewSet
+from apirest.view_sms_campaign import SMSCampaignViewSet
+#from agent.api_views import AgentViewSet
+#from apirest.view_agent_profile import AgentProfileViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
 router.register(r'campaigns', CampaignViewSet)
-router.register(r'audio_files', AudioFileViewSet)
+router.register(r'sms-campaigns', SMSCampaignViewSet)
+router.register(r'audio-files', AudioFileViewSet)
 router.register(r'dnc-list', DNCViewSet)
 router.register(r'dnc-contact', DNCContactViewSet)
 router.register(r'gateway', GatewayViewSet)
 router.register(r'sms-gateway', SMSGatewayViewSet, 'sms-gateway')
-router.register(r'content_type', ContentTypeViewSet)
+router.register(r'content-type', ContentTypeViewSet)
 router.register(r'phonebook', PhonebookViewSet)
 router.register(r'contact', ContactViewSet)
 router.register(r'subscriber', SubscriberViewSet)
 router.register(r'callrequest', CallrequestViewSet)
-router.register(r'survey_template', SurveyTemplateViewSet)
+router.register(r'survey-template', SurveyTemplateViewSet)
 
 # sealed survey
 router.register(r'sealed-survey', SurveyViewSet)
 
-router.register(r'section_template', SectionTemplateViewSet)
-router.register(r'branching_template', BranchingTemplateViewSet)
+router.register(r'section-template', SectionTemplateViewSet)
+router.register(r'branching-template', BranchingTemplateViewSet)
 router.register(r'queue', QueueViewSet)
 router.register(r'tier', TierViewSet)
 router.register(r'calendar', CalendarViewSet)
@@ -78,8 +80,8 @@ router.register(r'rule', RuleViewSet)
 router.register(r'event', EventViewSet)
 router.register(r'alarm', AlarmViewSet)
 router.register(r'alarm-request', AlarmRequestViewSet)
-router.register(r'agents', AgentViewSet)
-router.register(r'agent-profile', AgentProfileViewSet)
+#router.register(r'agents', AgentViewSet)
+#router.register(r'agent-profile', AgentProfileViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browseable API.

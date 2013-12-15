@@ -14,9 +14,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import serializers
-from survey.models import Survey_template, Section_template
-from audiofield.models import AudioFile
-from callcenter.models import Queue
+from survey.models import Section_template
 
 
 class SectionTemplateSerializer(serializers.HyperlinkedModelSerializer):
@@ -25,7 +23,7 @@ class SectionTemplateSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"type": "1", "audiofile": "/rest-api/audio_files/1/", "question": "survey que", "survey": "/rest-api/survey_template/1/", "invalid_audiofile": "/rest-api/audio_files/1/", "queue": "/rest-api/queue/1/"}' http://localhost:8000/rest-api/section_template/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"type": "1", "audiofile": "/rest-api/audio-files/1/", "question": "survey que", "survey": "/rest-api/survey-template/1/", "invalid_audiofile": "/rest-api/audio-files/1/", "queue": "/rest-api/queue/1/"}' http://localhost:8000/rest-api/section-template/
 
         Response::
 
@@ -35,18 +33,18 @@ class SectionTemplateSerializer(serializers.HyperlinkedModelSerializer):
             Vary: Accept, Accept-Language, Cookie
             Content-Type: application/json; charset=utf-8
             Content-Language: en-us
-            Location: http://localhost:8000/rest-api/section_template/1/
+            Location: http://localhost:8000/rest-api/section-template/1/
             Allow: GET, POST, HEAD, OPTIONS
 
     **Read**:
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/section_template/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/section-template/
 
                 or
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/section_template/%section-template-id%/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/section-template/%section-template-id%/
 
         Response::
 
@@ -56,7 +54,7 @@ class SectionTemplateSerializer(serializers.HyperlinkedModelSerializer):
                 "previous": null,
                 "results": [
                     {
-                        "url": "http://127.0.0.1:8000/rest-api/section_template/1/",
+                        "url": "http://127.0.0.1:8000/rest-api/section-template/1/",
                         "order": 1,
                         "type": 1,
                         "question": "this is test question",
@@ -85,7 +83,7 @@ class SectionTemplateSerializer(serializers.HyperlinkedModelSerializer):
                         "queue": null,
                         "created_date": "2013-06-13T12:42:28.457",
                         "updated_date": "2013-06-13T12:42:28.511",
-                        "survey": "http://127.0.0.1:8000/rest-api/survey_template/1/",
+                        "survey": "http://127.0.0.1:8000/rest-api/survey-template/1/",
                         "invalid_audiofile": null
                     }
                 ]
@@ -95,7 +93,7 @@ class SectionTemplateSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"type": "1", "question": "survey que", "survey": "/rest-api/survey_template/1/", "invalid_audiofile": "/rest-api/audio_files/1/"}' http://localhost:8000/rest-api/section_template/%section-template-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"type": "1", "question": "survey que", "survey": "/rest-api/survey-template/1/", "invalid_audiofile": "/rest-api/audio-files/1/"}' http://localhost:8000/rest-api/section-template/%section-template-id%/
 
         Response::
 

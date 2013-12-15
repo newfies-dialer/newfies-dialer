@@ -28,8 +28,6 @@ class AlarmRequestSerializer(serializers.HyperlinkedModelSerializer):
 
             curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"alarm": "http://localhost:8000/rest-api/alarm/1/", "date": "2013-12-12 12:45:33", "status": "1", "callrequest": "http://localhost:8000/rest-api/callrequest/1/"}' http://localhost:8000/rest-api/alarm-request/
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"alarm": "1", "date": "2013-12-12 12:45:33", "status": "1", "callrequest": "2"}' http://localhost:8000/rest-api/alarm-request/
-
         Response::
 
             HTTP/1.0 201 CREATED
@@ -84,6 +82,12 @@ class AlarmRequestSerializer(serializers.HyperlinkedModelSerializer):
             Content-Length: 0
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
+
+    **Delete**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/alarm-request/%alarm-request-id%/
     """
 
     class Meta:
@@ -94,25 +98,6 @@ class AlarmRequestSerializer(serializers.HyperlinkedModelSerializer):
         fields = super(AlarmRequestSerializer, self).get_fields(*args, **kwargs)
         request = self.context['request']
         calendar_user_list = get_calendar_user_id_list(request.user)
-        if request.method != 'GET' and self.init_data is not None:
-            callrequest = self.init_data.get('callrequest')
-            if callrequest and callrequest.find('http://') == -1:
-                try:
-                    Callrequest.objects.get(pk=callrequest, campaign__user=request.user)
-                    self.init_data['callrequest'] = '/rest-api/callrequest/%s/' % callrequest
-                except:
-                    self.init_data['callrequest'] = ''
-                    pass
-
-            alarm = self.init_data.get('alarm')
-            if alarm and alarm.find('http://') == -1:
-                try:
-                    Alarm.objects.get(pk=alarm, event__creator_id__in=calendar_user_list)
-                    self.init_data['alarm'] = '/rest-api/alarm/%s/' % alarm
-                except:
-                    self.init_data['alarm'] = ''
-                    pass
-
         fields['alarm'].queryset = Alarm.objects.filter(event__creator_id__in=calendar_user_list)
         fields['callrequest'].queryset = Callrequest.objects.filter(campaign__user=request.user)
         return fields

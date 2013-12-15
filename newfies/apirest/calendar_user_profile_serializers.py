@@ -16,9 +16,12 @@
 
 from rest_framework import serializers
 from appointment.models.users import CalendarUser, CalendarUserProfile
+from appointment.function_def import get_calendar_user_id_list
+from agent.models import AgentProfile
 
 
 class CalendarUserProfileSerializer(serializers.ModelSerializer):
+    manager = serializers.Field(source='manager')
 
     class Meta:
         model = CalendarUserProfile
@@ -26,5 +29,15 @@ class CalendarUserProfileSerializer(serializers.ModelSerializer):
     def get_fields(self, *args, **kwargs):
         """filter  field"""
         fields = super(CalendarUserProfileSerializer, self).get_fields(*args, **kwargs)
-        fields['user'].queryset = CalendarUser.objects.all()  # .filter(is_staff=False, is_superuser=False)
+        request = self.context['request']
+        calendar_user_list = get_calendar_user_id_list(request.user)
+        agent_id_list = AgentProfile.objects.values_list('user_id', flat=True).filter(manager=request.user)
+        if not self.object:
+            fields['user'].queryset = CalendarUser.objects\
+                .filter(is_staff=False, is_superuser=False)\
+                .exclude(id__in=calendar_user_list)\
+                .exclude(id__in=agent_id_list).order_by('id')
+        else:
+            fields['user'].queryset = CalendarUser.objects.filter(pk=self.object.user_id)
+
         return fields

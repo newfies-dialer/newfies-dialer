@@ -74,19 +74,22 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
 
     def post_save(self, obj, created=False):
         """Create Calendar User object with default name & current Calendar User"""
-        obj.set_password(self.request.DATA['password'])
-        obj.save()
 
-        CalendarUserProfile.objects.create(
-            user=obj,
-            manager=Manager.objects.get(username=self.request.user),
-            calendar_setting=CalendarSetting.objects.filter(user=self.request.user)[0]
-        )
+        if created:
+            obj.set_password(self.request.DATA['password'])
+            obj.save()
 
-        Calendar.objects.create(
-            name='default',
-            user=obj,
-        )
+            CalendarUserProfile.objects.create(
+                user=obj,
+                manager=Manager.objects.get(username=self.request.user),
+                calendar_setting=CalendarSetting.objects.filter(user=self.request.user)[0]
+            )
+
+            Calendar.objects.create(
+                name='default',
+                user=obj,
+            )
+
 
     def retrieve(self, request, *args, **kwargs):
         """retrieve CalendarUser object"""

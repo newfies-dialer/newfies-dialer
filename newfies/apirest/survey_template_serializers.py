@@ -23,7 +23,7 @@ class SurveyTemplateSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "survey name"}' http://localhost:8000/rest-api/survey_template/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "survey name"}' http://localhost:8000/rest-api/survey-template/
 
         Response::
 
@@ -33,18 +33,18 @@ class SurveyTemplateSerializer(serializers.HyperlinkedModelSerializer):
             Vary: Accept, Accept-Language, Cookie
             Content-Type: application/json; charset=utf-8
             Content-Language: en-us
-            Location: http://localhost:8000/rest-api/survey/1/
+            Location: http://localhost:8000/rest-api/survey-template/1/
             Allow: GET, POST, HEAD, OPTIONS
 
     **Read**:
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/survey_template/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/survey-template/
 
                 or
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/survey_template/%survey_template_id%/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/survey-template/%survey-template-id%/
 
         Response::
 
@@ -54,7 +54,7 @@ class SurveyTemplateSerializer(serializers.HyperlinkedModelSerializer):
                 "previous": null,
                 "results": [
                     {
-                        "url": "http://127.0.0.1:8000/rest-api/survey/1/",
+                        "url": "http://127.0.0.1:8000/rest-api/survey-template/1/",
                         "name": "Sample survey campaign",
                         "tts_language": "en",
                         "description": "ok",
@@ -69,7 +69,7 @@ class SurveyTemplateSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "sample survey"}' http://localhost:8000/rest-api/survey_template/%survey-template-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "sample survey"}' http://localhost:8000/rest-api/survey-template/%survey-template-id%/
 
         Response::
 

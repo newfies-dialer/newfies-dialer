@@ -28,8 +28,6 @@ class CalendarSerializer(serializers.HyperlinkedModelSerializer):
 
             curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycalendar", "max_concurrent": "1", "user": "http://127.0.0.1:8000/rest-api/calendar-user/4/"}' http://localhost:8000/rest-api/calendar/
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycalendar", "max_concurrent": "1", "user": "4"}' http://localhost:8000/rest-api/calendar/
-
         Response::
 
             HTTP/1.0 201 CREATED
@@ -69,7 +67,7 @@ class CalendarSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "mylittle phonebook"}' http://localhost:8000/rest-api/calendar/%calendar-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "mycalendar", "max_concurrent": "1", "user": "http://127.0.0.1:8000/rest-api/calendar-user/4/"}' http://localhost:8000/rest-api/calendar/%calendar-id%/
 
         Response::
 
@@ -80,6 +78,13 @@ class CalendarSerializer(serializers.HyperlinkedModelSerializer):
             Content-Length: 0
             Content-Type: text/html; charset=utf-8
             Content-Language: en-us
+
+
+    **Delete**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/calendar/%calendar-id%/
     """
 
     class Meta:
@@ -90,16 +95,6 @@ class CalendarSerializer(serializers.HyperlinkedModelSerializer):
         fields = super(CalendarSerializer, self).get_fields(*args, **kwargs)
         request = self.context['request']
         calendar_user_list = get_calendar_user_id_list(request.user)
-        if request.method != 'GET' and self.init_data is not None:
-            user = self.init_data.get('user')
-            if user and user.find('http://') == -1:
-                try:
-                    CalendarUser.objects.get(pk=int(user), id__in=calendar_user_list)
-                    self.init_data['user'] = '/rest-api/calendar-user/%s/' % user
-                except:
-                    self.init_data['user'] = ''
-                    pass
-
         fields['user'].queryset = CalendarUser.objects.filter(id__in=calendar_user_list).order_by('id')
 
         return fields

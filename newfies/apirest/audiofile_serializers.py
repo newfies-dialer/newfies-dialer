@@ -25,9 +25,9 @@ class AudioFileSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/audio_files/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/audio-files/
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/audio_files/%audio_files-id%/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/audio-files/%audio-files-id%/
 
         Response::
 
@@ -37,7 +37,7 @@ class AudioFileSerializer(serializers.HyperlinkedModelSerializer):
                 "previous": null,
                 "results": [
                     {
-                        "url": "http://127.0.0.1:8000/rest-api/audio_files/1/",
+                        "url": "http://127.0.0.1:8000/rest-api/audio-files/1/",
                         "name": "Sample audio",
                         "audio_file": "upload/audiofiles/audio-file-SODXT-1669906647.wav",
                         "user": "http://127.0.0.1:8000/rest-api/users/1/",

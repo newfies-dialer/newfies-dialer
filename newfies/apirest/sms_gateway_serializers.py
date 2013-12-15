@@ -15,7 +15,7 @@
 #
 
 from rest_framework import serializers
-from sms.models import Gateway as SMS_Gateway
+from sms.models import Gateway as SMSGateway
 
 
 class SMSGatewaySerializer(serializers.HyperlinkedModelSerializer):
@@ -94,4 +94,4 @@ class SMSGatewaySerializer(serializers.HyperlinkedModelSerializer):
     _default_view_name = '%(app_label)s-%(model_name)s-detail'
 
     class Meta:
-        model = SMS_Gateway
+        model = SMSGateway

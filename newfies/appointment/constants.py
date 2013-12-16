@@ -19,6 +19,7 @@ from common.utils import Choice
 class EVENT_STATUS(Choice):
     PENDING = 1, _('pending').upper()
     COMPLETED = 2, _('completed').upper()
+    PAUSED = 3, _('paused').upper()
 
 
 class ALARM_STATUS(Choice):

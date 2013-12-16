@@ -652,9 +652,8 @@ def check_retry_alarm(alarm_request_id):
         obj_alarmreq.update_status(ALARMREQUEST_STATUS.FAILURE)
         #Check phonenumber_sms_failure
         if obj_alarmreq.alarm.phonenumber_sms_failure:
-            # TODO: send SMS to PN obj_alarmreq.alarm.phonenumber_sms_failure
-            # SMS text will be :
 
+            # TODO: Use template SMS key (failure_reach) with this text as default
             failure_sms = "we haven't been able to reach '" \
                 + str(obj_alarmreq.alarm.alarm_phonenumber) \
                 + "' after trying " + str(obj_alarmreq.alarm.num_attempt) \
@@ -667,7 +666,6 @@ def check_retry_alarm(alarm_request_id):
                 content_type=ContentType.objects.get(model='alarmrequest'),
                 object_id=obj_alarmreq.id,
             )
-
             try:
                 calendar_user = obj_alarmreq.alarm.event.calendar.user
                 calendar_setting = CalendarUserProfile.objects.get(user=calendar_user).calendar_setting
@@ -675,4 +673,4 @@ def check_retry_alarm(alarm_request_id):
             except:
                 SendMessage.delay(sms_obj.id)
 
-            print "sent SMS Failure alarm"
+            print "Sent SMS Failure alarm : %s" % str(obj_alarmreq.alarm.alarm_phonenumber)

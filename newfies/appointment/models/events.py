@@ -144,6 +144,14 @@ class Event(models.Model):
 
         return new_event
 
+    def status_update_last_child(self, status):
+        """we will search for the last created child of an event and update his status
+        to the status value"""
+        obj_events = Event.objects.filter(parent_event=self).order_by('-created_on')
+        if obj_events:
+            obj_events[0].status = status
+            obj_events[0].save()
+
     def get_rrule_object(self):
         if self.rule is not None:
             params = self.rule.get_params()

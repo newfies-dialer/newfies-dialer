@@ -35,7 +35,6 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
 
-
     def list(self, request, *args, **kwargs):
         """get list of all CalendarUser objects"""
         if self.request.user.is_superuser:
@@ -45,6 +44,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
 
         snippets = CalendarUser.objects.filter(id__in=calendar_user_list).order_by('id')
         list_data = []
+        
         for c_user in snippets:
             try:
                 calendar_obj = Calendar.objects.get(user=c_user)
@@ -53,8 +53,10 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
                     'max_concurrent': calendar_obj.max_concurrent,
                 }
             except:
-                calendar_dict = {}
+                calendar_dict = {}   
+            user_url =  'http://%s/rest-api/calendar-user/%s/' % (self.request.META['HTTP_HOST'], str(c_user.id))            
             data = {
+                'url': user_url,
                 'id': c_user.id,
                 'username': c_user.username,
                 'password': c_user.password,

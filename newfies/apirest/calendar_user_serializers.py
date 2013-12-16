@@ -70,9 +70,8 @@ class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):
         CURL Usage::
 
             curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/calendar-user/%calendar-user-id%/
-    """
+    """    
 
     class Meta:
         model = CalendarUser
-        fields = ('url', 'username', 'password', 'last_name', 'first_name',
-                  'email', 'groups')
+        fields = ('username', 'password', 'last_name', 'first_name', 'email')

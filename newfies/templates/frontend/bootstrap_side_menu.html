@@ -3,13 +3,13 @@
 <div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
     <div class="list-group">
 
-        {% if "/phonebook/" in request.path or "/contact/" in request.path %}
+        {% if "/phonebook/" in request.path or "/contact/" in request.path or "/contact_import/" in request.path %}
             {% if perms.dialer_contact.view_phonebook %}
                 <a class="list-group-item {% ifcontains '/phonebook/' %}active{% endifcontains %}" href="/phonebook/">{% trans "phonebooks"|title %}</a>
             {% endif %}
             {% if perms.dialer_contact.view_contact %}
                 <a class="list-group-item {% ifcontains '/contact/' %}active{% endifcontains %}" href="/contact/">{% trans "contacts"|title %}</a>
-                <a class="list-group-item {% ifcontains '/contact/import/' %}active{% endifcontains %}" href="/contact/import/">{% trans "import contacts"|title %}</a>
+                <a class="list-group-item {% ifcontains '/contact_import/' %}active{% endifcontains %}" href="/contact_import/">{% trans "import contacts"|title %}</a>
             {% endif %}
 
         {% endif %}

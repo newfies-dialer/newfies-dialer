@@ -70,7 +70,7 @@ class Contact_fileImport(FileImport):
             result_list = []
             for phonebook in phonebook_list:
                 contacts_in_phonebook = phonebook.phonebook_contacts()
-                nbcontact = " - (nb contact= %d)" % (contacts_in_phonebook)
+                nbcontact = " -> %d contact(s)" % (contacts_in_phonebook)
                 pb_string = phonebook.name + nbcontact
                 result_list.append((phonebook.id, pb_string))
 

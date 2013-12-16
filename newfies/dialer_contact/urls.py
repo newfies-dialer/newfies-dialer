@@ -25,7 +25,7 @@ urlpatterns = patterns('dialer_contact.views',
     # Contacts urls
     (r'^contact/$', 'contact_list'),
     (r'^contact/add/$', 'contact_add'),
-    (r'^contact/import/$', 'contact_import'),
+    (r'^contact_import/$', 'contact_import'),
     (r'^contact/del/(.+)/$', 'contact_del'),
     (r'^contact/(.+)/$', 'contact_change'),
 )

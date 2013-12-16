@@ -288,14 +288,14 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
     def test_contact_view_import(self):
         """Test Function to check import Contact"""
-        response = self.client.get('/contact/import/')
+        response = self.client.get('/contact_import/')
         self.assertTrue(response.context['form'],
                         Contact_fileImport(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/contact/import_contact.html')
 
-        response = self.client.post('/contact/import/',
+        response = self.client.post('/contact_import/',
                                     data={'phonebook': '1',
                                           'csv_file': csv_file})
         self.assertEqual(response.status_code, 200)
@@ -304,12 +304,12 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
             settings.APPLICATION_DIR +
             '/dialer_audio/fixtures/sample_audio_file.mp3', 'r'
         )
-        response = self.client.post('/contact/import/',
+        response = self.client.post('/contact_import/',
                                     data={'phonebook_id': '1',
                                           'csv_file': new_file})
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.get('/contact/import/')
+        request = self.factory.get('/contact_import/')
         request.user = self.user
         request.session = {}
         response = contact_import(request)

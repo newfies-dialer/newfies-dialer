@@ -84,7 +84,7 @@ user's phonebook.
 
 **URL**:
 
-    * http://localhost:8000/dialer_campaign/contact/import/
+    * http://localhost:8000/dialer_campaign/contact_import/
 
 .. image:: ../_static/images/customer/import_contact.png
 

@@ -82,7 +82,7 @@ def get_dnc_list(user):
     result_list = []
     for dnc in dnc_list:
         contacts_in_dnc = dnc.dnc_contacts_count()
-        nbcontact = " - (nb contact= %d)" % (contacts_in_dnc)
+        nbcontact = " -> %d contact(s)" % (contacts_in_dnc)
         dnc_string = dnc.name + nbcontact
         result_list.append((dnc.id, dnc_string))
     return result_list

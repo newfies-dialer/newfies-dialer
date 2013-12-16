@@ -45,9 +45,8 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
         else:
             calendar_user_list = get_calendar_user_id_list(request.user)
 
-        profiles = CalendarUserProfile.objects.filter(id__in=calendar_user_list).order_by('id')
+        profiles = CalendarUserProfile.objects.filter(user_id__in=calendar_user_list).order_by('id')
         list_data = []
-
         for c_user_profile in profiles:
             user_url = 'http://%s/rest-api/calendar-user-profile/%s/' % (self.request.META['HTTP_HOST'], str(c_user_profile.id))
             calendar_setting_url = 'http://%s/rest-api/calendar-setting/%s/' % (self.request.META['HTTP_HOST'], str(c_user_profile.calendar_setting_id))
@@ -66,7 +65,7 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
                 'fax': c_user_profile.fax,
                 'company_name': c_user_profile.company_name,
                 'company_website': c_user_profile.company_website,
-                'language': c_user_profile.language,
+                #'language': c_user_profile.language,
             }
             list_data.append(data)
 

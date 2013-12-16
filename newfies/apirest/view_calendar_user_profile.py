@@ -38,19 +38,19 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
         obj.manager = Manager.objects.get(username=self.request.user)
 
     def list(self, request, *args, **kwargs):
-        """get list of all CalendarUser objects""" 
+        """get list of all CalendarUser objects"""
         if self.request.user.is_superuser:
             calendar_user_list = get_all_calendar_user_id_list()
         else:
-            calendar_user_list = get_calendar_user_id_list(request.user)  
+            calendar_user_list = get_calendar_user_id_list(request.user)
 
         snippets = CalendarUserProfile.objects.filter(id__in=calendar_user_list).order_by('id')
         list_data = []
-        
-        for c_user_profile in snippets:            
-            user_url =  'http://%s/rest-api/calendar-user-profile/%s/' % (self.request.META['HTTP_HOST'], str(c_user_profile.id))                        
+
+        for c_user_profile in snippets:
+            user_url = 'http://%s/rest-api/calendar-user-profile/%s/' % (self.request.META['HTTP_HOST'], str(c_user_profile.id))
             calendar_setting_url = 'http://%s/rest-api/calendar-setting/%s/' % (self.request.META['HTTP_HOST'], str(c_user_profile.calendar_setting_id))
-            
+
             data = {
                 'url': user_url,
                 'id': c_user_profile.id,
@@ -59,13 +59,13 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
                 'manager': str(c_user_profile.manager),
                 'address': c_user_profile.address,
                 'city': c_user_profile.city,
-                'state': c_user_profile.state,                
-                'zip_code': c_user_profile.zip_code,                
+                'state': c_user_profile.state,
+                'zip_code': c_user_profile.zip_code,
                 'phone_no': c_user_profile.phone_no,
                 'fax': c_user_profile.fax,
                 'company_name': c_user_profile.company_name,
                 'company_website': c_user_profile.company_website,
-                'language': c_user_profile.language,                
+                'language': c_user_profile.language,
             }
             list_data.append(data)
 

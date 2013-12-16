@@ -100,9 +100,7 @@ class AlarmSerializer(serializers.HyperlinkedModelSerializer):
         CURL Usage::
 
             curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/alarm/%alarm-id%/
-
     """
-
     class Meta:
         model = Alarm
 

@@ -52,7 +52,7 @@ class Alarm(models.Model):
     status = models.IntegerField(choices=list(ALARM_STATUS),
                                  default=ALARM_STATUS.PENDING,
                                  verbose_name=_("status"))
-    result = models.IntegerField(choices=list(ALARM_RESULT), default=0,
+    result = models.IntegerField(choices=list(ALARM_RESULT), default=ALARM_RESULT.PENDING,
                                  verbose_name=_("result"), blank=True, null=True)
     # URL Cancel is used if an appointment is cancelled, we will need to do a mapping on IVR result
     url_cancel = models.CharField(max_length=250, blank=True, null=True,

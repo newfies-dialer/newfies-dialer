@@ -79,7 +79,7 @@ class CalendarUserProfileSerializer(serializers.ModelSerializer):
     manager = serializers.Field(source='manager')
 
     class Meta:
-        model = CalendarUserProfile
+        model = CalendarUserProfile    
 
     def get_fields(self, *args, **kwargs):
         """filter  field"""

@@ -144,7 +144,7 @@ class Event(models.Model):
 
         return new_event
 
-    def status_update_last_child(self, status):
+    def update_last_child_status(self, status):
         """we will search for the last created child of an event and update his status
         to the status value"""
         obj_events = Event.objects.filter(parent_event=self).order_by('-created_on')

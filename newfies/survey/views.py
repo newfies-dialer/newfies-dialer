@@ -641,14 +641,14 @@ def section_branch_add(request):
             section.survey_id, section.id, initial={'section': section_id})
         if request.method == 'POST':
             form = BranchingForm(
-                section.survey_id, section.id, request.POST)
+                section.survey_id, section.id, request.POST)            
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('branching is added successfully.')
                 return HttpResponseRedirect(
                     redirect_url_to_survey_list + '%s/#row%s' % (section.survey_id, section_id))
-            else:
-                form._errors["keys"] = _("duplicate record keys with goto.")
+            else:                                
+                form._errors["keys"] = _("duplicate keys with goto.")
                 request.session["err_msg"] = True
 
     template = 'frontend/survey/section_branch_change.html'

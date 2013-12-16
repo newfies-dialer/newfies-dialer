@@ -83,17 +83,19 @@
                         </div>
                     </div>
                     <div class="row">
-                        <div class="col-xs-6">
-                            <label class="control-label" for="{{ form.keys.auto_id }}">{{ form.keys.label|title }}</label>
-                            {{ form.keys }}
-                            {% if form.keys.errors %}
-                                <span class="help-inline">
-                                    {{ form.keys.errors|removetags:"ul li"|safe }}
+                        <div class="form-group {% if form.keys.errors %}has-error{% endif %}">
+                            <div class="col-xs-6">
+                                <label class="control-label" for="{{ form.keys.auto_id }}">{{ form.keys.label|title }}</label>
+                                {{ form.keys }}
+                                {% if form.keys.errors %}
+                                    <span class="help-inline">
+                                        {{ form.keys.errors }}
+                                    </span>
+                                {% endif %}
+                                <span class="help-block">
+                                    {{ form.keys.help_text|safe }}
                                 </span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ form.keys.help_text|safe }}
-                            </span>
+                            </div>
                         </div>
                     </div>
                 {% endif %}

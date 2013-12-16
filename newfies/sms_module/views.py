@@ -233,7 +233,7 @@ def sms_campaign_list(request):
     if status and status != 'all':
         kwargs['status'] = status
 
-    smscampaign_list = SMSCampaign.objects.filter(user=request.user)
+    smscampaign_list = SMSCampaign.objects.filter(user=request.user).order_by(sort_order)
     smscampaign_count = smscampaign_list.count()
     if kwargs:
         all_smscampaign_list = smscampaign_list.filter(**kwargs).order_by(sort_order)

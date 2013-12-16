@@ -280,7 +280,7 @@ def campaign_list(request):
     if status and status != 'all':
         kwargs['status'] = status
 
-    campaign_list = Campaign.objects.filter(user=request.user)
+    campaign_list = Campaign.objects.filter(user=request.user).order_by(sort_order)
     campaign_count = campaign_list.count()
     if kwargs:
         all_campaign_list = campaign_list.filter(**kwargs).order_by(sort_order)
@@ -633,8 +633,7 @@ def subscriber_list(request):
                            'completion_count_attempt', 'status',
                            'disposition', 'collected_data', 'agent']
     default_sort_field = 'id'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']

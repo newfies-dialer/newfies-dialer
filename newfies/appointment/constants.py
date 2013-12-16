@@ -30,7 +30,7 @@ class ALARM_STATUS(Choice):
 
 
 class ALARM_RESULT(Choice):
-    PENDING = 0, _('pending').upper()
+    NORESULT = 0, _('no result').upper()
     CONFIRMED = 1, _('confirmed').upper()
     CANCELLED = 2, _('cancelled').upper()
     RESCHEDULED = 3, _('rescheduled').upper()

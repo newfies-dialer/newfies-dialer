@@ -85,11 +85,10 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
                 calendar_setting=CalendarSetting.objects.filter(user=self.request.user)[0]
             )
 
-            Calendar.objects.create(
-                name='default',
-                user=obj,
-            )
-
+            #Calendar.objects.create(
+            #    name='default',
+            #    user=obj,
+            #)
 
     def retrieve(self, request, *args, **kwargs):
         """retrieve CalendarUser object"""

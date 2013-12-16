@@ -129,9 +129,7 @@
                                     {% endif %}
 
                                     {{ row.id|create_duplicate_campaign|safe }}
-
-                                    {% get_campaign_app_view row %}
-                                    
+                                                                
                                     {% if row.content_type.model == 'survey' %}
                                         <a id="id_survey_seal_{{ row.id }}" href="#sealed-survey" url="/module/sealed_survey_view/{{ row.id }}/" title="{% trans 'view sealed survey'|capfirst %}" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>
                                         <!--Sealed survey modal-->
@@ -143,6 +141,8 @@
                                                 $("#" + modal_id).load(url);
                                             });
                                         </script>
+                                    {% else %}
+                                        {% get_campaign_app_view row %}
                                     {% endif %}
                                 </td>
                             </tr>

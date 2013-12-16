@@ -22,6 +22,7 @@ from apirest.calendar_user_profile_serializers import CalendarUserProfileSeriali
 from appointment.function_def import get_calendar_user_id_list, \
     get_all_calendar_user_id_list
 from user_profile.models import Manager
+import ast
 
 
 class CalendarUserProfileViewSet(viewsets.ModelViewSet):
@@ -44,10 +45,10 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
         else:
             calendar_user_list = get_calendar_user_id_list(request.user)
 
-        snippets = CalendarUserProfile.objects.filter(id__in=calendar_user_list).order_by('id')
+        profiles = CalendarUserProfile.objects.filter(id__in=calendar_user_list).order_by('id')
         list_data = []
 
-        for c_user_profile in snippets:
+        for c_user_profile in profiles:
             user_url = 'http://%s/rest-api/calendar-user-profile/%s/' % (self.request.META['HTTP_HOST'], str(c_user_profile.id))
             calendar_setting_url = 'http://%s/rest-api/calendar-setting/%s/' % (self.request.META['HTTP_HOST'], str(c_user_profile.calendar_setting_id))
 
@@ -70,7 +71,6 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
             list_data.append(data)
 
         temp_data = ", ".join(str(e) for e in list_data)
-        import ast
         final_data = ast.literal_eval(temp_data)
         #serializer = CalendarUserSerializer(snippets, many=True)
         return Response(final_data)

@@ -46,6 +46,9 @@ from apirest.view_event import EventViewSet
 from apirest.view_alarm import AlarmViewSet
 from apirest.view_alarm_request import AlarmRequestViewSet
 from apirest.view_sms_campaign import SMSCampaignViewSet
+from apirest.view_mail_template import MailTemplateViewSet
+from apirest.view_sms_template import SMSTemplateViewSet
+
 #from agent.api_views import AgentViewSet
 #from apirest.view_agent_profile import AgentProfileViewSet
 
@@ -80,6 +83,10 @@ router.register(r'rule', RuleViewSet)
 router.register(r'event', EventViewSet)
 router.register(r'alarm', AlarmViewSet)
 router.register(r'alarm-request', AlarmRequestViewSet)
+router.register(r'mail-template', MailTemplateViewSet)
+router.register(r'sms-template', SMSTemplateViewSet)
+
+
 #router.register(r'agents', AgentViewSet)
 #router.register(r'agent-profile', AgentProfileViewSet)
 

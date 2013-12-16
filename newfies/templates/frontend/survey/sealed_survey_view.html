@@ -4,7 +4,7 @@
 {% block header_files %}
 {% endblock %}
 
-{% block extra_files %}    
+{% block extra_files %}
     {% include "frontend/survey/survey_change_header.html" %}
     {% include "common_audiofield.html" %}
 {% endblock %}
@@ -266,6 +266,12 @@
                                                                             {{ branch.keys }}
                                                                         {% else %}
                                                                             {% trans "none"|title %}
+                                                                        {% endif %}
+                                                                    </td>
+                                                                {% else %}
+                                                                    <td>
+                                                                        {% if branch.keys == '0' %}
+                                                                            {% trans "default"|title %}
                                                                         {% endif %}
                                                                     </td>
                                                                 {% endif %}

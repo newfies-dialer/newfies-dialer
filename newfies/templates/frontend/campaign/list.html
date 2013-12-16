@@ -129,12 +129,12 @@
                                     {% endif %}
 
                                     {{ row.id|create_duplicate_campaign|safe }}
-                                                                
+
                                     {% if row.content_type.model == 'survey' %}
-                                        <a id="id_survey_seal_{{ row.id }}" href="#sealed-survey" url="/module/sealed_survey_view/{{ row.id }}/" title="{% trans 'view sealed survey'|capfirst %}" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>
+                                        <a id="id_survey_seal_{{ row.object_id }}" href="#sealed-survey" url="/module/sealed_survey_view/{{ row.object_id }}/" title="{% trans 'view sealed survey'|capfirst %}" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>
                                         <!--Sealed survey modal-->
                                         <script type="text/javascript" charset="utf-8">
-                                            $("#id_survey_seal_{{ row.id }}").live('click', function(e) {
+                                            $("#id_survey_seal_{{ row.object_id }}").live('click', function(e) {
                                                 e.preventDefault();
                                                 var url = $(this).attr('url');
                                                 var modal_id = $(this).attr('data-controls-modal');

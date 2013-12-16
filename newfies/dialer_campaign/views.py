@@ -179,9 +179,9 @@ def _return_link(app_name, obj_id):
     """
     link = ''
     # Object view links
-    if app_name == 'survey':
-        link = '<a href="/module/sealed_survey_view/%s/" target="_blank" title="%s"><i class="fa fa-search"></i></a>' % \
-            (obj_id, _('survey').title())
+    #if app_name == 'survey':
+    #    link = '<a href="#sealed-survey" url="/module/sealed_survey_view/%s/" title="%s" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>' % \
+    #        (obj_id, _('survey').title())
 
     # Object edit links
     if app_name == 'survey_template':

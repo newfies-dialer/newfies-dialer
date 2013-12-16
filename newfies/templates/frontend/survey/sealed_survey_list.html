@@ -34,10 +34,21 @@
                                 <td>{{ row.campaign__name }}</td>
                                 <td>{{ row.updated_date }}</td>
                                 <td>
-                                    {% link_of_survey_view row.id %}
+                                    {# link_of_survey_view row.id #}
+                                    <a id="id_survey_seal_{{ row.id }}" href="#sealed-survey" url="/module/sealed_survey_view/{{ row.id }}/" target="_blank" title="{% trans 'view sealed survey' %}"  data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>
+                                    
+                                    <!--Sealed survey modal-->
+                                    <script type="text/javascript" charset="utf-8">
+                                        $("#id_survey_seal_{{ row.id }}").live('click', function(e) {
+                                            e.preventDefault();
+                                            var url = $(this).attr('url');
+                                            var modal_id = $(this).attr('data-controls-modal');
+                                            $("#" + modal_id).load(url);
+                                        });
+                                    </script>
                                 </td>
                             </tr>
-                        {% endfor %}
+                        {% endfor %}                        
                     {% else %}
                         <tr>
                             <td colspan="4" align="center">
@@ -46,6 +57,9 @@
                         </tr>
                     {% endif %}
                 </table>
+
+                <!-- survey-seal modal content-->
+                <div id="sealed-survey" class="modal fade" role="dialog" aria-labelledby="sealed_survey"></div>
             </div>
             <div class="text-right">
                 {% trans "total"|title %} : {{ total_survey }}

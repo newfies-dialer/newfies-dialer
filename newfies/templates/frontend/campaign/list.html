@@ -131,6 +131,19 @@
                                     {{ row.id|create_duplicate_campaign|safe }}
 
                                     {% get_campaign_app_view row %}
+                                    
+                                    {% if row.content_type.model == 'survey' %}
+                                        <a id="id_survey_seal_{{ row.id }}" href="#sealed-survey" url="/module/sealed_survey_view/{{ row.id }}/" title="{% trans 'view sealed survey'|capfirst %}" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>
+                                        <!--Sealed survey modal-->
+                                        <script type="text/javascript" charset="utf-8">
+                                            $("#id_survey_seal_{{ row.id }}").live('click', function(e) {
+                                                e.preventDefault();
+                                                var url = $(this).attr('url');
+                                                var modal_id = $(this).attr('data-controls-modal');
+                                                $("#" + modal_id).load(url);
+                                            });
+                                        </script>
+                                    {% endif %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -152,4 +165,6 @@
         </form>
     </div>
 </div>
+<!-- survey-seal modal content-->
+<div id="sealed-survey" class="modal fade" role="dialog" aria-labelledby="sealed_survey"></div>
 {% endblock %}

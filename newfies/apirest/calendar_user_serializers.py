@@ -18,8 +18,27 @@ from rest_framework import serializers
 from appointment.models.users import CalendarUser
 
 
-class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):
+class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):    
     """
+    **Create**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"username": "caluser2", "password": "caluser2", "email": "xyz@gmail.com"}' http://localhost:8000/rest-api/calendar-user/
+
+        Response::
+
+            HTTP/1.0 201 CREATED
+            Date: Mon, 16 Dec 2013 11:00:39 GMT
+            Server: WSGIServer/0.1 Python/2.7.3
+            Vary: Accept, Accept-Language, Cookie
+            Content-Language: en
+            Content-Type: application/json; charset=utf-8
+            Location: http://localhost:8000/rest-api/calendar-user/5/
+            Allow: GET, POST, HEAD, OPTIONS
+
+            {"url": "http://localhost:8000/rest-api/calendar-user/5/", "username": "caluser2", "password": "pbkdf2_sha256$12000$RKQtziT23qoz$WiVneuVVTbi2NjSmLCmuXeQTEMoHYnqAaC0/nUUaNtM=", "last_name": "", "first_name": "", "email": "xyz@gmail.com", "groups": []}
+
     **Read**:
 
         CURL Usage::

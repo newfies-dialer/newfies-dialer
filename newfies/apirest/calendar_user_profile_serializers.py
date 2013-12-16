@@ -28,7 +28,7 @@ class CalendarUserProfileSerializer(serializers.ModelSerializer):
 
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/calendar-user-profile/
 
-            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/calendar-user-profile/%calendar-user-profile-id%/
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/calendar-user-profile/%calendar-user-id%/
 
         Response::
 
@@ -64,11 +64,11 @@ class CalendarUserProfileSerializer(serializers.ModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"accountcode": "353652", "calendar_setting": "1"}' http://localhost:8000/rest-api/calendar-user-profile/%calendar-user-profile-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"accountcode": "353652", "calendar_setting": "1"}' http://localhost:8000/rest-api/calendar-user-profile/%calendar-user-id%/
 
         Response::
 
-            HTTP/1.0 200 NO CONTENT
+            HTTP/1.0 200 OK
             Date: Fri, 23 Sep 2011 06:46:12 GMT
             Server: WSGIServer/0.1 Python/2.7.1+
             Vary: Accept-Language, Cookie

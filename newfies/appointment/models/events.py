@@ -152,6 +152,11 @@ class Event(models.Model):
             obj_events[0].status = status
             obj_events[0].save()
 
+    def get_list_child(self):
+        """we will list childs of an event"""
+        obj_events = Event.objects.filter(parent_event=self).order_by('created_on')
+        return obj_events
+
     def get_rrule_object(self):
         if self.rule is not None:
             params = self.rule.get_params()

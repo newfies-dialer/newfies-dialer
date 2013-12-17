@@ -73,8 +73,10 @@
                         {% endfor %}
                     </div>
 
-                    <div class="modal-footer" align="right">
-                        <input id="id_add" name="add" type="submit" class="btn btn-primary" value="{% trans "save"|title %}" />
+                    <div class="modal-footer" align="right">                        
+                        <button type="submit" class="btn btn-primary" id="id_add" name="add" value="{% trans 'save'|title %}">
+                            <i class="fa fa-save"></i> {% trans "save"|title %}
+                        </button>
                         <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</button>
                     </div>
                 </form>

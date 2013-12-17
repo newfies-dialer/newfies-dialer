@@ -97,11 +97,11 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 
             curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/event/%event-id%/
 
-    **update_event_status**:
+    **update_last_child_status**:
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"status": "1"}' http://localhost:8000/rest-api/event/%event-id%/update_event_status/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"status": "1"}' http://localhost:8000/rest-api/event/%event-id%/update_last_child_status/
 
         Response::
 
@@ -117,10 +117,10 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         Response::
 
             {
-                "url": "http://localhost:8000/rest-api/event/2/", 
-                "start": "2013-12-24 08:55:13+00:00", 
-                "end": "2013-12-31 09:55:13+00:00", 
-                "description": "", 
+                "url": "http://localhost:8000/rest-api/event/2/",
+                "start": "2013-12-24 08:55:13+00:00",
+                "end": "2013-12-31 09:55:13+00:00",
+                "description": "",
                 "title": "test-child-event"
             }
     """

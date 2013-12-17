@@ -154,7 +154,11 @@ class Event(models.Model):
 
     def update_last_child_status(self, status):
         """we will search for the last created child of an event and update his status
-        to the status value"""
+        to the status value
+
+        Note for the integrators: We can pause an event for 12hours but after that we will have to
+        stop and create the new event.
+        """
         obj_events = Event.objects.filter(parent_event=self).order_by('-created_on')
         if obj_events:
             obj_events[0].status = status

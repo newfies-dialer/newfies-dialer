@@ -179,9 +179,9 @@ def _return_link(app_name, obj_id):
     """
     link = ''
     # Object view links
-    #if app_name == 'survey':
-    #    link = '<a href="#sealed-survey" url="/module/sealed_survey_view/%s/" title="%s" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>' % \
-    #        (obj_id, _('survey').title())
+    if app_name == 'survey':
+        link = '<a id="id_survey_seal_%s" href="#sealed-survey" url="/module/sealed_survey_view/%s/" title="%s" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>' % \
+            (obj_id, obj_id, _('view sealed survey').title())
 
     # Object edit links
     if app_name == 'survey_template':
@@ -295,6 +295,7 @@ def campaign_list(request):
         'total_campaign': campaign_count,
         'PAGE_SIZE': PAGE_SIZE,
         'CAMPAIGN_COLUMN_NAME': CAMPAIGN_COLUMN_NAME,
+        'CAMPAIGN_STATUS': CAMPAIGN_STATUS,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),

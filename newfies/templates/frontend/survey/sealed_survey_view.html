@@ -6,7 +6,7 @@
 
 {% block extra_files %}
     {% include "frontend/survey/survey_change_header.html" %}
-    {% include "common_audiofield.html" %}
+    {% include "common_audiofield.html" %}  
 {% endblock %}
 
 {% block row_fluid %}
@@ -22,10 +22,7 @@
 {% endblock %}
 
 {% block container %}
-
-    {% block content %}
     <div class="modal-dialog">
-
         <div class="modal-content">
             <div class="modal-header">
                 <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
@@ -305,9 +302,8 @@
                     {% endfor %}
                 {% endif %}
                 </div>
+
             </div>
         </div>
     </div>
-{% endblock %}
-
 {% endblock %}

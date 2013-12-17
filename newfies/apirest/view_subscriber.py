@@ -27,6 +27,7 @@ logger = logging.getLogger('newfies.filelog')
 
 #TODO: Add more documentation on this API
 
+
 class SubscriberViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows campaigns to be viewed or edited.
@@ -80,7 +81,7 @@ class SubscriberViewSet(viewsets.ModelViewSet):
             country=request.POST.get('country'),
             unit_number=request.POST.get('unit_number'),
             additional_vars=add_var,
-            status=CONTACT_STATUS.ACTIVE, # default active
+            status=CONTACT_STATUS.ACTIVE,  # default active
             phonebook=obj_phonebook)
 
         # Insert the contact to the subscriber also for
@@ -114,7 +115,7 @@ class SubscriberViewSet(viewsets.ModelViewSet):
                             Subscriber.objects.create(
                                 contact=con_obj,
                                 duplicate_contact=con_obj.contact,
-                                status=SUBSCRIBER_STATUS.PENDING, # PENDING
+                                status=SUBSCRIBER_STATUS.PENDING,  # PENDING
                                 campaign=c_campaign)
                         except:
                             error_msg = "Duplicate Subscriber"

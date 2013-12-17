@@ -17,7 +17,6 @@ from rest_framework import viewsets
 from apirest.event_serializers import EventSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework import status
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.events import Event
@@ -43,34 +42,33 @@ class EventViewSet(viewsets.ModelViewSet):
         return queryset
 
     @action(methods=['PATCH'])
-    def updat_event_status(self, request, pk=None):
-        """it will update last child event status"""        
-        event = self.get_object()        
-        event.update_last_child_status(request.DATA['status'])          
+    def update_last_child_status(self, request, pk=None):
+        """it will update last child event status"""
+        event = self.get_object()
+        event.update_last_child_status(request.DATA['status'])
         return Response({'status': 'event status has been updated'})
 
     @action(methods=['GET'])
     def get_list_child(self, request, pk=None):
-        """it will get all child events"""        
-        event = self.get_object()        
+        """it will get all child events"""
+        event = self.get_object()
         queryset = event.get_list_child()
 
-        list_data = []            
-        for child_event in queryset:            
-            event_url =  'http://%s/rest-api/event/%s/' % (self.request.META['HTTP_HOST'], str(child_event.id))            
+        list_data = []
+        for child_event in queryset:
+            event_url = 'http://%s/rest-api/event/%s/' % (self.request.META['HTTP_HOST'], str(child_event.id))
             data = {
                 'url': event_url,
-                'title': child_event.title, 
+                'title': child_event.title,
                 'description': child_event.description,
                 'start': str(child_event.start),
-                'end': str(child_event.end),                                        
+                'end': str(child_event.end),
             }
             list_data.append(data)
-        
+
         if list_data:
             temp_data = ", ".join(str(e) for e in list_data)
-            final_data = ast.literal_eval(temp_data)   
+            final_data = ast.literal_eval(temp_data)
         else:
-            final_data = {"note": "no child event found"}        
+            final_data = {"note": "no child event found"}
         return Response(final_data)
-                

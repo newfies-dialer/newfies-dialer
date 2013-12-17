@@ -68,9 +68,12 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
                 'calendar': calendar_dict,
             }
             list_data.append(data)
-
-        temp_data = ", ".join(str(e) for e in list_data)        
-        final_data = ast.literal_eval(temp_data)
+        
+        if list_data:
+            temp_data = ", ".join(str(e) for e in list_data)
+            final_data = ast.literal_eval(temp_data)   
+        else:
+            final_data = {"note": "no calendar-user found"}
         #serializer = CalendarUserSerializer(snippets, many=True)
         return Response(final_data)
 

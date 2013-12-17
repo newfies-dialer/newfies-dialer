@@ -31,7 +31,11 @@
         <input class="btn btn-primary" type="submit" name="submit" value="{% trans 'search'|title %}" />
     </form>
 </div>
-
+<button id="toggle_btn" type="button" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#form_collapse">
+    <i id="toggle_btn_i" class="glyphicon glyphicon-zoom-out"></i>
+    <span id="toggle_btn_i_span">{% trans "show search"|title %}</span>
+</button>
+<div>&nbsp;</div>
 <script type="text/javascript">
 function add_button()
 {

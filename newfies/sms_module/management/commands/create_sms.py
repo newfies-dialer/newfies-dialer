@@ -74,7 +74,7 @@ def create_sms(smscampaign_id, quantity):
             object_id=1,
             status=choice(MESSAGE_STATUSES),
             sms_campaign=obj_campaign,
-            gateway_id=1)
+            sms_gateway_id=1)
         print "new_sms:"
         print new_sms
 

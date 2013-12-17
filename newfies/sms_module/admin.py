@@ -117,7 +117,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
     can_add = True
     detail_title = _("SMS report")
     list_display = ('sender', 'recipient_number', 'send_date', 'uuid',
-                    'status', 'status_message', 'gateway')
+                    'status', 'status_message', 'sms_gateway')
     ordering = ('-id', )
 
     def has_add_permission(self, request):

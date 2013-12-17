@@ -126,9 +126,17 @@ class Event(models.Model):
     def copy_event(self, next_occurrence):
         """create new event with next occurrence"""
 
+        if self.parent_event:
+            parent_event = self.parent_event
+        else:
+            parent_event = self
+
+        #find the new event end
+        event_end = next_occurrence + (self.end - self.start)
+
         new_event = Event.objects.create(
             start=next_occurrence,
-            end=self.end,
+            end=event_end,
             title=self.title,
             description=self.description,
             creator=self.creator,
@@ -138,7 +146,7 @@ class Event(models.Model):
             notify_count=self.notify_count,
             data=self.data,
             # implemented parent_event & occ_count
-            parent_event=self,
+            parent_event=parent_event,
             occ_count=self.occ_count + 1,
         )
 

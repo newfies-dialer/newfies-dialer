@@ -25,8 +25,8 @@ class SECTION_TYPE(Choice):
     CALL_TRANSFER = 6, _('call transfer').capitalize()
     HANGUP_SECTION = 7, _('hangup').capitalize()
     CONFERENCE = 8, _('conference').capitalize()
-    DNC = 9, _('dnc').upper()
-    SMS = 10, _('sms').upper()
+    DNC = 9, _('DNC')
+    SMS = 10, _('SMS')
 
 
 class SURVEY_COLUMN_NAME(Choice):

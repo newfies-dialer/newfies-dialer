@@ -114,7 +114,7 @@ admin.site.register(SMSCampaignSubscriber, SMSCampaignSubscriberAdmin)
 class SMSMessageAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a SMSMessage."""
-    can_add = False
+    can_add = True
     detail_title = _("SMS report")
     list_display = ('sender', 'recipient_number', 'send_date', 'uuid',
                     'status', 'status_message', 'gateway')
@@ -161,7 +161,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
         if request.method == 'POST':
             query_string = sms_search_admin_form_fun(request)
             return HttpResponseRedirect(
-                "/admin/"+opts.app_label+"/"+opts.object_name.lower()+"/?"+query_string)
+                "/admin/" + opts.app_label + "/" + opts.object_name.lower() + "/?" + query_string)
         else:
             status = ''
             from_date = ''
@@ -297,14 +297,15 @@ class SMSMessageAdmin(admin.ModelAdmin):
             if format == 'json':
                 send_date = str(i.send_date)
 
-            list_val.append((i.sender,
-                             i.recipient_number,
-                             send_date,
-                             i.uuid,
-                             i.status,
-                             i.status_message,
-                             gateway
-                            ))
+            list_val.append(
+                (i.sender,
+                 i.recipient_number,
+                 send_date,
+                 i.uuid,
+                 i.status,
+                 i.status_message,
+                 gateway
+                 ))
 
         data = tablib.Dataset(*list_val, headers=headers)
 
@@ -317,7 +318,6 @@ class SMSMessageAdmin(admin.ModelAdmin):
         if format == 'json':
             response.write(data.json)
         return response
-
 
 
 class SMSTemplateAdmin(admin.ModelAdmin):

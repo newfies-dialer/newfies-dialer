@@ -158,6 +158,37 @@ def check_sms_campaign_pendingcall(sms_campaign_id):
             countdown=second_towait)
 
 
+class spool_sms_nocampaign(PeriodicTask):
+    """A periodic task that checks the sms not assigned to a campaign, create and tasks the calls
+
+    **Usage**:
+
+        spool_sms_nocampaign.delay()
+    """
+    run_every = timedelta(seconds=int(60 / DIV_MIN))
+    #NOTE : until we implement a PID Controller :
+    #http://en.wikipedia.org/wiki/PID_controller
+
+    #The sms_campaign have to run every minutes in order to control the number
+    # of calls per minute. Cons : new calls might delay 60seconds
+    #run_every = timedelta(seconds=60)
+
+    @only_one(ikey="spool_sms_nocampaign", timeout=LOCK_EXPIRE)
+    def run(self, **kwargs):
+        logger = self.get_logger(**kwargs)
+        logger.warning("TASK :: Check spool_sms_nocampaign")
+
+        #start_from = datetime.now()
+        #list_sms = SMSMessage.objects.filter(delivery_date__lte=start_from, status='Unsent', sms_campaign__isnull=True)
+        list_sms = SMSMessage.objects.filter(status='Unsent', sms_campaign__isnull=True)
+        logger.warning("TASK :: Check spool_sms_nocampaign -> COUNT SMS (%d)" % list_sms.count())
+
+        for sms in list_sms:
+            logger.debug("=> SMS Message (id:%d - phonenumber:%s)" % (sms.id, sms.sender_number))
+            # Send SMS
+            SendMessage.delay(sms.id, sms.sms_gateway_id)
+
+
 class sms_campaign_running(PeriodicTask):
     """A periodic task that checks the sms_campaign, create and tasks the calls
 

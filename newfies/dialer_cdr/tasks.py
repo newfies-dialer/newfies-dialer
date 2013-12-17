@@ -486,6 +486,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     gateway_id = obj_callrequest.aleg_gateway.id
     #gateway_codecs / gateway_retries
     gateway_timeouts = obj_callrequest.aleg_gateway.gateway_timeouts
+    if not gateway_timeouts:
+        gateway_timeouts = '60'
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
 
     debug_query(11)
@@ -572,8 +574,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 
             #DEBUG
             #settings.ESL_SCRIPT = '&playback(/usr/local/freeswitch/sounds/en/us/callie/voicemail/8000/vm-record_greeting.wav)'
-            dial_command = "originate {%s}%s%s '%s'" % (args_str, gateways, dialout_phone_number, settings.ESL_SCRIPT)
-            #dial_command = "originate {%s}user/areski '%s'" % (args_str, settings.ESL_SCRIPT)
+            #dial_command = "originate {%s}%s%s '%s'" % (args_str, gateways, dialout_phone_number, settings.ESL_SCRIPT)
+            dial_command = "originate {%s}user/areski '%s'" % (args_str, settings.ESL_SCRIPT)
 
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"

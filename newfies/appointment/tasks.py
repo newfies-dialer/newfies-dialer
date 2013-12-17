@@ -60,8 +60,9 @@ class event_dispatcher(PeriodicTask):
         logger.info("TASK :: event_dispatcher")
 
         # List all the events where event.start > NOW() - 12 hours and status = EVENT_STATUS.PENDING
-        start = datetime.now() - timedelta(hours=12)
-        event_list = Event.objects.filter(start__gte=start, status=EVENT_STATUS.PENDING)
+        start_from = datetime.now() - timedelta(hours=12)
+        start_to = datetime.now()
+        event_list = Event.objects.filter(start__gte=start_from, start__lte=start_to, status=EVENT_STATUS.PENDING)
         for obj_event in event_list:
             try:
                 # Get and perform alarm

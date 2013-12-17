@@ -448,6 +448,10 @@ class SMSMessage(Message):
     message = models.OneToOneField(Message)
     sms_campaign = models.ForeignKey(SMSCampaign, null=True, blank=True,
                                      help_text=_("select SMS campaign"))
+    sms_gateway = models.ForeignKey(Gateway, null=True, blank=True,
+                                    verbose_name=_("sms gateway"),
+                                    related_name="smsmessage_smsgateway",
+                                    help_text=_("select SMS gateway"))
 
     class Meta:
         permissions = (

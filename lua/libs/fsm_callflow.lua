@@ -525,6 +525,17 @@ function FSMCall:next_node()
         self:playnode(current_node)
         self:end_call()
 
+    elseif current_node.type == SMS then
+        --Send an SMS
+        if self.db.campaign_info.dnc_id then
+            self.db:connect()
+            self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
+            self.db:disconnect()
+        end
+        --Play Node
+        self:playnode(current_node)
+        self:end_call()
+
     elseif current_node.type == MULTI_CHOICE then
         digits = self:getdigitnode(current_node)
         self.debugger:msg("INFO", "result digit => "..digits)

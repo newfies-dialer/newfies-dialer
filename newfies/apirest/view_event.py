@@ -22,6 +22,7 @@ from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.events import Event
 from appointment.function_def import get_calendar_user_id_list
+import ast
 
 
 class EventViewSet(viewsets.ModelViewSet):
@@ -52,13 +53,37 @@ class EventViewSet(viewsets.ModelViewSet):
             calendar_user_list = get_calendar_user_id_list(self.request.user)
             queryset = Event.objects.filter(parent_event=event, creator_id__in=calendar_user_list)
 
-        print queryset
-        #serializer = PasswordSerializer(data=request.DATA)
-        #if serializer.is_valid():
-        #    event.status 
-        #    event.save()
-        #    return Response({'status': 'event status has been updated'})
-        #else:
-        #    return Response(serializer.errors,
-        #                    status=status.HTTP_400_BAD_REQUEST)
+        
+        event.status = request.DATA['status']
+        event.save()        
+        #return Response(serializer.errors,
+        #                status=status.HTTP_400_BAD_REQUEST)
         return Response({'status': 'event status has been updated'})
+
+    @action(methods=['GET'])
+    def get_list_child(self, request, pk=None):
+        """it will get all child events"""        
+        event = self.get_object()        
+        if self.request.user.is_superuser:
+            queryset = Event.objects.filter(parent_event=event)
+        else:
+            calendar_user_list = get_calendar_user_id_list(self.request.user)
+            queryset = Event.objects.filter(parent_event=event, creator_id__in=calendar_user_list)        
+
+        list_data = []        
+        for child_event in queryset:            
+            event_url =  'http://%s/rest-api/event/%s/' % (self.request.META['HTTP_HOST'], str(child_event.id))            
+            data = {
+                'url': event_url,
+                'title': child_event.title, 
+                'description': child_event.description,
+                'start': str(child_event.start),
+                'end': str(child_event.end),                                        
+            }
+            list_data.append(data)
+
+        temp_data = ", ".join(str(e) for e in list_data)
+        
+        final_data = ast.literal_eval(temp_data)        
+        return Response(final_data)
+                

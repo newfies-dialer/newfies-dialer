@@ -24,6 +24,7 @@ from appointment.function_def import get_calendar_user_id_list, \
     get_all_calendar_user_id_list
 from apirest.calendar_user_serializers import CalendarUserSerializer
 from user_profile.models import Manager
+import ast
 
 
 class CalendarUserViewSet(viewsets.ModelViewSet):
@@ -68,8 +69,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
             }
             list_data.append(data)
 
-        temp_data = ", ".join(str(e) for e in list_data)
-        import ast
+        temp_data = ", ".join(str(e) for e in list_data)        
         final_data = ast.literal_eval(temp_data)
         #serializer = CalendarUserSerializer(snippets, many=True)
         return Response(final_data)

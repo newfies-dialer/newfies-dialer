@@ -106,6 +106,23 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         Response::
 
             {"status": "event status has been updated"}
+
+
+    **get_list_child**:
+
+        CURL Usage::
+
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/event/%event-id%/get_list_child/
+
+        Response::
+
+            {
+                "url": "http://localhost:8000/rest-api/event/2/", 
+                "start": "2013-12-24 08:55:13+00:00", 
+                "end": "2013-12-31 09:55:13+00:00", 
+                "description": "", 
+                "title": "test-child-event"
+            }
     """
 
     class Meta:

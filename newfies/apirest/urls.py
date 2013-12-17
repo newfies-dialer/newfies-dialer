@@ -95,7 +95,7 @@ router.register(r'sms-template', SMSTemplateViewSet)
 urlpatterns = patterns('',
     url(r'^rest-api/subcampaign/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
     url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
-    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/(?P<contact_id>[0-9]+)/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
+    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/(?P<contact_id>[0-9]+)/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),    
 
     url(r'^rest-api/surveyaggregate/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
     url(r'^rest-api/surveyaggregate/(?P<campaign_id>[0-9]+)/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),

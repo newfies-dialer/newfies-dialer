@@ -96,6 +96,16 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
         CURL Usage::
 
             curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/event/%event-id%/
+
+    **updat_event_status**:
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"status": "1"}' http://localhost:8000/rest-api/event/%event-id%/updat_last_child_event_status/
+
+        Response::
+
+            {"status": "event status has been updated"}
     """
 
     class Meta:

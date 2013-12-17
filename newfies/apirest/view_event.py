@@ -43,7 +43,7 @@ class EventViewSet(viewsets.ModelViewSet):
         return queryset
 
     @action(methods=['PATCH'])
-    def updat_event_status(self, request, pk=None):
+    def update_event_status(self, request, pk=None):
         """it will update last child event status"""        
         event = self.get_object()        
         event.update_last_child_status(request.DATA['status'])          

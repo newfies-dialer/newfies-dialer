@@ -2,7 +2,7 @@ language: python
 python:
   - "2.7"
 env:
-  - DJANGO=1.5.1
+  - DJANGO=1.6
 install:
   # - pip install -q Django==$DJANGO --use-mirrors
   - sudo apt-get install flite
@@ -12,8 +12,8 @@ install:
 before_script:
   - cp install/conf/settings_local.py newfies/settings_local.py
   - cp install/conf/settings_travis.py newfies/settings_travis.py
-  - "mysql -e 'create database newfies;'"
-  - "mysql -e 'create database newfies_test;'"
+  #- "mysql -e 'create database newfies;'"
+  #- "mysql -e 'create database newfies_test;'"
   # - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
   # - pyflakes -x W newfies
 script:
@@ -23,3 +23,4 @@ script:
 branches:
   only:
     - develop
+    - appointment

@@ -17,6 +17,9 @@
 # To download and run the script on your server :
 # cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
 #
+# BRANCH = appointment
+# cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/appointment/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
+#
 
 #Set branch to install develop / master
 BRANCH='appointment'

@@ -598,6 +598,9 @@ BOWER_INSTALLED_APPS = (
     'nvd3#1.1.12-beta',
 )
 
+#Need to build documentation with Django 1.6
+LOGGING_CONFIG = None
+
 #IMPORT LOCAL SETTINGS
 #=====================
 try:

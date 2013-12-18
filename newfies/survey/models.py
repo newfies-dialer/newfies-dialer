@@ -336,6 +336,7 @@ class Section_template(Section_abstract):
             max_number=self.max_number,
             phonenumber=self.phonenumber,
             conference=self.conference,
+            sms_text=self.sms_text,
             completed=self.completed,
             order=self.order,
             invalid_audiofile_id=self.invalid_audiofile_id,

@@ -86,7 +86,7 @@ function FSMCall:init()
             self.contact_id = 'None'
             self.callrequest_id = 15390
             self.db.DG_SURVEY_ID = 74
-            self.alarm_request_id = 15
+            self.alarm_request_id = 43
         end
     end
 
@@ -529,8 +529,7 @@ function FSMCall:next_node()
 
     elseif current_node.type == SMS then
         --Send an SMS
-        if current_node.sms_text then
-            self.db:connect()
+        if current_node.sms_text and current_node.sms_text ~= '' then
             -- TODO: Not yet tested
             mcontact = mtable_jsoncontact(self.db.contact)
             if mcontact.sms_phonenumber then
@@ -538,7 +537,11 @@ function FSMCall:next_node()
             else
                 destination_number = self.destination_number
             end
-            self.db:send_sms(current_node.sms_text, self.survey_id, destination_number)
+
+            local sms_text = tag_replace(current_node.sms_text, self.db.contact)
+            self.debugger:msg("INFO", "Prepare Send SMS : "..sms_text)
+            self.db:connect()
+            self.db:send_sms(sms_text, self.survey_id, destination_number)
             self.db:disconnect()
 
             -- Save result
@@ -548,7 +551,6 @@ function FSMCall:next_node()
         end
         --Play Node
         self:playnode(current_node)
-        self:end_call()
 
     elseif current_node.type == MULTI_CHOICE then
         digits = self:getdigitnode(current_node)
@@ -606,7 +608,8 @@ function FSMCall:next_node()
     if current_node.type == PLAY_MESSAGE
         or current_node.type == RECORD_MSG
         or current_node.type == CALL_TRANSFER
-        or current_node.type == CONFERENCE then
+        or current_node.type == CONFERENCE
+        or current_node.type == SMS then
         --Check when no branching has been created
         if (not current_branching) then
             self.debugger:msg("ERROR", "No existing branching -> Goto Hangup - nodetype:"..current_node.type)

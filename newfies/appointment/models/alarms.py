@@ -109,10 +109,10 @@ class Alarm(models.Model):
             sms_template=self.sms_template,
             date_start_notice=self.date_start_notice,
             #result=self.result,
-            #url_cancel=self.url_cancel,
-            #phonenumber_sms_failure=self.phonenumber_sms_failure,
-            #url_confirm=self.url_confirm,
-            #phonenumber_transfer=self.phonenumber_transfer,
+            url_cancel=self.url_cancel,
+            phonenumber_sms_failure=self.phonenumber_sms_failure,
+            url_confirm=self.url_confirm,
+            phonenumber_transfer=self.phonenumber_transfer,
         )
         return new_alarm
 

@@ -22,7 +22,6 @@ from apirest.alarm_request_serializers import AlarmRequestSerializer
 from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.events import Event
 from appointment.function_def import get_calendar_user_id_list
-import ast
 
 
 class AlarmRequestViewSet(viewsets.ModelViewSet):

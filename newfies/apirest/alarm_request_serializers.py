@@ -99,12 +99,14 @@ class AlarmRequestSerializer(serializers.HyperlinkedModelSerializer):
         Response::
 
             {
-                "url": "http://localhost:8000/rest-api/alarm-request/1/", 
-                "callrequest": "http://localhost:8000/rest-api/callrequest/100/", 
-                "alarm": {
-                    "url": "http://localhost:8000/rest-api/alarm/2/", 
-                    "event": {
-                        "url": "http://localhost:8000/rest-api/event/2/"
+                "event": {
+                    "url": "http://127.0.0.1:8000/rest-api/event/2/", 
+                    "alarm": {
+                        "url": "http://127.0.0.1:8000/rest-api/alarm/2/", 
+                        "alarm-request": {
+                            "url": "http://127.0.0.1:8000/rest-api/alarm-request/1/", 
+                            "alarm-callrequest": "http://127.0.0.1:8000/rest-api/callrequest/100/"
+                        }
                     }
                 }
             }

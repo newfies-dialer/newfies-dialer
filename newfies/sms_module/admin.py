@@ -15,6 +15,7 @@
 from django.contrib import admin
 from django.contrib import messages
 from django.conf.urls import patterns
+from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext as _
 from django.contrib.admin.options import IncorrectLookupParameters
 from django.contrib.admin.views.main import ERROR_FLAG
@@ -201,7 +202,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
                                                 tday.day, 0, 0, 0, 0)
             cl.root_query_set.filter(**kwargs)
 
-        formset = cl.formset = None
+        cl.formset = None
         # Session variable is used to get record set with searched option into export file
         request.session['admin_sms_record_qs'] = cl.root_query_set
 
@@ -218,8 +219,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
             'app_label': _('SMS module'),
             'title': _('SMS report'),
         }
-        return super(SMSMessageAdmin, self)\
-            .changelist_view(request, extra_context=ctx)
+        return super(SMSMessageAdmin, self).changelist_view(request, extra_context=ctx)
 
     def sms_daily_report(self, request):
         opts = SMSMessage._meta

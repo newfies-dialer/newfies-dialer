@@ -5,7 +5,7 @@
 -- This Source Code Form is subject to the terms of the Mozilla Public
 -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 -- You can obtain one at http://mozilla.org/MPL/2.0/.
---
+--tag_replace
 -- Copyright (C) 2011-2013 Star2Billing S.L.
 --
 -- The Initial Developer of the Original Code is
@@ -527,9 +527,16 @@ function FSMCall:next_node()
 
     elseif current_node.type == SMS then
         --Send an SMS
-        if self.db.campaign_info.dnc_id then
+        if current_node.sms_text then
             self.db:connect()
-            self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
+            -- TODO: Not yet tested
+            mcontact = mtable_jsoncontact(self.db.contact)
+            if mcontact.supervisor_phonenumber then
+                destination_number = mcontact.supervisor_phonenumber
+            else
+                destination_number = self.destination_number
+            end
+            self.db:send_sms(current_node.sms_text, self.survey_id, destination_number)
             self.db:disconnect()
         end
         --Play Node

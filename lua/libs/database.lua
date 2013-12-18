@@ -22,7 +22,7 @@ local oo = require "loop.simple"
 local dbhanlder = require "dbhandler"
 -- local dbh_fs = require "dbh_fs"
 -- local dbh_fs = require "dbh_light"
-
+local uuid4= require("uuid4")
 
 
 -- redis.commands.expire = redis.command('EXPIRE')
@@ -47,6 +47,8 @@ Database = oo.class{
     results = {},
     caching = false,
     event_alarm = nil,
+    callerid = nil,
+    sms_gateway_id = nil,
 }
 
 function Database:__init(debug_mode, debugger)
@@ -132,7 +134,7 @@ end
 function Database:load_audiofile()
     -- id   name    audio_file  user_id
     local sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
-    self:db_debugger("DEBUG", "Load audiofile branching : "..sqlquery)
+    self:db_debugger("DEBUG", "Load audio file branching : "..sqlquery)
     self.list_audio = self.dbh:get_cache_list(sqlquery, 300)
     self:db_debugger_inspect("DEBUG", self.list_audio)
 end
@@ -145,13 +147,15 @@ function Database:load_campaign_info(campaign_id)
     if not self.campaign_info then
         return false
     end
+    self.callerid = self.campaign_info["callerid"]
+    self.sms_gateway_id = self.campaign_info["sms_gateway_id"]
     self.user_id = self.campaign_info["user_id"]
 end
 
 function Database:test_get_campaign()
     local sqlquery = "SELECT * FROM dialer_campaign ORDER BY DESC id"
     self:db_debugger("DEBUG", "Get campaign list : "..sqlquery)
-    self.contact = self.dbh:get_object(sqlquery)
+    self.campaign = self.dbh:get_object(sqlquery)
 end
 
 function Database:load_contact(contact_id)
@@ -190,7 +194,7 @@ end
 
 function Database:load_alarm_event(alarm_request_id)
     local sqlquery = "SELECT event_id, alarm_id, appointment_alarm.survey_id as survey_id, manager_id, data, "..
-        "voicemail, amd_behavior, voicemail_audiofile_id FROM appointment_alarmrequest "..
+        "voicemail, amd_behavior, voicemail_audiofile_id, callerid, sms_gateway_id, data, alarm_phonenumber FROM appointment_alarmrequest "..
         "LEFT JOIN appointment_alarm ON appointment_alarm.id=alarm_id "..
         "LEFT JOIN appointment_event ON appointment_event.id=appointment_alarm.event_id "..
         "LEFT JOIN calendar_user_profile ON calendar_user_profile.user_id=creator_id "..
@@ -205,6 +209,8 @@ function Database:load_alarm_event(alarm_request_id)
     -- print(self.event_alarm.manager_id)
     -- print(self.event_alarm.alarm_id)
     self.user_id = self.event_alarm.manager_id
+    self.callerid = self.event_alarm.callerid
+    self.sms_gateway_id = self.event_alarm.sms_gateway_id
 end
 
 function Database:load_all_alarm_request(alarm_request_id)
@@ -216,6 +222,12 @@ function Database:load_all_alarm_request(alarm_request_id)
     end
 end
 
+function Database:createcontact(phonenumber, data)
+    -- create a fake contact for alarm
+    self.contact = { address = "", contact = phonenumber, email = "", first_name = "", last_name = "", additional_vars = data }
+    return contact
+end
+
 function Database:load_all(campaign_id, contact_id, alarm_request_id)
 
     if contact_id=='None' or campaign_id=='None' then
@@ -224,6 +236,7 @@ function Database:load_all(campaign_id, contact_id, alarm_request_id)
         self:load_survey_section(self.event_alarm.survey_id)
         self:load_survey_branching(self.event_alarm.survey_id)
         self:load_audiofile()
+        self:createcontact(self.event_alarm.alarm_phonenumber, self.event_alarm.data)
         return self.event_alarm.survey_id
     end
 
@@ -436,5 +449,38 @@ function Database:save_alarm_result(alarm_id, digits)
         else
             return true
         end
+    end
+end
+
+function Database:send_sms(text, survey_id, phonenumber)
+    -- self.sms_gateway_id = 1
+    -- self.callerid = '165151616565'
+    -- self.user_id = 1
+    if not self.sms_gateway_id then
+        self:db_debugger("ERROR", "CANNOT SEND SMS : missing sms_gateway_id")
+        return false
+    end
+    --v4 UUID
+    local uuid = uuid4.getUUID()
+    local content_type_id = self:load_content_type()
+    local sqlquery = "INSERT INTO sms_message (content, recipient_number, sender_id, send_date, delivery_date, uuid, status, "..
+        "billed, content_type_id, object_id, gateway_id, sender_number) "..
+        "VALUES ('"..text.."', '"..phonenumber.."', "..self.user_id..", NULL, NULL, '"..uuid.."', 'Unsent', 'f',"..content_type_id..
+        ", "..survey_id..", "..self.sms_gateway_id..", '"..self.callerid.."')"
+    self:db_debugger("DEBUG", "INSERT send sms:"..sqlquery)
+    local res = self.dbh:execute(sqlquery)
+    if not res then
+        return false
+    end
+
+    -- Insert smsmessage
+    local sqlquery = "INSERT INTO smsmessage (message_id, sms_campaign_id, sms_gateway_id) "..
+        "VALUES ( (SELECT id FROM sms_message WHERE uuid='"..uuid.."'), NULL, "..self.sms_gateway_id..")"
+    self:db_debugger("DEBUG", "INSERT send smsmessage:"..sqlquery)
+    local res = self.dbh:execute(sqlquery)
+    if not res then
+        return false
+    else
+        return true
     end
 end

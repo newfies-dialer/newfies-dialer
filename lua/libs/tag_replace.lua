@@ -13,6 +13,22 @@
 --
 
 
+function mtable_jsoncontact(contact)
+    --decode json from additional_vars
+    if contact['additional_vars'] then
+        decdata = decodejson(contact['additional_vars'])
+        if decdata and type(decdata) == "table" then
+            -- Merge Table
+            mcontact = table_merge(contact, decdata)
+        else
+            mcontact = contact
+        end
+    else
+        mcontact = contact
+    end
+    return mcontact
+end
+
 --
 -- Function  Replace place holders by tag value.
 --     This function will replace all the following tags :
@@ -33,18 +49,8 @@ function tag_replace(text, contact)
     if not string.find(text, "[{|}]") then
         return text
     end
-    --decode json from additional_vars
-    if contact['additional_vars'] then
-        decdata = decodejson(contact['additional_vars'])
-        if decdata and type(decdata) == "table" then
-            -- Merge Table
-            mcontact = table_merge(contact, decdata)
-        else
-            mcontact = contact
-        end
-    else
-        mcontact = contact
-    end
+    --get merged table of contact with the json additional_vars
+    mcontact = mtable_jsoncontact(contact)
 
     if not type(mcontact) == "table" then
         return text

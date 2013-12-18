@@ -88,6 +88,26 @@ class AlarmRequestSerializer(serializers.HyperlinkedModelSerializer):
         CURL Usage::
 
             curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/alarm-request/%alarm-request-id%/
+
+
+    **get_nested_alarm_request**:
+
+        CURL Usage::
+
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/alarm-request/%alarm-request-id%/get_nested_alarm_request/
+
+        Response::
+
+            {
+                "url": "http://localhost:8000/rest-api/alarm-request/1/", 
+                "callrequest": "http://localhost:8000/rest-api/callrequest/100/", 
+                "alarm": {
+                    "url": "http://localhost:8000/rest-api/alarm/2/", 
+                    "event": {
+                        "url": "http://localhost:8000/rest-api/event/2/"
+                    }
+                }
+            }
     """
 
     class Meta:

@@ -29,9 +29,7 @@ logger = logging.getLogger('newfies.filelog')
 
 
 class SubscriberViewSet(viewsets.ModelViewSet):
-    """
-    API endpoint that allows campaigns to be viewed or edited.
-    """
+    """SubscriberViewSet"""
     queryset = Subscriber.objects.all()
     serializer_class = SubscriberSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
@@ -51,16 +49,26 @@ class SubscriberViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request):
-        """Customize create"""
+        """        
+        It will insert active contact to the subscriber for each 
+        active campaign using this phonebook which are not imported into 
+        subscriber before
+
+        phonebook_id - To check valid phonebook_id & To add new contact in that phonebook
+        additional_vars - Must be in JSON format
+
+        CURL Usage::
+
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"}' http://localhost:8000/rest-api/subscriber/
+
+        """
         try:
             phonebook_id = request.POST.get('phonebook_id')
             obj_phonebook = Phonebook.objects.get(
                 id=phonebook_id, user=request.user)
         except:
             return Response({'error': 'phonebook id is not valid'})
-
-        #this method will also create a record into Subscriber
-        #this is defined in signal post_save_add_contact
+        
         add_var = ''
         if request.POST.get('additional_vars'):
             try:

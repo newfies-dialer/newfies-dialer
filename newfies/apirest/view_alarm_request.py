@@ -19,7 +19,7 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from apirest.alarm_request_serializers import AlarmRequestSerializer
-from appointment.models.alarms import AlarmRequest
+from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.events import Event
 from appointment.function_def import get_calendar_user_id_list
 import ast
@@ -69,42 +69,26 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
         #Event.objects.values_list('id', flat=True).filter(parent_event=event)
         alarm_request_queryset = AlarmRequest.objects.filter(
             alarm__event__parent_event=event).order_by('id')
-        
-        list_data = []
-        for alarm_request in alarm_request_queryset:
 
-            alarm_request_url = 'http://%s/rest-api/alarm-request/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.id))
-            callrequest_url = 'http://%s/rest-api/callrequest/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.callrequest_id))
-            alarm_url = 'http://%s/rest-api/alarm/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.alarm_id))
-            event_url = 'http://%s/rest-api/event/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.alarm.event_id))
-            
-            data = {
-                'event': {
-                    'url': event_url,
-                    'name': alarm_request.alarm.event.title,                    
-                    'start': str(alarm_request.alarm.event.start),
-                    'end': str(alarm_request.alarm.event.end),
-                    'end_recurring_period': str(alarm_request.alarm.event.end_recurring_period),
-                    'status': alarm_request.alarm.event.status,
-                    'alarm': {
-                        'url': alarm_url,
-                        'daily_start': str(alarm_request.alarm.daily_start),
-                        'daily_stop': str(alarm_request.alarm.daily_stop),
-                        'date_start_notice': str(alarm_request.alarm.date_start_notice),
-                        'alarm-request': {
-                            'date': str(alarm_request.date),
-                            'url': alarm_request_url,
-                            'alarm-callrequest': callrequest_url,
-
-                        }
-                    }
-                }
+        event_url = 'http://%s/rest-api/event/%s/' % (self.request.META['HTTP_HOST'], str(event.id))
+        final_data = {}
+        final_data["event-url"] = event_url
+        final_data["event-%s" % str(event.id)] = {}
+        alarm_list = Alarm.objects.filter(event__parent_event=event).order_by('id')
+        for alarm in alarm_list:            
+            alarm_url = 'http://%s/rest-api/alarm/%s/' % (self.request.META['HTTP_HOST'], str(alarm.id))
+            final_data["event-%s" % str(event.id)]["alarm-%s" % str(alarm.id) ] = {
+                'url': alarm_url
             }
-            list_data.append(data)
 
-        if list_data:
-            temp_data = ", ".join(str(e) for e in list_data)
-            final_data = ast.literal_eval(temp_data)
-        else:
-            final_data = {"note": "no alarm request found"}
+            alarm_requests = AlarmRequest.objects.filter(alarm=alarm).order_by('id')
+            for alarm_request in alarm_requests:
+                alarm_request_url = 'http://%s/rest-api/alarm-request/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.id))
+                callrequest_url = 'http://%s/rest-api/callrequest/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.callrequest_id))
+                final_data["event-%s" % str(event.id)]["alarm-%s" % str(alarm.id) ]['alarm-request-%s' % str(alarm_request.id)] = {
+                    "url" : alarm_request_url,
+                    "alarm-callrequest": callrequest_url,
+                    "date": str(alarm_request.date),
+                }
+                        
         return Response(final_data)

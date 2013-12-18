@@ -51,7 +51,7 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
     def get_nested_alarm_request(self, request, pk=None):
         """it will get all nested alarm request"""
         #alarm_request = self.get_object()
-       
+
         if self.request.user.is_superuser:
             try:
                 event = Event.objects.get(pk=pk)
@@ -65,13 +65,12 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
             except:
                 final_data = {"error": "event id is not valid"}
                 return Response(final_data)
-        
+
         alarm_request_queryset = AlarmRequest.objects.filter(
             alarm__event__parent_event=event).order_by('-id')
-        
+
         list_data = []
         for alarm_request in alarm_request_queryset:
-
             alarm_request_url = 'http://%s/rest-api/alarm-request/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.id))
             callrequest_url = 'http://%s/rest-api/callrequest/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.callrequest_id))
             alarm_url = 'http://%s/rest-api/alarm/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.alarm_id))
@@ -85,7 +84,7 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
                     'event': {
                         'url': event_url,
                     }
-                }               
+                }
             }
             list_data.append(data)
 

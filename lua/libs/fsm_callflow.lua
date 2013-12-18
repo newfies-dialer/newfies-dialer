@@ -504,24 +504,26 @@ function FSMCall:next_node()
             conference = self.campaign_id
         end
         self.lastaction_start = os.time()
-        self.actionresult = 'conf: '..conference
         self.session:execute("conference", conference..'@default')
         actionduration = os.time() - self.lastaction_start
         self.debugger:msg("INFO", "END CONFERENCE : duration "..actionduration)
-
+        -- Save result
         self.actionresult = 'conf: '..conference
-        --.." duration:"..actionduration
         self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
         self.actionresult = false
 
     elseif current_node.type == DNC then
-        --Add this phonenumber to the DNC campaign list
+        -- Add this phonenumber to the DNC campaign list
         if self.db.campaign_info.dnc_id then
             self.db:connect()
             self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
             self.db:disconnect()
         end
-        --Play Node
+        -- Save result
+        self.actionresult = 'DNC: '..self.destination_number
+        self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
+        self.actionresult = false
+        -- Play Node
         self:playnode(current_node)
         self:end_call()
 
@@ -531,13 +533,18 @@ function FSMCall:next_node()
             self.db:connect()
             -- TODO: Not yet tested
             mcontact = mtable_jsoncontact(self.db.contact)
-            if mcontact.supervisor_phonenumber then
-                destination_number = mcontact.supervisor_phonenumber
+            if mcontact.sms_phonenumber then
+                destination_number = mcontact.sms_phonenumber
             else
                 destination_number = self.destination_number
             end
             self.db:send_sms(current_node.sms_text, self.survey_id, destination_number)
             self.db:disconnect()
+
+            -- Save result
+            self.actionresult = 'SMS: '..destination_number
+            self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
+            self.actionresult = false
         end
         --Play Node
         self:playnode(current_node)

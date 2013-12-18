@@ -66,18 +66,14 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
                 final_data = {"error": "event id is not valid"}
                 return Response(final_data)
 
-        #Event.objects.values_list('id', flat=True).filter(parent_event=event)
-        alarm_request_queryset = AlarmRequest.objects.filter(
-            alarm__event__parent_event=event).order_by('id')
-
         event_url = 'http://%s/rest-api/event/%s/' % (self.request.META['HTTP_HOST'], str(event.id))
         final_data = {}
         final_data["event-url"] = event_url
         final_data["event-%s" % str(event.id)] = {}
         alarm_list = Alarm.objects.filter(event__parent_event=event).order_by('id')
-        for alarm in alarm_list:            
+        for alarm in alarm_list:
             alarm_url = 'http://%s/rest-api/alarm/%s/' % (self.request.META['HTTP_HOST'], str(alarm.id))
-            final_data["event-%s" % str(event.id)]["alarm-%s" % str(alarm.id) ] = {
+            final_data["event-%s" % str(event.id)]["alarm-%s" % str(alarm.id)] = {
                 'url': alarm_url
             }
 
@@ -85,10 +81,13 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
             for alarm_request in alarm_requests:
                 alarm_request_url = 'http://%s/rest-api/alarm-request/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.id))
                 callrequest_url = 'http://%s/rest-api/callrequest/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.callrequest_id))
-                final_data["event-%s" % str(event.id)]["alarm-%s" % str(alarm.id) ]['alarm-request-%s' % str(alarm_request.id)] = {
-                    "url" : alarm_request_url,
+                final_data["event-%s" % str(event.id)]["alarm-%s" % str(alarm.id)]['alarm-request-%s' % str(alarm_request.id)] = {
+                    "url": alarm_request_url,
                     "alarm-callrequest": callrequest_url,
                     "date": str(alarm_request.date),
+                    "status": str(alarm_request.status),
+                    "callstatus": str(alarm_request.callstatus),
+                    "duration": str(alarm_request.duration),
                 }
-                        
+
         return Response(final_data)

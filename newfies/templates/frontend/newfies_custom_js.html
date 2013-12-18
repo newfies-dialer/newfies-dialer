@@ -21,10 +21,7 @@
 
     // toggle event for forms
     $(function() {
-        {% if search_tag == 1 %}
-            $("#form_collapse").collapse('hide');
-        {% endif %}
-
+            
         $("#form_collapse").on('hidden.bs.collapse', function() {
             $('#toggle_btn_i_span').text('{% trans "open search"|title %}');
             $('#toggle_btn_i').attr('class', 'glyphicon glyphicon-zoom-in');

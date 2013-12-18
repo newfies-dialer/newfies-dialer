@@ -1,7 +1,7 @@
 {% extends "frontend/master.html" %}
 {% load i18n dajaxice_templatetags common_tags survey_tags %}
 
-{% block extra_files %}
+{% block extra_files %}    
     {% include "frontend/survey/survey_change_header.html" %}
     {% include "common_audiofield.html" %}
 {% endblock %}
@@ -404,16 +404,16 @@
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);
     });
-
-    // Section add modal
-    $(".section-add").live('click', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('url');
-        var modal_id = $(this).attr('data-controls-modal');
-        url = url + "?survey_id=" + {{ survey_obj_id }};
-        $("#" + modal_id).load(url);
-    });
-
+    {% if action == 'update' %}
+        // Section add modal
+        $(".section-add").live('click', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('url');
+            var modal_id = $(this).attr('data-controls-modal');
+            url = url + "?survey_id=" + {{ survey_obj_id }};
+            $("#" + modal_id).load(url);
+        });
+    {% endif %}
     // Section branching change modal
     $(".section-branch").live('click', function(e) {
         e.preventDefault();

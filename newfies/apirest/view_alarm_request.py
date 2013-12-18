@@ -66,8 +66,9 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
                 final_data = {"error": "event id is not valid"}
                 return Response(final_data)
 
+        #Event.objects.values_list('id', flat=True).filter(parent_event=event)
         alarm_request_queryset = AlarmRequest.objects.filter(
-            alarm__event__parent_event=event).order_by('-id')
+            alarm__event__parent_event=event).order_by('id')
 
         list_data = []
         for alarm_request in alarm_request_queryset:
@@ -77,12 +78,24 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
             event_url = 'http://%s/rest-api/event/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.alarm.event_id))
 
             data = {
-                'url': alarm_request_url,
-                'callrequest': callrequest_url,
-                'alarm': {
-                    'url': alarm_url,
-                    'event': {
-                        'url': event_url,
+                'event': {
+                    'url': event_url,
+                    'name': alarm_request.alarm.event.title,
+                    'start': str(alarm_request.alarm.event.start),
+                    'end': str(alarm_request.alarm.event.end),
+                    'end_recurring_period': str(alarm_request.alarm.event.end_recurring_period),
+                    'status': alarm_request.alarm.event.status,
+                    'alarm': {
+                        'url': alarm_url,
+                        'daily_start': str(alarm_request.alarm.daily_start),
+                        'daily_stop': str(alarm_request.alarm.daily_stop),
+                        'date_start_notice': str(alarm_request.alarm.date_start_notice),
+                        'alarm-request': {
+                            'date': str(alarm_request.date),
+                            'url': alarm_request_url,
+                            'alarm-callrequest': callrequest_url,
+
+                        }
                     }
                 }
             }

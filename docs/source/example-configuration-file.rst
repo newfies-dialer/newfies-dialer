@@ -5,7 +5,7 @@ Sample Configuration
 
 This is a sample configuration to get you started.
 It should contain all you need to create a basic set-up.
- 
+
 ------------------------
 The Configuration Module
 ------------------------
@@ -103,11 +103,11 @@ The URL patterns specific to the dialer_campaign application are applied in the
 ``/dialer_campaign/urls.py`` file in the dialer_campaign application folder.
 The code segment that adds these URL patterns isn't lengthy either and is shown below::
 
-  urlpatterns = patterns('dialer_campaign.views',
-    (r'^phonebook/$', 'phonebook_list'),
-    (r'^phonebook/add/$', 'phonebook_add'),
-    (r'^phonebook/(.+)/$', 'phonebook_change'),
-  )
+    urlpatterns = patterns('dialer_campaign.views',
+      (r'^phonebook/$', 'phonebook_list'),
+      (r'^phonebook/add/$', 'phonebook_add'),
+      (r'^phonebook/(.+)/$', 'phonebook_change'),
+    )
 
 ----------------
 The Views module

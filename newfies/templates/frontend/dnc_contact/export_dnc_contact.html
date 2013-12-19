@@ -29,7 +29,7 @@
                 <div class="btn-group" data-toggle="buttons">
                     {% for choice in form.export_to.field.choices %}
                     <label class="btn btn-default">
-                        <input name='{{ form.export_to.name }}' type='radio'value='{{ choice.0 }}'/> {{ choice.1 }}
+                        <input name='{{ form.export_to.name }}' type='radio' value='{{ choice.0 }}'/> {{ choice.1 }}
                     </label>
                     {% endfor %}
                 </div>

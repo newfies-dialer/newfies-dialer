@@ -69,7 +69,7 @@ class SubscriberViewSet(viewsets.ModelViewSet):
         except:
             return Response({'error': 'phonebook id is not valid'})
         
-        add_var = ''
+        add_var = {}
         if request.POST.get('additional_vars'):
             try:
                 import json

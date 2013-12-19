@@ -49,9 +49,9 @@ class SubscriberViewSet(viewsets.ModelViewSet):
         return Response(serializer.data)
 
     def create(self, request):
-        """        
-        It will insert active contact to the subscriber for each 
-        active campaign using this phonebook which are not imported into 
+        """
+        It will insert active contact to the subscriber for each
+        active campaign using this phonebook which are not imported into
         subscriber before
 
         phonebook_id - To check valid phonebook_id & To add new contact in that phonebook
@@ -68,7 +68,7 @@ class SubscriberViewSet(viewsets.ModelViewSet):
                 id=phonebook_id, user=request.user)
         except:
             return Response({'error': 'phonebook id is not valid'})
-        
+
         add_var = {}
         if request.POST.get('additional_vars'):
             try:

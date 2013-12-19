@@ -27,6 +27,7 @@ from apirest.view_phonebook import PhonebookViewSet
 from apirest.view_contact import ContactViewSet
 from apirest.view_campaign import CampaignViewSet
 from apirest.view_subscriber import SubscriberViewSet
+from apirest.view_sub import NewSubscriberViewSet
 from apirest.view_bulk_contact import BulkContactViewSet
 from apirest.view_callrequest import CallrequestViewSet
 from apirest.view_survey_template import SurveyTemplateViewSet
@@ -95,12 +96,15 @@ router.register(r'sms-template', SMSTemplateViewSet)
 urlpatterns = patterns('',
     url(r'^rest-api/subcampaign/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
     url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
-    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/(?P<contact_id>[0-9]+)/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),    
+    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/(?P<contact_id>[0-9]+)/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
 
     url(r'^rest-api/surveyaggregate/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
     url(r'^rest-api/surveyaggregate/(?P<campaign_id>[0-9]+)/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
 
     url(r'^rest-api/bulkcontact/$', BulkContactViewSet.as_view(), name="bulk_contact"),
+
+    # subscriber rest api
+    url(r'^rest-api/new-subscriber/$', NewSubscriberViewSet.as_view(), name="subscriber_contact"),
 
     url(r'^rest-api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),

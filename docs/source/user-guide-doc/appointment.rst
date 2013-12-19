@@ -10,7 +10,7 @@ Appointment Module
     :depth: 2
 
 
-Starting from the version 2.10, Newfies-Dialer has been enhanced with an appointment module. At first Newfies-Dialer was designed to provide a powerful voice broadcasting and it efficiently outbounds thousands and millions of calls via gateway to different audience. One of the major limitation of the voice broadcasting, it's impossible/hard to target a call to a specific contact at a *programmed time*. This is where the appointment module fill up the gap and allow to build outbound calls application depending on timestamp.
+Starting from the version 2.10, Newfies-Dialer has been enhanced with an appointment module. At first Newfies-Dialer was designed to provide a powerful voice broadcasting and it efficiently outbound thousands and millions of calls via gateway to different audience. One of the major limitation of the voice broadcasting, it's impossible/hard to target a call to a specific contact at a *programmed time*. This is where the appointment module fill up the gap and allow to build outbound calls application depending on time-stamp.
 
 .. image:: ../_static/images/appointment_module_screenshot.png
 
@@ -25,7 +25,7 @@ The module have few components will we will describe in this section.
 
 **Calendar User**
 
-    The Calendar User is subuser of the Newfies-Dialer User, calendar user will be your enduser which will need to set reminders/alarms.
+    The Calendar User is sub-user of the Newfies-Dialer User, calendar user will be your end-user which will need to set reminders/alarms.
     For instance if you provide appointment reminder to doctor, the calendar user may be the doctor or the secretary.
     A Calendar User have a certain amount of limitation which are configured via Calendar User Settings.
 
@@ -35,23 +35,23 @@ The module have few components will we will describe in this section.
 
 **Event**
 
-    Event, it's a thing that happen/occur at a certain date & time, an event is link to a Calendar. You can define the duration of an event (ie hour),  you can also by the mean of Rule configure reoccurence mechanism, for instance if an event is happening every day, every month, or event follow complex rules like repeating itself every week but only on Tuesday.
+    Event, it's a thing that happen/occur at a certain date & time, an event is link to a Calendar. You can define the duration of an event (ie hour),  you can also by the mean of Rule configure occurence mechanism, for instance if an event is happening every day, every month, or event follow complex rules like repeating itself every week but only on Tuesday.
 
     TODO: add documentation on data fields (similar to additionals_data)
 
 **Rule**
 
-    Newfies-Dialer comes with a set of predefined rules which can be used for your event, you will find the Daily rule, which if applied to an event will make the reoccure every day.
+    Newfies-Dialer comes with a set of predefined rules which can be used for your event, you will find the Daily rule, which if applied to an event will make the occur every day.
     Rule is based on the rrule python module. The rrule module offers a small, complete, and very fast, implementation of the recurrence rules documented in the iCalendar RFC : http://www.ietf.org/rfc/rfc2445.txt
 
     More info about rrule: http://labix.org/python-dateutil#head-470fa22b2db72000d7abe698a5783a46b0731b57
 
 
-Event happens at a certain time and you can also program event to reoccurence daily or follow reoccurence rules, now in order to get notification about event you have to create Alarms related to the event.
+Event happens at a certain time and you can also program event to occur daily or follow occurence rules, now in order to get notification about event you have to create Alarms related to the event.
 
 **Alarm**
 
-    Alarm helps to notify about an occuring event, the notification use several different method, the currently supported ones are Call, SMS and Mail. Alarms have a large set of settings which offers a great flexibility.
+    Alarm helps to notify about an occurring event, the notification use several different method, the currently supported ones are Call, SMS and Mail. Alarms have a large set of settings which offers a great flexibility.
 
 
 **Settings of Alarms**
@@ -60,7 +60,7 @@ Event happens at a certain time and you can also program event to reoccurence da
 
     - Date start notice : Date to which you will start the alarm (this will generally be similar to the event date)
 
-    - Alarm Phonenumber : Define to which phone number the alarm will be trigger
+    - Alarm Phone Number : Define to which phone number the alarm will be trigger
 
     - Alarm Email : Define to which email the alarm will be sent
 
@@ -72,9 +72,9 @@ Event happens at a certain time and you can also program event to reoccurence da
 
     - Retry Delay : Time to wait between each call retry
 
-    - Phonenumber SMS Failure : In case the phonenumber wasn't reachable after max retry, we will trigger an SMS to this number
+    - Phone Number SMS Failure : In case the phone number wasn't reachable after max retry, we will trigger an SMS to this number
 
-    - URL Cancel / URL Confirm / Phonenumber Transfer : Features that will be implemented in the future version
+    - URL Cancel / URL Confirm / Phone Number Transfer : Features that will be implemented in the future version
 
 
 **Alarm Result**
@@ -115,15 +115,15 @@ Explore the `appointment models`_.
 User cases
 ----------
 
-The appointment modules has been build with flexibility in mind, and we tried to cover several scenarios needed by different applications/softwares willing to perform complex Appointment reminder application or Alarm system.
+The appointment modules has been build with flexibility in mind, and we tried to cover several scenarios needed by different application/software willing to perform complex Appointment reminder application or Alarm system.
 
 You could build with this module software such:
 
 
-Wakeup call alarm
+Wake up call alarm
 ~~~~~~~~~~~~~~~~~
 
-    Each of your calendar user will have their calendar in which they will create an wakeup event, decide when it will be triggered, how many times, delay between retries, etc...
+    Each of your calendar user will have their calendar in which they will create an wake up event, decide when it will be triggered, how many times, delay between retries, etc...
 
     The voice application will then play something like "Hello Mr Joe, it's 7am and it's time for you to wake up and get ready for work"
 
@@ -180,12 +180,12 @@ To be able to setup and receive alarm there is a process to follow, which we wil
 
     http://127.0.0.1:8000/module/calendar/
 
-7) Create Event, for instance an event happening today at 11am, define when the event start and finish, add a reoccurence rule if you want for instance the event happening every day.
+7) Create Event, for instance an event happening today at 11am, define when the event start and finish, add an occurence rule if you want for instance the event happening every day.
 
     Create Event can be done by click on Add button :
     http://127.0.0.1:8000/module/event/
 
-8) Create Alarm, this will allow to receive notification when Events are occuring. To get started, let's create an alarm with Method Call, link it to the previous created event, et a date for the alarm and the phonenumber that will be notified, then configure the rest of the alarm settings to your taste.
+8) Create Alarm, this will allow to receive notification when Events are occurring. To get started, let's create an alarm with Method Call, link it to the previous created event, et a date for the alarm and the phone number that will be notified, then configure the rest of the alarm settings to your taste.
 
     Create Alarm can be done by click on Add button :
     http://127.0.0.1:8000/module/alarm/
@@ -204,11 +204,11 @@ Work Flow with API
 
 One of the powerful features of the appointment module is his APIs, which will allow developers to build great idea for application on top of Newfies-Dialer.
 
+We will describe an example of work flow with APIs.
 
-We will describe an example of workflow with APIs.
 
-1) Create CalendarSetting
-~~~~~~~~~~~~~~~~~~~~~~~~~
+1) Create Calendar Setting
+~~~~~~~~~~~~~~~~~~~~~~~~~~
 
     **CURL Usage**::
 
@@ -243,8 +243,8 @@ We will describe an example of workflow with APIs.
         }
 
 
-2) Create CalendarUser
-~~~~~~~~~~~~~~~~~~~~~~
+2) Create Calendar User
+~~~~~~~~~~~~~~~~~~~~~~~
 
     **CURL Usage**::
 
@@ -272,10 +272,10 @@ We will describe an example of workflow with APIs.
         }
 
 
-3) Update CalendardUserProfile
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+3) Update Calendard User Profile
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    We will need to use the previously created CalendarSetting.
+    We will need to use the previously created Calendar Setting.
 
     **CURL Usage**::
 
@@ -383,10 +383,10 @@ We will describe an example of workflow with APIs.
 
 
 
-6) Get list of childs from an event
+6) Get list of child from an event
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Event reoccuring in time will have a tail of sub events linked to the parent event.
+    Events, occurring in time, will have a tail of sub events linked to the parent event.
     Usually the integrator using APIs will keep track of the parent event and at some stage might need to retrieve information about the
     sub events.
 
@@ -420,8 +420,8 @@ We will describe an example of workflow with APIs.
 7) Update the last child event status to Paused
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    In some scenario you might want to pause an alarm of being trigged, as an alarm is link to all reoccurence of events created,
-    you don't need to update the status of the parent event neither all the childs, you will need to update it for the last event only.
+    In some scenario you might want to pause an alarm of being trigged, as an alarm is link to all occurence of an events created,
+    you don't need to update the status of the parent event neither all the child, you will need to update it for the last event only.
 
     You will achieve this by using the API /update_last_child_status/
 

@@ -29,15 +29,18 @@ The module have few components will we will describe in this section.
     For instance if you provide appointment reminder to doctor, the calendar user may be the doctor or the secretary.
     A Calendar User have a certain amount of limitation which are configured via Calendar User Settings.
 
+
 **Calendar**
 
     Calendar are entity that help to regroup and collect events.
+
 
 **Event**
 
     Event, it's a thing that happen/occur at a certain date & time, an event is link to a Calendar. You can define the duration of an event (ie hour),  you can also by the mean of Rule configure occurence mechanism, for instance if an event is happening every day, every month, or event follow complex rules like repeating itself every week but only on Tuesday.
 
     TODO: add documentation on data fields (similar to additionals_data)
+
 
 **Rule**
 
@@ -48,6 +51,7 @@ The module have few components will we will describe in this section.
 
 
 Event happens at a certain time and you can also program event to occur daily or follow occurence rules, now in order to get notification about event you have to create Alarms related to the event.
+
 
 **Alarm**
 
@@ -104,6 +108,7 @@ This diagram of the appointment models might help developers and integrators hel
 .. image:: ../_static/images/models/appointment.png
     :width: 700
 
+
 Explore the `appointment models`_.
 
 .. _appointment models: ../_static/images/models/appointment.png
@@ -144,10 +149,10 @@ Calendar Alarm event
     Some users might want to simply remember important date/event, for instance for a meeting, to pickup the kid from music class, etc... each Calendar User can create as many Calendar as they want, for instance they could have a birthday calendar and a work calendar to not mix personal and professional event.
 
 
-.. _appointment-process-architecture:
+.. _appointment-process-flow:
 
-Process architecture
---------------------
+Process flow
+------------
 
 To be able to setup and receive alarm there is a process to follow, which we will described bellow:
 
@@ -510,3 +515,13 @@ We will describe an example of work flow with APIs.
             }
           }
         }
+
+
+.. _appointment-api-explorer:
+
+API explorer for Appointment module
+-----------------------------------
+
+Some APIs can be explored and tested easily via the API-Explorer. This is certainly the best way to understand and read about all the APIs provided by Newfies-Dialer.
+
+To access the API-Explorer go to http://127.0.0.1:8000/rest-api/

@@ -63,9 +63,12 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
         else:
             obj_subscriber.count_attempt += 1
 
+        text_message = obj_subscriber.contact.replace_tag(obj_subscriber.sms_campaign.text_message)
+        logger.info("SendMessage text_message:%s" % text_message)
+
         # Create Message object
         msg_obj = SMSMessage.objects.create(
-            content=obj_subscriber.sms_campaign.text_message,
+            content=text_message,
             recipient_number=obj_subscriber.contact.contact,
             sender=obj_subscriber.sms_campaign.user,
             sender_number=obj_subscriber.sms_campaign.callerid,
@@ -399,6 +402,12 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
                 continue
 
             for subscriber in list_subscriber:
+                if not subscriber.message:
+                    logger.error("=> SMS with No Message")
+                    subscriber.status = SMS_SUBSCRIBER_STATUS.FAIL  # 'FAIL'
+                    subscriber.save()
+                    continue
+
                 logger.warning("=> SMS Message Status = %s" % subscriber.message.status)
                 if subscriber.message.status == 'Failed':
                     # check sms_maxretry
@@ -406,9 +415,13 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
                         subscriber.status = SMS_SUBSCRIBER_STATUS.FAIL  # 'FAIL'
                         subscriber.save()
                     else:
+
+                        text_message = subscriber.contact.replace_tag(subscriber.sms_campaign.text_message)
+                        logger.info("SendMessage text_message:%s" % text_message)
+
                         # Create Message object
                         msg_obj = SMSMessage.objects.create(
-                            content=subscriber.sms_campaign.text_message,
+                            content=text_message,
                             recipient_number=subscriber.contact.contact,
                             sender=subscriber.sms_campaign.user,
                             sender_number=subscriber.sms_campaign.callerid,

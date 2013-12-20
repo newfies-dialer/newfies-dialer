@@ -18,6 +18,7 @@ from django_countries import CountryField
 from common.intermediate_model_base_class import Model
 from dialer_contact.constants import CONTACT_STATUS
 import jsonfield
+import re
 
 
 class Phonebook(Model):
@@ -126,5 +127,38 @@ class Contact(Model):
     def contact_name(self):
         """Return Contact Name"""
         return u"%s %s" % (self.first_name, self.last_name)
+
+    def replace_tag(self, text):
+        """
+        Replace tag by contact values.
+        This function will replace all the following tags :
+            {last_name}
+            {first_name}
+            {email}
+            {country}
+            {city}
+            {phone_number}
+        as well as, get additional_vars, and replace json tags
+        """
+        text = str(text).lower()
+        taglist = {
+            'last_name': self.last_name,
+            'first_name': self.first_name,
+            'email': self.email,
+            'country': self.country,
+            'city': self.city,
+            'phone_number': self.contact,
+        }
+        if self.additional_vars:
+            for index in self.additional_vars:
+                taglist[index] = self.additional_vars[index]
+
+        for ind in taglist:
+            text = text.replace('{' + ind + '}', str(taglist[ind]))
+
+        # replace the tags not found
+        text = re.sub('{(\w+)}', '', text)
+        return text
+
     contact_name.allow_tags = True
     contact_name.short_description = _('name')

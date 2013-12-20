@@ -133,7 +133,7 @@ def get_url_sms_campaign_status(id, status):
     Helper to display campaign status button on the grid
     """
     #Store html for campaign control button
-    control_play_style = tpl_control_icon('fa-play-circle')
+    control_play_style = tpl_control_icon('fa-play')
     control_pause_style = tpl_control_icon('fa-pause')
     control_abort_style = tpl_control_icon('fa-eject')
     control_stop_style = tpl_control_icon('fa-stop')
@@ -148,7 +148,7 @@ def get_url_sms_campaign_status(id, status):
     #according to the current status, disable link and change the button color
     if status == SMS_CAMPAIGN_STATUS.START:
         url_cpg_start = '#'
-        control_play_style = tpl_control_icon('fa-play-circle')
+        control_play_style = tpl_control_icon('fa-play')
     elif status == SMS_CAMPAIGN_STATUS.PAUSE:
         url_cpg_pause = '#'
         control_pause_style = tpl_control_icon('fa-pause')
@@ -449,7 +449,7 @@ def sms_campaign_duplicate(request, id):
         form = DuplicateSMSCampaignForm(request.user, request.POST)
         if form.is_valid():
             sms_campaign_obj = SMSCampaign.objects.get(pk=id)
-            
+
             sms_campaign_obj.pk = None
             sms_campaign_obj.campaign_code = request.POST.get('campaign_code')
             sms_campaign_obj.name = request.POST.get('name')

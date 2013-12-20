@@ -27,6 +27,7 @@ from apirest.view_phonebook import PhonebookViewSet
 from apirest.view_contact import ContactViewSet
 from apirest.view_campaign import CampaignViewSet
 from apirest.view_subscriber import SubscriberViewSet
+from apirest.view_subscriber_list import SubscriberListViewSet
 from apirest.view_bulk_contact import BulkContactViewSet
 from apirest.view_callrequest import CallrequestViewSet
 from apirest.view_survey_template import SurveyTemplateViewSet
@@ -64,12 +65,10 @@ router.register(r'sms-gateway', SMSGatewayViewSet, 'sms-gateway')
 router.register(r'content-type', ContentTypeViewSet)
 router.register(r'phonebook', PhonebookViewSet)
 router.register(r'contact', ContactViewSet)
+router.register(r'subscriber-list', SubscriberListViewSet)
 router.register(r'callrequest', CallrequestViewSet)
 router.register(r'survey-template', SurveyTemplateViewSet)
-
-# sealed survey
 router.register(r'sealed-survey', SurveyViewSet)
-
 router.register(r'section-template', SectionTemplateViewSet)
 router.register(r'branching-template', BranchingTemplateViewSet)
 router.register(r'queue', QueueViewSet)
@@ -84,7 +83,6 @@ router.register(r'alarm', AlarmViewSet)
 router.register(r'alarm-request', AlarmRequestViewSet)
 router.register(r'mail-template', MailTemplateViewSet)
 router.register(r'sms-template', SMSTemplateViewSet)
-
 
 #router.register(r'agents', AgentViewSet)
 #router.register(r'agent-profile', AgentProfileViewSet)

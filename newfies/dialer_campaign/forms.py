@@ -22,25 +22,13 @@ from django.utils.translation import ugettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import CAMPAIGN_STATUS, SUBSCRIBER_STATUS
-from dialer_campaign.function_def import user_dialer_setting
-from dialer_contact.models import Phonebook
+from dialer_campaign.function_def import user_dialer_setting, get_phonebook_list
 from dialer_contact.forms import SearchForm
 from agent.function_def import agent_list
 from agent.models import AgentProfile, Agent
 from common.common_functions import get_unique_code
 from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
-
-
-def get_phonebook_list(user):
-    """Return phonebook list of logged in user"""
-    list_pb = []
-    list_pb.append((0, '---'))
-    pb_list = Phonebook.objects.values_list('id', 'name') \
-        .filter(user=user).order_by('id')
-    for l in pb_list:
-        list_pb.append((l[0], l[1]))
-    return list_pb
 
 
 def get_object_choices(available_objects):

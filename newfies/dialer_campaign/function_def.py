@@ -13,7 +13,7 @@
 #
 
 from django.utils.translation import ugettext_lazy as _
-from dialer_contact.models import Contact
+from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import CAMPAIGN_STATUS, \
     CAMPAIGN_STATUS_COLOR, SUBSCRIBER_STATUS
@@ -21,6 +21,18 @@ from user_profile.models import UserProfile
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
 from datetime import timedelta
+
+
+def get_phonebook_list(user):
+    """Return phonebook list of logged in user"""
+    phonebook_list = Phonebook.objects.filter(user=user).order_by('id')
+    result_list = []
+    for phonebook in phonebook_list:
+        contacts_in_phonebook = phonebook.phonebook_contacts()
+        nbcontact = " -> %d contact(s)" % (contacts_in_phonebook)
+        pb_string = phonebook.name + nbcontact
+        result_list.append((phonebook.id, pb_string))
+    return result_list
 
 
 def check_dialer_setting(request, check_for, field_value=''):

@@ -17,6 +17,7 @@ from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.constants import STATUS_CHOICE
+from dialer_campaign.function_def import get_phonebook_list
 #from dialer_contact.constants import CHOICE_TYPE
 from bootstrap3_datetime.widgets import DateTimePicker
 
@@ -66,15 +67,7 @@ class Contact_fileImport(FileImport):
             self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's phonebook list
         if user:  # and not user.is_superuser
-            phonebook_list = Phonebook.objects.filter(user=user).order_by('id')
-            result_list = []
-            for phonebook in phonebook_list:
-                contacts_in_phonebook = phonebook.phonebook_contacts()
-                nbcontact = " -> %d contact(s)" % (contacts_in_phonebook)
-                pb_string = phonebook.name + nbcontact
-                result_list.append((phonebook.id, pb_string))
-
-            self.fields['phonebook'].choices = result_list
+            self.fields['phonebook'].choices = get_phonebook_list(user)
 
 
 class PhonebookForm(ModelForm):
@@ -116,8 +109,8 @@ class ContactForm(ModelForm):
 
         # To get user's phonebook list
         if user:
-            self.fields['phonebook'].choices = \
-                Phonebook.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            self.fields['phonebook'].choices = Phonebook.objects.values_list('id', 'name')\
+                .filter(user=user).order_by('id')
 
 
 class ContactSearchForm(forms.Form):

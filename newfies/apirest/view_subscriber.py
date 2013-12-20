@@ -13,42 +13,25 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from rest_framework import viewsets
 from rest_framework.response import Response
-from apirest.subscriber_serializers import SubscriberSerializer
+from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import SUBSCRIBER_STATUS
+
 import logging
 logger = logging.getLogger('newfies.filelog')
 
-#TODO: Add more documentation on this API
 
-
-class SubscriberViewSet(viewsets.ModelViewSet):
+class SubscriberViewSet(APIView):
     """SubscriberViewSet"""
-    queryset = Subscriber.objects.all()
-    serializer_class = SubscriberSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
 
-    def list(self, request):
-        """
-        This view should return a list of all the subscribers
-        for the currently authenticated campaign user.
-        """
-        if self.request.user.is_superuser:
-            queryset = Subscriber.objects.all()
-        else:
-            queryset = Subscriber.objects.filter(
-                campaign__user=self.request.user)
-        serializer = SubscriberSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def create(self, request):
+    def post(self, request, pk=None):
         """
         It will insert active contact to the subscriber for each
         active campaign using this phonebook which are not imported into
@@ -59,11 +42,11 @@ class SubscriberViewSet(viewsets.ModelViewSet):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"}' http://localhost:8000/rest-api/subscriber/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"contact": "650784355", "last_name": "belaid", "first_name": "areski", "email": "areski@gmail.com", "phonebook_id" : "1"}' http://localhost:8000/rest-api/new-subscriber/
 
         """
         try:
-            phonebook_id = request.POST.get('phonebook_id')
+            phonebook_id = request.DATA.get('phonebook_id')
             obj_phonebook = Phonebook.objects.get(
                 id=phonebook_id, user=request.user)
         except:
@@ -73,21 +56,21 @@ class SubscriberViewSet(viewsets.ModelViewSet):
         if request.POST.get('additional_vars'):
             try:
                 import json
-                add_var = json.loads(str(request.POST.get('additional_vars')))
+                add_var = json.loads(str(request.DATA.get('additional_vars')))
             except:
                 return Response({'error': 'additional_vars is not valid format'})
 
         Contact.objects.create(
-            contact=request.POST.get('contact'),
-            last_name=request.POST.get('last_name'),
-            first_name=request.POST.get('first_name'),
-            email=request.POST.get('email'),
-            description=request.POST.get('description'),
-            address=request.POST.get('address'),
-            city=request.POST.get('city'),
-            state=request.POST.get('state'),
-            country=request.POST.get('country'),
-            unit_number=request.POST.get('unit_number'),
+            contact=request.DATA.get('contact'),
+            last_name=request.DATA.get('last_name'),
+            first_name=request.DATA.get('first_name'),
+            email=request.DATA.get('email'),
+            description=request.DATA.get('description'),
+            address=request.DATA.get('address'),
+            city=request.DATA.get('city'),
+            state=request.DATA.get('state'),
+            country=request.DATA.get('country'),
+            unit_number=request.DATA.get('unit_number'),
             additional_vars=add_var,
             status=CONTACT_STATUS.ACTIVE,  # default active
             phonebook=obj_phonebook)

@@ -27,7 +27,6 @@ from apirest.view_phonebook import PhonebookViewSet
 from apirest.view_contact import ContactViewSet
 from apirest.view_campaign import CampaignViewSet
 from apirest.view_subscriber import SubscriberViewSet
-from apirest.view_sub import NewSubscriberViewSet
 from apirest.view_bulk_contact import BulkContactViewSet
 from apirest.view_callrequest import CallrequestViewSet
 from apirest.view_survey_template import SurveyTemplateViewSet
@@ -65,7 +64,6 @@ router.register(r'sms-gateway', SMSGatewayViewSet, 'sms-gateway')
 router.register(r'content-type', ContentTypeViewSet)
 router.register(r'phonebook', PhonebookViewSet)
 router.register(r'contact', ContactViewSet)
-router.register(r'subscriber', SubscriberViewSet)
 router.register(r'callrequest', CallrequestViewSet)
 router.register(r'survey-template', SurveyTemplateViewSet)
 
@@ -104,7 +102,7 @@ urlpatterns = patterns('',
     url(r'^rest-api/bulkcontact/$', BulkContactViewSet.as_view(), name="bulk_contact"),
 
     # subscriber rest api
-    url(r'^rest-api/new-subscriber/$', NewSubscriberViewSet.as_view(), name="subscriber_contact"),
+    url(r'^rest-api/subscriber/$', SubscriberViewSet.as_view(), name="subscriber_contact"),
 
     url(r'^rest-api/', include(router.urls)),
     url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),

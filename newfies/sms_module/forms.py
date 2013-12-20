@@ -192,3 +192,20 @@ class SMSCampaignSearchForm(forms.Form):
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             self.fields['phonebook_id'].choices = get_phonebook_list(user)
+
+
+class DuplicateSMSCampaignForm(ModelForm):
+    """DuplicateSMSCampaignForm ModelForm"""
+    campaign_code = forms.CharField(widget=forms.HiddenInput)
+
+    class Meta:
+        model = SMSCampaign
+        fields = ['campaign_code', 'name', 'phonebook']
+
+    def __init__(self, user, *args, **kwargs):
+        super(DuplicateSMSCampaignForm, self).__init__(*args, **kwargs)
+        self.fields['campaign_code'].initial = get_unique_code(length=5)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+        if user:
+            self.fields['phonebook'].choices = get_phonebook_list(user)

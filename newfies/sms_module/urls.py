@@ -12,24 +12,25 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.conf.urls import patterns, url
+from django.conf.urls import patterns
 
 urlpatterns = patterns('sms_module.views',
 
     # SMS Campaign urls
-    url(r'^sms_dashboard/$', 'sms_dashboard'),
-    url(r'^sms_campaign/$', 'sms_campaign_list'),
-    url(r'^sms_campaign/add/$', 'sms_campaign_add'),
-    url(r'^sms_campaign/del/(.+)/$', 'sms_campaign_del'),
+    (r'^sms_dashboard/$', 'sms_dashboard'),
+    (r'^sms_campaign/$', 'sms_campaign_list'),
+    (r'^sms_campaign/add/$', 'sms_campaign_add'),
+    (r'^sms_campaign/del/(.+)/$', 'sms_campaign_del'),
+    (r'^sms_campaign_duplicate/(.+)/$', 'sms_campaign_duplicate'),
 
     # SMS Campaign Actions (start|stop|pause|abort) for customer UI
-    url(r'^sms_campaign/update_sms_campaign_status_cust/(\d*)/(\d*)/$',
-                    'update_sms_campaign_status_cust'),
-    url(r'^sms_campaign/(.+)/$', 'sms_campaign_change'),
+    (r'^sms_campaign/update_sms_campaign_status_cust/(\d*)/(\d*)/$',
+        'update_sms_campaign_status_cust'),
+    (r'^sms_campaign/(.+)/$', 'sms_campaign_change'),
 
     # SMS Campaign Actions (start|stop|pause|abort) for Admin UI
-    url(r'^update_sms_campaign_status_admin/(\d*)/(\d*)/$',
-                    'update_sms_campaign_status_admin'),
+    (r'^update_sms_campaign_status_admin/(\d*)/(\d*)/$',
+        'update_sms_campaign_status_admin'),
 
     # SMS Report urls
     (r'^sms_report/$', 'sms_report'),

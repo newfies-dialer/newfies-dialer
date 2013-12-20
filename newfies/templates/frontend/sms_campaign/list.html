@@ -112,6 +112,7 @@
                                     {% if perms.sms_module.delete_smscampaign %}
                                         <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete sms campaign'|capfirst %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
+                                    {{ row.id|create_duplicate_sms_campaign|safe }}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -133,4 +134,14 @@
         </form>
     </div>
 </div>
+<!--sms-campaign-duplicate modal-->
+<script type="text/javascript" charset="utf-8">
+    $(".sms-campaign-duplicate").live('click', function(e) {
+        var url = $(this).attr('url');
+        var modal_id = $(this).attr('data-controls-modal');
+        $("#" + modal_id).load(url);
+    });
+</script>
+<!-- modal content-->
+<div id="sms-campaign-duplicate" class="modal fade" role="dialog" aria-labelledby="add_duplicate_sms_campaign"></div>
 {% endblock %}

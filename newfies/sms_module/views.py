@@ -36,7 +36,7 @@ from constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
     SMS_NOTIFICATION_NAME, SMS_REPORT_COLUMN_NAME, COLOR_SMS_DISPOSITION,\
     SMS_SUBSCRIBER_STATUS, SMS_MESSAGE_STATUS
 from forms import SMSCampaignForm, SMSDashboardForm, SMSSearchForm,\
-    SMSCampaignSearchForm
+    SMSCampaignSearchForm, DuplicateSMSCampaignForm
 from function_def import check_sms_dialer_setting
 from tasks import sms_collect_subscriber
 from datetime import datetime
@@ -165,6 +165,13 @@ def get_url_sms_campaign_status(id, status):
             url_cpg_pause, _("pause").title(), control_pause_style,
             url_cpg_abort, _("abort").title(), control_abort_style,
             url_cpg_stop, _("stop").title(), control_stop_style)
+
+
+def make_duplicate_sms_campaign(sms_campaign_id):
+    """Create link to make duplicate campaign"""
+    link = '<a href="#sms-campaign-duplicate"  url="/sms_campaign_duplicate/%s/" class="sms-campaign-duplicate" data-toggle="modal" data-controls-modal="sms-campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
+           % (sms_campaign_id, _('duplicate this sms campaign').capitalize())
+    return link
 
 
 # SMSCampaign
@@ -421,6 +428,55 @@ def sms_campaign_change(request, object_id):
         'action': 'update',
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
+    return render_to_response(
+        template, data, context_instance=RequestContext(request))
+
+
+@login_required
+def sms_campaign_duplicate(request, id):
+    """
+    Duplicate sms campaign via DuplicateSMSCampaignForm
+
+    **Attributes**:
+
+        * ``id`` - Selected sms campaign object
+        * ``form`` - DuplicateSMSCampaignForm
+        * ``template`` - frontend/sms_campaign/sms_campaign_duplicate.html
+    """
+    form = DuplicateSMSCampaignForm(request.user)
+    request.session['error_msg'] = ''
+    if request.method == 'POST':
+        form = DuplicateSMSCampaignForm(request.user, request.POST)
+        if form.is_valid():
+            sms_campaign_obj = SMSCampaign.objects.get(pk=id)
+            
+            sms_campaign_obj.pk = None
+            sms_campaign_obj.campaign_code = request.POST.get('campaign_code')
+            sms_campaign_obj.name = request.POST.get('name')
+            sms_campaign_obj.status = SMS_CAMPAIGN_STATUS.PAUSE
+            sms_campaign_obj.startingdate = datetime.now()
+            sms_campaign_obj.expirationdate = datetime.now() + relativedelta(days=+1)
+            sms_campaign_obj.imported_phonebook = ''
+            sms_campaign_obj.totalcontact = 0
+            sms_campaign_obj.save()
+
+            # Many to many field
+            for pb in request.POST.getlist('phonebook'):
+                sms_campaign_obj.phonebook.add(pb)
+
+            return HttpResponseRedirect('/sms_campaign/')
+        else:
+            request.session['error_msg'] = True
+    else:
+        request.session['error_msg'] = ''
+
+    template = 'frontend/sms_campaign/sms_campaign_duplicate.html'
+    data = {
+        'sms_campaign_id': id,
+        'form': form,
+        'err_msg': request.session.get('error_msg'),
+    }
+    request.session['error_msg'] = ''
     return render_to_response(
         template, data, context_instance=RequestContext(request))
 

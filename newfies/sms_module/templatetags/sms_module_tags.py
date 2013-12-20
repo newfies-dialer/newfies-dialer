@@ -15,7 +15,7 @@
 from django.template.defaultfilters import register
 from sms_module.constants import SMS_CAMPAIGN_STATUS
 from sms_module.function_def import get_sms_campaign_status_name
-from sms_module.views import get_url_sms_campaign_status
+from sms_module.views import get_url_sms_campaign_status, make_duplicate_sms_campaign
 
 
 @register.filter(name='sms_campaign_status')
@@ -56,3 +56,9 @@ def get_sms_campaign_status(id):
 @register.simple_tag(name='get_sms_campaign_status_url')
 def get_sms_campaign_status_url(id, status):
     return get_url_sms_campaign_status(id, status)
+
+
+@register.filter(name='create_duplicate_sms_campaign')
+def create_duplicate_sms_campaign(id):
+    link = make_duplicate_sms_campaign(id)
+    return link

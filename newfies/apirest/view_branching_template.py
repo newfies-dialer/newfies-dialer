@@ -24,6 +24,7 @@ class BranchingTemplateViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows content_type to be viewed or edited.
     """
+    model = Branching_template
     queryset = Branching_template.objects.all()
     serializer_class = BranchingTemplateSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

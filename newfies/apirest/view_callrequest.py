@@ -24,6 +24,7 @@ class CallrequestViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows campaigns to be viewed or edited.
     """
+    model = Callrequest
     queryset = Callrequest.objects.all()
     serializer_class = CallrequestSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

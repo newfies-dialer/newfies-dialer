@@ -24,6 +24,7 @@ class DNCViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows dnc list to be viewed or edited.
     """
+    model = DNC
     queryset = DNC.objects.all()
     serializer_class = DNCSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

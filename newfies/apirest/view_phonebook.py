@@ -24,6 +24,7 @@ class PhonebookViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows phonebook to be viewed or edited.
     """
+    model = Phonebook
     queryset = Phonebook.objects.all()
     serializer_class = PhonebookSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

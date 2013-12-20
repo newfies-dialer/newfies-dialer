@@ -31,6 +31,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows calendar user to be viewed or edited.
     """
+    model = CalendarUser
     queryset = CalendarUser.objects.filter(is_staff=False, is_superuser=False)
     serializer_class = CalendarUserSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

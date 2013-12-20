@@ -25,6 +25,7 @@ class AgentProfileViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows agent profile user to be viewed or edited.
     """
+    model = AgentProfile
     queryset = AgentProfile.objects.filter(is_agent=True)
     serializer_class = AgentProfileSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

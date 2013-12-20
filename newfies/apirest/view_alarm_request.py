@@ -28,6 +28,7 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows alarm request to be viewed or edited.
     """
+    model = AlarmRequest
     queryset = AlarmRequest.objects.all()
     serializer_class = AlarmRequestSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

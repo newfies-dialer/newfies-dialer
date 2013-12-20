@@ -25,6 +25,7 @@ class QueueViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows queue to be viewed or edited.
     """
+    model = Queue
     queryset = Queue.objects.all()
     serializer_class = QueueSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

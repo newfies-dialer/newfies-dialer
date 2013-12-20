@@ -28,6 +28,7 @@ class EventViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows event to be viewed or edited.
     """
+    model = Event
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

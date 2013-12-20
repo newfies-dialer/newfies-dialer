@@ -24,6 +24,7 @@ class ContactViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows contact to be viewed or edited.
     """
+    model = Contact
     queryset = Contact.objects.all()
     serializer_class = ContactSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

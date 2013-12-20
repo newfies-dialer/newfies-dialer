@@ -40,6 +40,7 @@ class SMSCampaignViewSet(viewsets.ModelViewSet):
             Allow: GET, POST, HEAD, OPTIONS
 
     """
+    model = SMSCampaign
     queryset = SMSCampaign.objects.all()
     serializer_class = SMSCampaignSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

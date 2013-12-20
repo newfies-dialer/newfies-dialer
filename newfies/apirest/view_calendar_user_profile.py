@@ -29,6 +29,7 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows calendar user profile to be viewed or edited.
     """
+    model = CalendarUserProfile
     queryset = CalendarUserProfile.objects.all()
     serializer_class = CalendarUserProfileSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

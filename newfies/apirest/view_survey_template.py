@@ -24,6 +24,7 @@ class SurveyTemplateViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows content_type to be viewed or edited.
     """
+    model = Survey_template
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticated, DjangoModelPermissions)
     queryset = Survey_template.objects.all()

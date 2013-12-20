@@ -24,6 +24,7 @@ class SectionTemplateViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows content_type to be viewed or edited.
     """
+    model = Section_template
     queryset = Section_template.objects.all()
     serializer_class = SectionTemplateSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

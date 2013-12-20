@@ -43,6 +43,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
             {"id": 1, "campaign_code": "JDQBG", "name": "mycampaign1", "description": "", "callerid": "1239876", "phonebook": ["/rest-api/phonebook/1/", "/rest-api/phonebook/2/"], "startingdate": "2013-06-13T13:13:33", "expirationdate": "2013-06-14T13:13:33", "aleg_gateway": "http://localhost:8000/rest-api/gateway/1/", "user": "http://localhost:8000/rest-api/users/1/", "status": 2, "content_type": "http://localhost:8000/rest-api/content_type/49/", "object_id": 1, "extra_data": "2000", "dnc": null, "frequency": 20, "callmaxduration": 50, "maxretry": 3, "intervalretry": 3000, "calltimeout": 45, "daily_start_time": "00:00:00", "daily_stop_time": "23:59:59", "monday": true, "tuesday": true, "wednesday": true, "thursday": true, "friday": true, "saturday": true, "sunday": true, "completion_maxretry": 0, "completion_intervalretry": 900}
 
     """
+    model = Campaign
     queryset = Campaign.objects.all()
     serializer_class = CampaignSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

@@ -25,6 +25,7 @@ class TierViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows tier to be viewed or edited.
     """
+    model = Tier
     queryset = Tier.objects.all()
     serializer_class = TierSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

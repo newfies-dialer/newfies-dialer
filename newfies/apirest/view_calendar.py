@@ -25,6 +25,7 @@ class CalendarViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows calendar to be viewed or edited.
     """
+    model = Calendar
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

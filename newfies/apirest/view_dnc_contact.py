@@ -24,6 +24,7 @@ class DNCContactViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows dnc contact to be viewed or edited.
     """
+    model = DNCContact
     queryset = DNCContact.objects.all()
     serializer_class = DNCContactSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

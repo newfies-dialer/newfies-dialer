@@ -28,6 +28,7 @@ class AudioFileViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows audio_files to be viewed or edited.
     """
+    model = AudioFile
     queryset = AudioFile.objects.all()
     serializer_class = AudioFileSerializer
     authentication = (BasicAuthentication, SessionAuthentication)

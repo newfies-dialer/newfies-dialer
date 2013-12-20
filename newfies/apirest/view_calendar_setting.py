@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from apirest.calendar_setting_serializers import CalendarSettingSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.users import CalendarSetting
 
@@ -27,7 +27,7 @@ class CalendarSettingViewSet(viewsets.ModelViewSet):
     queryset = CalendarSetting.objects.all()
     serializer_class = CalendarSettingSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
     def get_queryset(self):
         """

@@ -14,7 +14,7 @@
 #
 
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from apirest.subscriber_list_serializers import SubscriberListSerializer
 from dialer_campaign.models import Subscriber
@@ -25,7 +25,7 @@ class SubscriberListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Subscriber.objects.all()
     serializer_class = SubscriberListSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
     def get_queryset(self):
         """

@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from apirest.sms_template_serializers import SMSTemplateSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from sms_module.models import SMSTemplate
 
@@ -27,4 +27,4 @@ class SMSTemplateViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = SMSTemplate.objects.all()
     serializer_class = SMSTemplateSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)

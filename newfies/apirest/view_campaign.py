@@ -16,7 +16,7 @@
 from rest_framework import viewsets
 #from rest_framework.response import Response
 from apirest.campaign_serializers import CampaignSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.models import Campaign
@@ -46,7 +46,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
     queryset = Campaign.objects.all()
     serializer_class = CampaignSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
     def pre_save(self, obj):
         obj.user = self.request.user

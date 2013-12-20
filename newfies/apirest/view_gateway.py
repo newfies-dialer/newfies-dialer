@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from apirest.gateway_serializers import GatewaySerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile
@@ -28,7 +28,7 @@ class GatewayViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Gateway.objects.all()
     serializer_class = GatewaySerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
     def get_queryset(self):
         """

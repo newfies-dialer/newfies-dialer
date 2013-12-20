@@ -16,7 +16,7 @@
 from rest_framework import viewsets
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from apirest.alarm_request_serializers import AlarmRequestSerializer
 from appointment.models.alarms import Alarm, AlarmRequest
@@ -31,7 +31,7 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
     queryset = AlarmRequest.objects.all()
     serializer_class = AlarmRequestSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
     def get_queryset(self):
         """

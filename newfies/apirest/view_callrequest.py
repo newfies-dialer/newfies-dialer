@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from apirest.callrequest_serializers import CallrequestSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_cdr.models import Callrequest
 
@@ -27,7 +27,7 @@ class CallrequestViewSet(viewsets.ModelViewSet):
     queryset = Callrequest.objects.all()
     serializer_class = CallrequestSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
     def pre_save(self, obj):
         obj.user = self.request.user

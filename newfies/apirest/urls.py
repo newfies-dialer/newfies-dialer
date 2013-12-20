@@ -95,7 +95,7 @@ urlpatterns = patterns('',
     url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/(?P<contact_id>[0-9]+)/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
 
     url(r'^rest-api/surveyaggregate/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
-    url(r'^rest-api/surveyaggregate/(?P<campaign_id>[0-9]+)/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
+    url(r'^rest-api/surveyaggregate/(?P<survey_id>[0-9]+)/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
 
     url(r'^rest-api/bulkcontact/$', BulkContactViewSet.as_view(), name="bulk_contact"),
 

@@ -15,7 +15,7 @@
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.function_def import dialer_setting_limit, check_dialer_setting
@@ -43,7 +43,7 @@ class BulkContactViewSet(APIView):
             {"result": "Bulk contacts are created"}
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
     def post(self, request):
         """

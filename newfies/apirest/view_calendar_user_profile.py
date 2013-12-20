@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.users import CalendarUserProfile
 from apirest.calendar_user_profile_serializers import CalendarUserProfileSerializer
@@ -32,7 +32,7 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
     queryset = CalendarUserProfile.objects.all()
     serializer_class = CalendarUserProfileSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
     lookup_field = ('user_id')
 
     def pre_save(self, obj):

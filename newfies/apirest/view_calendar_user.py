@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.users import CalendarUser, CalendarUserProfile,\
     CalendarSetting
@@ -34,7 +34,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
     queryset = CalendarUser.objects.filter(is_staff=False, is_superuser=False)
     serializer_class = CalendarUserSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
     def list(self, request, *args, **kwargs):
         """get list of all CalendarUser objects"""

@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from apirest.dnc_contact_serializers import DNCContactSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dnc.models import DNCContact
 
@@ -27,7 +27,7 @@ class DNCContactViewSet(viewsets.ModelViewSet):
     queryset = DNCContact.objects.all()
     serializer_class = DNCContactSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
     def get_queryset(self):
         """

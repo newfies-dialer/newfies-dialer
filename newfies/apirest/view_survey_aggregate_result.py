@@ -14,11 +14,10 @@
 #
 
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.response import Response
-from dialer_campaign.models import Campaign
-from survey.models import ResultAggregate
+from survey.models import Survey, ResultAggregate
 import logging
 logger = logging.getLogger('newfies.filelog')
 
@@ -28,25 +27,23 @@ class SurveyAggregateResultViewSet(APIView):
     List Result aggregate result per survey
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
-    def get(self, request, campaign_id=0, format=None):
+    def get(self, request, survey_id=0, format=None):
         """GET method of survey aggregate result API"""
         error = {}
         survey_result_kwargs = {}
-
-        # TODO: to fix as we removed campaign, we will use Survey
         try:
-            survey_result_kwargs['campaign'] = Campaign.objects.get(id=campaign_id)
+            survey_result_kwargs['survey'] = Survey.objects.get(id=survey_id)
         except:
-            error_msg = "Campaign ID does not exists!"
+            error_msg = "Survey ID does not exists!"
             error['error'] = error_msg
             logger.error(error_msg)
             return Response(error)
 
-        survey_result = ResultAggregate.objects \
-            .filter(**survey_result_kwargs) \
-            .values('section__question', 'response', 'count') \
+        survey_result = ResultAggregate.objects\
+            .filter(**survey_result_kwargs)\
+            .values('section__question', 'response', 'count')\
             .order_by('section')
 
         return Response(survey_result)

@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from apirest.branching_template_serializers import BranchingTemplateSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from survey.models import Branching_template
 
@@ -27,7 +27,7 @@ class BranchingTemplateViewSet(viewsets.ModelViewSet):
     queryset = Branching_template.objects.all()
     serializer_class = BranchingTemplateSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
 
     def get_queryset(self):
         """

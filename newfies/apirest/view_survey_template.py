@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from apirest.survey_template_serializers import SurveyTemplateSerializer
-from rest_framework.permissions import IsAuthenticatedOrReadOnly
+from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from survey.models import Survey_template
 
@@ -25,7 +25,7 @@ class SurveyTemplateViewSet(viewsets.ModelViewSet):
     API endpoint that allows content_type to be viewed or edited.
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permission_classes = (IsAuthenticatedOrReadOnly, )
+    permissions = (IsAuthenticated, DjangoModelPermissions)
     queryset = Survey_template.objects.all()
     serializer_class = SurveyTemplateSerializer
 

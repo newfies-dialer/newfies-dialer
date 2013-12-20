@@ -26,4 +26,14 @@ class SubscriberListViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = SubscriberListSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
-    
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the Subscriber
+        for the currently authenticated user.
+        """
+        if self.request.user.is_superuser:
+            queryset = Subscriber.objects.all()
+        else:
+            queryset = Subscriber.objects.filter(campaign__user=self.request.user)
+        return queryset

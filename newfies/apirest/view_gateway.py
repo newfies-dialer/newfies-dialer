@@ -18,6 +18,7 @@ from apirest.gateway_serializers import GatewaySerializer
 from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_gateway.models import Gateway
+from user_profile.models import UserProfile
 
 
 class GatewayViewSet(viewsets.ReadOnlyModelViewSet):
@@ -28,3 +29,15 @@ class GatewayViewSet(viewsets.ReadOnlyModelViewSet):
     serializer_class = GatewaySerializer
     authentication = (BasicAuthentication, SessionAuthentication)
     permissions = (IsAuthenticatedOrReadOnly, )
+
+    def get_queryset(self):
+        """
+        This view should return a list of all the alarms
+        for the currently authenticated user.
+        """
+        if self.request.user.is_superuser:
+            queryset = Gateway.objects.all()
+        else:
+            queryset = UserProfile.objects.get(user=self.request.user).userprofile_gateway.all()
+            
+        return queryset

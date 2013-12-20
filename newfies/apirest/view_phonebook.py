@@ -20,6 +20,22 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from dialer_contact.models import Phonebook
 
 
+class CustomDjangoModelPermissions(DjangoModelPermissions):
+    # Map methods into required permission codes.
+    # Override this if you need to also provide 'view' permissions,
+    # or if you want to provide custom permission codes.
+    perms_map = {
+        'GET': ['%(app_label)s.view_%(model_name)s'],
+        'OPTIONS': [],
+        'HEAD': [],
+        'POST': ['%(app_label)s.add_%(model_name)s'],
+        'PUT': ['%(app_label)s.change_%(model_name)s'],
+        'PATCH': ['%(app_label)s.change_%(model_name)s'],
+        'DELETE': ['%(app_label)s.delete_%(model_name)s'],
+    }
+    authenticated_users_only = True
+
+
 class PhonebookViewSet(viewsets.ModelViewSet):
     """
     API endpoint that allows phonebook to be viewed or edited.
@@ -28,7 +44,7 @@ class PhonebookViewSet(viewsets.ModelViewSet):
     queryset = Phonebook.objects.all()
     serializer_class = PhonebookSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomDjangoModelPermissions)
 
     def get_queryset(self):
         """

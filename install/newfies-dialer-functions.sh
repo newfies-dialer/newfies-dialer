@@ -31,8 +31,9 @@ BRANCH="appointment"
 
 DATETIME=$(date +"%Y%m%d%H%M%S")
 INSTALL_DIR='/usr/share/newfies'
+CONFIG_DIR='/usr/share/newfies/newfies_dialer/'
 LUA_DIR='/usr/share/newfies-lua'
-INSTALL_DIR_WELCOME='/var/www/newfies'
+WELCOME_DIR='/var/www/newfies'
 DATABASENAME='newfies_dialer_db'
 DB_USERSALT=`</dev/urandom tr -dc 0-9| (head -c $1 > /dev/null 2>&1 || head -c 5)`
 DB_USERNAME="newfies_dialer_$DB_USERSALT"
@@ -102,9 +103,9 @@ func_accept_license() {
 
 #Function install the landing page
 func_install_landing_page() {
-    mkdir -p $INSTALL_DIR_WELCOME
+    mkdir -p $WELCOME_DIR
     # Copy files
-    cp -r /usr/src/newfies-dialer/install/landing-page/* $INSTALL_DIR_WELCOME
+    cp -r /usr/src/newfies-dialer/install/landing-page/* $WELCOME_DIR
     echo ""
     echo "Add Nginx configuration for Welcome page..."
     cp -rf /usr/src/newfies-dialer/install/nginx/global /etc/nginx/
@@ -127,7 +128,7 @@ func_install_landing_page() {
     service nginx restart
 
     #Update Welcome page IP
-    sed -i "s/LOCALHOST/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR_WELCOME/index.html
+    sed -i "s/LOCALHOST/$IPADDR:$HTTP_PORT/g" $WELCOME_DIR/index.html
 }
 
 func_check_dependencies() {
@@ -418,24 +419,24 @@ func_install_pip_deps(){
 func_prepare_settings(){
 
     #Copy settings_local.py into newfies dir
-    cp /usr/src/newfies-dialer/install/conf/settings_local.py $INSTALL_DIR
+    cp /usr/src/newfies-dialer/install/conf/settings_local.py $CONFIG_DIR
 
     #Update Secret Key
     echo "Update Secret Key..."
     RANDPASSW=`</dev/urandom tr -dc A-Za-z0-9| (head -c $1 > /dev/null 2>&1 || head -c 50)`
-    sed -i "s/^SECRET_KEY.*/SECRET_KEY = \'$RANDPASSW\'/g"  $INSTALL_DIR/settings.py
+    sed -i "s/^SECRET_KEY.*/SECRET_KEY = \'$RANDPASSW\'/g"  $CONFIG_DIR/settings.py
     echo ""
 
     #Disable Debug
-    sed -i "s/DEBUG = True/DEBUG = False/g"  $INSTALL_DIR/settings_local.py
-    sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $INSTALL_DIR/settings_local.py
+    sed -i "s/DEBUG = True/DEBUG = False/g"  $CONFIG_DIR/settings_local.py
+    sed -i "s/TEMPLATE_DEBUG = DEBUG/TEMPLATE_DEBUG = False/g"  $CONFIG_DIR/settings_local.py
 
     #Setup settings_local.py for POSTGRESQL
-    sed -i "s/DATABASENAME/$DATABASENAME/"  $INSTALL_DIR/settings_local.py
-    sed -i "s/DB_USERNAME/$DB_USERNAME/" $INSTALL_DIR/settings_local.py
-    sed -i "s/DB_PASSWORD/$DB_PASSWORD/" $INSTALL_DIR/settings_local.py
-    sed -i "s/DB_HOSTNAME/$DB_HOSTNAME/" $INSTALL_DIR/settings_local.py
-    sed -i "s/DB_PORT/$DB_PORT/" $INSTALL_DIR/settings_local.py
+    sed -i "s/DATABASENAME/$DATABASENAME/"  $CONFIG_DIR/settings_local.py
+    sed -i "s/DB_USERNAME/$DB_USERNAME/" $CONFIG_DIR/settings_local.py
+    sed -i "s/DB_PASSWORD/$DB_PASSWORD/" $CONFIG_DIR/settings_local.py
+    sed -i "s/DB_HOSTNAME/$DB_HOSTNAME/" $CONFIG_DIR/settings_local.py
+    sed -i "s/DB_PORT/$DB_PORT/" $CONFIG_DIR/settings_local.py
 
     #Setup settings_local.py for POSTGRESQL
     sed -i "s/newfiesdb/$DATABASENAME/"  $LUA_DIR/libs/settings.lua
@@ -472,9 +473,9 @@ func_prepare_settings(){
     #sed -i "s/APIPASSWORD/$APIPASSWORD/g" xml_cdr.conf.xml
 
     #Update Authorize local IP
-    sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $INSTALL_DIR/settings_local.py
-    sed -i "s/SERVER_IP/$IPADDR/g" $INSTALL_DIR/settings_local.py
+    sed -i "s/SERVER_IP_PORT/$IPADDR:$HTTP_PORT/g" $CONFIG_DIR/settings_local.py
+    sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $CONFIG_DIR/settings_local.py
+    sed -i "s/SERVER_IP/$IPADDR/g" $CONFIG_DIR/settings_local.py
 
     case $DIST in
         'DEBIAN')
@@ -501,7 +502,7 @@ func_prepare_settings(){
     esac
 
     #Set Timezone in settings_local.py
-    sed -i "s@Europe/Madrid@$ZONE@g" $INSTALL_DIR/settings_local.py
+    sed -i "s@Europe/Madrid@$ZONE@g" $CONFIG_DIR/settings_local.py
 }
 
 
@@ -592,7 +593,7 @@ func_create_pgsql_database(){
 }
 
 #NGINX / SUPERVISOR
-func_config_start_nginx_supervisor(){
+func_nginx_supervisor(){
     #Configure and Start supervisor
     case $DIST in
         'DEBIAN')
@@ -604,6 +605,26 @@ func_config_start_nginx_supervisor(){
             chkconfig --levels 235 supervisor on
             echo_supervisord_conf > /etc/supervisord.conf
             cat /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf >> /etc/supervisord.conf
+            mkdir /var/log/supervisor/
+        ;;
+    esac
+    /etc/init.d/supervisor force-stop
+    /etc/init.d/supervisor start
+}
+
+#CELERY SUPERVISOR
+func_celery_supervisor(){
+    #Configure and Start supervisor
+    case $DIST in
+        'DEBIAN')
+            cp /usr/src/newfies-dialer/install/supervisor/celery_newfies_dialer.conf /etc/supervisor/conf.d/
+        ;;
+        'CENTOS')
+            cp /usr/src/newfies-dialer/install/supervisor/supervisord /etc/init.d/supervisor
+            chmod +x /etc/rc.d/init.d/supervisor
+            chkconfig --levels 235 supervisor on
+            echo_supervisord_conf > /etc/supervisord.conf
+            cat /usr/src/newfies-dialer/install/supervisor/celery_newfies_dialer.conf >> /etc/supervisord.conf
             mkdir /var/log/supervisor/
         ;;
     esac
@@ -693,7 +714,7 @@ func_install_frontend(){
     python manage.py collectstatic --noinput
 
     #NGINX / SUPERVISOR
-    func_config_start_nginx_supervisor
+    func_nginx_supervisor
 
     # * * LOGROTATE * *
     func_prepare_logger
@@ -742,21 +763,11 @@ func_install_backend() {
     #Memcache installation
     #pip install python-memcached
 
-    echo "Configure Celery..."
+    echo "Install Celery via supervisor..."
+    func_celery_supervisor
+
     case $DIST in
         'DEBIAN')
-            # Add init-scripts
-            cp /usr/src/newfies-dialer/install/celery-init/debian/etc/default/newfies-celeryd /etc/default/
-            cp /usr/src/newfies-dialer/install/celery-init/debian/etc/init.d/newfies-celeryd /etc/init.d/
-            # Configure init-scripts
-            sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
-            sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
-            chmod +x /etc/default/newfies-celeryd
-            chmod +x /etc/init.d/newfies-celeryd
-
-            /etc/init.d/newfies-celeryd restart
-            cd /etc/init.d; update-rc.d newfies-celeryd defaults 99
-
             #Check permissions on /dev/shm to ensure that celery can start and run for openVZ.
             DIR="/dev/shm"
             echo "Checking the permissions for $dir"
@@ -771,20 +782,6 @@ func_install_backend() {
                     echo "none /dev/shm tmpfs rw,nosuid,nodev,noexec 0 0" >> /etc/fstab
                 fi
             fi
-        ;;
-        'CENTOS')
-            # Add init-scripts
-            cp /usr/src/newfies-dialer/install/celery-init/centos/etc/default/newfies-celeryd /etc/default/
-            cp /usr/src/newfies-dialer/install/celery-init/centos/etc/init.d/newfies-celeryd /etc/init.d/
-            # Configure init-scripts
-            sed -i "s/CELERYD_USER='celery'/CELERYD_USER='$CELERYD_USER'/g"  /etc/default/newfies-celeryd
-            sed -i "s/CELERYD_GROUP='celery'/CELERYD_GROUP='$CELERYD_GROUP'/g"  /etc/default/newfies-celeryd
-
-            chmod +x /etc/init.d/newfies-celeryd
-            /etc/init.d/newfies-celeryd restart
-
-            chkconfig --add newfies-celeryd
-            chkconfig --level 2345 newfies-celeryd on
         ;;
     esac
 

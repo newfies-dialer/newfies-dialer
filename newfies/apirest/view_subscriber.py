@@ -15,12 +15,13 @@
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import SUBSCRIBER_STATUS
+from permissions import CustomObjectPermissions
 
 import logging
 logger = logging.getLogger('newfies.filelog')
@@ -29,7 +30,7 @@ logger = logging.getLogger('newfies.filelog')
 class SubscriberViewSet(APIView):
     """SubscriberViewSet"""
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def post(self, request, pk=None):
         """

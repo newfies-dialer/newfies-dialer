@@ -16,9 +16,10 @@
 from rest_framework import viewsets
 #from rest_framework.response import Response
 from apirest.sms_campaign_serializers import SMSCampaignSerializer
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from sms_module.models import SMSCampaign
+from permissions import CustomObjectPermissions
 
 
 class SMSCampaignViewSet(viewsets.ModelViewSet):
@@ -44,7 +45,7 @@ class SMSCampaignViewSet(viewsets.ModelViewSet):
     queryset = SMSCampaign.objects.all()
     serializer_class = SMSCampaignSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def pre_save(self, obj):
         obj.user = self.request.user

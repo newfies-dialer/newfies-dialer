@@ -18,7 +18,7 @@ from apirest.phonebook_serializers import PhonebookSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Phonebook
-from permissions import CustomModelPermissions
+from permissions import CustomObjectPermissions
 
 
 class PhonebookViewSet(viewsets.ModelViewSet):
@@ -29,7 +29,7 @@ class PhonebookViewSet(viewsets.ModelViewSet):
     queryset = Phonebook.objects.all()
     serializer_class = PhonebookSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

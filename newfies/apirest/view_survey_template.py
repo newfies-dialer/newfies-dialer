@@ -15,9 +15,10 @@
 
 from rest_framework import viewsets
 from apirest.survey_template_serializers import SurveyTemplateSerializer
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from survey.models import Survey_template
+from permissions import CustomObjectPermissions
 
 
 class SurveyTemplateViewSet(viewsets.ModelViewSet):
@@ -26,7 +27,7 @@ class SurveyTemplateViewSet(viewsets.ModelViewSet):
     """
     model = Survey_template
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
     queryset = Survey_template.objects.all()
     serializer_class = SurveyTemplateSerializer
 

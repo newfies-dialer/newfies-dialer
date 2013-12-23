@@ -14,11 +14,12 @@
 #
 
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from callcenter.models import Tier
 from apirest.tier_serializers import TierSerializer
 from user_profile.models import Manager
+from permissions import CustomObjectPermissions
 
 
 class TierViewSet(viewsets.ModelViewSet):
@@ -29,7 +30,7 @@ class TierViewSet(viewsets.ModelViewSet):
     queryset = Tier.objects.all()
     serializer_class = TierSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

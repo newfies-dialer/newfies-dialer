@@ -15,9 +15,10 @@
 
 from rest_framework import viewsets
 from apirest.dnc_serializers import DNCSerializer
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dnc.models import DNC
+from permissions import CustomObjectPermissions
 
 
 class DNCViewSet(viewsets.ModelViewSet):
@@ -28,7 +29,7 @@ class DNCViewSet(viewsets.ModelViewSet):
     queryset = DNC.objects.all()
     serializer_class = DNCSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

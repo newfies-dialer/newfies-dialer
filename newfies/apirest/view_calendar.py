@@ -15,10 +15,11 @@
 
 from rest_framework import viewsets
 from apirest.calendar_serializers import CalendarSerializer
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.calendars import Calendar
 from appointment.function_def import get_calendar_user_id_list
+from permissions import CustomObjectPermissions
 
 
 class CalendarViewSet(viewsets.ModelViewSet):
@@ -29,7 +30,7 @@ class CalendarViewSet(viewsets.ModelViewSet):
     queryset = Calendar.objects.all()
     serializer_class = CalendarSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

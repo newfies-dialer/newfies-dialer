@@ -14,10 +14,11 @@
 #
 
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from apirest.subscriber_list_serializers import SubscriberListSerializer
 from dialer_campaign.models import Subscriber
+from permissions import CustomObjectPermissions
 
 
 class SubscriberListViewSet(viewsets.ReadOnlyModelViewSet):
@@ -25,7 +26,7 @@ class SubscriberListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Subscriber.objects.all()
     serializer_class = SubscriberListSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

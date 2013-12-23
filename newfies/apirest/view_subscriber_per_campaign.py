@@ -14,11 +14,12 @@
 #
 
 from django.db import connection
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from dialer_campaign.models import Campaign
+from permissions import CustomObjectPermissions
 
 
 class SubscriberPerCampaignList(APIView):
@@ -26,7 +27,7 @@ class SubscriberPerCampaignList(APIView):
     List all subscriber per campaign
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def get(self, request, campaign_id=0, contact_id=0, format=None):
         error = {}

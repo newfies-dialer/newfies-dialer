@@ -15,9 +15,10 @@
 
 from rest_framework import viewsets
 from apirest.sms_gateway_serializers import SMSGatewaySerializer
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from sms.models import Gateway as SMSGateway
+from permissions import CustomObjectPermissions
 
 
 class SMSGatewayViewSet(viewsets.ReadOnlyModelViewSet):
@@ -27,4 +28,4 @@ class SMSGatewayViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = SMSGateway.objects.all()
     serializer_class = SMSGatewaySerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)

@@ -14,11 +14,12 @@
 #
 
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from callcenter.models import Queue
 from apirest.queue_serializers import QueueSerializer
 from user_profile.models import Manager
+from permissions import CustomObjectPermissions
 
 
 class QueueViewSet(viewsets.ModelViewSet):
@@ -29,7 +30,7 @@ class QueueViewSet(viewsets.ModelViewSet):
     queryset = Queue.objects.all()
     serializer_class = QueueSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

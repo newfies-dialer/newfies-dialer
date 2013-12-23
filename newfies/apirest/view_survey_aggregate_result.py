@@ -14,10 +14,11 @@
 #
 
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.response import Response
 from survey.models import Survey, ResultAggregate
+from permissions import CustomObjectPermissions
 import logging
 logger = logging.getLogger('newfies.filelog')
 
@@ -27,7 +28,7 @@ class SurveyAggregateResultViewSet(APIView):
     List Result aggregate result per survey
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def get(self, request, survey_id=0, format=None):
         """GET method of survey aggregate result API"""

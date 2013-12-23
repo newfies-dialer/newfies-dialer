@@ -15,7 +15,7 @@
 
 from rest_framework import viewsets
 from rest_framework.response import Response
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.users import CalendarUser, CalendarUserProfile,\
     CalendarSetting
@@ -24,6 +24,7 @@ from appointment.function_def import get_calendar_user_id_list, \
     get_all_calendar_user_id_list
 from apirest.calendar_user_serializers import CalendarUserSerializer
 from user_profile.models import Manager
+from permissions import CustomObjectPermissions
 import ast
 
 
@@ -35,7 +36,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
     queryset = CalendarUser.objects.filter(is_staff=False, is_superuser=False)
     serializer_class = CalendarUserSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def list(self, request, *args, **kwargs):
         """get list of all CalendarUser objects"""
@@ -55,8 +56,9 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
                     'max_concurrent': calendar_obj.max_concurrent,
                 }
             except:
-                calendar_dict = {}   
-            user_url =  'http://%s/rest-api/calendar-user/%s/' % (self.request.META['HTTP_HOST'], str(c_user.id))            
+                calendar_dict = {}
+
+            user_url = 'http://%s/rest-api/calendar-user/%s/' % (self.request.META['HTTP_HOST'], str(c_user.id))
             data = {
                 'url': user_url,
                 'id': c_user.id,
@@ -72,7 +74,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
         
         if list_data:
             temp_data = ", ".join(str(e) for e in list_data)
-            final_data = ast.literal_eval(temp_data)   
+            final_data = ast.literal_eval(temp_data)
         else:
             final_data = {"note": "no calendar-user found"}
         #serializer = CalendarUserSerializer(snippets, many=True)
@@ -90,11 +92,6 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
                 manager=Manager.objects.get(username=self.request.user),
                 calendar_setting=CalendarSetting.objects.filter(user=self.request.user)[0]
             )
-
-            #Calendar.objects.create(
-            #    name='default',
-            #    user=obj,
-            #)
 
     def retrieve(self, request, *args, **kwargs):
         """retrieve CalendarUser object"""

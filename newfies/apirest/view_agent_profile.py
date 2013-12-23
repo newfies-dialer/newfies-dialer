@@ -14,11 +14,12 @@
 #
 
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from apirest.agent_profile_serializers import AgentProfileSerializer
 from agent.models import AgentProfile
 from user_profile.models import Manager
+from permissions import CustomObjectPermissions
 
 
 class AgentProfileViewSet(viewsets.ModelViewSet):
@@ -29,7 +30,7 @@ class AgentProfileViewSet(viewsets.ModelViewSet):
     queryset = AgentProfile.objects.filter(is_agent=True)
     serializer_class = AgentProfileSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

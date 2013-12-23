@@ -15,9 +15,10 @@
 
 from rest_framework import viewsets
 from apirest.rule_serializers import RuleSerializer
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.rules import Rule
+from permissions import CustomObjectPermissions
 
 
 class RuleViewSet(viewsets.ReadOnlyModelViewSet):
@@ -27,4 +28,4 @@ class RuleViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Rule.objects.all()
     serializer_class = RuleSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)

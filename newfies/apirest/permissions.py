@@ -12,12 +12,12 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from rest_framework.permissions import DjangoModelPermissions
+from rest_framework.permissions import DjangoObjectPermissions
 
 
-class CustomModelPermissions(DjangoModelPermissions):
+class CustomObjectPermissions(DjangoObjectPermissions):
     """
-    Similar to `DjangoModelPermissions`, but adding 'view' permissions.
+    Similar to `DjangoObjectPermissions`, but adding 'view' permissions.
     """
     perms_map = {
         'GET': ['%(app_label)s.view_%(model_name)s'],

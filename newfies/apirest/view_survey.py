@@ -14,10 +14,11 @@
 #
 
 from rest_framework import viewsets
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from apirest.survey_serializers import SurveySerializer
 from survey.models import Survey
+from permissions import CustomObjectPermissions
 
 
 class SurveyViewSet(viewsets.ReadOnlyModelViewSet):
@@ -25,7 +26,7 @@ class SurveyViewSet(viewsets.ReadOnlyModelViewSet):
     API endpoint that allows survey to be viewed.
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permission_classes = (IsAuthenticated, DjangoModelPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
     queryset = Survey.objects.all()
     serializer_class = SurveySerializer
 

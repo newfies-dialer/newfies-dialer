@@ -43,7 +43,7 @@ class BulkContactViewSet(APIView):
             {"result": "Bulk contacts are created"}
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated)
 
     def post(self, request):
         """

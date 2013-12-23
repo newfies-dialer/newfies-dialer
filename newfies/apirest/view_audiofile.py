@@ -18,10 +18,11 @@ from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
 from rest_framework.response import Response
 from apirest.audiofile_serializers import AudioFileSerializer
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_audio.forms import DialerAudioFileForm
 from audiofield.models import AudioFile
+from permissions import CustomObjectPermissions
 
 
 class AudioFileViewSet(viewsets.ModelViewSet):
@@ -32,7 +33,7 @@ class AudioFileViewSet(viewsets.ModelViewSet):
     queryset = AudioFile.objects.all()
     serializer_class = AudioFileSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

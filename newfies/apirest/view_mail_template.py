@@ -15,9 +15,10 @@
 
 from rest_framework import viewsets
 from apirest.mail_template_serializers import MailTemplateSerializer
-from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from mod_mailer.models import MailTemplate
+from permissions import CustomObjectPermissions
 
 
 class MailTemplateViewSet(viewsets.ReadOnlyModelViewSet):
@@ -27,4 +28,4 @@ class MailTemplateViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = MailTemplate.objects.all()
     serializer_class = MailTemplateSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, DjangoModelPermissions)
+    permissions = (IsAuthenticated, CustomObjectPermissions)

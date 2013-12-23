@@ -20,6 +20,7 @@ from appointment.models.rules import Rule
 from appointment.models.events import Event, Occurrence
 from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.calendars import Calendar
+from appointment.admin_filters import ManagerFilter
 from appointment.forms import CalendarUserProfileForm, EventAdminForm, \
     AdminCalendarForm
 
@@ -35,6 +36,7 @@ class CalendarUserAdmin(UserAdmin):
     ]
     list_display = ('username', 'email', 'first_name', 'last_name', 'is_staff',
                     'is_active', 'is_superuser', 'last_login')
+    list_filter = (ManagerFilter, )
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)

@@ -29,7 +29,7 @@ import os.path
 audio_redirect_url = '/module/audio/'
 
 
-@permission_required('audiofield.view_audio', login_url='/')
+@permission_required('audiofield.view_audiofile', login_url='/')
 @login_required
 def audio_list(request):
     """AudioFile list for the logged in user

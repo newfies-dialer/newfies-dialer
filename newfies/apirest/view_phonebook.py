@@ -19,6 +19,8 @@ from rest_framework.permissions import IsAuthenticated, DjangoModelPermissions
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Phonebook
 
+SAFE_METHODS = ['HEAD', 'OPTIONS']
+
 
 class CustomDjangoModelPermissions(DjangoModelPermissions):
     # Map methods into required permission codes.

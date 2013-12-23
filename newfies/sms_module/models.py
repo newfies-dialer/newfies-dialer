@@ -117,16 +117,15 @@ class SMSCampaign(Model):
                                 verbose_name=_("Caller ID Number"),
                                 help_text=_("outbound Caller ID"))
     #General Starting & Stopping date
-    startingdate = models.DateTimeField(
-        default=(lambda: datetime.now()), verbose_name=_('start'),
-        help_text=_("date format: YYYY-mm-DD HH:MM:SS"))
+    startingdate = models.DateTimeField(default=(lambda: datetime.now()),
+                                        verbose_name=_('start'))
 
     expirationdate = models.DateTimeField(
         default=(lambda: datetime.now() + relativedelta(months=+1)),
-        verbose_name=_('finish'), help_text=_("date format: YYYY-mm-DD HH:MM:SS"))
+        verbose_name=_('finish'))
     #Per Day Starting & Stopping Time
-    daily_start_time = models.TimeField(default='00:00:00', help_text=_("time format: HH:MM:SS"))
-    daily_stop_time = models.TimeField(default='23:59:59', help_text=_("time format: HH:MM:SS"))
+    daily_start_time = models.TimeField(default='00:00:00')
+    daily_stop_time = models.TimeField(default='23:59:59')
     monday = models.BooleanField(default=True, verbose_name=_('monday'))
     tuesday = models.BooleanField(default=True, verbose_name=_('tuesday'))
     wednesday = models.BooleanField(default=True, verbose_name=_('wednesday'))

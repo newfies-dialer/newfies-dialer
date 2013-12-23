@@ -19,7 +19,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from dialer_campaign.models import Campaign
-from permissions import CustomObjectPermissions
+from dialer_contact.models import Contact
 
 
 class SubscriberPerCampaignList(APIView):
@@ -27,19 +27,53 @@ class SubscriberPerCampaignList(APIView):
     List all subscriber per campaign
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permissions = (IsAuthenticated)
 
     def get(self, request, campaign_id=0, contact_id=0, format=None):
+        """
+        **Read**:
+
+            CURL Usage::
+            
+                curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/subcampaign/%campaign_id%/
+
+                curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/subcampaign/%campaign_id%/%contact_id%/
+        """
         error = {}
 
         cursor = connection.cursor()
-        try:
-            Campaign.objects.get(id=campaign_id)
-        except:
-            error_msg = "Campaign ID does not exists!"
-            error['error'] = error_msg
-            return Response(error)
+        
+        if request.user.is_superuser:
+            try:
+                Campaign.objects.get(id=campaign_id)
+            except:
+                error_msg = "Campaign ID is not valid!"
+                error['error'] = error_msg
+                return Response(error)
 
+            if contact_id:
+                try:
+                    Contact.objects.get(id=contact_id)
+                except:
+                    error_msg = "Contact ID is not valid!"
+                    error['error'] = error_msg
+                    return Response(error)
+        else:
+            try:
+                Campaign.objects.get(id=campaign_id, user=request.user)
+            except:
+                error_msg = "Campaign ID is not valid!"
+                error['error'] = error_msg
+                return Response(error)
+
+            if contact_id:
+                try:
+                    Contact.objects.get(id=contact_id, phonebook__user=request.user)
+                except:
+                    error_msg = "Contact ID is not valid!"
+                    error['error'] = error_msg
+                    return Response(error)
+        
         if contact_id and contact_id > 0:
             sql_statement = "SELECT DISTINCT contact_id, last_attempt, " \
                 "count_attempt, completion_count_attempt, dialer_subscriber.status," \

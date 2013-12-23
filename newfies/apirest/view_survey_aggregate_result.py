@@ -45,13 +45,21 @@ class SurveyAggregateResultViewSet(APIView):
             logger.error(error_msg)
             return Response(error)
 
-        try:
-            survey_result_kwargs['survey'] = Survey.objects.get(id=survey_id, user=request.user)
-        except:
-            error_msg = "Survey ID is not valid!"
-            error['error'] = error_msg
-            logger.error(error_msg)
-            return Response(error)
+        error_msg = "Survey ID is not valid!"
+        if request.user.is_superuser:
+            try:
+                survey_result_kwargs['survey'] = Survey.objects.get(id=survey_id)
+            except:
+                error['error'] = error_msg
+                logger.error(error_msg)
+                return Response(error)
+        else:
+            try:
+                survey_result_kwargs['survey'] = Survey.objects.get(id=survey_id, user=request.user)
+            except:
+                error['error'] = error_msg
+                logger.error(error_msg)
+                return Response(error)
 
         survey_result = ResultAggregate.objects\
             .filter(**survey_result_kwargs)\

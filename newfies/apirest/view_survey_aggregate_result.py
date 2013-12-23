@@ -18,7 +18,6 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.response import Response
 from survey.models import Survey, ResultAggregate
-from permissions import CustomObjectPermissions
 import logging
 logger = logging.getLogger('newfies.filelog')
 
@@ -26,18 +25,30 @@ logger = logging.getLogger('newfies.filelog')
 class SurveyAggregateResultViewSet(APIView):
     """
     List Result aggregate result per survey
+
+    **Read**:
+
+        CURL Usage::
+            
+            curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/surveyaggregate/%survey_id%/
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permissions = (IsAuthenticated)
 
     def get(self, request, survey_id=0, format=None):
         """GET method of survey aggregate result API"""
         error = {}
         survey_result_kwargs = {}
+        if survey_id == 0:
+            error_msg = "Please enter Survey ID."
+            error['error'] = error_msg
+            logger.error(error_msg)
+            return Response(error)
+
         try:
-            survey_result_kwargs['survey'] = Survey.objects.get(id=survey_id)
+            survey_result_kwargs['survey'] = Survey.objects.get(id=survey_id, user=request.user)
         except:
-            error_msg = "Survey ID does not exists!"
+            error_msg = "Survey ID is not valid!"
             error['error'] = error_msg
             logger.error(error_msg)
             return Response(error)

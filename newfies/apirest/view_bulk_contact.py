@@ -61,9 +61,9 @@ class BulkContactViewSet(APIView):
             phonebook_id = request.DATA.get('phonebook_id')
             if phonebook_id and phonebook_id != '':
                 try:
-                    Phonebook.objects.get(id=phonebook_id)
+                    Phonebook.objects.get(id=phonebook_id, user=request.user)
                 except Phonebook.DoesNotExist:
-                    error['error'] = 'Phonebook is not selected!'
+                    error['error'] = 'Phonebook is not valid!'
             else:
                 error['error'] = 'Phonebook is not selected!'
 
@@ -74,17 +74,18 @@ class BulkContactViewSet(APIView):
         phonebook_id = request.DATA.get('phonebook_id')
         phonenolist = list(phoneno_list.split(","))
 
-        obj_phonebook = Phonebook.objects.get(id=phonebook_id)
+        obj_phonebook = Phonebook.objects.get(id=phonebook_id, user=request.user)
         new_contact_count = 0
         for phoneno in phonenolist:
             # check phoneno in Contact
-            dup_count = Contact.objects.filter(contact=phoneno).count()
+            dup_count = Contact.objects.filter(contact=phoneno, phonebook__user=request.user).count()
 
             # If dup_count is zero, create new contact
             if dup_count == 0:
                 new_contact = Contact.objects.create(
                     phonebook=obj_phonebook,
-                    contact=phoneno, )
+                    contact=phoneno,
+                )
                 new_contact_count = new_contact_count + 1
                 new_contact.save()
             else:

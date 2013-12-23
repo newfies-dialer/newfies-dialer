@@ -235,7 +235,7 @@ INSTALLED_APPS = (
     'activelink',
     'sms',
     'sms_module',
-    'bootstrap3_datetime',
+    'bootstrap3_datetime',    
 )
 
 # Django extensions
@@ -351,6 +351,7 @@ DILLA_SPAMLIBS = [
 #    'KEY_PREFIX': 'newfies_',
 #  }
 #}
+
 
 #REST FRAMEWORK
 #==============

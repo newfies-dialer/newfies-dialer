@@ -235,7 +235,7 @@ INSTALLED_APPS = (
     'activelink',
     'sms',
     'sms_module',
-    'bootstrap3_datetime',    
+    'bootstrap3_datetime',
 )
 
 # Django extensions
@@ -365,7 +365,8 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        'rest_framework.permissions.DjangoModelPermissions'
+        #'rest_framework.permissions.DjangoModelPermissions'
+        'apirest.permissions.CustomModelPermissions'
     ),
     #'DEFAULT_THROTTLE_CLASSES': (
     #    'rest_framework.throttling.SimpleRateThrottle',

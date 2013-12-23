@@ -15,25 +15,10 @@
 
 from rest_framework import viewsets
 from apirest.phonebook_serializers import PhonebookSerializer
-from rest_framework.permissions import IsAuthenticated, \
-    DjangoObjectPermissions
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Phonebook
-
-
-class CustomObjectPermissions(DjangoObjectPermissions):
-    """
-    Similar to `DjangoObjectPermissions`, but adding 'view' permissions.
-    """
-    perms_map = {
-        'GET': ['%(app_label)s.view_%(model_name)s'],
-        'OPTIONS': ['%(app_label)s.view_%(model_name)s'],
-        'HEAD': ['%(app_label)s.view_%(model_name)s'],
-        'POST': ['%(app_label)s.add_%(model_name)s'],
-        'PUT': ['%(app_label)s.change_%(model_name)s'],
-        'PATCH': ['%(app_label)s.change_%(model_name)s'],
-        'DELETE': ['%(app_label)s.delete_%(model_name)s'],
-    }
+from permissions import CustomModelPermissions
 
 
 class PhonebookViewSet(viewsets.ModelViewSet):
@@ -44,7 +29,7 @@ class PhonebookViewSet(viewsets.ModelViewSet):
     queryset = Phonebook.objects.all()
     serializer_class = PhonebookSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permissions = (IsAuthenticated, CustomModelPermissions)
 
     def get_queryset(self):
         """

@@ -111,7 +111,7 @@ class SMSCampaign(Model):
     description = models.TextField(verbose_name=_('description'), blank=True,
                                    null=True, help_text=_("campaign description"))
     user = models.ForeignKey('auth.User', related_name='SMSCampaign owner')
-    status = models.IntegerField(choices=list(SMS_CAMPAIGN_STATUS), blank=True, null=True,
+    status = models.IntegerField(choices=list(SMS_CAMPAIGN_STATUS),
                                  default=SMS_CAMPAIGN_STATUS.PAUSE, verbose_name=_("status"))
     callerid = models.CharField(max_length=80, blank=True,
                                 verbose_name=_("Caller ID Number"),

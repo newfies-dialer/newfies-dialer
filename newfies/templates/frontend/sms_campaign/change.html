@@ -28,7 +28,7 @@
                 <fieldset>
                     <legend>{% trans "general settings"|title %}</legend>
                     <div class="row">
-                        {% get_fieldset campaign_code,ds_user,name,callerid,sms_gateway,status as campaign_fields from form %}
+                        {% get_fieldset campaign_code,ds_user,name,callerid,sms_gateway as campaign_fields from form %}
                         {% for field in campaign_fields.hidden_fields %}
                             {{ field }}
                         {% endfor %}

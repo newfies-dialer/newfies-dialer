@@ -323,10 +323,6 @@ def sms_campaign_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-
-            # Start tasks to import subscriber
-            if obj.status == SMS_CAMPAIGN_STATUS.START:
-                sms_collect_subscriber.delay(obj.pk)
             form.save_m2m()
 
             request.session["msg"] = _('"%(name)s" is added.') %\
@@ -421,13 +417,10 @@ def sms_campaign_change(request, object_id):
             # Update sms campaign
             form = SMSCampaignForm(
                 request.user, request.POST, instance=sms_campaign)
-            previous_status = sms_campaign.status
+            
             if form.is_valid():
                 obj = form.save()
-                # Start tasks to import subscriber
-                if obj.status == SMS_CAMPAIGN_STATUS.START and previous_status != SMS_CAMPAIGN_STATUS.START:
-                    sms_collect_subscriber.delay(obj.id)
-
+                obj.save()
                 request.session["msg"] = _('"%(name)s" is updated.') \
                     % {'name': request.POST['name']}
                 return HttpResponseRedirect(redirect_url_to_smscampaign_list)

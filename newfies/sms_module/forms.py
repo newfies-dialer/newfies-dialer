@@ -51,13 +51,14 @@ class SMSCampaignForm(ModelForm):
     class Meta:
         model = SMSCampaign
         fields = ['campaign_code', 'name', 'description',
-                  'callerid', 'status', 'sms_gateway', 'phonebook',
+                  'callerid', 'sms_gateway', 'phonebook',
                   'extra_data', 'text_message',
                   'frequency', 'maxretry', 'intervalretry',
                   'startingdate', 'expirationdate',
                   'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                   'saturday', 'sunday', 'ds_user']
+        exclude = ('status',)
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
             'extra_data': Textarea(attrs={'cols': 23, 'rows': 3}),

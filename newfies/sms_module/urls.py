@@ -21,7 +21,8 @@ urlpatterns = patterns('sms_module.views',
     (r'^sms_campaign/$', 'sms_campaign_list'),
     (r'^sms_campaign/add/$', 'sms_campaign_add'),
     (r'^sms_campaign/del/(.+)/$', 'sms_campaign_del'),
-    (r'^sms_campaign_duplicate/(.+)/$', 'sms_campaign_duplicate'),
+    (r'^sms_campaign/duplicate/(.+)/$', 'sms_campaign_duplicate'),
+    (r'^sms_campaign/text_message/(.+)/$', 'sms_campaign_text_message'),
 
     # SMS Campaign Actions (start|stop|pause|abort) for customer UI
     (r'^sms_campaign/update_sms_campaign_status_cust/(\d*)/(\d*)/$',

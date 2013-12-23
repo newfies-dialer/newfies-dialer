@@ -45,6 +45,9 @@ import tablib
 import time
 
 
+redirect_url_to_smscampaign_list = '/sms_campaign/'
+
+
 def common_sms_campaign_status(pk, status):
     """SMS Campaign Status (e.g. start | stop | abort | pause) needs to be changed.
     It is a common function for the admin and customer UI's
@@ -117,7 +120,7 @@ def update_sms_campaign_status_cust(request, pk, status):
     recipient = common_sms_campaign_status(pk, status)
     sms_notification_status = get_sms_notification_status(int(status))
     frontend_send_notification(request, sms_notification_status, recipient)
-    return HttpResponseRedirect('/sms_campaign/')
+    return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
 
 def count_contact_of_smscampaign(smscampaign_id):
@@ -169,8 +172,15 @@ def get_url_sms_campaign_status(id, status):
 
 def make_duplicate_sms_campaign(sms_campaign_id):
     """Create link to make duplicate campaign"""
-    link = '<a href="#sms-campaign-duplicate"  url="/sms_campaign_duplicate/%s/" class="sms-campaign-duplicate" data-toggle="modal" data-controls-modal="sms-campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
+    link = '<a href="#sms-campaign-duplicate"  url="/sms_campaign/duplicate/%s/" class="sms-campaign-duplicate" data-toggle="modal" data-controls-modal="sms-campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
            % (sms_campaign_id, _('duplicate this sms campaign').capitalize())
+    return link
+
+
+def sms_campaign_textmessage(sms_campaign_id):
+    """Create link to get sms campaign's text-message"""
+    link = '<a href="#sms-campaign-textmessage"  url="/sms_campaign/text_message/%s/" class="sms-campaign-textmessage" data-toggle="modal" data-controls-modal="sms-campaign-textmessage" title="%s"><i class="fa fa-search"></i></a>' \
+           % (sms_campaign_id, _('get text-message of this sms campaign').capitalize())
     return link
 
 
@@ -290,7 +300,7 @@ def sms_campaign_add(request):
         request.session['error_msg'] = \
             _("in order to add a sms campaign, you need to have your \
                settings configured properly, please contact the admin.")
-        return HttpResponseRedirect("/sms_campaign/")
+        return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     # Check dialer setting limit
     if request.user and request.method != 'POST':
@@ -303,7 +313,7 @@ def sms_campaign_add(request):
             # sms campaign limit reached
             frontend_send_notification(
                 request, SMS_NOTIFICATION_NAME.sms_campaign_limit_reached)
-            return HttpResponseRedirect("/sms_campaign/")
+            return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     form = SMSCampaignForm(request.user)
     # Add sms campaign
@@ -321,7 +331,7 @@ def sms_campaign_add(request):
 
             request.session["msg"] = _('"%(name)s" is added.') %\
                 {'name': request.POST['name']}
-            return HttpResponseRedirect('/sms_campaign/')
+            return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     template = 'frontend/sms_campaign/change.html'
     data = {
@@ -377,7 +387,7 @@ def sms_campaign_del(request, object_id):
                 request.session["msg"] = _('%(count)s sms campaign(s) are deleted.')\
                     % {'count': sms_campaign_list.count()}
                 sms_campaign_list.delete()
-    return HttpResponseRedirect('/sms_campaign/')
+    return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
 
 @permission_required('sms_module.change_smsmessage', login_url='/')
@@ -398,7 +408,7 @@ def sms_campaign_change(request, object_id):
     """
     # If dialer setting is not attached with user, redirect to sms campaign list
     if not user_dialer_setting(request.user):
-        return HttpResponseRedirect("/sms_campaign/")
+        return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     sms_campaign = get_object_or_404(SMSCampaign, pk=object_id, user=request.user)
     form = SMSCampaignForm(request.user, instance=sms_campaign)
@@ -406,7 +416,7 @@ def sms_campaign_change(request, object_id):
         # Delete sms campaign
         if request.POST.get('delete'):
             sms_campaign_del(request, object_id)
-            return HttpResponseRedirect('/sms_campaign/')
+            return HttpResponseRedirect(redirect_url_to_smscampaign_list)
         else:
             # Update sms campaign
             form = SMSCampaignForm(
@@ -420,7 +430,7 @@ def sms_campaign_change(request, object_id):
 
                 request.session["msg"] = _('"%(name)s" is updated.') \
                     % {'name': request.POST['name']}
-                return HttpResponseRedirect('/sms_campaign/')
+                return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     template = 'frontend/sms_campaign/change.html'
     data = {
@@ -443,6 +453,10 @@ def sms_campaign_duplicate(request, id):
         * ``form`` - DuplicateSMSCampaignForm
         * ``template`` - frontend/sms_campaign/sms_campaign_duplicate.html
     """
+    # If dialer setting is not attached with user, redirect to sms campaign list
+    if not user_dialer_setting(request.user):
+        return HttpResponseRedirect(redirect_url_to_smscampaign_list)
+
     form = DuplicateSMSCampaignForm(request.user)
     request.session['error_msg'] = ''
     if request.method == 'POST':
@@ -464,7 +478,7 @@ def sms_campaign_duplicate(request, id):
             for pb in request.POST.getlist('phonebook'):
                 sms_campaign_obj.phonebook.add(pb)
 
-            return HttpResponseRedirect('/sms_campaign/')
+            return HttpResponseRedirect(redirect_url_to_smscampaign_list)
         else:
             request.session['error_msg'] = True
     else:
@@ -475,6 +489,30 @@ def sms_campaign_duplicate(request, id):
         'sms_campaign_id': id,
         'form': form,
         'err_msg': request.session.get('error_msg'),
+    }
+    request.session['error_msg'] = ''
+    return render_to_response(
+        template, data, context_instance=RequestContext(request))
+
+
+@login_required
+def sms_campaign_text_message(request, object_id):
+    """
+    Get sms campaign's text message
+
+    **Attributes**:
+
+        * ``object_id`` - Selected sms campaign object
+        * ``template`` - frontend/sms_campaign/sms_campaign_text_message.html
+    """
+    # If dialer setting is not attached with user, redirect to sms campaign list
+    if not user_dialer_setting(request.user):
+        return HttpResponseRedirect(redirect_url_to_smscampaign_list)
+
+    sms_campaign = get_object_or_404(SMSCampaign, pk=object_id, user=request.user)
+    template = 'frontend/sms_campaign/sms_campaign_text_message.html'
+    data = {
+        'sms_campaign': sms_campaign,
     }
     request.session['error_msg'] = ''
     return render_to_response(

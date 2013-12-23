@@ -113,6 +113,8 @@
                                         <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete sms campaign'|capfirst %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
                                     {{ row.id|create_duplicate_sms_campaign|safe }}
+
+                                    {{ row.id|get_sms_campaign_textmessage|safe }}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -144,4 +146,15 @@
 </script>
 <!-- modal content-->
 <div id="sms-campaign-duplicate" class="modal fade" role="dialog" aria-labelledby="add_duplicate_sms_campaign"></div>
+
+<!--sms-campaign-textmessage modal-->
+<script type="text/javascript" charset="utf-8">
+    $(".sms-campaign-textmessage").live('click', function(e) {
+        var url = $(this).attr('url');
+        var modal_id = $(this).attr('data-controls-modal');
+        $("#" + modal_id).load(url);
+    });
+</script>
+<!-- modal content-->
+<div id="sms-campaign-textmessage" class="modal fade" role="dialog" aria-labelledby="get_sms_campaign_textmessage"></div>
 {% endblock %}

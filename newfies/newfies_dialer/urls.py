@@ -57,6 +57,13 @@ urlpatterns = patterns('',
     (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
 )
 
+if settings.DEBUG:
+    import debug_toolbar
+    urlpatterns += patterns('',
+        url(r'^__debug__/', include(debug_toolbar.urls)),
+    )
+
+
 urlpatterns += urlpatterns_apirest
 urlpatterns += urlpatterns_agent_apirest
 urlpatterns += urlpatterns_frontend

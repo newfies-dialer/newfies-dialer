@@ -286,6 +286,7 @@ else:
         'ENABLE_STACKTRACES': True,
         'SQL_WARNING_THRESHOLD': 100,   # milliseconds
     }
+    DEBUG_TOOLBAR_PATCH_SETTINGS = False
 
 # Django extensions
 try:

@@ -47,7 +47,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
     queryset = Campaign.objects.all()
     serializer_class = CampaignSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def pre_save(self, obj):
         obj.user = self.request.user

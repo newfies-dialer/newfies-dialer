@@ -28,4 +28,4 @@ class MailTemplateViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = MailTemplate.objects.all()
     serializer_class = MailTemplateSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)

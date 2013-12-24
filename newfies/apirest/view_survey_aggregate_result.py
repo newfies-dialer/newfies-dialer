@@ -14,7 +14,6 @@
 #
 
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.response import Response
 from survey.models import Survey, ResultAggregate
@@ -33,7 +32,6 @@ class SurveyAggregateResultViewSet(APIView):
             curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/surveyaggregate/%survey_id%/
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated)
 
     def get(self, request, survey_id=0, format=None):
         """GET method of survey aggregate result API"""

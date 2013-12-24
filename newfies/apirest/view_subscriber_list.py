@@ -26,7 +26,7 @@ class SubscriberListViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Subscriber.objects.all()
     serializer_class = SubscriberListSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

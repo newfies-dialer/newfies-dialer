@@ -33,7 +33,7 @@ class EventViewSet(viewsets.ModelViewSet):
     queryset = Event.objects.all()
     serializer_class = EventSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         if self.request.user.is_superuser:

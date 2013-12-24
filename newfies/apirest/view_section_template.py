@@ -29,7 +29,7 @@ class SectionTemplateViewSet(viewsets.ModelViewSet):
     queryset = Section_template.objects.all()
     serializer_class = SectionTemplateSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

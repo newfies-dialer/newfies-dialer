@@ -29,7 +29,7 @@ class DNCViewSet(viewsets.ModelViewSet):
     queryset = DNC.objects.all()
     serializer_class = DNCSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

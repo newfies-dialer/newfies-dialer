@@ -26,11 +26,11 @@ class SurveyTemplateViewSet(viewsets.ModelViewSet):
     API endpoint that allows content_type to be viewed or edited.
     """
     model = Survey_template
-    authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
     queryset = Survey_template.objects.all()
     serializer_class = SurveyTemplateSerializer
-
+    authentication = (BasicAuthentication, SessionAuthentication)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
+    
     def pre_save(self, obj):
         obj.user = self.request.user
 

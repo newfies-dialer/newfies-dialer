@@ -15,7 +15,6 @@
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.constants import CONTACT_STATUS
@@ -29,7 +28,6 @@ logger = logging.getLogger('newfies.filelog')
 class SubscriberViewSet(APIView):
     """SubscriberViewSet"""
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated)
 
     def post(self, request, pk=None):
         """

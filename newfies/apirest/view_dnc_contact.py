@@ -29,7 +29,7 @@ class DNCContactViewSet(viewsets.ModelViewSet):
     queryset = DNCContact.objects.all()
     serializer_class = DNCContactSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

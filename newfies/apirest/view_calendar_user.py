@@ -36,7 +36,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
     queryset = CalendarUser.objects.filter(is_staff=False, is_superuser=False)
     serializer_class = CalendarUserSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def list(self, request, *args, **kwargs):
         """get list of all CalendarUser objects"""

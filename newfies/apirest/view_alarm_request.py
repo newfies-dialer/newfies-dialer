@@ -33,7 +33,7 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
     queryset = AlarmRequest.objects.all()
     serializer_class = AlarmRequestSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

@@ -14,7 +14,6 @@
 #
 
 from django.db import connection
-from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from rest_framework.views import APIView
 from rest_framework.response import Response
@@ -27,7 +26,6 @@ class SubscriberPerCampaignList(APIView):
     List all subscriber per campaign
     """
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated)
 
     def get(self, request, campaign_id=0, contact_id=0, format=None):
         """

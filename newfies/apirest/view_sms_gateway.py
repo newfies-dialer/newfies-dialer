@@ -28,4 +28,4 @@ class SMSGatewayViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = SMSGateway.objects.all()
     serializer_class = SMSGatewaySerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)

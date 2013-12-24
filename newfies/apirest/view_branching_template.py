@@ -29,7 +29,7 @@ class BranchingTemplateViewSet(viewsets.ModelViewSet):
     queryset = Branching_template.objects.all()
     serializer_class = BranchingTemplateSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

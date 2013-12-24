@@ -29,7 +29,7 @@ class CallrequestViewSet(viewsets.ModelViewSet):
     queryset = Callrequest.objects.all()
     serializer_class = CallrequestSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def pre_save(self, obj):
         obj.user = self.request.user

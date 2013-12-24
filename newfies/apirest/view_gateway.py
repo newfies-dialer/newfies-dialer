@@ -29,7 +29,7 @@ class GatewayViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Gateway.objects.all()
     serializer_class = GatewaySerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

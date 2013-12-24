@@ -45,7 +45,7 @@ class SMSCampaignViewSet(viewsets.ModelViewSet):
     queryset = SMSCampaign.objects.all()
     serializer_class = SMSCampaignSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def pre_save(self, obj):
         obj.user = self.request.user

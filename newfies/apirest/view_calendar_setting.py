@@ -29,7 +29,7 @@ class CalendarSettingViewSet(viewsets.ModelViewSet):
     queryset = CalendarSetting.objects.all()
     serializer_class = CalendarSettingSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
 
     def get_queryset(self):
         """

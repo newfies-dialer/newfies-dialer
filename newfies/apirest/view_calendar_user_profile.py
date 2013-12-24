@@ -34,7 +34,7 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
     queryset = CalendarUserProfile.objects.all()
     serializer_class = CalendarUserProfileSerializer
     authentication = (BasicAuthentication, SessionAuthentication)
-    permissions = (IsAuthenticated, CustomObjectPermissions)
+    permission_classes = (IsAuthenticated, CustomObjectPermissions)
     lookup_field = ('user_id')
 
     def pre_save(self, obj):

@@ -29,7 +29,6 @@ Contents:
 
     configuration-defaults
     ./freeswitch/install-configure-freeswitch
-    troubleshooting
     user-guide
 
 .. toctree::
@@ -41,6 +40,7 @@ Contents:
     :maxdepth: 2
 
     api-reference
+    troubleshooting
     contributing
     resources
     faq

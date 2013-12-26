@@ -1,8 +1,8 @@
-.. automodule:: api.campaign_api
+.. automodule:: apirest.campaign_serializers
 
 .. _campaignResource-model:
 
-:class:`CampaignResource`
--------------------------
+:class:`CampaignSerializer`
+--------------------------
 
-.. autoclass:: CampaignResource
+.. autoclass:: CampaignSerializer

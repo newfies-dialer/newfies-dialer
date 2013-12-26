@@ -14,18 +14,11 @@
 import sys
 import os
 
-
 sys.path.insert(0, os.path.abspath('../../'))
 sys.path.insert(1, os.path.abspath('../../newfies'))
-sys.path.insert(2, os.path.abspath('../../newfies/newfies_dialer'))
 
 from newfies import newfies_dialer
-from newfies.newfies_dialer import settings as mysettings
-# set up Django
 os.environ['DJANGO_SETTINGS_MODULE'] = 'newfies_dialer.settings'
-from django.conf import settings  # noqa
-settings.configure(mysettings)
-
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the

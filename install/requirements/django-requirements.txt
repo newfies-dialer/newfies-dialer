@@ -21,7 +21,7 @@ django-dajaxice-ng==0.5.6
 linaro-django-pagination==2.0.2
 django-admin-tools==0.5.1
 django-country-dialcode==0.4.8
-django-audiofield==0.5.6
+django-audiofield==0.5.7
 django-admin-tools-stats==0.5.1
 switch2bill-common==2.8.2
 django-extensions==1.0.3

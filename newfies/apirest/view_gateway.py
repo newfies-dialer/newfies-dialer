@@ -12,7 +12,6 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
 from rest_framework import viewsets
 from apirest.gateway_serializers import GatewaySerializer
 from rest_framework.permissions import IsAuthenticated
@@ -40,5 +39,4 @@ class GatewayViewSet(viewsets.ReadOnlyModelViewSet):
             queryset = Gateway.objects.all()
         else:
             queryset = UserProfile.objects.get(user=self.request.user).userprofile_gateway.all()
-            
         return queryset

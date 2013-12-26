@@ -13,7 +13,6 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
 from rest_framework import serializers
 from appointment.models.users import CalendarUser, CalendarUserProfile
 from appointment.function_def import get_calendar_user_id_list
@@ -38,23 +37,23 @@ class CalendarUserProfileSerializer(serializers.ModelSerializer):
                 "previous": null,
                 "results": [
                     {
-                        "manager": "manager", 
-                        "id": 1, 
-                        "user": 3, 
-                        "address": null, 
-                        "city": null, 
-                        "state": null, 
-                        "country": "", 
-                        "zip_code": null, 
-                        "phone_no": null, 
-                        "fax": null, 
-                        "company_name": null, 
-                        "company_website": null, 
-                        "language": null, 
-                        "note": null, 
-                        "accountcode": null, 
-                        "created_date": "2013-12-16T06:26:06.153Z", 
-                        "updated_date": "2013-12-16T06:26:06.153Z", 
+                        "manager": "manager",
+                        "id": 1,
+                        "user": 3,
+                        "address": null,
+                        "city": null,
+                        "state": null,
+                        "country": "",
+                        "zip_code": null,
+                        "phone_no": null,
+                        "fax": null,
+                        "company_name": null,
+                        "company_website": null,
+                        "language": null,
+                        "note": null,
+                        "accountcode": null,
+                        "created_date": "2013-12-16T06:26:06.153Z",
+                        "updated_date": "2013-12-16T06:26:06.153Z",
                         "calendar_setting": 1
                     }
                 ]
@@ -79,18 +78,19 @@ class CalendarUserProfileSerializer(serializers.ModelSerializer):
     manager = serializers.Field(source='manager')
 
     class Meta:
-        model = CalendarUserProfile    
+        model = CalendarUserProfile
 
     def get_fields(self, *args, **kwargs):
         """filter  field"""
         fields = super(CalendarUserProfileSerializer, self).get_fields(*args, **kwargs)
         request = self.context['request']
-        calendar_user_list = get_calendar_user_id_list(request.user)
         agent_id_list = AgentProfile.objects.values_list('user_id', flat=True).filter(manager=request.user)
         fields['user'].queryset = CalendarUser.objects\
-                .filter(is_staff=False, is_superuser=False)\
-                .exclude(id__in=agent_id_list).order_by('id')
+            .filter(is_staff=False, is_superuser=False)\
+            .exclude(id__in=agent_id_list).order_by('id')
         """
+        calendar_user_list = get_calendar_user_id_list(request.user)
+
         if not self.object:
             fields['user'].queryset = CalendarUser.objects\
                 .filter(is_staff=False, is_superuser=False)\

@@ -18,8 +18,6 @@ from rest_framework.response import Response
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.function_def import dialer_setting_limit, check_dialer_setting
-import logging
-logger = logging.getLogger('newfies.filelog')
 
 
 class BulkContactViewSet(APIView):
@@ -88,7 +86,6 @@ class BulkContactViewSet(APIView):
                 new_contact.save()
             else:
                 error_msg = "The contact duplicated (%s)!\n" % phoneno
-                logger.error(error_msg)
                 return Response({'error': error_msg})
 
         return Response({'result': 'Bulk contacts are created'})

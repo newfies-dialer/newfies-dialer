@@ -2,7 +2,8 @@
 
 .. _campaignResource-model:
 
-:class:`CampaignSerializer`
---------------------------
+`CampaignSerializer`
+--------------------
 
 .. autoclass:: CampaignSerializer
+	:members:

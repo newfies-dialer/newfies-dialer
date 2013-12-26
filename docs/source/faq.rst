@@ -6,31 +6,30 @@ Frequently Asked Questions
 
 .. contents::
     :local:
-    :depth: 1
+    :depth: 2
 
 .. _faq-general:
 
 General
 =======
 
+
 .. _faq-what-is-newfies-dialer:
 
+What is Newfies-Dialer
+----------------------
 
-What is Newfies-Dialer?
------------------------
-
-**Answer:** .
+**Answer:**
 
 Newfies-Dialer is a voice broadcast application designed and built to automate the delivery of interactive phone calls to contacts, clients and the general public.
 
 
 .. _faq-why-should-use-newfies-dialer:
 
+Why should I use Newfies-Dialer
+-------------------------------
 
-Why should I use Newfies-Dialer?
---------------------------------
-
-**Answer:** .
+**Answer:**
 
 Below are some examples of some of the uses that Newfies-Dialer can be put to. There are more details and examples at http://www.newfies-dialer.org/solutions/
 
@@ -68,25 +67,28 @@ Below are some examples of some of the uses that Newfies-Dialer can be put to. T
 
 .. _faq-what-s-the-history-newfies-dialer:
 
+What's the history behind Newfies-Dialer
+----------------------------------------
 
-What's the history behind Newfies-Dialer?
------------------------------------------
-
-**Answer:** .
+**Answer:**
 
 Newfies-Dialer is a bulk dialer application which was commissioned by a charity named Kubatana (http://www.kubatana.net) based in Zimbabwe, which sponsors the Freedomfone project (http://www.freedomfone.org/) dedicated to providing information via phone technology.
 
 In less economically developed countries, Internet is often limited, but there is usually comprehensive mobile phone coverage. Freedomfone uses Newfies-Dialer to dial up people’s phones and offer health information on Cholera, Malaria and so many other avoidable health issues in the third world, which may be alleviated by education. Newfies-Dialer was so named after the Newfoundland Dog nicknamed Newfies and used by sea rescue services around the world.
 
 
+.. _faq-text2speech:
+
+Text2Speech
+===========
+
 
 .. _faq-how-does-tag-substitution-work:
 
+How does the tag substitution work with the TTS engine
+------------------------------------------------------
 
-How does the tag substitution work with the TTS engine?
--------------------------------------------------------
-
-**Answer:** .
+**Answer:**
 
 This is the list of standard tags that will be automatically replaced:
     {last_name}
@@ -108,11 +110,10 @@ Text example:
 
 .. _faq-how-provide-tts-in-multiple-languages:
 
+How does Newfies-Dialer provide TTS in multiple languages
+---------------------------------------------------------
 
-How does Newfies-Dialer provide TTS in multiple languages?
-----------------------------------------------------------
-
-**Answer:** .
+**Answer:**
 
 By default the TTS engine used by newfies-Dialer is Flite (http://www.speech.cs.cmu.edu/flite/)
 which only supports English. If you want to use another language you will need another TTS engine.
@@ -123,11 +124,10 @@ the only thing you have to do is to sign in and enable Acapela on Newfies-dialer
 
 .. _faq-how-enable-acapela:
 
+How to enable Acapela on Newfies-Dialer
+---------------------------------------
 
-How to enable Acapela on Newfies-Dialer?
-----------------------------------------
-
-**Answer:** .
+**Answer:**
 
 First you will have to sign-up and register an account with Acapela : http://acapela-vaas.com/
 Once you signed up you will receive a login, an application login and an application password, you will need those to configure Acapela on Newfies-Dialer.
@@ -181,17 +181,22 @@ Finally restart the web UI:::
     /etc/init.d/supervisor start
 
 
+
+.. _faq-dialer-logic:
+
+Dialer Logic
+============
+
 .. _faq-how-retry-works:
 
+How does the dial retry logic works
+-----------------------------------
 
-How retry works?
-----------------
-
-**Answer:** .
+**Answer:**
 
 There are 2 systems available to retry calls:
 
-Basic Retry::
+Basic Retry:
 
     Basic retry checks to see if the call has been answered, even for a very
     short duration, this is regarded as a successful call. However if the call
@@ -200,7 +205,7 @@ Basic Retry::
     the campaign.
 
 
-Completion Retry::
+Completion Retry:
 
     This feature works with the survey editor. When a survey node is created, the
     "Survey Complete" checkbox can be ticked so that it is clear that the contact
@@ -208,6 +213,4 @@ Completion Retry::
     Usually, one of the last nodes in the survey is ticked as "Survey Complete".
 
     The Completion Retry interval and number of times to retry is set in the
-    campaign under the "Dialer Completion Settings" secion.
-
-
+    campaign under the "Dialer Completion Settings" section.

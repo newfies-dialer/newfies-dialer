@@ -10,6 +10,8 @@ Contents:
     :maxdepth: 1
 
 
+    ./api-doc/alarm_request_serializers
+    ./api-doc/alarm_serializers
     ./api-doc/campaign_serializers
 
 

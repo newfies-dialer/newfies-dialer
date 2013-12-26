@@ -211,15 +211,3 @@ Objects Description
 
 .. autoclass:: UserProfile
     :members:
-
-
-
-.. _database-design:
-
-Database Design
-===============
-
-The current database schema is shown below:
-
-.. image:: ../_static/images/model_newfies.png
-   :width: 1000

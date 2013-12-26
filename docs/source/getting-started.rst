@@ -71,30 +71,30 @@ application that is custom designed to provide the desired behaviour.
 Below are examples of some of the uses for Newfies-Dialer
 
 
-    * ``Telecasting``: Broadcast marketing or informational messages to customers and clients.
+    * **Telecasting**: Broadcast marketing or informational messages to customers and clients.
 
-    * ``Phone Polling, Surveys and Voting``: Ring large numbers of people and present
+    * **Phone Polling, Surveys and Voting**: Ring large numbers of people and present
       IVR options for either polling their opinions, interactive surveys, or taking
       their vote and record the results.
 
-    * ``Debt Control``: Customers can be automatically reminded at intervals that
+    * **Debt Control**: Customers can be automatically reminded at intervals that
       they owe money, and an IVR menu presented to talk to the finance department
       or passed to a credit card capture IVR to pay over the phone.
 
-    * ``Appointment reminders``: Doctors, Dentists, and other organisations that make
+    * **Appointment reminders**: Doctors, Dentists, and other organisations that make
       appointments for their clients can integrate Newfies-Dialer into their
       appointment systems to pass a message reminding them of an upcoming appointment.
 
-    * ``Dissemination of information via phone``: Newfies-Dialer was originally
+    * **Dissemination of information via phone**: Newfies-Dialer was originally
       designed to call large numbers of people and disseminate medical and health advice
       via the ubiquitous cellphone in 3rd world countries where often, literacy
       levels are low. On a local scale, it can be used to disseminate information
       about forthcoming community events.
 
-    * ``Mass Emergency broadcast``: Where there is a necessity to warn large numbers
+    * **Mass Emergency broadcast**: Where there is a necessity to warn large numbers
       of people in a short space of time, such as weather warnings.
 
-    * ``Subscription Reminders and Renewals``: Where a company sells an annual
+    * **Subscription Reminders and Renewals**: Where a company sells an annual
       subscription for a product or service, Newfies-Dialer can be configured to
       dial the customer, remind them that the subscription is due. a
 
@@ -105,36 +105,54 @@ Features
 --------
 
     +-----------------+----------------------------------------------------+
-    | Telephony PBX   | Based on leading open source Freeswitch, Asterisk  |
+    | Broadcasting    | Web-based SMS and Voice Broadcasting application.  |
     +-----------------+----------------------------------------------------+
     | Distributed     | Runs on one or more machines. Supports             |
     |                 | broker `clustering` and `HA` when used in          |
     |                 | combination with `RabbitMQ`.  You can set up new   |
-    |                 | workers without central configuration (e.g. use    |
-    |                 | your grandma's laptop to help if the queue is      |
-    |                 | temporarily congested).                            |
+    |                 | workers without central configuration.             |
     +-----------------+----------------------------------------------------+
-    | Concurrency     | Throttle Concurrent Calls                          |
+    | Concurrency     | Throttle Concurrent Calls.                         |
     +-----------------+----------------------------------------------------+
     | Scheduling      | Supports recurring tasks like cron, or specifying  |
     |                 | an exact date or countdown for when the task       |
     |                 | should be executed. Can re-try to the non connected|
-    |                 | numbers at a later time                            |
+    |                 | numbers at a later time.                           |
     +-----------------+----------------------------------------------------+
     | IVR support     | Accommodates multiple IVR scripts with options to  |
     |                 | connect the user to some other IVR/phone number on |
-    |                 | pressing a key                                     |
+    |                 | pressing a key.                                    |
     +-----------------+----------------------------------------------------+
-    | Web Interface   | Newfies can be managed via a Web interface.        |
+    | Web Interface   | Newfies-Dialer can be managed via a Web interface. |
     |                 | Realtime web-based reports for call details and    |
     |                 | current calls.                                     |
-    |                 | You can query status and results via URLs, enabling|
-    |                 | the ability  to poll task status using Ajax.       |
-    +-----------------+----------------------------------------------------+
-    | Error Emails    | Can be configured to send emails to the            |
-    |                 | administrator if a tasks fails.                    |
     +-----------------+----------------------------------------------------+
     | Import Contact  | Import contact details from a .csv file            |
+    +-----------------+----------------------------------------------------+
+    | Multi-tenancy   | It provies two different roles for end-user, staff |
+    |                 | and administrator. With Appointment reminder       |
+    |                 | module, it also provides Calendar Users.           |
+    +-----------------+----------------------------------------------------+
+    | RealTime Control| Control the Speed of campaigns in realtime, pause, |
+    |                 | Start and Stop button are also provided to control |
+    |                 | the campaigns                                      |
+    +-----------------+----------------------------------------------------+
+    | Surveys         | IVR designer application enable the easy creation  |
+    |                 | of survey application used. Survey report can be   |
+    |                 | consulted in real-time.                            |
+    +-----------------+----------------------------------------------------+
+    | Audio file      | Support multiple audio file formats : wav, mp3,    |
+    |                 | ogg, gsm, etc...                                   |
+    +-----------------+----------------------------------------------------+
+    | Text2Speech     | Support powerful text2speech engine : Flite,       |
+    |                 | Acapela & Cepstral. Acapela covers a wide range    |
+    |                 | languages.                                         |
+    +-----------------+----------------------------------------------------+
+    | DNC             | Support Do Not Call List. Several DNC lists can be |
+    |                 | managed per campaign and per users                 |
+    +-----------------+----------------------------------------------------+
+    | SMS             | SMS delivery, SMS Gateway support, SMS campaign.   |
+    |                 | For this module see the section addons on website  |
     +-----------------+----------------------------------------------------+
 
 
@@ -145,9 +163,6 @@ Extra Features
 
     +-----------------+----------------------------------------------------+
     | AMD             | Answer Machine Detection module is available.      |
-    |                 | For this module see the section addons on website  |
-    +-----------------+----------------------------------------------------+
-    | SMS             | SMS delivery, SMS Gateway support, SMS campaign.   |
     |                 | For this module see the section addons on website  |
     +-----------------+----------------------------------------------------+
 
@@ -162,12 +177,12 @@ Architecture
 
 * User selects contacts, phonebooks and campaigns, then chooses a voice application to use. The campaign is then launched
 
-* ``Newfies-Dialer`` spools the outbound calls to ``FreeSWITCH`` via ``ESL``.
+* **Newfies-Dialer** spools the outbound calls to **FreeSWITCH** via **ESL**.
 
-* ``FreeSWITCH`` dials the contact via the configured telephony gateways.
+* **FreeSWITCH** dials the contact via the configured telephony gateways.
 
-* Contact picks up the call, and the answer event is received in ``FreeSWITCH`` and passed back to our Lua IVR Application.
+* Contact picks up the call, and the answer event is received in **FreeSWITCH** and passed back to our Lua IVR Application.
 
-* ``Newfies-Dialer`` is notified that the call is answered, then renders the appropriate IVR.
+* **Newfies-Dialer** is notified that the call is answered, then renders the appropriate IVR.
 
-* The application is delivered to the contact by ``FreeSWITCH``.
+* The application is delivered to the contact by **FreeSWITCH**.

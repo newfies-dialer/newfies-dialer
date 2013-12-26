@@ -12,6 +12,11 @@ Contents:
 
     ./api-doc/alarm_request_serializers
     ./api-doc/alarm_serializers
+    ./api-doc/audiofile_serializers
+    ./api-doc/branching_template_serializers
+    ./api-doc/calendar_serializers
+    ./api-doc/calendar_setting_serializers
+    ./api-doc/calendar_user_profile_serializers
     ./api-doc/campaign_serializers
 
 

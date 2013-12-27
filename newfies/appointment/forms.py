@@ -21,6 +21,7 @@ from appointment.models.users import CalendarUserProfile, CalendarUser, \
 from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm
+from appointment.constants import EVENT_STATUS
 from appointment.function_def import get_calendar_user_id_list, \
     get_calendar_user_list, get_calendar_list, get_all_calendar_user_id_list
 from survey.models import Survey
@@ -246,7 +247,8 @@ class AlarmForm(ModelForm):
         list_event = []
         list_event.append((0, '---'))
         event_list = Event.objects.values_list(
-            'id', 'title').filter(calendar__user_id__in=calendar_user_list).order_by('id')
+            'id', 'title').filter(calendar__user_id__in=calendar_user_list,
+                                  status=EVENT_STATUS.PENDING).order_by('id')
         for l in event_list:
             list_event.append((l[0], l[1]))
         self.fields['event'].choices = list_event

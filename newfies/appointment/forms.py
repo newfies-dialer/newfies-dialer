@@ -24,6 +24,7 @@ from appointment.models.alarms import Alarm
 from appointment.constants import EVENT_STATUS
 from appointment.function_def import get_calendar_user_id_list, \
     get_calendar_user_list, get_calendar_list, get_all_calendar_user_id_list
+from agent.function_def import manager_list
 from survey.models import Survey
 from bootstrap3_datetime.widgets import DateTimePicker
 
@@ -60,6 +61,10 @@ class CalendarUserProfileForm(ModelForm):
 
     class Meta:
         model = CalendarUserProfile
+
+    def __init__(self, *args, **kwargs):
+        super(CalendarUserProfileForm, self).__init__(*args, **kwargs)
+        self.fields['manager'].choices = manager_list()
 
 
 class CalendarSettingForm(ModelForm):

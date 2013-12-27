@@ -13,7 +13,7 @@
 #
 
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from dnc.models import DNC, DNCContact
 from common.common_forms import Exportfile
@@ -25,8 +25,11 @@ class DNCForm(ModelForm):
 
     class Meta:
         model = DNC
-        fields = ['name']
+        fields = ['name', 'description']
         exclude = ('user',)
+        widgets = {
+            'description': Textarea(attrs={'cols': 26, 'rows': 3}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(DNCForm, self).__init__(*args, **kwargs)
@@ -36,10 +39,7 @@ class DNCForm(ModelForm):
 
 class DNCContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-    phone_number = forms.CharField(label=_('phone number'), required=False,
-                                   widget=forms.TextInput(attrs={'size': 15}))
-    # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
-    #                                     choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
+    phone_number = forms.IntegerField(label=_('phone number'), required=False)
     dnc = forms.ChoiceField(label=_('Do Not Call list').title(), required=False)
 
     def __init__(self, user, *args, **kwargs):

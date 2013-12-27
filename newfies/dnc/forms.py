@@ -40,7 +40,7 @@ class DNCForm(ModelForm):
 
 class DNCContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-    phone_number = forms.IntegerField(label=_('phone number'), required=False)
+    phone_number = forms.CharField(label=_('phone number'), required=False)
     dnc = forms.ChoiceField(label=_('Do Not Call list').title(), required=False)
 
     def __init__(self, user, *args, **kwargs):

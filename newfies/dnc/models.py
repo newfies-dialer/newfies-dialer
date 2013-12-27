@@ -70,8 +70,8 @@ class DNCContact(models.Model):
     **Name of DB table**: dnc_contact
     """
     dnc = models.ForeignKey(DNC, verbose_name=_("Do Not Call List"))
-    phone_number = models.CharField(max_length=120, db_index=True, null=True, blank=True,
-        verbose_name=_("phone number"))
+    phone_number = models.CharField(max_length=120, db_index=True,
+                                    verbose_name=_("phone number"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True,)

@@ -10,7 +10,7 @@ Appointment Module
     :depth: 2
 
 
-Starting from the version 2.10, Newfies-Dialer has been enhanced with an appointment module. At first Newfies-Dialer was designed to provide a powerful voice broadcasting and it efficiently outbound thousands and millions of calls via gateway to different audience. One of the major limitation of the voice broadcasting, it's impossible/hard to target a call to a specific contact at a *programmed time*. This is where the appointment module fill up the gap and allow to build outbound calls application depending on time-stamp.
+From version 2.10, Newfies-Dialer includes an appointments module supporting appointment reminders. Newfies-Dialer was originally designed to provide powerful voice broadcasting, making thousands or even millions of calls via gateways to different audiences. One of the major limitations of voice broadcasting was that it is difficult, or even impossible to target a call to a specific contact at a *programmed or preset time*. The appointments module addresses this limitation allowing calls to be sent at a preset time.
 
 .. image:: ../_static/images/appointment_module_screenshot.png
 
@@ -20,65 +20,65 @@ Starting from the version 2.10, Newfies-Dialer has been enhanced with an appoint
 Structure of the appointment module
 -----------------------------------
 
-The module have few components will we will describe in this section.
+The appointments module has the following components and are described in this section.
+
+A survey is created with the required messages and actions. Once the Calendar settings and users are configured, an event is created attached to a calendar, then an alarm is triggered by the Event and sent out via voice call, email or SMS. In the case of a Voice Call, the survey selected will be executed.
 
 
 **Calendar User**
 
-    The Calendar User is sub-user of the Newfies-Dialer User, calendar user will be your end-user which will need to set reminders/alarms.
-    For instance if you provide appointment reminder to doctor, the calendar user may be the doctor or the secretary.
-    A Calendar User have a certain amount of limitation which are configured via Calendar User Settings.
-
+    The Calendar-User is a sub-user of the Newfies-Dialer User. The Calendar-User will the customer who is creating the reminders or alarms. For instance, if you create a appointment reminders to a Doctor's surgery, then the calendar user may be an individual doctor or secretary. The rights of a Calendar-User can be configured via the Calendar-User's settings. Note that a Calendar-User does not log into the interface, alarms are created and configured via the Newfies-Dialer login.
 
 **Calendar**
 
-    Calendar are entity that help to regroup and collect events.
+    Calendar is an entity that helps to group and collect events.
 
 
 **Event**
 
-    Event, it's a thing that happen/occur at a certain date & time, an event is link to a Calendar. You can define the duration of an event (ie hour),  you can also by the mean of Rule configure occurence mechanism, for instance if an event is happening every day, every month, or event follow complex rules like repeating itself every week but only on Tuesday.
+    An Event sets the time, date and duration of when the alarms are to be sent out. An event is linked to a calendar. The Event also includes custom rules that can be set up to trigger an event every day, week or month, as well as create more complex rules such as; repeat every Tuesday at a given time. 
 
     TODO: add documentation on data fields (similar to additionals_data)
 
 
 **Rule**
 
-    Newfies-Dialer comes with a set of predefined rules which can be used for your event, you will find the Daily rule, which if applied to an event will make the occur every day.
-    Rule is based on the rrule python module. The rrule module offers a small, complete, and very fast, implementation of the recurrence rules documented in the iCalendar RFC : http://www.ietf.org/rfc/rfc2445.txt
+    Newfies-Dialer comes with a set of predefined rules which can be used for the events, e.g. the Daily rule, which, if applied to an event, will make the event recur every day.
+    
+    The Rule is based on the rrule python module. The rrule module offers a small, complete, and very fast implementation of the recurrence rules documented in the iCalendar RFC : http://www.ietf.org/rfc/rfc2445.txt
 
     More info about rrule: http://labix.org/python-dateutil#head-470fa22b2db72000d7abe698a5783a46b0731b57
 
 
-Event happens at a certain time and you can also program event to occur daily or follow occurence rules, now in order to get notification about event you have to create Alarms related to the event.
+Events happen at a specified time and you can also program the event to recur daily or follow recurring rules,  In order to get notified about an event it is necessary to create Alarms related to the event.
 
 
 **Alarm**
 
-    Alarm helps to notify about an occurring event, the notification use several different method, the currently supported ones are Call, SMS and Mail. Alarms have a large set of settings which offers a great flexibility.
+    An Alarm notifies by SMS, voice call or email that an event is occuring. Other methods could be added. Alarms have a number of settings which offer a great deal of flexibility.
 
 
 **Settings of Alarms**
 
-    - Method : Set the method to use for an Alarm (Call, SMS or Mail)
+    - Method : Set the method to use for an Alarm (Voice Call, SMS or email)
 
-    - Date start notice : Date to which you will start the alarm (this will generally be similar to the event date)
+    - Date start : Date and time to trigger the alarm which generally will be similar to the event date and time.
 
-    - Alarm Phone Number : Define to which phone number the alarm will be trigger
+    - Alarm Phone Number : Set the phone number to be called by the alarm.
 
-    - Alarm Email : Define to which email the alarm will be sent
+    - Alarm Email : Set the email address to send the alarm email.
 
-    - Daily start &  Daily stop : You can configure when alarm are allowed to occur during the day, for instance if you don't want alarm happening before 6am.
+    - Daily start &  Daily stop : Configure when alarms are allowed to triggered during the day, for instance, prevent alarms before 6AM and 10PM.
 
-    - Advance Notice : How much time before the alarm occur to you want to start the notification
+    - Advance Notice : How long before the alarm occurs to start the notification.
 
-    - Max Retry : For call method sometime you might not reach the person, so you with max retry define the amount of retry attempts you will do.
+    - Max Retry : Applies to a voice call, and sets the number of retries in the event of a failed call.
 
-    - Retry Delay : Time to wait between each call retry
+    - Retry Delay : Interval between each call retry
 
-    - Phone Number SMS Failure : In case the phone number wasn't reachable after max retry, we will trigger an SMS to this number
+    - Phone Number SMS Failure : In the case of a failed voice call, an SMS is triggered to this number
 
-    - URL Cancel / URL Confirm / Phone Number Transfer : Features that will be implemented in the future version
+    - URL Cancel / URL Confirm / Phone Number Transfer : A feature that will be implemented in a future version.
 
 
 **Alarm Result**
@@ -88,14 +88,12 @@ Event happens at a certain time and you can also program event to occur daily or
 
 **Alarm Requests**
 
-    Keep track of the alarms attempts, it's useful resources if you want to provide detailed logs.
+    Keeps track of the alarms attempts, it's a useful resource to provide detailed logs.
 
 
 **Calendar User Settings**
 
-    When you create a Calendar User, there is certainly a level of customization you will need to apply for customers but most of all ensure,
-    they are limited to use the Newfies-Dialer platform according to your rule.
-    So for each Calendar User you will be able to set settings allowing you to preconfigure callerid, timeout on call, AMD (if you have the AMD module), the gateways that will be used for Call and for SMS and also the IVR application that they will be authorized to use.
+    The Calendar Settings determine the Caller ID name and number to be delivered to the called party, the timeout and the voice and SMS gateway to use. There is also an option to set the AMD (if installed) settings.
 
 
 .. _appointment-models:
@@ -103,7 +101,7 @@ Event happens at a certain time and you can also program event to occur daily or
 Models description
 ------------------
 
-This diagram of the appointment models might help developers and integrators helps to understand the system.
+This diagram of the appointment models should help developers and integrators to understand the system.
 
 .. image:: ../_static/images/models/appointment.png
     :width: 700
@@ -122,31 +120,33 @@ User cases
 
 The appointment modules has been build with flexibility in mind, and we tried to cover several scenarios needed by different application/software willing to perform complex Appointment reminder application or Alarm system.
 
-You could build with this module software such:
+The Appointment Module has been built with flexibility in mind, trying to cover several scenarios required by different applications and software to perform complex appointment reminder applications or alarm systems.
+
+Modules you could build with the Newfies-Dialer Appointment Module may include:
 
 
 Wake up call alarm
 ~~~~~~~~~~~~~~~~~
 
-    Each of your calendar user will have their calendar in which they will create an wake up event, decide when it will be triggered, how many times, delay between retries, etc...
+    Each of the calendar users will have a calendar in which they create an wake up event, decide when the event will be triggered, how many times, delay between retries, etc...
 
-    The voice application will then play something like "Hello Mr Joe, it's 7am and it's time for you to wake up and get ready for work"
+    The voice application will then play something like "Good morning, it's 7am and it's time to wake up and get ready for work"
 
 
 Appointment Reminder
 ~~~~~~~~~~~~~~~~~~~~
 
-    In a common appointment reminder scenario, your user could be doctors with cabinet and they need to call their patient 24 hours before each appointment, they want to offer an application that will call their patient and say "Hello, you have an appointment tomorrow with Doctor {doc_name} at {apt_date}, please press 1 to confirm, press 2 to cancel or press 3 to reschedule"
+    In a common appointment reminder scenario, your user could be doctors surgery with a need to call their patient 24 hours before each appointment and offer an an IVR menu that will call their patient and say "Hello, you have an appointment tomorrow with Doctor {doc_name} at {apt_date}, please press 1 to confirm, press 2 to cancel or press 3 to reschedule"
 
-    When the user press any key during a Rating type of Node on the IVR application, this is considered as result and will be store to the alarm result field. If the patient press 2, you will see this in the result and could display this to the doctor, if the user press 3 you could decide to transfer the call to the secretary.
+    When the user presses any key during a Rating type of Node on the IVR application, this is considered as a result and will be stored in the alarm result field. If the patient presses 2, it will be seen in the results and could be displayed to the doctor's receptionist, if the user presses 3, the call could be transferred to reception to re-arrange the appointment.
 
-    Appointment module support Call, SMS and Mail, so you can decide to send a passive SMS as an extra reminder an hour before appointment.
+    The Appointment Module supports Voice Calls, SMS and email, so the system could be configured to send a passive SMS as an extra reminder one hour before the appointment.
 
 
 Calendar Alarm event
 ~~~~~~~~~~~~~~~~~~~~
 
-    Some users might want to simply remember important date/event, for instance for a meeting, to pickup the kid from music class, etc... each Calendar User can create as many Calendar as they want, for instance they could have a birthday calendar and a work calendar to not mix personal and professional event.
+    Some users might want to simply remember important dates and events, such as a meeting, birthday or to pickup their child from music class. Each Calendar User can create as many Calendars as they want, for instance they could have a personal calendar and a work calendar so as not to mix personal and professional events.
 
 
 .. _appointment-process-flow:
@@ -154,29 +154,29 @@ Calendar Alarm event
 Process flow
 ------------
 
-To be able to setup and receive alarm there is a process to follow, which we will described bellow:
+To be able to setup and receive alarm there is a process to follow and is described below:
 
-1) Create and Configure Voice Gateway and SMS gateway
+1) Create and Configure Voice Gateway and SMS gateway.
 
-    You should be able to do this via the admin panel:
+    This is done via the admin panel:
     http://127.0.0.1:8000/admin
 
-2) Create create a IVR application (Survey) that will be use and play to the user receiving the calls
+2) Create an IVR application (Survey) that will be played to the user receiving the calls
 
-    Go to the survey module and start creating your own application with several IVR nodes:
+    Go to the survey module and create an application with several IVR nodes:
     http://127.0.0.1:8000/module/survey/
 
-3) Seal a Survey, sealing a survey is important as it will ensure that if someone modify the Survey the sealed survey will not be modified and we can build accurate reporting on each survey nodes/
+3) Seal the Survey. This prevents the survey being modified and is important to ensure accurate and consistant reporting on each survey node.
 
-    There is a button in the Action column that will allow you to seal the survey:
+    There is a button in the Action column against the survey to seal the survey and prevent further editing:
     http://127.0.0.1:8000/module/survey/
 
-4) Create Calendar User Settings, define a callerID and configure the gateway you want to use
+4) Create Calendar User Settings, define a callerID and configure the gateway to use.
 
-    Add a new Calendar Settings here:
+    Add new Calendar Settings at:
     http://127.0.0.1:8000/module/calendar_setting/
 
-5) Create Calendar User, set credentials and permission for this user and assign them to a Calendar User Settings
+5) Create Calendar User, set credentials and permissions for this user and assign them to Calendar Setting.
 
     Create a user with a username & password:
     http://127.0.0.1:8000/module/calendar_user/
@@ -185,19 +185,19 @@ To be able to setup and receive alarm there is a process to follow, which we wil
 
     http://127.0.0.1:8000/module/calendar/
 
-7) Create Event, for instance an event happening today at 11am, define when the event start and finish, add an occurence rule if you want for instance the event happening every day.
+7) Create Event, for instance an event happening today at 11am, define when the event start and finish, add an recurring rule if the event is to recur.
 
     Create Event can be done by click on Add button :
     http://127.0.0.1:8000/module/event/
 
-8) Create Alarm, this will allow to receive notification when Events are occurring. To get started, let's create an alarm with Method Call, link it to the previous created event, et a date for the alarm and the phone number that will be notified, then configure the rest of the alarm settings to your taste.
+8) Create Alarm to receive notification when Events are happening. e.g. Create an alarm of type "Call", link it to the previously created event, add a date and time for the alarm and the phone number top be called, then configure the rest of the alarm settings as required.
 
     Create Alarm can be done by click on Add button :
     http://127.0.0.1:8000/module/alarm/
 
-9) Access result Alarmrequest.
+9) Access results of Alarm Requests.
 
-    You access to detailed logs of the Alarm happening by browsing the alarm request :
+    Access detailed logs of the Alarm by browsing to alarm request at :
     http://127.0.0.1:8000/admin/appointment/alarmrequest/
 
 
@@ -207,9 +207,9 @@ To be able to setup and receive alarm there is a process to follow, which we wil
 Work Flow with API
 ------------------
 
-One of the powerful features of the appointment module is his APIs, which will allow developers to build great idea for application on top of Newfies-Dialer.
+One of the most powerful features of The Appointment Module are the API's that allow developers to build an application on top of Newfies-Dialer or integrate Newfies-Dialer into third party software such as CRM systems.
 
-We will describe an example of work flow with APIs.
+Described below is an example of work flow with the API's.
 
 
 1) Create Calendar Setting
@@ -388,14 +388,14 @@ We will describe an example of work flow with APIs.
 
 
 
-6) Get list of child from an event
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+6) Get list of child events from a main event
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    Events, occurring in time, will have a tail of sub events linked to the parent event.
-    Usually the integrator using APIs will keep track of the parent event and at some stage might need to retrieve information about the
-    sub events.
+    Events, occurring over time, will have a tail of sub-events linked to the parent event.
+    Usually the systems integrator using API's will keep track of the parent event and at some stage may need to retrieve information about the
+    sub-events.
 
-    You will achieve this by using the API /get_list_child/
+    This is achieved by using the API /get_list_child/
 
 
     **CURL Usage**::
@@ -425,10 +425,10 @@ We will describe an example of work flow with APIs.
 7) Update the last child event status to Paused
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    In some scenario you might want to pause an alarm of being trigged, as an alarm is link to all occurence of an events created,
-    you don't need to update the status of the parent event neither all the child, you will need to update it for the last event only.
+    In some scenarios it may be necessary to pause an alarm being triggered. As an alarm is linked to all occurence of an event created,
+    it's not necessary to update the status of the parent event or all the child events, only the last event needs updated.
 
-    You will achieve this by using the API /update_last_child_status/
+    This is achieved by using the API /update_last_child_status/
 
 
     **CURL Usage**::
@@ -455,14 +455,12 @@ We will describe an example of work flow with APIs.
 8) Get detailed log from alarm request for a event
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-    In order to provide logs or stats to your customers/users, you may want to retrieve
-    information from our AlarmRequest for a given event.
+    In order to provide logs or stats to your customers/users, information can be retrieved from  the AlarmRequest for a given event.
 
-    The result is a nested JSON structure which will give you Event-ID with the Alarm-ID related to the event, plus
-    the list alarm-request-ID for each of those Alarms.
+    The result is a nested JSON structure which gives the Event-ID with the Alarm-ID related to the event, plus the list alarm-request-ID for each of those Alarms.
 
 
-    You will achieve this by using the API /get_nested_alarm_request/
+    This is achieved by using the API /get_nested_alarm_request/
 
 
     **CURL Usage**::
@@ -522,6 +520,6 @@ We will describe an example of work flow with APIs.
 API explorer for Appointment module
 -----------------------------------
 
-Some APIs can be explored and tested easily via the API-Explorer. This is certainly the best way to understand and read about all the APIs provided by Newfies-Dialer.
+Some APIs can be explored and tested easily via the API-Explorer. This is the best way to understand and read about all the APIs provided by Newfies-Dialer.
 
 To access the API-Explorer go to http://127.0.0.1:8000/rest-api/

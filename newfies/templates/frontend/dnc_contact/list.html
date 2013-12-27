@@ -6,7 +6,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "dnc"|upper %} {% trans "contacts"|title %} <small>{% trans "list, add and edit Do Not Call contacts"|capfirst %}</small></h1>
+    <h1>{% trans "DNC" %} {% trans "contacts"|title %} <small>{% trans "list, add and edit Do Not Call contacts"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -62,7 +62,7 @@ function delete_button()
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a></li>
                 {% endif %}
                 <li>
-                    <a href="export_view/">{% trans "dnc"|upper %} {% trans "export"|capfirst %}</a>
+                    <a href="export_view/">{% trans "DNC" %} {% trans "export"|capfirst %}</a>
                 </li>
             </ul>
         </div>
@@ -102,10 +102,10 @@ function delete_button()
                                 <td>{{ row.updated_date }}</td>
                                 <td>
                                     {% if perms.dnc.change_dnccontact %}
-                                        <a href="{{ row.id }}/" title="{% trans 'update dnc contact'|title %}"><i class="fa fa-edit"></i></a>
+                                        <a href="{{ row.id }}/" title="{% trans 'update DNC contact'|title %}"><i class="fa fa-edit"></i></a>
                                     {% endif %}
                                     {% if perms.dnc.delete_dnccontact %}
-                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete dnc contact'|title %}"><i class="fa fa-trash-o"></i></a>
+                                        <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete DNC contact'|title %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

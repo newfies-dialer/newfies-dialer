@@ -185,10 +185,10 @@ class Section_abstract(Sortable):
     # Question is the section label, this is used in the reporting
     question = models.CharField(max_length=500, blank=False,
                                 verbose_name=_("question"),
-                                help_text=_('example : hotel service rating'))
+                                help_text=_('Example: hotel service rating'))
     # Script will be used by TTS
     script = models.CharField(max_length=1000, null=True, blank=True,
-                              help_text=_('example : capture digits between 1 to 5, press pound key when done'))
+                              help_text=_('Example: Press a key between 1 to 5, press pound key when done or Hello {first_name} {last_name}, please press a key between 1 to 5'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("audio File"))
     retries = models.IntegerField(max_length=1, null=True, blank=True,

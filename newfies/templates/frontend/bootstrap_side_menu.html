@@ -20,7 +20,7 @@
             {% endif %}
             {% if perms.dnc.view_dnccontact %}
                 <a class="list-group-item {% ifcontains '/dnc_contact/' %}active{% endifcontains %}" href="/module/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts"|title %}</a>
-                <a class="list-group-item {% ifcontains '/dnc_contact_import/' %}active{% endifcontains %}" href="/module/dnc_contact_import/">{% trans "import"|title %} {% trans "dnc"|upper %} {% trans "contacts"|title %}</a>
+                <a class="list-group-item {% ifcontains '/dnc_contact_import/' %}active{% endifcontains %}" href="/module/dnc_contact_import/">{% trans "import"|title %} {% trans "DNC" %} {% trans "contacts"|title %}</a>
             {% endif %}
         {% endif %}
 

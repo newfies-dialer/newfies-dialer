@@ -13,13 +13,21 @@
 #
 from user_profile.models import Manager
 from agent.models import AgentProfile, Agent
+from appointment.function_def import get_all_calendar_user_id_list
+
+
+def agent_user_id_list():
+    agent_id_list = AgentProfile.objects.values_list('user_id', flat=True)
+    return agent_id_list
 
 
 def manager_list():
     """Return all managers of the system"""
     manager_list = []
-    list = Manager.objects.values_list('id', 'username') \
-        .filter(is_superuser=False, is_active=True).order_by('id')
+    agent_id_list = agent_user_id_list()
+    calendar_user_id_list = get_all_calendar_user_id_list()
+    list = Manager.objects.values_list('id', 'username').filter(is_staff=False, is_superuser=False)\
+        .exclude(id__in=agent_id_list).exclude(id__in=calendar_user_id_list).order_by('id')
     for l in list:
         manager_list.append((l[0], l[1]))
     return manager_list

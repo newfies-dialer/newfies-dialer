@@ -32,6 +32,8 @@ class DNC(models.Model):
     name = models.CharField(max_length=50, blank=False,
                             null=True, verbose_name=_("name"),
                             help_text=_("Enter a DNC list name"))
+    description = models.TextField(null=True, blank=True,
+                                   help_text=_("DNC notes"))
     user = models.ForeignKey('auth.User', related_name='DNC owner')
 
     created_date = models.DateTimeField(auto_now_add=True)

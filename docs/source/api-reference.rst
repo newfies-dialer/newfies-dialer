@@ -29,6 +29,13 @@ Contents:
     ./api-doc/phonebook_serializers
     ./api-doc/rule_serializers
     ./api-doc/section_template_serializers
+    ./api-doc/sms_campaign_serializers
+    ./api-doc/sms_gateway_serializers
+    ./api-doc/sms_template_serializers
+    ./api-doc/subscriber_list_serializers
+    ./api-doc/survey_serializers
+    ./api-doc/survey_template_serializers
+    ./api-doc/tier_serializers
 
 
 

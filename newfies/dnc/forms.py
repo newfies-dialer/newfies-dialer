@@ -13,8 +13,9 @@
 #
 
 from django import forms
-from django.forms import ModelForm
+from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
+from django.forms.util import ErrorList
 from dnc.models import DNC, DNCContact
 from common.common_forms import Exportfile
 from dialer_contact.forms import FileImport
@@ -25,8 +26,11 @@ class DNCForm(ModelForm):
 
     class Meta:
         model = DNC
-        fields = ['name']
+        fields = ['name', 'description']
         exclude = ('user',)
+        widgets = {
+            'description': Textarea(attrs={'cols': 26, 'rows': 3}),
+        }
 
     def __init__(self, *args, **kwargs):
         super(DNCForm, self).__init__(*args, **kwargs)
@@ -36,10 +40,7 @@ class DNCForm(ModelForm):
 
 class DNCContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-    phone_number = forms.CharField(label=_('phone number'), required=False,
-                                   widget=forms.TextInput(attrs={'size': 15}))
-    # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
-    #                                     choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
+    phone_number = forms.CharField(label=_('phone number'), required=False)
     dnc = forms.ChoiceField(label=_('Do Not Call list').title(), required=False)
 
     def __init__(self, user, *args, **kwargs):
@@ -56,6 +57,16 @@ class DNCContactSearchForm(forms.Form):
 
             self.fields['dnc'].choices = dnc_list_user
 
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number', None)
+        try:
+            int(phone_number)
+        except:
+            msg = _('Please enter a valid phone number')
+            self._errors['phone_number'] = ErrorList([msg])
+            del self.cleaned_data['phone_number']
+        return phone_number
+
 
 class DNCContactForm(ModelForm):
     """DNCContact ModelForm"""
@@ -70,8 +81,8 @@ class DNCContactForm(ModelForm):
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
-            self.fields['dnc'].choices = \
-                DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            self.fields['dnc'].choices = DNC.objects.values_list('id', 'name')\
+                .filter(user=user).order_by('id')
 
 
 def get_dnc_list(user):

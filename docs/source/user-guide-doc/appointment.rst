@@ -36,7 +36,7 @@ A survey is created with the required messages and actions. Once the Calendar se
 
 **Event**
 
-    An Event sets the time, date and duration of when the alarms are to be sent out. An event is linked to a calendar. The Event also includes custom rules that can be set up to trigger an event every day, week or month, as well as create more complex rules such as; repeat every Tuesday at a given time. 
+    An Event sets the time, date and duration of when the alarms are to be sent out. An event is linked to a calendar. The Event also includes custom rules that can be set up to trigger an event every day, week or month, as well as create more complex rules such as; repeat every Tuesday at a given time.
 
     TODO: add documentation on data fields (similar to additionals_data)
 
@@ -44,7 +44,7 @@ A survey is created with the required messages and actions. Once the Calendar se
 **Rule**
 
     Newfies-Dialer comes with a set of predefined rules which can be used for the events, e.g. the Daily rule, which, if applied to an event, will make the event recur every day.
-    
+
     The Rule is based on the rrule python module. The rrule module offers a small, complete, and very fast implementation of the recurrence rules documented in the iCalendar RFC : http://www.ietf.org/rfc/rfc2445.txt
 
     More info about rrule: http://labix.org/python-dateutil#head-470fa22b2db72000d7abe698a5783a46b0731b57
@@ -117,8 +117,6 @@ Explore the `appointment models`_.
 
 User cases
 ----------
-
-The appointment modules has been build with flexibility in mind, and we tried to cover several scenarios needed by different application/software willing to perform complex Appointment reminder application or Alarm system.
 
 The Appointment Module has been built with flexibility in mind, trying to cover several scenarios required by different applications and software to perform complex appointment reminder applications or alarm systems.
 

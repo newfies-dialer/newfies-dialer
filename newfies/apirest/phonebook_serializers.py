@@ -24,7 +24,7 @@ class PhonebookSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "user": "/rest-api/users/1/"}' http://localhost:8000/rest-api/phonebook/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "myphonebook"}' http://localhost:8000/rest-api/phonebook/
 
         Response::
 

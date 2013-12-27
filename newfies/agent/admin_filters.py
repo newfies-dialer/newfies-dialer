@@ -38,7 +38,8 @@ class ManagerFilter(SimpleListFilter):
         `self.value()`.
         """
         if self.value() is not None:
-            agent_id_list = AgentProfile.objects.values_list('user_id', flat=True).filter(manager_id=self.value())
+            agent_id_list = AgentProfile.objects.values_list('user_id', flat=True)\
+                .filter(manager_id=self.value())
             return queryset.filter(id__in=agent_id_list)
         else:
             return queryset

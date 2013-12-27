@@ -18,6 +18,7 @@ from agent.models import Agent, AgentProfile
 from agent.forms import AgentProfileForm
 from agent.admin_filters import ManagerFilter
 from appointment.function_def import get_all_calendar_user_id_list
+from user_profile.models import Manager
 
 
 class AgentProfileInline(admin.StackedInline):
@@ -36,7 +37,11 @@ class AgentAdmin(UserAdmin):
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)
         calendar_user_list = get_all_calendar_user_id_list()
-        qs = qs.filter(is_staff=False, is_superuser=False).exclude(id__in=calendar_user_list)
+        manager_id_list = Manager.objects.values_list('id', flat=True)\
+            .filter(is_staff=False, is_superuser=False, is_active=True)
+        qs = qs.filter(is_staff=False, is_superuser=False, is_active=True)\
+            .exclude(id__in=calendar_user_list)\
+            .exclude(id__in=manager_id_list)
         return qs
 
 admin.site.register(Agent, AgentAdmin)

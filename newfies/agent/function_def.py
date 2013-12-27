@@ -19,7 +19,7 @@ def manager_list():
     """Return all managers of the system"""
     manager_list = []
     list = Manager.objects.values_list('id', 'username') \
-        .filter(is_staff=True, is_superuser=False, is_active=True).order_by('id')
+        .filter(is_superuser=False, is_active=True).order_by('id')
     for l in list:
         manager_list.append((l[0], l[1]))
     return manager_list

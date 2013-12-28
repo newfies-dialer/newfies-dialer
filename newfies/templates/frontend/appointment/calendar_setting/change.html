@@ -22,7 +22,7 @@
         <div class="col-md-6">
             <div class="form-group {% if field.errors %}has-error{% endif %}">
             <div class="col-xs-8">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                 {{ field }}
                 {% if field.errors %}
                     <span class="help-inline">
@@ -43,7 +43,7 @@
         <div class="col-md-6">
             <div class="form-group {% if field.errors %}has-error{% endif %}">
             <div class="col-xs-8">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                 {{ field }}
                 {% if field.errors %}
                     <span class="help-inline">
@@ -65,7 +65,7 @@
                     <div class="btn-group" data-toggle="buttons">
                         {% get_fieldset voicemail as settings_fields from form %}
                         {% for field in settings_fields %}
-                            <label for="{{ field.auto_id }}">{{ field.label|title }}</label><br/>
+                            <label for="{{ field.auto_id }}">{{ field.label|wordcap }}</label><br/>
                             <div class="make-switch switch-small">
                             {{ field }}
                             </div>
@@ -81,7 +81,7 @@
                 <div class="col-md-6">
                     <div class="form-group {% if field.errors %}has-error{% endif %}">
                         <div class="col-xs-8">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                             {{ field }}
                             {% if field.errors %}
                                 <span class="help-inline">

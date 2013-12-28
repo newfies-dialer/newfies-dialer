@@ -27,10 +27,10 @@ class Alarm(models.Model):
                                          help_text=_("Seconds to start processing an alarm before the alarm date/time"))
     maxretry = models.IntegerField(null=True, blank=True, default=0,
                                    verbose_name=_('max retry'),
-                                   help_text=_("Amount of time to retry for this alarm"))
+                                   help_text=_("number of retries"))
     retry_delay = models.IntegerField(null=True, blank=True, default=0,
                                       verbose_name=_('retry delay'),
-                                      help_text=_("Time to wait between each alarm re-attempt"))
+                                      help_text=_("Seconds to wait between retries"))
     num_attempt = models.IntegerField(null=True, blank=True, default=0,
                                      verbose_name=_('number of attempts'))
     method = models.IntegerField(choices=list(ALARM_METHOD),

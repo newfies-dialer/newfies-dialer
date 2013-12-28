@@ -132,14 +132,14 @@
                 </div>
                 </fieldset>
                 <fieldset>
-                    <legend>{% trans "SMS settings"|title %}</legend>
+                    <legend>{% trans "SMS settings"|wordcap %}</legend>
                     <div class="row">
                         {% get_fieldset sms_gateway as campaign_settings_fields from form %}
                         {% for field in campaign_settings_fields %}
                         <div class="col-md-6">
                             <div class="form-group {% if field.errors %}has-error{% endif %}">
                                 <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                                     {{ field }}
                                     {% if field.errors %}
                                         <span class="help-inline">

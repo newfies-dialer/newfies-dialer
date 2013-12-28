@@ -16,7 +16,7 @@
          "count_in_use":null,
          "removeprefix":"",
          "gateway_retries":"",
-         "gateways":"sofia/internal/testgateway/",
+         "gateways":"sofia/gateway/myprovider/",
          "secondused":null,
          "originate_dial_string":"",
          "count_call":null,

@@ -35,7 +35,7 @@
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
                         <div class="col-xs-8">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                             {{ field }}
                             {% if field.errors %}
                                 <span class="help-inline">
@@ -62,7 +62,7 @@
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
                         <div class="col-xs-8">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                             {{ field }}
                             {% if field.errors %}
                                 <span class="help-inline">
@@ -89,7 +89,7 @@
                     <div class="col-md-6">
                         <div class="form-group {% if field.errors %}has-error{% endif %}">
                         <div class="col-xs-8">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                             {{ field }}
                             {% if field.errors %}
                                 <span class="help-inline">

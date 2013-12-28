@@ -120,17 +120,17 @@ def get_dnc_contact_count(request):
 @permission_required('dnc.delete_dnc', login_url='/')
 @login_required
 def dnc_del(request, object_id):
-    """Delete a dnc for a logged in user
+    """Delete a DNC for a logged in user
 
     **Attributes**:
 
-        * ``object_id`` - Selected dnc object
-        * ``object_list`` - Selected dnc objects
+        * ``object_id`` - Selected DNC object
+        * ``object_list`` - Selected DNC objects
 
     **Logic Description**:
 
-        * Delete contacts from a contact list belonging to a dnc list.
-        * Delete selected the dnc from the dnc list
+        * Delete contacts from a contact list belonging to a DNC list.
+        * Delete the selected the selected DNC list
     """
     if int(object_id) != 0:
         # When object_id is not 0
@@ -162,7 +162,7 @@ def dnc_del(request, object_id):
                 .extra(where=['id IN (%s)' % values])
             if dnc_list:
                 request.session["msg"] =\
-                    _('%(count)s dnc list(s) are deleted.')\
+                    _('%(count)s DNC list(s) are deleted.')\
                     % {'count': dnc_list.count()}
                 dnc_list.delete()
         except:
@@ -499,7 +499,7 @@ def dnc_contact_import(request):
                 try:
                     int(row[0])
                 except ValueError:
-                    error_msg = _("Some of the imported data were invalid!")
+                    error_msg = _("Some of the imported data was invalid!")
                     type_error_import_list.append(row)
                     continue
 
@@ -525,12 +525,12 @@ def dnc_contact_import(request):
 
         #check if there is contact imported
         if contact_cnt > 0:
-            msg = _('%(contact_cnt)s dnc contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
+            msg = _('%(contact_cnt)s DNC contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
                 % {'contact_cnt': contact_cnt,
                    'total_rows': total_rows}
 
         if dup_contact_cnt > 0:
-            error_msg = _('Duplicate dnc contact(s) %(dup_contact_cnt)s are not inserted!!') \
+            error_msg = _('Duplicate DNC contact(s) %(dup_contact_cnt)s are not inserted!!') \
                 % {'dup_contact_cnt': dup_contact_cnt}
 
     data = RequestContext(request, {
@@ -548,7 +548,7 @@ def dnc_contact_import(request):
 
 @login_required
 def dnc_contact_export(request):
-    """Export CSV file of dnc contact"""
+    """Export CSV file of DNC contact"""
     format = request.GET['format']
     dnc_list_id = ''
     if request.GET.get('dnc_list_id'):

@@ -67,7 +67,7 @@ class CalendarSetting(models.Model):
                                related_name="calendar_survey")
     aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False,
                                      verbose_name=_("a-leg gateway"),
-                                     help_text=_("select gateway to use to be used"))
+                                     help_text=_("select gateway to use"))
     sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"),
                                     null=False, blank=False,
                                     related_name="sms_gateway",

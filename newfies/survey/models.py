@@ -188,7 +188,7 @@ class Section_abstract(Sortable):
                                 help_text=_('Example: hotel service rating'))
     # Script will be used by TTS
     script = models.CharField(max_length=1000, null=True, blank=True,
-                              help_text=_('Example: Press a key between 1 to 5, press pound key when done or Hello {first_name} {last_name}, please press a key between 1 to 5'))
+        help_text=_('Example: Press a key between 1 to 5, press pound key when done or Hello {first_name} {last_name}, please press a key between 1 to 5'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("audio File"))
     retries = models.IntegerField(max_length=1, null=True, blank=True,

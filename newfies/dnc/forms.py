@@ -101,7 +101,7 @@ def get_dnc_list(user):
 
 class DNCContact_fileImport(FileImport):
     """Admin Form : Import CSV file with DNC list"""
-    dnc_list = forms.ChoiceField(label=_("DNC list"),
+    dnc_list = forms.ChoiceField(label=_("DNC List"),
                                  required=True,
                                  help_text=_("select DNC list"))
 

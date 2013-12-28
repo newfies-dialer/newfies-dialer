@@ -30,7 +30,7 @@ from survey.views import survey_list, survey_add, \
     section_script_change, section_branch_change, \
     section_branch_add, section_delete, section_script_play, \
     sealed_survey_view, survey_campaign_result, import_survey, export_survey,\
-    frozen_survey_list, freeze_survey
+    sealed_survey_list, freeze_survey
 #from survey.ajax import section_sort
 
 post_save.disconnect(post_save_add_script, sender=Section_template)
@@ -88,7 +88,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
                 'branching.json',
                 ]
 
-    def test_frozen_survey_view_list(self):
+    def test_sealed_survey_view_list(self):
         """Test Function survey view list"""
         response = self.client.get('/sealed_survey/')
         self.assertEqual(response.status_code, 200)
@@ -97,7 +97,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         request = self.factory.get('/sealed_survey/')
         request.user = self.user
         request.session = {}
-        response = frozen_survey_list(request)
+        response = sealed_survey_list(request)
         self.assertEqual(response.status_code, 200)
 
     def test_survey_view_list(self):

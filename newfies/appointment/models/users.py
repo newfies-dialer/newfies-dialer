@@ -63,7 +63,7 @@ class CalendarSetting(models.Model):
                              help_text=_("select manager"),
                              related_name="manager_user")
     survey = models.ForeignKey(Survey, null=False, blank=False,
-                               verbose_name=_('frozen survey'),
+                               verbose_name=_('sealed survey'),
                                related_name="calendar_survey")
     aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False,
                                      verbose_name=_("a-leg gateway"),

@@ -131,13 +131,15 @@ class Contact(Model):
     def replace_tag(self, text):
         """
         Replace tag by contact values.
-        This function will replace all the following tags :
+        This function will replace all the following tags:
+
             {last_name}
             {first_name}
             {email}
             {country}
             {city}
             {phone_number}
+
         as well as, get additional_vars, and replace json tags
         """
         text = str(text).lower()

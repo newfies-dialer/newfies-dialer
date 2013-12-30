@@ -3,10 +3,7 @@
 Javascript Files
 ================
 
-
 * `jQuery`_ is a fast and concise JavaScript Library that simplifies HTML document traversing, event handling, animating, and Ajax interactions for rapid web development. jQuery is designed to change the way that you write JavaScript.
-
-* `Flot`_ is a pure JavaScript plotting library for jQuery, with a focus on simple usage, attractive looks and interactive features.
 
 * `Bootstrap`_ is sleek, intuitive, and powerful front-end framework for faster and easier web development.
 
@@ -16,8 +13,6 @@ Javascript Files
 
 
 .. _`jQuery`: http://www.jquery.com/
-
-.. _`Flot`: http://www.flotcharts.org/
 
 .. _`Bootstrap`: http://www.twitter.github.com/bootstrap/
 

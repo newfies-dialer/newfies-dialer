@@ -6,7 +6,7 @@ Model Test Case
 
 .. automodule:: dialer_contact.tests
 
-.. _DialerContactModel:
+.. _DialerContactModel-model:
 
 .. autoclass:: DialerContactModel
     :members:
@@ -14,7 +14,7 @@ Model Test Case
 
 .. automodule:: dialer_campaign.tests
 
-.. _DialerCampaignModel:
+.. _DialerCampaignModel-model:
 
 .. autoclass:: DialerCampaignModel
     :members:
@@ -22,7 +22,7 @@ Model Test Case
 
 .. automodule:: dialer_cdr.tests
 
-.. _DialerCdrModel:
+.. _DialerCdrModel-model:
 
 .. autoclass:: DialerCdrModel
     :members:
@@ -30,7 +30,7 @@ Model Test Case
 
 .. automodule:: dialer_settings.tests
 
-.. _DialerSettingModel:
+.. _DialerSettingModel-model:
 
 .. autoclass:: DialerSettingModel
     :members:
@@ -38,23 +38,15 @@ Model Test Case
 
 .. automodule:: dialer_gateway.tests
 
-.. _GatewayModel:
+.. _GatewayModel-model:
 
 .. autoclass:: GatewayModel
     :members:
 
 
-.. automodule:: voice_app.tests
-
-.. _VoiceAppModel:
-
-.. autoclass:: VoiceAppModel
-    :members:
-
-
 .. automodule:: survey.tests
 
-.. _SurveyModel:
+.. _SurveyModel-model:
 
 .. autoclass:: SurveyModel
     :members:

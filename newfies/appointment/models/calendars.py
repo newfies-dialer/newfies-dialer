@@ -10,7 +10,7 @@ import pytz
 
 
 class Calendar(models.Model):
-    '''
+    """
     This is for grouping events so that batch relations can be made to all
     events.  An example would be a project calendar.
 
@@ -18,31 +18,7 @@ class Calendar(models.Model):
     events: all the events contained within the calendar.
     >>> calendar = Calendar(name = 'Test Calendar')
     >>> calendar.save()
-    >>> data = {
-    ...         'title': 'Recent Event',
-    ...         'start': datetime.datetime(2008, 1, 5, 0, 0),
-    ...         'end': datetime.datetime(2008, 1, 10, 0, 0)
-    ...        }
-    >>> event = Event(**data)
-    >>> event.save()
-    >>> calendar.events.add(event)
-    >>> data = {
-    ...         'title': 'Upcoming Event',
-    ...         'start': datetime.datetime(2008, 1, 1, 0, 0),
-    ...         'end': datetime.datetime(2008, 1, 4, 0, 0)
-    ...        }
-    >>> event = Event(**data)
-    >>> event.save()
-    >>> calendar.events.add(event)
-    >>> data = {
-    ...         'title': 'Current Event',
-    ...         'start': datetime.datetime(2008, 1, 3),
-    ...         'end': datetime.datetime(2008, 1, 6)
-    ...        }
-    >>> event = Event(**data)
-    >>> event.save()
-    >>> calendar.events.add(event)
-    '''
+    """
     name = models.CharField(verbose_name=_('name'), max_length=200)
     user = models.ForeignKey(CalendarUser, blank=True, null=True,
                              verbose_name=_("calendar user"),

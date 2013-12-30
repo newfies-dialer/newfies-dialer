@@ -10,11 +10,3 @@ Newfies Signals
 ------------------------------
 
   .. autofunction:: post_save_add_contact
-
-
-.. _post-save-update-campaign-status-signal:
-
-:class:`post_update_campaign_status`
-------------------------------------
-
-  .. autofunction:: post_update_campaign_status

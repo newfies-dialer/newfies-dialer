@@ -168,7 +168,6 @@ Newfies-Dialer Views
   .. autofunction:: survey_report
 
 
-
 .. automodule:: dialer_audio.views
 
 .. _audio_list:
@@ -346,3 +345,79 @@ Newfies-Dialer Views
 ---------------------
 
   .. autofunction:: alarm_change
+
+
+.. automodule:: sms_module.views
+
+.. _sms_campaign_list:
+
+:class:`sms_campaign_list`
+--------------------------
+
+  .. autofunction:: sms_campaign_list
+
+.. _sms_campaign_add:
+
+:class:`sms_campaign_add`
+-------------------------
+
+  .. autofunction:: sms_campaign_add
+
+
+.. _sms_campaign_del:
+
+:class:`sms_campaign_del`
+-------------------------
+
+  .. autofunction:: sms_campaign_del
+
+
+.. _sms_campaign_duplicate:
+
+:class:`sms_campaign_duplicate`
+-------------------------------
+
+  .. autofunction:: sms_campaign_duplicate
+
+.. _sms_campaign_text_message:
+
+:class:`sms_campaign_text_message`
+----------------------------------
+
+  .. autofunction:: sms_campaign_text_message
+
+.. _update_sms_campaign_status_cust:
+
+:class:`update_sms_campaign_status_cust`
+----------------------------------------
+
+  .. autofunction:: update_sms_campaign_status_cust
+
+
+.. _sms_campaign_change:
+
+:class:`sms_campaign_change`
+----------------------------
+
+  .. autofunction:: sms_campaign_change
+
+.. _sms_dashboard:
+
+:class:`sms_dashboard`
+----------------------
+
+  .. autofunction:: sms_dashboard
+
+.. _sms_report:
+
+:class:`sms_report`
+-------------------
+
+  .. autofunction:: sms_report
+
+.. _export_sms_report:
+
+:class:`export_sms_report`
+--------------------------
+
+  .. autofunction:: export_sms_report

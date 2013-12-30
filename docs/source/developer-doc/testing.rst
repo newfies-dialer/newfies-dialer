@@ -49,6 +49,8 @@ How to run test
 
     $ python manage.py test appointment
 
+    $ python manage.py test sms_module
+
 
 .. toctree::
     :maxdepth: 2

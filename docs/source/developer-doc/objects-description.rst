@@ -187,3 +187,63 @@ Objects Description
 
 .. autoclass:: UserProfile
     :members:
+
+.. automodule:: appointment.models.users
+
+.. _CalendarSetting-model:
+
+:class:`CalendarSetting`
+------------------------
+
+.. autoclass:: CalendarSetting
+    :members:
+
+
+.. _CalendarUser-model:
+
+:class:`CalendarUser`
+---------------------
+
+.. autoclass:: CalendarUser
+    :members:
+
+
+.. _CalendarUserProfile-model:
+
+:class:`CalendarUserProfile`
+----------------------------
+
+.. autoclass:: CalendarUserProfile
+    :members:
+
+
+.. automodule:: appointment.models.calendars
+
+.. _Calendar-model:
+
+:class:`Calendar`
+-----------------
+
+.. autoclass:: Calendar
+    :members:
+
+
+.. automodule:: appointment.models.events
+
+.. _Event-model:
+
+:class:`Event`
+--------------
+
+.. autoclass:: Event
+    :members:
+
+.. automodule:: appointment.models.alarms
+
+.. _Alarm-model:
+
+:class:`Alarm`
+--------------
+
+.. autoclass:: Alarm
+    :members:

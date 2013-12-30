@@ -62,8 +62,7 @@ tells Django where to find your HTML template files. ::
     'dialer_cdr',
     'dialer_settings',
     'user_profile',
-    'voip_server',
-    'voip_app',
+    'survey',
     ...
     )
 

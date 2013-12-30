@@ -84,6 +84,16 @@ class DNCContactForm(ModelForm):
             self.fields['dnc'].choices = DNC.objects.values_list('id', 'name')\
                 .filter(user=user).order_by('id')
 
+    def clean_phone_number(self):
+        phone_number = self.cleaned_data.get('phone_number', None)
+        try:
+            int(phone_number)
+        except:
+            msg = _('Please enter a valid phone number')
+            self._errors['phone_number'] = ErrorList([msg])
+            del self.cleaned_data['phone_number']
+        return phone_number
+
 
 def get_dnc_list(user):
     """get dnc list for ``dnc_list`` field which is used by DNCContact_fileImport

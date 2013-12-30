@@ -47,8 +47,7 @@ How to run test
 
     $ python manage.py test user_profile
 
-    $ python manage.py test voice_app
-
+    $ python manage.py test appointment
 
 
 .. toctree::

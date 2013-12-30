@@ -19,8 +19,7 @@ from frontend.forms import LoginForm, DashboardForm
 from frontend.views import customer_dashboard, index, \
     login_view, logout_view
 from frontend.constants import SEARCH_TYPE
-
-from newfies.urls import custom_404_view, custom_500_view
+from newfies_dialer.urls import custom_404_view, custom_500_view
 
 
 class FrontendView(BaseAuthenticatedClient):

@@ -16,7 +16,7 @@ Contents:
     ./api-doc/branching_template_serializers
     ./api-doc/calendar_serializers
     ./api-doc/calendar_setting_serializers
-    ./api-doc/calendar_user_erializers
+    ./api-doc/calendar_user_serializers
     ./api-doc/calendar_user_profile_serializers
     ./api-doc/campaign_serializers
     ./api-doc/contact_serializers
@@ -27,6 +27,7 @@ Contents:
     ./api-doc/gateway_serializers
     ./api-doc/mail_template_serializers
     ./api-doc/phonebook_serializers
+    ./api-doc/queue_serializers
     ./api-doc/rule_serializers
     ./api-doc/section_template_serializers
     ./api-doc/sms_campaign_serializers

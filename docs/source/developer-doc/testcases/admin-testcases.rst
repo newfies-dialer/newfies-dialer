@@ -63,12 +63,3 @@ Admin Interface Test Case
 
 .. autoclass:: SurveyAdminView
     :members:
-
-
-.. automodule:: voice_app.tests
-
-
-.. _VoiceAppAdminView-admin:
-
-.. autoclass:: VoiceAppAdminView
-    :members:

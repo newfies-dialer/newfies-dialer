@@ -27,8 +27,6 @@ The newfies directory::
     |-- dialer_gateway     - This defines the trunk to deliver the VoIP Calls
     |   `-- fixtures
     |-- dialer_settings    - This defines sets of settings to apply on user
-    |-- voice_app          - This defines application that are defined on the platform
-    |   `-- fixtures
     |-- survey             - The code for survey module
     |   `-- fixtures
     |-- frontend           - The code for dashboard, forgot password

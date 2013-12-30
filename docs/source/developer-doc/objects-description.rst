@@ -73,30 +73,6 @@ Objects Description
     :members:
 
 
-.. automodule:: voice_app.models
-
-.. _VoiceApp-model:
-
-:class:`VoiceApp_abstract`
---------------------------
-
-.. autoclass:: VoiceApp_abstract
-    :members:
-
-
-:class:`VoiceApp_template`
---------------------------
-
-.. autoclass:: VoiceApp_template
-    :members:
-
-:class:`VoiceApp`
------------------
-
-.. autoclass:: VoiceApp
-    :members:
-
-
 .. automodule:: dialer_gateway.models
 
 .. _Gateway-model:

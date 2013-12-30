@@ -105,6 +105,7 @@ For example, let's add this in "Additional Parameters (JSON)":
 
 When you create a survey with a node that plays TTS, you can easily replace the key-values in the text.
 Text example:
+
     "We are calling you on behalf of {company_name}, you receive a bonus of {bonus} {currency}"
 
 

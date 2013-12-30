@@ -124,7 +124,7 @@ Modules you could build with the Newfies-Dialer Appointment Module may include:
 
 
 Wake up call alarm
-~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~
 
     Each of the calendar users will have a calendar in which they create an wake up event, decide when the event will be triggered, how many times, delay between retries, etc...
 

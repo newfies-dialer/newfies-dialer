@@ -76,16 +76,3 @@ Customer Interface Test Case
 
 .. autoclass:: SurveyCustomerView
     :members:
-
-
-
-.. automodule:: voice_app.tests
-
-
-.. _VoiceAppCustomerView-customer:
-
-.. autoclass:: VoiceAppCustomerView
-    :members:
-
-
-

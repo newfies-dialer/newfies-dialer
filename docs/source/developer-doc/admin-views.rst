@@ -84,17 +84,6 @@ Newfies-Dialer Admin Views
     :members:
 
 
-.. automodule:: voice_app.admin
-
-.. _voicaappadmin:
-
-:class:`VoiceAppAdmin`
-----------------------
-
-.. autoclass:: VoiceAppAdmin
-    :members:
-
-
 .. automodule:: survey.admin
 
 .. _surveyappadmin:

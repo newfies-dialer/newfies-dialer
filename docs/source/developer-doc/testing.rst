@@ -58,15 +58,3 @@ How to run test
     ./testcases/admin-testcases
     ./testcases/customer-testcases
     ./testcases/model-testcases
-
-
-.. automodule:: frontend.tests
-
------------------------------------
-Customer Interface Forgot Test Case
------------------------------------
-
-.. _FrontendForgotPassword:
-
-.. autoclass:: FrontendForgotPassword
-    :members:

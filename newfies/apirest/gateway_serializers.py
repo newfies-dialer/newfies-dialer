@@ -74,22 +74,6 @@ class GatewaySerializer(serializers.HyperlinkedModelSerializer):
                     }
                 ]
             }
-
-    **Update**:
-
-        CURL Usage::
-
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"name": "my gateway"}' http://localhost:8000/rest-api/gateway/%gateway-id%/
-
-        Response::
-
-            HTTP/1.0 200 NO CONTENT
-            Date: Fri, 23 Sep 2011 06:46:12 GMT
-            Server: WSGIServer/0.1 Python/2.7.1+
-            Vary: Accept-Language, Cookie
-            Content-Length: 0
-            Content-Type: text/html; charset=utf-8
-            Content-Language: en-us
     """
 
     class Meta:

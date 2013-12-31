@@ -208,7 +208,7 @@ INSTALLED_APPS = (
     'dateutil',
     #'pagination',
     'linaro_django_pagination',
-    'memcache_status',
+    #'memcache_status',
     'country_dialcode',
     'common',
     'dialer_contact',

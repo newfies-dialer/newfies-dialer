@@ -14,7 +14,7 @@
 
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
-from django_countries import CountryField
+from django_countries.fields import CountryField
 from common.intermediate_model_base_class import Model
 from dialer_contact.constants import CONTACT_STATUS
 import jsonfield

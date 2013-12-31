@@ -36,10 +36,31 @@ from common.only_one_task import only_one
 from common_functions import debug_query
 from uuid import uuid1
 from time import sleep
+import ESL as ESL
 
 logger = get_task_logger(__name__)
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
+
+
+def dial_out(dial_command):
+    reload(ESL)
+    c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
+    c.connected()
+    ev = c.api("bgapi", str(dial_command))
+    c.disconnect()
+    if ev:
+        result = ev.serialize()
+        logger.debug(result)
+        pos = result.find('Job-UUID:')
+        if pos:
+            request_uuid = result[pos + 10:pos + 46]
+        else:
+            request_uuid = 'error'
+    else:
+        request_uuid = 'error'
+    return request_uuid
+
 
 
 def check_retrycall_completion(callrequest):
@@ -582,24 +603,9 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
             logger.warn('dial_command : %s' % dial_command)
 
-            import ESL
-            c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
-            c.connected()
-            ev = c.api("bgapi", str(dial_command))
-            c.disconnect()
+            request_uuid = dial_out(dial_command)
 
             debug_query(14)
-
-            if ev:
-                result = ev.serialize()
-                logger.debug(result)
-                pos = result.find('Job-UUID:')
-                if pos:
-                    request_uuid = result[pos + 10:pos + 46]
-                else:
-                    request_uuid = 'error'
-            else:
-                request_uuid = 'error'
 
             if request_uuid and len(request_uuid) > 0 and request_uuid[:5] == 'error':
                 outbound_failure = True

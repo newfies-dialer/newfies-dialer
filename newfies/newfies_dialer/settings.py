@@ -211,10 +211,12 @@ INSTALLED_APPS = (
     #'memcache_status',
     'country_dialcode',
     'common',
+    'sms',
+    'sms_module',
     'dialer_contact',
-    'dialer_cdr',
     'dialer_audio',
     'dialer_campaign',
+    'dialer_cdr',
     'dialer_gateway',
     'dialer_settings',
     'user_profile',
@@ -233,8 +235,6 @@ INSTALLED_APPS = (
     'corsheaders',
     'djangobower',
     'activelink',
-    'sms',
-    'sms_module',
     'bootstrap3_datetime',
 )
 

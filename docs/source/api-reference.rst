@@ -46,6 +46,7 @@ Testing console of APIs:
 
 
 .. image:: /_static/images/api-playground/list_of_api.png
+    :width: 700
 
 
 To test individual api, click on one api from above api list and you will get like

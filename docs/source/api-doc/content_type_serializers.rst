@@ -1,6 +1,6 @@
 .. automodule:: apirest.content_type_serializers
 
-.. _ContactSerializer-model:
+.. _ContentTypeSerializer-model:
 
 `ContentTypeSerializer`
 -----------------------

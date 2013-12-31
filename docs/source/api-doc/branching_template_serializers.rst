@@ -3,7 +3,7 @@
 .. _BranchingTemplateSerializer-model:
 
 `BranchingTemplateSerializer`
-----------------------------
+-----------------------------
 
 .. autoclass:: BranchingTemplateSerializer
     :members:

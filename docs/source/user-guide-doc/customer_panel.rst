@@ -174,6 +174,7 @@ linked with contacts from the campaign list, click on campaign to update.
     * http://localhost:8000/dialer_campaign/campaign/
 
 .. image:: ../_static/images/customer/campaign_list.png
+    :width: 800
 
 
 To Add/Update a Campaign for a logged in user
@@ -184,6 +185,7 @@ To Add/Update a Campaign for a logged in user
     * http://localhost:8000/dialer_campaign/campaign/1/
 
 .. image:: ../_static/images/customer/update_campaign.png
+    :width: 800
 
 
 
@@ -195,6 +197,7 @@ Dashboard
 Dashboard gives the information anbout campaign & its related call records
 
 .. image:: ../_static/images/customer/customer_dashboard.png
+    :width: 800
 
 
 .. _settings-user:

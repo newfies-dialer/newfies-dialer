@@ -38,7 +38,16 @@ A survey is created with the required messages and actions. Once the Calendar se
 
     An Event sets the time, date and duration of when the alarms are to be sent out. An event is linked to a calendar. The Event also includes custom rules that can be set up to trigger an event every day, week or month, as well as create more complex rules such as; repeat every Tuesday at a given time.
 
-    TODO: add documentation on data fields (similar to additionals_data)
+    A data field is provided and used to pass extra variable
+    You can pass custom variables easily by using the "Additional Parameters (JSON)" field which allow you to add custom key-values that will be later used and replaced by the Text2Speech processor.
+
+    For example let's set "Additional Parameters (JSON)" to::
+
+        {"doctor_name": "Herbert", "apt_date" : "10 January at 5pm"}
+
+    Then when you create a survey with a node that plays TTS, you can easily replace the key-values in the text::
+
+        We are calling you on behalf of {doctor_name}, we want to remind you of your appointment at {apt_date}
 
 
 **Rule**
@@ -83,7 +92,15 @@ Events happen at a specified time and you can also program the event to recur da
 
 **Alarm Result**
 
-    TODO: Explain how alarm result works!
+    We provided a mechanism to store Result into Alarm, let's imagine the situation when you are calling all your clients at the beginning of the week and want to tell them about their upcoming appointment and ask them if they want to confirm, cancel or reschedule.
+
+    For this scenario, you will build a Survey application with those 3 options::
+
+        - Press 1 to Confirm,
+        - Press 2 to Cancel
+        - or Press 4 to Reschedule your appointment
+
+    You will simply need to create a **Rating Question**, as this type of section will behave differently on the appointment module, the result of this question will be directly stored into the result of the Alarm. This will be very practically for future reporting and for instance if the doctor need to visualize all the Event that need to be cancelled or rescheduled.
 
 
 **Alarm Requests**

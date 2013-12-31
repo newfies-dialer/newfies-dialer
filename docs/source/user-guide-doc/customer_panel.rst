@@ -22,6 +22,7 @@ Login Page
 Index page for the customer interface after successful login with user credentials
 
 .. image:: ../_static/images/customer_screenshot.png
+    :width: 750
 
 
 .. _customer-phonebook-access:

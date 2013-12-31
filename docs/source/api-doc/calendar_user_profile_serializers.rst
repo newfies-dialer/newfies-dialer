@@ -1,6 +1,6 @@
 .. automodule:: apirest.calendar_user_profile_serializers
 
-.. _CalendarSettingSerializer-model:
+.. _CalendarUserProfileSerializer-model:
 
 `CalendarUserProfileSerializer`
 -------------------------------

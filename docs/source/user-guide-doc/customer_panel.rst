@@ -38,6 +38,7 @@ description. Also from the phonebook list, click on the phonebook to update.
     * http://localhost:8000/dialer_campaign/phonebook/
 
 .. image:: ../_static/images/customer/phonebook_list.png
+    :width: 700
 
 
 To Add/Update a Phonebook for a logged in user
@@ -87,6 +88,7 @@ user's phonebook.
     * http://localhost:8000/dialer_campaign/contact_import/
 
 .. image:: ../_static/images/customer/import_contact.png
+    :width: 700
 
 
 

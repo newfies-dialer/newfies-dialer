@@ -27,7 +27,9 @@ A survey is created with the required messages and actions. Once the Calendar se
 
 **Calendar User**
 
-    The Calendar-User is a sub-user of the Newfies-Dialer User. The Calendar-User will the customer who is creating the reminders or alarms. For instance, if you create a appointment reminders to a Doctor's surgery, then the calendar user may be an individual doctor or secretary. The rights of a Calendar-User can be configured via the Calendar-User's settings. Note that a Calendar-User does not log into the interface, alarms are created and configured via the Newfies-Dialer login.
+    The Calendar-User is a sub-user of the Newfies-Dialer User. The Calendar-User will the customer who is creating the reminders or alarms. For instance, if you create a appointment reminders to a Doctor's surgery, then the calendar user may be an individual doctor or secretary. The rights of a Calendar-User can be configured via the Calendar-User's settings.
+
+    Note that a Calendar-User does not log into the interface, alarms are created and configured via the Newfies-Dialer login.
 
 **Calendar**
 
@@ -69,25 +71,25 @@ Events happen at a specified time and you can also program the event to recur da
 
 **Settings of Alarms**
 
-    - Method : Set the method to use for an Alarm (Voice Call, SMS or email)
+    - Method: Set the method to use for an Alarm (Voice Call, SMS or email)
 
-    - Date start : Date and time to trigger the alarm which generally will be similar to the event date and time.
+    - Date Start: Date and time to trigger the alarm which generally will be similar to the event date and time.
 
-    - Alarm Phone Number : Set the phone number to be called by the alarm.
+    - Alarm Phone Number: Set the phone number to be called by the alarm.
 
-    - Alarm Email : Set the email address to send the alarm email.
+    - Alarm Email: Set the email address to send the alarm email.
 
-    - Daily start &  Daily stop : Configure when alarms are allowed to triggered during the day, for instance, prevent alarms before 6AM and 10PM.
+    - Daily Start &  Daily Stop: Configure when alarms are allowed to triggered during the day, for instance, prevent alarms before 6AM and 10PM.
 
-    - Advance Notice : How long before the alarm occurs to start the notification.
+    - Advance Notice: How long before the alarm occurs to start the notification.
 
-    - Max Retry : Applies to a voice call, and sets the number of retries in the event of a failed call.
+    - Max Retry: Applies to a voice call, and sets the number of retries in the event of a failed call.
 
-    - Retry Delay : Interval between each call retry
+    - Retry Delay: Interval between each call retry
 
-    - Phone Number SMS Failure : In the case of a failed voice call, an SMS is triggered to this number
+    - Phone Number SMS Failure: In the case of a failed voice call, an SMS is triggered to this number
 
-    - URL Cancel / URL Confirm / Phone Number Transfer : A feature that will be implemented in a future version.
+    - URL Cancel / URL Confirm / Phone Number Transfer: A feature that will be implemented in a future version.
 
 
 **Alarm Result**

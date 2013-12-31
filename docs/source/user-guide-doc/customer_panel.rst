@@ -216,3 +216,31 @@ The settings page provides a number of functions:
 
 .. image:: ../_static/images/customer/account_setting.png
 
+.. _customer-sms-campaign-access:
+
+SMSCampaign
+-----------
+
+The sms campaign list will be displayed from the following URL. You can add a new sms campaign for
+the logged in user by clicking ``Add sms campaign``. When adding a sms campaign, it is important
+to add the campaign's start and end dates with time & week-day exceptions. Select
+the sms gateway through which smses will be routed & phonebook(s) that are
+linked with contacts from the sms campaign list, click on sms campaign to update.
+
+**URL**:
+
+    * http://localhost:8000/sms_campaign/
+
+.. image:: ../_static/images/customer/sms_campaign_list.png
+    :width: 800
+
+
+To Add/Update a SMS Campaign for a logged in user
+
+**URL**:
+
+    * http://localhost:8000/sms_campaign/add/
+    * http://localhost:8000/sms_campaign/1/
+
+.. image:: ../_static/images/customer/update_sms_campaign.png
+    :width: 800

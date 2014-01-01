@@ -20,22 +20,6 @@ from dialer_gateway.models import Gateway
 
 class GatewaySerializer(serializers.HyperlinkedModelSerializer):
     """
-    **Create**:
-
-        CURL Usage::
-
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "My_Gateway", "description": "", "addprefix": "", "removeprefix": "", "gateways": "user/,user", "gateway_codecs": "PCMA,PCMU", "gateway_timeouts": "10,10", "gateway_retries": "2,1"}' http://localhost:8000/rest-api/gateway/
-
-        Response::
-
-            HTTP/1.0 201 CREATED
-            Date: Fri, 14 Jun 2013 09:52:27 GMT
-            Server: WSGIServer/0.1 Python/2.7.3
-            Vary: Accept, Accept-Language, Cookie
-            Content-Type: application/json; charset=utf-8
-            Content-Language: en-us
-            Allow: GET, POST, HEAD, OPTIONS
-
     **Read**:
 
         CURL Usage::

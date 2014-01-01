@@ -100,8 +100,9 @@ class CampaignForm(ModelForm):
             self.fields['ds_user'].initial = user
             list_gw = []
             dnc_list = []
-
-            self.fields['phonebook'].choices = get_phonebook_list(user)
+            phonebook_list = get_phonebook_list(user)
+            self.fields['phonebook'].choices = phonebook_list
+            self.fields['phonebook'].initial = str(phonebook_list[0][0])
 
             list = user.get_profile().userprofile_gateway.all()
             gw_list = ((l.id, l.name) for l in list)

@@ -79,7 +79,9 @@ class SMSCampaignForm(ModelForm):
 
         if user:
             self.fields['ds_user'].initial = user
-            self.fields['phonebook'].choices = get_phonebook_list(user)
+            phonebook_list = get_phonebook_list(user)
+            self.fields['phonebook'].choices = phonebook_list
+            self.fields['phonebook'].initial = str(phonebook_list[0][0])
 
     def clean(self):
         cleaned_data = self.cleaned_data

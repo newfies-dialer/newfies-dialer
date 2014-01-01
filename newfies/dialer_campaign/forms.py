@@ -161,6 +161,12 @@ class CampaignForm(ModelForm):
         callmaxduration = cleaned_data.get('callmaxduration')
         maxretry = cleaned_data.get('maxretry')
         calltimeout = cleaned_data.get('calltimeout')
+        phonebook = cleaned_data.get('phonebook')
+
+        if not phonebook:
+            msg = _('you must select at least one phonebook')
+            self._errors['phonebook'] = ErrorList([msg])
+            del self.cleaned_data['phonebook']
 
         dialer_set = user_dialer_setting(User.objects.get(username=ds_user))
         if dialer_set:

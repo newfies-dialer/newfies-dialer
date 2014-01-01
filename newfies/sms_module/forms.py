@@ -86,6 +86,12 @@ class SMSCampaignForm(ModelForm):
         ds_user = cleaned_data.get("ds_user")
         frequency = cleaned_data.get('frequency')
         maxretry = cleaned_data.get('maxretry')
+        phonebook = cleaned_data.get('phonebook')
+
+        if not phonebook:
+            msg = _('you must select at least one phonebook')
+            self._errors['phonebook'] = ErrorList([msg])
+            del self.cleaned_data['phonebook']
 
         sms_dialer_set = user_dialer_setting(ds_user)
         if sms_dialer_set:

@@ -100,8 +100,9 @@ class CampaignForm(ModelForm):
             self.fields['ds_user'].initial = user
             list_gw = []
             dnc_list = []
-
-            self.fields['phonebook'].choices = get_phonebook_list(user)
+            phonebook_list = get_phonebook_list(user)
+            self.fields['phonebook'].choices = phonebook_list
+            self.fields['phonebook'].initial = str(phonebook_list[0][0])
 
             list = user.get_profile().userprofile_gateway.all()
             gw_list = ((l.id, l.name) for l in list)
@@ -161,6 +162,12 @@ class CampaignForm(ModelForm):
         callmaxduration = cleaned_data.get('callmaxduration')
         maxretry = cleaned_data.get('maxretry')
         calltimeout = cleaned_data.get('calltimeout')
+        phonebook = cleaned_data.get('phonebook')
+
+        if not phonebook:
+            msg = _('you must select at least one phonebook')
+            self._errors['phonebook'] = ErrorList([msg])
+            del self.cleaned_data['phonebook']
 
         dialer_set = user_dialer_setting(User.objects.get(username=ds_user))
         if dialer_set:

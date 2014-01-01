@@ -73,7 +73,7 @@
                                         <label class="control-label" for="{{ form.type.auto_id }}">{{ form.type.label|capfirst }}</label>
                                         {{ form.type }}
                                         {% if form.type.errors %}
-                                            <span class="help-inline">
+                                            <span class="help-block">
                                                 {{ form.type.errors|removetags:"ul li"|safe }}
                                             </span>
                                         {% endif %}
@@ -94,7 +94,7 @@
                                             <label class="control-label" for="{{ form.retries.auto_id }}">{{ form.retries.label|capfirst }}</label>
                                             {{ form.retries }}
                                             {% if form.retries.errors %}
-                                                <span class="help-inline">
+                                                <span class="help-block">
                                                     {{ form.retries.errors|removetags:"ul li"|safe }}
                                                 </span>
                                             {% endif %}
@@ -110,7 +110,7 @@
                                             <label class="control-label" for="{{ form.timeout.auto_id }}">{{ form.timeout.label|capfirst }}</label>
                                             {{ form.timeout }}
                                             {% if form.timeout.errors %}
-                                                <span class="help-inline">
+                                                <span class="help-block">
                                                     {{ form.timeout.errors|removetags:"ul li"|safe }}
                                                 </span>
                                             {% endif %}
@@ -137,7 +137,7 @@
                                         </label>
                                         {{ form.question }}
                                         {% if form.question.errors %}
-                                            <span class="help-inline">
+                                            <span class="help-block">
                                                 {{ form.question.errors|removetags:"ul li"|safe }}
                                             </span>
                                         {% endif %}
@@ -156,7 +156,7 @@
                                         {{ form.audiofile }}&nbsp;
                                         <a href="#" id="helpover" rel="popover" data-placement="top" data-content="{% blocktrans %}If an audio file is not selected, the script will be played using Text-To-Speech{% endblocktrans %}" data-original-title="{% trans "information"|title %}"><i class="icon-info-sign"></i></a>
                                         {% if form.audiofile.errors %}
-                                            <span class="help-inline">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
+                                            <span class="help-block">{{ form.audiofile.errors|removetags:"ul li"|safe }}</span>
                                         {% endif %}
                                         <span class="help-block">
                                         {{ form.audiofile.help_text|capfirst }}
@@ -200,7 +200,7 @@
 
                                             {{ form.rating_laps }}
                                             {% if form.rating_laps.errors %}
-                                                <span class="help-inline">{{ form.rating_laps.errors|removetags:"ul li"|safe }}</span>
+                                                <span class="help-block">{{ form.rating_laps.errors|removetags:"ul li"|safe }}</span>
                                             {% endif %}
                                             <span class="help-block">
                                             {{ form.rating_laps.help_text|capfirst }}
@@ -232,7 +232,7 @@
                                             <label class="control-label" for="{{ form.number_digits.auto_id }}">{{ form.number_digits.label|capfirst }}</label>
                                             {{ form.number_digits }}
                                             {% if form.number_digits.errors %}
-                                                <span class="help-inline">
+                                                <span class="help-block">
                                                     {{ form.number_digits.errors|removetags:"ul li"|safe }}
                                                 </span>
                                             {% endif %}
@@ -249,7 +249,7 @@
                                             <label class="control-label" for="{{ form.min_number.auto_id }}"> {{ form.min_number.label|capfirst }}</label>
                                             {{ form.min_number }}
                                             {% if form.min_number.errors %}
-                                                <span class="help-inline">{{ form.min_number.errors|removetags:"ul li"|safe }}</span>
+                                                <span class="help-block">{{ form.min_number.errors|removetags:"ul li"|safe }}</span>
                                             {% endif %}
                                             <span class="help-block">{{ form.min_number.help_text|capfirst|safe }} </span>
                                         </div>
@@ -262,7 +262,7 @@
                                             <label class="control-label" for="{{ form.max_number.auto_id }}"> {{ form.max_number.label|capfirst }}</label>
                                             {{ form.max_number }}
                                             {% if form.max_number.errors %}
-                                                <span class="help-inline">{{ form.max_number.errors|removetags:"ul li"|safe }}</span>
+                                                <span class="help-block">{{ form.max_number.errors|removetags:"ul li"|safe }}</span>
                                             {% endif %}
                                             <span class="help-block">{{ form.max_number.help_text|capfirst|safe }} </span>
                                         </div>
@@ -281,7 +281,7 @@
 
                                             {{ form.phonenumber }}
                                             {% if form.phonenumber.errors %}
-                                                <span class="help-inline">{{ form.phonenumber.errors|removetags:"ul li"|safe }}</span>
+                                                <span class="help-block">{{ form.phonenumber.errors|removetags:"ul li"|safe }}</span>
                                             {% endif %}
                                             <span class="help-block">
                                             {{ form.phonenumber.help_text|capfirst }}
@@ -301,7 +301,7 @@
                                             <label class="control-label" for="{{ form.conference.auto_id }}">{{ form.conference.label|capfirst }}</label>
                                             {{ form.conference }}
                                             {% if form.conference.errors %}
-                                                <span class="help-inline">
+                                                <span class="help-block">
                                                     {{ form.conference.errors|removetags:"ul li"|safe }}
                                                 </span>
                                             {% endif %}
@@ -324,7 +324,7 @@
                                             <label class="control-label" for="{{ form.sms_text.auto_id }}">{{ form.sms_text.label|capfirst }}</label>
                                             {{ form.sms_text }}
                                             {% if form.sms_text.errors %}
-                                                <span class="help-inline">
+                                                <span class="help-block">
                                                     {{ form.sms_text.errors|removetags:"ul li"|safe }}
                                                 </span>
                                             {% endif %}
@@ -360,7 +360,7 @@
                                             <label class="control-label" for="{{ form.invalid_audiofile.auto_id }}">{{ form.invalid_audiofile.label|capfirst }}</label>
                                             {{ form.invalid_audiofile }}
                                             {% if form.invalid_audiofile.errors %}
-                                                <span class="help-inline">{{ form.invalid_audiofile.errors|removetags:"ul li"|safe }}</span>
+                                                <span class="help-block">{{ form.invalid_audiofile.errors|removetags:"ul li"|safe }}</span>
                                             {% endif %}
                                             <span class="help-block">{{ form.invalid_audiofile.help_text|capfirst|safe }} </span>
                                         </div>

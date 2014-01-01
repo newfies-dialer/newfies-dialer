@@ -1,7 +1,7 @@
 {% extends "frontend/master.html" %}
 {% load i18n dajaxice_templatetags common_tags survey_tags %}
 
-{% block extra_files %}    
+{% block extra_files %}
     {% include "frontend/survey/survey_change_header.html" %}
     {% include "common_audiofield.html" %}
 {% endblock %}
@@ -31,7 +31,7 @@
                 <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
                 {{ field }}
                 {% if field.errors %}
-                    <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                    <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
                 {% endif %}
                 <span class="help-block">{{ field.help_text|capfirst }} </span>
             </div>
@@ -377,7 +377,7 @@
             </button>
         {% endif %}
         </div>
-        <div class="col-md-6 text-right">            
+        <div class="col-md-6 text-right">
             <button type="submit" id="update" class="btn btn-success" value="{% trans 'close survey'|title %}" onclick="javascript:document.getElementById('update_form').submit();"><i class="fa fa-edit"></i> {% trans "close survey"|title %}
             </button>
         </div>

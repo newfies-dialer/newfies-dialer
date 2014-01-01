@@ -13,7 +13,7 @@
                     <label class="control-label" for="{{ form.dnc_list.auto_id }}">{{ form.dnc_list.label|title }}</label>
                     {{ form.dnc_list }}
                     {% if form.dnc_list.errors %}
-                        <span class="help-inline">
+                        <span class="help-block">
                             {{ form.dnc_list.errors|removetags:"ul li"|safe }}
                         </span>
                     {% endif %}

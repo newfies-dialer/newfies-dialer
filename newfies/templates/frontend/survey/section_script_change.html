@@ -61,7 +61,7 @@
                                     <label class="control-label" for="{{ form.script.auto_id }}">{{ form.script.label|title }}</label>
                                     {{ form.script }}
                                     {% if form.script.errors %}
-                                        <span class="help-inline">
+                                        <span class="help-block">
                                             {{ form.script.errors|removetags:"ul li"|safe }}
                                         </span>
                                     {% endif %}

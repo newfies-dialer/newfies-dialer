@@ -19,7 +19,7 @@
             <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
             {{ field }}
             {% if field.errors %}
-                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
             {% endif %}
             <span class="help-block">{{ field.help_text|capfirst }} </span>
         </div>

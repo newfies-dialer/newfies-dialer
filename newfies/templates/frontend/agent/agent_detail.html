@@ -28,7 +28,7 @@
                     </div>
                     <div class="span4">{{ field }}
                         {% if field.errors %}
-                            <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                            <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
                         {% endif %}
                         <span class="help-block">{{ field.help_text|capfirst }} </span>
                     </div>
@@ -44,7 +44,7 @@
                     </div>
                     <div class="span4">{{ field }}
                         {% if field.errors %}
-                            <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
+                            <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
                         {% endif %}
                         <span class="help-block">{{ field.help_text|capfirst }} </span>
                     </div>

@@ -38,7 +38,7 @@
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                             {{ field }}
                             {% if field.errors %}
-                                <span class="help-inline">
+                                <span class="help-block">
                                     {{ field.errors|removetags:"ul li"|safe }}
                                 </span>
                             {% endif %}
@@ -65,7 +65,7 @@
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                             {{ field }}
                             {% if field.errors %}
-                                <span class="help-inline">
+                                <span class="help-block">
                                     {{ field.errors|removetags:"ul li"|safe }}
                                 </span>
                             {% endif %}
@@ -92,7 +92,7 @@
                             <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                             {{ field }}
                             {% if field.errors %}
-                                <span class="help-inline">
+                                <span class="help-block">
                                     {{ field.errors|removetags:"ul li"|safe }}
                                 </span>
                             {% endif %}

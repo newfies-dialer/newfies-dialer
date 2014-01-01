@@ -14,8 +14,8 @@ all optional dependencies which are needed for your Project/Application.
 
 To get started with Newfies-Dialer you must have the following installed:
 
-- python >= 2.4 (programming language)
-- Apache / http server with WSGI modules
+- python >= 2.7 (programming language)
+- HTTP server with WSGI modules (Apache, Nginx)
 - Django Framework >= 1.6.1 (Python based Web framework)
 - Celery >= 3.0 (Asynchronous task queue/job queue based on distributed message passing)
 - MySQL-python >= 1.2.3 (MySQL for python language)
@@ -24,9 +24,9 @@ To get started with Newfies-Dialer you must have the following installed:
 - anyjson >= 0.3 (Loads the fastest JSON module)
 - django-celery >= 3.1.1 (Celery integration for Django)
 - django-extensions >= 1.0.3 (Collection of global custom management extensions for Django)
-- django-jsonfield >= 0.8.12 (Reusable django field that can use inside models)
+- django-jsonfield >= 0.9.12 (Reusable django field that can use inside models)
 - django-pagination >= 1.0.7 (Utilities for creating robust pagination tools throughout a django application)
-- django-picklefield >= 0.3.0 (Implementation of a pickled object field)
+- django-picklefield >= 0.3.1 (Implementation of a pickled object field)
 - django-threaded-multihost >= 1.4-0 (Provides multi-host utilities to Django projects)
 - django-urlauth = 0.1.8 (Allows to build links with authentication effect )
 - django-uuidfield >= 0.4 (Provides a UUIDField for your Django models)

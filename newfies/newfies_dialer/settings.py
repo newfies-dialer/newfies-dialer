@@ -422,6 +422,27 @@ CELERY_QUEUES = {
     },
 }
 
+from kombu import Queue
+
+CELERY_DEFAULT_QUEUE = 'default'
+#Define list of Queues and their routing keys
+CELERY_QUEUES = (
+    Queue('default', routing_key='task.#'),
+    Queue('sms_tasks', routing_key='sms_module.#'),
+    Queue('appointment', routing_key='appointment.#'),
+)
+CELERY_DEFAULT_EXCHANGE = 'tasks'
+CELERY_DEFAULT_EXCHANGE_TYPE = 'topic'
+CELERY_DEFAULT_ROUTING_KEY = 'task.default'
+
+# python manage.py celeryd -EB -l info --purge --queue=sms_tasks
+# Define tasks and which queue they will use with their routing key
+CELERY_ROUTES = {
+    'sms_module.tasks.sms_campaign_running': {
+        'queue': 'sms_tasks',
+        'routing_key': 'sms_module.sms_campaign_running',
+    },
+}
 
 """
 from datetime import timedelta

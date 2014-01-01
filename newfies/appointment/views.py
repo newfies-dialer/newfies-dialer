@@ -19,9 +19,6 @@ from django.http import HttpResponseRedirect, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm
-#from django.contrib.auth.models import Permission
-#from django.views.decorators.csrf import csrf_exempt
 from appointment.models.calendars import Calendar
 from appointment.models.events import Event
 from appointment.models.alarms import Alarm
@@ -39,6 +36,8 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import ceil_strdate, getvar, \
     get_pagination_vars, unset_session_var
 from datetime import datetime
+from django.utils.timezone import utc
+
 
 redirect_url_to_calendar_user_list = '/module/calendar_user/'
 redirect_url_to_calendar_setting_list = '/module/calendar_setting/'
@@ -605,7 +604,7 @@ def event_list(request):
 
         * List all events which belong to the logged in user.
     """
-    today = datetime.now()
+    today = datetime.utcnow().replace(tzinfo=utc)
     form = EventSearchForm(request.user,
                            initial={'start': today.strftime('%Y-%m-%d %H:%M:%S')})
     sort_col_field_list = ['id', 'start', 'end', 'title',

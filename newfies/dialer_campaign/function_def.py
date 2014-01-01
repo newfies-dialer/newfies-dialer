@@ -187,10 +187,11 @@ def date_range(start, end, q):
     """Date  Range
 
     >>> from datetime import datetime
+    >>> from django.utils.timezone import utc
 
-    >>> s_date = datetime(2012, 07, 11, 0, 0, 0, 0)
+    >>> s_date = datetime(2012, 07, 11, 0, 0, 0, 0).replace(tzinfo=utc)
 
-    >>> e_date = datetime(2012, 07, 12, 23, 59, 59, 99999)
+    >>> e_date = datetime(2012, 07, 12, 23, 59, 59, 99999).replace(tzinfo=utc)
 
     >>> date_range(s_date, e_date, 2)
     [datetime.datetime(2012, 7, 11, 0, 0), datetime.datetime(2012, 7, 12, 0, 0)]

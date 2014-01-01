@@ -20,6 +20,7 @@ from models import SMSCampaign
 #from dialer_setting.models import DialerSetting
 from constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR
 from datetime import datetime
+from django.utils.timezone import utc
 
 
 def field_list(name, user=None):
@@ -125,11 +126,11 @@ def sms_record_common_fun(request):
     if request.POST.get('from_date'):
         from_date = request.POST.get('from_date')
         start_date = datetime(int(from_date[0:4]), int(from_date[5:7]),
-            int(from_date[8:10]), 0, 0, 0, 0)
+            int(from_date[8:10]), 0, 0, 0, 0).replace(tzinfo=utc)
     if request.POST.get('to_date'):
         to_date = request.POST.get('to_date')
         end_date = datetime(int(to_date[0:4]), int(to_date[5:7]),
-            int(to_date[8:10]), 23, 59, 59, 999999)
+            int(to_date[8:10]), 23, 59, 59, 999999).replace(tzinfo=utc)
 
     # Assign form field value to local variable
     status = variable_value(request, 'status')
@@ -141,12 +142,14 @@ def sms_record_common_fun(request):
         if request.session.get('from_date'):
             from_date = request.session['from_date']
             start_date = datetime(
-                int(from_date[0:4]), int(from_date[5:7]), int(from_date[8:10]), 0, 0, 0, 0)
+                int(from_date[0:4]), int(from_date[5:7]), int(from_date[8:10]),
+                0, 0, 0, 0).replace(tzinfo=utc)
 
         if request.session.get('to_date'):
             to_date = request.session['to_date']
             end_date = datetime(
-                int(to_date[0:4]), int(to_date[5:7]), int(to_date[8:10]), 23, 59, 59, 999999)
+                int(to_date[0:4]), int(to_date[5:7]), int(to_date[8:10]),
+                23, 59, 59, 999999).replace(tzinfo=utc)
 
         if request.session.get('status'):
             status = request.session['status']
@@ -170,10 +173,9 @@ def sms_record_common_fun(request):
         kwargs['sms_campaign'] = smscampaign
 
     if len(kwargs) == 0:
-        tday = datetime.today()
-        kwargs['send_date__gte'] = datetime(tday.year,
-                                            tday.month,
-                                            tday.day, 0, 0, 0, 0)
+        tday = datetime.utcnow().replace(tzinfo=utc)
+        kwargs['send_date__gte'] = datetime(tday.year, tday.month, tday.day,
+            0, 0, 0, 0).replace(tzinfo=utc)
     return kwargs
 
 

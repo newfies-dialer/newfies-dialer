@@ -24,6 +24,7 @@ from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
 from constants import SMS_SUBSCRIBER_STATUS, SMS_CAMPAIGN_STATUS
 from dialer_campaign.function_def import user_dialer_setting
 from datetime import datetime, timedelta
+from django.utils.timezone import utc
 from math import ceil
 
 logger = get_task_logger(__name__)
@@ -79,7 +80,7 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
         )
 
         obj_subscriber.message = msg_obj
-        obj_subscriber.last_attempt = datetime.now()
+        obj_subscriber.last_attempt = datetime.utcnow().replace(tzinfo=utc)
         obj_subscriber.save()
 
         # Send sms
@@ -151,7 +152,7 @@ def check_sms_campaign_pendingcall(sms_campaign_id):
 
         #Todo Check if it's a good practice / implement a PID algorithm
         second_towait = ceil(count * time_to_wait)
-        launch_date = datetime.now() + timedelta(seconds=second_towait)
+        launch_date = datetime.utcnow().replace(tzinfo=utc) + timedelta(seconds=second_towait)
 
         logger.warning("Init SMS in %s at %s" % (str(second_towait), launch_date.strftime("%b %d %Y %I:%M:%S")))
 
@@ -181,7 +182,7 @@ class spool_sms_nocampaign(PeriodicTask):
         logger = self.get_logger(**kwargs)
         logger.warning("TASK :: Check spool_sms_nocampaign")
 
-        #start_from = datetime.now()
+        #start_from = datetime.utcnow().replace(tzinfo=utc)
         #list_sms = SMSMessage.objects.filter(delivery_date__lte=start_from, status='Unsent', sms_campaign__isnull=True)
         list_sms = SMSMessage.objects.filter(status='Unsent', sms_campaign__isnull=True)
         logger.warning("TASK :: Check spool_sms_nocampaign -> COUNT SMS (%d)" % list_sms.count())
@@ -435,7 +436,7 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
                         SendMessage.delay(msg_obj.id, subscriber.sms_campaign.sms_gateway_id)
 
                         subscriber.message = msg_obj
-                        subscriber.last_attempt = datetime.now()
+                        subscriber.last_attempt = datetime.utcnow().replace(tzinfo=utc)
                         subscriber.count_attempt += 1
                         subscriber.save()
 

@@ -20,7 +20,6 @@ from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from dateutil.relativedelta import relativedelta
 from dialer_campaign.constants import SUBSCRIBER_STATUS, \
     CAMPAIGN_STATUS, AMD_BEHAVIOR
 from dialer_contact.constants import CONTACT_STATUS
@@ -32,6 +31,8 @@ from sms.models import Gateway as SMS_Gateway
 from dnc.models import DNC
 from agent.models import Agent
 from datetime import datetime
+from django.utils.timezone import utc
+from dateutil.relativedelta import relativedelta
 from common.intermediate_model_base_class import Model
 from common.common_functions import get_unique_code
 import jsonfield
@@ -49,13 +50,11 @@ class CampaignManager(models.Manager):
         the expiry date, the daily start/stop time and days of the week"""
         kwargs = {}
         kwargs['status'] = 1
-        tday = datetime.now()
+        tday = datetime.utcnow().replace(tzinfo=utc)
         kwargs['startingdate__lte'] = datetime(tday.year, tday.month, tday.day,
-                                               tday.hour, tday.minute,
-                                               tday.second, tday.microsecond)
+            tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
         kwargs['expirationdate__gte'] = datetime(tday.year, tday.month, tday.day,
-                                                 tday.hour, tday.minute,
-                                                 tday.second, tday.microsecond)
+            tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
         s_time = "%s:%s:%s" % (
             str(tday.hour), str(tday.minute), str(tday.second))
@@ -74,7 +73,7 @@ class CampaignManager(models.Manager):
         based on the expiry date but status is not 'END'
         """
         kwargs = {}
-        kwargs['expirationdate__lte'] = datetime.now()
+        kwargs['expirationdate__lte'] = datetime.utcnow().replace(tzinfo=utc)
         return Campaign.objects.filter(**kwargs).exclude(status=CAMPAIGN_STATUS.END)
 
 
@@ -182,9 +181,9 @@ class Campaign(Model):
                                    verbose_name=_("Caller Name"),
                                    help_text=_("outbound Caller Name"))
     #General Starting & Stopping date
-    startingdate = models.DateTimeField(default=(lambda: datetime.now()),
+    startingdate = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc)),
                                         verbose_name=_('start'))
-    expirationdate = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(days=+1)),
+    expirationdate = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)),
                                           verbose_name=_('finish'))
     #Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00',

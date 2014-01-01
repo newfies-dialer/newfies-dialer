@@ -20,7 +20,8 @@ from sms_module.models import SMSMessage, SMSCampaign
 from random import choice
 from uuid import uuid1
 import random
-import datetime
+from datetime import datetime, timedelta
+from django.utils.timezone import utc
 
 
 MESSAGE_STATUSES = ['Unsent', 'Sent', 'Delivered', 'Failed', 'No_Route', 'Unauthorized']
@@ -52,13 +53,13 @@ def create_sms(smscampaign_id, quantity):
     delta_days = random.randint(0, day_delta_int)
     delta_minutes = random.randint(1, 1440)
 
-    send_date = datetime.datetime.now() - datetime.timedelta(
-        minutes=delta_minutes) - datetime.timedelta(days=delta_days)
+    send_date = datetime.utcnow().replace(tzinfo=utc) - timedelta(
+        minutes=delta_minutes) - timedelta(days=delta_days)
 
     duration = 10
-    delivery_date = str(datetime.datetime.now() - datetime.timedelta(
-        minutes=delta_minutes) - datetime.timedelta(days=delta_days)
-        + datetime.timedelta(seconds=duration))
+    delivery_date = str(datetime.utcnow().replace(tzinfo=utc) - timedelta(
+        minutes=delta_minutes) - timedelta(days=delta_days)
+        + timedelta(seconds=duration))
 
     for i in range(1, int(quantity) + 1):
         phonenumber = '' . join([choice(chars) for i in range(length)])

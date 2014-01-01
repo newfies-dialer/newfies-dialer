@@ -48,7 +48,7 @@ class Alarm(models.Model):
     event = models.ForeignKey(Event, verbose_name=_("related to event"),
                               related_name="event")
     date_start_notice = models.DateTimeField(verbose_name=_('alarm date'),
-                                             default=(lambda: datetime.now()))
+                                             default=(lambda: datetime.utcnow().replace(tzinfo=utc)))
     status = models.IntegerField(choices=list(ALARM_STATUS),
                                  default=ALARM_STATUS.PENDING,
                                  verbose_name=_("status"))
@@ -85,8 +85,8 @@ class Alarm(models.Model):
 
     def get_time_diff(self):
         if self.date_start_notice:
-            now = datetime.utcnow().replace(tzinfo=utc)
-            timediff = self.date_start_notice - now
+            tday = datetime.utcnow().replace(tzinfo=utc)
+            timediff = self.date_start_notice - tday
             return timediff.total_seconds()
 
     def copy_alarm(self, new_event):

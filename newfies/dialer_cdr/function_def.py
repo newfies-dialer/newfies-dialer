@@ -16,6 +16,7 @@ from django.conf import settings
 from common.common_functions import variable_value, ceil_strdate
 from country_dialcode.models import Prefix
 from datetime import datetime
+from django.utils.timezone import utc
 
 
 def voipcall_record_common_fun(request):
@@ -55,12 +56,10 @@ def voipcall_record_common_fun(request):
 
     if len(kwargs) == 0:
         tday = datetime.today()
-        kwargs['starting_date__gte'] = datetime(tday.year,
-                                                tday.month,
-                                                tday.day, 0, 0, 0, 0)
-        kwargs['starting_date__lte'] = datetime(tday.year,
-                                                tday.month,
-                                                tday.day, 23, 59, 59)
+        kwargs['starting_date__gte'] = \
+            datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
+        kwargs['starting_date__lte'] = \
+            datetime(tday.year, tday.month, tday.day, 23, 59, 59).replace(tzinfo=utc)
     return kwargs
 
 

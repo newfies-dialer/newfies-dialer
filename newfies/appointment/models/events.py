@@ -12,6 +12,7 @@ from appointment.constants import EVENT_STATUS
 from dateutil import rrule
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from django.utils.timezone import utc
 import jsonfield
 import pytz
 
@@ -22,9 +23,9 @@ class Event(models.Model):
     """
     title = models.CharField(verbose_name=_("label"), max_length=255)
     description = models.TextField(verbose_name=_("description"), null=True, blank=True)
-    start = models.DateTimeField(default=(lambda: datetime.now()),
+    start = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc)),
                                  verbose_name=_("start"))
-    end = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(hours=+1)),
+    end = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc) + relativedelta(hours=+1)),
                                verbose_name=_("end"),
                                help_text=_("Must be later than the start"))
     creator = models.ForeignKey(CalendarUser, null=False, blank=False,
@@ -32,7 +33,7 @@ class Event(models.Model):
     created_on = models.DateTimeField(verbose_name=_("created on"), default=timezone.now)
     end_recurring_period = models.DateTimeField(verbose_name=_("end recurring period"),
                                                 null=True, blank=True,
-                                                default=(lambda: datetime.now() + relativedelta(months=+1)),
+                                                default=(lambda: datetime.utcnow().replace(tzinfo=utc) + relativedelta(months=+1)),
                                                 help_text=_("Used if the event recurs"))
     rule = models.ForeignKey(Rule, null=True, blank=True,
                              verbose_name=_("rule"), help_text=_("Recuring rules"))
@@ -118,7 +119,7 @@ class Event(models.Model):
         >>> event.get_next_occurrence()
         2008-02-02 00:00:00+00:00
         """
-        start = datetime.now()
+        start = datetime.utcnow().replace(tzinfo=utc)
         for occ in self.get_rrule_object():
             if occ.replace(tzinfo=None) > start:
                 return occ  # return the next occurent

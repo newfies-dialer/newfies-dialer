@@ -22,7 +22,8 @@ from dialer_cdr.models import Callrequest, VoIPCall
 #from survey.models import Section
 from random import choice
 from uuid import uuid1
-import datetime
+from datetime import datetime, timedelta
+from django.utils.timezone import utc
 import random
 import bisect
 
@@ -71,9 +72,9 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
     for i in range(1, int(no_of_record) + 1):
         delta_days = random.randint(0, day_delta_int)
         delta_minutes = random.randint(-720, 720)
-        created_date = datetime.datetime.now() \
-            - datetime.timedelta(minutes=delta_minutes) \
-            - datetime.timedelta(days=delta_days)
+        created_date = datetime.utcnow().replace(tzinfo=utc) \
+            - timedelta(minutes=delta_minutes) \
+            - timedelta(days=delta_days)
 
         phonenumber = '' . join([choice(chars) for i in range(length)])
         new_callrequest = Callrequest.objects.create(

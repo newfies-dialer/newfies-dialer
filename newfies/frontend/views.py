@@ -35,6 +35,7 @@ from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
 from common.common_functions import percentage
 from datetime import datetime
+from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
 import time
 import logging
@@ -190,22 +191,18 @@ def customer_dashboard(request, on_index=None):
             selected_campaign = request.POST['campaign']
             search_type = request.POST['search_type']
 
-        end_date = datetime.today()
+        end_date = datetime.utcnow().replace(tzinfo=utc)
         start_date = calculate_date(search_type)
 
         # date_length is used to do group by starting_date
         if int(search_type) >= SEARCH_TYPE.B_Last_7_days:  # all options except 30 days
             date_length = 13
             if int(search_type) == SEARCH_TYPE.C_Yesterday:  # yesterday
-                now = datetime.now()
-                start_date = datetime(now.year,
-                                      now.month,
-                                      now.day,
-                                      0, 0, 0, 0) - relativedelta(days=1)
-                end_date = datetime(now.year,
-                                    now.month,
-                                    now.day,
-                                    23, 59, 59, 999999) - relativedelta(days=1)
+                tday = datetime.utcnow().replace(tzinfo=utc)
+                start_date = datetime(tday.year, tday.month, tday.day,
+                    0, 0, 0, 0).replace(tzinfo=utc) - relativedelta(days=1)
+                end_date = datetime(tday.year, tday.month, tday.day,
+                    23, 59, 59, 999999).replace(tzinfo=utc) - relativedelta(days=1)
             if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
                 date_length = 16
         else:
@@ -276,7 +273,7 @@ def customer_dashboard(request, on_index=None):
                                  int(data['starting_date'][11:13]),
                                  0,
                                  0,
-                                 0)
+                                 0).replace(tzinfo=utc)
                 if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
                     ctime = datetime(int(data['starting_date'][0:4]),
                                      int(data['starting_date'][5:7]),
@@ -284,7 +281,7 @@ def customer_dashboard(request, on_index=None):
                                      int(data['starting_date'][11:13]),
                                      int(data['starting_date'][14:16]),
                                      0,
-                                     0)
+                                     0).replace(tzinfo=utc)
             else:
                 ctime = datetime(int(data['starting_date'][0:4]),
                                  int(data['starting_date'][5:7]),
@@ -292,7 +289,7 @@ def customer_dashboard(request, on_index=None):
                                  0,
                                  0,
                                  0,
-                                 0)
+                                 0).replace(tzinfo=utc)
             if ctime > maxtime:
                 maxtime = ctime
             elif ctime < mintime:
@@ -340,7 +337,7 @@ def customer_dashboard(request, on_index=None):
                     graph_day = datetime(int(date.strftime("%Y")),
                                          int(date.strftime("%m")),
                                          int(date.strftime("%d")),
-                                         int(str(option).zfill(2)))
+                                         int(str(option).zfill(2))).replace(tzinfo=utc)
 
                     dt = int(1000 * time.mktime(graph_day.timetuple()))
                     total_record[dt] = {
@@ -367,7 +364,7 @@ def customer_dashboard(request, on_index=None):
                                              int(date.strftime("%m")),
                                              int(date.strftime("%d")),
                                              int(str(hour).zfill(2)),
-                                             int(str(minute).zfill(2)))
+                                             int(str(minute).zfill(2))).replace(tzinfo=utc)
 
                         dt = int(1000 * time.mktime(graph_day.timetuple()))
                         total_record[dt] = {
@@ -384,7 +381,7 @@ def customer_dashboard(request, on_index=None):
                 # Last 30 days option
                 graph_day = datetime(int(date.strftime("%Y")),
                                      int(date.strftime("%m")),
-                                     int(date.strftime("%d")))
+                                     int(date.strftime("%d"))).replace(tzinfo=utc)
                 dt = int(1000 * time.mktime(graph_day.timetuple()))
                 total_record[dt] = {
                     'call_count': 0,
@@ -427,9 +424,9 @@ def customer_dashboard(request, on_index=None):
     # Contacts which are successfully called for running campaign
     reached_contact = 0
     if campaign_id_list:
-        now = datetime.now()
-        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
-        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
+        tday = datetime.utcnow().replace(tzinfo=utc)
+        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
+        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999).replace(tzinfo=utc)
         reached_contact = Subscriber.objects\
             .filter(campaign_id__in=campaign_id_list,  # status=5,
                     updated_date__range=(start_date, end_date))\

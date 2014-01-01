@@ -20,7 +20,6 @@ from django.db.models import Count
 from django.core.urlresolvers import reverse
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
-
 from dialer_contact.models import Contact
 from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.views import tpl_control_icon
@@ -40,6 +39,7 @@ from forms import SMSCampaignForm, SMSDashboardForm, SMSSearchForm,\
 from function_def import check_sms_dialer_setting
 from tasks import sms_collect_subscriber
 from datetime import datetime
+from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
 import tablib
 import time
@@ -417,7 +417,7 @@ def sms_campaign_change(request, object_id):
             # Update sms campaign
             form = SMSCampaignForm(
                 request.user, request.POST, instance=sms_campaign)
-            
+
             if form.is_valid():
                 obj = form.save()
                 obj.save()
@@ -461,8 +461,8 @@ def sms_campaign_duplicate(request, id):
             sms_campaign_obj.campaign_code = request.POST.get('campaign_code')
             sms_campaign_obj.name = request.POST.get('name')
             sms_campaign_obj.status = SMS_CAMPAIGN_STATUS.PAUSE
-            sms_campaign_obj.startingdate = datetime.now()
-            sms_campaign_obj.expirationdate = datetime.now() + relativedelta(days=+1)
+            sms_campaign_obj.startingdate = datetime.utcnow().replace(tzinfo=utc)
+            sms_campaign_obj.expirationdate = datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)
             sms_campaign_obj.imported_phonebook = ''
             sms_campaign_obj.totalcontact = 0
             sms_campaign_obj.save()
@@ -565,18 +565,18 @@ def sms_dashboard(request, on_index=None):
             selected_sms_campaign = request.POST['smscampaign']
             search_type = request.POST['search_type']
 
-        end_date = datetime.today()
+        end_date = datetime.utcnow().replace(tzinfo=utc)
         start_date = calculate_date(search_type)
 
         # date_length is used to do group by starting_date
         if int(search_type) >= SEARCH_TYPE.B_Last_7_days:  # all options except 30 days
             date_length = 13
             if int(search_type) == SEARCH_TYPE.C_Yesterday:  # yesterday
-                now = datetime.now()
-                start_date = datetime(
-                    now.year, now.month, now.day, 0, 0, 0, 0) - relativedelta(days=1)
-                end_date = datetime(
-                    now.year, now.month, now.day, 23, 59, 59, 999999) - relativedelta(days=1)
+                now = datetime.utcnow().replace(tzinfo=utc)
+                start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0).replace(tzinfo=utc) \
+                    - relativedelta(days=1)
+                end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999).replace(tzinfo=utc) \
+                    - relativedelta(days=1)
             if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
                 date_length = 16
         else:
@@ -630,19 +630,19 @@ def sms_dashboard(request, on_index=None):
                                  int(data['send_date'][5:7]),
                                  int(data['send_date'][8:10]),
                                  int(data['send_date'][11:13]),
-                                 0, 0, 0)
+                                 0, 0, 0).replace(tzinfo=utc)
                 if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
                     ctime = datetime(int(data['send_date'][0:4]),
                                      int(data['send_date'][5:7]),
                                      int(data['send_date'][8:10]),
                                      int(data['send_date'][11:13]),
                                      int(data['send_date'][14:16]),
-                                     0, 0)
+                                     0, 0).replace(tzinfo=utc)
             else:
                 ctime = datetime(int(data['send_date'][0:4]),
                                  int(data['send_date'][5:7]),
                                  int(data['send_date'][8:10]),
-                                 0, 0, 0, 0)
+                                 0, 0, 0, 0).replace(tzinfo=utc)
             if ctime > maxtime:
                 maxtime = ctime
             elif ctime < mintime:
@@ -679,7 +679,7 @@ def sms_dashboard(request, on_index=None):
                     graph_day = datetime(int(date.strftime("%Y")),
                                          int(date.strftime("%m")),
                                          int(date.strftime("%d")),
-                                         int(str(option).zfill(2)))
+                                         int(str(option).zfill(2))).replace(tzinfo=utc)
 
                     dt = int(1000 * time.mktime(graph_day.timetuple()))
                     total_record[dt] = {'sms_count': 0}
@@ -700,7 +700,7 @@ def sms_dashboard(request, on_index=None):
                                              int(date.strftime("%m")),
                                              int(date.strftime("%d")),
                                              int(str(hour).zfill(2)),
-                                             int(str(minute).zfill(2)))
+                                             int(str(minute).zfill(2))).replace(tzinfo=utc)
 
                         dt = int(1000 * time.mktime(graph_day.timetuple()))
                         total_record[dt] = {'sms_count': 0}
@@ -712,7 +712,7 @@ def sms_dashboard(request, on_index=None):
                 # Last 30 days option
                 graph_day = datetime(int(date.strftime("%Y")),
                                      int(date.strftime("%m")),
-                                     int(date.strftime("%d")))
+                                     int(date.strftime("%d"))).replace(tzinfo=utc)
                 dt = int(1000 * time.mktime(graph_day.timetuple()))
                 total_record[dt] = {'sms_count': 0}
                 if inttime in sms_dict.keys():
@@ -744,9 +744,9 @@ def sms_dashboard(request, on_index=None):
     # Contacts which are successfully messaged for running sms campaign
     reached_contact = 0
     if sms_campaign_id_list:
-        now = datetime.now()
-        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0)
-        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999)
+        now = datetime.utcnow().replace(tzinfo=utc)
+        start_date = datetime(now.year, now.month, now.day, 0, 0, 0, 0).replace(tzinfo=utc)
+        end_date = datetime(now.year, now.month, now.day, 23, 59, 59, 999999).replace(tzinfo=utc)
         sms_campaign_subscriber = SMSCampaignSubscriber.objects.filter(
             sms_campaign_id__in=sms_campaign_id_list,
             status=SMS_SUBSCRIBER_STATUS.COMPLETE,
@@ -932,11 +932,11 @@ def sms_report(request):
 
     if post_var_with_page == 0:
         # default
-        tday = datetime.today()
+        tday = datetime.utcnow().replace(tzinfo=utc)
         from_date = tday.strftime('%Y-%m-%d')
         to_date = tday.strftime('%Y-%m-%d')
-        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0)
-        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999)
+        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
+        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999).replace(tzinfo=utc)
         status = 'all'
         smscampaign = ''
         form = SMSSearchForm(

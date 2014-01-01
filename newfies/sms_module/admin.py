@@ -32,6 +32,7 @@ from function_def import check_sms_dialer_setting,\
 from forms import AdminSMSSearchForm
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
+from django.utils.timezone import utc
 import tablib
 
 
@@ -196,10 +197,9 @@ class SMSMessageAdmin(admin.ModelAdmin):
 
         kwargs = {}
         if request.META['QUERY_STRING'] == '':
-            tday = datetime.today()
-            kwargs['send_date__gte'] = datetime(tday.year,
-                                                tday.month,
-                                                tday.day, 0, 0, 0, 0)
+            tday = datetime.utcnow().replace(tzinfo=utc)
+            kwargs['send_date__gte'] = datetime(tday.year, tday.month, tday.day,
+                0, 0, 0, 0).replace(tzinfo=utc)
             cl.root_query_set.filter(**kwargs)
 
         cl.formset = None
@@ -235,11 +235,10 @@ class SMSMessageAdmin(admin.ModelAdmin):
             request.session['smscampaign'] = request.POST.get('smscampaign')
         else:
             kwargs = sms_record_common_fun(request)
-            tday = datetime.today()
+            tday = datetime.utcnow().replace(tzinfo=utc)
             if len(kwargs) == 0:
-                kwargs['send_date__gte'] = datetime(tday.year,
-                                                    tday.month,
-                                                    tday.day, 0, 0, 0, 0)
+                kwargs['send_date__gte'] = datetime(tday.year, tday.month, tday.day,
+                    0, 0, 0, 0).replace(tzinfo=utc)
 
         select_data = {"send_date": "SUBSTR(CAST(send_date as CHAR(30)),1,10)"}
 

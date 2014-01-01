@@ -23,6 +23,7 @@ from dialer_cdr.views import export_voipcall_report, voipcall_report
 from dialer_cdr.function_def import voipcall_search_admin_form_fun
 #from dialer_cdr.tasks import init_callrequest
 from datetime import datetime
+from django.utils.timezone import utc
 
 
 class DialerCdrView(BaseAuthenticatedClient):
@@ -60,14 +61,14 @@ class DialerCdrView(BaseAuthenticatedClient):
         self.failUnlessEqual(response.status_code, 200)
 
         response = self.client.post('/admin/dialer_cdr/voipcall/voip_daily_report/',
-            data={'from_date': datetime.now().strftime("%Y-%m-%d"),
-                  'to_date': datetime.now().strftime("%Y-%m-%d")})
+            data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+                  'to_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d")})
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post(
             '/admin/dialer_cdr/voipcall/voip_daily_report/',
-            data={'from_date': datetime.now().strftime("%Y-%m-%d"),
-                  'to_date': datetime.now().strftime("%Y-%m-%d")})
+            data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+                  'to_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d")})
         request.user = self.user
         request.session = {}
         response = voipcall_search_admin_form_fun(request)
@@ -85,8 +86,8 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
             'frontend/report/voipcall_report.html')
 
         response = self.client.post('/voipcall_report/',
-                        data={'from_date': datetime.now().strftime("%Y-%m-%d"),
-                              'to_date': datetime.now().strftime("%Y-%m-%d")})
+                        data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+                              'to_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d")})
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/voipcall_report/')
@@ -136,6 +137,7 @@ class DialerCdrCeleryTaskTestCase(TestCase):
     #    task runs with no errors, and returns the correct result."""
     #    result = init_callrequest.delay(self.callrequest.id, 1, self.callrequest.campaign.callmaxduration)
     #    self.assertEqual(result.successful(), True)
+
 
 class DialerCdrModel(TestCase):
     """Test Callrequest, VoIPCall models"""

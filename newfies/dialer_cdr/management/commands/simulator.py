@@ -28,7 +28,8 @@ from agent.models import Agent, AgentProfile
 from random import choice, randint
 from uuid import uuid1
 import time
-import datetime
+from datetime import datetime, timedelta
+from django.utils.timezone import utc
 from faker import Factory
 
 
@@ -44,9 +45,9 @@ def create_callrequest(phonenumber, campaign, subscriber):
 
     delta_days = randint(0, 10)
     delta_minutes = randint(-720, 720)
-    created_date = datetime.datetime.now() \
-        - datetime.timedelta(minutes=delta_minutes) \
-        - datetime.timedelta(days=delta_days)
+    created_date = datetime.utcnow().replace(tzinfo=utc) \
+        - timedelta(minutes=delta_minutes) \
+        - timedelta(days=delta_days)
 
     new_callrequest = Callrequest.objects.create(
         request_uuid=uuid1(),

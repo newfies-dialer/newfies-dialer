@@ -29,8 +29,10 @@ from dialer_campaign.views import get_url_campaign_status
 from dialer_contact.tasks import collect_subscriber
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
-
+from django.utils.timezone import utc
 import os
+
+
 csv_file = open(
     os.path.abspath('../../newfies-dialer/newfies/') +
     '/dialer_contact/fixtures/import_contacts.txt', 'r'
@@ -218,9 +220,9 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response, 'frontend/contact/list.html')
 
         request = self.factory.post('/contact/',
-                                    data={'from_date': datetime.now(),
-                                          'to_date': datetime.now(),
-                                          'contact_name': '123'})
+            data={'from_date': datetime.utcnow().replace(tzinfo=utc),
+                  'to_date': datetime.utcnow().replace(tzinfo=utc),
+                  'contact_name': '123'})
         request.user = self.user
         request.session = {}
         response = contact_list(request)

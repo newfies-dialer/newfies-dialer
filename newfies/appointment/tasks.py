@@ -24,13 +24,14 @@ from appointment.models.users import CalendarUserProfile
 from appointment.constants import EVENT_STATUS, ALARM_STATUS, \
     ALARM_METHOD, ALARMREQUEST_STATUS
 from mod_mailer.models import MailSpooler
-from datetime import datetime, timedelta
-from dateutil.relativedelta import relativedelta
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
-#from user_profile.models import UserProfile
 from math import floor
+from datetime import datetime, timedelta
+from django.utils.timezone import utc
+from dateutil.relativedelta import relativedelta
+
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 FREQ_DISPATCHER = 6
@@ -60,8 +61,8 @@ class event_dispatcher(PeriodicTask):
         logger.info("TASK :: event_dispatcher")
 
         # List all the events where event.start > NOW() - 12 hours and status = EVENT_STATUS.PENDING
-        start_from = datetime.now() - timedelta(hours=12)
-        start_to = datetime.now()
+        start_from = datetime.utcnow().replace(tzinfo=utc) - timedelta(hours=12)
+        start_to = datetime.utcnow().replace(tzinfo=utc)
         event_list = Event.objects.filter(start__gte=start_from, start__lte=start_to, status=EVENT_STATUS.PENDING)
         for obj_event in event_list:
             try:
@@ -113,8 +114,8 @@ class alarm_dispatcher(PeriodicTask):
         logger.info("TASK :: alarm_dispatcher")
 
         # Select Alarm where date_start_notice >= now() - 60 minutes and <= now() + 5 minutes
-        start_time = datetime.now() + relativedelta(minutes=-60)
-        end_time = datetime.now() + relativedelta(minutes=+5)
+        start_time = datetime.utcnow().replace(tzinfo=utc) + relativedelta(minutes=-60)
+        end_time = datetime.utcnow().replace(tzinfo=utc) + relativedelta(minutes=+5)
         alarm_list = Alarm.objects.filter(date_start_notice__range=(start_time, end_time),
                                           status=ALARM_STATUS.PENDING).order_by('date_start_notice')
         # Browse all the Alarm found
@@ -152,7 +153,7 @@ def perform_alarm(obj_event, obj_alarm):
         print "perform_alarm ALARM_METHOD.CALL"
         AlarmRequest.objects.create(
             alarm=obj_alarm,
-            date=datetime.now()
+            date=datetime.utcnow().replace(tzinfo=utc)
         )
 
     elif obj_alarm.method == ALARM_METHOD.SMS:
@@ -195,7 +196,7 @@ class alarmrequest_dispatcher(PeriodicTask):
         logger.info("TASK :: alarmrequest_dispatcher")
 
         # Select AlarmRequest where date >= now() - 60 minutes
-        start_time = datetime.now() + relativedelta(minutes=-60)
+        start_time = datetime.utcnow().replace(tzinfo=utc) + relativedelta(minutes=-60)
         alarmreq_list = AlarmRequest.objects.filter(date__gte=start_time, status=ALARMREQUEST_STATUS.PENDING)
         no_alarmreq = alarmreq_list.count()
         if no_alarmreq == 0:
@@ -244,7 +245,7 @@ class alarmrequest_dispatcher(PeriodicTask):
             new_callrequest = Callrequest(
                 status=CALLREQUEST_STATUS.PENDING,
                 call_type=call_type,
-                call_time=datetime.now(),
+                call_time=datetime.utcnow().replace(tzinfo=utc),
                 timeout=calltimeout,
                 callerid=callerid,
                 caller_name=caller_name,

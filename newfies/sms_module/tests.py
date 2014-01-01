@@ -15,7 +15,8 @@
 from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.test import TestCase
-from sms_module.models import SMSCampaign, SMSMessage, SMSDialerSetting
+from sms_module.models import SMSCampaign, SMSMessage, SMSDialerSetting,\
+    SMSCampaignSubscriber
 from sms_module.views import sms_campaign_list, sms_campaign_add,\
     sms_campaign_change, sms_campaign_del, update_sms_campaign_status_admin,\
     update_sms_campaign_status_cust, sms_dashboard, sms_report, export_sms_report,\
@@ -29,7 +30,8 @@ from sms_module.constants import SMS_CAMPAIGN_STATUS
 from sms_module.forms import SMSDashboardForm
 from frontend.constants import SEARCH_TYPE
 from common.utils import BaseAuthenticatedClient
-import datetime
+from datetime import datetime
+from django.utils.timezone import utc
 
 
 class SMSAdminView(BaseAuthenticatedClient):
@@ -81,8 +83,8 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
 
     fixtures = ['example_gateways.json', 'auth_user.json',
                 'phonebook.json', 'contact.json', 'dialer_setting.json',
-                'sms_dialer_setting.json',  'sms_campaign.json',
-                'user_profile.json', 'message.json', 'sms_message.json',]
+                'sms_dialer_setting.json', 'sms_campaign.json',
+                'user_profile.json', 'message.json', 'sms_message.json']
 
     def test_sms_campaign_list(self):
         """Test Function to check sms campaign list"""
@@ -148,7 +150,6 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         response = sms_campaign_del(request, 1)
         self.assertEqual(response['Location'], '/sms_campaign/')
         self.assertEqual(response.status_code, 302)
-
 
         request = self.factory.post('/sms_campaign/del/', {'select': '1'})
         request.user = self.user
@@ -276,8 +277,8 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
             response, 'frontend/sms_module/sms_report.html')
 
         response = self.client.post(
-            '/sms_report/', data={'from_date': datetime.now().strftime("%Y-%m-%d"),
-                                  'to_date': datetime.now().strftime("%Y-%m-%d")})
+            '/sms_report/', data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+                                  'to_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d")})
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/sms_report/')
@@ -315,7 +316,7 @@ class SMSCeleryTaskTestCase(TestCase):
 
     fixtures = ['example_gateways.json', 'auth_user.json',
                 'phonebook.json', 'contact.json',
-                'sms_dialer_setting.json',  'sms_campaign.json',
+                'sms_dialer_setting.json', 'sms_campaign.json',
                 'user_profile.json']
 
     def test_init_smsrequest(self):
@@ -372,8 +373,8 @@ class SMSCampaignModel(TestCase):
 
     fixtures = ['example_gateways.json', 'auth_user.json',
                 'phonebook.json', 'contact.json', 'dialer_setting.json',
-                'sms_dialer_setting.json',  'sms_campaign.json',
-                'user_profile.json', 'message.json', 'sms_message.json',]
+                'sms_dialer_setting.json', 'sms_campaign.json',
+                'user_profile.json', 'message.json', 'sms_message.json']
 
     def setUp(self):
         self.user = User.objects.get(username='admin')
@@ -399,7 +400,7 @@ class SMSCampaignModel(TestCase):
         self.sms.save()
 
         # Subscriber model
-        self.smssubscriber = SMSSubscriber(
+        self.smssubscriber = SMSCampaignSubscriber(
             message_id=1,
             sms_campaign=self.smscampaign,
             contact_id=1,
@@ -412,7 +413,6 @@ class SMSCampaignModel(TestCase):
 
         # Test mgt command
         call_command("create_sms", "1|10")
-
 
     def test_campaign_form(self):
         self.assertEqual(self.campaign.name, "sample_campaign")

@@ -32,6 +32,7 @@ from common.common_functions import getvar
 # from common.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
+from django.utils.timezone import utc
 import tablib
 
 # AppLabelRenamer(native_app_label=u'dialer_cdr', app_label=_('Dialer CDR')).main()
@@ -222,7 +223,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                                                 "to_date": tday.strftime("%Y-%m-%d")})
             if len(kwargs) == 0:
                 kwargs['starting_date__gte'] = datetime(tday.year, tday.month, tday.day,
-                                                        0, 0, 0, 0)
+                                                        0, 0, 0, 0).replace(tzinfo=utc)
 
         select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
         # Get Total Records from VoIPCall Report table for Daily Call Report

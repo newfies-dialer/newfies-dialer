@@ -41,6 +41,7 @@ from common.common_functions import ceil_strdate, getvar, \
     get_pagination_vars, unset_session_var
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from django.utils.timezone import utc
 import re
 import tablib
 
@@ -582,8 +583,8 @@ def campaign_duplicate(request, id):
             campaign_obj.status = CAMPAIGN_STATUS.PAUSE
             campaign_obj.totalcontact = 0
             campaign_obj.completed = 0
-            campaign_obj.startingdate = datetime.now()
-            campaign_obj.expirationdate = datetime.now() + relativedelta(days=+1)
+            campaign_obj.startingdate = datetime.utcnow().replace(tzinfo=utc)
+            campaign_obj.expirationdate = datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)
             campaign_obj.imported_phonebook = ''
             campaign_obj.has_been_started = False
             campaign_obj.has_been_duplicated = True
@@ -698,11 +699,11 @@ def subscriber_list(request):
 
     if post_var_with_page == 0:
         # default
-        tday = datetime.today()
+        tday = datetime.utcnow().replace(tzinfo=utc)
         from_date = tday.strftime('%Y-%m-%d')
         to_date = tday.strftime('%Y-%m-%d')
-        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0)
-        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999)
+        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
+        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999).replace(tzinfo=utc)
 
         form = SubscriberSearchForm(request.user, initial={'from_date': from_date,
                                                            'to_date': to_date})

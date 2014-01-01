@@ -40,6 +40,7 @@ from survey.models import post_save_add_script
 from common.common_functions import striplist, variable_value, ceil_strdate,\
     get_pagination_vars
 from datetime import datetime
+from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
 import subprocess
 import hashlib
@@ -641,13 +642,13 @@ def section_branch_add(request):
             section.survey_id, section.id, initial={'section': section_id})
         if request.method == 'POST':
             form = BranchingForm(
-                section.survey_id, section.id, request.POST)            
+                section.survey_id, section.id, request.POST)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('branching is added successfully.')
                 return HttpResponseRedirect(
                     redirect_url_to_survey_list + '%s/#row%s' % (section.survey_id, section_id))
-            else:                                
+            else:
                 form._errors["keys"] = _("duplicate keys with goto.")
                 request.session["err_msg"] = True
 
@@ -968,9 +969,9 @@ def survey_report(request):
         else:
             from_date
     except NameError:
-        tday = datetime.today()
+        tday = datetime.utcnow().replace(tzinfo=utc)
         from_date = tday.strftime('%Y-%m-01')
-        last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999) +
+        last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999).replace(tzinfo=utc) +
                     relativedelta(months=1)) -
                     relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)

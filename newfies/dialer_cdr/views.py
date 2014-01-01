@@ -27,6 +27,7 @@ from user_profile.models import Manager
 from common.common_functions import ceil_strdate, unset_session_var, \
     get_pagination_vars
 from datetime import datetime
+from django.utils.timezone import utc
 import tablib
 
 
@@ -138,11 +139,11 @@ def voipcall_report(request):
             campaign_id = request.session.get('session_campaign_id')
             leg_type = request.session.get('session_leg_type')
             form = VoipSearchForm(request.user,
-                                  initial={'from_date': start_date.strftime('%Y-%m-%d'),
-                                           'to_date': end_date.strftime('%Y-%m-%d'),
-                                           'status': disposition,
-                                           'campaign_id': campaign_id,
-                                           'leg_type': leg_type})
+                initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                       'to_date': end_date.strftime('%Y-%m-%d'),
+                       'status': disposition,
+                       'campaign_id': campaign_id,
+                       'leg_type': leg_type})
         else:
             post_var_with_page = 1
             if request.method == 'GET':
@@ -152,20 +153,20 @@ def voipcall_report(request):
 
     if post_var_with_page == 0:
         # default
-        tday = datetime.today()
+        tday = datetime.utcnow().replace(tzinfo=utc)
         from_date = tday.strftime('%Y-%m-%d')
         to_date = tday.strftime('%Y-%m-%d')
-        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0)
-        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999)
+        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
+        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999).replace(tzinfo=utc)
         disposition = 'all'
         campaign_id = 0
         leg_type = ''
         form = VoipSearchForm(request.user,
-                              initial={'from_date': from_date,
-                                       'to_date': to_date,
-                                       'status': disposition,
-                                       'campaign_id': campaign_id,
-                                       'leg_type': leg_type})
+            initial={'from_date': from_date,
+                    'to_date': to_date,
+                    'status': disposition,
+                    'campaign_id': campaign_id,
+                    'leg_type': leg_type})
         # unset session var
         request.session['session_start_date'] = start_date
         request.session['session_end_date'] = end_date

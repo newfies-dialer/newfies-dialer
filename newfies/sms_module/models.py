@@ -26,9 +26,10 @@ from user_profile.models import UserProfile
 from sms.models import Message
 from sms.models import Gateway
 from constants import SMS_CAMPAIGN_STATUS, SMS_SUBSCRIBER_STATUS
-from datetime import datetime
 from common.intermediate_model_base_class import Model
 from common.common_functions import get_unique_code
+from datetime import datetime
+from django.utils.timezone import utc
 
 
 class SMSCampaignManager(models.Manager):
@@ -39,11 +40,11 @@ class SMSCampaignManager(models.Manager):
         the expiry date, the daily start/stop time and days of the week"""
         kwargs = {}
         kwargs['status'] = SMS_CAMPAIGN_STATUS.START
-        tday = datetime.now()
+        tday = datetime.utcnow().replace(tzinfo=utc)
         kwargs['startingdate__lte'] = datetime(tday.year, tday.month,
-            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond)
+            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
         kwargs['expirationdate__gte'] = datetime(tday.year, tday.month,
-            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond)
+            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
         s_time = str(tday.hour) + ":" + str(tday.minute) + ":" + str(tday.second)
         kwargs['daily_start_time__lte'] = datetime.strptime(s_time, '%H:%M:%S')
@@ -59,7 +60,7 @@ class SMSCampaignManager(models.Manager):
         """Return all the smscampaigns which are expired or going to expire
          based on the expiry date but status is not 'END'"""
         kwargs = {}
-        kwargs['expirationdate__lte'] = datetime.now()
+        kwargs['expirationdate__lte'] = datetime.utcnow().replace(tzinfo=utc)
         return SMSCampaign.objects.filter(**kwargs).exclude(status=SMS_CAMPAIGN_STATUS.END)
 
 
@@ -117,11 +118,11 @@ class SMSCampaign(Model):
                                 verbose_name=_("Caller ID Number"),
                                 help_text=_("outbound Caller ID"))
     #General Starting & Stopping date
-    startingdate = models.DateTimeField(default=(lambda: datetime.now()),
+    startingdate = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc)),
                                         verbose_name=_('start'))
 
     expirationdate = models.DateTimeField(
-        default=(lambda: datetime.now() + relativedelta(months=+1)),
+        default=(lambda: datetime.utcnow().replace(tzinfo=utc) + relativedelta(months=+1)),
         verbose_name=_('finish'))
     #Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00')

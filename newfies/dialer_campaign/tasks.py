@@ -26,6 +26,7 @@ from dialer_contact.tasks import collect_subscriber
 from dnc.models import DNCContact
 from common.only_one_task import only_one
 from datetime import datetime, timedelta
+from django.utils.timezone import utc
 from math import floor
 from common_functions import debug_query
 # from celery.task.http import HttpDispatchTask
@@ -165,7 +166,7 @@ class pending_call_processing(Task):
             new_callrequest = Callrequest(
                 status=CALLREQUEST_STATUS.PENDING,
                 call_type=call_type,
-                call_time=datetime.now(),
+                call_time=datetime.utcnow().replace(tzinfo=utc),
                 timeout=obj_campaign.calltimeout,
                 callerid=obj_campaign.callerid,
                 caller_name=obj_campaign.caller_name,

@@ -23,8 +23,9 @@ from dialer_cdr.constants import CALLREQUEST_STATUS, \
     VOIPCALL_AMD_STATUS
 from common.intermediate_model_base_class import Model
 from country_dialcode.models import Prefix
-from uuid import uuid1
 from datetime import datetime
+from django.utils.timezone import utc
+from uuid import uuid1
 
 
 class CallRequestManager(models.Manager):
@@ -34,9 +35,9 @@ class CallRequestManager(models.Manager):
         """Return all the pending callrequest based on call time and status"""
         kwargs = {}
         kwargs['status'] = 1
-        tday = datetime.now()
+        tday = datetime.utcnow().replace(tzinfo=utc)
         kwargs['call_time__lte'] = datetime(tday.year, tday.month,
-            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond)
+            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
         #return Callrequest.objects.all()
         return Callrequest.objects.filter(**kwargs)
@@ -96,7 +97,7 @@ class Callrequest(Model):
                                     max_length=120, null=True, blank=True)
     aleg_uuid = models.CharField(max_length=120, help_text=_("a-leg call-ID"),
                                  null=True, blank=True)
-    call_time = models.DateTimeField(default=(lambda: datetime.now()))
+    call_time = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc)))
     created_date = models.DateTimeField(auto_now_add=True,
                                         verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)

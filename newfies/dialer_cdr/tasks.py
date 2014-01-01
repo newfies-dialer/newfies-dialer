@@ -32,6 +32,7 @@ from sms.tasks import SendMessage
 #from dialer_cdr.function_def import get_prefix_obj
 from dialer_gateway.utils import prepare_phonenumber
 from datetime import datetime, timedelta
+from django.utils.timezone import utc
 from common.only_one_task import only_one
 from common_functions import debug_query
 from uuid import uuid1
@@ -68,7 +69,6 @@ def dial_out(dial_command):
     else:
         request_uuid = 'error'
     return request_uuid
-
 
 
 def check_retrycall_completion(callrequest):
@@ -637,7 +637,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             obj_callrequest.subscriber.count_attempt = 1
         else:
             obj_callrequest.subscriber.count_attempt = obj_callrequest.subscriber.count_attempt + 1
-        obj_callrequest.subscriber.last_attempt = datetime.now()
+        obj_callrequest.subscriber.last_attempt = datetime.utcnow().replace(tzinfo=utc)
         #check if the outbound call failed then update Subscriber
         if outbound_failure:
             obj_callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL

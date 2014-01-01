@@ -27,7 +27,7 @@ A survey is created with the required messages and actions. Once the Calendar se
 
 **Calendar User**
 
-    The Calendar-User is a sub-user of the Newfies-Dialer User. The Calendar-User will the customer who is creating the reminders or alarms. For instance, if you create a appointment reminders to a Doctor's surgery, then the calendar user may be an individual doctor or secretary. The rights of a Calendar-User can be configured via the Calendar-User's settings.
+    The Calendar-User is a sub-user of the Newfies-Dialer User. The Calendar-User will be the customer who is creating the reminders or alarms. For instance, if you create a appointment reminders for a Doctor's surgery, then the calendar user may be an individual doctor or secretary. The rights of a Calendar-User can be configured via the Calendar-User's settings.
 
     Note that a Calendar-User does not log into the interface, alarms are created and configured via the Newfies-Dialer login.
 
@@ -40,16 +40,16 @@ A survey is created with the required messages and actions. Once the Calendar se
 
     An Event sets the time, date and duration of when the alarms are to be sent out. An event is linked to a calendar. The Event also includes custom rules that can be set up to trigger an event every day, week or month, as well as create more complex rules such as; repeat every Tuesday at a given time.
 
-    A data field is provided and used to pass extra variable
-    You can pass custom variables easily by using the "Additional Parameters (JSON)" field which allow you to add custom key-values that will be later used and replaced by the Text2Speech processor.
+    A data field is provided and used to pass extra variables
+    You can pass custom variables by using the "Additional Parameters (JSON)" field which allows you to add custom key-values that will be used in the survey and replaced by the Text2Speech processor.
 
-    For example let's set "Additional Parameters (JSON)" to::
+    For example; set "Additional Parameters (JSON)" to::
 
         {"doctor_name": "Herbert", "apt_date" : "10 January at 5pm"}
 
-    Then when you create a survey with a node that plays TTS, you can easily replace the key-values in the text::
+    When a survey is created with a node that plays TTS, you can replace the key-values in the text::
 
-        We are calling you on behalf of {doctor_name}, we want to remind you of your appointment at {apt_date}
+        "We are calling you on behalf of {doctor_name}, we want to remind you of your appointment at {apt_date}"
 
 
 **Rule**
@@ -94,15 +94,15 @@ Events happen at a specified time and you can also program the event to recur da
 
 **Alarm Result**
 
-    We provided a mechanism to store Result into Alarm, let's imagine the situation when you are calling all your clients at the beginning of the week and want to tell them about their upcoming appointment and ask them if they want to confirm, cancel or reschedule.
+    A mechanism is provided to store the results from Alarms. For instance, imagine that a calendar user is calling all clients at the beginning of the week to tell them about their forthcoming appointment and ask them if they want to confirm, cancel or re-schedule.
 
-    For this scenario, you will build a Survey application with those 3 options::
+    For this scenario, a Survey application is built with the 3 options::
 
         - Press 1 to Confirm,
         - Press 2 to Cancel
-        - or Press 4 to Reschedule your appointment
+        - or Press 4 to Re-schedule your appointment
 
-    You will simply need to create a **Rating Question**, as this type of section will behave differently on the appointment module, the result of this question will be directly stored into the result of the Alarm. This will be very practically for future reporting and for instance if the doctor need to visualize all the Event that need to be cancelled or rescheduled.
+    You will simply need to create a **Rating Question**, as this section type will behave differently with the appointment module and the result of the question will be stored in the Alarm result. This will be practical for future reporting and will allow the calendar user to see all the Events that need to be cancelled or re-scheduled.
 
 
 **Alarm Requests**

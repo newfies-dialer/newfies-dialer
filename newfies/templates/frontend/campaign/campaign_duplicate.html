@@ -25,29 +25,21 @@
         {% if err_msg %}
             {% include "frontend/extra_modal_header.html" %}
             <script type="text/javascript" charset="utf-8">
-                $(function () {
-                    $(window).load(function(){
-                        $('#duplicate-campaign').modal('show');
-                    });
-
-                    var url = '/campaign/';
-                    $("#id_close,#id_close_x").live('click', function() {
-                        $(location).attr('href', url);
-                    });
-
-                    var KEYCODE_ESC = 27;
-                    $(document).keyup(function(e) {
-                        if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
-                    });
+                $(window).load(function(){
+                    $('#campaign-duplicate').modal('show');
                 });
+                function back_to(){
+                    var url = '/campaign/';
+                    $(location).attr('href', url);
+                }
             </script>
             <!-- modal content-->
-            <div class="modal fade" id="duplicate-campaign" role="dialog" aria-labelledby="add_duplicate_campaign" data-backdrop="static">
+            <div class="modal fade" id="campaign-duplicate" role="dialog" aria-labelledby="campaign_duplicate" data-backdrop="static">
         {% endif %}
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
+                    <a id="id_close_x" class="close" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</a>
                     <h3>{% trans "campaign"|title %}
                         <small></small>
                     </h3>
@@ -73,11 +65,11 @@
                         {% endfor %}
                     </div>
 
-                    <div class="modal-footer" align="right">                        
+                    <div class="modal-footer" align="right">
                         <button type="submit" class="btn btn-primary" id="id_add" name="add" value="{% trans 'save'|title %}">
                             <i class="fa fa-save"></i> {% trans "save"|title %}
                         </button>
-                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</button>
+                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
                     </div>
                 </form>
             </div>

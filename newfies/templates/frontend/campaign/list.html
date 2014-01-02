@@ -47,19 +47,6 @@
     }
 </script>
 
-<!--Section branching change modal-->
-<script type="text/javascript" charset="utf-8">
-    $(".campaign-duplicate").live('click', function(e) {
-        //e.preventDefault();
-        //e.stopPropagation();
-        var url = $(this).attr('url');
-        var modal_id = $(this).attr('data-controls-modal');
-        $("#" + modal_id).load(url);
-    });
-</script>
-<!-- modal content-->
-<div id="campaign-duplicate" class="modal fade" role="dialog" aria-labelledby="add_duplicate_campaign"></div>
-
 <div class="row">
     <div class="col-md-12">
         <div class="btn-group">
@@ -129,19 +116,17 @@
                                     {% endif %}
 
                                     {{ row.id|create_duplicate_campaign|safe }}
-
+                                    {% get_campaign_app_view row %}
                                     {% if row.content_type.model == 'survey' and row.has_been_started  %}
                                         <!--Sealed survey modal-->
                                         <script type="text/javascript" charset="utf-8">
-                                            $("#id_survey_seal_{{ row.object_id }}").live('click', function(e) {
-                                                e.preventDefault();
+                                            $("#id_survey_seal_{{ row.object_id }}").on('click', function(e) {
                                                 var url = $(this).attr('url');
                                                 var modal_id = $(this).attr('data-controls-modal');
                                                 $("#" + modal_id).load(url);
                                             });
                                         </script>
                                     {% endif %}
-                                    {% get_campaign_app_view row %}
                                 </td>
                             </tr>
                         {% endfor %}
@@ -165,4 +150,15 @@
 </div>
 <!-- survey-seal modal content-->
 <div id="sealed-survey" class="modal fade" role="dialog" aria-labelledby="sealed_survey"></div>
+
+<!--Section branching change modal-->
+<script type="text/javascript" charset="utf-8">
+    $(".campaign-duplicate").on('click', function(e) {
+        var url = $(this).attr('url');
+        var modal_id = $(this).attr('data-controls-modal');
+        $("#" + modal_id).load(url);
+    });
+</script>
+<!-- modal content-->
+<div id="campaign-duplicate" class="modal fade" role="dialog" aria-labelledby="add_duplicate_campaign"></div>
 {% endblock %}

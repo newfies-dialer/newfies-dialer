@@ -212,7 +212,9 @@ class DuplicateCampaignForm(ModelForm):
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
-            self.fields['phonebook'].choices = get_phonebook_list(user)
+            phonebook_list = get_phonebook_list(user)
+            self.fields['phonebook'].choices = phonebook_list
+            self.fields['phonebook'].initial = str(phonebook_list[0][0])
 
 
 class CampaignAdminForm(ModelForm):

@@ -12,6 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.utils.timezone import utc
 from frontend.forms import SEARCH_TYPE
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -19,7 +20,7 @@ from datetime import datetime
 
 def calculate_date(search_type):
     """calculate date"""
-    end_date = datetime.today()
+    end_date = datetime.today().replace(tzinfo=utc)
     search_type = int(search_type)
 
     # Last 30 days

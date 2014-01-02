@@ -76,7 +76,7 @@ func_identify_os() {
 func_accept_license() {
     clear
     echo ""
-    echo "Newfies-Dialer License MPL V2.0"
+    echo "Newfies-Dialer License MPL V2.0 (branch:$BRANCH)"
     echo "Further information at http://www.newfies-dialer.org/support/licensing/"
     echo ""
     echo "This Source Code Form is subject to the terms of the Mozilla Public"
@@ -543,10 +543,6 @@ func_install_source(){
 
     git clone git://github.com/Star2Billing/newfies-dialer.git
     cd newfies-dialer
-
-    echo ""
-    echo "Installing Branch: $BRANCH"
-    echo ""
 
     #Install branch develop / callcenter
     if echo $BRANCH | grep -i "^develop" > /dev/null ; then

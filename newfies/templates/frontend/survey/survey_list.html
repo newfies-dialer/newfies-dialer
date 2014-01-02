@@ -83,7 +83,7 @@ function delete_button(){
                                         <a id="id_survey_seal_{{ row.id }}" href="#survey-seal" url="/module/seal_survey/{{ row.id }}/" title="{% trans 'seal survey'|title %}" data-toggle="modal" data-controls-modal="survey-seal"><i class="fa fa-copy"></i></a>
                                         <!--Survey seal modal-->
                                         <script type="text/javascript" charset="utf-8">
-                                            $("#id_survey_seal_{{ row.id }}").live('click', function(e) {
+                                            $("#id_survey_seal_{{ row.id }}").on('click', function(e) {
                                                 e.preventDefault();
                                                 var url = $(this).attr('url');
                                                 var modal_id = $(this).attr('data-controls-modal');

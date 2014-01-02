@@ -58,7 +58,7 @@
                             <label for="id_{{ field.name }}" class="control-label">{{ field.label|title }}</label>
                             {{ field }}
                             {% if field.errors %}
-                                <span class="{% if field.errors %}has-error{% endif %}">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                <span class="help-block {% if field.errors %}has-error{% endif %}">{{ field.errors|removetags:"ul li"|safe }}</span>
                             {% endif %}
                             <span class="help-block">{{ field.help_text|capfirst }} </span>
                         </div>

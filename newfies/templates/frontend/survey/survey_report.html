@@ -192,7 +192,7 @@
         <!--Section branching change modal-->
         <script type="text/javascript" charset="utf-8">
 
-            $(".survey-campaign-result").live('click', function() {
+            $(".survey-campaign-result").delegate('click', function() {
                 var url = $(this).attr('url');
                 var modal_id = $(this).attr('data-controls-modal');
                 $("#" + modal_id).load(url);

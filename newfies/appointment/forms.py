@@ -26,6 +26,7 @@ from appointment.function_def import get_calendar_user_id_list, \
     get_calendar_user_list, get_calendar_list, get_all_calendar_user_id_list
 from agent.function_def import manager_list
 from survey.models import Survey
+from user_profile.models import UserProfile
 from bootstrap3_datetime.widgets import DateTimePicker
 
 
@@ -87,7 +88,7 @@ class CalendarSettingForm(ModelForm):
 
         list_gateway = []
         list_gateway.append((0, '---'))
-        gateway_list = user.get_profile().userprofile_gateway.all()
+        gateway_list = UserProfile.objects.get(user=user).userprofile_gateway.all()
         for l in gateway_list:
             list_gateway.append((l.id, l.name))
         self.fields['aleg_gateway'].choices = list_gateway

@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
+#from django.contrib.auth.models import User
 #from django.conf import settings
 from common.utils import BaseAuthenticatedClient
 from appointment.models.users import CalendarSetting, CalendarUser, CalendarUserProfile
@@ -20,7 +20,7 @@ from appointment.models.calendars import Calendar
 from appointment.models.events import Event
 from appointment.models.alarms import Alarm
 from appointment.views import calendar_setting_list, calendar_user_list, calendar_list,\
-    event_list, alarm_list
+    event_list, alarm_list, calendar_setting_add
 
 
 class AppointmentAdminView(BaseAuthenticatedClient):
@@ -67,8 +67,8 @@ class AppointmentAdminView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
     def test_admin_alarm_admin_list(self):
-        """Test Function to check admin event list"""
-        response = self.client.get("/admin/appointment/calendar/")
+        """Test Function to check admin alarm list"""
+        response = self.client.get("/admin/appointment/alarm/")
         self.assertEqual(response.status_code, 200)
 
     def test_admin_alarm_admin_add(self):
@@ -80,7 +80,14 @@ class AppointmentAdminView(BaseAuthenticatedClient):
 class AppointmentCustomerView(BaseAuthenticatedClient):
     """Test cases for Appointment Customer Interface."""
 
-    #fixtures = ['auth_user.json']
+    fixtures = [
+        'auth_user.json', 'gateway.json', 'dialer_setting.json',
+        'user_profile.json', 'phonebook.json', 'contact.json',
+        'survey.json', 'dnc_list.json', 'dnc_contact.json',
+        'campaign.json', 'subscriber.json', 'example_gateways.json',
+        'calendar_setting.json', 'calendar_user.json',
+        'calendar.json', 'event.json', 'alarm.json'
+    ]
 
     def test_calendar_setting_view_list(self):
         """Test Function to check calendar_setting list"""
@@ -93,6 +100,47 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = calendar_setting_list(request)
         self.assertEqual(response.status_code, 200)
+
+    def test_calendar_setting_view_add(self):
+        """Test Function to check add calendar_setting"""
+        request = self.factory.get('/module/calendar_setting/add/')
+        request.user = self.user
+        request.session = {}
+        response = calendar_setting_add(request)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/module/calendar_setting/add/', data={
+            "sms_gateway": "1",
+            "callerid": "242534",
+            "voicemail": "False",
+            "call_timeout": "60",
+            "voicemail_audiofile": "",
+            "label": "test calendar setting",
+            "caller_name": "test",
+            "survey": "1",
+            "user": "2",
+            "created_date": "2013-12-17T13:41:24.195",
+            "aleg_gateway": "1",
+            "amd_behavior": ""}, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/module/calendar_setting/add/', {
+            "sms_gateway": "1",
+            "callerid": "242534",
+            "voicemail": "False",
+            "call_timeout": "60",
+            "voicemail_audiofile": "",
+            "label": "test calendar setting",
+            "caller_name": "test",
+            "survey": "1",
+            "user": "2",
+            "created_date": "2013-12-17T13:41:24.195",
+            "aleg_gateway": "1",
+            "amd_behavior": ""}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = calendar_setting_add(request)
+        self.assertEqual(response.status_code, 302)
 
     def test_calendar_user_view_list(self):
         """Test Function to check calendar_user list"""

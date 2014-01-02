@@ -26,25 +26,29 @@
             {% include "frontend/extra_modal_header.html" %}
             <script type="text/javascript" charset="utf-8">
                 $(window).load(function(){
-                    $('#survey-import-modal').modal('show');
+                    $('#survey-import').modal('show');
                 });
-                var url = '/module/survey/';
-                $("#id_close,#id_close_x").live('click', function() {
+                function back_to(){
+                    var url = '/module/survey/';
                     $(location).attr('href', url);
-                });
+                }
+                //var url = '/module/survey/';
+                //$("#id_close,#id_close_x").live('click', function() {
+                //    $(location).attr('href', url);
+                //});
                 var KEYCODE_ESC = 27;
                 $(document).keyup(function(e) {
                     if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
                 });
             </script>
             <!-- modal content-->
-            <div class="modal fade" id="survey-import-modal" role="dialog" aria-labelledby="survey_import_modal" data-backdrop="static">
+            <div class="modal fade" id="survey-import" role="dialog" aria-labelledby="survey_import" data-backdrop="static">
 
         {% endif %}
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
+                    <a id="id_close_x" class="close" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</a>
                     <h3>{% trans "import survey"|title %}</h3>
                 </div>
                 <form method="post" role="form" action="/module/import_survey/" enctype="multipart/form-data" >{% csrf_token %}
@@ -62,7 +66,7 @@
                     </div>
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
-                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</button>
+                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
                     </div>
                 </form>
             </div>

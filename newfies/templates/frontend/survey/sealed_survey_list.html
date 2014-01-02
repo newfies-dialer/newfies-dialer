@@ -2,7 +2,7 @@
 {% load i18n pagination_tags common_tags survey_tags %}
 
 {% block extra_files %}
-    {% include "frontend/custom_jquery_select_all.html" %}            
+    {% include "frontend/custom_jquery_select_all.html" %}
 {% endblock %}
 
 {% block content_header %}
@@ -36,10 +36,10 @@
                                 <td>
                                     {# link_of_survey_view row.id #}
                                     <a id="id_survey_seal_{{ row.id }}" href="#sealed-survey" url="/module/sealed_survey_view/{{ row.id }}/" target="_blank" title="{% trans 'view sealed survey' %}"  data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>
-                                    
+
                                     <!--Sealed survey modal-->
                                     <script type="text/javascript" charset="utf-8">
-                                        $("#id_survey_seal_{{ row.id }}").live('click', function(e) {
+                                        $("#id_survey_seal_{{ row.id }}").on('click', function(e) {
                                             e.preventDefault();
                                             var url = $(this).attr('url');
                                             var modal_id = $(this).attr('data-controls-modal');
@@ -48,7 +48,7 @@
                                     </script>
                                 </td>
                             </tr>
-                        {% endfor %}                        
+                        {% endfor %}
                     {% else %}
                         <tr>
                             <td colspan="4" align="center">

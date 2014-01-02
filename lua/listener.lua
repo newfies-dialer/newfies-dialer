@@ -196,6 +196,9 @@ while true do
         else
             starting_date = 'NOW()'
         end
+        if alarm_request_id == 'None' then
+            alarm_request_id = 'NULL'
+        end
 
         -- HEARTBEAT happening every 30 seconds
         if event_name == 'HEARTBEAT' then

@@ -501,6 +501,7 @@ def customer_dashboard(request, on_index=None):
             'x_axis_format': '%d %b %Y',
             'tag_script_js': True,
             'jquery_on_ready': True,
+            'resize': True,
         }
     }
     if on_index == 'yes':

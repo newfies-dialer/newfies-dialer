@@ -52,4 +52,4 @@ def calculate_date(search_type):
     if search_type == SEARCH_TYPE.G_Last_hour:
         start_date = end_date + relativedelta(hours=-int(1))
 
-    return start_date
+    return start_date.replace(tzinfo=utc)

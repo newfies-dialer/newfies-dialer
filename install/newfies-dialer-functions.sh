@@ -544,6 +544,10 @@ func_install_source(){
     git clone git://github.com/Star2Billing/newfies-dialer.git
     cd newfies-dialer
 
+    echo ""
+    echo "Installing Branch: $BRANCH"
+    echo ""
+
     #Install branch develop / callcenter
     if echo $BRANCH | grep -i "^develop" > /dev/null ; then
         git checkout -b develop --track origin/develop

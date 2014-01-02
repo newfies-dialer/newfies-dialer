@@ -1,0 +1,12 @@
+[
+{
+    "pk": 1,
+    "model": "appointment.calendar",
+    "fields": {
+        "created_date": "2013-12-17T13:42:31.500",
+        "max_concurrent": 1,
+        "name": "test calendar",
+        "user": 3
+    }
+}
+]

@@ -398,7 +398,7 @@ func_install_pip_deps(){
     echo "Install Django requirements..."
     for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt | grep -v \#)
     do
-        pip install $line
+        pip install $line --allow-all-external --allow-unverified django-admin-tools
     done
 
     #Install Python ESL / this needs to be done within the virtualenv

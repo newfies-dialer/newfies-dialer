@@ -29,7 +29,7 @@ from frontend_notification.urls import urlpatterns as urlpatterns_frontend_notif
 from agent.urls import urlpatterns as urlpatterns_agent
 from callcenter.urls import urlpatterns as urlpatterns_callcenter
 from sms_module.urls import urlpatterns as urlpatterns_sms_module
-from dajaxice.core import dajaxice_autodiscover
+from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 from django.contrib import admin
 import os
 
@@ -54,7 +54,8 @@ urlpatterns = patterns('',
     (r'^static/(?P<path>.*)$', 'django.views.static.serve',
         {'document_root': settings.STATIC_ROOT}),
     #(r'^sentry/', include('sentry.web.urls')),
-    (r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
+    #(r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
+    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
 )
 
 if settings.DEBUG:

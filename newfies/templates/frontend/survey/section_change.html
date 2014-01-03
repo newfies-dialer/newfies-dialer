@@ -42,7 +42,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <button id="id_close_x" type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <button id="id_close_x" type="button" class="close" data-dismiss="modal" aria-hidden="true" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</button>
                     <h4>
                         {% if action == 'update' %}
                             {% trans "update"|title %}
@@ -377,7 +377,7 @@
                             </button>
                         {% endif %}
 
-                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</button>
+                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
                     </div>
                 </form>
             </div>

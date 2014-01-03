@@ -363,10 +363,6 @@
 </div>
 {% endif %}
 
-<!-- close survey section modal content-->
-<div id="section-update-edit" class="modal fade" role="dialog" aria-labelledby="section_update_edit">
-</div>
-
 {% if action == 'update' %}
     <div class="row">
         <div class="col-md-6 text-left">
@@ -382,6 +378,10 @@
     </div>
 {% endif %}
 
+<!-- close survey section modal content-->
+<div id="section-update-edit" class="modal fade" role="dialog" aria-labelledby="section_update_edit">
+</div>
+
 <!--Section add modal content-->
 <div id="section-create-add" class="modal fade" role="dialog" aria-labelledby="section_create_add"></div>
 
@@ -396,45 +396,47 @@
 
 <script type="text/javascript" charset="utf-8">
     // update section in modal
-    $(".section-edit").on('click', function(e) {
-        //e.preventDefault();
-        var url = $(this).attr('url');
-        var modal_id = $(this).attr('data-controls-modal');
-        $("#" + modal_id).load(url);
-    });
-    {% if action == 'update' %}
-        // Section add modal
-        $(".section-add").on('click', function(e) {
+    $(function() {
+        $(".section-edit").on('click', function(e) {
             //e.preventDefault();
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
-            url = url + "?survey_id={{ survey_obj_id }}";
             $("#" + modal_id).load(url);
         });
-    {% endif %}
-    // Section branching change modal
-    $(".section-branch").on('click', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('url');
-        var modal_id = $(this).attr('data-controls-modal');
-        $("#" + modal_id).load(url);
+        {% if action == 'update' %}
+            // Section add modal
+            $(".section-add").on('click', function(e) {
+                //e.preventDefault();
+                var url = $(this).attr('url');
+                var modal_id = $(this).attr('data-controls-modal');
+                url = url + "?survey_id={{ survey_obj_id }}";
+                $("#" + modal_id).load(url);
+            });
+        {% endif %}
+        // Section branching change modal
+        $(".section-branch").on('click', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('url');
+            var modal_id = $(this).attr('data-controls-modal');
+            $("#" + modal_id).load(url);
+        });
+
+        // Section script update modal
+        $(".script-edit").on('click', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('url');
+            var modal_id = $(this).attr('data-controls-modal');
+            $("#" + modal_id).load(url);
+        });
+
+        // Section delete modal
+        $(".section-delete").on('click', function(e) {
+            e.preventDefault();
+            var url = $(this).attr('url');
+            var modal_id = $(this).attr('data-controls-modal');
+            $("#" + modal_id).load(url);
+        });
     });
-
-    // Section script update modal
-    $(".script-edit").on('click', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('url');
-        var modal_id = $(this).attr('data-controls-modal');
-        $("#" + modal_id).load(url);
-    })
-
-    // Section delete modal
-    $(".section-delete").on('click', function(e) {
-        e.preventDefault();
-        var url = $(this).attr('url');
-        var modal_id = $(this).attr('data-controls-modal');
-        $("#" + modal_id).load(url);
-    })
 </script>
 
 </form>

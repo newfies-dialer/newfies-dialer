@@ -398,7 +398,7 @@
 
 <script type="text/javascript" charset="utf-8">
     // update section in modal
-    $(".section-edit").live('click', function(e) {
+    $(".section-edit").on('click', function(e) {
         e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
@@ -406,8 +406,8 @@
     });
     {% if action == 'update' %}
         // Section add modal
-        $(".section-add").live('click', function(e) {
-            e.preventDefault();
+        $(".section-add").on('click', function(e) {
+            //e.preventDefault();
             var url = $(this).attr('url');
             var modal_id = $(this).attr('data-controls-modal');
             url = url + "?survey_id=" + {{ survey_obj_id }};
@@ -415,7 +415,7 @@
         });
     {% endif %}
     // Section branching change modal
-    $(".section-branch").live('click', function(e) {
+    $(".section-branch").on('click', function(e) {
         e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
@@ -423,7 +423,7 @@
     });
 
     // Section script update modal
-    $(".script-edit").live('click', function(e) {
+    $(".script-edit").on('click', function(e) {
         e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
@@ -431,7 +431,7 @@
     })
 
     // Section delete modal
-    $(".section-delete").live('click', function(e) {
+    $(".section-delete").on('click', function(e) {
         e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');

@@ -138,7 +138,7 @@
 </div>
 <!--sms-campaign-duplicate modal-->
 <script type="text/javascript" charset="utf-8">
-    $(".sms-campaign-duplicate").live('click', function(e) {
+    $(".sms-campaign-duplicate").on('click', function(e) {
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);
@@ -149,7 +149,7 @@
 
 <!--sms-campaign-textmessage modal-->
 <script type="text/javascript" charset="utf-8">
-    $(".sms-campaign-textmessage").live('click', function(e) {
+    $(".sms-campaign-textmessage").on('click', function(e) {
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);

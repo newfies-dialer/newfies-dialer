@@ -25,21 +25,13 @@
         {% if err_msg %}
             {% include "frontend/extra_modal_header.html" %}
             <script type="text/javascript" charset="utf-8">
-                $(function () {
-                    $(window).load(function(){
-                        $('#sms-duplicate-campaign').modal('show');
-                    });
-
-                    var url = '/sms_campaign/';
-                    $("#id_close,#id_close_x").live('click', function() {
-                        $(location).attr('href', url);
-                    });
-
-                    var KEYCODE_ESC = 27;
-                    $(document).keyup(function(e) {
-                        if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
-                    });
+                $(window).load(function(){
+                    $('#sms-duplicate-campaign').modal('show');
                 });
+                function back_to(){
+                    var url = '/sms_campaign/';
+                    $(location).attr('href', url);
+                }
             </script>
             <!-- modal content-->
             <div class="modal fade" id="sms-duplicate-campaign" role="dialog" aria-labelledby="add_duplicate_sms_campaign" data-backdrop="static">
@@ -47,7 +39,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
+                    <a id="id_close_x" class="close" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</a>
                     <h3>{% trans "sms"|upper %} {% trans "campaign"|title %}
                         <small></small>
                     </h3>
@@ -65,7 +57,7 @@
                                 <label for="id_{{ field.name }}" class="control-label">{{ field.label|title }}</label>
                                 {{ field }}
                                 {% if field.errors %}
-                                    <span class="{% if field.errors %}has-error{% endif %}">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                    <span class="help-block {% if field.errors %}has-error{% endif %}">{{ field.errors|removetags:"ul li"|safe }}</span>
                                 {% endif %}
                                 <span class="help-block">{{ field.help_text|capfirst }} </span>
                             </div>
@@ -77,7 +69,7 @@
                         <button type="submit" class="btn btn-primary" id="id_add" name="add" value="{% trans 'save'|title %}">
                             <i class="fa fa-save"></i> {% trans "save"|title %}
                         </button>
-                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</button>
+                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
                     </div>
                 </form>
             </div>

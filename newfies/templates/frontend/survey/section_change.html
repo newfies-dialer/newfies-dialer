@@ -23,21 +23,15 @@
     {% block content %}
 
         {% if err_msg %}
-
             {% include "frontend/extra_modal_header.html" %}
-
-            <script type="text/javascript" charset="utf-8">
+            <script type="text/javascript">
                 $(window).load(function(){
                     $('#section-modal').modal('show');
                 });
-                var url = '/module/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
-                $("#id_close,#id_close_x").live('click', function() {
+                function back_to(){
+                    var url = '/module/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
                     $(location).attr('href', url);
-                });
-                var KEYCODE_ESC = 27;
-                $(document).keyup(function(e) {
-                    if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
-                });
+                }
                 $(function () {
                     $('#helpover').popover();
                 });

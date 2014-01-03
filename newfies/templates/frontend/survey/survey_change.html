@@ -397,7 +397,7 @@
 <script type="text/javascript" charset="utf-8">
     // update section in modal
     $(".section-edit").on('click', function(e) {
-        e.preventDefault();
+        //e.preventDefault();
         var url = $(this).attr('url');
         var modal_id = $(this).attr('data-controls-modal');
         $("#" + modal_id).load(url);

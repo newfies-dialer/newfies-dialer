@@ -26,14 +26,10 @@
                 $(window).load(function(){
                     $('#section-script-modal').modal('show');
                 });
-                var url = '/module/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
-                $("#id_close,#id_close_x").live('click', function() {
+                function back_to(){
+                    var url = '/module/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
                     $(location).attr('href', url);
-                });
-                var KEYCODE_ESC = 27;
-                $(document).keyup(function(e) {
-                    if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
-                });
+                }
             </script>
         <!-- modal content-->
         <div class="modal fade" id="section-script-modal" role="dialog" aria-labelledby="section_script_modal">
@@ -41,7 +37,7 @@
         <div class="modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
+                    <a id="id_close_x" class="close" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</a>
                     <h3>{% if action == 'update' %}
                         {% trans "update"|title %}
                     {% else %}
@@ -82,7 +78,7 @@
                                 <i class="fa fa-save fa-lg"></i> {% trans "save"|title %}
                             </button>
                         {% endif %}
-                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</bu
+                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
                     </div>
 
                 </form>

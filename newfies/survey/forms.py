@@ -372,17 +372,18 @@ class SurveyDetailReportForm(SearchForm):
         self.fields.keyOrder = change_field_list
         if user:
             survey_list = []
-            try:
-                if user.is_superuser:
-                    survey_objs = Survey.objects.values_list('id', 'name').all().order_by('-id')
-                else:
-                    survey_objs = Survey.objects.values_list('id', 'name')\
-                        .filter(user=user).order_by('-id')
+            if user.is_superuser:
+                survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name').all().order_by('-id')
+            else:
+                survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name')\
+                    .filter(user=user).order_by('-id')
 
-                for i in survey_objs:
-                    survey_list.append((i[0], i[1]))
-            except:
-                pass
+            for i in survey_objs:
+                if i[2]:
+                    survey_name = i[1] + " : " + i[2]
+                else:
+                    survey_name = i[1]
+                survey_list.append((i[0], survey_name))
             self.fields['survey_id'].choices = survey_list
 
 

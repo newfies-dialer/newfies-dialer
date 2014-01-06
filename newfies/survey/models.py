@@ -65,7 +65,7 @@ class Survey_abstract(models.Model):
         abstract = True
 
     def __unicode__(self):
-            return u"%s" % self.name
+        return u"%s" % self.name
 
 
 class Survey_template(Survey_abstract):
@@ -135,6 +135,12 @@ class Survey(Survey_abstract):
         )
         verbose_name = _("survey")
         verbose_name_plural = _("surveys")
+
+    def __unicode__(self):
+        if self.campaign:
+            return u"%s (campaign: %s)" % (self.name, self.campaign)
+        else:
+            return u"%s" % self.name
 
 
 class Section_abstract(Sortable):

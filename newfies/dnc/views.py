@@ -211,7 +211,7 @@ def dnc_change(request, object_id):
                               context_instance=RequestContext(request))
 
 
-@permission_required('dnc.view_dnccontact', login_url='/')
+@permission_required('dnc.view_dnc_contact', login_url='/')
 @login_required
 def dnc_contact_list(request):
     """DNC Contact list for the logged in user

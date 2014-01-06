@@ -61,7 +61,7 @@
                         <li class="{% ifcontains '/audio/' %}active{% endifcontains %}"><a href="/module/audio/">{% trans "audio files"|capfirst %}</a></li>
                     {% endif %}
 
-                    {% if perms.dnc.view_dnc %}
+                    {% if perms.dnc.view_dnc_list %}
                         <li class="{% ifcontains '/dnc_list/' %}active{% endifcontains %}"><a href="/module/dnc_list/">{% trans "DNC" %}</a></li>
                     {% endif %}
 

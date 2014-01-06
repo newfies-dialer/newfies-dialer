@@ -30,14 +30,10 @@
             $(window).load(function(){
                 $('#section-modal').modal('show');
             });
-            var url = '/module/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
-            $("#id_close,#id_close_x").live('click', function() {
+            function back_to(){
+                var url = '/module/survey/' + '{{ survey_id }}'  + '/#row{{ section_id }}';
                 $(location).attr('href', url);
-            });
-            var KEYCODE_ESC = 27;
-            $(document).keyup(function(e) {
-                if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
-            });
+            }
         </script>
     <!-- modal content-->
     <div class="modal fade" id="section-modal" role="dialog" aria-labelledby="section_modal" data-backdrop="static">
@@ -47,7 +43,7 @@
 
         <div class="modal-content">
             <div class="modal-header">
-                <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
+                <a id="id_close_x" class="close" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</a>
                 <h3>{% trans "branch to section"|title %}</h3>
             </div>
 
@@ -64,20 +60,22 @@
                 {% else %}
                     <div class="row">
                         <div class="col-md-6">
-                            <script type="text/javascript" charset="utf-8">
-                                $("#button-anything").live('click', function() {
+                            <script type="text/javascript">
+                            $(function() {
+                                $("#button-anything").on('click', function() {
                                     $("#id_keys").attr('value', 'any');
                                 });
-                                $("#button-invalid").live('click', function() {
+                                $("#button-invalid").on('click', function() {
                                     $("#id_keys").attr('value', 'invalid');
                                 });
+                            });
                             </script>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
-                                    <input type="radio" name="options" id="button-anything">{% trans "any other key"|title %}
+                                    <input type="radio" name="keys_button" id="button-anything">{% trans "any other key"|title %}
                                 </label>
                                 <label class="btn btn-default">
-                                    <input type="radio" name="options" id="button-invalid"> {% trans "invalid"|title %}
+                                    <input type="radio" name="keys_button" id="button-invalid"> {% trans "invalid"|title %}
                                 </label>
                             </div>
                         </div>
@@ -138,7 +136,7 @@
                         </button>
                     {% endif %}
                 {% endif %}
-                <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</button>
+                <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
             </div>
             </form>
         </div>

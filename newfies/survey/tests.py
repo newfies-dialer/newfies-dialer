@@ -90,11 +90,11 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_sealed_survey_view_list(self):
         """Test Function survey view list"""
-        response = self.client.get('/sealed_survey/')
+        response = self.client.get('/module/sealed_survey/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/sealed_survey_list.html')
 
-        request = self.factory.get('/sealed_survey/')
+        request = self.factory.get('/module/sealed_survey/')
         request.user = self.user
         request.session = {}
         response = sealed_survey_list(request)
@@ -102,11 +102,11 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_list(self):
         """Test Function survey view list"""
-        response = self.client.get('/survey/')
+        response = self.client.get('/module/survey/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_list.html')
 
-        request = self.factory.get('/survey/')
+        request = self.factory.get('/module/survey/')
         request.user = self.user
         request.session = {}
         response = survey_list(request)
@@ -114,12 +114,12 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_add(self):
         """Test Function survey view add"""
-        response = self.client.get('/survey/add/')
+        response = self.client.get('/module/survey/add/')
         self.assertTrue(response.context['form'], SurveyForm())
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
 
-        request = self.factory.post('/survey/add/', {'name': 'test_survey'}, follow=True)
+        request = self.factory.post('/module/survey/add/', {'name': 'test_survey'}, follow=True)
         request.user = self.user
         request.session = {}
         response = survey_add(request)
@@ -127,16 +127,16 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_update(self):
         """Test Function survey view update"""
-        response = self.client.get('/survey/1/')
+        response = self.client.get('/module/survey/1/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
 
-        request = self.factory.post('/survey/1/', {'name': 'test_survey'}, follow=True)
+        request = self.factory.post('/module/survey/1/', {'name': 'test_survey'}, follow=True)
         request.user = self.user
         request.session = {}
         response = survey_change(request, 1)
         self.assertEqual(response.status_code, 302)
-        self.assertEqual(response['Location'], '/survey/')
+        self.assertEqual(response['Location'], '/module/survey/')
 
         response = survey_del(request, 1)
         self.assertEqual(response.status_code, 302)
@@ -149,17 +149,17 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
     def test_survey_view_delete(self):
         """Test Function to check delete survey"""
-        request = self.factory.get('/survey/del/1/')
+        request = self.factory.get('/module/survey/del/1/')
         request.user = self.user
         request.session = {}
         response = survey_del(request, 1)
         self.assertEqual(response.status_code, 302)
 
-        request = self.factory.post('/survey/del/', {'select': '1'})
+        request = self.factory.post('/module/survey/del/', {'select': '1'})
         request.user = self.user
         request.session = {}
         response = survey_del(request, 0)
-        self.assertEqual(response['Location'], '/survey/')
+        self.assertEqual(response['Location'], '/module/survey/')
         self.assertEqual(response.status_code, 302)
 
     def test_survey_section_view_add(self):
@@ -388,7 +388,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_script_play(request, 1)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.get('/section/script_play/10/')
+        response = self.client.get('/section/script_play/1/')
         self.assertRaises(Http404)
 
     def test_survey_section_view_delete(self):
@@ -510,12 +510,13 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = import_survey(request)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post('/import_survey/',
+        response = self.client.post('/module/import_survey/',
             data={'survey_file': '', 'name': 'new survey'})
         self.assertEqual(response.status_code, 200)
 
     def test_seal_survey(self):
         request = self.factory.get('/module/seal_survey/1/')
+        request.user = self.user
         request.session = {}
         response = seal_survey(request, 1)
         self.assertEqual(response.status_code, 200)

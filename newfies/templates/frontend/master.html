@@ -35,11 +35,13 @@
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-{% block header_files %}
-
 <!-- Le javascript -->
 <script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery/2.0.3/jquery.min.js"></script>
 
+{% block jquery_ui_js %}
+{% endblock %}
+
+{% block header_files %}
 <!--bootstrap js-->
 <script src="{{ STATIC_URL }}newfies/bootstrap/js/bootstrap.js"></script>
 <script src="{{ STATIC_URL }}newfies/js/bootbox.min.js"></script>

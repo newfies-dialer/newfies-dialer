@@ -630,6 +630,10 @@ BOWER_INSTALLED_APPS = (
 #Need to build documentation with Django 1.6
 LOGGING_CONFIG = None
 
+# DAJAXICE setting
+# Not Include XmlHttpRequest.js inside dajaxice.core.js
+DAJAXICE_XMLHTTPREQUEST_JS_IMPORT = False
+
 #IMPORT LOCAL SETTINGS
 #=====================
 try:

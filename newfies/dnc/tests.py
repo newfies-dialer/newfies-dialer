@@ -22,9 +22,10 @@ from dnc.views import dnc_add, dnc_change, dnc_list, dnc_del,\
 from dnc.forms import DNCForm, DNCContactForm, DNCContactSearchForm,\
     DNCContact_fileImport
 from common.utils import BaseAuthenticatedClient
+import os
 
 csv_file = open(
-    settings.APPLICATION_DIR +
+    os.path.abspath('../../newfies-dialer/newfies/') +
     '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
 )
 
@@ -136,7 +137,6 @@ class DNCCustomerView(BaseAuthenticatedClient):
     def test_dnc_contact_view_list(self):
         """Test Function to check DNC Contact list"""
         response = self.client.get('/module/dnc_contact/')
-        self.assertEqual(response.context['module'], 'dnc_contact_list')
         self.assertTrue(response.context['form'], DNCContactSearchForm(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/dnc_contact/list.html')
@@ -211,7 +211,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
                         DNCContact_fileImport(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
-                                'frontend/dnc_contact_import_dnc_contact.html')
+                                'frontend/dnc_contact/import_dnc_contact.html')
 
         response = self.client.post('/module/dnc_contact_import/',
                                     data={'dnc_list': '1',
@@ -219,8 +219,8 @@ class DNCCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         new_file = open(
-            settings.APPLICATION_DIR +
-            '/dialer_audio/fixtures/sample_audio_file.mp3', 'r'
+            os.path.abspath('../../newfies-dialer/newfies/') +
+            '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
         )
         response = self.client.post('/module/dnc_contact_import/',
                                     data={'dnc_list': '1',

@@ -60,20 +60,22 @@
                 {% else %}
                     <div class="row">
                         <div class="col-md-6">
-                            <script type="text/javascript" charset="utf-8">
+                            <script type="text/javascript">
+                            $(function() {
                                 $("#button-anything").on('click', function() {
                                     $("#id_keys").attr('value', 'any');
                                 });
                                 $("#button-invalid").on('click', function() {
                                     $("#id_keys").attr('value', 'invalid');
                                 });
+                            });
                             </script>
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
-                                    <input type="radio" name="options" id="button-anything">{% trans "any other key"|title %}
+                                    <input type="radio" name="keys_button" id="button-anything">{% trans "any other key"|title %}
                                 </label>
                                 <label class="btn btn-default">
-                                    <input type="radio" name="options" id="button-invalid"> {% trans "invalid"|title %}
+                                    <input type="radio" name="keys_button" id="button-invalid"> {% trans "invalid"|title %}
                                 </label>
                             </div>
                         </div>

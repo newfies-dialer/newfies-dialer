@@ -32,7 +32,6 @@ from datetime import datetime
 from django.utils.timezone import utc
 import os
 
-
 csv_file = open(
     os.path.abspath('../../newfies-dialer/newfies/') +
     '/dialer_contact/fixtures/import_contacts.txt', 'r'
@@ -108,7 +107,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
     def test_phonebook_view_list(self):
         """Test Function to check phonebook list"""
         response = self.client.get('/phonebook/')
-        self.assertEqual(response.context['module'], 'phonebook_list')
         self.assertTemplateUsed(response, 'frontend/phonebook/list.html')
 
         request = self.factory.get('/phonebook/')
@@ -214,7 +212,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
     def test_contact_view_list(self):
         """Test Function to check Contact list"""
         response = self.client.get('/contact/')
-        self.assertEqual(response.context['module'], 'contact_list')
         self.assertTrue(response.context['form'], ContactSearchForm(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'frontend/contact/list.html')
@@ -296,20 +293,6 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
                                 'frontend/contact/import_contact.html')
-
-        #response = self.client.post('/contact_import/',
-        #                            data={'phonebook': '1',
-        #                                  'csv_file': csv_file})
-        #self.assertEqual(response.status_code, 200)
-
-        new_file = open(
-            settings.APPLICATION_DIR +
-            '/dialer_audio/fixtures/sample_audio_file.mp3', 'r'
-        )
-        response = self.client.post('/contact_import/',
-                                    data={'phonebook_id': '1',
-                                          'csv_file': new_file})
-        self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/contact_import/')
         request.user = self.user

@@ -33,7 +33,7 @@ dnc_list_redirect_url = '/module/dnc_list/'
 dnc_contact_redirect_url = '/module/dnc_contact/'
 
 
-@permission_required('dnc.view_dnc_list', login_url='/')
+@permission_required('dnc.view_dnc', login_url='/')
 @login_required
 def dnc_list(request):
     """DNC list for the logged in user

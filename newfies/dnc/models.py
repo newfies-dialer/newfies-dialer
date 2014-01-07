@@ -44,7 +44,7 @@ class DNC(models.Model):
 
     class Meta:
         permissions = (
-            ("view_dnc_list", _('can see Do Not Call list')),
+            ("view_dnc", _('can see Do Not Call list')),
         )
         db_table = "dnc_list"
         verbose_name = _("Do Not Call list")

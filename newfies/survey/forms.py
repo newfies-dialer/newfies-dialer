@@ -344,19 +344,20 @@ class SurveyReportForm(forms.Form):
         self.fields.keyOrder = ['campaign']
         # To get user's campaign list which are attached with survey
         if user:
-            list = []
+            camp_list = []
+            camp_list.append((0, _('select campaign').title()))
             try:
                 if user.is_superuser:
-                    camp_list = Campaign.objects.values_list('id', 'name')\
+                    campaign_list = Campaign.objects.values_list('id', 'name')\
                         .filter(content_type__model='survey', has_been_started=True).order_by('-id')
                 else:
-                    camp_list = Campaign.objects.values_list('id', 'name')\
+                    campaign_list = Campaign.objects.values_list('id', 'name')\
                         .filter(user=user, content_type__model='survey', has_been_started=True).order_by('-id')
-                for i in camp_list:
-                    list.append((i[0], i[1]))
+                for i in campaign_list:
+                    camp_list.append((i[0], i[1]))
             except:
                 pass
-            self.fields['campaign'].choices = list
+            self.fields['campaign'].choices = camp_list
 
 
 class SurveyDetailReportForm(SearchForm):
@@ -372,6 +373,7 @@ class SurveyDetailReportForm(SearchForm):
         self.fields.keyOrder = change_field_list
         if user:
             survey_list = []
+            survey_list.append((0, _('select survey').title()))
             if user.is_superuser:
                 survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name').all().order_by('-id')
             else:

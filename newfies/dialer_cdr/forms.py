@@ -51,26 +51,26 @@ class VoipSearchForm(SearchForm):
 
             self.fields['leg_type'].choices = get_leg_type_list()
 
-            campaign_list = []
-            campaign_list.append((0, _('all').upper()))
+            camp_list = []
+            camp_list.append((0, _('all').upper()))
             content_type_list = ['survey']
             try:
                 if user.is_superuser:
-                    campaign_list = Campaign.objects.values_list('id', 'name') \
+                    campaign_list = Campaign.objects.values_list('id', 'name')\
                         .filter(content_type__model__in=content_type_list,
                                 has_been_started=True) \
                         .order_by('-id')
                 else:
-                    campaign_list = Campaign.objects.values_list('id', 'name') \
+                    campaign_list = Campaign.objects.values_list('id', 'name')\
                         .filter(user=user, content_type__model__in=content_type_list,
                                 has_been_started=True) \
                         .order_by('-id')
 
                 for i in campaign_list:
-                    campaign_list.append((i[0], i[1]))
+                    camp_list.append((i[0], i[1]))
             except:
                 pass
-            self.fields['campaign_id'].choices = campaign_list
+            self.fields['campaign_id'].choices = camp_list
 
 
 class AdminVoipSearchForm(AdminSearchForm):

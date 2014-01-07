@@ -31,7 +31,7 @@ from dialer_campaign.forms import get_phonebook_list, \
 def get_smscampaign_list(user=None):
     """get list of smscampaign"""
     camp_list = []
-    camp_list.append((0, '---'))
+    camp_list.append((0, _('all').upper()))
     if user is None:
         pb_list = field_list("smscampaign")
     else:

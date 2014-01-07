@@ -76,12 +76,13 @@ class SMSAdminView(BaseAuthenticatedClient):
         response = self.client.get('/admin/sms_module/smsmessage/sms_daily_report/')
         self.failUnlessEqual(response.status_code, 200)
 
+
 class SMSModuleCustomerView(BaseAuthenticatedClient):
     """Test cases for SMSCampaign Customer Interface."""
 
     fixtures = ['example_gateways.json', 'auth_user.json', 'gateway.json',
                 'phonebook.json', 'contact.json', 'dialer_setting.json',
-                'sms_campaign.json', 'user_profile.json', 'message.json', 
+                'sms_campaign.json', 'user_profile.json', 'message.json',
                 'sms_message.json']
 
     def test_sms_campaign_list(self):
@@ -165,7 +166,6 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response['Location'],
             '/admin/sms_module/smscampaign/')
 
-    """
     def test_update_sms_campaign_status_cust(self):
         request = self.factory.post(
             'update_sms_campaign_status_cust/1/1/', follow=True)
@@ -195,7 +195,6 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = update_sms_campaign_status_cust(request, 1, 4)
         self.assertEqual(response.status_code, 302)
-    """
 
     def test_sms_dashboard(self):
         """Test Function to check customer sms_dashboard"""
@@ -315,56 +314,52 @@ class SMSCeleryTaskTestCase(TestCase):
 
     fixtures = ['example_gateways.json', 'auth_user.json', 'gateway.json',
                 'phonebook.json', 'contact.json', 'dialer_setting.json',
-                'sms_campaign.json', 'user_profile.json', 'message.json',
-                'sms_message.json']
+                'user_profile.json', 'sms_campaign.json', 'message.json',
+                'sms_message.json', 'sms_campaign_subscriber.json']
 
-    #def test_init_smsrequest(self):
-    #    """Test that the ``init_smsrequest``
-    #    task runs with no errors, and returns the correct result."""
-    #    result = init_smsrequest.delay(1, 1)
-    #    self.assertEqual(result.successful(), True)
+    def test_init_smsrequest(self):
+        """Test that the ``init_smsrequest``
+        task runs with no errors, and returns the correct result."""
+        sms_campaign_obj = SMSCampaign.objects.get(pk=1)
+        sms_campaign_subscriber_obj = SMSCampaignSubscriber.objects.get(pk=1)
+        result = init_smsrequest.delay(sms_campaign_subscriber_obj, sms_campaign_obj)
+        self.assertEqual(result.successful(), True)
 
-    #def test_check_sms_campaign_pendingcall(self):
-    #    """Test that the ``check_sms_campaign_pendingcall``
-    #    periodic task runs with no errors, and returns the correct result."""
-    #    result = check_sms_campaign_pendingcall.delay()
-    #    self.assertEqual(result.successful(), True)
+    def test_check_sms_campaign_pendingcall(self):
+        """Test that the ``check_sms_campaign_pendingcall``
+        periodic task runs with no errors, and returns the correct result."""
+        result = check_sms_campaign_pendingcall.delay(1)
+        self.assertEqual(result.successful(), True)
 
-    #def test_sms_campaign_running(self):
-    #    """Test that the ``sms_campaign_running``
-    #    task runs with no errors, and returns the correct result."""
-    #    result = sms_campaign_running.delay(1)
-    #    self.assertEqual(result.successful(), True)
+    def test_sms_campaign_running(self):
+        """Test that the ``sms_campaign_running``
+        task runs with no errors, and returns the correct result."""
+        result = sms_campaign_running.delay()
+        self.assertEqual(result.successful(), True)
 
-    #def test_sms_campaign_spool_contact(self):
-    #    """Test that the ``sms_campaign_spool_contact``
-    #    periodic task runs with no errors, and returns the correct result."""
-    #    result = sms_campaign_spool_contact.delay()
-    #    self.assertEqual(result.successful(), True)
+    def test_sms_campaign_spool_contact(self):
+        """Test that the ``sms_campaign_spool_contact``
+        periodic task runs with no errors, and returns the correct result."""
+        result = sms_campaign_spool_contact.delay()
+        self.assertEqual(result.successful(), True)
 
-    #def test_collect_subscriber_optimized(self):
-    #    """Test that the ``collect_subscriber_optimized``
-    #    task runs with no errors, and returns the correct result."""
-    #    result = collect_subscriber_optimized.delay(1)
-    #    self.assertEqual(result.successful(), True)
+    def test_import_phonebook(self):
+        """Test that the ``import_phonebook``
+        periodic task runs with no errors, and returns the correct result."""
+        result = SMSImportPhonebook.delay(1, 1)
+        self.assertEqual(result.successful(), True)
 
-    #def test_import_phonebook(self):
-    #    """Test that the ``import_phonebook``
-    #    periodic task runs with no errors, and returns the correct result."""
-    #    result = import_phonebook.delay()
-    #    self.assertEqual(result.successful(), True)
+    def test_sms_campaign_expire_check(self):
+        """Test that the ``sms_campaign_expire_check``
+        task runs with no errors, and returns the correct result."""
+        result = sms_campaign_expire_check.delay()
+        self.assertEqual(result.successful(), True)
 
-    #def test_sms_campaign_expire_check(self):
-    #    """Test that the ``sms_campaign_expire_check``
-    #    task runs with no errors, and returns the correct result."""
-    #    result = sms_campaign_expire_check.delay(1)
-    #    self.assertEqual(result.successful(), True)
-
-    #def test_resend_sms_update_smscampaignsubscriber(self):
-    #    """Test that the ``resend_sms_update_smscampaignsubscriber``
-    #    periodic task runs with no errors, and returns the correct result."""
-    #    result = resend_sms_update_smscampaignsubscriber.delay()
-    #    self.assertEqual(result.successful(), True)
+    def test_resend_sms_update_smscampaignsubscriber(self):
+        """Test that the ``resend_sms_update_smscampaignsubscriber``
+        periodic task runs with no errors, and returns the correct result."""
+        result = resend_sms_update_smscampaignsubscriber.delay()
+        self.assertEqual(result.successful(), True)
 
 
 class SMSCampaignModel(TestCase):
@@ -413,7 +408,7 @@ class SMSCampaignModel(TestCase):
         self.assertTrue(self.smssubscriber.__unicode__())
 
         # Test mgt command
-        #call_command("create_sms", "1|10")
+        call_command("create_sms", "1|10")
 
     def test_campaign_form(self):
         self.assertEqual(self.smscampaign.name, "SMS Campaign")

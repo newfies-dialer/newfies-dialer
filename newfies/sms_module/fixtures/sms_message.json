@@ -3,7 +3,9 @@
         "pk":1,
         "model":"sms_module.smsmessage",
         "fields":{
-            "sms_campaign":1
+        	"message":1,
+            "sms_campaign":1,
+            "sms_gateway":1
         }
     }
 ]

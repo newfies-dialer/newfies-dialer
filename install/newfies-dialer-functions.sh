@@ -385,6 +385,10 @@ func_install_pip_deps(){
 
     #Install Newfies-Dialer depencencies
     easy_install -U distribute
+
+    #Upgrade pip to latest (1.5)
+    pip install pip --upgrade
+
     #pip now only installs stable versions by default, so we need to use --pre option
     pip install --pre pytz
     #For python 2.6 only

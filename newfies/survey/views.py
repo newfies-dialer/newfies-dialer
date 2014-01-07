@@ -267,53 +267,52 @@ def section_add(request):
     if request.method == 'POST':
         # Play message
         if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
-            form_data = \
-                section_add_form(request, PlayMessageSectionForm, survey, SECTION_TYPE.PLAY_MESSAGE)
+            form_data = section_add_form(request, PlayMessageSectionForm,
+                                         survey, SECTION_TYPE.PLAY_MESSAGE)
 
         # hangup
         if int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
-            form_data =\
-                section_add_form(request, PlayMessageSectionForm, survey, SECTION_TYPE.HANGUP_SECTION)
+            form_data = section_add_form(request, PlayMessageSectionForm,
+                                         survey, SECTION_TYPE.HANGUP_SECTION)
 
         # DNC
         if int(request.POST.get('type')) == SECTION_TYPE.DNC:
-            form_data =\
-                section_add_form(request, PlayMessageSectionForm, survey, SECTION_TYPE.DNC)
+            form_data = section_add_form(request, PlayMessageSectionForm,
+                                         survey, SECTION_TYPE.DNC)
 
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
-            form_data =\
-                section_add_form(request, MultipleChoiceSectionForm, survey, SECTION_TYPE.MULTI_CHOICE)
+            form_data = section_add_form(request, MultipleChoiceSectionForm,
+                                         survey, SECTION_TYPE.MULTI_CHOICE)
 
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
-            form_data =\
-                section_add_form(request, RatingSectionForm, survey, SECTION_TYPE.RATING_SECTION)
+            form_data = section_add_form(request, RatingSectionForm,
+                                         survey, SECTION_TYPE.RATING_SECTION)
 
         # Capture Digits Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
-            form_data =\
-                section_add_form(request, CaptureDigitsSectionForm, survey, SECTION_TYPE.CAPTURE_DIGITS)
+            form_data = section_add_form(request, CaptureDigitsSectionForm,
+                                         survey, SECTION_TYPE.CAPTURE_DIGITS)
 
         # Record Message Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
-            form_data =\
-                section_add_form(request, RecordMessageSectionForm, survey, SECTION_TYPE.RECORD_MSG)
+            form_data = section_add_form(request, RecordMessageSectionForm,
+                                         survey, SECTION_TYPE.RECORD_MSG)
 
         # Call transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CONFERENCE:
-            form_data =\
-                section_add_form(request, ConferenceSectionForm, survey, SECTION_TYPE.CONFERENCE)
+            form_data = section_add_form(request, ConferenceSectionForm,
+                                         survey, SECTION_TYPE.CONFERENCE)
 
         # Call transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
-            form_data =\
-                section_add_form(request, CallTransferSectionForm, survey, SECTION_TYPE.CALL_TRANSFER)
+            form_data = section_add_form(request, CallTransferSectionForm,
+                                         survey, SECTION_TYPE.CALL_TRANSFER)
 
         # SMS Section
         if int(request.POST.get('type')) == SECTION_TYPE.SMS:
-            form_data =\
-                section_add_form(request, SMSSectionForm, survey, SECTION_TYPE.SMS)
+            form_data = section_add_form(request, SMSSectionForm, survey, SECTION_TYPE.SMS)
 
         if form_data.get('save_tag'):
             return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
@@ -365,7 +364,7 @@ def section_update_form(request, Form, section_type, section_instance):
     if request.POST.get('update') is None:
         request.session["err_msg"] = True
         form = Form(request.user,
-            instance=section_instance, initial={'type': section_type})
+                    instance=section_instance, initial={'type': section_type})
 
     data = {
         'form': form,

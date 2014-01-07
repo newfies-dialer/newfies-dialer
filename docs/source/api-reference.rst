@@ -27,7 +27,6 @@ Contents:
     ./api-doc/gateway_serializers
     ./api-doc/mail_template_serializers
     ./api-doc/phonebook_serializers
-    ./api-doc/queue_serializers
     ./api-doc/rule_serializers
     ./api-doc/section_template_serializers
     ./api-doc/sms_campaign_serializers
@@ -36,8 +35,9 @@ Contents:
     ./api-doc/subscriber_list_serializers
     ./api-doc/survey_serializers
     ./api-doc/survey_template_serializers
-    ./api-doc/tier_serializers
 
+.. ./api-doc/queue_serializers
+.. ./api-doc/tier_serializers
 
 
 Testing console of APIs:

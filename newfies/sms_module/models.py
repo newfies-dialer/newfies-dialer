@@ -142,15 +142,14 @@ class SMSCampaign(Model):
     maxretry = models.IntegerField(default='0', blank=True, null=True,
                                    verbose_name=_('max retries'),
                                    help_text=_("maximum retries per contact"))
-    intervalretry = models.IntegerField(
-        default='300', blank=True, null=True, verbose_name=_('time between Retries'),
+    intervalretry = models.IntegerField(default='300', blank=True, null=True,
+        verbose_name=_('time between Retries'),
         help_text=_("time delay in seconds before retrying contact"))
 
     sms_gateway = models.ForeignKey(Gateway, verbose_name=_("sms gateway"),
                                     related_name="SMS Gateway",
                                     help_text=_("select SMS gateway"))
-    text_message = models.TextField(verbose_name=_('text Message'), blank=True,
-                                    null=True, help_text=_("content of the SMS"))
+    text_message = models.TextField(verbose_name=_('text Message'), blank=False, null=False)
 
     extra_data = models.CharField(max_length=120, blank=True,
                                   verbose_name=_("extra parameters"),

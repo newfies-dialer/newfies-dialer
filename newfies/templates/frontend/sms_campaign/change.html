@@ -28,7 +28,7 @@
                 <fieldset>
                     <legend>{% trans "general settings"|title %}</legend>
                     <div class="row">
-                        {% get_fieldset campaign_code,ds_user,name,callerid,sms_gateway as campaign_fields from form %}
+                        {% get_fieldset campaign_code,ds_user,name,callerid,sms_gateway,phonebook as campaign_fields from form %}
                         {% for field in campaign_fields.hidden_fields %}
                             {{ field }}
                         {% endfor %}
@@ -36,7 +36,7 @@
                             <div class="col-md-6">
                                 <div class="form-group {% if field.errors %}has-error{% endif %}">
                                 <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                                     {{ field }}
                                     {% if field.errors %}
                                         <span class="help-block">
@@ -51,12 +51,12 @@
                             </div>
                         {% endfor %}
 
-                        {% get_fieldset text_message,description,phonebook as campaign_fields from form %}
+                        {% get_fieldset text_message as campaign_fields from form %}
                         {% for field in campaign_fields.visible_fields %}
-                            <div class="col-md-6">
+                            <div class="col-md-8">
                                 <div class="form-group {% if field.errors %}has-error{% endif %}">
                                 <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                                     {{ field }}
                                     {% if field.errors %}
                                         <span class="help-block">
@@ -83,7 +83,7 @@
                             <div class="col-md-6">
                                 <div class="form-group {% if field.errors %}has-error{% endif %}">
                                 <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                                     {{ field }}
                                     {% if field.errors %}
                                         <span class="help-block">
@@ -116,7 +116,7 @@
                             {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
                             {% for field in settings_fields %}
                             <div class="col-md-1">
-                                <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                <label for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                                 <div class="make-switch switch-small">
                                 {{ field }}
                                 </div>
@@ -131,7 +131,7 @@
                             <div class="col-md-6">
                                 <div class="form-group {% if field.errors %}has-error{% endif %}">
                                 <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
                                     {{ field }}
                                     {% if field.errors %}
                                         <span class="help-block">

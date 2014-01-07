@@ -65,7 +65,6 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
             obj_subscriber.count_attempt += 1
 
         text_message = obj_subscriber.contact.replace_tag(obj_subscriber.sms_campaign.text_message)
-        logger.info("SendMessage text_message:%s" % text_message)
 
         # Create Message object
         msg_obj = SMSMessage.objects.create(

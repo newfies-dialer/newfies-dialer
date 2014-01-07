@@ -50,8 +50,8 @@ class SMSCampaignForm(ModelForm):
 
     class Meta:
         model = SMSCampaign
-        fields = ['campaign_code', 'name', 'description',
-                  'callerid', 'sms_gateway', 'phonebook',
+        fields = ['campaign_code', 'name', 'callerid',
+                  'sms_gateway', 'phonebook',
                   'extra_data', 'text_message',
                   'frequency', 'maxretry', 'intervalretry',
                   'startingdate', 'expirationdate',
@@ -60,7 +60,6 @@ class SMSCampaignForm(ModelForm):
                   'saturday', 'sunday', 'ds_user']
         exclude = ('status',)
         widgets = {
-            'description': Textarea(attrs={'cols': 23, 'rows': 3}),
             'extra_data': Textarea(attrs={'cols': 23, 'rows': 3}),
             'text_message': Textarea(attrs={'cols': 23, 'rows': 3}),
             'startingdate': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),

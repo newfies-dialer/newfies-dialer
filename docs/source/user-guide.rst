@@ -15,3 +15,4 @@ Contents:
     ./user-guide-doc/customer_panel
     ./user-guide-doc/admin_panel
     ./user-guide-doc/appointment
+    ./user-guide-doc/sms_campaign

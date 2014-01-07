@@ -29,6 +29,7 @@ Contents:
 
     configuration-defaults
     ./freeswitch/install-configure-freeswitch
+    ./SMS/sms.rst
     user-guide
 
 .. toctree::

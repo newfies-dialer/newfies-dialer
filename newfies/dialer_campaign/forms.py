@@ -26,6 +26,7 @@ from dialer_campaign.function_def import user_dialer_setting, get_phonebook_list
 from dialer_contact.forms import SearchForm
 from agent.function_def import agent_list
 from agent.models import AgentProfile, Agent
+from user_profile.models import UserProfile
 from common.common_functions import get_unique_code
 from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
@@ -104,12 +105,11 @@ class CampaignForm(ModelForm):
             self.fields['phonebook'].choices = phonebook_list
             self.fields['phonebook'].initial = str(phonebook_list[0][0])
 
-            list = user.get_profile().userprofile_gateway.all()
+            list = UserProfile.objects.get(user=user).userprofile_gateway.all()
             gw_list = ((l.id, l.name) for l in list)
 
             dnc_list.append(('', '---'))
-            list = DNC.objects.values_list('id', 'name') \
-                .filter(user=user).order_by('id')
+            list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
             for l in list:
                 dnc_list.append((l[0], l[1]))
             self.fields['dnc'].choices = dnc_list

@@ -336,7 +336,7 @@ class Campaign(Model):
     def get_active_max_frequency(self):
         """Get the active max frequency"""
         try:
-            obj_userprofile = self.user.get_profile()
+            obj_userprofile = UserProfile.objects.get(user=self.user)
         except UserProfile.DoesNotExist:
             return self.frequency
 
@@ -349,7 +349,7 @@ class Campaign(Model):
     def get_active_callmaxduration(self):
         """Get the active call max duration"""
         try:
-            obj_userprofile = self.user.get_profile()
+            obj_userprofile = UserProfile.objects.get(user=self.user)
         except UserProfile.DoesNotExist:
             return self.frequency
 

@@ -267,10 +267,10 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 
     def test_subscriber_list_export(self):
         """Test Function to check subscriber list"""
-        response = self.client.get('/subscribers/export_subscriber/')
+        response = self.client.get('/subscribers/export_subscriber/?format=csv')
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.get('/subscribers/export_subscriber/')
+        request = self.factory.get('/subscribers/export_subscriber/?format=xml')
         request.user = self.user
         request.session = {}
         response = subscriber_export(request)

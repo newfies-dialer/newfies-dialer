@@ -58,7 +58,7 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
     maxretry = get_sms_maxretry(obj_sms_campaign)
 
     # Update SMSCampaignSubscriber
-    if obj_subscriber.count_attempt < maxretry:
+    if obj_subscriber.count_attempt <= maxretry:
         if obj_subscriber.count_attempt is None or not obj_subscriber.count_attempt >= 0:
             obj_subscriber.count_attempt = 1
         else:
@@ -85,6 +85,8 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
         # Send sms
         logger.warning("Call SendMessage id:%d" % msg_obj.id)
         SendMessage.delay(msg_obj.id, obj_subscriber.sms_campaign.sms_gateway_id)
+    else:
+        logger.error("Max retry exceeded, sub_id:%s" % obj_subscriber.id)
 
     return True
 
@@ -399,6 +401,7 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
 
             if not list_subscriber:
                 #Go to the next campaign
+                logger.info("No subscribers in this campaign (id:%s)" % (sms_campaign.id))
                 continue
 
             for subscriber in list_subscriber:

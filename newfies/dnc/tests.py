@@ -222,8 +222,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         new_file = open(
-            os.path.abspath('../../newfies-dialer/newfies/') +
-            '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
+            settings.APPLICATION_DIR + '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
         )
         response = self.client.post('/module/dnc_contact_import/',
                                     data={'dnc_list': '1',

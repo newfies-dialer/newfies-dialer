@@ -3,6 +3,8 @@ python:
   - "2.7"
 env:
   - DJANGO=1.6.1
+services:
+  - redis
 install:
   # - pip install -q Django==$DJANGO --use-mirrors
   - sudo apt-get install flite

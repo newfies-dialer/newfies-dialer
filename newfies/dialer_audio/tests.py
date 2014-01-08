@@ -12,17 +12,19 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.models import User
-#from django.conf import settings
+#from django.contrib.auth.models import User
+from django.conf import settings
 from common.utils import BaseAuthenticatedClient
-from audiofield.models import AudioFile
-from dialer_audio.views import audio_list, audio_add, \
-    audio_change, audio_del
-import os
+#from audiofield.models import AudioFile
+#from dialer_audio.views import audio_list, audio_add, audio_change, audio_del
+#import os
+
+#audio_file = open(
+#    os.path.abspath('../../newfies-dialer/newfies/') + '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
+#)
 
 audio_file = open(
-    os.path.abspath('../../newfies-dialer/newfies/') +
-    '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
+    settings.APPLICATION_DIR + '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
 )
 
 

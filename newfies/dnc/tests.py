@@ -14,7 +14,7 @@
 
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.conf import settings
+#from django.conf import settings
 from dnc.models import DNC, DNCContact
 from dnc.views import dnc_add, dnc_change, dnc_list, dnc_del,\
     dnc_contact_list, dnc_contact_add, dnc_contact_change, \
@@ -25,8 +25,7 @@ from common.utils import BaseAuthenticatedClient
 import os
 
 csv_file = open(
-    os.path.abspath('../../newfies-dialer/newfies/') +
-    '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
+    os.path.abspath('../../newfies-dialer/newfies/') + '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
 )
 
 

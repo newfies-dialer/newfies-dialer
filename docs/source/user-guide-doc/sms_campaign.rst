@@ -54,6 +54,12 @@ There is also a start and stop date as to when it is valid to send the campaign.
 
 When all the settings are as required, then the survey can be saved and started by clicking the play button.
 
+Reporting
+=========
 
+To view the SMS reports, click reporting then SMS reports on the side menu. The call data records for SMS messages are listed under the SMS tab, while a daily report shows the number of SMS's sent by day.
 
+Records can be filtered on date, status and campaign.
+
+SMS CDR can be exported in CSV, XML and Excel formats. 
 

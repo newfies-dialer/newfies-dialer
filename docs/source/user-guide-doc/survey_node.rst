@@ -116,3 +116,15 @@ Record Message
 Record a message, the system stops recording after 3 seconds of silence, or by pressing the # key. The IVR flow will then continue.
 
 Recordings can be listened to in the survey reports menu.
+
+
+SMS Message
+-----------
+
+Play a message to the customer, either via TTS or audio file, then send an SMS message to the customer.
+
+Note that when the campaign is created, an SMS gateway must be selected under the Dialer tab.
+
+Reports on SMS messages can be be viewed under the Reporting section.
+
+

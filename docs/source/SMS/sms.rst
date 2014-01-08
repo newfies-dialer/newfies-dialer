@@ -50,7 +50,11 @@ Edit _Sender_ID_, _USERNAME_ and _PASSWORD_ to match the credetials issued by SM
 Khomp
 -----
 
-Documentation to follow.
+Khomp hardware is supported to all the use of SIM cards in house. See http://www.khomp.com.br/ for more details. The hardware needs to be configured for Freeswitch, see http://wiki.freeswitch.org/wiki/Khomp for more details.
+
+Additionally, the SMS Khomp API needs to be installed to link Newfies-Dialer and Khomp hardware which is available at https://github.com/areski/sms-khomp-api. 
+
+Contact us (http://www.newfies-dialer.org/about-us/contact/) for support and assistance.
 
 
 Messages
@@ -61,12 +65,12 @@ The messages section in the admin screens shows the status of the messages, e.g.
 Providers
 =========
 
-Documentation to follow.
+This area is not operational at the moment and is as a place-holder for future development.
 
 Replies
 =======
 
-Documentation to follow.
+This area is not operational at the moment and is as a place-holder for future development 
 
 
 

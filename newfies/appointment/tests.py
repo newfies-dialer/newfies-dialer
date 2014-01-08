@@ -20,7 +20,12 @@ from appointment.models.calendars import Calendar
 from appointment.models.events import Event
 from appointment.models.alarms import Alarm
 from appointment.views import calendar_setting_list, calendar_user_list, calendar_list,\
-    event_list, alarm_list, calendar_setting_add
+    event_list, alarm_list, calendar_setting_add, calendar_setting_change,\
+    calendar_setting_del, calendar_user_add, calendar_user_change, calendar_user_del,\
+    calendar_add, calendar_change, calendar_del, event_add, event_change, event_del,\
+    alarm_add, alarm_change, alarm_del
+from datetime import datetime
+from django.utils.timezone import utc
 
 
 class AppointmentAdminView(BaseAuthenticatedClient):
@@ -85,7 +90,7 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         'user_profile.json', 'phonebook.json', 'contact.json',
         'survey.json', 'dnc_list.json', 'dnc_contact.json',
         'campaign.json', 'subscriber.json', 'example_gateways.json',
-        'calendar_setting.json', 'calendar_user.json',
+        'calendar_setting.json', 'calendar_user_profile.json',
         'calendar.json', 'event.json', 'alarm.json'
     ]
 
@@ -142,6 +147,38 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         response = calendar_setting_add(request)
         self.assertEqual(response.status_code, 302)
 
+    def test_calendar_setting_view_update(self):
+        """Test Function to check update calendar_setting"""
+        request = self.factory.post('/module/calendar_setting/1/', {
+            "caller_name": "test",
+            "survey": "1",
+        }, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = calendar_setting_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/module/calendar_setting/1/', {'delete': True}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = calendar_setting_change(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+    def test_calendar_setting_view_delete(self):
+        """Test Function to check delete calendar_setting"""
+        # delete calendar_setting
+        request = self.factory.post('/module/calendar_setting/del/1/', follow=True)
+        request.user = self.user
+        request.session = {}
+        response = calendar_setting_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/module/calendar_setting/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = calendar_setting_del(request, 0)
+        self.assertEqual(response.status_code, 302)
+
     def test_calendar_user_view_list(self):
         """Test Function to check calendar_user list"""
         response = self.client.get('/module/calendar_user/')
@@ -153,6 +190,63 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = calendar_user_list(request)
         self.assertEqual(response.status_code, 200)
+
+    def test_calendar_user_view_add(self):
+        """Test Function to check add calendar_setting"""
+        request = self.factory.get('/module/calendar_user/add/')
+        request.user = self.user
+        request.session = {}
+        response = calendar_user_add(request)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/module/calendar_user/add/', data={
+            "username": "caluser1",
+            "password": "caluser1",
+            "calendar_setting_id": 1,
+            }, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/module/calendar_user/add/', {
+            "username": "caluser1",
+            "password": "caluser1",
+            "calendar_setting_id": 1
+            }, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = calendar_user_add(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_calendar_user_view_update(self):
+        """Test Function to check update calendar user"""
+        request = self.factory.post('/module/calendar_user/4/', {
+            "caller_name": "test",
+            "survey": "1",
+        }, follow=True)
+        request.user = self.user
+        request.session = {}
+        #response = calendar_user_change(request, 3)
+        #self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/module/calendar_user/3/', {'delete': True}, follow=True)
+        request.user = self.user
+        request.session = {}
+        #response = calendar_user_change(request, 3)
+        #self.assertEqual(response.status_code, 302)
+
+    def test_calendar_user_view_delete(self):
+        """Test Function to check delete calendar user"""
+        # delete calendar_setting
+        request = self.factory.post('/module/calendar_user/del/4/', follow=True)
+        request.user = self.user
+        request.session = {}
+        #response = calendar_user_del(request, 4)
+        #self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/module/calendar_user/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        #response = calendar_user_del(request, 0)
+        #self.assertEqual(response.status_code, 302)
 
     def test_calendar_view_list(self):
         """Test Function to check calendar list"""
@@ -166,6 +260,61 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         response = calendar_list(request)
         self.assertEqual(response.status_code, 200)
 
+    def test_calendar_view_add(self):
+        """Test Function to check add calendar"""
+        request = self.factory.get('/module/calendar/add/')
+        request.user = self.user
+        request.session = {}
+        response = calendar_add(request)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/module/calendar/add/', data={
+            "name": "test calendar",
+            "max_concurrent": 1,
+            }, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/module/calendar/add/', {
+            "name": "test calendar",
+            "max_concurrent": 1,
+            }, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = calendar_add(request)
+        self.assertEqual(response.status_code, 302)
+
+    def test_calendar_view_update(self):
+        """Test Function to check update calendar"""
+        request = self.factory.post('/module/calendar/1/', {
+            "caller_name": "test",
+            "survey": "1",
+        }, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = calendar_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/module/calendar/1/', {'delete': True}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = calendar_change(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+    def test_calendar_view_delete(self):
+        """Test Function to check delete calendar"""
+        # delete calendar
+        request = self.factory.post('/module/calendar/del/1/', follow=True)
+        request.user = self.user
+        request.session = {}
+        response = calendar_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/module/calendar/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = calendar_del(request, 0)
+        self.assertEqual(response.status_code, 302)
+
     def test_event_view_list(self):
         """Test Function to check event list"""
         response = self.client.get('/module/event/')
@@ -178,6 +327,67 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         response = event_list(request)
         self.assertEqual(response.status_code, 200)
 
+    def test_event_view_add(self):
+        """Test Function to check add event"""
+        request = self.factory.get('/module/event/add/')
+        request.user = self.user
+        request.session = {}
+        response = event_add(request)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/module/event/add/', data={
+            "title": "test event",
+            "description": "",
+            "creator_id": 1,
+            "created_on": datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+            "calendar_id": 1,
+            }, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/module/event/add/', {
+            "title": "test event",
+            "description": "",
+            "creator_id": 1,
+            "created_on": datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+            "calendar_id": 1,
+            }, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = event_add(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_event_view_update(self):
+        """Test Function to check update event"""
+        request = self.factory.post('/module/event/1/', {
+            "title": "test event",
+            "description": "",
+        }, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = event_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/module/event/1/', {'delete': True}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = event_change(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+    def test_event_view_delete(self):
+        """Test Function to check delete event"""
+        # delete event
+        request = self.factory.post('/module/event/del/1/', follow=True)
+        request.user = self.user
+        request.session = {}
+        response = event_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/module/event/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = event_del(request, 0)
+        self.assertEqual(response.status_code, 302)
+
     def test_alarm_view_list(self):
         """Test Function to check alarm list"""
         response = self.client.get('/module/alarm/')
@@ -189,3 +399,64 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = alarm_list(request)
         self.assertEqual(response.status_code, 200)
+
+    def test_alarm_view_add(self):
+        """Test Function to check add alarm"""
+        request = self.factory.get('/module/alarm/add/')
+        request.user = self.user
+        request.session = {}
+        response = alarm_add(request)
+        self.assertEqual(response.status_code, 200)
+
+        response = self.client.post('/module/alarm/add/', data={
+            "alarm_phonenumber": "123456789",
+            "alarm_email": "notify@xyz.com",
+            "advance_notice": 1,
+            "event_id": 1,
+            "maxretry": 1,
+            }, follow=True)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/module/alarm/add/', {
+            "alarm_phonenumber": "123456789",
+            "alarm_email": "notify@xyz.com",
+            "advance_notice": 1,
+            "event_id": 1,
+            "maxretry": 1,
+            }, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = alarm_add(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_alarm_view_update(self):
+        """Test Function to check update alarm"""
+        request = self.factory.post('/module/alarm/1/', {
+            "title": "test event",
+            "description": "",
+        }, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = alarm_change(request, 1)
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.post('/module/alarm/1/', {'delete': True}, follow=True)
+        request.user = self.user
+        request.session = {}
+        response = alarm_change(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+    def test_alarm_view_delete(self):
+        """Test Function to check delete alarm"""
+        # delete event
+        request = self.factory.post('/module/alarm/del/1/', follow=True)
+        request.user = self.user
+        request.session = {}
+        response = alarm_del(request, 1)
+        self.assertEqual(response.status_code, 302)
+
+        request = self.factory.post('/module/alarm/del/', {'select': '1'})
+        request.user = self.user
+        request.session = {}
+        response = alarm_del(request, 0)
+        self.assertEqual(response.status_code, 302)

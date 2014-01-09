@@ -30,7 +30,7 @@ class Calendar(models.Model):
 
     class Meta:
         permissions = (
-            ("view_calendar ", _('Can see Calendar list')),
+            ("view_calendar", _('Can see Calendar list')),
         )
         verbose_name = _('calendar')
         verbose_name_plural = _('calendars')

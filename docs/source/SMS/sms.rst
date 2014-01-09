@@ -16,6 +16,17 @@ Go to the Admin interface and identify the SMS Gateway section, and click on Gat
 
 Click the gateway to be configured and edit the pre-filled settings and populate the fields with the credentials supplied by your SMS provider:
 
+**URL**:
+
+    * http://localhost:8000/admin/sms/gateway/
+    * http://localhost:8000/admin/sms/gateway/add/
+
+
+.. image:: ../_static/images/admin/sms_gateway_list.png
+
+.. image:: ../_static/images/admin/update_sms_gateway.png
+
+
 Clickatell
 ----------
 

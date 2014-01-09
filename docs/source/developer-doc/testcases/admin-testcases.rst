@@ -32,7 +32,6 @@ Admin Interface Test Case
 
 .. automodule:: dialer_cdr.tests
 
-
 .. _DialerCdrView-admin:
 
 .. autoclass:: DialerCdrView

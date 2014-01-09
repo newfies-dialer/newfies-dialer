@@ -275,7 +275,7 @@ def calendar_user_change_password(request, object_id):
                               context_instance=RequestContext(request))
 
 
-#@permission_required('appointment.view_calendar', login_url='/')
+@permission_required('appointment.view_calendar', login_url='/')
 @login_required
 def calendar_list(request):
     """Calendar list for the logged in user
@@ -432,7 +432,7 @@ def calendar_change(request, object_id):
                               context_instance=RequestContext(request))
 
 
-#@permission_required('appointment.view_calendarsetting', login_url='/')
+@permission_required('appointment.add_calendarsetting', login_url='/')
 @login_required
 def calendar_setting_list(request):
     """Calendar setting list for the logged in user

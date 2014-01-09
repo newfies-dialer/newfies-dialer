@@ -29,10 +29,10 @@ from common.utils import BaseAuthenticatedClient
 #)
 
 csv_file = open(
-    settings.APPLICATION_DIR[:-15] + '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
+    settings.APPLICATION_DIR + '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
 )
 new_file = open(
-    settings.APPLICATION_DIR[:-15] + '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
+    settings.APPLICATION_DIR + '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
 )
 
 

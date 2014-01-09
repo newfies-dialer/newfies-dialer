@@ -24,7 +24,7 @@ from dialer_audio.views import audio_list  # audio_add, audio_change, audio_del
 #)
 
 audio_file = open(
-    settings.APPLICATION_DIR[:-15] + '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
+    settings.APPLICATION_DIR + '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
 )
 
 

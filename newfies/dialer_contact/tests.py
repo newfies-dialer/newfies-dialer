@@ -37,7 +37,7 @@ from django.utils.timezone import utc
 #)
 
 csv_file = open(
-    settings.APPLICATION_DIR[:-15] + '/dialer_contact/fixtures/import_contacts.txt', 'r'
+    settings.APPLICATION_DIR + '/dialer_contact/fixtures/import_contacts.txt', 'r'
 )
 
 

@@ -41,6 +41,14 @@ Under the completion tab:
  - *Time Between Retries:* If a message delivery fails, wait this number of seconds before retrying.
  - *Max Retries:* Number of times to re-attempt message delivery.
 
+**URL**:
+
+    * http://localhost:8000/sms_campaign/add/
+    * http://localhost:8000/sms_campaign/1/
+
+.. image:: ../_static/images/customer/update_sms_campaign.png
+    :width: 800
+
 Schedule
 --------
 
@@ -61,5 +69,13 @@ To view the SMS reports, click reporting then SMS reports on the side menu. The 
 
 Records can be filtered on date, status and campaign.
 
-SMS CDR can be exported in CSV, XML and Excel formats. 
+SMS CDR can be exported in CSV, XML and Excel formats.
+
+**URL**:
+
+    * http://localhost:8000/sms_report/
+
+.. image:: ../_static/images/customer/sms_report_part1.png
+
+.. image:: ../_static/images/customer/sms_report_part2.png
 

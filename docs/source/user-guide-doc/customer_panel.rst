@@ -379,6 +379,8 @@ Reports
 
     * http://localhost:8000/sms_report/
 
-.. image:: ../_static/images/customer/sms_report.png
+.. image:: ../_static/images/customer/sms_report_part1.png
+
+.. image:: ../_static/images/customer/sms_report_part2.png
 
 

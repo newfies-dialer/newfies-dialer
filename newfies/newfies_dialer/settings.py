@@ -623,6 +623,8 @@ BOWER_COMPONENTS_ROOT = os.path.join(APPLICATION_DIR, 'components')
 BOWER_PATH = '/usr/bin/bower'
 
 BOWER_INSTALLED_APPS = (
+    'jquery#2.0.3',
+    'bootstrap#3.0.3',
     'd3#3.3.6',
     'nvd3#1.1.12-beta',
 )

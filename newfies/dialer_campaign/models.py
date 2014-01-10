@@ -29,7 +29,7 @@ from audiofield.models import AudioFile
 from user_profile.models import UserProfile
 from sms.models import Gateway as SMS_Gateway
 from dnc.models import DNC
-from agent.models import Agent
+#from agent.models import Agent
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
@@ -481,9 +481,9 @@ class Subscriber(Model):
     collected_data = models.TextField(verbose_name=_('subscriber response'),
                                       blank=True, null=True,
                                       help_text=_("collect user call data"))
-    agent = models.ForeignKey(Agent, verbose_name=_("agent"),
-                              blank=True, null=True,
-                              related_name="agent")
+    #agent = models.ForeignKey(Agent, verbose_name=_("agent"),
+    #                          blank=True, null=True,
+    #                          related_name="agent")
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True, db_index=True)

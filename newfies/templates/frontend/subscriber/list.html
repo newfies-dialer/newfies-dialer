@@ -76,7 +76,7 @@ function delete_button()
                         <th>{% sort_link SUBSCRIBER_COLUMN_NAME.status|capfirst col_name_with_order.status %}</th>
                         <th>{% sort_link SUBSCRIBER_COLUMN_NAME.disposition|capfirst col_name_with_order.disposition %}</th>
                         <th>{{ SUBSCRIBER_COLUMN_NAME.collected_data|capfirst }}</th>
-                        <th>{% sort_link SUBSCRIBER_COLUMN_NAME.agent|capfirst col_name_with_order.agent %}</th>
+                        <!--<th>{% sort_link SUBSCRIBER_COLUMN_NAME.agent|capfirst col_name_with_order.agent %}</th>-->
                     </tr>
                     </thead>
                     {% if subscriber_list %}
@@ -91,12 +91,12 @@ function delete_button()
                                 <td>{% subscriber_disposition row.campaign_id row.disposition %}
                                 </td>
                                 <td>{{ row.collected_data }}</td>
-                                <td>{{ row.agent }}</td>
+                                <!--<td>{{ row.agent }}</td>-->
                             </tr>
                         {% endfor %}
                     {% else %}
                         <tr>
-                            <td colspan="8" align="center">
+                            <td colspan="7" align="center">
                                 {% trans "no records found"|title %}
                             </td>
                         </tr>

@@ -78,7 +78,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
     """
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
-                'user_profile.json', 'contenttype.json',
+                'user_profile.json',  # 'contenttype.json',
                 'phonebook.json', 'contact.json',
                 'dnc_list.json', 'dnc_contact.json',
                 'campaign.json', 'subscriber.json',

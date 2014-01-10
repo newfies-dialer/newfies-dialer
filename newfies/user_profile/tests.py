@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from django.test import TestCase
 from django.contrib.auth.forms import PasswordChangeForm
 from user_profile.models import UserProfile
-from user_profile.forms import UserChangeDetailForm, \
+from user_profile.forms import UserChangeDetailForm,\
     UserChangeDetailExtendForm, CheckPhoneNumberForm
 from user_profile.views import customer_detail_change
 from dialer_settings.models import DialerSetting

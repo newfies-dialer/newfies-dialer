@@ -6,16 +6,12 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django import forms
 from django.forms import ModelForm
-from django.utils.translation import ugettext as _
-from django.contrib.auth.models import User
-from agent.models import AgentProfile
 from agent.function_def import manager_list, agentprofile_list
 from callcenter.models import Queue, Tier
 from callcenter.function_def import queue_list
@@ -41,9 +37,10 @@ class QueueFrontEndForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(QueueFrontEndForm, self).__init__(*args, **kwargs)
-        exclude_list = ['tier_rules_apply', 'tier_rule_wait_multiply_level',
-                        'tier_rule_no_agent_no_wait', 'abandoned_resume_allowed'
-                       ]
+        exclude_list = [
+            'tier_rules_apply', 'tier_rule_wait_multiply_level',
+            'tier_rule_no_agent_no_wait', 'abandoned_resume_allowed'
+        ]
 
         for i in self.fields.keyOrder:
             if i not in exclude_list:

@@ -8,7 +8,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -28,16 +28,16 @@ class SMSTemplateSerializer(serializers.HyperlinkedModelSerializer):
         Response::
 
             {
-                "count": 1, 
-                "next": null, 
-                "previous": null, 
+                "count": 1,
+                "next": null,
+                "previous": null,
                 "results": [
                     {
-                        "url": "http://127.0.0.1:8000/rest-api/sms-template/1/", 
-                        "label": "sms_test", 
-                        "template_key": "sms_test", 
-                        "sender_phonenumber": "9427164510", 
-                        "sms_text": "hello test", 
+                        "url": "http://127.0.0.1:8000/rest-api/sms-template/1/",
+                        "label": "sms_test",
+                        "template_key": "sms_test",
+                        "sender_phonenumber": "9427164510",
+                        "sms_text": "hello test",
                         "created_date": "2013-12-16T06:43:29.475Z"
                     }
                 ]

@@ -7,7 +7,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -32,7 +32,7 @@ class SubscriberPerCampaignList(APIView):
         **Read**:
 
             CURL Usage::
-            
+
                 curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/subcampaign/%campaign_id%/
 
                 curl -u username:password -H 'Accept: application/json' http://localhost:8000/rest-api/subcampaign/%campaign_id%/%contact_id%/
@@ -40,7 +40,7 @@ class SubscriberPerCampaignList(APIView):
         error = {}
 
         cursor = connection.cursor()
-        
+
         if request.user.is_superuser:
             try:
                 Campaign.objects.get(id=campaign_id)
@@ -71,7 +71,7 @@ class SubscriberPerCampaignList(APIView):
                     error_msg = "Contact ID is not valid!"
                     error['error'] = error_msg
                     return Response(error)
-        
+
         if contact_id and contact_id > 0:
             sql_statement = "SELECT DISTINCT contact_id, last_attempt, " \
                 "count_attempt, completion_count_attempt, dialer_subscriber.status," \

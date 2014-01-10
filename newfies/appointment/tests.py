@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -199,17 +199,19 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         response = calendar_user_add(request)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post('/module/calendar_user/add/', data={
-            "username": "caluser1",
-            "password": "caluser1",
-            "calendar_setting_id": 1,
+        response = self.client.post('/module/calendar_user/add/', data=
+            {
+                "username": "caluser1",
+                "password": "caluser1",
+                "calendar_setting_id": 1,
             }, follow=True)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/module/calendar_user/add/', {
-            "username": "caluser1",
-            "password": "caluser1",
-            "calendar_setting_id": 1
+        request = self.factory.post('/module/calendar_user/add/',
+            {
+                "username": "caluser1",
+                "password": "caluser1",
+                "calendar_setting_id": 1
             }, follow=True)
         request.user = self.user
         request.session = {}
@@ -268,15 +270,17 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         response = calendar_add(request)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post('/module/calendar/add/', data={
-            "name": "test calendar",
-            "max_concurrent": 1,
+        response = self.client.post('/module/calendar/add/', data=
+            {
+                "name": "test calendar",
+                "max_concurrent": 1,
             }, follow=True)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/module/calendar/add/', {
-            "name": "test calendar",
-            "max_concurrent": 1,
+        request = self.factory.post('/module/calendar/add/',
+            {
+                "name": "test calendar",
+                "max_concurrent": 1,
             }, follow=True)
         request.user = self.user
         request.session = {}
@@ -335,21 +339,23 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         response = event_add(request)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post('/module/event/add/', data={
-            "title": "test event",
-            "description": "",
-            "creator_id": 1,
-            "created_on": datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
-            "calendar_id": 1,
+        response = self.client.post('/module/event/add/', data=
+            {
+                "title": "test event",
+                "description": "",
+                "creator_id": 1,
+                "created_on": datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+                "calendar_id": 1,
             }, follow=True)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/module/event/add/', {
-            "title": "test event",
-            "description": "",
-            "creator_id": 1,
-            "created_on": datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
-            "calendar_id": 1,
+        request = self.factory.post('/module/event/add/',
+            {
+                "title": "test event",
+                "description": "",
+                "creator_id": 1,
+                "created_on": datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+                "calendar_id": 1,
             }, follow=True)
         request.user = self.user
         request.session = {}
@@ -408,21 +414,23 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         response = alarm_add(request)
         self.assertEqual(response.status_code, 200)
 
-        response = self.client.post('/module/alarm/add/', data={
-            "alarm_phonenumber": "123456789",
-            "alarm_email": "notify@xyz.com",
-            "advance_notice": 1,
-            "event_id": 1,
-            "maxretry": 1,
+        response = self.client.post('/module/alarm/add/', data=
+            {
+                "alarm_phonenumber": "123456789",
+                "alarm_email": "notify@xyz.com",
+                "advance_notice": 1,
+                "event_id": 1,
+                "maxretry": 1,
             }, follow=True)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/module/alarm/add/', {
-            "alarm_phonenumber": "123456789",
-            "alarm_email": "notify@xyz.com",
-            "advance_notice": 1,
-            "event_id": 1,
-            "maxretry": 1,
+        request = self.factory.post('/module/alarm/add/',
+            {
+                "alarm_phonenumber": "123456789",
+                "alarm_email": "notify@xyz.com",
+                "advance_notice": 1,
+                "event_id": 1,
+                "maxretry": 1,
             }, follow=True)
         request.user = self.user
         request.session = {}

@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -36,7 +36,7 @@ class CallcenterAdminAgentFilter(SimpleListFilter):
         provided in the query string and retrievable via
         `self.value()`.
         """
-        if self.value() != None:
+        if self.value():
             return queryset.filter(agent_id=self.value())
         else:
             return queryset
@@ -62,7 +62,7 @@ class CallcenterAdminManagerFilter(SimpleListFilter):
         provided in the query string and retrievable via
         `self.value()`.
         """
-        if self.value() != None:
+        if self.value():
             return queryset.filter(manager_id=self.value())
         else:
             return queryset

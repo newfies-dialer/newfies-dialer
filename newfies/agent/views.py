@@ -6,21 +6,20 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.conf import settings
 #from django.contrib.auth.models import User
-from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
-from django.shortcuts import render_to_response, get_object_or_404, render
+from django.shortcuts import render_to_response, get_object_or_404
 from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
-from django.contrib.auth.forms import PasswordChangeForm, \
-    AdminPasswordChangeForm
+from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import Permission
 #from django.views.decorators.csrf import csrf_exempt
 from agent.models import AgentProfile, Agent
@@ -74,7 +73,9 @@ def auth(request):
                 request.user = user
 
                 # Once we have logged the user in return the serialized response
+                # TODO: not defined api ?
                 serializer = api.user.UserSerializer(request.user)
+                # TODO: not defined JSONResponse ?
                 return JSONResponse(serializer.data)
 
     # They did not provide basic authentication

@@ -7,12 +7,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
 from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
@@ -47,7 +46,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
 
         snippets = CalendarUser.objects.filter(id__in=calendar_user_list).order_by('id')
         list_data = []
-        
+
         for c_user in snippets:
             try:
                 calendar_obj = Calendar.objects.get(user=c_user)
@@ -71,7 +70,7 @@ class CalendarUserViewSet(viewsets.ModelViewSet):
                 'calendar': calendar_dict,
             }
             list_data.append(data)
-        
+
         if list_data:
             temp_data = ", ".join(str(e) for e in list_data)
             final_data = ast.literal_eval(temp_data)

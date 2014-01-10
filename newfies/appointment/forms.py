@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -119,7 +119,8 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
 
-        self.fields.keyOrder = ['calendar_setting', 'accountcode', 'address',
+        self.fields.keyOrder = [
+            'calendar_setting', 'accountcode', 'address',
             'city', 'state', 'country', 'zip_code', 'phone_no', 'fax', 'company_name',
             'company_website', 'language', 'note',
         ]

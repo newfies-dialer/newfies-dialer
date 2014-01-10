@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-
 #
 # Newfies-Dialer License
 # http://www.newfies-dialer.org
@@ -8,17 +7,16 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
 from rest_framework import serializers
 from appointment.models.users import CalendarUser
 
 
-class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):    
+class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):
     """
     **Create**:
 
@@ -70,7 +68,7 @@ class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):
         CURL Usage::
 
             curl -u username:password --dump-header - -H "Content-Type: application/json" -X DELETE  http://localhost:8000/rest-api/calendar-user/%calendar-user-id%/
-    """    
+    """
 
     class Meta:
         model = CalendarUser

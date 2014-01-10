@@ -17,7 +17,6 @@
 -
 - The Initial Developer of the Original Code is
 - Arezqui Belaid <info@star2billing.com>
--
 -->
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -70,31 +69,32 @@
 
 {% block container %}
 <div class="container">
-    <div class="row row-offcanvas row-offcanvas-right">
-        <!--start left side-->
-        {% if user.is_authenticated %}
-            {% if not request.path|check_url_for_template_width %}
-                {% block sidebar_menu %}
-                    {% include "frontend/bootstrap_side_menu.html" %}
-                {% endblock %}
-            {% endif %}
-        {% endif %}
-        <!--end left side-->
+<div class="row row-offcanvas row-offcanvas-right">
 
-        <!--start right side-->
-        {% if user.is_authenticated %}
-            {% if request.path|check_url_for_template_width %}
-                <div class="col-xs-12 col-sm-12">
-            {% else %}
-                <div class="col-xs-12 col-sm-9">
-                    <!--offcanvas side menu toggle button-->
-                    <p class="pull-right visible-xs">
-                        <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">{% trans "side menu"|title %}</button>
-                    </p>
-            {% endif %}
-        {% else %}
-            <div class="col-xs-12 col-sm-12">
+    <!--start left side-->
+    {% if user.is_authenticated %}
+        {% if not request.path|check_url_for_template_width %}
+            {% block sidebar_menu %}
+                {% include "frontend/bootstrap_side_menu.html" %}
+            {% endblock %}
         {% endif %}
+    {% endif %}
+    <!--end left side-->
+
+    <!--start right side-->
+    {% if user.is_authenticated %}
+        {% if request.path|check_url_for_template_width %}
+            <div class="col-xs-12 col-sm-12">
+        {% else %}
+            <div class="col-xs-12 col-sm-9">
+                <!--offcanvas side menu toggle button-->
+                <p class="pull-right visible-xs">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">{% trans "side menu"|title %}</button>
+                </p>
+        {% endif %}
+    {% else %}
+        <div class="col-xs-12 col-sm-12">
+    {% endif %}
 
     {% block row_fluid %}
         <div class="row">
@@ -130,20 +130,19 @@
         </div>
     {% endblock %}
 
-
-        {% if errorlogin %}
+    {% if errorlogin %}
+        <div class="alert alert-danger">
+            <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin|capfirst }}
+        </div>
+        </br>
+    {% else %}
+        {% if notlogged %}
             <div class="alert alert-danger">
-                <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin|capfirst }}
+                <strong>{% trans "alert"|title %} : </strong>  {% trans "please login by clicking on login button"|capfirst %}
             </div>
             </br>
-        {% else %}
-            {% if notlogged %}
-                <div class="alert alert-danger">
-                    <strong>{% trans "alert"|title %} : </strong>  {% trans "please login by clicking on login button"|capfirst %}
-                </div>
-                </br>
-            {% endif %}
         {% endif %}
+    {% endif %}
 
     {% block header %}
         <div class="page-header">
@@ -156,19 +155,19 @@
     {% block extra_files %}
     {% endblock %}
 
-        {% if user.is_authenticated %}
+    {% if user.is_authenticated %}
 
-            {% if dialer_setting_msg %}
-            <div class="alert alert-danger">
-                <strong>{% trans "alert"|title %} : </strong>  {{ dialer_setting_msg }}
-                {% if not request.session.has_notified %}
-                    {% trans "to send notification to administrator"|capfirst %} <a href="/notify/admin/">{% trans "click here"|capfirst %}</a>
-                {% else %}
-                    {% trans "(notification sent)" %}
-                {% endif %}
-            </div>
+        {% if dialer_setting_msg %}
+        <div class="alert alert-danger">
+            <strong>{% trans "alert"|title %} : </strong>  {{ dialer_setting_msg }}
+            {% if not request.session.has_notified %}
+                {% trans "to send notification to administrator"|capfirst %} <a href="/notify/admin/">{% trans "click here"|capfirst %}</a>
+            {% else %}
+                {% trans "(notification sent)" %}
             {% endif %}
+        </div>
         {% endif %}
+    {% endif %}
 
     <!--Success Message of view-->
     {% if msg %}
@@ -192,9 +191,10 @@
     {% endif %}
 
     {% block content %}
-    <!-- CONTENT BLOCK -->
+        <!-- CONTENT BLOCK -->
     {% endblock %}
-        </div><!--end right side-->
+
+    </div><!--end right side-->
 
     </div><!--div row row-offcanvas row-offcanvas-right-->
 

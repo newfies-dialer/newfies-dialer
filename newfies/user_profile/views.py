@@ -77,7 +77,7 @@ def customer_detail_change(request):
             user_detail_form = UserChangeDetailForm(
                 request.user, request.POST, instance=user_detail)
             user_detail_extened_form = UserChangeDetailExtendForm(
-                    request.user, request.POST, instance=user_detail_extened)
+                request.user, request.POST, instance=user_detail_extened)
             action = 'tabs-1'
             if (user_detail_form.is_valid()
                and user_detail_extened_form.is_valid()):

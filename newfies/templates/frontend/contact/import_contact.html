@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n %}
+{% load i18n common_tags %}
 
 {% block extra_files %}
     <style>
@@ -10,7 +10,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% trans "import contact"|title %} <small>{% trans "import list of contact by uploading CSV files"|capfirst %}</small></h1>
+    <h1>{% trans "import contact"|title %} <small>{% trans "import contacts by uploading CSV files"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
@@ -74,7 +74,7 @@
 <form class="well" role="form" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
     {% for field in form %}
     <div class="form-group {% if field.errors %}has-error{% endif %}">
-            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
             {{ field }}
             {% if field.errors %}
                 <span class="help-block">
@@ -82,13 +82,13 @@
                 </span>
             {% endif %}
             <span class="help-block">
-                {{ field.help_text|capfirst }}
+                {{ field.help_text|wordcap }}
             </span>
     </div>
     {% endfor %}
     <div class="text-right">
         <button type="submit" class="btn btn-primary" value="submit">
-            <i class="fa fa-save fa-lg"></i> {% trans "import"|title %}
+            <i class="fa fa-save fa-lg"></i> {% trans "import"|wordcap %}
         </button>
     </div>
 </form>

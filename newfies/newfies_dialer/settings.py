@@ -624,6 +624,7 @@ BOWER_PATH = '/usr/bin/bower'
 
 BOWER_INSTALLED_APPS = (
     'jquery#2.0.3',
+    'jquery-ui#~1.10.3',
     'bootstrap#3.0.3',
     'bootbox#4.1.0',
     'd3#3.3.6',

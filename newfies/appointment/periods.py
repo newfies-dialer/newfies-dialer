@@ -7,6 +7,7 @@ from django.utils.translation import ugettext_lazy as _
 from schedule.models import Occurrence
 from django.utils import timezone
 
+
 weekday_names = []
 weekday_abbrs = []
 if FIRST_DAY_OF_WEEK == 1:

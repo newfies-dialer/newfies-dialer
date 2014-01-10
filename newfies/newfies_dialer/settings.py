@@ -223,7 +223,7 @@ INSTALLED_APPS = (
     'notification',
     'survey',
     'dnc',
-    'agent',
+    #'agent',
     #'callcenter',
     'appointment',
     'mod_mailer',

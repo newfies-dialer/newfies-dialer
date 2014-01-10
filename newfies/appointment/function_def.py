@@ -13,6 +13,7 @@
 #
 from appointment.models.users import CalendarUserProfile, CalendarUser
 from appointment.models.calendars import Calendar
+from user_profile.models import Manager
 
 
 def get_all_calendar_user_id_list():
@@ -53,3 +54,15 @@ def get_calendar_list(calendar_user_list):
         list_calendar.append((l[0], l[1]))
 
     return list_calendar
+
+
+def manager_list_of_calendar_user():
+    """Return all managers of the system"""
+    manager_list = []
+    calendar_user_id_list = get_all_calendar_user_id_list()
+    obj_list = Manager.objects.values_list('id', 'username')\
+        .filter(is_staff=False, is_superuser=False)\
+        .exclude(id__in=calendar_user_id_list).order_by('id')
+    for l in obj_list:
+        manager_list.append((l[0], l[1]))
+    return manager_list

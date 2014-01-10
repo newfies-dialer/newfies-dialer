@@ -158,14 +158,14 @@ def calendar_user_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete all calendar users belonging to a managers
-            calendar_user_list = CalendarUserProfile.objects \
-                .filter(manager_id=request.user.id) \
+            calendar_user_list = CalendarUserProfile.objects\
+                .filter(manager_id=request.user.id)\
                 .extra(where=['id IN (%s)' % values])
 
             if calendar_user_list:
                 user_list = calendar_user_list.values_list('user_id', flat=True)
                 calendar_users = CalendarUser.objects.filter(pk__in=user_list)
-                request.session["msg"] = _('%(count)s calendar user(s) are deleted.') \
+                request.session["msg"] = _('%(count)s calendar user(s) are deleted.')\
                     % {'count': calendar_user_list.count()}
                 calendar_users.delete()
         except:

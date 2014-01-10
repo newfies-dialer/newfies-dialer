@@ -41,8 +41,7 @@ def get_object_choices(available_objects):
         obj_id = obj.id
         # form_value - e.g."type:12-id:3"
         form_value = "type:%s-id:%s" % (type_id, obj_id)
-        display_text = '%s : %s' \
-            % (str(ContentType.objects.get_for_model(obj.__class__)), str(obj))
+        display_text = '%s : %s' % (str(ContentType.objects.get_for_model(obj.__class__)), str(obj))
         object_choices.append([form_value, display_text])
 
     return object_choices

@@ -18,8 +18,8 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dialer_gateway.models import Gateway
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_cdr.constants import CALLREQUEST_STATUS, \
-    CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION, \
+from dialer_cdr.constants import CALLREQUEST_STATUS,\
+    CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION,\
     VOIPCALL_AMD_STATUS
 from common.intermediate_model_base_class import Model
 from country_dialcode.models import Prefix
@@ -195,22 +195,20 @@ class VoIPCall(models.Model):
     **Name of DB table**: dialer_cdr
     """
     user = models.ForeignKey('auth.User', related_name='Call Sender')
-    request_uuid = models.CharField(verbose_name=_("RequestUUID"),
-                    default=str_uuid1(),
-                    max_length=120, null=True, blank=True)
+    request_uuid = models.CharField(verbose_name=_("RequestUUID"), null=True, blank=True,
+                                    default=str_uuid1(), max_length=120)
     used_gateway = models.ForeignKey(Gateway, null=True, blank=True,
-                    verbose_name=_("used gateway"))
+                                     verbose_name=_("used gateway"))
     callrequest = models.ForeignKey(Callrequest, null=True, blank=True,
-                    verbose_name=_("callrequest"))
+                                    verbose_name=_("callrequest"))
     callid = models.CharField(max_length=120, help_text=_("VoIP call-ID"))
     callerid = models.CharField(max_length=120, verbose_name=_('CallerID'))
     phone_number = models.CharField(max_length=120, null=True, blank=True,
-        verbose_name=_("phone number"),
-        help_text=_(u'the international number of the recipient, without the leading +'))
+                                    verbose_name=_("phone number"),
+                                    help_text=_(u'the international number of the recipient, without the leading +'))
 
     dialcode = models.ForeignKey(Prefix, verbose_name=_("destination"),
-                    null=True, blank=True,
-                    help_text=_("select prefix"))
+                                 null=True, blank=True, help_text=_("select prefix"))
     starting_date = models.DateTimeField(auto_now_add=True,
                                          verbose_name=_("starting date"),
                                          db_index=True)
@@ -219,11 +217,10 @@ class VoIPCall(models.Model):
     progresssec = models.IntegerField(null=True, blank=True, verbose_name=_("progress sec"))
     answersec = models.IntegerField(null=True, blank=True, verbose_name=_("answer sec"))
     waitsec = models.IntegerField(null=True, blank=True, verbose_name=_("wait sec"))
-    disposition = models.CharField(choices=VOIPCALL_DISPOSITION,
-                   max_length=40, null=True, blank=True,
-                   verbose_name=_("disposition"))
+    disposition = models.CharField(choices=VOIPCALL_DISPOSITION, null=True, blank=True,
+                                   max_length=40, verbose_name=_("disposition"))
     hangup_cause = models.CharField(max_length=40, null=True, blank=True,
-                    verbose_name=_("hangup cause"))
+                                    verbose_name=_("hangup cause"))
     hangup_cause_q850 = models.CharField(max_length=10, null=True, blank=True)
     leg_type = models.SmallIntegerField(choices=list(LEG_TYPE), default=LEG_TYPE.A_LEG,
                                         verbose_name=_("leg"), null=True, blank=True)

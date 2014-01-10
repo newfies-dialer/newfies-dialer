@@ -35,37 +35,21 @@
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
-<!-- Le javascript -->
-<script type="text/javascript" src="{{ STATIC_URL }}jquery/jquery.min.js"></script>
 
 {% block jquery_ui_js %}
 {% endblock %}
 
 {% block header_files %}
-<!--bootstrap js-->
-<script src="{{ STATIC_URL }}/bootstrap/dist/js/bootstrap.js"></script>
-<script src="{{ STATIC_URL }}/bootbox/bootbox.js"></script>
-<script src="{{ STATIC_URL }}newfies/js/sidebar-offcanvas.js"></script>
 
-<!-- bootstrap css -->
+<script src="{{ STATIC_URL }}jquery/jquery.min.js" type="text/javascript"></script>
+
+<!-- CSS -->
 <link href="{{ STATIC_URL }}/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
 <link href="{{ STATIC_URL }}newfies/css/sidebar-offcanvas.css" rel="stylesheet">
-
-<!-- bootstrap-switch -->
-<script src="{{ STATIC_URL }}newfies/bootstrap-switch/js/bootstrap-switch.js"></script>
-<link rel="stylesheet" href="{{ STATIC_URL }}newfies/bootstrap-switch/stylesheets/bootstrap-switch.css" />
-
-<!--jquery-ui-bootstrap css-->
-<link href="{{ STATIC_URL }}newfies/jquery-ui-bootstrap/css/jquery-ui-1.10.0.custom.css" rel="stylesheet">
-
-<!-- font-awesome -->
+<link href="{{ STATIC_URL }}bootstrap-switch/build/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+<link href="{{ STATIC_URL }}/jquery-ui/themes/flick/jquery-ui.min.css" type="text/css" rel="stylesheet" media="all"/>
 <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
-
-<!-- RTL -->
-<!-- <link href="{{ STATIC_URL }}newfies/bootstrap-2.0.4/css/rtl/bootstrap-rtl.min.css" rel="stylesheet"> -->
-
-<!-- Newfies custom css -->
-<link type="text/css" media="screen" href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet"/>
+<link href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet" type="text/css" media="screen" />
 
 {% endblock %}
 
@@ -220,6 +204,14 @@
 
 </div><!-- div container -->
 {% endblock %}
+
+<!-- javascript -->
+<script src="{{ STATIC_URL }}/jquery-ui/ui/minified/jquery-ui.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}/bootbox/bootbox.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}newfies/js/sidebar-offcanvas.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}bootstrap-switch/build/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}newfies/js/extra_footer.js" type="text/javascript"></script>
 
 </body>
 </html>

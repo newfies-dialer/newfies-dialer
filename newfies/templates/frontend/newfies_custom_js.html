@@ -1,6 +1,9 @@
 {% load i18n %}
 
+{# TODO move this to a JS file #}
+
 <script type="text/javascript">
+$(document).ready(function(){
     $(function () {
         $('#helpover').popover();
         $(".fg-button").hover(
@@ -21,7 +24,7 @@
 
     // toggle event for forms
     $(function() {
-            
+
         $("#form_collapse").on('hidden.bs.collapse', function() {
             $('#toggle_btn_i_span').text('{% trans "open search"|title %}');
             $('#toggle_btn_i').attr('class', 'glyphicon glyphicon-zoom-in');
@@ -32,4 +35,5 @@
             $('#toggle_btn_i').attr('class', 'glyphicon glyphicon-zoom-out');
         });
     });
+});
 </script>

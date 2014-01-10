@@ -626,6 +626,7 @@ BOWER_INSTALLED_APPS = (
     'jquery#2.0.3',
     'jquery-ui#~1.10.3',
     'bootstrap#3.0.3',
+    'bootstrap-switch#2.0.0',
     'bootbox#4.1.0',
     'd3#3.3.6',
     'nvd3#1.1.12-beta',

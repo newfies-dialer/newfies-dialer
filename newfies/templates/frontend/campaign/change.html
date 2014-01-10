@@ -213,7 +213,7 @@
                     <div class="col-md-12 col-xs-6">
                         {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
                         {% for field in settings_fields %}
-                        <div class="col-md-1">
+                        <div class="col-md-3">
                             <label for="{{ field.auto_id }}">{{ field.label|title }}</label>
                             <div class="make-switch switch-small">
                             {{ field }}

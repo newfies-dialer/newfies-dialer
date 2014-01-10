@@ -22,11 +22,17 @@ from dnc.views import dnc_add, dnc_change, dnc_list, dnc_del,\
 from dnc.forms import DNCForm, DNCContactForm, DNCContactSearchForm,\
     DNCContact_fileImport
 from common.utils import BaseAuthenticatedClient
-import os
+#import os
+
+#csv_file = open(
+#    os.path.abspath('../../newfies-dialer/newfies/') + '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
+#)
 
 csv_file = open(
-    os.path.abspath('../../newfies-dialer/newfies/') +
-    '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
+    settings.APPLICATION_DIR + '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
+)
+new_file = open(
+    settings.APPLICATION_DIR + '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
 )
 
 
@@ -218,10 +224,6 @@ class DNCCustomerView(BaseAuthenticatedClient):
                                           'csv_file': csv_file})
         self.assertEqual(response.status_code, 200)
 
-        new_file = open(
-            os.path.abspath('../../newfies-dialer/newfies/') +
-            '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
-        )
         response = self.client.post('/module/dnc_contact_import/',
                                     data={'dnc_list': '1',
                                           'csv_file': new_file})

@@ -24,8 +24,8 @@ from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import CAMPAIGN_STATUS, SUBSCRIBER_STATUS
 from dialer_campaign.function_def import user_dialer_setting, get_phonebook_list
 from dialer_contact.forms import SearchForm
-from agent.function_def import agent_list
-from agent.models import AgentProfile, Agent
+#from agent.function_def import agent_list
+#from agent.models import AgentProfile, Agent
 from user_profile.models import UserProfile
 from common.common_functions import get_unique_code
 from dnc.models import DNC
@@ -41,8 +41,7 @@ def get_object_choices(available_objects):
         obj_id = obj.id
         # form_value - e.g."type:12-id:3"
         form_value = "type:%s-id:%s" % (type_id, obj_id)
-        display_text = '%s : %s' \
-            % (str(ContentType.objects.get_for_model(obj.__class__)), str(obj))
+        display_text = '%s : %s' % (str(ContentType.objects.get_for_model(obj.__class__)), str(obj))
         object_choices.append([form_value, display_text])
 
     return object_choices
@@ -172,26 +171,22 @@ class CampaignForm(ModelForm):
         dialer_set = user_dialer_setting(User.objects.get(username=ds_user))
         if dialer_set:
             if frequency > dialer_set.max_frequency:
-                msg = _('maximum frequency limit of %d exceeded.'
-                    % dialer_set.max_frequency)
+                msg = _('maximum frequency limit of %d exceeded.' % dialer_set.max_frequency)
                 self._errors['frequency'] = ErrorList([msg])
                 del self.cleaned_data['frequency']
 
             if callmaxduration > dialer_set.callmaxduration:
-                msg = _('maximum duration limit of %d exceeded.'
-                    % dialer_set.callmaxduration)
+                msg = _('maximum duration limit of %d exceeded.' % dialer_set.callmaxduration)
                 self._errors['callmaxduration'] = ErrorList([msg])
                 del self.cleaned_data['callmaxduration']
 
             if maxretry > dialer_set.maxretry:
-                msg = _('maximum retries limit of %d exceeded.'
-                    % dialer_set.maxretry)
+                msg = _('maximum retries limit of %d exceeded.' % dialer_set.maxretry)
                 self._errors['maxretry'] = ErrorList([msg])
                 del self.cleaned_data['maxretry']
 
             if calltimeout > dialer_set.max_calltimeout:
-                msg = _('maximum timeout limit of %d exceeded.'
-                    % dialer_set.max_calltimeout)
+                msg = _('maximum timeout limit of %d exceeded.' % dialer_set.max_calltimeout)
                 self._errors['calltimeout'] = ErrorList([msg])
                 del self.cleaned_data['calltimeout']
 
@@ -296,6 +291,7 @@ class SubscriberSearchForm(SearchForm):
             for i in campaign_list:
                 camp_list.append((i[0], i[1]))
 
+            """
             agent_list = []
             agent_list.append((0, _('all').upper()))
 
@@ -310,9 +306,10 @@ class SubscriberSearchForm(SearchForm):
                 .filter(id__in=agent_profile_list)
             for i in a_list:
                 agent_list.append((i[0], i[1]))
-
-            self.fields['campaign_id'].choices = camp_list
             self.fields['agent_id'].choices = agent_list
+            """
+            self.fields['campaign_id'].choices = camp_list
+
 
 campaign_status_list = []
 campaign_status_list.append(('all', _('all').upper()))

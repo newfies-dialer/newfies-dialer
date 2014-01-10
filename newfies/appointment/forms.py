@@ -14,17 +14,16 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
-from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm, \
+from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm,\
     UserChangeForm
-from appointment.models.users import CalendarUserProfile, CalendarUser, \
+from appointment.models.users import CalendarUserProfile, CalendarUser,\
     CalendarSetting
 from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm
 from appointment.constants import EVENT_STATUS
-from appointment.function_def import get_calendar_user_id_list, \
-    get_calendar_user_list, get_calendar_list, get_all_calendar_user_id_list
-from agent.function_def import manager_list
+from appointment.function_def import get_calendar_user_id_list, get_calendar_user_list,\
+    get_calendar_list, get_all_calendar_user_id_list, manager_list_of_calendar_user
 from survey.models import Survey
 from user_profile.models import UserProfile
 from bootstrap3_datetime.widgets import DateTimePicker
@@ -65,7 +64,7 @@ class CalendarUserProfileForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(CalendarUserProfileForm, self).__init__(*args, **kwargs)
-        self.fields['manager'].choices = manager_list()
+        self.fields['manager'].choices = manager_list_of_calendar_user()
 
 
 class CalendarSettingForm(ModelForm):
@@ -120,10 +119,10 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
 
-        self.fields.keyOrder = ['calendar_setting', 'accountcode', 'address', 'city',
-            'state', 'country', 'zip_code', 'phone_no', 'fax', 'company_name',
-            'company_website', 'language', 'note']
-
+        self.fields.keyOrder = ['calendar_setting', 'accountcode', 'address',
+            'city', 'state', 'country', 'zip_code', 'phone_no', 'fax', 'company_name',
+            'company_website', 'language', 'note',
+        ]
         list_calendar_setting = []
         list_calendar_setting.append((0, _('select calendar setting').title()))
         calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')

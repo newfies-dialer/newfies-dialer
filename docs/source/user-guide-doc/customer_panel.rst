@@ -213,6 +213,7 @@ The settings page provides a number of functions:
     * Authorized - Facitiy to check that a number is not blacklisted.
 
 .. image:: ../_static/images/customer/account_setting.png
+    :width: 800
 
 .. _customer-sms-campaign-access:
 
@@ -343,3 +344,43 @@ To Add/Update a alarm for a logged in user
 
 .. image:: ../_static/images/customer/update_alarm.png
     :width: 700
+
+Reports
+-------
+
+**URL**:
+
+    * http://localhost:8000/voipcall_report/
+
+.. image:: ../_static/images/customer/call_report_part1.png
+
+.. image:: ../_static/images/customer/call_report_part2.png
+
+
+**URL**:
+
+    * http://localhost:8000/survey_report/
+
+.. image:: ../_static/images/customer/survey_report_part1.png
+
+.. image:: ../_static/images/customer/survey_report_part2.png
+
+.. image:: ../_static/images/customer/survey_report_part3.png
+
+
+**URL**:
+
+    * http://localhost:8000/subscribers/
+
+.. image:: ../_static/images/customer/subscriber_report.png
+
+
+**URL**:
+
+    * http://localhost:8000/sms_report/
+
+.. image:: ../_static/images/customer/sms_report_part1.png
+
+.. image:: ../_static/images/customer/sms_report_part2.png
+
+

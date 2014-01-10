@@ -30,11 +30,14 @@ from dialer_contact.tasks import collect_subscriber
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 from django.utils.timezone import utc
-import os
+#import os
+
+#csv_file = open(
+#    os.path.abspath('../../newfies-dialer/newfies/') + '/dialer_contact/fixtures/import_contacts.txt', 'r'
+#)
 
 csv_file = open(
-    os.path.abspath('../../newfies-dialer/newfies/') +
-    '/dialer_contact/fixtures/import_contacts.txt', 'r'
+    settings.APPLICATION_DIR + '/dialer_contact/fixtures/import_contacts.txt', 'r'
 )
 
 

@@ -18,7 +18,7 @@ from django.contrib.auth.models import User
 from django.db.models import Q
 from user_profile.models import UserProfile, Manager, Staff
 from appointment.function_def import get_all_calendar_user_id_list
-from agent.models import AgentProfile
+#from agent.models import AgentProfile
 
 
 class UserProfileInline(admin.StackedInline):
@@ -48,11 +48,10 @@ class ManagerAdmin(UserAdmin):
 
     def queryset(self, request):
         qs = super(UserAdmin, self).queryset(request)
-        agent_id_list = AgentProfile.objects.values_list('user_id', flat=True)\
-            .filter(is_agent=True, manager__isnull=False)
+        #agent_id_list = AgentProfile.objects.values_list('user_id', flat=True)\
+        #    .filter(is_agent=True, manager__isnull=False)
         calendar_user_list = get_all_calendar_user_id_list()
-        qs = qs.filter(is_superuser=False).exclude(id__in=calendar_user_list)\
-            .exclude(id__in=agent_id_list)
+        qs = qs.filter(is_superuser=False).exclude(id__in=calendar_user_list)  # .exclude(id__in=agent_id_list)
         return qs
 
 admin.site.unregister(User)

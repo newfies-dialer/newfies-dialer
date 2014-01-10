@@ -36,8 +36,8 @@ from apirest.view_section_template import SectionTemplateViewSet
 from apirest.view_branching_template import BranchingTemplateViewSet
 from apirest.view_survey_aggregate_result import SurveyAggregateResultViewSet
 from apirest.view_subscriber_per_campaign import SubscriberPerCampaignList
-from apirest.view_queue import QueueViewSet
-from apirest.view_tier import TierViewSet
+#from apirest.view_queue import QueueViewSet
+#from apirest.view_tier import TierViewSet
 from apirest.view_calendar import CalendarViewSet
 from apirest.view_calendar_setting import CalendarSettingViewSet
 from apirest.view_calendar_user import CalendarUserViewSet

@@ -31,6 +31,7 @@ from frontend.constants import SEARCH_TYPE
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
 from django.utils.timezone import utc
+from uuid import uuid1
 
 
 class SMSAdminView(BaseAuthenticatedClient):
@@ -392,6 +393,7 @@ class SMSCampaignModel(TestCase):
             sender=self.user,
             content_type_id=1,
             object_id=1,
+            uuid=str(uuid1()),
         )
         self.sms.save()
 

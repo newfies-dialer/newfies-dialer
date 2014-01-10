@@ -111,7 +111,7 @@ class SubscriberAdmin(admin.ModelAdmin):
     form = SubscriberAdminForm
     list_display = ('id', 'contact', 'campaign', 'last_attempt', 'get_attempts',
                     'get_completion_attempts', 'duplicate_contact', 'disposition',
-                    'collected_data', 'status', 'agent', 'created_date')
+                    'collected_data', 'status', 'created_date')  # 'agent',
     list_filter = ('campaign', 'status', 'created_date', 'last_attempt', AgentFilter)
     ordering = ('-id', )
 

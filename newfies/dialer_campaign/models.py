@@ -29,7 +29,7 @@ from audiofield.models import AudioFile
 from user_profile.models import UserProfile
 from sms.models import Gateway as SMS_Gateway
 from dnc.models import DNC
-from agent.models import Agent
+#from agent.models import Agent
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
@@ -251,11 +251,11 @@ class Campaign(Model):
                             related_name='DNC')
     #Voicemail Detection
     voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
-    amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),
-                                 default=AMD_BEHAVIOR.ALWAYS,
-                                 verbose_name=_("detection behaviour"), blank=True, null=True)
+    amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR), blank=True, null=True,
+                                       default=AMD_BEHAVIOR.ALWAYS,
+                                       verbose_name=_("detection behaviour"))
     voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                  verbose_name=_("voicemail audio file"))
+                                            verbose_name=_("voicemail audio file"))
     #Callcenter
     agent_script = models.TextField(verbose_name=_('agent script'), blank=True, null=True)
     lead_disposition = models.TextField(verbose_name=_('lead disposition'), blank=True, null=True)
@@ -361,8 +361,8 @@ class Campaign(Model):
 
     def get_active_contact(self):
         """Get all the active Contacts from the phonebook"""
-        list_contact = \
-            Contact.objects.filter(phonebook__campaign=self.id, status=CONTACT_STATUS.ACTIVE).all()
+        list_contact = Contact.objects.filter(phonebook__campaign=self.id,
+                                              status=CONTACT_STATUS.ACTIVE).all()
         if not list_contact:
             return False
         return list_contact
@@ -370,8 +370,7 @@ class Campaign(Model):
     def progress_bar(self):
         """Progress bar generated based on no of contacts"""
         # Cache subscriber_count
-        count_contact = \
-            Contact.objects.filter(phonebook__campaign=self.id).count()
+        count_contact = Contact.objects.filter(phonebook__campaign=self.id).count()
 
         # Cache need to be set per campaign
         # subscriber_count_key_campaign_id_1
@@ -379,28 +378,26 @@ class Campaign(Model):
             'subscriber_count_key_campaign_id_' + str(self.id))
 
         if subscriber_count is None:
-            list_contact = Contact.objects.values_list('id', flat=True) \
+            list_contact = Contact.objects.values_list('id', flat=True)\
                 .filter(phonebook__campaign=self.id)
 
             subscriber_count = 0
             try:
-                subscriber_count += Subscriber.objects \
+                subscriber_count += Subscriber.objects\
                     .filter(contact__in=list_contact,
                             campaign=self.id,
-                            status=SUBSCRIBER_STATUS.SENT) \
+                            status=SUBSCRIBER_STATUS.SENT)\
                     .count()
             except:
                 pass
 
-            cache.set("subscriber_count_key_campaign_id_%s"
-                      % str(self.id), subscriber_count, 5)
+            cache.set("subscriber_count_key_campaign_id_%s" % str(self.id), subscriber_count, 5)
 
         subscriber_count = int(subscriber_count)
         count_contact = int(count_contact)
 
         if count_contact > 0:
-            percentage_pixel = \
-                (float(subscriber_count) / count_contact) * 100
+            percentage_pixel = (float(subscriber_count) / count_contact) * 100
             percentage_pixel = int(percentage_pixel)
         else:
             percentage_pixel = 0
@@ -429,8 +426,8 @@ class Campaign(Model):
         #TODO: Improve this part with a PL/SQL
 
         #We cannot use select_related here as it's not compliant with locking the rows
-        list_subscriber = Subscriber.objects.select_for_update() \
-            .filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING) \
+        list_subscriber = Subscriber.objects.select_for_update()\
+            .filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING)\
             .all()[:limit]
         if not list_subscriber:
             return (False, 0)
@@ -484,9 +481,9 @@ class Subscriber(Model):
     collected_data = models.TextField(verbose_name=_('subscriber response'),
                                       blank=True, null=True,
                                       help_text=_("collect user call data"))
-    agent = models.ForeignKey(Agent, verbose_name=_("agent"),
-                              blank=True, null=True,
-                              related_name="agent")
+    #agent = models.ForeignKey(Agent, verbose_name=_("agent"),
+    #                          blank=True, null=True,
+    #                          related_name="agent")
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True, db_index=True)
@@ -553,8 +550,8 @@ def post_save_add_contact(sender, **kwargs):
           model.
     """
     obj = kwargs['instance']
-    active_campaign_list = \
-        Campaign.objects.filter(phonebook__contact__id=obj.id, status=CAMPAIGN_STATUS.START)
+    active_campaign_list = Campaign.objects.filter(phonebook__contact__id=obj.id,
+                                                   status=CAMPAIGN_STATUS.START)
     # created instance = True + active contact + active_campaign
     if kwargs['created'] and obj.status == CONTACT_STATUS.ACTIVE \
             and active_campaign_list.count() >= 1:

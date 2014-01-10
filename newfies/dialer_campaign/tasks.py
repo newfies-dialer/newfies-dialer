@@ -17,7 +17,7 @@ from celery.task import PeriodicTask
 from celery.task import Task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign
-from dialer_campaign.constants import SUBSCRIBER_STATUS, \
+from dialer_campaign.constants import SUBSCRIBER_STATUS,\
     CAMPAIGN_STATUS
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_cdr.models import Callrequest

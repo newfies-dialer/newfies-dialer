@@ -13,7 +13,7 @@
 #
 from django.contrib.admin import SimpleListFilter
 from django.utils.translation import ugettext as _
-from agent.function_def import manager_list
+from appointment.function_def import manager_list_of_calendar_user
 from appointment.models.users import CalendarUserProfile
 
 
@@ -29,7 +29,7 @@ class ManagerFilter(SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
-        return manager_list()
+        return manager_list_of_calendar_user()
 
     def queryset(self, request, queryset):
         """

@@ -16,6 +16,7 @@ import os
 
 sys.path.insert(0, os.path.abspath('../../'))
 sys.path.insert(1, os.path.abspath('../../newfies'))
+#sys.path.insert(2, os.path.abspath('../../newfies/newfies_dialer'))
 
 from newfies import newfies_dialer
 os.environ['DJANGO_SETTINGS_MODULE'] = 'newfies_dialer.settings'

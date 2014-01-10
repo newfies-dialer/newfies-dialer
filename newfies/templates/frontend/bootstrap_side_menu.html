@@ -38,15 +38,15 @@
 
         {% if "/calendar_setting/" in request.path or "/calendar_user/" in request.path or "/calendar/" in request.path or "/event/" in request.path or "/alarm/" in request.path %}
 
-            {# if perms.appointment.view_calendarsetting #}
+            {% if perms.appointment.view_calendarsetting %}
                 <a class="list-group-item {% ifcontains '/calendar_setting/' %}active{% endifcontains %}" href="/module/calendar_setting/">{% trans "calendar settings"|title %}</a>
-            {# endif #}
+            {% endif %}
             {% if perms.appointment.view_calendar_user %}
                 <a class="list-group-item {% ifcontains '/calendar_user/' %}active{% endifcontains %}" href="/module/calendar_user/">{% trans "calendar users"|title %}</a>
             {% endif %}
-            {# if perms.appointment.view_calendar #}
+            {% if perms.appointment.view_calendar %}
                 <a class="list-group-item {% ifcontains '/calendar/' %}active{% endifcontains %}" href="/module/calendar/">{% trans "calendars"|title %}</a>
-            {# endif #}
+            {% endif %}
             {% if perms.appointment.view_event %}
                 <a class="list-group-item {% ifcontains '/event/' %}active{% endifcontains %}" href="/module/event/">{% trans "events"|title %}</a>
             {% endif %}

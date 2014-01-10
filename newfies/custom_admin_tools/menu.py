@@ -39,7 +39,7 @@ class CustomMenu(Menu):
                 _('administration').capitalize(),
                 models=('django.contrib.*', )
             ),
-            items.MenuItem(_('API Explorer'), reverse('admin:index') + '../api-explorer/'),
+            items.MenuItem(_('API Explorer'), reverse('admin:index') + '../rest-api/'),
             items.MenuItem(_('customer panel').title(), reverse('admin:index') + '../'),
         ]
 

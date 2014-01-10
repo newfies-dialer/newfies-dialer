@@ -630,6 +630,7 @@ BOWER_INSTALLED_APPS = (
     'bootbox#4.1.0',
     'd3#3.3.6',
     'nvd3#1.1.12-beta',
+    'components-font-awesome#4.0.3',
 )
 
 #Need to build documentation with Django 1.6

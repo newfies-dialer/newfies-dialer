@@ -258,7 +258,7 @@ class SubscriberAdminForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SubscriberAdminForm, self).__init__(*args, **kwargs)
-        self.fields['agent'].choices = agent_list()
+        #self.fields['agent'].choices = agent_list()
 
 subscriber_status_list = []
 subscriber_status_list.append(('all', _('all').upper()))

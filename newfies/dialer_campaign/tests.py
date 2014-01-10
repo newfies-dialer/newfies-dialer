@@ -63,27 +63,26 @@ class DialerCampaignView(BaseAuthenticatedClient):
                 "extra_data": "2000"})
         self.assertEqual(response.status_code, 200)
 
-    #def test_admin_subscriber_view_list(self):
-    #    """Test Function to check admin subscriber list"""
-    #    response = self.client.get('/admin/dialer_campaign/subscriber/')
-    #    self.failUnlessEqual(response.status_code, 200)
+    def test_admin_subscriber_view_list(self):
+        """Test Function to check admin subscriber list"""
+        response = self.client.get('/admin/dialer_campaign/subscriber/')
+        self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_subscriber_view_add(self):
         """Test Function to check admin subscriber add"""
-    #    response = self.client.get('/admin/dialer_campaign/subscriber/add/')
-    #    self.failUnlessEqual(response.status_code, 200)
+        response = self.client.get('/admin/dialer_campaign/subscriber/add/')
+        self.failUnlessEqual(response.status_code, 200)
 
-    #    response = self.client.post(
-    #        '/admin/dialer_campaign/subscriber/add/',
-    #        data={
-    #            "status": "1",
-    #            "campaign": "1",
-    #            "duplicate_contact": "1234567",
-    #            "count_attempt": "1",
-    #            "completion_count_attempt": "1",
-    #            "agent": "",
-    #        })
-    #    self.assertEqual(response.status_code, 200)
+        response = self.client.post(
+            '/admin/dialer_campaign/subscriber/add/',
+            data={
+                "status": "1",
+                "campaign": "1",
+                "duplicate_contact": "1234567",
+                "count_attempt": "1",
+                "completion_count_attempt": "1",
+            })
+        self.assertEqual(response.status_code, 200)
 
 
 class DialerCampaignCustomerView(BaseAuthenticatedClient):
@@ -250,17 +249,17 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         response = campaign_duplicate(request, 1)
         self.assertEqual(response.status_code, 302)
 
-    #def test_subscriber_list(self):
-    #    """Test Function to check subscriber list"""
-    #    response = self.client.get('/subscribers/')
-    #    self.assertEqual(response.status_code, 200)
-    #    self.assertTemplateUsed(response, 'frontend/subscriber/list.html')
+    def test_subscriber_list(self):
+        """Test Function to check subscriber list"""
+        response = self.client.get('/subscribers/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/subscriber/list.html')
 
-    #    request = self.factory.get('/subscribers/')
-    #    request.user = self.user
-    #    request.session = {}
-    #    response = subscriber_list(request)
-    #    self.assertEqual(response.status_code, 200)
+        request = self.factory.get('/subscribers/')
+        request.user = self.user
+        request.session = {}
+        response = subscriber_list(request)
+        self.assertEqual(response.status_code, 200)
 
     def test_subscriber_list_export(self):
         """Test Function to check subscriber list"""

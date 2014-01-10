@@ -13,8 +13,8 @@
 #
 from django.contrib.admin import SimpleListFilter
 from django.utils.translation import ugettext as _
-from agent.function_def import agent_list
-from agent.models import AgentProfile
+#from agent.function_def import agent_list
+#from agent.models import AgentProfile
 
 
 class AgentFilter(SimpleListFilter):
@@ -29,7 +29,7 @@ class AgentFilter(SimpleListFilter):
         human-readable name for the option that will appear
         in the right sidebar.
         """
-        return agent_list()
+        return []  # agent_list()
 
     def queryset(self, request, queryset):
         """
@@ -38,7 +38,7 @@ class AgentFilter(SimpleListFilter):
         `self.value()`.
         """
         if self.value() is not None:
-            agent_id_list = AgentProfile.objects.values_list('user_id', flat=True).all()
-            return queryset.filter(agent_id__in=agent_id_list)
+            #agent_id_list = AgentProfile.objects.values_list('user_id', flat=True).all()
+            return queryset  # .filter(agent_id__in=agent_id_list)
         else:
             return queryset

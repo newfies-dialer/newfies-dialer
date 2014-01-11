@@ -97,8 +97,8 @@
                         {% autopaginate smscampaign_list PAGE_SIZE %}
                         {% for row in smscampaign_list %}
                             <tr>
-                                <td class="survey_edit_key"><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
-                                <td class="survey_edit_key">{{ row.campaign_code }}</td>
+                                <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
+                                <td>{{ row.campaign_code }}</td>
                                 <td>{{ row.name }}</td>
                                 <td>{{ row.startingdate }}</td>
                                 <td>{{ row.sms_gateway }}</td>

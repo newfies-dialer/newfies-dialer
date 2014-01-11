@@ -22,12 +22,9 @@
 # >> Install with develop script :
 # cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
 #
-# >> Install with appointment script :
-# cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/appointment/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
-#
 
-#Set branch to install develop / master / appointment
-BRANCH="appointment"
+#Set branch to install develop / master
+BRANCH="develop"
 
 DATETIME=$(date +"%Y%m%d%H%M%S")
 INSTALL_DIR='/usr/share/newfies'
@@ -551,9 +548,6 @@ func_install_source(){
     #Install branch develop / callcenter
     if echo $BRANCH | grep -i "^develop" > /dev/null ; then
         git checkout -b develop --track origin/develop
-    fi
-    if echo $BRANCH | grep -i "^appointment" > /dev/null ; then
-        git checkout -b appointment --track origin/appointment
     fi
 
     #Copy files

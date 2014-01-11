@@ -22,6 +22,7 @@ Login Page
 Index page for the customer interface after successful login with user credentials
 
 .. image:: ../_static/images/customer_screenshot.png
+    :width: 750
 
 
 .. _customer-phonebook-access:
@@ -35,17 +36,18 @@ description. Also from the phonebook list, click on the phonebook to update.
 
 **URL**:
 
-    * http://localhost:8000/dialer_campaign/phonebook/
+    * http://localhost:8000/phonebook/
 
 .. image:: ../_static/images/customer/phonebook_list.png
+    :width: 700
 
 
 To Add/Update a Phonebook for a logged in user
 
 **URL**:
 
-    * http://localhost:8000/dialer_campaign/phonebook/add/
-    * http://localhost:8000/dialer_campaign/phonebook/1/
+    * http://localhost:8000/phonebook/add/
+    * http://localhost:8000/phonebook/1/
 
 .. image:: ../_static/images/customer/update_phonebook.png
 
@@ -63,7 +65,7 @@ the phonebook list. On the contact list, click on the contact to update.
 
 **URL**:
 
-    * http://localhost:8000/dialer_campaign/contact/
+    * http://localhost:8000/contact/
 
 .. image:: ../_static/images/customer/contact_list.png
 
@@ -72,8 +74,8 @@ To Add/Update a contact in a phonebook
 
 **URL**:
 
-    * http://localhost:8000/dialer_campaign/contact/add/
-    * http://localhost:8000/dialer_campaign/contact/1/
+    * http://localhost:8000/contact/add/
+    * http://localhost:8000/contact/1/
 
 .. image:: ../_static/images/customer/update_contact.png
 
@@ -84,9 +86,10 @@ user's phonebook.
 
 **URL**:
 
-    * http://localhost:8000/dialer_campaign/contact/import/
+    * http://localhost:8000/contact_import/
 
 .. image:: ../_static/images/customer/import_contact.png
+    :width: 700
 
 
 
@@ -118,9 +121,9 @@ The audio file will then be uploaded and renamed so that it is unique.
 
 **URL**:
 
-    * http://localhost:8000/survey/
-    * http://localhost:8000/survey/add/
-    * http://localhost:8000/survey/1/
+    * http://localhost:8000/module/survey/
+    * http://localhost:8000/module/survey/add/
+    * http://localhost:8000/module/survey/1/
 
 .. image:: ../_static/images/customer/survey_list.png
 
@@ -169,21 +172,21 @@ linked with contacts from the campaign list, click on campaign to update.
 
 **URL**:
 
-    * http://localhost:8000/dialer_campaign/campaign/
+    * http://localhost:8000/campaign/
 
 .. image:: ../_static/images/customer/campaign_list.png
+    :width: 800
 
 
 To Add/Update a Campaign for a logged in user
 
 **URL**:
 
-    * http://localhost:8000/dialer_campaign/campaign/add/
-    * http://localhost:8000/dialer_campaign/campaign/1/
+    * http://localhost:8000/campaign/add/
+    * http://localhost:8000/campaign/1/
 
 .. image:: ../_static/images/customer/update_campaign.png
-
-
+    :width: 800
 
 .. _customer-dashboard-access:
 
@@ -193,6 +196,7 @@ Dashboard
 Dashboard gives the information anbout campaign & its related call records
 
 .. image:: ../_static/images/customer/customer_dashboard.png
+    :width: 800
 
 
 .. _settings-user:
@@ -209,4 +213,174 @@ The settings page provides a number of functions:
     * Authorized - Facitiy to check that a number is not blacklisted.
 
 .. image:: ../_static/images/customer/account_setting.png
+    :width: 800
+
+.. _customer-sms-campaign-access:
+
+SMSCampaign
+-----------
+
+The sms campaign list will be displayed from the following URL. You can add a new sms campaign for
+the logged in user by clicking ``Add sms campaign``. When adding a sms campaign, it is important
+to add the campaign's start and end dates with time & week-day exceptions. Select
+the sms gateway through which smses will be routed & phonebook(s) that are
+linked with contacts from the sms campaign list, click on sms campaign to update.
+
+**URL**:
+
+    * http://localhost:8000/sms_campaign/
+
+.. image:: ../_static/images/customer/sms_campaign_list.png
+    :width: 800
+
+
+To Add/Update a SMS Campaign for a logged in user
+
+**URL**:
+
+    * http://localhost:8000/sms_campaign/add/
+    * http://localhost:8000/sms_campaign/1/
+
+.. image:: ../_static/images/customer/update_sms_campaign.png
+    :width: 800
+
+.. _appointment-access:
+
+Calendar Setting
+----------------
+
+**URL**:
+
+    * http://localhost:8000/module/calendar_setting/
+
+.. image:: ../_static/images/customer/calendar_settings_list.png
+
+
+To Add/Update a calendar setting for a logged in user
+
+**URL**:
+
+    * http://localhost:8000/module/calendar_setting/add/
+    * http://localhost:8000/module/calendar_setting/1/
+
+.. image:: ../_static/images/customer/update_calendar_setting.png
+
+Calendar User
+-------------
+
+**URL**:
+
+    * http://localhost:8000/module/calendar_user/
+
+.. image:: ../_static/images/customer/calendar_user_list.png
+
+
+To Add/Update a calendar user for a logged in user
+
+**URL**:
+
+    * http://localhost:8000/module/calendar_user/add/
+    * http://localhost:8000/module/calendar_user/4/
+
+.. image:: ../_static/images/customer/add_calendar_user.png
+
+
+Calendar
+--------
+
+**URL**:
+
+    * http://localhost:8000/module/calendar/
+
+.. image:: ../_static/images/customer/calendar_list.png
+
+
+To Add/Update a calendar for a logged in user
+
+**URL**:
+
+    * http://localhost:8000/module/calendar/add/
+    * http://localhost:8000/module/calendar/4/
+
+.. image:: ../_static/images/customer/update_calendar.png
+
+
+Event
+-----
+
+**URL**:
+
+    * http://localhost:8000/module/event/
+
+.. image:: ../_static/images/customer/event_list.png
+
+
+To Add/Update a event for a logged in user
+
+**URL**:
+
+    * http://localhost:8000/module/event/add/
+    * http://localhost:8000/module/event/1/
+
+.. image:: ../_static/images/customer/update_event.png
+
+
+Alarm
+-----
+
+**URL**:
+
+    * http://localhost:8000/module/alarm/
+
+.. image:: ../_static/images/customer/alarm_list.png
+
+
+To Add/Update a alarm for a logged in user
+
+**URL**:
+
+    * http://localhost:8000/module/alarm/add/
+    * http://localhost:8000/module/alarm/1/
+
+.. image:: ../_static/images/customer/update_alarm.png
+    :width: 700
+
+Reports
+-------
+
+**URL**:
+
+    * http://localhost:8000/voipcall_report/
+
+.. image:: ../_static/images/customer/call_report_part1.png
+
+.. image:: ../_static/images/customer/call_report_part2.png
+
+
+**URL**:
+
+    * http://localhost:8000/survey_report/
+
+.. image:: ../_static/images/customer/survey_report_part1.png
+
+.. image:: ../_static/images/customer/survey_report_part2.png
+
+.. image:: ../_static/images/customer/survey_report_part3.png
+
+
+**URL**:
+
+    * http://localhost:8000/subscribers/
+
+.. image:: ../_static/images/customer/subscriber_report.png
+
+
+**URL**:
+
+    * http://localhost:8000/sms_report/
+
+.. image:: ../_static/images/customer/sms_report_part1.png
+
+.. image:: ../_static/images/customer/sms_report_part2.png
+
 

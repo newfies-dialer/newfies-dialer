@@ -32,7 +32,6 @@ Admin Interface Test Case
 
 .. automodule:: dialer_cdr.tests
 
-
 .. _DialerCdrView-admin:
 
 .. autoclass:: DialerCdrView
@@ -62,13 +61,4 @@ Admin Interface Test Case
 .. _SurveyAdminView-admin:
 
 .. autoclass:: SurveyAdminView
-    :members:
-
-
-.. automodule:: voice_app.tests
-
-
-.. _VoiceAppAdminView-admin:
-
-.. autoclass:: VoiceAppAdminView
     :members:

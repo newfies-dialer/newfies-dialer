@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -31,7 +31,9 @@ class DNC(models.Model):
     """
     name = models.CharField(max_length=50, blank=False,
                             null=True, verbose_name=_("name"),
-                            help_text=_("DNC name"))
+                            help_text=_("Enter a DNC list name"))
+    description = models.TextField(null=True, blank=True,
+                                   help_text=_("DNC notes"))
     user = models.ForeignKey('auth.User', related_name='DNC owner')
 
     created_date = models.DateTimeField(auto_now_add=True)
@@ -42,7 +44,7 @@ class DNC(models.Model):
 
     class Meta:
         permissions = (
-            ("view_dnc_list", _('can see Do Not Call list')),
+            ("view_dnc", _('can see Do Not Call list')),
         )
         db_table = "dnc_list"
         verbose_name = _("Do Not Call list")
@@ -52,7 +54,7 @@ class DNC(models.Model):
         """This will return a count of the contacts in the dnc"""
         return DNCContact.objects.filter(dnc=self.id).count()
     dnc_contacts_count.allow_tags = True
-    dnc_contacts_count.short_description = _('dnc contacts')
+    dnc_contacts_count.short_description = _('DNC contacts')
 
 
 class DNCContact(models.Model):
@@ -70,8 +72,8 @@ class DNCContact(models.Model):
     **Name of DB table**: dnc_contact
     """
     dnc = models.ForeignKey(DNC, verbose_name=_("Do Not Call List"))
-    phone_number = models.CharField(max_length=120, db_index=True, null=True, blank=True,
-        verbose_name=_("phone number"))
+    phone_number = models.CharField(max_length=120, db_index=True,
+                                    verbose_name=_("phone number"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True,)
@@ -81,7 +83,7 @@ class DNCContact(models.Model):
 
     class Meta:
         permissions = (
-            ("view_dnccontact", _('can see Do Not Call contact')),
+            ("view_dnc_contact", _('can see Do Not Call contact')),
         )
         db_table = "dnc_contact"
         verbose_name = _("Do Not Call contact")

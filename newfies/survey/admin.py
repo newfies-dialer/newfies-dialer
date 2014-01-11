@@ -7,20 +7,21 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from django.contrib import admin
-from django.utils.translation import ugettext as _
+# from django.utils.translation import ugettext as _
 from survey.models import Survey, Section, Branching, \
     Survey_template, Section_template, Branching_template, \
     Result, ResultAggregate
 from adminsortable.admin import SortableAdmin, SortableTabularInline
-from common.app_label_renamer import AppLabelRenamer
-AppLabelRenamer(native_app_label=u'survey', app_label=_('Survey')).main()
+# from common.app_label_renamer import AppLabelRenamer
+
+# AppLabelRenamer(native_app_label=u'survey', app_label=_('Survey')).main()
 
 
 #Templates Section, Survey and Branching for Admin
@@ -124,9 +125,9 @@ class ResultAggregateAdmin(admin.ModelAdmin):
 
     """Allows the administrator to view and modify survey aggregated result."""
 
-    list_display = ('id', 'campaign', 'survey', 'section', 'response',
+    list_display = ('id', 'survey', 'section', 'response',
                     'count', 'created_date')
-    search_fields = ['campaign', 'survey']
+    search_fields = ['survey']
     list_filter = ['created_date', 'survey']
     list_display_links = ('id',)
     ordering = ('id', )

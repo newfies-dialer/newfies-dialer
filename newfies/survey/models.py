@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -65,7 +65,7 @@ class Survey_abstract(models.Model):
         abstract = True
 
     def __unicode__(self):
-            return u"%s" % self.name
+        return u"%s" % self.name
 
 
 class Survey_template(Survey_abstract):
@@ -81,7 +81,7 @@ class Survey_template(Survey_abstract):
         verbose_name = _("survey template")
         verbose_name_plural = _("survey templates")
 
-    def copy_survey_template(self, campaign_id):
+    def copy_survey_template(self, campaign_id=None):
         """
         copy survey template to survey when starting campaign
         """
@@ -92,13 +92,14 @@ class Survey_template(Survey_abstract):
             user=self.user,
             campaign_id=campaign_id)
 
-        # updated campaign content_type & object_id with new survey object
-        survey_id = ContentType.objects.get(model='survey').id
+        if campaign_id:
+            # updated campaign content_type & object_id with new survey object
+            survey_id = ContentType.objects.get(model='survey').id
 
-        campaign_obj = Campaign.objects.get(id=campaign_id)
-        campaign_obj.content_type_id = survey_id
-        campaign_obj.object_id = new_survey_obj.id
-        campaign_obj.save()
+            campaign_obj = Campaign.objects.get(id=campaign_id)
+            campaign_obj.content_type_id = survey_id
+            campaign_obj.object_id = new_survey_obj.id
+            campaign_obj.save()
 
         # Copy Sections
         section_template = Section_template.objects.filter(survey=self)
@@ -126,12 +127,20 @@ class Survey(Survey_abstract):
     class Meta:
         permissions = (
             ("view_survey", _('can see survey')),
+            ("view_sealed_survey", _('can see sealed survey')),
+            ("seal_survey", _('can seal survey')),
             ("export_survey", _('can export survey')),
             ("import_survey", _('can import survey')),
             ("view_survey_report", _('can see survey report'))
         )
         verbose_name = _("survey")
         verbose_name_plural = _("surveys")
+
+    def __unicode__(self):
+        if self.campaign:
+            return u"%s (campaign: %s)" % (self.name, self.campaign)
+        else:
+            return u"%s" % self.name
 
 
 class Section_abstract(Sortable):
@@ -164,6 +173,7 @@ class Section_abstract(Sortable):
         * ``phonenumber`` - phonenumber to dialout / call transfer
         * ``completed`` - reaching this section will mark the subscriber as completed
         * ``conference`` - Conference Room
+        * ``sms_text`` - text to send via SMS
 
     **Relationships**:
 
@@ -176,23 +186,23 @@ class Section_abstract(Sortable):
     # select section
     type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE),
                                default=SECTION_TYPE.PLAY_MESSAGE,
-                               blank=True, null=True,
+                               #blank=True, null=True,
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting
     question = models.CharField(max_length=500, blank=False,
                                 verbose_name=_("question"),
-                                help_text=_('example : hotel service rating'))
+                                help_text=_('Example: hotel service rating'))
     # Script will be used by TTS
     script = models.CharField(max_length=1000, null=True, blank=True,
-                              help_text=_('example : capture digits between 1 to 5, press pound key when done'))
+        help_text=_('Example: Press a key between 1 to 5, press pound key when done or Hello {first_name} {last_name}, please press a key between 1 to 5'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("audio File"))
     retries = models.IntegerField(max_length=1, null=True, blank=True,
                                   verbose_name=_("retries"), default=0,
-                                  help_text=_('retries this section until it\'s valid'))
+                                  help_text=_('retries until valid input'))
     timeout = models.IntegerField(max_length=2, null=True, blank=True,
                                   verbose_name=_("timeout"), default=5,
-                                  help_text=_('timeout in seconds to press the key(s)'))
+                                  help_text=_('timeout in seconds'))
     # Multi-choice
     key_0 = models.CharField(max_length=100, null=True, blank=True,
                              verbose_name=_("key") + " 0")
@@ -235,7 +245,11 @@ class Section_abstract(Sortable):
     #Conference Room
     conference = models.CharField(max_length=50,
                                   null=True, blank=True,
-                                  verbose_name=_("conference"))
+                                  verbose_name=_("conference number"))
+
+    sms_text = models.CharField(max_length=200,
+                                null=True, blank=True,
+                                help_text=_('text that will be send via SMS to the contact'))
 
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False,
@@ -328,6 +342,7 @@ class Section_template(Section_abstract):
             max_number=self.max_number,
             phonenumber=self.phonenumber,
             conference=self.conference,
+            sms_text=self.sms_text,
             completed=self.completed,
             order=self.order,
             invalid_audiofile_id=self.invalid_audiofile_id,
@@ -483,13 +498,12 @@ class Result(models.Model):
 
 
 class ResultAggregate(models.Model):
-    """This gives survey result aggregate, used to display survey
+    """
+    This gives survey result aggregate, used to display survey
     result in a more efficient way
 
     **Name of DB table**: result_aggregate
     """
-    campaign = models.ForeignKey(Campaign, null=True, blank=True,
-                                 verbose_name=_("campaign"))
     survey = models.ForeignKey(Survey, related_name='ResultSum Survey')
     section = models.ForeignKey(Section, related_name='ResultSum Section')
     response = models.CharField(max_length=150, blank=False, db_index=True,
@@ -500,7 +514,7 @@ class ResultAggregate(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ("campaign", "survey", "section", "response")
+        unique_together = ("survey", "section", "response")
 
     def __unicode__(self):
         return '[%s] %s = %s' % (self.id, self.section, self.response)
@@ -524,7 +538,8 @@ def post_save_add_script(sender, **kwargs):
         if (obj.type == SECTION_TYPE.PLAY_MESSAGE
            or obj.type == SECTION_TYPE.RECORD_MSG
            or obj.type == SECTION_TYPE.CALL_TRANSFER
-           or obj.type == SECTION_TYPE.CONFERENCE):
+           or obj.type == SECTION_TYPE.CONFERENCE
+           or obj.type == SECTION_TYPE.SMS):
             Branching_template.objects.create(keys=0, section_id=obj.id, goto_id='')
 
         if obj.type == SECTION_TYPE.MULTI_CHOICE or \

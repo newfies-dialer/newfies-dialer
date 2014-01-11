@@ -1,0 +1,34 @@
+[
+    {
+        "pk": 1,
+        "model": "agent.agentprofile",
+        "fields": {
+            "status": 1,
+            "is_agent": true,
+            "manager": 1,
+            "reject_delay_time": null,
+            "max_no_answer": null,
+            "city": "",
+            "call_timeout": 45,
+            "note": "",
+            "state": "",
+            "company_name": "",
+            "type": 1,
+            "zip_code": "",
+            "updated_date": "2013-04-01T13:55:52.775",
+            "fax": "",
+            "busy_delay_time": null,
+            "company_website": "",
+            "user": 3,
+            "address": "",
+            "accountcode": null,
+            "language": null,
+            "country": "",
+            "no_answer_delay_time": null,
+            "phone_no": "",
+            "contact": "",
+            "wrap_up_time": null,
+            "created_date": "2013-04-01T13:55:52.775"
+        }
+    }
+]

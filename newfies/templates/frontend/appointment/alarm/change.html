@@ -1,0 +1,112 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block extra_files %}
+    {{ form.media }}
+{% endblock %}
+
+{% block content_header %}
+    <h1>
+        {% if action == 'update' %}
+            {% trans "update"|title %}
+        {% else %}
+            {% trans "add"|title %}
+        {% endif %}
+        {% trans "alarm"|title %}
+        <small></small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+<ul class="nav nav-tabs">
+    <li class="active"><a href="#tabs-1" data-toggle="tab">{% trans "general settings"|title %}</a></li>
+    <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "alarm settings"|title %}</a></li>
+    <li class="{% if action == 'tabs-3' %}active{% endif %}"><a href="#tabs-3" data-toggle="tab">{% trans "result settings"|title %}</a></li>
+</ul>
+<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <div class="tab-content">
+        <div id="tabs-1" class="tab-pane active">
+            <div class="row">
+                {% get_fieldset alarm_phonenumber,alarm_email,event,method,survey,mail_template,sms_template,date_start_notice as general_fields from form %}
+                {% for field in general_fields.hidden_fields %}
+                    {{ field }}
+                {% endfor %}
+                {% for field in general_fields.visible_fields %}
+                    <div class="col-md-6">
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <div class="col-xs-8">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-block">
+                                    {{ field.errors|removetags:"ul li"|safe }}
+                                </span>
+                            {% endif %}
+                            <span class="help-block">
+                                {{ field.help_text|capfirst }}
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+        <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
+
+            <div class="row">
+                {% get_fieldset daily_start,daily_stop,advance_notice,maxretry,retry_delay as alarm_fields from form %}
+                {% for field in alarm_fields.hidden_fields %}
+                    {{ field }}
+                {% endfor %}
+                {% for field in alarm_fields.visible_fields %}
+                    <div class="col-md-6">
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <div class="col-xs-8">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-block">
+                                    {{ field.errors|removetags:"ul li"|safe }}
+                                </span>
+                            {% endif %}
+                            <span class="help-block">
+                                {{ field.help_text|capfirst }}
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div id="tabs-3" class="tab-pane {% if action == 'tabs-3' %}active{% endif %}">
+            <div class="row">
+                {% get_fieldset result,url_cancel,phonenumber_sms_failure,url_confirm,phonenumber_transfer as result_fields from form %}
+                {% for field in result_fields.hidden_fields %}
+                    {{ field }}
+                {% endfor %}
+                {% for field in result_fields.visible_fields %}
+                    <div class="col-md-6">
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <div class="col-xs-8">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-block">
+                                    {{ field.errors|removetags:"ul li"|safe }}
+                                </span>
+                            {% endif %}
+                            <span class="help-block">
+                                {{ field.help_text|capfirst }}
+                            </span>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+    {% include "frontend/common_submit_buttons.html" %}
+</form>
+
+{% endblock %}

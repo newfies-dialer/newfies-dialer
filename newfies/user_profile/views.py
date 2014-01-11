@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -24,9 +24,8 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
-    UserChangeDetailExtendForm, \
+    UserChangeDetailExtendForm, UserPasswordChangeForm,\
     CheckPhoneNumberForm
-from common.common_functions import current_view
 
 
 @login_required
@@ -36,7 +35,7 @@ def customer_detail_change(request):
     **Attributes**:
 
         * ``form`` - UserChangeDetailForm, UserChangeDetailExtendForm,
-                        PasswordChangeForm, CheckPhoneNumberForm
+                        UserPasswordChangeForm, CheckPhoneNumberForm
         * ``template`` - 'frontend/registration/user_detail_change.html'
 
     **Logic Description**:
@@ -44,6 +43,7 @@ def customer_detail_change(request):
         * User is able to change his/her detail.
     """
     user_detail = get_object_or_404(User, username=request.user)
+
     try:
         user_detail_extened = UserProfile.objects.get(user=user_detail)
     except UserProfile.DoesNotExist:
@@ -55,17 +55,11 @@ def customer_detail_change(request):
 
     user_detail_form = UserChangeDetailForm(request.user,
                                             instance=user_detail)
-    user_detail_extened_form = \
-        UserChangeDetailExtendForm(request.user,
-                                   instance=user_detail_extened)
+    user_detail_extened_form = UserChangeDetailExtendForm(request.user,
+                                                          instance=user_detail_extened)
 
-    user_password_form = PasswordChangeForm(user=request.user)
+    user_password_form = UserPasswordChangeForm(user=request.user)
     check_phone_no_form = CheckPhoneNumberForm()
-
-    try:
-        dialer_set = DialerSetting.objects.get(id=request.user.get_profile().dialersetting_id)
-    except:
-        dialer_set = ''
 
     msg_detail = ''
     msg_pass = ''
@@ -82,9 +76,8 @@ def customer_detail_change(request):
         if request.POST['form-type'] == "change-detail":
             user_detail_form = UserChangeDetailForm(
                 request.user, request.POST, instance=user_detail)
-            user_detail_extened_form = \
-                UserChangeDetailExtendForm(
-                    request.user, request.POST, instance=user_detail_extened)
+            user_detail_extened_form = UserChangeDetailExtendForm(
+                request.user, request.POST, instance=user_detail_extened)
             action = 'tabs-1'
             if (user_detail_form.is_valid()
                and user_detail_extened_form.is_valid()):
@@ -99,15 +92,16 @@ def customer_detail_change(request):
             action = 'tabs-4'
             check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if check_phone_no_form.is_valid():
-                if not common_contact_authorization(request.user, request.POST['phone_number']):
+                dialersetting = request.user.get_profile().dialersetting
+                if not common_contact_authorization(dialersetting, request.POST['phone_number']):
                     error_number = _('this phone number is not authorized.')
                 else:
                     msg_number = _('this phone number is authorized.')
             else:
                 error_number = _('please correct the errors below.')
         else:  # "change-password"
-            user_password_form = PasswordChangeForm(user=request.user,
-                                                    data=request.POST)
+            user_password_form = UserPasswordChangeForm(user=request.user,
+                                                        data=request.POST)
             action = 'tabs-2'
             if user_password_form.is_valid():
                 #DEMO / Disable
@@ -117,9 +111,13 @@ def customer_detail_change(request):
             else:
                 error_pass = _('please correct the errors below.')
 
+    try:
+        dialer_set = user_detail_extened.dialersetting
+    except:
+        dialer_set = ''
+
     template = 'frontend/registration/user_detail_change.html'
     data = {
-        'module': current_view(request),
         'user_detail_form': user_detail_form,
         'user_detail_extened_form': user_detail_extened_form,
         'user_password_form': user_password_form,
@@ -134,5 +132,4 @@ def customer_detail_change(request):
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'action': action,
     }
-    return render_to_response(template, data,
-           context_instance=RequestContext(request))
+    return render_to_response(template, data, context_instance=RequestContext(request))

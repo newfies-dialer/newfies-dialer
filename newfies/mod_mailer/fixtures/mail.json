@@ -1,0 +1,16 @@
+[
+   {
+      "pk":1,
+      "model":"mail.mailtemplate",
+      "fields":{
+         "from_name":"From Name",
+         "message_plaintext":"You need to confirm your email.",
+         "template_key":"confirmation",
+         "from_email":"info@localhost.com",
+         "message_html":"<b>HTML version</b></br></br>You need to confirm your email.",
+         "created_date":"2013-10-01 10:00:00",
+         "label":"Confirmation",
+         "subject":"Email confirmation"
+      }
+   }
+]

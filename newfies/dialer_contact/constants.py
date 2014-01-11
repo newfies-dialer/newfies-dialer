@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -48,5 +48,6 @@ class CONTACT_COLUMN_NAME(Choice):
     contact = _('contact')
     last_name = _('last name')
     first_name = _('first name')
+    email = _('email')
     status = _('status')
     date = _('date')

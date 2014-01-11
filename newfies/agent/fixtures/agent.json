@@ -1,0 +1,22 @@
+[
+    {
+        "pk": 3,
+        "model": "auth.user",
+        "fields": {
+            "username": "agent",
+            "first_name": "",
+            "last_name": "",
+            "is_active": true,
+            "is_superuser": false,
+            "is_staff": false,
+            "last_login": "2013-04-01T16:48:34.429",
+            "groups": [],
+            "user_permissions": [
+                19
+            ],
+            "password": "pbkdf2_sha256$10000$FgHVLCbi3hKH$+sMmpXmOrCRyayEvk1uBQIWJ+zn65j4Up4Wt7cONNXQ=",
+            "email": "",
+            "date_joined": "2013-04-01T13:55:52"
+        }
+    }
+]

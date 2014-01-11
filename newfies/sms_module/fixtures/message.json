@@ -1,0 +1,24 @@
+[
+    {
+        "pk":1,
+        "model":"sms.message",
+        "fields":{
+            "status":"Delivered",
+            "sender":1,
+            "reply_callback":null,
+            "object_id":1,
+            "content":"this is test",
+            "gateway_charge":null,
+            "send_date":"2013-01-03T14:55:09.595",
+            "content_type":35,
+            "sender_number":"02956",
+            "gateway_message_id":null,
+            "billed":false,
+            "recipient_number":"02956",
+            "status_message":null,
+            "gateway":1,
+            "delivery_date":"2013-01-03T14:55:19.595",
+            "uuid":"ad1117c058a011e2964f000c2925d15f"
+        }
+    }
+]

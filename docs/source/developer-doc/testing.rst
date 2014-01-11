@@ -47,8 +47,9 @@ How to run test
 
     $ python manage.py test user_profile
 
-    $ python manage.py test voice_app
+    $ python manage.py test appointment
 
+    $ python manage.py test sms_module
 
 
 .. toctree::
@@ -58,15 +59,3 @@ How to run test
     ./testcases/admin-testcases
     ./testcases/customer-testcases
     ./testcases/model-testcases
-
-
-.. automodule:: frontend.tests
-
------------------------------------
-Customer Interface Forgot Test Case
------------------------------------
-
-.. _FrontendForgotPassword:
-
-.. autoclass:: FrontendForgotPassword
-    :members:

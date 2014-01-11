@@ -1,0 +1,103 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block content_header %}
+    <h1>
+        {% if action == 'update' %}
+            {% trans "update"|title %}
+        {% else %}
+            {% trans "add"|title %}
+        {% endif %}
+        {% trans "calendar settings"|title %}
+        <small></small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <div class="row">
+        {% get_fieldset label,callerid,caller_name,call_timeout as calendarsetting_fields from form %}
+        {% for field in calendarsetting_fields.visible_fields %}
+        <div class="col-md-6">
+            <div class="form-group {% if field.errors %}has-error{% endif %}">
+            <div class="col-xs-8">
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-block">
+                        {{ field.errors|removetags:"ul li"|safe }}
+                    </span>
+                {% endif %}
+                <span class="help-block">
+                    {{ field.help_text|capfirst }}
+                </span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="row">
+        {% get_fieldset survey,aleg_gateway,sms_gateway as calendarsetting_fields from form %}
+        {% for field in calendarsetting_fields.visible_fields %}
+        <div class="col-md-6">
+            <div class="form-group {% if field.errors %}has-error{% endif %}">
+            <div class="col-xs-8">
+                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-block">
+                        {{ field.errors|removetags:"ul li"|safe }}
+                    </span>
+                {% endif %}
+                <span class="help-block">
+                    {{ field.help_text|capfirst }}
+                </span>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% if AMD %}
+        <div class="row">
+            <div class="col-md-6">
+                <div class="col-xs-10">
+                    <div class="btn-group" data-toggle="buttons">
+                        {% get_fieldset voicemail as settings_fields from form %}
+                        {% for field in settings_fields %}
+                            <label for="{{ field.auto_id }}">{{ field.label|wordcap }}</label><br/>
+                            <div class="make-switch switch-small">
+                            {{ field }}
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div>&nbsp;</div>
+        <div class="row">
+            {% get_fieldset amd_behavior,voicemail_audiofile as calendarsetting_fields from form %}
+            {% for field in calendarsetting_fields.visible_fields %}
+                <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                        <div class="col-xs-8">
+                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-block">
+                                    {{ field.errors|removetags:"ul li"|safe }}
+                                </span>
+                            {% endif %}
+                            <span class="help-block">
+                                {{ field.help_text|capfirst }}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% endif %}
+    {% include "frontend/common_submit_buttons.html" %}
+</form>
+
+{% endblock %}

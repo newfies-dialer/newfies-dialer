@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n dialer_campaign_tags %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"><![endif]-->
 <!--[if IE 8]><html class="no-js lt-ie9"><![endif]-->
@@ -13,11 +13,10 @@
 - License, v. 2.0. If a copy of the MPL was not distributed with this file,
 - You can obtain one at http://mozilla.org/MPL/2.0/.
 -
-- Copyright (C) 2011-2013 Star2Billing S.L.
+- Copyright (C) 2011-2014 Star2Billing S.L.
 -
 - The Initial Developer of the Original Code is
 - Arezqui Belaid <info@star2billing.com>
--
 -->
 
 <meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
@@ -35,37 +34,21 @@
 <!--[if lt IE 9]>
   <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
 <![endif]-->
+
+{% block jquery_ui_js %}
+{% endblock %}
+
 {% block header_files %}
 
-<!-- Le javascript -->
-<script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-1.8.2.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}newfies/js/jquery-ui-1.9.1.custom.min.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}newfies/js/custom.validation.js"></script>
+<script src="{{ STATIC_URL }}jquery/jquery.min.js" type="text/javascript"></script>
 
-<!--bootstrap js-->
-<script src="{{ STATIC_URL }}newfies/bootstrap/js/bootstrap.js"></script>
-<script src="{{ STATIC_URL }}newfies/js/bootstrap-datepicker.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}newfies/js/bootbox.min.js"></script>
-
-<!-- bootstrap css -->
-<link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap.css" rel="stylesheet">
-<link href="{{ STATIC_URL }}newfies/css/datepicker.css" rel="stylesheet">
-<!-- jquery UI css -->
-<link type="text/css" href="{{ STATIC_URL }}newfies/css/jquery-ui-bootstrap/jquery-ui-1.8.16.custom.css" rel="stylesheet">
-<!-- RTL -->
-<!-- <link href="{{ STATIC_URL }}newfies/bootstrap-2.0.4/css/rtl/bootstrap-rtl.min.css" rel="stylesheet"> -->
-<style type="text/css">
-    body {
-        padding-top: 60px;
-        padding-bottom: 40px;
-    }
-</style>
-<link href="{{ STATIC_URL }}newfies/bootstrap/css/bootstrap-responsive.css" rel="stylesheet">
-
-<!--Override bootstrap-->
-<link href="{{ STATIC_URL }}newfies/css/override_bootstrap.css" rel="stylesheet">
-<!-- Newfies custom css -->
-<link type="text/css" media="screen" href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet"/>
+<!-- CSS -->
+<link href="{{ STATIC_URL }}/bootstrap/dist/css/bootstrap.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}newfies/css/sidebar-offcanvas.css" rel="stylesheet">
+<link href="{{ STATIC_URL }}/bootstrap-switch/build/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
+<link href="{{ STATIC_URL }}/jquery-ui/themes/flick/jquery-ui.min.css" type="text/css" rel="stylesheet" media="all"/>
+<link href="{{ STATIC_URL }}/components-font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="all"/>
+<link href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet" type="text/css" media="screen" />
 
 {% endblock %}
 
@@ -73,7 +56,9 @@
     {{ extra_header }}
 {% endblock %}
 
-{% include "frontend/newfies_custom_js.html" %}
+{% block newfies_custom_js %}
+    {% include "frontend/newfies_custom_js.html" %}
+{% endblock %}
 </head>
 
 <body>
@@ -84,49 +69,80 @@
 
 {% block container %}
 <div class="container">
+<div class="row row-offcanvas row-offcanvas-right">
+
+    <!--start left side-->
+    {% if user.is_authenticated %}
+        {% if not request.path|check_url_for_template_width %}
+            {% block sidebar_menu %}
+                {% include "frontend/bootstrap_side_menu.html" %}
+            {% endblock %}
+        {% endif %}
+    {% endif %}
+    <!--end left side-->
+
+    <!--start right side-->
+    {% if user.is_authenticated %}
+        {% if request.path|check_url_for_template_width %}
+            <div class="col-xs-12 col-sm-12">
+        {% else %}
+            <div class="col-xs-12 col-sm-9">
+                <!--offcanvas side menu toggle button-->
+                <p class="pull-right visible-xs">
+                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">{% trans "side menu"|title %}</button>
+                </p>
+        {% endif %}
+    {% else %}
+        <div class="col-xs-12 col-sm-12">
+    {% endif %}
 
     {% block row_fluid %}
-        <div class="row-fluid">
-        {% if not user.is_authenticated %}
-        <div class="span6">
-            <form class="well form-inline" action="/login/" class="pull-right" method="post">
-            {% csrf_token %}
-            {% for field in loginform %}
-                {{ field }}
-            {% endfor %}
-            <button class="btn" type="submit">{% trans "login"|title %}</button>
-            <a class="btn btn-info" href="/password_reset/">{% trans "forgot password?"|capfirst %}</a>
-        </form>
-        </div>
-        <div class="span6">
-            <form class="well form-inline" action="/i18n/setlang/" method="post" class="pull-right">
-                {% csrf_token %}
-                {% trans "display language"|capfirst %} : <select name="language" id="language-container" class="input-small" >
-                {% for lang in LANGUAGES %}
-                <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
-                {% endfor %}
-                </select>
-                &nbsp;&nbsp;&nbsp;&nbsp;
-            </form>
-        </div>
-        {% endif %}
+        <div class="row">
+            {% if not user.is_authenticated %}
+            <div class="col-6 col-sm-6 col-lg-6">
+                <form class="form-inline well" role="form" action="/login/" method="post">
+                    {% csrf_token %}
+                    {% for field in loginform %}
+                        <div class="form-group col-xs-3">
+                        {{ field }}
+                        </div>
+                    {% endfor %}
+                    <button class="btn btn-primary" type="submit">{% trans "login"|title %}</button>
+                    <a class="btn btn-warning" href="/password_reset/">{% trans "forgot password?"|capfirst %}</a>
+                </form>
+            </div>
+            <div class="col-6 col-sm-6 col-lg-6">
+                <form class="form-inline well" role="form" action="/i18n/setlang/" method="post">
+                    {% csrf_token %}
+                    {% trans "display language"|capfirst %} :
+                    <div class="checkbox">
+                        <label>
+                            <select name="language" id="language-container" class="form-control">
+                                {% for lang in LANGUAGES %}
+                                <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+                                {% endfor %}
+                            </select>
+                        </label>
+                    </div>
+                </form>
+            </div>
+            {% endif %}
         </div>
     {% endblock %}
 
-
-        {% if errorlogin %}
-        <div class="alert alert-error">
+    {% if errorlogin %}
+        <div class="alert alert-danger">
             <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin|capfirst }}
         </div>
         </br>
-        {% else %}
-            {% if notlogged %}
-            <div class="alert alert-error">
+    {% else %}
+        {% if notlogged %}
+            <div class="alert alert-danger">
                 <strong>{% trans "alert"|title %} : </strong>  {% trans "please login by clicking on login button"|capfirst %}
             </div>
             </br>
         {% endif %}
-        {% endif %}
+    {% endif %}
 
     {% block header %}
         <div class="page-header">
@@ -137,34 +153,32 @@
     {% endblock %}
 
     {% block extra_files %}
-
     {% endblock %}
 
-        {% if user.is_authenticated %}
-            {% if dialer_setting_msg %}
+    {% if user.is_authenticated %}
 
-            <div class="alert alert-error">
-                <strong>{% trans "alert"|title %} : </strong>  {{ dialer_setting_msg }}
-                {% if not request.session.has_notified %}
-                    {% trans "to send notification to administrator"|capfirst %} <a href="/notify/admin/">{% trans "click here"|capfirst %}</a>
-                {% else %}
-                    {% trans "(notification sent)" %}
-                {% endif %}
-            </div>
-
+        {% if dialer_setting_msg %}
+        <div class="alert alert-danger">
+            <strong>{% trans "alert"|title %} : </strong>  {{ dialer_setting_msg }}
+            {% if not request.session.has_notified %}
+                {% trans "to send notification to administrator"|capfirst %} <a href="/notify/admin/">{% trans "click here"|capfirst %}</a>
+            {% else %}
+                {% trans "(notification sent)" %}
             {% endif %}
+        </div>
         {% endif %}
+    {% endif %}
 
     <!--Success Message of view-->
     {% if msg %}
         <div class="alert alert-success">
-            <strong>{% trans "alert"|title %} : </strong>  {{ msg|capfirst }}
+            <strong>{% trans "Notification"|title %} : </strong>  {{ msg|capfirst }}
         </div>
     {% endif %}
 
     <!--Error Message of view-->
     {% if error_msg %}
-        <div class="alert alert-error">
+        <div class="alert alert-danger">
             <strong>{% trans "error"|title %} : </strong>  {{ error_msg|capfirst }}
         </div>
     {% endif %}
@@ -177,8 +191,12 @@
     {% endif %}
 
     {% block content %}
-    <!-- CONTENT BLOCK -->
+        <!-- CONTENT BLOCK -->
     {% endblock %}
+
+    </div><!--end right side-->
+
+    </div><!--div row row-offcanvas row-offcanvas-right-->
 
     {% block footer %}
         {% include "frontend/footer.html" %}
@@ -186,6 +204,14 @@
 
 </div><!-- div container -->
 {% endblock %}
+
+<!-- javascript -->
+<script src="{{ STATIC_URL }}/jquery-ui/ui/minified/jquery-ui.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}/bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}/bootbox/bootbox.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}newfies/js/sidebar-offcanvas.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}bootstrap-switch/build/js/bootstrap-switch.min.js" type="text/javascript"></script>
+<script src="{{ STATIC_URL }}newfies/js/extra_footer.js" type="text/javascript"></script>
 
 </body>
 </html>

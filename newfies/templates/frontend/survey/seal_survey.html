@@ -1,0 +1,81 @@
+{% extends "frontend/master.html" %}
+{% load i18n %}
+
+{% block header_files %}
+{% endblock %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block row_fluid %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block newfies_custom_js %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block container %}
+
+    {% block content %}
+        {% if err_msg %}
+        {% include "frontend/extra_modal_header.html" %}
+            <script type="text/javascript" charset="utf-8">
+                $(window).load(function(){
+                    $('#survey-seal').modal('show');
+                });
+                function back_to(){
+                    var url = '/module/survey/';
+                    $(location).attr('href', url);
+                }
+                var KEYCODE_ESC = 27;
+                $(document).keyup(function(e) {
+                    if (e.keyCode == KEYCODE_ESC) { $(location).attr('href', url); }
+                });
+            </script>
+            <!-- modal content-->
+            <div class="modal fade" id="survey-seal" role="dialog" aria-labelledby="survey_seal" data-backdrop="static">
+
+        {% endif %}
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a id="id_close_x" class="close" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</a>
+                    <h3>{% trans "seal survey"|title %}</h3>
+                </div>
+                <form method="post" role="form" action="/module/seal_survey/{{ object_id }}/" enctype="multipart/form-data" >{% csrf_token %}
+                    <div class="modal-body">
+                        {% for field in form %}
+                        <div class="form-group {% if field.errors %}has-error{% endif %}">
+                            <label for="id_{{ field.name }}" class="control-label">{{ field.label|title }}</label>
+                            {{ field }}
+                            {% if field.errors %}
+                                <span class="help-block {% if field.errors %}has-error{% endif %}">{{ field.errors|removetags:"ul li"|safe }}</span>
+                            {% endif %}
+                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary" value="{% trans 'save'|title %}">
+                            <i class="fa fa-save fa-lg"></i> {% trans "save"|title %}
+                        </button>
+                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+        {% if err_msg %}
+            </div>
+        {% endif %}
+
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+
+{% endblock %}

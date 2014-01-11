@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -78,9 +78,9 @@ def que_res_string(val):
                 result_string += new_string.encode('utf-8')
         else:
             que_res = i.encode('utf-8').split("*|*")
-            result_string +=\
+            result_string += \
                 '<tr><td>%s</td><td class="survey_result_key">%s</td></tr>' %\
-            (que_res[0], que_res[1])
+                (que_res[0], que_res[1])
 
     result_string += '</table>'
     return result_string
@@ -108,10 +108,10 @@ def get_branching_goto_field(section_id, selected_value):
             q_string = i.script
 
         if selected_value == i.id:
-            option_list += '<option value="%s" selected=selected>Goto: %s</option>' %\
+            option_list += '<option value="%s" selected=selected>Goto: %s</option>' % \
                            (str(i.id), (q_string))
         else:
-            option_list += '<option value="%s">Goto: %s</option>' %\
+            option_list += '<option value="%s">Goto: %s</option>' % \
                            (str(i.id), (q_string))
 
     return option_list
@@ -119,7 +119,10 @@ def get_branching_goto_field(section_id, selected_value):
 
 @register.filter(name='get_branching_count')
 def get_branching_count(section_id, branch_id):
-    branch_list = Branching_template\
+    """
+    calculate branching count
+    """
+    branch_list = Branching_template \
         .objects.values_list('id', flat=True).filter(section_id=section_id)\
         .order_by('id')
     branch_count = branch_list.count()
@@ -127,3 +130,13 @@ def get_branching_count(section_id, branch_id):
     if branch_list[0] == branch_id:
         branch_count = 0
     return branch_count
+
+
+@register.simple_tag(name='link_of_survey_view')
+def link_of_survey_view(survey_id):
+    """
+    create survey view link
+    """
+    link = '<a href="/module/sealed_survey_view/%s/" target="_blank" title="%s"><i class="fa fa-search"></i></a>' % \
+        (survey_id, _('view sealed survey').capitalize())
+    return link

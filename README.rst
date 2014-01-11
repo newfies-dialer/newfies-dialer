@@ -204,10 +204,7 @@ Support
 -------
 
 The Newfies-Dialer project is supported by Star2billing S.L.
-For more information, see http://www.star2billing.com
-
-Star2Billing S.L. (http://www.star2billing.com) offers consultancy including
-installation, training and customization
+For more information, see http://www.newfies-dialer.org/
 
 Please email us at newfies-dialer@star2billing.com for more information
 

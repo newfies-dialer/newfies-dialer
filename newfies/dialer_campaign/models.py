@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -20,7 +20,6 @@ from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from dateutil.relativedelta import relativedelta
 from dialer_campaign.constants import SUBSCRIBER_STATUS, \
     CAMPAIGN_STATUS, AMD_BEHAVIOR
 from dialer_contact.constants import CONTACT_STATUS
@@ -28,10 +27,15 @@ from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from audiofield.models import AudioFile
 from user_profile.models import UserProfile
+from sms.models import Gateway as SMS_Gateway
 from dnc.models import DNC
+#from agent.models import Agent
 from datetime import datetime
+from django.utils.timezone import utc
+from dateutil.relativedelta import relativedelta
 from common.intermediate_model_base_class import Model
 from common.common_functions import get_unique_code
+import jsonfield
 import logging
 import re
 
@@ -46,13 +50,11 @@ class CampaignManager(models.Manager):
         the expiry date, the daily start/stop time and days of the week"""
         kwargs = {}
         kwargs['status'] = 1
-        tday = datetime.now()
+        tday = datetime.utcnow().replace(tzinfo=utc)
         kwargs['startingdate__lte'] = datetime(tday.year, tday.month, tday.day,
-                                               tday.hour, tday.minute,
-                                               tday.second, tday.microsecond)
+            tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
         kwargs['expirationdate__gte'] = datetime(tday.year, tday.month, tday.day,
-                                                 tday.hour, tday.minute,
-                                                 tday.second, tday.microsecond)
+            tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
         s_time = "%s:%s:%s" % (
             str(tday.hour), str(tday.minute), str(tday.second))
@@ -71,7 +73,7 @@ class CampaignManager(models.Manager):
         based on the expiry date but status is not 'END'
         """
         kwargs = {}
-        kwargs['expirationdate__lte'] = datetime.now()
+        kwargs['expirationdate__lte'] = datetime.utcnow().replace(tzinfo=utc)
         return Campaign.objects.filter(**kwargs).exclude(status=CAMPAIGN_STATUS.END)
 
 
@@ -127,9 +129,9 @@ class Campaign(Model):
         * ``callmaxduration`` - Max retry allowed per user
         * ``maxretry`` - Max retry allowed per user
         * ``intervalretry`` - Time to wait between retries in seconds
-        * ``completion_maxretry`` - Amount of retries until a contact is completed
-        * ``completion_intervalretry`` - Time delay in seconds before retrying \
-        contact for completion
+        * ``completion_maxretry`` - Number of retries until a contact completes survey
+        * ``completion_intervalretry`` - Time delay in seconds before retrying contact \
+            to complete survey
         * ``calltimeout`` - Number of seconds to timeout on calls
         * ``aleg_gateway`` - Gateway to use to reach the contact
         * ``extra_data`` - Additional data to pass to the application
@@ -139,6 +141,7 @@ class Campaign(Model):
         * ``has_been_duplicated`` - campaign duplicated flag
         * ``voicemail`` - Enable Voicemail Detection
         * ``amd_behavior`` - Detection Behaviour
+        * ``sms_gateway`` - Gateway to transport the SMS
 
     **Relationships**:
 
@@ -172,25 +175,21 @@ class Campaign(Model):
                                  default=CAMPAIGN_STATUS.PAUSE,
                                  verbose_name=_("status"), blank=True, null=True)
     callerid = models.CharField(max_length=80, blank=True,
-                                verbose_name=_("callerID"),
-                                help_text=_("outbound caller-ID"))
+                                verbose_name=_("Caller ID Number"),
+                                help_text=_("outbound Caller ID"))
     caller_name = models.CharField(max_length=80, blank=True,
-                                   verbose_name=_("caller name"),
-                                   help_text=_("outbound caller-Name"))
+                                   verbose_name=_("Caller Name"),
+                                   help_text=_("outbound Caller Name"))
     #General Starting & Stopping date
-    startingdate = models.DateTimeField(default=(lambda: datetime.now()),
-                                        verbose_name=_('start'),
-                                        help_text=_("date format: YYYY-mm-DD HH:MM:SS"))
-    expirationdate = models.DateTimeField(default=(lambda: datetime.now() + relativedelta(days=+1)),
-                                          verbose_name=_('finish'),
-                                          help_text=_("date format: YYYY-mm-DD HH:MM:SS"))
+    startingdate = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc)),
+                                        verbose_name=_('start'))
+    expirationdate = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)),
+                                          verbose_name=_('finish'))
     #Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00',
-                                        verbose_name=_('daily start time'),
-                                        help_text=_("time format: HH:MM:SS"))
+                                        verbose_name=_('daily start time'))
     daily_stop_time = models.TimeField(default='23:59:59',
-                                       verbose_name=_('daily stop time'),
-                                       help_text=_("time format: HH:MM:SS"))
+                                       verbose_name=_('daily stop time'))
     monday = models.BooleanField(default=True, verbose_name=_('monday'))
     tuesday = models.BooleanField(default=True, verbose_name=_('tuesday'))
     wednesday = models.BooleanField(default=True, verbose_name=_('wednesday'))
@@ -214,16 +213,20 @@ class Campaign(Model):
                                         help_text=_("time delay in seconds before retrying contact"))
     completion_maxretry = models.IntegerField(default='0', blank=True, null=True,
                                               verbose_name=_('completion max retries'),
-                                              help_text=_("amount of retries until a contact is completed"))
+                                              help_text=_("number of retries until a contact completes survey"))
     completion_intervalretry = models.IntegerField(default='900', blank=True, null=True,
                                                    verbose_name=_('completion time between retries'),
-                                                   help_text=_("time delay in seconds before retrying contact for completion"))
+                                                   help_text=_("time delay in seconds before retrying contact to complete survey"))
     calltimeout = models.IntegerField(default='45', blank=True, null=True,
                                       verbose_name=_('timeout on call'),
                                       help_text=_("connection timeout in seconds"))
     aleg_gateway = models.ForeignKey(Gateway, verbose_name=_("A-Leg gateway"),
                                      related_name="A-Leg Gateway",
                                      help_text=_("select outbound gateway"))
+    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("sms gateway"),
+                                    null=True, blank=True,
+                                    related_name="campaign_sms_gateway",
+                                    help_text=_("select SMS gateway"))
     content_type = models.ForeignKey(ContentType, verbose_name=_("type"),
                                      limit_choices_to={"model__in": ["survey_template"]})
     object_id = models.PositiveIntegerField(verbose_name=_("application"))
@@ -246,13 +249,18 @@ class Campaign(Model):
     dnc = models.ForeignKey(DNC, null=True, blank=True, verbose_name=_("DNC"),
                             help_text=_("do not call list"),
                             related_name='DNC')
-    #Voicemail
-    voicemail = models.BooleanField(default=False, verbose_name=_('enable voicemail detection'))
-    amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),
-                                 default=AMD_BEHAVIOR.ALWAYS,
-                                 verbose_name=_("detection behaviour"), blank=True, null=True)
+    #Voicemail Detection
+    voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
+    amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR), blank=True, null=True,
+                                       default=AMD_BEHAVIOR.ALWAYS,
+                                       verbose_name=_("detection behaviour"))
     voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-                                  verbose_name=_("voicemail audio file"))
+                                            verbose_name=_("voicemail audio file"))
+    #Callcenter
+    agent_script = models.TextField(verbose_name=_('agent script'), blank=True, null=True)
+    lead_disposition = models.TextField(verbose_name=_('lead disposition'), blank=True, null=True)
+    external_link = jsonfield.JSONField(null=True, blank=True, verbose_name=_('additional parameters (JSON)'),
+        help_text=_("enter the list of parameters in Json format, e.g. {\"title\": [\"tab-1\", \"tab-2\"], \"url\": [\"https://duckduckgo.com/\", \"http://www.newfies-dialer.org/\"]}"))
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
@@ -328,7 +336,7 @@ class Campaign(Model):
     def get_active_max_frequency(self):
         """Get the active max frequency"""
         try:
-            obj_userprofile = self.user.get_profile()
+            obj_userprofile = UserProfile.objects.get(user=self.user)
         except UserProfile.DoesNotExist:
             return self.frequency
 
@@ -341,7 +349,7 @@ class Campaign(Model):
     def get_active_callmaxduration(self):
         """Get the active call max duration"""
         try:
-            obj_userprofile = self.user.get_profile()
+            obj_userprofile = UserProfile.objects.get(user=self.user)
         except UserProfile.DoesNotExist:
             return self.frequency
 
@@ -353,8 +361,8 @@ class Campaign(Model):
 
     def get_active_contact(self):
         """Get all the active Contacts from the phonebook"""
-        list_contact =\
-            Contact.objects.filter(phonebook__campaign=self.id, status=CONTACT_STATUS.ACTIVE).all()
+        list_contact = Contact.objects.filter(phonebook__campaign=self.id,
+                                              status=CONTACT_STATUS.ACTIVE).all()
         if not list_contact:
             return False
         return list_contact
@@ -362,8 +370,7 @@ class Campaign(Model):
     def progress_bar(self):
         """Progress bar generated based on no of contacts"""
         # Cache subscriber_count
-        count_contact = \
-            Contact.objects.filter(phonebook__campaign=self.id).count()
+        count_contact = Contact.objects.filter(phonebook__campaign=self.id).count()
 
         # Cache need to be set per campaign
         # subscriber_count_key_campaign_id_1
@@ -384,15 +391,13 @@ class Campaign(Model):
             except:
                 pass
 
-            cache.set("subscriber_count_key_campaign_id_%s"
-                      % str(self.id), subscriber_count, 5)
+            cache.set("subscriber_count_key_campaign_id_%s" % str(self.id), subscriber_count, 5)
 
         subscriber_count = int(subscriber_count)
         count_contact = int(count_contact)
 
         if count_contact > 0:
-            percentage_pixel = \
-                (float(subscriber_count) / count_contact) * 100
+            percentage_pixel = (float(subscriber_count) / count_contact) * 100
             percentage_pixel = int(percentage_pixel)
         else:
             percentage_pixel = 0
@@ -471,11 +476,22 @@ class Subscriber(Model):
     status = models.IntegerField(choices=list(SUBSCRIBER_STATUS),
                                  default=SUBSCRIBER_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)
+    disposition = models.IntegerField(verbose_name=_("disposition"),
+                                      blank=True, null=True)
+    collected_data = models.TextField(verbose_name=_('subscriber response'),
+                                      blank=True, null=True,
+                                      help_text=_("collect user call data"))
+    #agent = models.ForeignKey(Agent, verbose_name=_("agent"),
+    #                          blank=True, null=True,
+    #                          related_name="agent")
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True, db_index=True)
 
     class Meta:
+        permissions = (
+            ("view_subscriber", _('can see subscriber')),
+        )
         db_table = u'dialer_subscriber'
         verbose_name = _("subscriber")
         verbose_name_plural = _("subscribers")
@@ -491,6 +507,16 @@ class Subscriber(Model):
             return self.contact.contact
         else:
             return ''
+
+    def get_completion_attempts(self):
+        return self.completion_count_attempt
+    get_completion_attempts.allow_tags = True
+    get_completion_attempts.short_description = _('completion attempts')
+
+    def get_attempts(self):
+        return self.count_attempt
+    get_attempts.allow_tags = True
+    get_attempts.short_description = _('attempts')
 
     # static method to perform a stored procedure
     # Ref link - http://www.chrisumbel.com/article/django_python_stored_procedures.aspx
@@ -524,8 +550,8 @@ def post_save_add_contact(sender, **kwargs):
           model.
     """
     obj = kwargs['instance']
-    active_campaign_list = \
-        Campaign.objects.filter(phonebook__contact__id=obj.id, status=CAMPAIGN_STATUS.START)
+    active_campaign_list = Campaign.objects.filter(phonebook__contact__id=obj.id,
+                                                   status=CAMPAIGN_STATUS.START)
     # created instance = True + active contact + active_campaign
     if kwargs['created'] and obj.status == CONTACT_STATUS.ACTIVE \
             and active_campaign_list.count() >= 1:

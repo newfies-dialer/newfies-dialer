@@ -6,7 +6,7 @@
 -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 -- You can obtain one at http://mozilla.org/MPL/2.0/.
 --
--- Copyright (C) 2011-2013 Star2Billing S.L.
+-- Copyright (C) 2011-2014 Star2Billing S.L.
 --
 -- The Initial Developer of the Original Code is
 -- Arezqui Belaid <info@star2billing.com>
@@ -59,16 +59,16 @@ function commit_event()
         if count > 1 then
             sql_result = sql_result..","
         end
-        -- VALUES ('%s', '%s', '%s', 4'%s', '%s', now(), 7'%s', '%s', '%s', '%s', '%s', 12'%s', '%s', '%s', 15'%s', %s)]], event_name, body, job_uuid, call_uuid, status, used_gateway_id, callrequest_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, 0)
+        -- VALUES ('%s', '%s', '%s', 4'%s', '%s', now(), 7'%s', '%s', '%s', '%s', '%s', 12'%s', '%s', '%s', 15'%s', %s)]], event_name, body, job_uuid, call_uuid, status, used_gateway_id, callrequest_id, alarm_request_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, 0)
 
-        sql_result = sql_result.."('"..v[1].."', '"..v[2].."', '"..v[3].."', '"..v[4].."', "..v[5]..", "..v[6]..
-            ", "..v[7]..", "..v[8]..", "..v[9]..", '"..v[10].."', '"..v[11].."', '"..v[12].."', '"..v[13].."', '"..v[14].."', "..
-            ""..v[15]..", "..v[15]..", '"..v[17].."')"
+        sql_result = sql_result.."('"..v[1].."', '"..v[2].."', '"..v[3].."', '"..v[4].."', "..v[5]..", "..v[6]..", "..v[7]..
+            ", "..v[8]..", "..v[9]..", "..v[10]..", '"..v[11].."', '"..v[12].."', '"..v[13].."', '"..v[14].."', '"..v[15].."', "..
+            ""..v[16]..", "..v[16]..", '"..v[18].."')"
     end
--- (event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, 10 callerid, phonenumber, hangup_cause,
+-- (event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status, duration, billsec, 10 callerid, phonenumber, hangup_cause,
 -- hangup_cause_q850, amd_status, starting_date)
     sql = "INSERT INTO call_event "..
-    "(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, created_date, leg) "..
+    "(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, created_date, leg) "..
     "VALUES "..sql_result
     if count > 0 then
         --logger(sql)
@@ -83,8 +83,8 @@ function commit_event()
     end
 end
 
-function push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
-    results[incr] = {event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, os.time(), leg}
+function push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
+    results[incr] = {event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, os.time(), leg}
     incr = incr + 1
     if (incr >= 500) then
         commit_event()
@@ -124,6 +124,7 @@ resex = assert(dbcon:execute([[
         call_uuid varchar(200) NOT NULL,
         used_gateway_id integer,
         callrequest_id integer,
+        alarm_request_id integer,
         callerid varchar(200),
         phonenumber varchar(200),
         duration integer DEFAULT 0,
@@ -179,6 +180,7 @@ while true do
         call_uuid = e:getHeader("Channel-Call-UUID") or ""
         used_gateway_id = e:getHeader("variable_used_gateway_id") or 0
         callrequest_id = e:getHeader("variable_callrequest_id") or 0
+        alarm_request_id = e:getHeader("variable_alarm_request_id") or 0
         duration = e:getHeader("variable_duration") or 0
         billsec = e:getHeader("variable_billsec") or 0
         callerid = e:getHeader("variable_outbound_caller_id_number") or ""
@@ -193,6 +195,9 @@ while true do
             starting_date = 'to_timestamp('..start_uepoch..'/1000000)'
         else
             starting_date = 'NOW()'
+        end
+        if alarm_request_id == 'None' then
+            alarm_request_id = 'NULL'
         end
 
         -- HEARTBEAT happening every 30 seconds
@@ -231,7 +236,7 @@ while true do
                 end
 
                 --Insert Event to Database
-                push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status,
+                push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status,
                     duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
 
             elseif event_name == 'CHANNEL_HANGUP_COMPLETE' then
@@ -246,7 +251,7 @@ while true do
                 end
 
                 --Insert Event to Database
-                push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, status,
+                push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status,
                     duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
 
             end

@@ -7,6 +7,7 @@
 *.egg
 test.db
 newfies/settings_local.py
+newfies/newfies_dialer/settings_local.py
 docs/build/*
 contact_*.txt
 TEST

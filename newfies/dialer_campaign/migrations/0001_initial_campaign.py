@@ -79,7 +79,6 @@ class Migration(SchemaMigration):
         # Adding unique constraint on 'Subscriber', fields ['contact', 'campaign']
         db.create_unique(u'dialer_subscriber', ['contact_id', 'campaign_id'])
 
-
     def backwards(self, orm):
         # Removing unique constraint on 'Subscriber', fields ['contact', 'campaign']
         db.delete_unique(u'dialer_subscriber', ['contact_id', 'campaign_id'])
@@ -92,7 +91,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'Subscriber'
         db.delete_table(u'dialer_subscriber')
-
 
     models = {
         'audiofield.audiofile': {

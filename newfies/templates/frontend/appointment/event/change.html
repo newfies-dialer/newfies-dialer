@@ -1,0 +1,71 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block extra_files %}
+    {{ form.media }}
+{% endblock %}
+
+{% block content_header %}
+    <h1>
+        {% if action == 'update' %}
+            {% trans "update"|title %}
+        {% else %}
+            {% trans "add"|title %}
+        {% endif %}
+        {% trans "event"|title %}
+        <small></small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <fieldset>
+        <legend>{% trans "event settings"|title %}</legend>
+        <div class="row">
+            {% get_fieldset title,calendar,start,end,creator,end_recurring_period,rule as event_fields from form %}
+            {% for field in event_fields.visible_fields %}
+                <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="col-xs-8">
+                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-block">
+                                {{ field.errors|removetags:"ul li"|safe }}
+                            </span>
+                        {% endif %}
+                        <span class="help-block">
+                            {{ field.help_text|capfirst }}
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="row">
+            {% get_fieldset description,data as event_fields from form %}
+            {% for field in event_fields.visible_fields %}
+                <div class="col-md-6">
+                    <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="col-xs-8">
+                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-block">
+                                {{ field.errors|removetags:"ul li"|safe }}
+                            </span>
+                        {% endif %}
+                        <span class="help-block">
+                            {{ field.help_text|capfirst }}
+                        </span>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    <fieldset>
+    {% include "frontend/common_submit_buttons.html" %}
+</form>
+
+{% endblock %}

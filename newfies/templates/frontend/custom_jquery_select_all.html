@@ -91,17 +91,53 @@ $(function () {
             if(document.location.href.search("/survey/") != -1) {
                 confirm_string = $fields.length + '{% trans " survey(s) are going to be deleted?" %}';
             }
-            if(document.location.href.search("/dnc/") != -1) {
+            if(document.location.href.search("/dnc_list/") != -1) {
 
                 var allVals = [];
                 $fields.each(function() {
                    allVals.push($(this).val());
                 });
-                contact_count = ajax_call("/dnc/contact_count/", allVals);
+                contact_count = ajax_call("/module/dnc_list/contact_count/", allVals);
                 confirm_string = $fields.length + '{% trans " DNC(s) are going to be deleted with " %}' + contact_count + '{% trans " contact(s)?" %}';
             }
             if(document.location.href.search("/dnc_contact/") != -1) {
                 confirm_string = $fields.length +  '{% trans " DNC contact(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/agent/") != -1) {
+                confirm_string = $fields.length +  '{% trans " agent(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/queue/") != -1) {
+                confirm_string = $fields.length +  '{% trans " queue(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/tier/") != -1) {
+                confirm_string = $fields.length +  '{% trans " tier(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/calendar_setting/") != -1) {
+                confirm_string = $fields.length +  '{% trans " calendar setting(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/calendar_user/") != -1) {
+                confirm_string = $fields.length +  '{% trans " calendar user(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/calendar/") != -1) {
+                confirm_string = $fields.length +  '{% trans " calendar(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/event/") != -1) {
+                confirm_string = $fields.length +  '{% trans " event(s) are going to be deleted?" %}' ;
+            }
+            if(document.location.href.search("/alarm/") != -1) {
+                confirm_string = $fields.length +  '{% trans " alarm(s) are going to be deleted?" %}' ;
+            }
+
+            if(document.location.href.search("/sms_campaign/") != -1) {
+                if(sms_campaign_stop_flag){
+
+                    $("#ListForm").attr("action", "del/0/?stop_sms_campaign=True");
+                    confirm_string = $fields.length + '{% trans " sms campaign(s) are going to be stopped?" %}';
+                    sms_campaign_stop_flag = false;
+                }
+                else{
+                    confirm_string = $fields.length + '{% trans " sms campaign(s) are going to be deleted?" %}';
+                }
             }
 
             bootbox.confirm(confirm_string, function(result) {
@@ -127,7 +163,7 @@ function get_alert_msg_for_phonebook(id)
 {
     contact_count = ajax_call("/phonebook/contact_count/", id);
     var href = $('#id_phonebook_delete_confirm').attr('href');
-    confirm_string = '{% trans "please confirm to delete this phonebook with"|capfirst %} ' + contact_count + ' {% trans "contact(s)" %}';
+    confirm_string = '{% trans "please press OK to delete this phonebook with"|capfirst %} ' + contact_count + ' {% trans "contact(s)" %}';
 
     bootbox_call(confirm_string, href);
     return false;
@@ -136,9 +172,9 @@ function get_alert_msg_for_phonebook(id)
 
 function get_alert_msg_for_dnc(id)
 {
-    contact_count = ajax_call("/dnc/contact_count/", id);
+    contact_count = ajax_call("/module/dnc_list/contact_count/", id);
     var href = $('#id_dnc_delete_confirm').attr('href');
-    confirm_string = '{% trans "please confirm to delete this DNC with"|capfirst %} ' + contact_count + ' {% trans "contact(s)" %}';
+    confirm_string = '{% trans "please press OK to delete this DNC with"|capfirst %} ' + contact_count + ' {% trans "contact(s)" %}';
     bootbox_call(confirm_string, href);
     return false;
 }

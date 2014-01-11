@@ -1,0 +1,51 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block header_files %}
+{% endblock %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block row_fluid %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block newfies_custom_js %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block container %}
+
+    {% block content %}        
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a id="id_close_x" class="close" data-dismiss="modal" >&times;</a>
+                    <h3>{% trans "text message"|title %}
+                        <small></small>
+                    </h3>
+                </div>
+                
+                <div class="modal-body">
+                    {{ sms_campaign.text_message }}
+                </div>
+
+                <div class="modal-footer" align="right">                                               
+                    <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal">{% trans "close"|title %}</button>
+                </div>                
+            </div>
+        </div>
+    
+    {% include "frontend/extra_modal_footer.html" %}
+
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+
+{% endblock %}

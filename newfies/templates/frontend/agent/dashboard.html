@@ -1,0 +1,18 @@
+
+{% load i18n %}
+
+{% include "frontend/agent/agent_menu.html" %}
+
+<div class="row-fluid" id="dashboard_box">
+  <div ng-controller="AgentDashboardController">
+      <div>
+          {% verbatim %}
+            <div class="alert alert-success" ng-show='success_msg.show' ng-model="successMsg">{{ successMsg }}</div>
+            <div class="alert alert-error" ng-show='error_msg.show' ng-model="errorMsg">{{ errorMsg }}</div>
+          {{ greet }},
+          {% endverbatim %}
+          {{ user }} - {{ user.last_name }}
+      </div>
+  </div>
+</div>
+

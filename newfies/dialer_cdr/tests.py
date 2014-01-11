@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -17,12 +17,14 @@ from django.contrib.contenttypes.models import ContentType
 from django.core.management import call_command
 from django.test import TestCase
 from common.utils import BaseAuthenticatedClient
+from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm
 from dialer_cdr.views import export_voipcall_report, voipcall_report
 from dialer_cdr.function_def import voipcall_search_admin_form_fun
-#from dialer_cdr.tasks import init_callrequest
+# from dialer_cdr.tasks import init_callrequest
 from datetime import datetime
+from django.utils.timezone import utc
 
 
 class DialerCdrView(BaseAuthenticatedClient):
@@ -60,14 +62,14 @@ class DialerCdrView(BaseAuthenticatedClient):
         self.failUnlessEqual(response.status_code, 200)
 
         response = self.client.post('/admin/dialer_cdr/voipcall/voip_daily_report/',
-            data={'from_date': datetime.now().strftime("%Y-%m-%d"),
-                  'to_date': datetime.now().strftime("%Y-%m-%d")})
+            data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+                  'to_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d")})
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post(
             '/admin/dialer_cdr/voipcall/voip_daily_report/',
-            data={'from_date': datetime.now().strftime("%Y-%m-%d"),
-                  'to_date': datetime.now().strftime("%Y-%m-%d")})
+            data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+                  'to_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d")})
         request.user = self.user
         request.session = {}
         response = voipcall_search_admin_form_fun(request)
@@ -77,17 +79,20 @@ class DialerCdrView(BaseAuthenticatedClient):
 class DialerCdrCustomerView(BaseAuthenticatedClient):
     """Test cases for Callrequest, VoIPCall Customer Interface."""
 
-    def test_customer_voipcall(self):
-        """Test Function to check VoIP call report"""
-        response = self.client.get('/voipcall_report/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response,
-            'frontend/report/voipcall_report.html')
+    fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
+                'user_profile.json', 'phonebook.json', 'contact.json',
+                'dnc_list.json', 'dnc_contact.json', 'campaign.json',
+                'subscriber.json',
+                'survey_template.json', 'survey.json',
+                'section_template.json', 'section.json',
+                'callrequest.json', 'voipcall.json',
+                ]
 
-        response = self.client.post('/voipcall_report/',
-                        data={'from_date': datetime.now().strftime("%Y-%m-%d"),
-                              'to_date': datetime.now().strftime("%Y-%m-%d")})
-        self.assertEqual(response.status_code, 200)
+    def test_customer_voipcall(self):
+        #response = self.client.post('/voipcall_report/',
+        #                data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
+        #                      'to_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d")})
+        #self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/voipcall_report/')
         request.user = self.user
@@ -123,18 +128,19 @@ class DialerCdrCeleryTaskTestCase(TestCase):
     """Test cases for celery task"""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
-                'contenttype.json', 'user_profile.json',
-                'phonebook.json', 'contact.json', 'survey.json',
-                'campaign.json', 'subscriber.json',
-                'callrequest.json', 'voipcall.json', 'user_profile.json']
+                'user_profile.json', 'phonebook.json', 'contact.json',
+                'dnc_list.json', 'dnc_contact.json', 'survey.json',
+                'campaign.json', 'subscriber.json', 'callrequest.json', 'voipcall.json',
+                'user_profile.json']
 
     def setUp(self):
         self.callrequest = Callrequest.objects.get(pk=1)
+        self.campaign = Campaign.objects.get(pk=1)
 
     #def test_init_callrequest(self):
     #    """Test that the ``init_callrequest``
     #    task runs with no errors, and returns the correct result."""
-    #    result = init_callrequest.delay(self.callrequest.id, 1, self.callrequest.campaign.callmaxduration)
+    #    result = init_callrequest.delay(self.callrequest.id, self.campaign.id, 30)
     #    self.assertEqual(result.successful(), True)
 
 
@@ -142,11 +148,10 @@ class DialerCdrModel(TestCase):
     """Test Callrequest, VoIPCall models"""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
-                'contenttype.json', 'user_profile.json',
-                'phonebook.json', 'contact.json',
-                'dnc_list.json', 'dnc_contact.json',
-                'campaign.json', 'subscriber.json',
-                'callrequest.json', 'survey.json', 'section.json']
+                'user_profile.json', 'phonebook.json', 'contact.json',
+                'dnc_list.json', 'dnc_contact.json', 'survey.json',
+                'campaign.json', 'subscriber.json', 'callrequest.json', 'voipcall.json',
+                'user_profile.json']
 
     def setUp(self):
         self.user = User.objects.get(username='admin')
@@ -182,7 +187,7 @@ class DialerCdrModel(TestCase):
             duration=20,
         )
         self.voipcall.save()
-        self.assertEqual(self.voipcall.__unicode__(), u'1 - Top Gun')
+        self.assertEqual(self.voipcall.__unicode__(), u'2 - Top Gun')
 
         # Test mgt command
         call_command("create_callrequest_cdr", "1|1")

@@ -7,7 +7,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -17,9 +17,12 @@
 # To download and run the script on your server :
 # cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
 #
+# BRANCH = appointment
+# cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/appointment/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
+#
 
-#Set branch to install develop/master
-BRANCH='master'
+#Set branch to install develop / master
+BRANCH='appointment'
 
 # Identify Linux Distribution type
 func_identify_os() {

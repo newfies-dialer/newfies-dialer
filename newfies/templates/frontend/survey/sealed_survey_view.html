@@ -1,0 +1,275 @@
+{% extends "frontend/master.html" %}
+{% load i18n survey_tags common_tags %}
+
+{% block header_files %}
+{% endblock %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block row_fluid %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block newfies_custom_js %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block container %}
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <a id="id_close_x" class="close" data-dismiss="modal">&times;</a>
+                <h3>{{ survey.name }}</h3>
+            </div>
+
+            <div class="modal-body">
+
+                <div class="row">
+                    {% if survey.description %}
+                    <div class="col-md-6">
+                        {% trans "description"|title %}: {{ survey.description }}
+                    </div>
+                    {% endif %}
+                </div>
+
+                <div>
+                {% if section_list %}
+                    {% for section in section_list %}
+                    <div id="row{{ section.id }}" class="panel panel-default">
+                        <div class="panel-heading">
+                            {{ forloop.counter }}. {{ section.type|section_type_name|title }}
+
+                            {% if section.timeout and section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.HANGUP_SECTION and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER and section.type != SECTION_TYPE.CONFERENCE %}
+                                <span class="label label-info">T-{{ section.timeout }}s</span>
+                            {% endif %}
+                            {% if section.retries %}
+                                <span class="label label-info">R-{{ section.retries }}</span>
+                            {% endif %}
+                            {% if section.completed %}
+                                <span class="badge badge-success">{% trans "complete"|title %}</span>
+                            {% endif %}
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    {% if section.type == SECTION_TYPE.MULTI_CHOICE or section.type == SECTION_TYPE.RATING_SECTION or section.type == SECTION_TYPE.CAPTURE_DIGITS %}
+                                        <b>{% trans "question"|title %} :</b>
+                                    {% else %}
+                                        <b>{% trans "section title"|capfirst %} :</b>
+                                    {% endif %}
+                                    {{ section.question }}
+                                </div>
+
+                                <div class="col-md-12">
+                                    {% if section.audiofile %}
+                                        <b>{% trans "audio file"|capfirst %} :</b> {{ section.audiofile.name }}
+                                        <span>
+                                            <ul class="playlist">
+                                                <li style="width:220px;">
+                                                    <a href="{{ MEDIA_URL }}{{ section.audiofile.audio_file }}">{{ section.audiofile.name }}</a>
+                                                </li>
+                                            </ul>
+                                        </span><br/>
+
+                                    {% else %}
+                                        <b>{% trans "script"|title %} :</b> {{ section.script }}
+                                    {% endif %}
+                                </div>
+
+                                <!--Multiple choice Section form-->
+                                {% if section.type == SECTION_TYPE.MULTI_CHOICE %}
+
+                                    <div class="col-md-12">
+                                        <table class="table table-striped table-bordered table-condensed">
+                                            <tr>
+                                                <th colspan="2">
+                                                    <center>
+                                                        <h4><em>{% trans "key associations"|title %}</em></h4>
+                                                    </center>
+                                                </th>
+                                            </tr>
+                                            {% if section.key_0|length > 0 %}
+                                                <tr>
+                                                    <td><b>{% trans "key"|title %} 0</b></td>
+                                                    <td>{{ section.key_0 }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if section.key_1|length > 0 %}
+                                                <tr>
+                                                    <td><b>{% trans "key"|title %} 1</b></td>
+                                                    <td>{{ section.key_1 }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if section.key_2|length > 0 %}
+                                                <tr>
+                                                    <td><b>{% trans "key"|title %} 2</b></td>
+                                                    <td>{{ section.key_2 }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if section.key_3|length > 0 %}
+                                                <tr>
+                                                    <td><b>{% trans "key"|title %} 3</b></td>
+                                                    <td>{{ section.key_3 }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if section.key_4|length > 0 %}
+                                                <tr>
+                                                    <td><b>{% trans "key"|title %} 4</b></td>
+                                                    <td>{{ section.key_4 }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if section.key_5|length > 0 %}
+                                                <tr>
+                                                    <td><b>{% trans "key"|title %} 5</b></td>
+                                                    <td>{{ section.key_5 }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if section.key_6|length > 0 %}
+                                                <tr>
+                                                    <td><b>{% trans "key"|title %} 6</b></td>
+                                                    <td>{{ section.key_6 }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if section.key_7|length > 0 %}
+                                                <tr>
+                                                    <td><b>{% trans "key"|title %} 7</b></td>
+                                                    <td>{{ section.key_7 }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if section.key_8|length > 0 %}
+                                                <tr>
+                                                    <td><b>{% trans "key"|title %} 8</b></td>
+                                                    <td>{{ section.key_8 }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            {% if section.key_9|length > 0 %}
+                                                <tr>
+                                                    <td><b>{% trans "key"|title %} 9</b></td>
+                                                    <td>{{ section.key_9 }}</td>
+                                                </tr>
+                                            {% endif %}
+                                            <tr>
+                                                <td>...</td>
+                                                <td>...</td>
+                                            </tr>
+                                        </table>
+                                    </div>
+                                {% endif %}
+
+                                <!--Rating Section form-->
+                                {% if section.type == SECTION_TYPE.RATING_SECTION %}
+                                    <div class="col-md-12">
+                                        {% trans "from 1 to"|capfirst %} {{ section.rating_laps }}
+                                    </div>
+                                {% endif %}
+
+                                <!--Enter number Section form-->
+                                {% if section.type == SECTION_TYPE.CAPTURE_DIGITS %}
+                                    <div class="col-md-12">
+                                        {% if section.validate_number %}
+                                            {% trans "number is between"|capfirst %}&nbsp;{{ section.min_number }}&nbsp;{% trans "and" %}&nbsp;{{ section.max_number }}
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+
+                                <!--Call transfer Section form-->
+                                {% if section.type == SECTION_TYPE.CALL_TRANSFER %}
+                                    <div class="col-md-12">
+                                        {% if section.phonenumber %}
+                                            <b>{% trans "Phone Number / SIP URI" %} :</b> {{ section.phonenumber }} <br/>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+
+                                <!--Conference -->
+                                {% if section.type == SECTION_TYPE.CONFERENCE %}
+                                    <div class="col-md-12">
+                                        {% if section.conference %}
+                                            {% trans "conference"|title %} : {{ section.conference }} <br/>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+
+                                <!--SMS text -->
+                                {% if section.type == SECTION_TYPE.SMS %}
+                                    <div class="col-md-12">
+                                        {% if section.sms_text %}
+                                            {% trans "sms"|title %} {% trans "text"|title %} : {{ section.sms_text }} <br/>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+
+                                <!--branching-->
+                                {% if branching_list and section.id in branching_section_list %}
+                                    <div class="col-md-12">
+                                        <b>{% trans "branching"|title %}</b><br/>
+                                        <div class="table-responsive">
+                                            <table class="table table-striped table-bordered table-condensed">
+                                                <tr>
+                                                    {% if section.type != SECTION_TYPE.RECORD_MSG %}
+                                                        <th>{% trans "keys"|title %}</th>
+                                                    {% endif %}
+                                                    <th>{% trans "goto"|title %}</th>
+                                                </tr>
+                                                {% for branch in branching_list %}
+                                                    <tr>
+                                                        {% if branch.section_id == section.id %}
+                                                            {% if section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER and section.type != SECTION_TYPE.CONFERENCE %}
+                                                                <td>
+                                                                    {% if branch.keys == 'any' %}
+                                                                        {% trans "any other key"|title %}
+                                                                    {% elif branch.keys == 'invalid' %}
+                                                                        {% trans "invalid"|title %}
+                                                                    {% elif branch.keys == 'timeout' %}
+                                                                        {% trans "timeout"|title %} (no input within {{ section.timeout }}s)
+                                                                    {% elif branch.keys %}
+                                                                        {% trans "Key" %}&nbsp;
+                                                                        {{ branch.keys }}
+                                                                    {% else %}
+                                                                        {% trans "none"|title %}
+                                                                    {% endif %}
+                                                                </td>
+                                                            {% else %}
+                                                                <td>
+                                                                    {% if branch.keys == '0' %}
+                                                                        {% trans "default"|title %}
+                                                                    {% endif %}
+                                                                </td>
+                                                            {% endif %}
+                                                            <td>
+                                                                {% if branch.goto.id %}
+                                                                    {% if branch.goto.question %}
+                                                                        {{ branch.goto.question }}
+                                                                    {% else %}
+                                                                        {{ branch.goto.script }}
+                                                                    {% endif %}
+                                                                {% else %}
+                                                                    &nbsp;{% trans "hang up"|capfirst %}
+                                                                {% endif %}
+                                                            </td>
+                                                        {% endif %}
+                                                    </tr>
+                                                {% endfor %}
+                                            </table>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                                <!--endif branching-->
+
+                            </div>
+
+                        </div>
+                    </div>
+                    {% endfor %}
+                {% endif %}
+                </div>
+
+            </div>
+        </div>
+    </div>
+{% endblock %}

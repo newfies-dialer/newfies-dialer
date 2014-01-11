@@ -1,0 +1,52 @@
+[
+   {
+      "pk":1,
+      "model":"appointment.rule",
+      "fields":{
+         "frequency":"MONTHLY",
+         "params":"",
+         "name":"Monthly",
+         "description":"will recur once every Month"
+      }
+   },
+   {
+      "pk":2,
+      "model":"appointment.rule",
+      "fields":{
+         "frequency":"WEEKLY",
+         "params":"count:10;byweekday:0,1,2,3,4",
+         "name":"Weekly (Monday-Friday) R-10",
+         "description":"will recur once every Week from Monday to Friday and repetition of 10 times"
+      }
+   },
+   {
+      "pk":4,
+      "model":"appointment.rule",
+      "fields":{
+         "frequency":"WEEKLY",
+         "params":"byweekday:0,1,2,3,4",
+         "name":"Weekly (Monday-Friday)",
+         "description":"will recur once every Week from Monday to Friday"
+      }
+   },
+   {
+      "pk":5,
+      "model":"appointment.rule",
+      "fields":{
+         "frequency":"YEARLY",
+         "params":"",
+         "name":"Yearly",
+         "description":"will recur once every Year"
+      }
+   },
+   {
+      "pk":6,
+      "model":"appointment.rule",
+      "fields":{
+         "frequency":"DAILY",
+         "params":"",
+         "name":"Daily",
+         "description":"will recur once every Day"
+      }
+   }
+]

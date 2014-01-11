@@ -6,14 +6,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
 from django.core.management.base import BaseCommand
-from django.utils.translation import ugettext as _
 from django.db import IntegrityError
 from optparse import make_option
 from dialer_campaign.models import Phonebook, Contact, Campaign
@@ -22,8 +21,8 @@ from dialer_campaign.tasks import collect_subscriber
 
 class Command(BaseCommand):
     args = 'phonebook_id, list_of_phonenumber'
-    help = "Create a new contact for a given phonenumber and phonebook\n"\
-           "--------------------------------------------------------------\n"\
+    help = "Create a new contact for a given phonenumber and phonebook\n" \
+           "--------------------------------------------------------------\n" \
            "python manage.py create_subscriber --phonebook_id=1 --list_of_phonenumber=123456,9867456"
 
     option_list = BaseCommand.option_list + (

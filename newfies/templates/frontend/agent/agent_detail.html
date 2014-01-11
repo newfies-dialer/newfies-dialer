@@ -1,0 +1,61 @@
+{% load i18n %}
+
+{% include "frontend/agent/agent_menu.html" %}
+
+<div class="row-fluid" id="setting_box">
+    <div ng-controller="AgentDetailController">
+
+        {% if msg_detail %}
+            <div class="alert alert-success">
+                <strong>{% trans "alert"|title %} : </strong>  {{ msg_detail|capfirst }}
+            </div>
+        {% endif %}
+
+        {% if error_detail %}
+            <div class="alert alert-error">
+                <strong>{% trans "alert"|title %} : </strong>  {{ error_detail|capfirst }}
+            </div>
+        {% endif %}
+        <br/>
+
+        <form class="well">
+            {% for field in user_detail_form %}
+                <div class="row{% if field.errors %} control-group error{% endif %}">
+                    <div class="span2">
+                        <label class="control-label" for="{{ field.auto_id }}">
+                        {{ field.label|title }}
+                        </label>
+                    </div>
+                    <div class="span4">{{ field }}
+                        {% if field.errors %}
+                            <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ field.help_text|capfirst }} </span>
+                    </div>
+                </div>
+            {% endfor %}
+
+            {% for field in user_detail_extened_form %}
+                <div class="row{% if field.errors %} control-group error{% endif %}">
+                    <div class="span2">
+                        <label class="control-label" for="{{ field.auto_id }}">
+                        {{ field.label|title }}
+                        </label>
+                    </div>
+                    <div class="span4">{{ field }}
+                        {% if field.errors %}
+                            <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ field.help_text|capfirst }} </span>
+                    </div>
+                </div>
+            {% endfor %}{{ user.id }} - {{ request.user.id }}
+            <div class="actions">
+                <input type="hidden" ng-model="user.user_id" name="user_id" value="{{ user.id }}" />
+                <!--<input type="submit" class="btn btn-primary" value="{% trans 'change detail'|title %}" />-->
+                <button class="btn" ng-click="change_detail()">{% trans "change detail"|title %}</button>
+            </div>
+        </form>
+    </div>
+</div>
+

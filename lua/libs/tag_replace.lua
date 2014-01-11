@@ -6,12 +6,28 @@
 -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 -- You can obtain one at http://mozilla.org/MPL/2.0/.
 --
--- Copyright (C) 2011-2013 Star2Billing S.L.
+-- Copyright (C) 2011-2014 Star2Billing S.L.
 --
 -- The Initial Developer of the Original Code is
 -- Arezqui Belaid <info@star2billing.com>
 --
 
+
+function mtable_jsoncontact(contact)
+    --decode json from additional_vars
+    if contact['additional_vars'] then
+        decdata = decodejson(contact['additional_vars'])
+        if decdata and type(decdata) == "table" then
+            -- Merge Table
+            mcontact = table_merge(contact, decdata)
+        else
+            mcontact = contact
+        end
+    else
+        mcontact = contact
+    end
+    return mcontact
+end
 
 --
 -- Function  Replace place holders by tag value.
@@ -33,18 +49,8 @@ function tag_replace(text, contact)
     if not string.find(text, "[{|}]") then
         return text
     end
-    --decode json from additional_vars
-    if contact['additional_vars'] then
-        decdata = decodejson(contact['additional_vars'])
-        if decdata and type(decdata) == "table" then
-            -- Merge Table
-            mcontact = table_merge(contact, decdata)
-        else
-            mcontact = contact
-        end
-    else
-        mcontact = contact
-    end
+    --get merged table of contact with the json additional_vars
+    mcontact = mtable_jsoncontact(contact)
 
     if not type(mcontact) == "table" then
         return text

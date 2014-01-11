@@ -1,0 +1,30 @@
+{% extends "rest_framework/base.html" %}
+{% load rest_framework %}
+{# Override this template in your own templates directory to customize #}
+{% block head %}
+
+    {% block meta %}
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="robots" content="NONE,NOARCHIVE" />
+    {% endblock %}
+
+    <title>{% block title %}Django REST framework{% endblock %}</title>
+
+    {% block style %}
+    {% block bootstrap_theme %}
+        <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap.min.css" %}"/>
+        <!--<link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/bootstrap-tweaks.css" %}"/>-->
+    {% endblock %}
+    <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/prettify.css" %}"/>
+    <link rel="stylesheet" type="text/css" href="{% static "rest_framework/css/default.css" %}"/>
+    {% endblock %}
+    <!--Override bootstrap-->
+    <link href="{{ STATIC_URL }}newfies/css/override_bootstrap.css" rel="stylesheet">
+    <!-- Newfies custom css -->
+    <link type="text/css" media="screen" href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet"/>
+{% endblock %}
+
+<!-- If you want the login option on django-rest-framework you need to remove the block navbar -->
+{% block navbar %}
+    {% include "frontend/bootstrap_menu.html" %}
+{% endblock %}

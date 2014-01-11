@@ -1,0 +1,158 @@
+{% extends "frontend/master.html" %}
+{% load i18n pagination_tags common_tags %}
+
+{% block extra_files %}
+    {{ form.media }}
+    {% include "frontend/common_datepicker.html" %}
+    {% include "frontend/custom_jquery_select_all.html" %}
+{% endblock %}
+
+{% block content_header %}
+    <h1>{% trans "SMS" %} {% trans "reports"|title %} <small>{% trans "detailed SMS data"|capfirst %}</small></h1>
+{% endblock %}
+
+
+{% block content %}
+
+    <div id="form_collapse" class="collapse">
+        <form class="well" method="POST" action="." enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="row">
+                {% get_fieldset from_date,to_date,status,smscampaign as campaign_fields from form %}
+                {% for field in campaign_fields.visible_fields %}
+                    <div class="col-md-3 {% if field.errors %} error{% endif %}">
+                        <label class="control-label" for="id_{{ field.name }}">{{ field.label|capfirst }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                        <span class="help-block">{{ field.help_text|capfirst }} </span>
+                    </div>
+                {% endfor %}
+            </div>
+            <input type="submit" value="{% trans 'search'|title %}" class="btn btn-primary"/>
+        </form>
+    </div>
+    <button id="toggle_btn" type="button" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#form_collapse">
+        <i id="toggle_btn_i" class="glyphicon glyphicon-zoom-in"></i>
+        <span id="toggle_btn_i_span">{% trans "show search"|title %}</span>
+    </button>
+    <div>&nbsp;</div>
+    <ul class="nav nav-tabs">
+        <li class="{% if action == 'tabs-1' %}active{% endif %}"><a href="#tabs-1" data-toggle="tab">{% trans "SMS" %}</a></li>
+        <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "daily report"|title %}</a></li>
+    </ul>
+    <div class="tab-content">
+        <div id="tabs-1" class="tab-pane active">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="graph_header">
+                        {% trans "SMS" %} {% trans "detail records"|title %} -
+                        <b>
+                            {% if start_date  %}
+                                {{ start_date|date:"jS N Y" }}
+                            {% endif %}
+                            {% if end_date  %}
+                                {% trans "to" %} {{ end_date|date:"jS N Y" }}
+                            {% endif %}
+                        </b>
+                    </div>
+                </div>
+            </div>
+            {% if sms_list %}
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="btn-group">
+                        <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        {% trans "action"|capfirst %} <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" role="menu">
+                            <li><a href="/export_sms_report/?format=csv">{% trans "export to CSV"|capfirst %}</a></li>
+                            <li><a href="/export_sms_report/?format=xls">{% trans "export to XLS"|capfirst %}</a></li>
+                            <li><a href="/export_sms_report/?format=json">{% trans "export to JSON"|capfirst %}</a></li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            {% endif %}
+            <p>&nbsp;</p>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th>{% sort_link SMS_REPORT_COLUMN_NAME.send_date col_name_with_order.send_date %}</th>
+                        <th>{% sort_link SMS_REPORT_COLUMN_NAME.recipient_number col_name_with_order.recipient_number %}</th>
+                        <th>{% sort_link SMS_REPORT_COLUMN_NAME.uuid col_name_with_order.uuid %}</th>
+                        <th>{% sort_link SMS_REPORT_COLUMN_NAME.status col_name_with_order.status %}</th>
+                        <th>{% sort_link SMS_REPORT_COLUMN_NAME.status_msg col_name_with_order.status_msg %}</th>
+                        <th>{% sort_link SMS_REPORT_COLUMN_NAME.gateway col_name_with_order.gateway %}</th>
+                    </tr>
+                    </thead>
+                    {% if sms_list %}
+                        {% autopaginate all_sms_list PAGE_SIZE %}
+                        {% for row in sms_list %}
+                            <tr>
+                                <td>{{ row.send_date }}</td>
+                                <td>{{ row.recipient_number }}</td>
+                                <td>{{ row.uuid }}</td>
+                                <td>{{ row.status }}</td>
+                                <td>{{ row.status_message }}</td>
+                                <td>{{ row.gateway }}</td>
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="6" align="center">
+                                {% trans "no records found"|title %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+            <div class="text-right">
+                {% trans "total"|title %} : {{ sms_count }}
+            </div>
+            {% if all_sms_list %}
+                {% paginate %}
+            {% endif %}
+        </div>
+
+        <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="graph_header">
+                        {% trans "SMS" %} {% trans "daily summary"|title %} -
+                        <b>
+                            {% if start_date  %}
+                                {{ start_date|date:"jS N Y" }}
+                            {% endif %}
+                            {% if end_date  %}
+                                {% trans "to" %} {{ end_date|date:"jS N Y" }}
+                            {% endif %}
+                        </b>
+                    </div>
+                </div>
+            </div>
+            <p>&nbsp;</p>
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-condensed">
+                    <tr>
+                        <th>{% trans "date"|title %}</th>
+                        <th>{% trans "SMS" %}</th>
+                    </tr>
+                    {% for td in total_data %}
+                    <tr>
+                        <td>{{ td.send_date }}</td>
+                        <td>{{ td.send_date__count }}</td>
+                    </tr>
+                    {% endfor %}
+                    <tr>
+                        <td>{% trans "total"|title %}</td>
+                        <td>{{ total_sms }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    </div>
+{% endblock %}

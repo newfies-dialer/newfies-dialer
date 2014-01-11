@@ -1,0 +1,78 @@
+{% extends "admin/change_list.html" %}
+{% load admin_list i18n %}
+
+{% if not is_popup %}
+  {% block breadcrumbs %}
+    <div class="breadcrumbs">
+      <a href="../../">
+        {% trans "home"|title %}
+      </a>
+       &rsaquo;
+       <a href="../">
+         {{ app_label|capfirst }}
+      </a>
+      &rsaquo; <a href="../">{% trans "SMS" %} {% trans "report" %}</a>
+      &rsaquo; {% trans "SMS" %} {% trans "aggregate report" %}
+    </div>
+  {% endblock %}
+{% endif %}
+
+{% block content %}
+<div id="content-main">
+
+{% if cl.formset.errors %}
+    <p class="errornote">
+    {% blocktrans count cl.formset.errors|length as counter %}Please correct the error below.{% plural %}Please correct the errors below.{% endblocktrans %}
+    </p>
+    {{ cl.formset.non_form_errors }}
+{% endif %}
+
+{% block custom-search %}
+    <form method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <table class="actions">
+    <caption>{% trans "search option"|title %}</caption>
+    {{ form.as_table }}
+    <tr>
+        <td>&nbsp;</td>
+        <td>
+            <input type="submit" value="{% trans 'search'|title %}" class="l-1" />&nbsp;
+            <button href="/admin/sms_module/smsmessage/" class="j-2">{% trans 'reset'|title %}</button>
+        <td>
+    </tr>
+    </table>
+    </form>
+{% endblock %}
+
+
+{% block extra_data %}
+<p>&nbsp;</p>
+<div>
+    <table  class="module" align=left>
+    <caption>{% trans "daily report"|title %}</caption>
+    <thead>
+        <tr>
+            <th scope="col">{% trans "date"|title  %}</th>
+            <th scope="col">{% trans "SMS"  %}</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for td in total_data %}
+        <tr class="{% cycle 'row1' 'row2' %}">
+            <td>{{ td.send_date }}</td>
+            <td>{{ td.send_date__count }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+    <tfoot>
+        <tr>
+            <td>{% trans "total"|title  %}</td>
+            <td>{{ total_sms }}</td>
+        </tr>
+    </tfoot>
+    </table>
+</div>
+
+{% endblock %}
+
+</div>
+{% endblock %}

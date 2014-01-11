@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -21,15 +21,16 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from dialer_campaign.models import Campaign, Subscriber
+#from dialer_campaign.admin_filters import AgentFilter
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit
 from dialer_campaign.constants import SUBSCRIBER_STATUS, SUBSCRIBER_STATUS_NAME
-from dialer_campaign.forms import SubscriberReportForm
+from dialer_campaign.forms import SubscriberReportForm, SubscriberAdminForm
 from genericadmin.admin import GenericAdminModelAdmin
 from common.common_functions import variable_value, ceil_strdate
-from common.app_label_renamer import AppLabelRenamer
+# from common.app_label_renamer import AppLabelRenamer
 from datetime import datetime
 APP_LABEL = _('Dialer Campaign')
-AppLabelRenamer(native_app_label=u'dialer_campaign', app_label=APP_LABEL).main()
+# AppLabelRenamer(native_app_label=u'dialer_campaign', app_label=APP_LABEL).main()
 
 
 class CampaignAdmin(GenericAdminModelAdmin):
@@ -42,32 +43,34 @@ class CampaignAdmin(GenericAdminModelAdmin):
         (_('standard options').capitalize(), {
             'fields': ('campaign_code', 'name', 'description', 'callerid',
                        'user', 'status', 'startingdate', 'expirationdate',
-                       'aleg_gateway', 'content_type', 'object_id',
-                       'extra_data', 'phonebook', 'voicemail', 'amd_behavior',
-                       'voicemail_audiofile'
+                       'aleg_gateway', 'sms_gateway', 'content_type',
+                       'object_id', 'extra_data', 'phonebook', 'voicemail',
+                       'amd_behavior', 'voicemail_audiofile'
                        ),
         }),
         (_('advanced options').capitalize(), {
-            'classes': ('collapse',),
+            'classes': ('collapse', ),
             'fields': ('frequency', 'callmaxduration', 'maxretry',
                        'intervalretry', 'calltimeout', 'imported_phonebook',
                        'daily_start_time', 'daily_stop_time',
                        'monday', 'tuesday', 'wednesday',
                        'thursday', 'friday', 'saturday', 'sunday',
-                       'completion_maxretry', 'completion_intervalretry', 'dnc')
+                       'completion_maxretry', 'completion_intervalretry',
+                       'dnc', 'agent_script', 'lead_disposition',
+                       'external_link')
         }),
     )
     list_display = ('id', 'name', 'content_type', 'campaign_code', 'user',
                     'startingdate', 'expirationdate', 'frequency',
-                    'callmaxduration', 'maxretry', 'aleg_gateway', 'status',
-                    'update_campaign_status', 'totalcontact', 'completed',
-                    'subscriber_detail', 'progress_bar')
+                    'callmaxduration', 'maxretry', 'aleg_gateway', 'sms_gateway',
+                    'status', 'update_campaign_status', 'totalcontact',
+                    'completed', 'subscriber_detail', 'progress_bar')
 
     list_display_links = ('id', 'name', )
     #list_filter doesn't display correctly too many elements in list_display
     #list_filter = ['user', 'status', 'created_date']
     ordering = ('-id', )
-    filter_horizontal = ('phonebook',)
+    filter_horizontal = ('phonebook', )
 
     def get_urls(self):
         urls = super(CampaignAdmin, self).get_urls()
@@ -105,12 +108,12 @@ admin.site.register(Campaign, CampaignAdmin)
 class SubscriberAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a Subscriber."""
-    list_display = ('id', 'contact', 'campaign',
-                    'last_attempt', 'count_attempt', 'completion_count_attempt', 'duplicate_contact',
-                    'contact_name', 'status', 'created_date')
-    list_filter = ['campaign', 'status', 'created_date', 'last_attempt']
+    form = SubscriberAdminForm
+    list_display = ('id', 'contact', 'campaign', 'last_attempt', 'get_attempts',
+                    'get_completion_attempts', 'duplicate_contact', 'disposition',
+                    'collected_data', 'status', 'created_date')  # 'agent',
+    list_filter = ('campaign', 'status', 'created_date', 'last_attempt', )  # AgentFilter
     ordering = ('-id', )
-    raw_id_fields = ("contact",)
 
     def get_urls(self):
         urls = super(SubscriberAdmin, self).get_urls()
@@ -167,11 +170,11 @@ class SubscriberAdmin(admin.ModelAdmin):
                     kwargs['campaign_id'] = campaign_id
 
                 select_data = {"updated_date": "SUBSTR(CAST(updated_date as CHAR(30)),1,10)"}
-                subscriber = Subscriber.objects\
-                    .filter(**kwargs)\
-                    .extra(select=select_data)\
-                    .values('updated_date', 'status')\
-                    .annotate(Count('updated_date'))\
+                subscriber = Subscriber.objects \
+                    .filter(**kwargs) \
+                    .extra(select=select_data) \
+                    .values('updated_date', 'status') \
+                    .annotate(Count('updated_date')) \
                     .order_by('updated_date')
 
                 for i in subscriber:

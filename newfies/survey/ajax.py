@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -29,7 +29,7 @@ def section_sort(request, id, sort_order):
         section = Section_template.objects.get(pk=int(id))
         section.order = sort_order
         section.save()
-        # dajax.alert("(%s) has been successfully sorted !!" % \
+        # dajax.alert("(%s) has been successfully sorted! % \
         #    (survey_question.question))
     except:
         pass
@@ -45,7 +45,7 @@ def default_branching_goto(request, id, goto_id):
             branching_obj = Branching_template.objects.get(id=id)
             branching_obj.goto_id = goto_id
             branching_obj.save()
-            # dajax.alert("(%s) has been successfully sorted !!" % \
+            # dajax.alert("(%s) has been successfully sorted! % \
             #    (survey_question.question))
     except:
         pass

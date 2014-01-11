@@ -1,0 +1,29 @@
+[
+{
+    "pk": 1,
+    "model": "appointment.alarm",
+    "fields": {
+        "event": 1,
+        "date_start_notice": "2013-12-18T12:04:24",
+        "phonenumber_transfer": "",
+        "sms_template": null,
+        "survey": 1,
+        "phonenumber_sms_failure": "",
+        "url_confirm": "",
+        "num_attempt": 0,
+        "mail_template": null,
+        "status": 1,
+        "daily_start": "00:00:00",
+        "alarm_phonenumber": "35543532",
+        "method": 1,
+        "url_cancel": "",
+        "maxretry": 0,
+        "result": 0,
+        "created_date": "2013-12-18T12:04:49.435",
+        "retry_delay": 0,
+        "advance_notice": 0,
+        "daily_stop": "23:59:59",
+        "alarm_email": "notify@gmail.com"
+    }
+}
+]

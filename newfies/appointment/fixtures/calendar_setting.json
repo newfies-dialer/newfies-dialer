@@ -1,0 +1,21 @@
+[
+{
+    "pk": 1,
+    "model": "appointment.calendarsetting",
+    "fields": {
+        "updated_date": "2014-01-02T16:57:24.951",
+        "sms_gateway": 1,
+        "callerid": "242534",
+        "voicemail": false,
+        "call_timeout": 60,
+        "voicemail_audiofile": null,
+        "label": "test calendar setting",
+        "caller_name": "test",
+        "survey": 1,
+        "user": 2,
+        "created_date": "2013-12-17T13:41:24.195",
+        "aleg_gateway": 1,
+        "amd_behavior": null
+    }
+}
+]

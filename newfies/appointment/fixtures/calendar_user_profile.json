@@ -1,0 +1,25 @@
+[
+{
+    "pk": 1,
+    "model": "appointment.calendaruserprofile",
+    "fields": {
+        "updated_date": "2013-12-17T13:42:14.978",
+        "city": "",
+        "fax": "",
+        "note": "",
+        "language": null,
+        "company_name": "",
+        "country": "",
+        "accountcode": null,
+        "phone_no": "",
+        "company_website": "",
+        "calendar_setting": 1,
+        "state": "",
+        "user": 3,
+        "address": "",
+        "created_date": "2013-12-17T13:42:09.739",
+        "manager": 1,
+        "zip_code": ""
+    }
+}
+]

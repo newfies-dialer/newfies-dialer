@@ -1,0 +1,154 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block extra_files %}
+    {{ form.media }}
+    {% include "frontend/common_datepicker.html" %}
+{% endblock %}
+
+{% block content_header %}
+    <h1>{% if action == "update" %}
+            {% trans "update"|title %}
+        {% else %}
+            {% trans "add"|title %}
+        {% endif %} {% trans "SMS" %} {% trans "campaign"|title %}
+        <small>{% trans "set SMS campaign parameters"|capfirst %}</small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+    <ul class="nav nav-tabs">
+        <li class="active"><a href="#tabs-1" data-toggle="tab">{% trans "general"|title %}</a></li>
+        <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "completion"|title %}</a></li>
+        <li class="{% if action == 'tabs-3' %}active{% endif %}"><a href="#tabs-3" data-toggle="tab">{% trans "schedule"|title %}</a></li>
+    </ul>
+    <form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+        <div class="tab-content">
+            <div id="tabs-1" class="tab-pane active">
+                <fieldset>
+                    <legend>{% trans "general settings"|title %}</legend>
+                    <div class="row">
+                        {% get_fieldset campaign_code,ds_user,name,callerid,sms_gateway,phonebook as campaign_fields from form %}
+                        {% for field in campaign_fields.hidden_fields %}
+                            {{ field }}
+                        {% endfor %}
+                        {% for field in campaign_fields.visible_fields %}
+                            <div class="col-md-6">
+                                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                <div class="col-xs-8">
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-block">
+                                            {{ field.errors|removetags:"ul li"|safe }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="help-block">
+                                        {{ field.help_text|capfirst }}
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+
+                        {% get_fieldset text_message as campaign_fields from form %}
+                        {% for field in campaign_fields.visible_fields %}
+                            <div class="col-md-8">
+                                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                <div class="col-xs-8">
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-block">
+                                            {{ field.errors|removetags:"ul li"|safe }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="help-block">
+                                        {{ field.help_text|capfirst }}
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+            </div>
+
+            <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
+                <fieldset>
+                    <legend>{% trans "completion settings"|title %}</legend>
+                    <div class="row">
+                        {% get_fieldset frequency,maxretry,intervalretry as campaign_settings_fields from form %}
+                        {% for field in campaign_settings_fields %}
+                            <div class="col-md-6">
+                                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                <div class="col-xs-8">
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-block">
+                                            {{ field.errors|removetags:"ul li"|safe }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="help-block">
+                                        {{ field.help_text|capfirst }}
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+            </div>
+
+            <div id="tabs-3" class="tab-pane {% if action == 'tabs-3' %}active{% endif %}">
+                <fieldset>
+                    <legend>{% trans "schedule settings" %}</legend>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="col-xs-10">
+                                <label>{% trans "week days"|title %}<label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 col-xs-10">
+                            {% get_fieldset monday,tuesday,wednesday,thursday,friday,saturday,sunday as settings_fields from form %}
+                            {% for field in settings_fields %}
+                            <div class="col-md-1">
+                                <label for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                                <div class="make-switch switch-small">
+                                {{ field }}
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                    </div>
+                    <div>&nbsp;</div>
+                    <div class="row">
+                        {% get_fieldset startingdate,expirationdate,daily_start_time,daily_stop_time as campaign_settings_fields from form %}
+                        {% for field in campaign_settings_fields %}
+                            <div class="col-md-6">
+                                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                <div class="col-xs-8">
+                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
+                                    {{ field }}
+                                    {% if field.errors %}
+                                        <span class="help-block">
+                                            {{ field.errors|removetags:"ul li"|safe }}
+                                        </span>
+                                    {% endif %}
+                                    <span class="help-block">
+                                        {{ field.help_text|capfirst }}
+                                    </span>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </fieldset>
+            </div>
+        </div>
+        {% include "frontend/common_submit_buttons.html" %}
+    </form>
+{% endblock %}

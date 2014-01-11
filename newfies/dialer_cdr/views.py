@@ -6,13 +6,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.decorators import login_required,\
+from django.contrib.auth.decorators import login_required, \
     permission_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
@@ -23,9 +23,10 @@ from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
-from common.common_functions import current_view, ceil_strdate,\
-    get_pagination_vars, unset_session_var
+from common.common_functions import ceil_strdate, unset_session_var, \
+    get_pagination_vars
 from datetime import datetime
+from django.utils.timezone import utc
 import tablib
 
 
@@ -34,11 +35,11 @@ def get_voipcall_daily_data(voipcall_list):
     select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
     # Get Total Rrecords from VoIPCall Report table for Daily Call Report
-    total_data = voipcall_list.extra(select=select_data)\
-        .values('starting_date')\
-        .annotate(Count('starting_date'))\
-        .annotate(Sum('duration'))\
-        .annotate(Avg('duration'))\
+    total_data = voipcall_list.extra(select=select_data) \
+        .values('starting_date') \
+        .annotate(Count('starting_date')) \
+        .annotate(Sum('duration')) \
+        .annotate(Avg('duration')) \
         .order_by('-starting_date')
 
     # Following code will count total voip calls, duration
@@ -85,7 +86,7 @@ def voipcall_report(request):
                            'used_gateway', 'callerid', 'callid', 'phone_number',
                            'duration', 'billsec', 'amd_status']
     default_sort_field = 'starting_date'
-    pagination_data =\
+    pagination_data = \
         get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
@@ -137,11 +138,11 @@ def voipcall_report(request):
             campaign_id = request.session.get('session_campaign_id')
             leg_type = request.session.get('session_leg_type')
             form = VoipSearchForm(request.user,
-                                  initial={'from_date': start_date.strftime('%Y-%m-%d'),
-                                           'to_date': end_date.strftime('%Y-%m-%d'),
-                                           'status': disposition,
-                                           'campaign_id': campaign_id,
-                                           'leg_type': leg_type})
+                initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                       'to_date': end_date.strftime('%Y-%m-%d'),
+                       'status': disposition,
+                       'campaign_id': campaign_id,
+                       'leg_type': leg_type})
         else:
             post_var_with_page = 1
             if request.method == 'GET':
@@ -151,20 +152,20 @@ def voipcall_report(request):
 
     if post_var_with_page == 0:
         # default
-        tday = datetime.today()
+        tday = datetime.utcnow().replace(tzinfo=utc)
         from_date = tday.strftime('%Y-%m-%d')
         to_date = tday.strftime('%Y-%m-%d')
-        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0)
-        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999)
+        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
+        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999).replace(tzinfo=utc)
         disposition = 'all'
         campaign_id = 0
         leg_type = ''
         form = VoipSearchForm(request.user,
-                              initial={'from_date': from_date,
-                                       'to_date': to_date,
-                                       'status': disposition,
-                                       'campaign_id': campaign_id,
-                                       'leg_type': leg_type})
+            initial={'from_date': from_date,
+                    'to_date': to_date,
+                    'status': disposition,
+                    'campaign_id': campaign_id,
+                    'leg_type': leg_type})
         # unset session var
         request.session['session_start_date'] = start_date
         request.session['session_end_date'] = end_date
@@ -190,7 +191,7 @@ def voipcall_report(request):
         kwargs['leg_type__exact'] = leg_type
 
     if not request.user.is_superuser:
-        kwargs['user'] = request.user
+        kwargs['user_id'] = request.user.id
 
     voipcall_list = VoIPCall.objects.filter(**kwargs)
 
@@ -218,7 +219,6 @@ def voipcall_report(request):
         'total_calls': daily_data['total_calls'],
         'total_avg_duration': daily_data['total_avg_duration'],
         'max_duration': daily_data['max_duration'],
-        'module': current_view(request),
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'all_voipcall_list': all_voipcall_list,
         'voipcall_list': voipcall_list,
@@ -234,7 +234,7 @@ def voipcall_report(request):
     request.session['msg'] = ''
     request.session['error_msg'] = ''
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -275,7 +275,7 @@ def export_voipcall_report(request):
             amd_status = i.amd_status if settings.AMD else ''
 
             starting_date = i.starting_date
-            if format == 'json':
+            if format == 'json' or format == 'xls':
                 starting_date = str(i.starting_date)
 
             list_val.append((i.user.username,

@@ -179,6 +179,8 @@ func_setup_virtualenv() {
     echo "This will install virtualenv & virtualenvwrapper"
     echo "and create a new virtualenv : $NEWFIES_ENV"
 
+    pip install setuptools --no-use-wheel --upgrade
+
     pip install virtualenv
     pip install virtualenvwrapper
 

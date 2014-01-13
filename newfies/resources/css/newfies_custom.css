@@ -195,3 +195,19 @@ a:hover, a:focus {
     color: #428bca;
 }
 /* END - Add circle around icons */
+
+/* jquery UI survey section CSS */
+/* style for question box for jquery UI sort*/
+.portlet { margin: 0 1em 1em 0; }
+.portlet-header { margin: 0.3em; padding-bottom: 10px; padding-left: 0.2em; }
+.portlet-header .btn-small { float: right; padding: 5px 3px 1px 4px; margin: 0 0 0.5em 0.2em; }
+.portlet-header button {font-size: 15px;}
+.portlet-header input {font-size: 15px; }
+.portlet-content { padding: 0.4em; }
+.ui-sortable-placeholder { border: 1px dotted black; visibility: visible !important; height: 50px !important; }
+.ui-sortable-placeholder * { visibility: hidden; }
+ /* change span width for response inputs */
+.span5 {width: 160px;}
+.right-side-icon{
+    float: right;
+}

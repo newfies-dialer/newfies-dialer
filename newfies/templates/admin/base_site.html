@@ -17,22 +17,7 @@
 <link media="all" href="{{ STATIC_URL }}/jquery-ui/themes/flick/jquery-ui.min.css" type="text/css" rel="stylesheet" />
 <script type="text/javascript" src="{{ STATIC_URL }}/jquery-ui/ui/minified/jquery-ui.min.js"></script>
 
-<script type="text/javascript">
-    // TODO move to a common_admin_newfies.js file
-    $(function() {
-        var dates = $('#id_from_date, #id_to_date').datepicker({
-            defaultDate: "+1w",
-            changeMonth: true,
-            dateFormat: 'yy-mm-dd',
-            onSelect: function(selectedDate) {
-                var option = this.id == "id_from_date" ? "minDate" : "maxDate";
-                var instance = $(this).data("datepicker");
-                var date = $.datepicker.parseDate(instance.settings.dateFormat || $.datepicker._defaults.dateFormat, selectedDate, instance.settings);
-                dates.not(this).datepicker("option", option, date);
-            }
-        });
-    });
-</script>
+<script type="text/javascript" src="{{ STATIC_URL }}newfies/common_admin_newfies.js"></script>
 <style>
 
 <!--

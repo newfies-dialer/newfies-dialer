@@ -1,34 +1,44 @@
 {% extends "frontend/master.html" %}
 {% load i18n %}
 
-{% block extra_files %}
-    <style>
-    .help-inline {
-        padding-left: 55px;
-    }
-    </style>
-{% endblock %}
-
 {% block content_header %}
-    <h1>{% trans "export dnc contact"|title %} <small>{% trans "export list of dnc contact"|capfirst %}</small></h1>
+    <h1>{% trans "export DNC contacts"|capfirst %} <small>{% trans "export list of DNC contacts"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
-<form class="well" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
-     {% for field in form %}
-     <div class="clearfix{% if field.errors %} error{% endif %}">
-        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-        <div class="input">
-            {{ field }}
-            {% if field.errors %}
-                <span class="help-inline">{{ field.errors|removetags:"ul li"|safe }}</span>
-            {% endif %}
-            <span class="help-block">{{ field.help_text|capfirst }} </span>
+    <form class="well" role="form" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
+        <div class="row">
+            <div class="col-md-4">
+                <div class="form-group {% if form.dnc_list.errors %}has-error{% endif %}">
+                    <label class="control-label" for="{{ form.dnc_list.auto_id }}">{{ form.dnc_list.label|title }}</label>
+                    {{ form.dnc_list }}
+                    {% if form.dnc_list.errors %}
+                        <span class="help-block">
+                            {{ form.dnc_list.errors|removetags:"ul li"|safe }}
+                        </span>
+                    {% endif %}
+                    <span class="help-block">
+                        {{ form.dnc_list.help_text|capfirst }}
+                    </span>
+                </div>
+            </div>
         </div>
-     </div>
-     {% endfor %}
-     <div class="actions">
-         <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />
-     </div>
-</form>
+        <div class="row">
+            <div class="col-md-4">
+                <b>{% trans "export to"|capfirst %} :</b>
+                <div class="btn-group" data-toggle="buttons">
+                    {% for choice in form.export_to.field.choices %}
+                    <label class="btn btn-default">
+                        <input name='{{ form.export_to.name }}' type='radio' value='{{ choice.0 }}'/> {{ choice.1 }}
+                    </label>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+        <div class="text-right">
+            <button type="submit" name="submit" class="btn btn-primary" value="submit">
+                <i class="fa fa-save fa-lg"></i> {% trans "save"|capfirst %}
+            </button>
+        </div>
+    </form>
 {% endblock %}

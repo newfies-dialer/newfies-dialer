@@ -1,0 +1,97 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block content_header %}
+    <h1>
+        {% if action == 'update' %}
+            {% trans "update"|title %}
+        {% else %}
+            {% trans "add"|title %}
+        {% endif %}
+        {% trans "agent"|title %}
+        <small>{% trans "agent is belong to manager"|capfirst %}</small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+
+    {% if action == 'update' %}
+        <div class="row">
+            {% get_fieldset username as agent_fields from agent_username_form %}
+            {% for field in agent_fields.visible_fields %}
+            <div class="col-md-6">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                <div class="col-xs-8">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-block">
+                            {{ field.errors|removetags:"ul li"|safe }}
+                        </span>
+                    {% endif %}
+                    <span class="help-block">
+                        {{ field.help_text|capfirst }}
+                    </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% get_fieldset password as agent_fields from agent_username_form %}
+            {% for field in agent_fields.visible_fields %}
+            <div class="col-md-6">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    {{ field }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% for field in form %}
+            <div class="row">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="col-xs-6">
+                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="row">
+        {% get_fieldset type,call_timeout,contact,status,no_answer_delay_time,max_no_answer,wrap_up_time,reject_delay_time,busy_delay_time as agent_fields from form %}
+        {% for field in agent_fields.hidden_fields %}
+            {{ field }}
+        {% endfor %}
+        {% for field in agent_fields.visible_fields %}
+            <div class="col-md-6">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                <div class="col-xs-8">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-block">
+                            {{ field.errors|removetags:"ul li"|safe }}
+                        </span>
+                    {% endif %}
+                    <span class="help-block">
+                        {{ field.help_text|capfirst }}
+                    </span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% include "frontend/common_submit_buttons.html" %}
+</form>
+
+{% endblock %}

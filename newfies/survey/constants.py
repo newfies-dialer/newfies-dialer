@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -25,7 +25,8 @@ class SECTION_TYPE(Choice):
     CALL_TRANSFER = 6, _('call transfer').capitalize()
     HANGUP_SECTION = 7, _('hangup').capitalize()
     CONFERENCE = 8, _('conference').capitalize()
-    DNC = 9, _('dnc').upper()
+    DNC = 9, _('DNC')
+    SMS = 10, _('SMS')
 
 
 class SURVEY_COLUMN_NAME(Choice):
@@ -40,3 +41,10 @@ class SURVEY_CALL_RESULT_NAME(Choice):
     duration = _('duration')
     disposition = _('disposition')
     result = _('survey result')
+
+
+class SEALED_SURVEY_COLUMN_NAME(Choice):
+    name = _('name')
+    description = _('description')
+    campaign = _('campaign')
+    date = _('date')

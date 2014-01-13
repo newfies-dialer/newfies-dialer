@@ -6,7 +6,7 @@
 -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 -- You can obtain one at http://mozilla.org/MPL/2.0/.
 --
--- Copyright (C) 2011-2013 Star2Billing S.L.
+-- Copyright (C) 2011-2014 Star2Billing S.L.
 --
 -- The Initial Developer of the Original Code is
 -- Arezqui Belaid <info@star2billing.com>
@@ -53,7 +53,7 @@ if false then
     --section_id = section_id + 1
     db:save_result_mem(callrequest_id, section_id, record_file, recording_duration, dtmf)
 
-    db:commit_result_mem(campaign_id, survey_id)
+    db:commit_result_mem(survey_id)
 end
 
 if false then

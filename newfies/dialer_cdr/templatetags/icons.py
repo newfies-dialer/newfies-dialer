@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -25,7 +25,7 @@ def icon(icon_name):
     >>> icon('test')
     'class="icon" style="text-decoration:none;background-image:url(/static/newfies/icons/test.png);"'
     """
-    return 'class="icon" style="text-decoration:none;background-image:url(%snewfies/icons/%s.png);"'\
+    return 'class="icon" style="text-decoration:none;background-image:url(%snewfies/icons/%s.png);"' \
            % (settings.STATIC_URL, icon_name)
 register.simple_tag(icon)
 
@@ -49,6 +49,6 @@ def icon_style(icon_name):
     >>> icon_style('test')
     'style="text-decoration:none;background-image:url(/static/newfies/icons/test.png);"'
     """
-    return 'style="text-decoration:none;background-image:url(%snewfies/icons/%s.png);"'\
+    return 'style="text-decoration:none;background-image:url(%snewfies/icons/%s.png);"' \
            % (settings.STATIC_URL, icon_name)
 register.simple_tag(icon_style)

@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -15,7 +15,7 @@
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required, \
     permission_required
-from django.http import HttpResponseRedirect, Http404
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
 from django.core.mail import mail_admins
@@ -25,19 +25,25 @@ from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
 from django.db.models import get_model
 from dialer_contact.models import Phonebook
-from dialer_campaign.models import Campaign
-from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm
-from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME
+from dialer_campaign.models import Campaign, Subscriber
+from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm, \
+    SubscriberSearchForm, CampaignSearchForm
+from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME, \
+    SUBSCRIBER_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
-    user_dialer_setting, user_dialer_setting_msg
+    user_dialer_setting, user_dialer_setting_msg, get_subscriber_status, \
+    get_subscriber_disposition
 from dialer_campaign.tasks import collect_subscriber
 from survey.models import Section, Branching, Survey_template
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from common.common_functions import current_view, get_pagination_vars
+from common.common_functions import ceil_strdate, getvar, \
+    get_pagination_vars, unset_session_var
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
+from django.utils.timezone import utc
 import re
+import tablib
 
 
 @login_required
@@ -67,7 +73,7 @@ def update_campaign_status_cust(request, pk, status):
 
     #Check if no phonebook attached
     if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
-        request.session['error_msg'] = _('error : you have to assign a phonebook to your campaign before starting it')
+        request.session['error_msg'] = _('you mush assign a phonebook to your campaign before starting it')
     else:
         recipient = request.user
         frontend_send_notification(request, status, recipient)
@@ -99,12 +105,12 @@ def notify_admin(request):
     all_admin_user = User.objects.filter(is_superuser=True)
     for user in all_admin_user:
         recipient = user
-        if not request.session['has_notified']:
+        if not 'has_notified' in request.session:
             frontend_send_notification(
                 request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
             # Send mail to ADMINS
             subject = _('dialer setting configuration').title()
-            message = _('Notification - User Dialer Setting. The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') %\
+            message = _('Notification - User Dialer Setting. The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') % \
                 {'user': request.user, 'user_id': request.user.id}
             # mail_admins() is a shortcut for sending an email to the site admins,
             # as defined in the ADMINS setting
@@ -118,7 +124,7 @@ def tpl_control_icon(icon):
     """
     function to produce control html icon
     """
-    return 'style="text-decoration:none;background-image:url(%snewfies/icons/%s);"' % (settings.STATIC_URL, icon)
+    return '<i class="fa %s icon-small"></i>' % (icon)
 
 
 def get_url_campaign_status(id, status):
@@ -126,10 +132,10 @@ def get_url_campaign_status(id, status):
     Helper to display campaign status button on the grid
     """
     #Store html for campaign control button
-    control_play_style = tpl_control_icon('control_play_blue.png')
-    control_pause_style = tpl_control_icon('control_pause_blue.png')
-    control_abort_style = tpl_control_icon('control_abort_blue.png')
-    control_stop_style = tpl_control_icon('control_stop_blue.png')
+    control_play_style = tpl_control_icon('fa-play')
+    control_pause_style = tpl_control_icon('fa-pause')
+    control_abort_style = tpl_control_icon('fa-eject')
+    control_stop_style = tpl_control_icon('fa-stop')
 
     #set different url for the campaign status
     url_cpg_status = 'update_campaign_status_cust/%s' % str(id)
@@ -141,23 +147,23 @@ def get_url_campaign_status(id, status):
     #according to the current status, disable link and change the button color
     if status == CAMPAIGN_STATUS.START:
         url_cpg_start = '#'
-        control_play_style = tpl_control_icon('control_play.png')
+        control_play_style = tpl_control_icon('fa-play')
     elif status == CAMPAIGN_STATUS.PAUSE:
         url_cpg_pause = '#'
-        control_pause_style = tpl_control_icon('control_pause.png')
+        control_pause_style = tpl_control_icon('fa-pause')
     elif status == CAMPAIGN_STATUS.ABORT:
         url_cpg_abort = '#'
-        control_abort_style = tpl_control_icon('control_abort.png')
+        control_abort_style = tpl_control_icon('fa-eject')
     elif status == CAMPAIGN_STATUS.END:
         url_cpg_stop = '#'
-        control_stop_style = tpl_control_icon('control_stop.png')
+        control_stop_style = tpl_control_icon('fa-stop')
 
     #return all the html button for campaign status management
-    return "<a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a> <a href='%s' class='icon' title='%s' %s></a>" % \
+    return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
         (url_cpg_start, _("start").capitalize(), control_play_style,
-        url_cpg_pause, _("pause").capitalize(), control_pause_style,
-        url_cpg_abort, _("abort").capitalize(), control_abort_style,
-        url_cpg_stop, _("stop").capitalize(), control_stop_style)
+         url_cpg_pause, _("pause").capitalize(), control_pause_style,
+         url_cpg_abort, _("abort").capitalize(), control_abort_style,
+         url_cpg_stop, _("stop").capitalize(), control_stop_style)
 
 
 def get_app_name(app_label, model_name, object_id):
@@ -175,13 +181,13 @@ def _return_link(app_name, obj_id):
     link = ''
     # Object view links
     if app_name == 'survey':
-        link = '<a href="/survey_view/%s/" target="_blank" class="icon" title="%s" %s></a>' % \
-            (obj_id, _('survey').title(), tpl_control_icon('zoom.png'))
+        link = '<a id="id_survey_seal_%s" href="#sealed-survey" url="/module/sealed_survey_view/%s/" title="%s" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>' % \
+            (obj_id, obj_id, _('view sealed survey').title())
 
     # Object edit links
     if app_name == 'survey_template':
-        link = '<a href="/survey/%s/" target="_blank" class="icon" title="%s" %s></a>' %\
-            (obj_id, _('edit survey').title(), tpl_control_icon('zoom.png'))
+        link = '<a href="/module/survey/%s/" target="_blank" title="%s"><i class="fa fa-search"></i></a>' % \
+            (obj_id, _('edit survey').title())
 
     return link
 
@@ -206,9 +212,8 @@ def get_campaign_survey_view(campaign_object):
 
 def make_duplicate_campaign(campaign_object_id):
     """Create link to make duplicate campaign"""
-    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate icon" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s" %s></a>'\
-           % (campaign_object_id, _('duplicate this campaign').capitalize(),
-              tpl_control_icon('layers.png'))
+    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
+           % (campaign_object_id, _('duplicate this campaign').capitalize())
     return link
 
 
@@ -225,24 +230,73 @@ def campaign_list(request):
 
         * List all campaigns belonging to the logged in user
     """
+    form = CampaignSearchForm(request.user)
     request.session['pagination_path'] = request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
     sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
-    pagination_data =\
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
+
+    phonebook_id = ''
+    status = 'all'
+    search_tag = 1
+    if request.method == 'POST':
+        form = CampaignSearchForm(request.user, request.POST)
+        if form.is_valid():
+            field_list = ['phonebook_id', 'status']
+            unset_session_var(request, field_list)
+
+            phonebook_id = getvar(request, 'phonebook_id', setsession=True)
+            status = getvar(request, 'status', setsession=True)
+
+    post_var_with_page = 0
+    try:
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            post_var_with_page = 1
+            phonebook_id = request.session.get('session_phonebook_id')
+            status = request.session.get('session_status')
+            form = CampaignSearchForm(request.user, initial={'status': status,
+                                                             'phonebook_id': phonebook_id})
+        else:
+            post_var_with_page = 1
+            if request.method == 'GET':
+                post_var_with_page = 0
+    except:
+        pass
+
+    if post_var_with_page == 0:
+        # default
+        # unset session var
+        field_list = ['status', 'phonebook_id']
+        unset_session_var(request, field_list)
+
+    kwargs = {}
+    if phonebook_id and phonebook_id != '0':
+        kwargs['phonebook__id__in'] = [int(phonebook_id)]
+
+    if status and status != 'all':
+        kwargs['status'] = status
 
     campaign_list = Campaign.objects.filter(user=request.user).order_by(sort_order)
+    campaign_count = campaign_list.count()
+    if kwargs:
+        all_campaign_list = campaign_list.filter(**kwargs).order_by(sort_order)
+        campaign_list = all_campaign_list[start_page:end_page]
+        campaign_count = all_campaign_list.count()
 
     template = 'frontend/campaign/list.html'
     data = {
-        'module': current_view(request),
+        'form': form,
+        'search_tag': search_tag,
         'campaign_list': campaign_list,
-        'total_campaign': campaign_list.count(),
+        'total_campaign': campaign_count,
         'PAGE_SIZE': PAGE_SIZE,
         'CAMPAIGN_COLUMN_NAME': CAMPAIGN_COLUMN_NAME,
+        'CAMPAIGN_STATUS': CAMPAIGN_STATUS,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
@@ -321,13 +375,12 @@ def campaign_add(request):
 
             form.save_m2m()
 
-            request.session["msg"] = _('"%(name)s" added.') %\
+            request.session["msg"] = _('"%(name)s" added.') % \
                 {'name': request.POST['name']}
             return HttpResponseRedirect('/campaign/')
 
     template = 'frontend/campaign/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
         'AMD': settings.AMD,
@@ -357,10 +410,10 @@ def campaign_del(request, object_id):
         if stop_campaign:
             campaign.status = CAMPAIGN_STATUS.END
             campaign.save()
-            request.session["msg"] = _('"%(name)s" is stopped.')\
+            request.session["msg"] = _('the campaign "%(name)s" has been stopped.') \
                 % {'name': campaign.name}
         else:
-            request.session["msg"] = _('"%(name)s" is deleted.')\
+            request.session["msg"] = _('the campaign "%(name)s" has been deleted.') \
                 % {'name': campaign.name}
             campaign.delete()
     else:
@@ -368,16 +421,16 @@ def campaign_del(request, object_id):
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         try:
-            campaign_list = Campaign.objects\
-                .filter(user=request.user)\
+            campaign_list = Campaign.objects \
+                .filter(user=request.user) \
                 .extra(where=['id IN (%s)' % values])
             if campaign_list:
                 if stop_campaign:
                     campaign_list.update(status=CAMPAIGN_STATUS.END)
-                    request.session["msg"] = _('%(count)s campaign(s) are stopped.')\
+                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') \
                         % {'count': campaign_list.count()}
                 else:
-                    request.session["msg"] = _('%(count)s campaign(s) are deleted.')\
+                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') \
                         % {'count': campaign_list.count()}
                     campaign_list.delete()
         except:
@@ -407,7 +460,6 @@ def campaign_change(request, object_id):
         return HttpResponseRedirect("/campaign/")
 
     campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
-
     content_object = "type:%s-id:%s" % \
         (campaign.content_type_id, campaign.object_id)
     form = CampaignForm(request.user,
@@ -415,7 +467,7 @@ def campaign_change(request, object_id):
                         initial={'content_object': content_object})
 
     if campaign.status == CAMPAIGN_STATUS.START:
-        request.session['info_msg'] =\
+        request.session['info_msg'] = \
             _('the campaign is started, you can only edit Dialer settings and Campaign schedule')
 
     if request.method == 'POST':
@@ -436,24 +488,22 @@ def campaign_change(request, object_id):
                 # while campaign status is running
                 if campaign.status == CAMPAIGN_STATUS.START:
                     if request.POST.get('selected_phonebook'):
-                        selected_phonebook = str(request.POST.get('selected_phonebook'))\
+                        selected_phonebook = str(request.POST.get('selected_phonebook')) \
                             .split(',')
-                        obj.phonebook = Phonebook.objects\
-                            .filter(id__in=selected_phonebook)
+                        obj.phonebook = Phonebook.objects.filter(id__in=selected_phonebook)
 
                 contenttype = get_content_type(selected_content_object)
                 obj.content_type = contenttype['object_type']
                 obj.object_id = contenttype['object_id']
                 obj.save()
 
-                request.session["msg"] = _('"%(name)s" is updated.') \
+                request.session["msg"] = _('the campaign "%(name)s" is updated.') \
                     % {'name': request.POST['name']}
                 request.session['error_msg'] = ''
                 return HttpResponseRedirect('/campaign/')
 
     template = 'frontend/campaign/change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'update',
         'error_msg': request.session.get('error_msg'),
@@ -533,8 +583,8 @@ def campaign_duplicate(request, id):
             campaign_obj.status = CAMPAIGN_STATUS.PAUSE
             campaign_obj.totalcontact = 0
             campaign_obj.completed = 0
-            campaign_obj.startingdate = datetime.now()
-            campaign_obj.expirationdate = datetime.now() + relativedelta(days=+1)
+            campaign_obj.startingdate = datetime.utcnow().replace(tzinfo=utc)
+            campaign_obj.expirationdate = datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)
             campaign_obj.imported_phonebook = ''
             campaign_obj.has_been_started = False
             campaign_obj.has_been_duplicated = True
@@ -558,11 +608,229 @@ def campaign_duplicate(request, id):
 
     template = 'frontend/campaign/campaign_duplicate.html'
     data = {
-        'module': current_view(request),
         'campaign_id': id,
         'form': form,
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''
+    return render_to_response(
+        template, data, context_instance=RequestContext(request))
+
+
+@permission_required('dialer_campaign.view_subscriber', login_url='/')
+@login_required
+def subscriber_list(request):
+    """Subscriber list for the logged in user
+
+    **Attributes**:
+
+        * ``template`` - frontend/subscriber/list.html
+        * ``form`` - SubscriberSearchForm
+
+    **Logic Description**:
+
+        * List all subscribers belonging to the logged in user & their campaign
+    """
+    sort_col_field_list = ['contact', 'updated_date', 'count_attempt',
+                           'completion_count_attempt', 'status',
+                           'disposition', 'collected_data', 'agent']
+    default_sort_field = 'id'
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+    start_page = pagination_data['start_page']
+    end_page = pagination_data['end_page']
+
+    form = SubscriberSearchForm(request.user)
+
+    search_tag = 1
+    campaign_id = ''
+    agent_id = ''
+    status = 'all'
+
+    if request.method == 'POST':
+        form = SubscriberSearchForm(request.user, request.POST)
+
+        if form.is_valid():
+            field_list = ['start_date', 'end_date', 'status',
+                          'campaign_id', 'agent_id']
+            unset_session_var(request, field_list)
+            campaign_id = getvar(request, 'campaign_id', setsession=True)
+            agent_id = getvar(request, 'agent_id', setsession=True)
+
+            if request.POST.get('from_date'):
+                # From
+                from_date = request.POST['from_date']
+                start_date = ceil_strdate(from_date, 'start')
+                request.session['session_start_date'] = start_date
+
+            if request.POST.get('to_date'):
+                # To
+                to_date = request.POST['to_date']
+                end_date = ceil_strdate(to_date, 'end')
+                request.session['session_end_date'] = end_date
+
+            status = request.POST.get('status')
+            if status != 'all':
+                request.session['session_status'] = status
+
+    post_var_with_page = 0
+    try:
+        if request.GET.get('page') or request.GET.get('sort_by'):
+            post_var_with_page = 1
+            start_date = request.session.get('session_start_date')
+            end_date = request.session.get('session_end_date')
+            campaign_id = request.session.get('session_campaign_id')
+            agent_id = request.session.get('session_agent_id')
+            status = request.session.get('session_status')
+            form = SubscriberSearchForm(request.user,
+                                        initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                                                 'to_date': end_date.strftime('%Y-%m-%d'),
+                                                 'campaign_id': campaign_id,
+                                                 'agent_id': agent_id,
+                                                 'status': status})
+        else:
+            post_var_with_page = 1
+            if request.method == 'GET':
+                post_var_with_page = 0
+    except:
+        pass
+
+    if post_var_with_page == 0:
+        # default
+        tday = datetime.utcnow().replace(tzinfo=utc)
+        from_date = tday.strftime('%Y-%m-%d')
+        to_date = tday.strftime('%Y-%m-%d')
+        start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
+        end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999).replace(tzinfo=utc)
+
+        form = SubscriberSearchForm(request.user, initial={'from_date': from_date,
+                                                           'to_date': to_date})
+        # unset session var
+        request.session['session_start_date'] = start_date
+        request.session['session_end_date'] = end_date
+        request.session['session_status'] = ''
+        request.session['session_campaign_id'] = ''
+        request.session['session_agent_id'] = ''
+
+    kwargs = {}
+    # updated_date might be replaced with last_attempt
+    if start_date and end_date:
+        kwargs['updated_date__range'] = (start_date, end_date)
+    if start_date and end_date == '':
+        kwargs['updated_date__gte'] = start_date
+    if start_date == '' and end_date:
+        kwargs['updated_date__lte'] = end_date
+
+    if campaign_id and campaign_id != '0':
+        kwargs['campaign_id'] = campaign_id
+
+    if agent_id and agent_id != '0':
+        kwargs['agent_id'] = agent_id
+
+    if status and status != 'all':
+        kwargs['status'] = status
+
+    subscriber_list = []
+    all_subscriber_list = []
+    subscriber_count = 0
+
+    if request.user.is_superuser:
+        subscriber_list = Subscriber.objects.all()
+    else:
+        subscriber_list = Subscriber.objects.filter(campaign__user=request.user)
+
+    if kwargs:
+        subscriber_list = subscriber_list.filter(**kwargs)
+        request.session['subscriber_list_kwargs'] = kwargs
+    #if contact_name:
+    #    # Search on contact name
+    #    q = (Q(last_name__icontains=contact_name) |
+    #         Q(first_name__icontains=contact_name))
+    #    if q:
+    #        contact_list = contact_list.filter(q)
+
+    all_subscriber_list = subscriber_list.order_by(sort_order)
+    subscriber_list = all_subscriber_list[start_page:end_page]
+    subscriber_count = all_subscriber_list.count()
+
+    template = 'frontend/subscriber/list.html'
+    data = {
+        'subscriber_list': subscriber_list,
+        'all_subscriber_list': all_subscriber_list,
+        'total_subscribers': subscriber_count,
+        'PAGE_SIZE': PAGE_SIZE,
+        'SUBSCRIBER_COLUMN_NAME': SUBSCRIBER_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'msg': request.session.get('msg'),
+        'error_msg': request.session.get('error_msg'),
+        'form': form,
+        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'search_tag': search_tag,
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
+
+
+@login_required
+def subscriber_export(request):
+    """Export CSV file of subscriber record
+
+    **Important variable**:
+
+        * ``request.session['subscriber_list_kwargs']`` - stores subscriber_list kwargs
+
+    **Exported fields**: ['contact', 'updated_date', 'count_attempt',
+                          'completion_count_attempt', 'status', 'disposition',
+                          'collected_data', 'agent']
+    """
+    format = request.GET['format']
+    # get the response object, this can be used as a stream.
+    response = HttpResponse(mimetype='text/' + format)
+
+    # force download.
+    response['Content-Disposition'] = 'attachment;filename=export.' + format
+
+    if request.session.get('subscriber_list_kwargs'):
+        kwargs = request.session['subscriber_list_kwargs']
+        if request.user.is_superuser:
+            subscriber_list = Subscriber.objects.all()
+        else:
+            subscriber_list = Subscriber.objects.filter(campaign__user=request.user)
+
+        if kwargs:
+            subscriber_list = subscriber_list.filter(**kwargs)
+
+        headers = ('contact', 'updated_date', 'count_attempt', 'completion_count_attempt',
+                   'status', 'disposition', 'collected_data', 'agent', )
+
+        list_val = []
+        for i in subscriber_list:
+            updated_date = i.updated_date
+            if format == 'json' or format == 'xls':
+                updated_date = str(i.updated_date)
+
+            list_val.append((i.contact.contact,
+                             updated_date,
+                             i.count_attempt,
+                             i.completion_count_attempt,
+                             get_subscriber_status(i.status),
+                             get_subscriber_disposition(i.campaign_id, i.disposition),
+                             i.collected_data,
+                             i.agent, ))
+
+        data = tablib.Dataset(*list_val, headers=headers)
+
+        if format == 'xls':
+            response.write(data.xls)
+
+        if format == 'csv':
+            response.write(data.csv)
+
+        if format == 'json':
+            response.write(data.json)
+
+    return response

@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -65,6 +65,20 @@ class DialerSetting(models.Model):
 
     whitelist = models.TextField(blank=True, null=True, default='', verbose_name=_("whitelist"),
                                  help_text=_("use regular expressions to whitelist phone numbers"))
+
+    # SMS Campaign Settings
+    sms_max_frequency = models.IntegerField(default='100', blank=True, null=True,
+                                            verbose_name=_("Max frequency"),
+                                            help_text=_("Maximum SMS per minute"))
+    sms_maxretry = models.IntegerField(default='3', blank=True, null=True,
+                                       verbose_name=_('Max Retries'),
+                                       help_text=_("Maximum SMS retries per user."))
+    sms_max_number_campaign = models.IntegerField(
+        default=10, verbose_name=_("Max SMS campaigns"),
+        help_text=_("Maximum number of SMS campaigns"))
+    sms_max_number_subscriber_campaign = models.IntegerField(
+        default=10000, verbose_name=_("Max subscribers of SMS campaigns"),
+        help_text=_("Maximum subscribers per SMS campaign"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)

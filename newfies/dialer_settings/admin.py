@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -25,7 +25,9 @@ class DialerSettingAdmin(admin.ModelAdmin):
     of a DialerSetting."""
     list_display = ('name', 'max_frequency', 'callmaxduration', 'maxretry',
                     'max_calltimeout', 'max_cpg', 'max_subr_cpg', 'max_contact',
-                    'blacklist', 'whitelist', 'updated_date')
+                    'sms_max_frequency', 'sms_maxretry', 'sms_max_number_campaign',
+                    'sms_max_number_subscriber_campaign', 'updated_date')
+    # 'blacklist', 'whitelist',
     #list_filter = ['setting_group']
     search_fields = ('name', )
     ordering = ('-name', )

@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -17,6 +17,7 @@ from celery.decorators import task
 # from celery.task import Task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign, Subscriber
+from user_profile.models import UserProfile
 # from common.only_one_task import only_one
 
 logger = get_task_logger(__name__)
@@ -75,7 +76,8 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     # to the subscriber list
 
     #TODO: to review first... accr max_subr_cpn/max_subr_cpg
-    max_subr_cpg = Campaign.objects.get(pk=campaign_id).user.get_profile().dialersetting.max_subr_cpg
+    campaign_obj = Campaign.objects.get(pk=campaign_id)
+    max_subr_cpg = UserProfile.objects.get(user=campaign_obj.user).dialersetting.max_subr_cpg
 
     if max_subr_cpg > 0:
         #Check how many we are going to import and how many exist for that campaign already

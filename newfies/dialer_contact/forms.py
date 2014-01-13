@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -17,14 +17,25 @@ from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.constants import STATUS_CHOICE
+from dialer_campaign.function_def import get_phonebook_list
 #from dialer_contact.constants import CHOICE_TYPE
+from bootstrap3_datetime.widgets import DateTimePicker
 
 
-class SearchForm(forms.Form):
+class AdminSearchForm(forms.Form):
     """General Search Form with From & To date para."""
-    from_date = forms.CharField(label=_('from'), required=False,
-                                max_length=10)
+    from_date = forms.CharField(label=_('from'), required=False, max_length=10)
     to_date = forms.CharField(label=_('to'), required=False, max_length=10)
+
+
+class SearchForm(AdminSearchForm):
+    """General Search Form with From & To date para."""
+    from_date = forms.CharField(label=_('from'), required=False, max_length=10,
+                                widget=DateTimePicker(options={"format": "YYYY-MM-DD",
+                                                               "pickTime": False}))
+    to_date = forms.CharField(label=_('to'), required=False, max_length=10,
+                              widget=DateTimePicker(options={"format": "YYYY-MM-DD",
+                                                             "pickTime": False}))
 
 
 class FileImport(forms.Form):
@@ -52,10 +63,11 @@ class Contact_fileImport(FileImport):
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['phonebook', 'csv_file']
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's phonebook list
         if user:  # and not user.is_superuser
-            self.fields['phonebook'].choices = \
-                Phonebook.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            self.fields['phonebook'].choices = get_phonebook_list(user)
 
 
 class PhonebookForm(ModelForm):
@@ -69,30 +81,41 @@ class PhonebookForm(ModelForm):
             'description': Textarea(attrs={'cols': 26, 'rows': 3}),
         }
 
+    def __init__(self, *args, **kwargs):
+        super(PhonebookForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
 
 class ContactForm(ModelForm):
     """Contact ModelForm"""
 
     class Meta:
         model = Contact
-        fields = ['phonebook', 'contact', 'status', 'last_name', 'first_name',
-                  'email', 'address', 'city', 'state', 'country', 'unit_number',
-                  'additional_vars', 'description']
         widgets = {
-            'additional_vars': Textarea(attrs={'cols': 23, 'rows': 3}),
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
         }
 
     def __init__(self, user, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = [
+            'phonebook', 'contact', 'last_name', 'first_name', 'status', 'email',
+            'unit_number', 'address', 'city', 'state', 'country',
+            'description', 'additional_vars'
+        ]
+
+        for i in self.fields.keyOrder:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
         # To get user's phonebook list
         if user:
-            self.fields['phonebook'].choices = \
-                Phonebook.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            self.fields['phonebook'].choices = Phonebook.objects.values_list('id', 'name')\
+                .filter(user=user).order_by('id')
 
 
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
+    #TODO: when moving to 1.6 check https://docs.djangoproject.com/en/1.6/ref/forms/widgets/#numberinput
     contact_no = forms.CharField(label=_('contact number'), required=False,
                                  widget=forms.TextInput(attrs={'size': 15}))
     # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
@@ -106,7 +129,14 @@ class ContactSearchForm(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super(ContactSearchForm, self).__init__(*args, **kwargs)
-         # To get user's phonebook list
+        # To get user's phonebook list
+
+        change_field_list = [
+            'contact_no', 'contact_name', 'phonebook', 'contact_status'
+        ]
+        for i in change_field_list:
+            self.fields[i].widget.attrs['class'] = "form-control"
+
         if user:
             pb_list_user = []
             pb_list_user.append((0, '---'))

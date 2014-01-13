@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -17,13 +17,15 @@ from django.conf.urls import patterns
 
 urlpatterns = patterns('survey.views',
     # Survey urls
-    (r'^survey/$', 'survey_list'),
-    (r'^survey/add/$', 'survey_add'),
-    (r'^survey_view/(.+)/$', 'survey_view'),
-    (r'^survey/del/(.+)/$', 'survey_del'),
-    (r'^survey/(.+)/$', 'survey_change'),
-    (r'^export_survey/(.+)/$', 'export_survey'),
-    (r'^import_survey/$', 'import_survey'),
+    (r'^module/survey/$', 'survey_list'),
+    (r'^module/survey/add/$', 'survey_add'),
+    (r'^module/sealed_survey_view/(.+)/$', 'sealed_survey_view'),
+    (r'^module/survey/del/(.+)/$', 'survey_del'),
+    (r'^module/survey/(.+)/$', 'survey_change'),
+    (r'^module/export_survey/(.+)/$', 'export_survey'),
+    (r'^module/import_survey/$', 'import_survey'),
+    (r'^module/sealed_survey/$', 'sealed_survey_list'),
+    (r'^module/seal_survey/(.+)/$', 'seal_survey'),
 
     # Section urls
     (r'^section/add/$', 'section_add'),

@@ -6,7 +6,7 @@
 -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 -- You can obtain one at http://mozilla.org/MPL/2.0/.
 --
--- Copyright (C) 2011-2013 Star2Billing S.L.
+-- Copyright (C) 2011-2014 Star2Billing S.L.
 --
 -- The Initial Developer of the Original Code is
 -- Arezqui Belaid <info@star2billing.com>
@@ -66,16 +66,28 @@ function FSMCall:init()
     self.contact_id = self.session:getVariable("contact_id")
     self.callrequest_id = self.session:getVariable("callrequest_id")
     self.used_gateway_id = self.session:getVariable("used_gateway_id")
+    self.alarm_request_id = self.session:getVariable("alarm_request_id")
 
     --This is needed for Inbound test
     if not self.campaign_id or self.campaign_id == 0 or not self.contact_id then
-        self.campaign_id = 46
-        self.subscriber_id = 39
-        self.contact_id = 39
-        self.callrequest_id = 215
-        self.db.DG_SURVEY_ID = 41
-        --self.db.TABLE_SECTION = 'survey_section_template'
-        --self.db.TABLE_BRANCHING = 'survey_branching_template'
+        local nofs_type = 'alarm'
+        if nofs_type == 'campaign' then
+            -- Campaign Test
+            self.campaign_id = 46
+            self.subscriber_id = 39
+            self.contact_id = 39
+            self.callrequest_id = 215
+            self.db.DG_SURVEY_ID = 41
+            self.alarm_request_id = nil
+        else
+            -- Alarm Test
+            self.campaign_id = 'None'
+            self.subscriber_id = 'None'
+            self.contact_id = 'None'
+            self.callrequest_id = 15390
+            self.db.DG_SURVEY_ID = 74
+            self.alarm_request_id = 43
+        end
     end
 
     call_id = self.uuid..'_'..self.callrequest_id
@@ -83,9 +95,9 @@ function FSMCall:init()
 
     self.db:connect()
     --Load All data
-    self.survey_id = self.db:load_all(self.campaign_id, self.contact_id)
+    self.survey_id = self.db:load_all(self.campaign_id, self.contact_id, self.alarm_request_id)
     if not self.survey_id then
-        self.debugger:msg("ERROR", "Error loading data")
+        self.debugger:msg("ERROR", "Error Survey loading data")
         self:hangupcall()
         return false
     end
@@ -127,7 +139,7 @@ function FSMCall:end_call()
     --Save all the result to the Database
     --TODO: Reuse connection is faster, use the opened con
     self.db:connect()
-    self.db:commit_result_mem(self.campaign_id, self.survey_id)
+    self.db:commit_result_mem(self.survey_id)
     --We need to keep this disconnect as it's End of Call
     self.db:disconnect()
 
@@ -492,26 +504,53 @@ function FSMCall:next_node()
             conference = self.campaign_id
         end
         self.lastaction_start = os.time()
-        self.actionresult = 'conf: '..conference
         self.session:execute("conference", conference..'@default')
         actionduration = os.time() - self.lastaction_start
         self.debugger:msg("INFO", "END CONFERENCE : duration "..actionduration)
-
+        -- Save result
         self.actionresult = 'conf: '..conference
-        --.." duration:"..actionduration
         self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
         self.actionresult = false
 
     elseif current_node.type == DNC then
-        --Add this phonenumber to the DNC campaign list
+        -- Add this phonenumber to the DNC campaign list
         if self.db.campaign_info.dnc_id then
             self.db:connect()
             self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
             self.db:disconnect()
         end
-        --Play Node
+        -- Save result
+        self.actionresult = 'DNC: '..self.destination_number
+        self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
+        self.actionresult = false
+        -- Play Node
         self:playnode(current_node)
         self:end_call()
+
+    elseif current_node.type == SMS then
+        --Send an SMS
+        if current_node.sms_text and current_node.sms_text ~= '' then
+            -- TODO: Not yet tested
+            mcontact = mtable_jsoncontact(self.db.contact)
+            if mcontact.sms_phonenumber then
+                destination_number = mcontact.sms_phonenumber
+            else
+                destination_number = self.destination_number
+            end
+
+            local sms_text = tag_replace(current_node.sms_text, self.db.contact)
+            self.debugger:msg("INFO", "Prepare Send SMS : "..sms_text)
+            self.db:connect()
+            self.db:send_sms(sms_text, self.survey_id, destination_number)
+            self.db:disconnect()
+
+            -- Save result
+            self.actionresult = 'SMS: '..destination_number
+            self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
+            self.actionresult = false
+        end
+        --Play Node
+        self:playnode(current_node)
 
     elseif current_node.type == MULTI_CHOICE then
         digits = self:getdigitnode(current_node)
@@ -520,6 +559,13 @@ function FSMCall:next_node()
     elseif current_node.type == RATING_SECTION then
         digits = self:getdigitnode(current_node)
         self.debugger:msg("INFO", "result digit => "..digits)
+
+        -- Save the result to Alarm model
+        if self.db.event_alarm and self.db.event_alarm.alarm_id then
+            self.db:connect()
+            self.db:save_alarm_result(self.db.event_alarm.alarm_id, digits)
+            self.db:disconnect()
+        end
 
     elseif current_node.type == CAPTURE_DIGITS then
         digits = self:getdigitnode(current_node)
@@ -562,7 +608,8 @@ function FSMCall:next_node()
     if current_node.type == PLAY_MESSAGE
         or current_node.type == RECORD_MSG
         or current_node.type == CALL_TRANSFER
-        or current_node.type == CONFERENCE then
+        or current_node.type == CONFERENCE
+        or current_node.type == SMS then
         --Check when no branching has been created
         if (not current_branching) then
             self.debugger:msg("ERROR", "No existing branching -> Goto Hangup - nodetype:"..current_node.type)

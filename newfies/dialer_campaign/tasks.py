@@ -6,17 +6,18 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.core.exceptions import ObjectDoesNotExist
 from celery.task import PeriodicTask
 from celery.task import Task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign
-from dialer_campaign.constants import SUBSCRIBER_STATUS, \
+from dialer_campaign.constants import SUBSCRIBER_STATUS,\
     CAMPAIGN_STATUS
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_cdr.models import Callrequest
@@ -25,11 +26,11 @@ from dialer_contact.tasks import collect_subscriber
 from dnc.models import DNCContact
 from common.only_one_task import only_one
 from datetime import datetime, timedelta
+from django.utils.timezone import utc
 from math import floor
 from common_functions import debug_query
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint
-
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 DIV_MIN = 10  # This will divide the minutes by that value and allow to not wait too long for the calls
@@ -62,18 +63,19 @@ class campaign_spool_contact(PeriodicTask):
 
 
 # OPTIMIZATION - FINE
-class spool_pending_call(Task):
+class pending_call_processing(Task):
     @only_one(ikey="check_pendingcall", timeout=LOCK_EXPIRE)
     def run(self, campaign_id):
         """
-        This will execute the outbound calls in the campaign
+        This task retrieves the next outbound call to be made for a given campaign,
+        and will create a new callrequest and schedule a task to process those calls
 
         **Attributes**:
 
             * ``campaign_id`` - Campaign ID
         """
         logger = self.get_logger()
-        logger.info("TASK :: spool_pending_call = %d" % campaign_id)
+        logger.info("TASK :: pending_call_processing = %d" % campaign_id)
 
         debug_query(0)
 
@@ -89,6 +91,7 @@ class spool_pending_call(Task):
 
         debug_query(1)
 
+        #TODO: move this logic of setting call_type after post_save of CallRequest
         # Default call_type
         call_type = CALLREQUEST_TYPE.ALLOW_RETRY
         # Check campaign's maxretry
@@ -96,9 +99,13 @@ class spool_pending_call(Task):
             call_type = CALLREQUEST_TYPE.CANNOT_RETRY
 
         # Check user's dialer setting maxretry
-        if obj_campaign.user.userprofile.dialersetting:
+        try:
+            obj_campaign.user.userprofile.dialersetting
             if obj_campaign.user.userprofile.dialersetting.maxretry == 0:
                 call_type = CALLREQUEST_TYPE.CANNOT_RETRY
+        except ObjectDoesNotExist:
+            logger.error("Can't find user's dialersetting")
+            return False
 
         debug_query(2)
 
@@ -125,7 +132,7 @@ class spool_pending_call(Task):
         count = 0
 
         for elem_camp_subscriber in list_subscriber:
-            """Loop on Subscriber and start the initcall task"""
+            # Loop on Subscriber and start the initcall's task
             count = count + 1
             second_towait = floor(count * time_to_wait)
             ms_addtowait = (count * time_to_wait) - second_towait
@@ -155,13 +162,14 @@ class spool_pending_call(Task):
 
             #TODO: idea to speed up, create bluck of 10(Y) and then send a list of callrequest_id to init_callrequest
 
-            # Create a Callrequest Instance to track the call task
+            # Create Callrequest
             new_callrequest = Callrequest(
                 status=CALLREQUEST_STATUS.PENDING,
                 call_type=call_type,
-                call_time=datetime.now(),
+                call_time=datetime.utcnow().replace(tzinfo=utc),
                 timeout=obj_campaign.calltimeout,
                 callerid=obj_campaign.callerid,
+                caller_name=obj_campaign.caller_name,
                 phone_number=phone_number,
                 campaign=obj_campaign,
                 aleg_gateway=obj_campaign.aleg_gateway,
@@ -213,7 +221,7 @@ class campaign_running(PeriodicTask):
             logger.info("=> Campaign name %s (id:%s)" %
                         (campaign.name, campaign.id))
             keytask = 'check_campaign_pendingcall-%d' % (campaign.id)
-            spool_pending_call().delay(campaign.id, keytask=keytask)
+            pending_call_processing().delay(campaign.id, keytask=keytask)
         return True
 
 

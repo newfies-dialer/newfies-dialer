@@ -29,11 +29,11 @@ Contents:
 
     configuration-defaults
     ./freeswitch/install-configure-freeswitch
-    troubleshooting
+    ./SMS/sms.rst
     user-guide
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     developer-doc
 
@@ -41,6 +41,7 @@ Contents:
     :maxdepth: 2
 
     api-reference
+    troubleshooting
     contributing
     resources
     faq

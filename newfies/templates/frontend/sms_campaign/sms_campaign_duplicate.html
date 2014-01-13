@@ -1,0 +1,88 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block header_files %}
+{% endblock %}
+
+{% block extra_files %}
+{% endblock %}
+
+{% block row_fluid %}
+{% endblock %}
+
+{% block header %}
+{% endblock %}
+
+{% block newfies_custom_js %}
+{% endblock %}
+
+{% block menu %}
+{% endblock %}
+
+{% block container %}
+
+    {% block content %}
+        {% if err_msg %}
+            {% include "frontend/extra_modal_header.html" %}
+            <script type="text/javascript" charset="utf-8">
+                $(window).load(function(){
+                    $('#sms-duplicate-campaign').modal('show');
+                });
+                function back_to(){
+                    var url = '/sms_campaign/';
+                    $(location).attr('href', url);
+                }
+            </script>
+            <!-- modal content-->
+            <div class="modal fade" id="sms-duplicate-campaign" role="dialog" aria-labelledby="add_duplicate_sms_campaign" data-backdrop="static">
+        {% endif %}
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <a id="id_close_x" class="close" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</a>
+                    <h3>{% trans "sms"|upper %} {% trans "campaign"|title %}
+                        <small></small>
+                    </h3>
+                </div>
+                <form role="form" method="POST" action="/sms_campaign/duplicate/{{ sms_campaign_id }}/" enctype="multipart/form-data" id="update_form">
+                {% csrf_token %}
+                    <div class="modal-body">
+                        {% get_fieldset campaign_code,name,phonebook as sms_campaign_fields from form %}
+                        {% for field in sms_campaign_fields.hidden_fields %}
+                            {{ field }}
+                        {% endfor %}
+                        {% for field in sms_campaign_fields.visible_fields %}
+
+                            <div class="form-group {% if field.errors %}has-error{% endif %}">
+                                <label for="id_{{ field.name }}" class="control-label">{{ field.label|title }}</label>
+                                {{ field }}
+                                {% if field.errors %}
+                                    <span class="help-block {% if field.errors %}has-error{% endif %}">{{ field.errors|removetags:"ul li"|safe }}</span>
+                                {% endif %}
+                                <span class="help-block">{{ field.help_text|capfirst }} </span>
+                            </div>
+
+                        {% endfor %}
+                    </div>
+
+                    <div class="modal-footer" align="right">
+                        <button type="submit" class="btn btn-primary" id="id_add" name="add" value="{% trans 'save'|title %}">
+                            <i class="fa fa-save"></i> {% trans "save"|title %}
+                        </button>
+                        <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    {% if err_msg %}
+        </div>
+    {% endif %}
+
+    {% include "frontend/extra_modal_footer.html" %}
+
+    {% endblock %}
+
+    {% block footer %}
+    {% endblock %}
+
+{% endblock %}

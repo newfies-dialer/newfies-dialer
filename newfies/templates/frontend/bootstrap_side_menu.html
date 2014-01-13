@@ -1,0 +1,83 @@
+{% load i18n dialer_campaign_tags activelink %}
+
+<div id="sidebar" class="col-xs-6 col-sm-3 sidebar-offcanvas" role="navigation">
+    <div class="list-group">
+
+        {% if "/phonebook/" in request.path or "/contact/" in request.path or "/contact_import/" in request.path %}
+            {% if perms.dialer_contact.view_phonebook %}
+                <a class="list-group-item {% ifcontains '/phonebook/' %}active{% endifcontains %}" href="/phonebook/">{% trans "phonebooks"|title %}</a>
+            {% endif %}
+            {% if perms.dialer_contact.view_contact %}
+                <a class="list-group-item {% ifcontains '/contact/' %}active{% endifcontains %}" href="/contact/">{% trans "contacts"|title %}</a>
+                <a class="list-group-item {% ifcontains '/contact_import/' %}active{% endifcontains %}" href="/contact_import/">{% trans "import contacts"|title %}</a>
+            {% endif %}
+
+        {% endif %}
+
+        {% if "/dnc_list/" in request.path or "/dnc_contact/" in request.path or "/dnc_contact_import/" in request.path %}
+            {% if perms.dnc.view_dnc %}
+                <a class="list-group-item {% ifcontains '/dnc_list/' %}active{% endifcontains %}" href="/module/dnc_list/">{% trans "dnc"|upper %} {% trans "list"|title %}</a>
+            {% endif %}
+            {% if perms.dnc.view_dnc_contact %}
+                <a class="list-group-item {% ifcontains '/dnc_contact/' %}active{% endifcontains %}" href="/module/dnc_contact/">{% trans "dnc"|upper %} {% trans "contacts"|title %}</a>
+                <a class="list-group-item {% ifcontains '/dnc_contact_import/' %}active{% endifcontains %}" href="/module/dnc_contact_import/">{% trans "import"|title %} {% trans "DNC" %} {% trans "contacts"|title %}</a>
+            {% endif %}
+        {% endif %}
+
+        {% if "/agent/" in request.path or "/queue/" in request.path or "/tier/" in request.path %}
+            {% if perms.agent.view_agent %}
+                <a class="list-group-item {% ifcontains '/agent/' %}active{% endifcontains %}" href="/module/agent/">{% trans "agent"|title %}</a>
+            {% endif %}
+            {% if perms.callcenter.view_queue %}
+                <a class="list-group-item {% ifcontains '/queue/' %}active{% endifcontains %}" href="/module/queue/">{% trans "queue"|title %}</a>
+            {% endif %}
+            {% if perms.callcenter.view_tier %}
+                <a class="list-group-item {% ifcontains '/tier/' %}active{% endifcontains %}" href="/module/tier/">{% trans "tier"|title %}</a>
+            {% endif %}
+        {% endif %}
+
+        {% if "/calendar_setting/" in request.path or "/calendar_user/" in request.path or "/calendar/" in request.path or "/event/" in request.path or "/alarm/" in request.path %}
+
+            {% if perms.appointment.view_calendarsetting %}
+                <a class="list-group-item {% ifcontains '/calendar_setting/' %}active{% endifcontains %}" href="/module/calendar_setting/">{% trans "calendar settings"|title %}</a>
+            {% endif %}
+            {% if perms.appointment.view_calendar_user %}
+                <a class="list-group-item {% ifcontains '/calendar_user/' %}active{% endifcontains %}" href="/module/calendar_user/">{% trans "calendar users"|title %}</a>
+            {% endif %}
+            {% if perms.appointment.view_calendar %}
+                <a class="list-group-item {% ifcontains '/calendar/' %}active{% endifcontains %}" href="/module/calendar/">{% trans "calendars"|title %}</a>
+            {% endif %}
+            {% if perms.appointment.view_event %}
+                <a class="list-group-item {% ifcontains '/event/' %}active{% endifcontains %}" href="/module/event/">{% trans "events"|title %}</a>
+            {% endif %}
+            {% if perms.appointment.view_alarm %}
+                <a class="list-group-item {% ifcontains '/alarm/' %}active{% endifcontains %}" href="/module/alarm/">{% trans "alarms"|title %}</a>
+            {% endif %}
+
+        {% endif %}
+
+        {% if "/voipcall_report/" in request.path or "/survey_report/" in request.path or "/subscribers/" in request.path or "/sms_report/" in request.path %}
+            {% if perms.dialer_cdr.view_call_detail_report %}
+                <a class="list-group-item {% ifcontains '/voipcall_report/' %}active{% endifcontains %}" href="/voipcall_report/">{% trans "call detail reports"|title %}</a>
+            {% endif %}
+            {% if perms.survey.view_survey_report %}
+                <a class="list-group-item {% ifcontains '/survey_report/' %}active{% endifcontains %}" href="/survey_report/">{% trans "survey reports"|title %}</a>
+            {% endif %}
+            {% if perms.dialer_campaign.view_subscriber %}
+                <a class="list-group-item {% ifcontains '/subscribers/' %}active{% endifcontains %}" href="/subscribers/">{% trans "subscriber report"|title %}</a>
+            {% endif %}
+            {% if perms.sms_module.view_sms_report %}
+                <a class="list-group-item {% ifcontains '/sms_report/' %}active{% endifcontains %}" href="/sms_report/">{% trans "SMS" %} {% trans "reports"|title %}</a>
+            {% endif %}
+        {% endif %}
+
+        {% if "/sealed_survey/" in request.path or "/survey/" in request.path or "/sealed_survey_view/" in request.path %}
+            {% if perms.survey.view_survey %}
+                <a class="list-group-item {% ifcontains '/survey/' %}active{% endifcontains %}" href="/module/survey/">{% trans "surveys"|title %}</a>
+            {% endif %}
+            {% if perms.survey.view_sealed_survey %}
+                <a class="list-group-item {% ifcontains '/sealed_survey/' %}active{% endifcontains %}" href="/module/sealed_survey/">{% trans "sealed surveys"|title %}</a>
+            {% endif %}
+        {% endif %}
+    </div>
+</div>

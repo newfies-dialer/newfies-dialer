@@ -1,0 +1,115 @@
+{% extends "frontend/master.html" %}
+{% load i18n pagination_tags common_tags icons dialer_campaign_tags %}
+
+{% block extra_files %}
+    {{ form.media }}
+    {% include "frontend/common_datepicker.html" %}
+    {% include "frontend/custom_jquery_select_all.html" %}
+{% endblock %}
+
+{% block content_header %}
+    <h1>{% trans "subscribers"|title %} <small>{% trans "list subscribers"|capfirst %}</small></h1>
+{% endblock %}
+
+{% block content %}
+<div id="form_collapse" class="collapse">
+    <form class="well form-search" method="POST" action="." enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="row">
+            {% get_fieldset from_date,to_date,campaign_id,agent_id,status as search_subscriber from form %}
+            {% for field in search_subscriber %}
+            <div class="col-md-4 {% if field.errors %} error{% endif %}">
+                <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
+                {{ field }}
+                {% if field.errors %}
+                    <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
+                {% endif %}
+                <span class="help-block">{{ field.help_text|capfirst }} </span>
+            </div>
+            {% endfor %}
+        </div>
+        <input class="btn btn-primary" type=submit name=submit value={% trans "search"|title %} />&nbsp;
+    </form>
+</div>
+
+<button id="toggle_btn" type="button" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#form_collapse">
+    <i id="toggle_btn_i" class="glyphicon glyphicon-zoom-in"></i>
+    <span id="toggle_btn_i_span">{% trans "open search"|title %}</span>
+</button>
+
+<script type="text/javascript">
+function delete_button()
+{
+    $('#ListForm').submit();
+}
+</script>
+<div>&nbsp;</div>
+{% if subscriber_list %}
+<div class="row">
+    <div class="col-md-12">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            {% trans "action"|capfirst %} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                <li><a href="export_subscriber/?format=csv">{% trans "export to CSV"|capfirst %}</a></li>
+                <li><a href="export_subscriber/?format=xls">{% trans "export to XLS"|capfirst %}</a></li>
+                <li><a href="export_subscriber/?format=json">{% trans "export to JSON"|capfirst %}</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<br/>
+{% endif %}
+<div class="row">
+    <div class="col-md-12">
+        <form method="POST" action="del/0/" enctype="multipart/form-data" id="ListForm">{% csrf_token %}
+            <div class="table-responsive">
+                <table class="table table-striped table-bordered table-condensed">
+                    <thead>
+                    <tr>
+                        <th>{% sort_link SUBSCRIBER_COLUMN_NAME.contact|capfirst col_name_with_order.contact %}</th>
+                        <th>{% sort_link SUBSCRIBER_COLUMN_NAME.updated_date|capfirst col_name_with_order.updated_date %}</th>
+                        <th>{% sort_link SUBSCRIBER_COLUMN_NAME.count_attempt|capfirst col_name_with_order.count_attempt %}</th>
+                        <th>{% sort_link SUBSCRIBER_COLUMN_NAME.completion_count_attempt|title col_name_with_order.completion_count_attempt %}</th>
+                        <th>{% sort_link SUBSCRIBER_COLUMN_NAME.status|capfirst col_name_with_order.status %}</th>
+                        <th>{% sort_link SUBSCRIBER_COLUMN_NAME.disposition|capfirst col_name_with_order.disposition %}</th>
+                        <th>{{ SUBSCRIBER_COLUMN_NAME.collected_data|capfirst }}</th>
+                        <!--<th>{% sort_link SUBSCRIBER_COLUMN_NAME.agent|capfirst col_name_with_order.agent %}</th>-->
+                    </tr>
+                    </thead>
+                    {% if subscriber_list %}
+                        {% autopaginate all_subscriber_list PAGE_SIZE %}
+                        {% for row in subscriber_list %}
+                            <tr>
+                                <td>{{ row.contact }}</td>
+                                <td>{{ row.updated_date }}</td>
+                                <td>{{ row.count_attempt }}</td>
+                                <td>{{ row.completion_count_attempt }}</td>
+                                <td>{{ row.status|subscriber_status }}</td>
+                                <td>{% subscriber_disposition row.campaign_id row.disposition %}
+                                </td>
+                                <td>{{ row.collected_data }}</td>
+                                <!--<td>{{ row.agent }}</td>-->
+                            </tr>
+                        {% endfor %}
+                    {% else %}
+                        <tr>
+                            <td colspan="7" align="center">
+                                {% trans "no records found"|title %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                </table>
+            </div>
+            <div class="text-right">
+                {% trans "total"|title %} : {{ total_subscribers }}
+            </div>
+            {% if subscriber_list %}
+                {% paginate %}
+            {% endif %}
+        </form>
+    </div>
+</div>
+{% endblock %}

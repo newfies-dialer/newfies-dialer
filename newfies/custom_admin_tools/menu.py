@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -20,7 +20,7 @@ To activate your custom menu add the following to your settings.py::
 from django.core.urlresolvers import reverse
 from django.utils.translation import ugettext_lazy as _
 from admin_tools.menu import items, Menu
-import newfies
+import newfies_dialer
 
 
 class CustomMenu(Menu):
@@ -29,7 +29,7 @@ class CustomMenu(Menu):
     def __init__(self, **kwargs):
         Menu.__init__(self, **kwargs)
         self.children += [
-            items.MenuItem(_('Newfies-Dialer' + ' V' + newfies.__version__), reverse('admin:index')),
+            items.MenuItem(_('Newfies-Dialer' + ' V' + newfies_dialer.__version__), reverse('admin:index')),
             items.Bookmarks(),
             items.AppList(
                 _('applications').capitalize(),
@@ -39,7 +39,7 @@ class CustomMenu(Menu):
                 _('administration').capitalize(),
                 models=('django.contrib.*', )
             ),
-            items.MenuItem(_('API Explorer'), reverse('admin:index') + '../api-explorer/'),
+            items.MenuItem(_('API Explorer'), reverse('admin:index') + '../rest-api/'),
             items.MenuItem(_('customer panel').title(), reverse('admin:index') + '../'),
         ]
 

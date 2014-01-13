@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -32,12 +32,15 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
     CallTransferSectionForm, BranchingForm, ScriptForm,\
-    SurveyDetailReportForm, SurveyFileImport, ConferenceSectionForm
-from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME
+    SMSSectionForm, SurveyDetailReportForm, SurveyFileImport,\
+    ConferenceSectionForm, SealSurveyForm
+from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME,\
+    SEALED_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
-from common.common_functions import striplist, variable_value, current_view,\
-    ceil_strdate, get_pagination_vars
+from common.common_functions import striplist, variable_value, ceil_strdate,\
+    get_pagination_vars
 from datetime import datetime
+from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
 import subprocess
 import hashlib
@@ -46,6 +49,7 @@ import csv
 import os
 
 testdebug = False
+redirect_url_to_survey_list = '/module/survey/'
 
 
 def getaudio_acapela(text, tts_language='en'):
@@ -93,10 +97,8 @@ def survey_list(request):
     survey_list = Survey_template.objects\
         .values('id', 'name', 'description', 'updated_date')\
         .filter(user=request.user).order_by(sort_order)
-
     template = 'frontend/survey/survey_list.html'
     data = {
-        'module': current_view(request),
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
         'PAGE_SIZE': PAGE_SIZE,
@@ -134,10 +136,10 @@ def survey_add(request):
             obj.save()
             request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}
-            return HttpResponseRedirect('/survey/%s/' % (obj.id))
+            return HttpResponseRedirect(
+                redirect_url_to_survey_list + '%s/' % (obj.id))
     template = 'frontend/survey/survey_change.html'
     data = {
-        'module': current_view(request),
         'form': form,
         'action': 'add',
     }
@@ -200,7 +202,7 @@ def survey_del(request, object_id):
         except:
             raise Http404
 
-    return HttpResponseRedirect('/survey/')
+    return HttpResponseRedirect(redirect_url_to_survey_list)
 
 
 def section_add_form(request, Form, survey, section_type):
@@ -265,51 +267,55 @@ def section_add(request):
     if request.method == 'POST':
         # Play message
         if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
-            form_data = \
-                section_add_form(request, PlayMessageSectionForm, survey, SECTION_TYPE.PLAY_MESSAGE)
+            form_data = section_add_form(request, PlayMessageSectionForm,
+                                         survey, SECTION_TYPE.PLAY_MESSAGE)
 
         # hangup
         if int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
-            form_data =\
-                section_add_form(request, PlayMessageSectionForm, survey, SECTION_TYPE.HANGUP_SECTION)
+            form_data = section_add_form(request, PlayMessageSectionForm,
+                                         survey, SECTION_TYPE.HANGUP_SECTION)
 
         # DNC
         if int(request.POST.get('type')) == SECTION_TYPE.DNC:
-            form_data =\
-                section_add_form(request, PlayMessageSectionForm, survey, SECTION_TYPE.DNC)
+            form_data = section_add_form(request, PlayMessageSectionForm,
+                                         survey, SECTION_TYPE.DNC)
 
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
-            form_data =\
-                section_add_form(request, MultipleChoiceSectionForm, survey, SECTION_TYPE.MULTI_CHOICE)
+            form_data = section_add_form(request, MultipleChoiceSectionForm,
+                                         survey, SECTION_TYPE.MULTI_CHOICE)
 
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
-            form_data =\
-                section_add_form(request, RatingSectionForm, survey, SECTION_TYPE.RATING_SECTION)
+            form_data = section_add_form(request, RatingSectionForm,
+                                         survey, SECTION_TYPE.RATING_SECTION)
 
         # Capture Digits Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
-            form_data =\
-                section_add_form(request, CaptureDigitsSectionForm, survey, SECTION_TYPE.CAPTURE_DIGITS)
+            form_data = section_add_form(request, CaptureDigitsSectionForm,
+                                         survey, SECTION_TYPE.CAPTURE_DIGITS)
 
         # Record Message Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
-            form_data =\
-                section_add_form(request, RecordMessageSectionForm, survey, SECTION_TYPE.RECORD_MSG)
+            form_data = section_add_form(request, RecordMessageSectionForm,
+                                         survey, SECTION_TYPE.RECORD_MSG)
 
         # Call transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CONFERENCE:
-            form_data =\
-                section_add_form(request, ConferenceSectionForm, survey, SECTION_TYPE.CONFERENCE)
+            form_data = section_add_form(request, ConferenceSectionForm,
+                                         survey, SECTION_TYPE.CONFERENCE)
 
         # Call transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
-            form_data =\
-                section_add_form(request, CallTransferSectionForm, survey, SECTION_TYPE.CALL_TRANSFER)
+            form_data = section_add_form(request, CallTransferSectionForm,
+                                         survey, SECTION_TYPE.CALL_TRANSFER)
+
+        # SMS Section
+        if int(request.POST.get('type')) == SECTION_TYPE.SMS:
+            form_data = section_add_form(request, SMSSectionForm, survey, SECTION_TYPE.SMS)
 
         if form_data.get('save_tag'):
-            return HttpResponseRedirect('/survey/%s/#row%s'
+            return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                 % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
         else:
             form = form_data['form']
@@ -358,7 +364,7 @@ def section_update_form(request, Form, section_type, section_instance):
     if request.POST.get('update') is None:
         request.session["err_msg"] = True
         form = Form(request.user,
-            instance=section_instance, initial={'type': section_type})
+                    instance=section_instance, initial={'type': section_type})
 
     data = {
         'form': form,
@@ -406,6 +412,9 @@ def section_change(request, id):
     elif section.type == SECTION_TYPE.CALL_TRANSFER:
         #CALL_TRANSFER
         form = CallTransferSectionForm(request.user, instance=section)
+    elif section.type == SECTION_TYPE.SMS:
+        #SMS
+        form = SMSSectionForm(request.user, instance=section)
 
     request.session['err_msg'] = ''
 
@@ -414,41 +423,46 @@ def section_change(request, id):
         if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE or
             int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION or
             int(request.POST.get('type')) == SECTION_TYPE.DNC):
-            form_data = section_update_form(request,
-                PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
+            form_data = section_update_form(
+                request, PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
 
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
-            form_data = section_update_form(request,
-                MultipleChoiceSectionForm, SECTION_TYPE.MULTI_CHOICE, section)
+            form_data = section_update_form(
+                request, MultipleChoiceSectionForm, SECTION_TYPE.MULTI_CHOICE, section)
 
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
-            form_data = section_update_form(request,
-                RatingSectionForm, SECTION_TYPE.RATING_SECTION, section)
+            form_data = section_update_form(
+                request, RatingSectionForm, SECTION_TYPE.RATING_SECTION, section)
 
         # Capture Digits Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
-            form_data = section_update_form(request,
-                CaptureDigitsSectionForm, SECTION_TYPE.CAPTURE_DIGITS, section)
+            form_data = section_update_form(
+                request, CaptureDigitsSectionForm, SECTION_TYPE.CAPTURE_DIGITS, section)
 
         # Record Message Section Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
-            form_data = section_update_form(request,
-                RecordMessageSectionForm, SECTION_TYPE.RECORD_MSG, section)
+            form_data = section_update_form(
+                request, RecordMessageSectionForm, SECTION_TYPE.RECORD_MSG, section)
 
         # Call Transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
-            form_data = section_update_form(request,
-                CallTransferSectionForm, SECTION_TYPE.CALL_TRANSFER, section)
+            form_data = section_update_form(
+                request, CallTransferSectionForm, SECTION_TYPE.CALL_TRANSFER, section)
 
         # Conference Section
         if int(request.POST.get('type')) == SECTION_TYPE.CONFERENCE:
-            form_data = section_update_form(request,
-                ConferenceSectionForm, SECTION_TYPE.CONFERENCE, section)
+            form_data = section_update_form(
+                request, ConferenceSectionForm, SECTION_TYPE.CONFERENCE, section)
+
+        # SMS
+        if int(request.POST.get('type')) == SECTION_TYPE.SMS:
+            form_data = section_update_form(
+                request, SMSSectionForm, SECTION_TYPE.SMS, section)
 
         if form_data.get('save_tag'):
-            return HttpResponseRedirect('/survey/%s/#row%s'
+            return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                 % (section.survey_id, section.id))
         else:
             form = form_data['form']
@@ -458,7 +472,6 @@ def section_change(request, id):
         'form': form,
         'survey_id': section.survey_id,
         'section_id': section.id,
-        'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
         'SECTION_TYPE': SECTION_TYPE,
@@ -497,13 +510,12 @@ def section_delete(request, id):
         # 2) delete section
         section.delete()
         request.session["msg"] = _('section is deleted successfully.')
-        return HttpResponseRedirect('/survey/%s/' % (survey_id))
+        return HttpResponseRedirect(redirect_url_to_survey_list + '%s/' % (survey_id))
 
     template = 'frontend/survey/section_delete_confirmation.html'
     data = {
         'section_type': section.type,
         'section_id': section.id,
-        'module': current_view(request),
     }
     return render_to_response(template, data,
         context_instance=RequestContext(request))
@@ -532,7 +544,7 @@ def section_script_change(request, id):
         if form.is_valid():
             obj = form.save()
             request.session["msg"] = _('script updated.')
-            return HttpResponseRedirect('/survey/%s/#row%s'
+            return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                 % (obj.survey_id, obj.id))
         else:
             request.session["err_msg"] = True
@@ -542,7 +554,6 @@ def section_script_change(request, id):
         'form': form,
         'survey_id': section.survey_id,
         'section_id': section.id,
-        'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
     }
@@ -634,10 +645,10 @@ def section_branch_add(request):
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('branching is added successfully.')
-                return HttpResponseRedirect('/survey/%s/#row%s'
-                                        % (section.survey_id, section_id))
+                return HttpResponseRedirect(
+                    redirect_url_to_survey_list + '%s/#row%s' % (section.survey_id, section_id))
             else:
-                form._errors["keys"] = _("duplicate record keys with goto.")
+                form._errors["keys"] = _("duplicate keys with goto.")
                 request.session["err_msg"] = True
 
     template = 'frontend/survey/section_branch_change.html'
@@ -646,7 +657,6 @@ def section_branch_add(request):
         'survey_id': section_survey_id,
         'section_type': section_type,
         'section_id': section_id,
-        'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'add',
         'SECTION_TYPE': SECTION_TYPE,
@@ -681,7 +691,7 @@ def section_branch_change(request, id):
         section_id = branching_obj.section_id
         branching_obj.delete()
         request.session["msg"] = _('branching is deleted successfully.')
-        return HttpResponseRedirect('/survey/%s/#row%s'
+        return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                                     % (survey_id, section_id))
 
     branching = get_object_or_404(Branching_template, id=int(id),
@@ -697,7 +707,7 @@ def section_branch_change(request, id):
         if form.is_valid():
             form.save()
             request.session["msg"] = _('branching updated.')
-            return HttpResponseRedirect('/survey/%s/#row%s'
+            return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
                                         % (branching.section.survey_id,
                                            branching.section_id))
         else:
@@ -711,7 +721,6 @@ def section_branch_change(request, id):
         'section_type': branching.section.type,
         'section_id': branching.section.id,
         'branching_id': branching.id,
-        'module': current_view(request),
         'err_msg': request.session.get('err_msg'),
         'action': 'update',
         'SECTION_TYPE': SECTION_TYPE,
@@ -751,14 +760,15 @@ def survey_change(request, object_id):
 
     if request.method == 'POST':
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/survey/del/%s/' % object_id)
+            survey_del(request, object_id)
+            return HttpResponseRedirect(redirect_url_to_survey_list)
         else:
             form = SurveyForm(request.POST, request.user, instance=survey)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.')\
                     % {'name': request.POST['name']}
-                return HttpResponseRedirect('/survey/')
+                return HttpResponseRedirect(redirect_url_to_survey_list)
 
     template = 'frontend/survey/survey_change.html'
 
@@ -767,7 +777,6 @@ def survey_change(request, object_id):
         'section_list': section_list,
         'branching_list': branching_list,
         'branching_section_list': branching_section_list,
-        'module': current_view(request),
         'action': 'update',
         'form': form,
         'msg': request.session.get('msg'),
@@ -779,8 +788,8 @@ def survey_change(request, object_id):
 
 
 @login_required
-def survey_view(request, object_id):
-    """View locked survey
+def sealed_survey_view(request, object_id):
+    """View sealed survey
 
     **Logic Description**:
 
@@ -798,7 +807,7 @@ def survey_view(request, object_id):
     branching_section_list =\
         branching_list.values_list('section_id', flat=True).distinct()
 
-    template = 'frontend/survey/survey_view.html'
+    template = 'frontend/survey/sealed_survey_view.html'
 
     data = {
         'survey_obj_id': object_id,
@@ -806,7 +815,6 @@ def survey_view(request, object_id):
         'section_list': section_list,
         'branching_list': branching_list,
         'branching_section_list': branching_section_list,
-        'module': current_view(request),
         'action': 'view',
         'msg': request.session.get('msg'),
         'SECTION_TYPE': SECTION_TYPE,
@@ -853,7 +861,7 @@ def survey_cdr_daily_report(all_call_list):
 
 
 def get_survey_result(survey_result_kwargs):
-    """Get survey result report from selected survey campaign"""
+    """Get survey result report from the selected Survey"""
     survey_result = ResultAggregate.objects\
         .filter(**survey_result_kwargs)\
         .values('section__question', 'response', 'count')\
@@ -895,6 +903,7 @@ def survey_report(request):
     tday = datetime.today()
     from_date = tday.strftime("%Y-%m-%d")
     to_date = tday.strftime("%Y-%m-%d")
+
     form = SurveyDetailReportForm(request.user,
                                   initial={'from_date': from_date,
                                            'to_date': to_date})
@@ -912,17 +921,16 @@ def survey_report(request):
     sort_col_field_list = ['starting_date', 'phone_number', 'duration',
                            'disposition', 'id']
     default_sort_field = 'starting_date'
-    pagination_data =\
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
 
-    campaign_obj = ''
+    survey_id = ''
     action = 'tabs-1'
-
+    campaign_obj = ''
     if request.method == 'POST':
         #search_tag = 1
         form = SurveyDetailReportForm(request.user, request.POST)
@@ -930,7 +938,7 @@ def survey_report(request):
             # set session var value
             request.session['session_from_date'] = ''
             request.session['session_to_date'] = ''
-            request.session['session_campaign_id'] = ''
+            request.session['session_survey_id'] = ''
             request.session['session_surveycalls_kwargs'] = ''
             request.session['session_survey_cdr_daily_data'] = {}
 
@@ -944,25 +952,25 @@ def survey_report(request):
                 to_date = request.POST['to_date']
                 request.session['session_to_date'] = to_date
 
-            campaign_id = variable_value(request, 'campaign')
-            if campaign_id:
-                request.session['session_campaign_id'] = campaign_id
+            survey_id = variable_value(request, 'survey_id')
+            if survey_id:
+                request.session['session_survey_id'] = survey_id
     else:
         rows = []
-        campaign_id = ''
+        survey_id = ''
 
     try:
         if request.GET.get('page') or request.GET.get('sort_by'):
             from_date = request.session.get('session_from_date')
             to_date = request.session.get('session_to_date')
-            campaign_id = request.session.get('session_campaign_id')
+            survey_id = request.session.get('session_survey_id')
             search_tag = request.session.get('session_search_tag')
         else:
             from_date
     except NameError:
-        tday = datetime.today()
+        tday = datetime.utcnow().replace(tzinfo=utc)
         from_date = tday.strftime('%Y-%m-01')
-        last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999) +
+        last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999).replace(tzinfo=utc) +
                     relativedelta(months=1)) -
                     relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)
@@ -971,7 +979,7 @@ def survey_report(request):
         # unset session var value
         request.session['session_from_date'] = from_date
         request.session['session_to_date'] = to_date
-        request.session['session_campaign_id'] = ''
+        request.session['session_survey_id'] = ''
         request.session['session_surveycalls_kwargs'] = ''
         request.session['session_search_tag'] = search_tag
 
@@ -997,10 +1005,10 @@ def survey_report(request):
 
     all_call_list = []
     try:
-        campaign_obj = Campaign.objects.get(id=int(campaign_id))
-        survey_result_kwargs['campaign'] = campaign_obj
-
+        survey_result_kwargs['survey_id'] = survey_id
         survey_result = get_survey_result(survey_result_kwargs)
+
+        campaign_obj = Survey.objects.get(id=int(survey_id)).campaign
         kwargs['callrequest__campaign'] = campaign_obj
 
         # List of Survey VoIP call report
@@ -1036,7 +1044,6 @@ def survey_report(request):
         'total_calls': survey_cdr_daily_data['total_calls'],
         'total_avg_duration': survey_cdr_daily_data['total_avg_duration'],
         'max_duration': survey_cdr_daily_data['max_duration'],
-        'module': current_view(request),
         'msg': request.session.get('msg'),
         'err_msg': request.session.get('err_msg'),
         'form': form,
@@ -1105,7 +1112,7 @@ def export_surveycall_report(request):
             for ikey in column_list:
                 if ikey in column_list_base:
                     #This is not a Section result
-                    if ikey == 'starting_date' and format == 'json':
+                    if ikey == 'starting_date' and format == 'json' or format == 'xls':
                         starting_date = str(voipcall.__dict__[ikey])
                         result_row_list.append(starting_date)
                     else:
@@ -1319,7 +1326,7 @@ def import_survey(request):
 
             # connect post_save_add_script signal with Section_template
             post_save.connect(post_save_add_script, sender=Section_template)
-            return HttpResponseRedirect('/survey/')
+            return HttpResponseRedirect(redirect_url_to_survey_list)
         else:
             request.session["err_msg"] = True
 
@@ -1334,3 +1341,75 @@ def import_survey(request):
     request.session['err_msg'] = ''
     return render_to_response(template, data,
         context_instance=RequestContext(request))
+
+
+@permission_required('survey.view_sealed_survey', login_url='/')
+@login_required
+def sealed_survey_list(request):
+    """Survey list for the logged in user
+
+    **Attributes**:
+
+        * ``template`` - frontend/survey/sealed_survey_list.html
+
+    **Logic Description**:
+
+        * List all sealed surveys which belong to the logged in user.
+    """
+    sort_col_field_list = ['id', 'name', 'updated_date', 'campaign']
+    default_sort_field = 'id'
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+
+    #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
+    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    sort_order = pagination_data['sort_order']
+
+    survey_list = Survey.objects\
+        .values('id', 'name', 'description', 'updated_date', 'campaign__name')\
+        .filter(user=request.user).order_by(sort_order)
+
+    template = 'frontend/survey/sealed_survey_list.html'
+    data = {
+        'survey_list': survey_list,
+        'total_survey': survey_list.count(),
+        'PAGE_SIZE': PAGE_SIZE,
+        'SEALED_SURVEY_COLUMN_NAME': SEALED_SURVEY_COLUMN_NAME,
+        'col_name_with_order': pagination_data['col_name_with_order'],
+        'msg': request.session.get('msg'),
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))
+
+
+@permission_required('survey.seal_survey', login_url='/')
+@login_required
+def seal_survey(request, object_id):
+    """
+        seal survey without campaign
+    """
+    form = SealSurveyForm()
+    if request.method == 'POST':
+        form = SealSurveyForm(request.POST)
+        if form.is_valid():
+            survey_template = get_object_or_404(
+                Survey_template, pk=object_id, user=request.user)
+            survey_template.name = request.POST.get('name', survey_template.name)
+            survey_template.copy_survey_template()
+
+            request.session['msg'] = '(%s) survey is sealed successfully' % survey_template.name
+
+            return HttpResponseRedirect(redirect_url_to_survey_list)
+        else:
+            request.session['err_msg'] = True
+
+    template = 'frontend/survey/seal_survey.html'
+    data = {
+        'form': form,
+        'err_msg': request.session.get('err_msg'),
+        'object_id': object_id,
+    }
+    request.session['err_msg'] = ''
+    return render_to_response(template, data,
+                              context_instance=RequestContext(request))

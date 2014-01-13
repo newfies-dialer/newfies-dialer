@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -25,16 +25,17 @@ from django.utils.translation import ugettext_lazy as _
 from django.utils.translation import ungettext
 from django.db.models import Sum, Avg, Count
 from dialer_cdr.models import Callrequest, VoIPCall
-from dialer_cdr.forms import VoipSearchForm
+from dialer_cdr.forms import AdminVoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
     voipcall_search_admin_form_fun
 from common.common_functions import getvar
-from common.app_label_renamer import AppLabelRenamer
+# from common.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
+from django.utils.timezone import utc
 import tablib
 
-AppLabelRenamer(native_app_label=u'dialer_cdr', app_label=_('Dialer CDR')).main()
+# AppLabelRenamer(native_app_label=u'dialer_cdr', app_label=_('Dialer CDR')).main()
 APP_LABEL = _('VoIP report')
 
 
@@ -50,14 +51,14 @@ class CallrequestAdmin(GenericAdminModelAdmin):
                        'content_type', 'object_id', ),
         }),
         (_('advanced options').capitalize(), {
-            'classes': ('collapse',),
+            'classes': ('collapse', ),
             'fields': ('extra_data', 'extra_dial_string', 'subscriber', 'completed'),
         }),
     )
     #If we try to display user / content_type low the performance
     list_display = ('id', 'request_uuid', 'aleg_uuid', 'call_time',
                     'status', 'callerid', 'phone_number', 'call_type',
-                    'completed', 'num_attempt', 'last_attempt_time',)
+                    'completed', 'num_attempt', 'last_attempt_time', )
     list_display_links = ('id', 'request_uuid', )
     list_filter = ['callerid', 'call_time', 'status', 'call_type', 'campaign']
     ordering = ('-id', )
@@ -74,9 +75,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
     list_display = ('id', 'leg_type', 'callid', 'callerid', 'phone_number',
                     'starting_date', 'min_duration', 'billsec', 'disposition',
                     'hangup_cause', 'hangup_cause_q850')
-    valid_lookups = ('callrequest__campaign_id',)
+    valid_lookups = ('callrequest__campaign_id', )
     if settings.AMD:
-        list_display += ('amd_status',)
+        list_display += ('amd_status', )
     ordering = ('-id', )
 
     def lookup_allowed(self, lookup, *args, **kwargs):
@@ -88,9 +89,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """User link to user profile"""
 
         if obj.user.is_staff:
-            url = reverse('admin:auth_staff_change', args=(obj.user_id,))
+            url = reverse('admin:auth_staff_change', args=(obj.user_id, ))
         else:
-            url = reverse('admin:auth_customer_change', args=(obj.user_id,))
+            url = reverse('admin:auth_customer_change', args=(obj.user_id, ))
         return '<a href="%s"><b>%s</b></a>' % (url, obj.user)
     user_link.allow_tags = True
     user_link.short_description = _('user').capitalize()
@@ -99,7 +100,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """Used gateway link to edit gateway detail"""
         if obj.used_gateway:
             url = reverse('admin:dialer_gateway_gateway_change',
-                          args=(obj.used_gateway.id,))
+                          args=(obj.used_gateway.id, ))
             return '<a href="%s">%s</a>' % (url, obj.used_gateway)
     used_gateway_link.allow_tags = True
     used_gateway_link.short_description = _('gateway used').capitalize()
@@ -133,7 +134,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         **Attributes**:
 
-            * ``form`` - VoipSearchForm
+            * ``form`` - AdminVoipSearchForm
             * ``template`` - admin/dialer_cdr/voipcall/change_list.html
 
         **Logic Description**:
@@ -143,7 +144,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
         """
         opts = VoIPCall._meta
         query_string = ''
-        form = VoipSearchForm(request.user)
+        form = AdminVoipSearchForm()
         if request.method == 'POST':
             # Session variable get record set with searched option into export file
             request.session['admin_voipcall_record_kwargs'] = voipcall_record_common_fun(request)
@@ -164,12 +165,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
             campaign_id = getvar(request, 'callrequest__campaign_id')
             leg_type = getvar(request, 'leg_type__exact')
 
-            form = VoipSearchForm(request.user,
-                                  initial={'status': status,
-                                           'from_date': from_date,
-                                           'to_date': to_date,
-                                           'campaign_id': campaign_id,
-                                           'leg_type': leg_type})
+            form = AdminVoipSearchForm(initial={'status': status,
+                                                'from_date': from_date,
+                                                'to_date': to_date,
+                                                'campaign_id': campaign_id,
+                                                'leg_type': leg_type})
 
         ChangeList = self.get_changelist(request)
         try:
@@ -214,25 +214,25 @@ class VoIPCallAdmin(admin.ModelAdmin):
         opts = VoIPCall._meta
         kwargs = {}
         if request.method == 'POST':
-            form = VoipSearchForm(request.user, request.POST)
+            form = AdminVoipSearchForm(request.POST)
             kwargs = voipcall_record_common_fun(request)
         else:
             kwargs = voipcall_record_common_fun(request)
             tday = datetime.today()
-            form = VoipSearchForm(request.user, initial={"from_date": tday.strftime("%Y-%m-%d"),
-                                                         "to_date": tday.strftime("%Y-%m-%d")})
+            form = AdminVoipSearchForm(initial={"from_date": tday.strftime("%Y-%m-%d"),
+                                                "to_date": tday.strftime("%Y-%m-%d")})
             if len(kwargs) == 0:
                 kwargs['starting_date__gte'] = datetime(tday.year, tday.month, tday.day,
-                                                        0, 0, 0, 0)
+                                                        0, 0, 0, 0).replace(tzinfo=utc)
 
         select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
         # Get Total Records from VoIPCall Report table for Daily Call Report
-        total_data = VoIPCall.objects.extra(select=select_data)\
-            .values('starting_date')\
-            .filter(**kwargs)\
-            .annotate(Count('starting_date'))\
-            .annotate(Sum('duration'))\
-            .annotate(Avg('duration'))\
+        total_data = VoIPCall.objects.extra(select=select_data) \
+            .values('starting_date') \
+            .filter(**kwargs) \
+            .annotate(Count('starting_date')) \
+            .annotate(Sum('duration')) \
+            .annotate(Avg('duration')) \
             .order_by('-starting_date')
 
         # Following code will count total voip calls, duration

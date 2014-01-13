@@ -7,7 +7,7 @@ LOGDIR=$(dirname $LOGFILE)
 # You can set it as low as 1 if you’re on a small VPS.
 # A popular formula is 1 + 2 * number_of_cpus on the machine (the logic being,
 # half of the processess will be waiting for I/O, such as database).
-NUM_WORKERS=3
+NUM_WORKERS=1
 
 # user/group to run as
 USER=newfies_dialer

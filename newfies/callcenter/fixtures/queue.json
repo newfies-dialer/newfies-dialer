@@ -1,0 +1,46 @@
+[
+    {
+        "pk": 1,
+        "model": "callcenter.queue",
+        "fields": {
+            "tier_rule_wait_multiply_level": true,
+            "updated_date": "2013-04-01T15:23:25.448",
+            "discard_abandoned_after": null,
+            "tier_rules_apply": true,
+            "abandoned_resume_allowed": true,
+            "time_base_score": "",
+            "created_date": "2013-04-01T15:23:25.446",
+            "max_wait_time_with_no_agent_time_reached": null,
+            "strategy": 5,
+            "tier_rule_no_agent_no_wait": true,
+            "manager": 2,
+            "max_wait_time": null,
+            "tier_rule_wait_second": null,
+            "max_wait_time_with_no_agent": null,
+            "moh_sound": "",
+            "record_template": ""
+        }
+    },
+    {
+        "pk": 2,
+        "model": "callcenter.queue",
+        "fields": {
+            "tier_rule_wait_multiply_level": true,
+            "updated_date": "2013-04-01T17:53:57.623",
+            "discard_abandoned_after": null,
+            "tier_rules_apply": true,
+            "abandoned_resume_allowed": true,
+            "time_base_score": "",
+            "created_date": "2013-04-01T17:53:57.623",
+            "max_wait_time_with_no_agent_time_reached": null,
+            "strategy": 2,
+            "tier_rule_no_agent_no_wait": true,
+            "manager": 2,
+            "max_wait_time": null,
+            "tier_rule_wait_second": null,
+            "max_wait_time_with_no_agent": null,
+            "moh_sound": "xxx",
+            "record_template": ""
+        }
+    }
+]

@@ -1,0 +1,98 @@
+{% extends "frontend/master.html" %}
+{% load i18n common_tags %}
+
+{% block content_header %}
+    <h1>
+        {% if action == 'update' %}
+            {% trans "update"|title %}
+        {% else %}
+            {% trans "add"|title %}
+        {% endif %}
+        {% trans "calendar user"|title %}
+        <br/>
+        <small>{% trans "users authorized to create calendars, events and alarms"|capfirst %}</small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+
+<form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+
+    {% if action == 'update' %}
+        <div class="row">
+            {% get_fieldset username as calendar_user_fields from calendar_user_username_form %}
+            {% for field in calendar_user_fields.visible_fields %}
+            <div class="col-md-6">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                <div class="col-xs-8">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-block">
+                            {{ field.errors|removetags:"ul li"|safe }}
+                        </span>
+                    {% endif %}
+                    <span class="help-block">
+                        {{ field.help_text|capfirst }}
+                    </span>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+
+            {% get_fieldset password as calendar_user_fields from calendar_user_username_form %}
+            {% for field in calendar_user_fields.visible_fields %}
+            <div class="col-md-6">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    {{ field }}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        {% for field in form %}
+            <div class="row">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                    <div class="col-md-8 col-xs-6">
+                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                        {{ field }}
+                        {% if field.errors %}
+                            <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
+                        {% endif %}
+                            <span class="help-block">{{ field.help_text|capfirst }} </span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+
+    <div class="row">
+        {% get_fieldset calendar_setting,accountcode,address,city,state,country,zip_code,phone_no,fax,company_name,company_website,language,note as cal_user_fields from form %}
+        {% for field in cal_user_fields.hidden_fields %}
+            {{ field }}
+        {% endfor %}
+        {% for field in cal_user_fields.visible_fields %}
+            <div class="col-md-6">
+                <div class="form-group {% if field.errors %}has-error{% endif %}">
+                <div class="col-xs-8">
+                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
+                    {{ field }}
+                    {% if field.errors %}
+                        <span class="help-block">
+                            {{ field.errors|removetags:"ul li"|safe }}
+                        </span>
+                    {% endif %}
+                    <span class="help-block">
+                        {{ field.help_text|capfirst }}
+                    </span>
+                    </div>
+                </div>
+            </div>
+        {% endfor %}
+    </div>
+    {% include "frontend/common_submit_buttons.html" %}
+</form>
+
+{% endblock %}

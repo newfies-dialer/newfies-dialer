@@ -1,0 +1,26 @@
+[
+   {
+      "pk":1,
+      "model":"dialer_gateway.gateway",
+      "fields":{
+         "status":1,
+         "updated_date":"2013-12-10T15:33:45.481Z",
+         "addparameter":"",
+         "addprefix":"",
+         "name":"TestGateway",
+         "gateway_codecs":"",
+         "failover":null,
+         "created_date":"2013-12-10T15:33:45.481Z",
+         "maximum_call":null,
+         "gateway_timeouts":"",
+         "count_in_use":null,
+         "removeprefix":"",
+         "gateway_retries":"",
+         "gateways":"sofia/gateway/myprovider/",
+         "secondused":null,
+         "originate_dial_string":"",
+         "count_call":null,
+         "description":""
+      }
+   }
+]

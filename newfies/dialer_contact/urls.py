@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -25,7 +25,7 @@ urlpatterns = patterns('dialer_contact.views',
     # Contacts urls
     (r'^contact/$', 'contact_list'),
     (r'^contact/add/$', 'contact_add'),
-    (r'^contact/import/$', 'contact_import'),
+    (r'^contact_import/$', 'contact_import'),
     (r'^contact/del/(.+)/$', 'contact_del'),
     (r'^contact/(.+)/$', 'contact_change'),
 )

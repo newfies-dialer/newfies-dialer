@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -16,16 +16,15 @@ from django.core.management.base import BaseCommand
 from optparse import make_option
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.auth.models import User
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest, VoIPCall
 #from survey.models import Section
 from random import choice
 from uuid import uuid1
-import datetime
+from datetime import datetime, timedelta
+from django.utils.timezone import utc
 import random
 import bisect
-
 
 VOIPCALL_DISPOSITION = [('ANSWER', 80), ('BUSY', 10), ('NOANSWER', 20), ('CANCEL', 5), ('CONGESTION', 4), ('FAILED', 10)]
 SURVEY_RESULT_QUE = [
@@ -54,8 +53,6 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
     """
     Create Callrequest
     """
-
-    admin_user = User.objects.get(pk=1)
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
     except:
@@ -74,14 +71,14 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
     for i in range(1, int(no_of_record) + 1):
         delta_days = random.randint(0, day_delta_int)
         delta_minutes = random.randint(-720, 720)
-        created_date = datetime.datetime.now() \
-            - datetime.timedelta(minutes=delta_minutes) \
-            - datetime.timedelta(days=delta_days)
+        created_date = datetime.utcnow().replace(tzinfo=utc) \
+            - timedelta(minutes=delta_minutes) \
+            - timedelta(days=delta_days)
 
         phonenumber = '' . join([choice(chars) for i in range(length)])
         new_callrequest = Callrequest.objects.create(
             request_uuid=uuid1(),
-            user=admin_user,
+            user=obj_campaign.user,
             phone_number=phonenumber,
             campaign=obj_campaign,
             aleg_gateway_id=1,
@@ -96,7 +93,7 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
         voipcall = VoIPCall.objects.create(
             request_uuid=uuid1(),
             callid=uuid1(),
-            user=admin_user,
+            user=obj_campaign.user,
             callrequest=new_callrequest,
             starting_date=created_date,
             phone_number=phonenumber,
@@ -133,7 +130,6 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
                 pass
         #response = '' . join([choice(alpha) for i in range(length)])
         ResultAggregate.objects.create(
-                            campaign=obj_campaign,
                             survey_id=obj_campaign.object_id,
                             section=list_section[section_id],
                             response=choice(RESPONSE),
@@ -146,8 +142,8 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
 
 class Command(BaseCommand):
     args = 'campaign_id, no_of_record, delta_day'
-    help = "Generate random call-requests and CDRs for a given campaign_id\n"\
-           "--------------------------------------------------------------\n"\
+    help = "Generate random call-requests and CDRs for a given campaign_id\n" \
+           "--------------------------------------------------------------\n" \
            "python manage.py create_callrequest_cdr --campaign_id=1 --number-call=100 --delta-day=0"
 
     option_list = BaseCommand.option_list + (

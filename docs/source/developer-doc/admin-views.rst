@@ -84,17 +84,6 @@ Newfies-Dialer Admin Views
     :members:
 
 
-.. automodule:: voice_app.admin
-
-.. _voicaappadmin:
-
-:class:`VoiceAppAdmin`
-----------------------
-
-.. autoclass:: VoiceAppAdmin
-    :members:
-
-
 .. automodule:: survey.admin
 
 .. _surveyappadmin:
@@ -138,4 +127,46 @@ Newfies-Dialer Admin Views
 ------------------------
 
 .. autoclass:: ResultAggregate
+    :members:
+
+
+.. automodule:: appointment.admin
+
+.. _CalendarUserAdmin:
+
+:class:`CalendarUserAdmin`
+--------------------------
+
+.. autoclass:: CalendarUserAdmin
+    :members:
+
+.. _CalendarSettingAdmin:
+
+:class:`CalendarSettingAdmin`
+-----------------------------
+
+.. autoclass:: CalendarSettingAdmin
+    :members:
+
+.. _CalendarAdmin:
+
+:class:`CalendarAdmin`
+----------------------
+
+.. autoclass:: CalendarAdmin
+    :members:
+
+.. _EventAdmin:
+
+:class:`EventAdmin`
+-------------------
+
+.. autoclass:: EventAdmin
+    :members:
+
+
+:class:`AlarmAdmin`
+-------------------
+
+.. autoclass:: AlarmAdmin
     :members:

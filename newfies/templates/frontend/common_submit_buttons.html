@@ -1,0 +1,18 @@
+{% load i18n %}
+
+<div class="row">
+    <div class="col-md-12 text-right">
+    {% if action == 'update' %}
+        <button type="submit" id="update" name="update" class="btn btn-primary" value="update">
+            <i class="fa fa-edit fa-lg"></i> {% trans "update"|title %}
+        </button>
+        <button type="submit" id="delete" name="delete" class="btn btn-danger" value="delete">
+            <i class="fa fa-trash-o fa-lg"></i> {% trans "delete"|title %}
+        </button>
+    {% else %}
+        <button type="submit" id="add" name="add" class="btn btn-primary" value="submit">
+            <i class="fa fa-save fa-lg"></i> {% trans "save"|title %}
+        </button>
+    {% endif %}
+    </div>
+</div>

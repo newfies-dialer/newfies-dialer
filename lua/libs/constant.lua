@@ -6,7 +6,7 @@
 -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 -- You can obtain one at http://mozilla.org/MPL/2.0/.
 --
--- Copyright (C) 2011-2013 Star2Billing S.L.
+-- Copyright (C) 2011-2014 Star2Billing S.L.
 --
 -- The Initial Developer of the Original Code is
 -- Arezqui Belaid <info@star2billing.com>
@@ -22,6 +22,7 @@ CALL_TRANSFER = "6"
 HANGUP_SECTION = "7"
 CONFERENCE = "8"
 DNC = "9"
+SMS = "10"
 
 SECTION_TYPE = {}
 SECTION_TYPE["1"] = "PLAY_MESSAGE"
@@ -33,6 +34,7 @@ SECTION_TYPE["6"] = "CALL_TRANSFER"
 SECTION_TYPE["7"] = "HANGUP_SECTION"
 SECTION_TYPE["8"] = "CONFERENCE"
 SECTION_TYPE["9"] = "DNC"
+SECTION_TYPE["10"] = "SMS"
 
 -- Constant Value SUBSCRIBER_STATUS
 SUBSCRIBER_PENDING = "1"

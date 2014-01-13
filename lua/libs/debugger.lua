@@ -6,7 +6,7 @@
 -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 -- You can obtain one at http://mozilla.org/MPL/2.0/.
 --
--- Copyright (C) 2011-2013 Star2Billing S.L.
+-- Copyright (C) 2011-2014 Star2Billing S.L.
 --
 -- The Initial Developer of the Original Code is
 -- Arezqui Belaid <info@star2billing.com>
@@ -35,7 +35,7 @@ local logger = logging.file(LOGDIR .. "newfieslua_logs_%s.log", "%Y-%m-%d", "%da
 -- logging.FATAL
 -- The FATAL level designates very severe error events that would presumably lead the application to abort.
 --
-logger:setLevel(logging.INFO)
+logger:setLevel(logging.DEBUG)
 
 
 Debugger = oo.class{

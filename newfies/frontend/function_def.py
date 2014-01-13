@@ -6,12 +6,13 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
 
+from django.utils.timezone import utc
 from frontend.forms import SEARCH_TYPE
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -19,7 +20,7 @@ from datetime import datetime
 
 def calculate_date(search_type):
     """calculate date"""
-    end_date = datetime.today()
+    end_date = datetime.today().replace(tzinfo=utc)
     search_type = int(search_type)
 
     # Last 30 days
@@ -51,4 +52,4 @@ def calculate_date(search_type):
     if search_type == SEARCH_TYPE.G_Last_hour:
         start_date = end_date + relativedelta(hours=-int(1))
 
-    return start_date
+    return start_date.replace(tzinfo=utc)

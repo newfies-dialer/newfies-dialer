@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -22,8 +22,9 @@ from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add, \
     campaign_change, campaign_del, notify_admin, \
     update_campaign_status_admin, \
-    get_url_campaign_status, campaign_duplicate
-from dialer_campaign.tasks import campaign_running, \
+    get_url_campaign_status, campaign_duplicate, subscriber_list, \
+    subscriber_export
+from dialer_campaign.tasks import campaign_running, pending_call_processing,\
     collect_subscriber, campaign_expire_check
 from dialer_settings.models import DialerSetting
 from dialer_campaign.constants import SUBSCRIBER_STATUS
@@ -56,6 +57,7 @@ class DialerCampaignView(BaseAuthenticatedClient):
                 "intervalretry": "3000",
                 "calltimeout": "60",
                 "aleg_gateway": "1",
+                "sms_gateway": "",
                 "user": "1",
                 "content_object": "type:32-id:1",
                 "extra_data": "2000"})
@@ -63,14 +65,12 @@ class DialerCampaignView(BaseAuthenticatedClient):
 
     def test_admin_subscriber_view_list(self):
         """Test Function to check admin subscriber list"""
-        response =\
-            self.client.get('/admin/dialer_campaign/subscriber/')
+        response = self.client.get('/admin/dialer_campaign/subscriber/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_subscriber_view_add(self):
         """Test Function to check admin subscriber add"""
-        response =\
-            self.client.get('/admin/dialer_campaign/subscriber/add/')
+        response = self.client.get('/admin/dialer_campaign/subscriber/add/')
         self.failUnlessEqual(response.status_code, 200)
 
         response = self.client.post(
@@ -89,10 +89,9 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
     """Test cases for Campaign, Subscriber Customer Interface."""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
-                'user_profile.json', 'contenttype.json',
-                'phonebook.json', 'contact.json', 'survey.json',
-                'dnc_list.json', 'dnc_contact.json',
-                'campaign.json', 'subscriber.json',]
+                'user_profile.json', 'phonebook.json', 'contact.json',
+                'survey.json', 'dnc_list.json', 'dnc_contact.json',
+                'campaign.json', 'subscriber.json']
 
     def test_campaign_view_list(self):
         """Test Function to check campaign list"""
@@ -125,6 +124,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
+            "sms_gateway": "",
             "content_object": "type:43-id:1",
             "extra_data": "2000",
             "ds_user": self.user}, follow=True)
@@ -141,6 +141,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
+            "sms_gateway": "",
             "content_object": "type:43-id:1",
             "extra_data": "2000",
             "ds_user": self.user}, follow=True)
@@ -160,9 +161,10 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "intervalretry": "3000",
             "calltimeout": "60",
             "aleg_gateway": "1",
+            "sms_gateway": "",
             "content_object": "type:43-id:1",
             "extra_data": "2000",
-            "ds_user": self.user,}, follow=True)
+            "ds_user": self.user}, follow=True)
 
         request.user = self.user
         request.session = {}
@@ -181,8 +183,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         response = campaign_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/campaign/1/',
-            {'delete': True}, follow=True)
+        request = self.factory.post('/campaign/1/', {'delete': True}, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_change(request, 1)
@@ -205,8 +206,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response['Location'], '/campaign/')
         self.assertEqual(response.status_code, 302)
 
-        request = self.factory.post(
-            '/campaign/del/0/?stop_campaign=True', {'select': '1'})
+        request = self.factory.post('/campaign/del/0/?stop_campaign=True', {'select': '1'})
         request.user = self.user
         request.session = {}
         response = campaign_del(request, 0)
@@ -234,20 +234,43 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
                          '/admin/dialer_campaign/campaign/')
 
     def test_campaign_duplicate(self):
-        """test duplicate campaign"""
+        """Test duplicate campaign"""
         request = self.factory.get('campaign_duplicate/1/')
         request.user = self.user
         request.session = {}
         response = campaign_duplicate(request, 1)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('campaign_duplicate/1/',
-            {'name': 'duplicate', 'campaign_code': 'ZUXSA'},
+        request = self.factory.post(
+            'campaign_duplicate/1/', {'name': 'duplicate', 'campaign_code': 'ZUXSA'},
             follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_duplicate(request, 1)
         self.assertEqual(response.status_code, 302)
+
+    def test_subscriber_list(self):
+        """Test Function to check subscriber list"""
+        response = self.client.get('/subscribers/')
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'frontend/subscriber/list.html')
+
+        request = self.factory.get('/subscribers/')
+        request.user = self.user
+        request.session = {}
+        response = subscriber_list(request)
+        self.assertEqual(response.status_code, 200)
+
+    def test_subscriber_list_export(self):
+        """Test Function to check subscriber list"""
+        response = self.client.get('/subscribers/export_subscriber/?format=csv')
+        self.assertEqual(response.status_code, 200)
+
+        request = self.factory.get('/subscribers/export_subscriber/?format=xml')
+        request.user = self.user
+        request.session = {}
+        response = subscriber_export(request)
+        self.assertEqual(response.status_code, 200)
 
 
 class DialerCampaignCeleryTaskTestCase(TestCase):
@@ -260,11 +283,11 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
                 'campaign.json', 'subscriber.json',
                 ]
 
-    #def test_check_campaign_pendingcall(self):
-    #    """Test that the ``check_campaign_pendingcall``
-    #    task runs with no errors, and returns the correct result."""
-    #    result = check_campaign_pendingcall.delay(1)
-    #    self.assertEqual(result.successful(), True)
+    def test_check_pending_call_processing(self):
+        """Test that the ``check_campaign_pendingcall``
+        task runs with no errors, and returns the correct result."""
+        result = pending_call_processing.delay(1)
+        self.assertEqual(result.successful(), True)
 
     def test_campaign_running(self):
         """Test that the ``campaign_running``
@@ -300,8 +323,7 @@ class DialerCampaignModel(TestCase):
 
         # Campaign model
         try:
-            self.content_type_id = \
-                ContentType.objects.get(model='survey_template').id
+            self.content_type_id = ContentType.objects.get(model='survey_template').id
         except:
             self.content_type_id = 1
 
@@ -394,6 +416,7 @@ class DialerCampaignModel(TestCase):
             "intervalretry": "2000",
             "calltimeout": "60",
             "aleg_gateway": "1",
+            "sms_gateway": "",
             "content_object": "type:32-id:1",
             "extra_data": "2000",
             "ds_user": self.user})

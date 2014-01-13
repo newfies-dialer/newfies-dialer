@@ -6,7 +6,7 @@
 -- License, v. 2.0. If a copy of the MPL was not distributed with this file,
 -- You can obtain one at http://mozilla.org/MPL/2.0/.
 --
--- Copyright (C) 2011-2013 Star2Billing S.L.
+-- Copyright (C) 2011-2014 Star2Billing S.L.
 --
 -- The Initial Developer of the Original Code is
 -- Arezqui Belaid <info@star2billing.com>
@@ -22,7 +22,7 @@ local oo = require "loop.simple"
 local dbhanlder = require "dbhandler"
 -- local dbh_fs = require "dbh_fs"
 -- local dbh_fs = require "dbh_light"
-
+local uuid4= require("uuid4")
 
 
 -- redis.commands.expire = redis.command('EXPIRE')
@@ -46,6 +46,9 @@ Database = oo.class{
     debugger = nil,
     results = {},
     caching = false,
+    event_alarm = nil,
+    callerid = nil,
+    sms_gateway_id = nil,
 }
 
 function Database:__init(debug_mode, debugger)
@@ -131,7 +134,7 @@ end
 function Database:load_audiofile()
     -- id   name    audio_file  user_id
     local sqlquery = "SELECT * FROM audio_file WHERE user_id="..self.user_id
-    self:db_debugger("DEBUG", "Load audiofile branching : "..sqlquery)
+    self:db_debugger("DEBUG", "Load audio file branching : "..sqlquery)
     self.list_audio = self.dbh:get_cache_list(sqlquery, 300)
     self:db_debugger_inspect("DEBUG", self.list_audio)
 end
@@ -144,13 +147,15 @@ function Database:load_campaign_info(campaign_id)
     if not self.campaign_info then
         return false
     end
+    self.callerid = self.campaign_info["callerid"]
+    self.sms_gateway_id = self.campaign_info["sms_gateway_id"]
     self.user_id = self.campaign_info["user_id"]
 end
 
 function Database:test_get_campaign()
     local sqlquery = "SELECT * FROM dialer_campaign ORDER BY DESC id"
     self:db_debugger("DEBUG", "Get campaign list : "..sqlquery)
-    self.contact = self.dbh:get_object(sqlquery)
+    self.campaign = self.dbh:get_object(sqlquery)
 end
 
 function Database:load_contact(contact_id)
@@ -167,10 +172,12 @@ function Database:load_content_type()
 end
 
 function Database:update_subscriber(subscriber_id, status)
-    local sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
-    self:db_debugger("DEBUG", "Update Subscriber : "..sqlquery)
-    local res = self.dbh:execute(sqlquery)
-    self:update_campaign_completed()
+    if subscriber_id and subscriber_id ~= 'None' then
+        local sqlquery = "UPDATE dialer_subscriber SET status='"..status.."' WHERE id="..subscriber_id
+        self:db_debugger("DEBUG", "Update Subscriber : "..sqlquery)
+        local res = self.dbh:execute(sqlquery)
+        self:update_campaign_completed()
+    end
 end
 
 function Database:update_campaign_completed()
@@ -185,7 +192,55 @@ function Database:update_callrequest_cpt(callrequest_id)
     local res = self.dbh:execute(sqlquery)
 end
 
-function Database:load_all(campaign_id, contact_id)
+function Database:load_alarm_event(alarm_request_id)
+    local sqlquery = "SELECT event_id, alarm_id, appointment_alarm.survey_id as survey_id, manager_id, data, "..
+        "voicemail, amd_behavior, voicemail_audiofile_id, callerid, sms_gateway_id, data, alarm_phonenumber FROM appointment_alarmrequest "..
+        "LEFT JOIN appointment_alarm ON appointment_alarm.id=alarm_id "..
+        "LEFT JOIN appointment_event ON appointment_event.id=appointment_alarm.event_id "..
+        "LEFT JOIN calendar_user_profile ON calendar_user_profile.user_id=creator_id "..
+        "LEFT JOIN calendar_setting ON calendar_setting.id=calendar_setting_id "..
+        "WHERE appointment_alarmrequest.id="..alarm_request_id
+
+    self:db_debugger("DEBUG", "Load Event Data : "..sqlquery)
+    self.event_alarm = self.dbh:get_object(sqlquery)
+
+    -- local inspect = require 'inspect'
+    -- print(inspect(self.event_alarm))
+    -- print(self.event_alarm.manager_id)
+    -- print(self.event_alarm.alarm_id)
+    self.user_id = self.event_alarm.manager_id
+    self.callerid = self.event_alarm.callerid
+    self.sms_gateway_id = self.event_alarm.sms_gateway_id
+end
+
+function Database:load_all_alarm_request(alarm_request_id)
+
+    self:load_alarm_event(alarm_request_id)
+    if not self.event_alarm then
+        self:db_debugger("ERROR", "Error: No Event")
+        return false
+    end
+end
+
+function Database:createcontact(phonenumber, data)
+    -- create a fake contact for alarm
+    self.contact = { address = "", contact = phonenumber, email = "", first_name = "", last_name = "", additional_vars = data }
+    return contact
+end
+
+function Database:load_all(campaign_id, contact_id, alarm_request_id)
+
+    if contact_id=='None' or campaign_id=='None' then
+        -- ALARM
+        self:load_all_alarm_request(alarm_request_id)
+        self:load_survey_section(self.event_alarm.survey_id)
+        self:load_survey_branching(self.event_alarm.survey_id)
+        self:load_audiofile()
+        self:createcontact(self.event_alarm.alarm_phonenumber, self.event_alarm.data)
+        return self.event_alarm.survey_id
+    end
+
+    -- CAMPAIGN
     self:load_contact(contact_id)
     if not self.contact then
         self:db_debugger("ERROR", "Error: No Contact")
@@ -219,8 +274,8 @@ end
 
 function Database:check_data()
     --Check if we retrieve Campaign Info
-    if not self.campaign_info then
-        self:db_debugger("ERROR", "campaign_info no valid")
+    if not self.campaign_info and not self.event_alarm then
+        self:db_debugger("ERROR", "campaign_info or event_alarm no valid")
         self.valid_data = false
     end
     --Check if we retrieve List Section
@@ -241,7 +296,7 @@ function Database:save_result_mem(callrequest_id, section_id, record_file, recor
     self.results[tonumber(section_id)] = {callrequest_id, section_id, record_file, recording_duration, response, os.time()}
 end
 
-function Database:commit_result_mem(campaign_id, survey_id)
+function Database:commit_result_mem(survey_id)
     --Commit all results with one bulk insert to the Database
     local sql_result = ''
     local count = 0
@@ -253,7 +308,7 @@ function Database:commit_result_mem(campaign_id, survey_id)
         sql_result = sql_result.."("..v[1]..", "..v[2]..", '"..v[3].."', "..v[4]..", '"..v[5].."', CURRENT_TIMESTAMP("..v[6].."))"
         --Save Aggregate result
         --TODO: For performance replace this by a celery task which will read 1000 survey_result and aggregate them in block
-        self:set_aggregate_result(campaign_id, survey_id, v[2], v[5], v[4])
+        self:set_aggregate_result(survey_id, v[2], v[5], v[4])
     end
     local sqlquery = "INSERT INTO survey_result "..
         "(callrequest_id, section_id, record_file, recording_duration, response, created_date) VALUES "..sql_result
@@ -266,9 +321,9 @@ function Database:commit_result_mem(campaign_id, survey_id)
     end
 end
 
-function Database:save_result_aggregate(campaign_id, survey_id, section_id, response)
-    local sqlquery = "INSERT INTO survey_resultaggregate (campaign_id, survey_id, section_id, response, count, created_date) "..
-        "VALUES ("..campaign_id..", "..survey_id..", "..section_id..", '"..response.."', 1, NOW())"
+function Database:save_result_aggregate(survey_id, section_id, response)
+    local sqlquery = "INSERT INTO survey_resultaggregate (survey_id, section_id, response, count, created_date) "..
+        "VALUES ("..survey_id..", "..section_id..", '"..response.."', 1, NOW())"
     self:db_debugger("DEBUG", "Save Result Aggregate:"..sqlquery)
     local res = self.dbh:execute(sqlquery)
     if not res then
@@ -290,9 +345,9 @@ function Database:add_dnc(dnc_id, phonenumber)
     end
 end
 
-function Database:update_result_aggregate(campaign_id, survey_id, section_id, response)
+function Database:update_result_aggregate(survey_id, section_id, response)
     local sqlquery = "UPDATE survey_resultaggregate SET count = count + 1"..
-        " WHERE campaign_id="..campaign_id.." AND survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..response.."'"
+        " WHERE survey_id="..survey_id.." AND section_id="..section_id.." AND response='"..response.."'"
     self:db_debugger("DEBUG", "Update Result Aggregate:"..sqlquery)
     local res = self.dbh:execute(sqlquery)
     if not res then
@@ -302,8 +357,8 @@ function Database:update_result_aggregate(campaign_id, survey_id, section_id, re
     end
 end
 
-function Database:set_aggregate_result(campaign_id, survey_id, section_id, response, recording_dur)
-    -- save the aggregate result for the campaign / survey
+function Database:set_aggregate_result(survey_id, section_id, response, recording_dur)
+    -- save the aggregate result for the survey
     if recording_dur and tonumber(recording_dur) > 0 then
         recording_dur = tonumber(recording_dur)
         response = 'error to detect recording duration'
@@ -324,12 +379,12 @@ function Database:set_aggregate_result(campaign_id, survey_id, section_id, respo
     --TODO: Replace Insert ResultAggregate by a stored procedure PL/SQL
 
     -- Insert ResultAggregate
-    if self:save_result_aggregate(campaign_id, survey_id, section_id, response) then
+    if self:save_result_aggregate(survey_id, section_id, response) then
         -- no errors in save_result_aggregate
         return true
     else
         -- log error
-        if not self:update_result_aggregate(campaign_id, survey_id, section_id, response) then
+        if not self:update_result_aggregate(survey_id, section_id, response) then
             self:db_debugger("ERROR", "Error update_result_aggregate")
         end
         return true
@@ -380,5 +435,52 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
     else
         --Save result to memory
         self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
+    end
+end
+
+function Database:save_alarm_result(alarm_id, digits)
+    local int_digits = tonumber(digits)
+    if alarm_id and int_digits and int_digits >=0 then
+        local sqlquery = "UPDATE appointment_alarm SET result="..int_digits.." WHERE id="..alarm_id
+        self:db_debugger("DEBUG", "Update Alarm Result:"..sqlquery)
+        local res = self.dbh:execute(sqlquery)
+        if not res then
+            return false
+        else
+            return true
+        end
+    end
+end
+
+function Database:send_sms(text, survey_id, phonenumber)
+    -- self.sms_gateway_id = 1
+    -- self.callerid = '165151616565'
+    -- self.user_id = 1
+    if not self.sms_gateway_id then
+        self:db_debugger("ERROR", "CANNOT SEND SMS : missing sms_gateway_id")
+        return false
+    end
+    --v4 UUID
+    local uuid = uuid4.getUUID()
+    local content_type_id = self:load_content_type()
+    local sqlquery = "INSERT INTO sms_message (content, recipient_number, sender_id, send_date, delivery_date, uuid, status, "..
+        "billed, content_type_id, object_id, gateway_id, sender_number) "..
+        "VALUES ('"..text.."', '"..phonenumber.."', "..self.user_id..", NULL, NULL, '"..uuid.."', 'Unsent', 'f',"..content_type_id..
+        ", "..survey_id..", "..self.sms_gateway_id..", '"..self.callerid.."')"
+    self:db_debugger("DEBUG", "INSERT send sms:"..sqlquery)
+    local res = self.dbh:execute(sqlquery)
+    if not res then
+        return false
+    end
+
+    -- Insert smsmessage
+    local sqlquery = "INSERT INTO smsmessage (message_id, sms_campaign_id, sms_gateway_id) "..
+        "VALUES ( (SELECT id FROM sms_message WHERE uuid='"..uuid.."'), NULL, "..self.sms_gateway_id..")"
+    self:db_debugger("DEBUG", "INSERT send smsmessage:"..sqlquery)
+    local res = self.dbh:execute(sqlquery)
+    if not res then
+        return false
+    else
+        return true
     end
 end

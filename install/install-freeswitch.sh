@@ -7,7 +7,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -18,7 +18,7 @@
 # cd /usr/src/ ; rm install-freeswitch.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh ; chmod +x install-freeswitch.sh ; ./install-freeswitch.sh
 #
 
-#Set branch to install develop/master
+#Set branch to install develop / master
 BRANCH='master'
 
 FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-conf
@@ -73,6 +73,14 @@ func_install_fs_source() {
     git checkout $FS_VERSION
 
     ./bootstrap.sh
+
+    # !!! virtual memory exhausted: Cannot allocate memory !!!
+    # we need to make more temporary swap space
+    #
+    # dd if=/dev/zero of=/root/fakeswap bs=1024 count=1048576
+    # mkswap /root/fakeswap
+    # swapon /root/fakeswap
+
     ./configure --without-pgsql --prefix=/usr/local/freeswitch --sysconfdir=/etc/freeswitch/
     [ -f modules.conf ] && cp modules.conf modules.conf.bak
     sed -i -e \
@@ -96,6 +104,12 @@ func_install_fs_source() {
     modules.conf
     make && make install && make sounds-install && make moh-install
 
+    # Remove temporary swap
+    #
+    # swapoff /root/fakeswap
+    # rm /root/fakeswap
+
+
     #Set permissions
     chown -R freeswitch:freeswitch /usr/local/freeswitch /etc/freeswitch
 }
@@ -105,7 +119,7 @@ echo "Setting up Prerequisites and Dependencies for FreeSWITCH"
 case $DIST in
     'DEBIAN')
         apt-get -y update
-        apt-get -y install autoconf automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libexpat1-dev libgdbm-dev libgnutls-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpopt-dev libsctp-dev libsqlite3-dev libtiff4 libtiff4-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unzip zip zlib1g-dev zlib1g-dev
+        apt-get -y install autoconf2.64 automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libexpat1-dev libgdbm-dev libgnutls-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpopt-dev libsctp-dev libsqlite3-dev libtiff4 libtiff4-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unzip zip zlib1g-dev zlib1g-dev
         apt-get -y install libssl-dev pkg-config
         apt-get -y install libvorbis0a libogg0 libogg-dev libvorbis-dev
         apt-get -y install flite flite1-dev

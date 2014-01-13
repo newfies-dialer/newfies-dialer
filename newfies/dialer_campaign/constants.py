@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -61,3 +61,14 @@ class AMD_BEHAVIOR(Choice):
     ALWAYS = 1, _('ALWAYS PLAY MESSAGE')
     HUMAN_ONLY = 2, _('PLAY MESSAGE TO HUMAN ONLY')
     VOICEMAIL_ONLY = 3, _('LEAVE MESSAGE TO VOICEMAIL ONLY')
+
+
+class SUBSCRIBER_COLUMN_NAME(Choice):
+    contact = _('contact')
+    updated_date = _('date')
+    count_attempt = _('attempts')
+    completion_count_attempt = _('completion attempts')
+    status = _('status')
+    disposition = _('disposition')
+    collected_data = _('response')
+    agent = _('agent')

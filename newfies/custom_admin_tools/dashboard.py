@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2013 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
@@ -65,7 +65,7 @@ class CustomIndexDashboard(Dashboard):
             children=[
                 modules.AppList(
                     title=_('user').capitalize(),
-                    models=('django.contrib.*', 'user_profile.*', ),
+                    models=('django.contrib.*', 'user_profile.*', 'agent.*', ),
                 ),
                 modules.AppList(
                     _('task manager').title(),
@@ -77,6 +77,11 @@ class CustomIndexDashboard(Dashboard):
                 ),
                 modules.RecentActions(_('recent actions').capitalize(), 5),
             ]
+        ))
+
+        self.children.append(modules.AppList(
+            _('callcenter').title(),
+            models=('callcenter.*', ),
         ))
 
         self.children.append(modules.AppList(
@@ -97,6 +102,17 @@ class CustomIndexDashboard(Dashboard):
             models=('survey.*', ),
         ))
 
+        self.children.append(modules.AppList(
+            _('SMS Gateway'),
+            models=('sms.*', ),
+        ))
+
+        # append an app list module for "SMS"
+        self.children.append(modules.AppList(
+            _('SMS module'),
+            models=('sms_module.*', ),
+        ))
+
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
             _('audio files').title(),
@@ -106,6 +122,16 @@ class CustomIndexDashboard(Dashboard):
         self.children.append(modules.AppList(
             _('do not call').title(),
             models=('dnc.*', ),
+        ))
+
+        self.children.append(modules.AppList(
+            _('appointment').title(),
+            models=('appointment.*', ),
+        ))
+
+        self.children.append(modules.AppList(
+            _('mod_mailer').title(),
+            models=('mod_mailer.*', ),
         ))
 
         self.children.append(modules.LinkList(

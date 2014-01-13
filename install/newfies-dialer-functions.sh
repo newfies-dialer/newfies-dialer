@@ -602,8 +602,9 @@ func_nginx_supervisor(){
             cp /usr/src/newfies-dialer/install/supervisor/supervisord /etc/init.d/supervisor
             chmod +x /etc/rc.d/init.d/supervisor
             chkconfig --levels 235 supervisor on
-            echo_supervisord_conf > /etc/supervisord.conf
-            cat /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf >> /etc/supervisord.conf
+            cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord.conf /etc/supervisord.conf
+            mkdir -p /etc/supervisor/conf.d
+            cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
             mkdir /var/log/supervisor/
         ;;
     esac
@@ -622,8 +623,9 @@ func_celery_supervisor(){
             cp /usr/src/newfies-dialer/install/supervisor/supervisord /etc/init.d/supervisor
             chmod +x /etc/rc.d/init.d/supervisor
             chkconfig --levels 235 supervisor on
-            echo_supervisord_conf > /etc/supervisord.conf
-            cat /usr/src/newfies-dialer/install/supervisor/celery_newfies_dialer.conf >> /etc/supervisord.conf
+            cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord.conf /etc/supervisord.conf
+            mkdir -p /etc/supervisor/conf.d
+            cp /usr/src/newfies-dialer/install/supervisor/celery_newfies_dialer.conf /etc/supervisor/conf.d/
             mkdir /var/log/supervisor/
         ;;
     esac

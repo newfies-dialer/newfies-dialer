@@ -179,11 +179,6 @@ func_setup_virtualenv() {
     echo "This will install virtualenv & virtualenvwrapper"
     echo "and create a new virtualenv : $NEWFIES_ENV"
 
-    pip install setuptools --no-use-wheel --upgrade
-
-    pip install virtualenv
-    pip install virtualenvwrapper
-
     #Prepare settings for installation
     case $DIST in
         'DEBIAN')
@@ -191,8 +186,13 @@ func_setup_virtualenv() {
         ;;
         'CENTOS')
             SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
+            #Upgrade Setuptools
+            pip install setuptools --no-use-wheel --upgrade
         ;;
     esac
+
+    pip install virtualenv
+    pip install virtualenvwrapper
 
     # Enable virtualenvwrapper
     chk=`grep "virtualenvwrapper" ~/.bashrc|wc -l`

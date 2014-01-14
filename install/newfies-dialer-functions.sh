@@ -302,8 +302,8 @@ func_install_dependencies(){
     esac
 
     echo ""
-    echo "easy_install -U setuptools virtualenv pip distribute"
-    easy_install -U setuptools virtualenv pip distribute
+    echo "easy_install -U setuptools pip distribute"
+    easy_install -U setuptools pip distribute
 
     # install Bower
     npm install -g bower

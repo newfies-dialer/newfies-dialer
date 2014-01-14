@@ -615,7 +615,8 @@ func_nginx_supervisor(){
             mkdir /var/log/supervisor/
         ;;
     esac
-    /etc/init.d/supervisor force-stop
+    /etc/init.d/supervisor stop
+    sleep 1
     /etc/init.d/supervisor start
 }
 
@@ -642,7 +643,8 @@ func_celery_supervisor(){
             mkdir /var/log/supervisor/
         ;;
     esac
-    /etc/init.d/supervisor force-stop
+    /etc/init.d/supervisor stop
+    sleep 1
     /etc/init.d/supervisor start
 }
 

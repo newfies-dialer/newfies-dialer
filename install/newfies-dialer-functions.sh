@@ -174,44 +174,6 @@ func_iptables_configuration() {
     service iptables save
 }
 
-#Fuction to create the virtual env
-func_setup_virtualenv() {
-    echo "This will install virtualenv & virtualenvwrapper"
-    echo "and create a new virtualenv : $NEWFIES_ENV"
-
-    #Prepare settings for installation
-    case $DIST in
-        'DEBIAN')
-            SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
-        ;;
-        'CENTOS')
-            SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
-            #Upgrade Setuptools
-            pip install setuptools --no-use-wheel --upgrade
-        ;;
-    esac
-
-    pip install virtualenv
-    pip install virtualenvwrapper
-
-    # Enable virtualenvwrapper
-    chk=`grep "virtualenvwrapper" ~/.bashrc|wc -l`
-    if [ $chk -lt 1 ] ; then
-        echo "Set Virtualenvwrapper into bash"
-        echo "export WORKON_HOME=/usr/share/virtualenvs" >> ~/.bashrc
-        echo "source $SCRIPT_VIRTUALENVWRAPPER" >> ~/.bashrc
-    fi
-
-    # Setup virtualenv
-    export WORKON_HOME=/usr/share/virtualenvs
-    source $SCRIPT_VIRTUALENVWRAPPER
-
-    mkvirtualenv $NEWFIES_ENV
-    workon $NEWFIES_ENV
-
-    echo "Virtualenv $NEWFIES_ENV created and activated"
-}
-
 
 #Function to install Dependencies
 func_install_dependencies(){
@@ -266,7 +228,6 @@ func_install_dependencies(){
             yum -y install python-setuptools python-tools python-devel mercurial memcached
             yum -y install mlocate vim git wget
             yum -y install policycoreutils-python
-            easy_install pip
 
             # install Node & npm
             yum -y --enablerepo=epel install npm
@@ -340,6 +301,10 @@ func_install_dependencies(){
         ;;
     esac
 
+    echo ""
+    echo "easy_install -U setuptools virtualenv pip distribute"
+    easy_install -U setuptools virtualenv pip distribute
+
     # install Bower
     npm install -g bower
 
@@ -375,11 +340,78 @@ func_install_dependencies(){
 }
 
 
+#Fuction to create the virtual env
+func_setup_virtualenv() {
+    echo "This will install virtualenv & virtualenvwrapper"
+    echo "and create a new virtualenv : $NEWFIES_ENV"
+
+    #Prepare settings for installation
+    case $DIST in
+        'DEBIAN')
+            SCRIPT_VIRTUALENVWRAPPER="/usr/local/bin/virtualenvwrapper.sh"
+        ;;
+        'CENTOS')
+            SCRIPT_VIRTUALENVWRAPPER="/usr/bin/virtualenvwrapper.sh"
+            #Upgrade Setuptools
+            pip install setuptools --no-use-wheel --upgrade
+        ;;
+    esac
+
+    pip install virtualenv
+    pip install virtualenvwrapper
+
+    # Enable virtualenvwrapper
+    chk=`grep "virtualenvwrapper" ~/.bashrc|wc -l`
+    if [ $chk -lt 1 ] ; then
+        echo "Set Virtualenvwrapper into bash"
+        echo "export WORKON_HOME=/usr/share/virtualenvs" >> ~/.bashrc
+        echo "source $SCRIPT_VIRTUALENVWRAPPER" >> ~/.bashrc
+    fi
+
+    # Setup virtualenv
+    export WORKON_HOME=/usr/share/virtualenvs
+    source $SCRIPT_VIRTUALENVWRAPPER
+
+    mkvirtualenv $NEWFIES_ENV
+    workon $NEWFIES_ENV
+
+    echo "Virtualenv $NEWFIES_ENV created and activated"
+}
+
+
+#function to get the source of Newfies
+func_install_source(){
+
+    #get Newfies-Dialer
+    echo "Install Newfies-Dialer..."
+    cd /usr/src/
+    rm -rf newfies-dialer
+    mkdir /var/log/newfies
+
+    git clone git://github.com/Star2Billing/newfies-dialer.git
+    cd newfies-dialer
+
+    #Install branch develop / callcenter
+    if echo $BRANCH | grep -i "^develop" > /dev/null ; then
+        git checkout -b develop --track origin/develop
+    fi
+
+    #Copy files
+    cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
+    cp -r /usr/src/newfies-dialer/lua $LUA_DIR
+    cd $LUA_DIR/libs/
+    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/$BRANCH/acapela.lua
+
+    #Upload audio files
+    mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
+    chown -R $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/usermedia
+}
+
+
 #Function to install Python dependencies
 func_install_pip_deps(){
 
-    #Install Newfies-Dialer depencencies
-    easy_install -U distribute
+    echo "func_install_pip_deps..."
 
     #Upgrade pip to latest (1.5)
     pip install pip --upgrade
@@ -529,34 +561,6 @@ func_prepare_logger() {
     '  >> /etc/logrotate.d/newfies_dialer
 
     logrotate /etc/logrotate.d/newfies_dialer
-}
-
-#function to get the source of Newfies
-func_install_source(){
-
-    #get Newfies-Dialer
-    echo "Install Newfies-Dialer..."
-    cd /usr/src/
-    rm -rf newfies-dialer
-    mkdir /var/log/newfies
-
-    git clone git://github.com/Star2Billing/newfies-dialer.git
-    cd newfies-dialer
-
-    #Install branch develop / callcenter
-    if echo $BRANCH | grep -i "^develop" > /dev/null ; then
-        git checkout -b develop --track origin/develop
-    fi
-
-    #Copy files
-    cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
-    cp -r /usr/src/newfies-dialer/lua $LUA_DIR
-    cd $LUA_DIR/libs/
-    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/$BRANCH/acapela.lua
-
-    #Upload audio files
-    mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
-    chown -R $NEWFIES_USER:$NEWFIES_USER /usr/share/newfies/usermedia
 }
 
 #Create PGSQL

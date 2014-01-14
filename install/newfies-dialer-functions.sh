@@ -591,6 +591,8 @@ func_create_pgsql_database(){
 #NGINX / SUPERVISOR
 func_nginx_supervisor(){
 
+    #Leave virtualenv
+    deactivate
     #Install Supervisor
     pip install supervisor
 
@@ -616,6 +618,8 @@ func_nginx_supervisor(){
 #CELERY SUPERVISOR
 func_celery_supervisor(){
 
+    #Leave virtualenv
+    deactivate
     #Install Supervisor
     pip install supervisor
 

@@ -268,9 +268,6 @@ func_install_dependencies(){
             yum -y install policycoreutils-python
             easy_install pip
 
-            #Install Supervisor
-            pip install supervisor
-
             # install Node & npm
             yum -y --enablerepo=epel install npm
 
@@ -593,6 +590,10 @@ func_create_pgsql_database(){
 
 #NGINX / SUPERVISOR
 func_nginx_supervisor(){
+
+    #Install Supervisor
+    pip install supervisor
+
     #Configure and Start supervisor
     case $DIST in
         'DEBIAN')
@@ -614,6 +615,10 @@ func_nginx_supervisor(){
 
 #CELERY SUPERVISOR
 func_celery_supervisor(){
+
+    #Install Supervisor
+    pip install supervisor
+
     #Configure and Start supervisor
     case $DIST in
         'DEBIAN')

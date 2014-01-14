@@ -81,9 +81,6 @@ gpgcheck = 0
 	fi
 }
 
-
-
-
 #Identify the OS
 func_identify_os
 
@@ -94,9 +91,6 @@ echo "It will install Newfies-Dialer and Freeswitch on your server"
 echo "Press Enter to continue or CTRL-C to exit"
 echo ""
 read TEMP
-
-
-
 
 
 case $DIST in
@@ -113,8 +107,6 @@ case $DIST in
     ;;
 esac
 
-
-
 #Install Freeswitch
 cd /usr/src/
 wget --no-check-certificate  https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/install-freeswitch.sh -O install-freeswitch.sh
@@ -125,4 +117,3 @@ bash install-freeswitch.sh
 cd /usr/src/
 wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/install-newfies.sh -O install-newfies.sh
 bash install-newfies.sh
-

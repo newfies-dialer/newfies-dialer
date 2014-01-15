@@ -219,6 +219,7 @@ INSTALLED_APPS = (
     'dialer_cdr',
     'dialer_gateway',
     'dialer_settings',
+    'mod_registration',
     'user_profile',
     'notification',
     'survey',

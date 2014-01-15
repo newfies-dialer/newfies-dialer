@@ -26,6 +26,7 @@ from user_profile.urls import urlpatterns as urlpatterns_user_profile
 from survey.urls import urlpatterns as urlpatterns_survey
 from dialer_audio.urls import urlpatterns as urlpatterns_dialer_audio
 from frontend_notification.urls import urlpatterns as urlpatterns_frontend_notification
+from mod_registration.urls import urlpatterns as urlpatterns_mod_registration
 #from agent.urls import urlpatterns as urlpatterns_agent
 #from callcenter.urls import urlpatterns as urlpatterns_callcenter
 from sms_module.urls import urlpatterns as urlpatterns_sms_module
@@ -68,6 +69,7 @@ if settings.DEBUG:
 urlpatterns += urlpatterns_apirest
 urlpatterns += urlpatterns_agent_apirest
 urlpatterns += urlpatterns_frontend
+urlpatterns += urlpatterns_mod_registration
 urlpatterns += urlpatterns_dialer_contact
 urlpatterns += urlpatterns_dialer_campaign
 urlpatterns += urlpatterns_dialer_cdr

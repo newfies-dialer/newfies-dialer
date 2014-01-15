@@ -79,7 +79,7 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
         self.assertTrue(response.context['check_phone_no_form'],
                         CheckPhoneNumberForm())
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/registration/user_detail_change.html')
+        self.assertTemplateUsed(response, 'user_profile/user_detail_change.html')
 
         request = self.factory.get('/user_detail_change/')
         request.user = self.user

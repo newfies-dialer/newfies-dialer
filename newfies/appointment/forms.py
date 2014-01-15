@@ -107,6 +107,9 @@ class CalendarUserNameChangeForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super(CalendarUserNameChangeForm, self).__init__(*args, **kwargs)
+        for i in self.fields.keyOrder:
+            if i == 'username':
+                self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CalendarUserChangeDetailExtendForm(ModelForm):

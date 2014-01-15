@@ -20,7 +20,7 @@
 
         <form class="well">
             {% for field in user_detail_form %}
-                <div class="row{% if field.errors %} control-group error{% endif %}">
+                <div class="row{% if field.errors %} form-group error{% endif %}">
                     <div class="span2">
                         <label class="control-label" for="{{ field.auto_id }}">
                         {{ field.label|title }}
@@ -36,7 +36,7 @@
             {% endfor %}
 
             {% for field in user_detail_extened_form %}
-                <div class="row{% if field.errors %} control-group error{% endif %}">
+                <div class="row{% if field.errors %} form-group error{% endif %}">
                     <div class="span2">
                         <label class="control-label" for="{{ field.auto_id }}">
                         {{ field.label|title }}

@@ -36,7 +36,7 @@ def customer_detail_change(request):
 
         * ``form`` - UserChangeDetailForm, UserChangeDetailExtendForm,
                         UserPasswordChangeForm, CheckPhoneNumberForm
-        * ``template`` - 'frontend/registration/user_detail_change.html'
+        * ``template`` - 'user_profile/user_detail_change.html'
 
     **Logic Description**:
 
@@ -116,7 +116,7 @@ def customer_detail_change(request):
     except:
         dialer_set = ''
 
-    template = 'frontend/registration/user_detail_change.html'
+    template = 'user_profile/user_detail_change.html'
     data = {
         'user_detail_form': user_detail_form,
         'user_detail_extened_form': user_detail_extened_form,

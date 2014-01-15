@@ -17,20 +17,20 @@
 <div class="tab-content">
 
 	<div id="tabs-1" class="tab-pane {% if action == 'tabs-1' %}active{% endif %}">
-        {% include "frontend/registration/user_account.html" %}
+        {% include "user_profile/user_account.html" %}
     </div>
 
     <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
-        {% include "frontend/registration/user_change_password.html" %}
+        {% include "user_profile/user_change_password.html" %}
     </div>
 
     <div id="tabs-3" align="left" class="tab-pane {% if action == 'tabs-3' %}active{% endif %}">
         <div>&nbsp;</div>
-        {% include "frontend/registration/user_dialer_settings.html" %}
+        {% include "user_profile/user_dialer_settings.html" %}
     </div>
 
     <div id="tabs-4" align="left"  class="tab-pane {% if action == 'tabs-4' %}active{% endif %}">
-        {% include "frontend/registration/check_user_phone_number.html" %}
+        {% include "user_profile/check_user_phone_number.html" %}
 	</div>
 
     <div id="tabs-5" align="left" class="tab-pane {% if action == 'tabs-5' %}active{% endif %}">

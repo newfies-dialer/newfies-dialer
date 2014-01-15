@@ -90,7 +90,7 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         """Test Function to check sms campaign list"""
         response = self.client.get('/sms_campaign/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/sms_campaign/list.html')
+        self.assertTemplateUsed(response, 'sms_module/list.html')
 
         request = self.factory.get('/sms_campaign/')
         request.user = self.user
@@ -202,7 +202,7 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/sms_dashboard/')
         self.assertTrue(response.context['form'], SMSDashboardForm(self.user))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/sms_campaign/sms_dashboard.html')
+        self.assertTemplateUsed(response, 'sms_module/sms_dashboard.html')
 
         request = self.factory.post('/sms_dashboard/',
             {'smscampaign': '1',
@@ -273,7 +273,7 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/sms_report/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
-            response, 'frontend/sms_campaign/sms_report.html')
+            response, 'sms_module/sms_report.html')
 
         response = self.client.post(
             '/sms_report/', data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),

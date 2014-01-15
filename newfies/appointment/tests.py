@@ -98,7 +98,7 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         """Test Function to check calendar_setting list"""
         response = self.client.get('/module/calendar_setting/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/appointment/calendar_setting/list.html')
+        self.assertTemplateUsed(response, 'appointment/calendar_setting/list.html')
 
         request = self.factory.get('/module/calendar_setting/')
         request.user = self.user
@@ -183,7 +183,7 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         """Test Function to check calendar_user list"""
         response = self.client.get('/module/calendar_user/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/appointment/calendar_user/list.html')
+        self.assertTemplateUsed(response, 'appointment/calendar_user/list.html')
 
         request = self.factory.get('/module/calendar_user/')
         request.user = self.user
@@ -254,7 +254,7 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         """Test Function to check calendar list"""
         response = self.client.get('/module/calendar/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/appointment/calendar/list.html')
+        self.assertTemplateUsed(response, 'appointment/calendar/list.html')
 
         request = self.factory.get('/module/calendar/')
         request.user = self.user
@@ -323,7 +323,7 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         """Test Function to check event list"""
         response = self.client.get('/module/event/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/appointment/event/list.html')
+        self.assertTemplateUsed(response, 'appointment/event/list.html')
 
         request = self.factory.get('/module/calendar/')
         request.user = self.user
@@ -398,7 +398,7 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         """Test Function to check alarm list"""
         response = self.client.get('/module/alarm/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/appointment/alarm/list.html')
+        self.assertTemplateUsed(response, 'appointment/alarm/list.html')
 
         request = self.factory.get('/module/alarm/')
         request.user = self.user

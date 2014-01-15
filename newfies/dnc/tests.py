@@ -83,7 +83,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
     def test_dnc_view_list(self):
         """Test Function to check dnc list"""
         response = self.client.get('/module/dnc_list/')
-        self.assertTemplateUsed(response, 'frontend/dnc_list/list.html')
+        self.assertTemplateUsed(response, 'dnc/dnc_list/list.html')
 
         request = self.factory.get('/module/dnc_list/')
         request.user = self.user
@@ -109,7 +109,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         """Test Function to check update dnc"""
         response = self.client.get('/module/dnc_list/1/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/dnc_list/change.html')
+        self.assertTemplateUsed(response, 'dnc/dnc_list/change.html')
 
         request = self.factory.post('/module/dnc_list/1/',
             data={'name': 'Default_DNC'}, follow=True)
@@ -145,7 +145,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/module/dnc_contact/')
         self.assertTrue(response.context['form'], DNCContactSearchForm(self.user))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/dnc_contact/list.html')
+        self.assertTemplateUsed(response, 'dnc/dnc_contact/list.html')
 
         request = self.factory.post('/module/dnc_contact/',
                                     data={'phone_number': '123'})
@@ -178,7 +178,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/module/dnc_contact/1/')
         self.assertTrue(response.context['form'], DNCContactForm(self.user))
         self.assertEqual(response.context['action'], 'update')
-        self.assertTemplateUsed(response, 'frontend/dnc_contact/change.html')
+        self.assertTemplateUsed(response, 'dnc/dnc_contact/change.html')
 
         request = self.factory.post('/module/dnc_contact/1/',
             {'dnc': '1', 'phone_number': '154'})
@@ -217,7 +217,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
                         DNCContact_fileImport(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
-                                'frontend/dnc_contact/import_dnc_contact.html')
+                                'dnc/dnc_contact/import_dnc_contact.html')
 
         response = self.client.post('/module/dnc_contact_import/',
                                     data={'dnc_list': '1',

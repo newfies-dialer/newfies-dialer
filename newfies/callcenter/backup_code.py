@@ -60,7 +60,7 @@ class CallcenterCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/module/queue/')
         self.assertEqual(response.context['module'], 'queue_list')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/queue/list.html')
+        self.assertTemplateUsed(response, 'callcenter/queue/list.html')
 
         request = self.factory.get('/module/queue/')
         request.user = manager
@@ -124,9 +124,8 @@ class CallcenterCustomerView(BaseAuthenticatedClient):
         """Test Function to check tier list"""
         manager = User.objects.get(pk=2)
         response = self.client.get('/module/tier/')
-        self.assertEqual(response.context['module'], 'tier_list')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/tier/list.html')
+        self.assertTemplateUsed(response, 'callcenter/tier/list.html')
 
         request = self.factory.get('/module/tier/')
         request.user = manager
@@ -138,7 +137,6 @@ class CallcenterCustomerView(BaseAuthenticatedClient):
         """Test Function to check add tier"""
         manager = User.objects.get(pk=2)
         response = self.client.get('/module/tier/add/')
-        self.assertEqual(response.context['action'], 'add')
         self.assertEqual(response.status_code, 200)
         response = self.client.post('/module/tier/add/', data={})
         self.assertEqual(response.context['action'], 'add')

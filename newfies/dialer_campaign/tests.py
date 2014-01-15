@@ -16,13 +16,13 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.management import call_command
 from django.test import TestCase
-from dialer_campaign.models import Campaign, Subscriber, \
+from dialer_campaign.models import Campaign, Subscriber,\
     common_contact_authorization
 from dialer_campaign.forms import CampaignForm
-from dialer_campaign.views import campaign_list, campaign_add, \
-    campaign_change, campaign_del, notify_admin, \
-    update_campaign_status_admin, \
-    get_url_campaign_status, campaign_duplicate, subscriber_list, \
+from dialer_campaign.views import campaign_list, campaign_add,\
+    campaign_change, campaign_del, notify_admin,\
+    update_campaign_status_admin,\
+    get_url_campaign_status, campaign_duplicate, subscriber_list,\
     subscriber_export
 from dialer_campaign.tasks import campaign_running, pending_call_processing,\
     collect_subscriber, campaign_expire_check
@@ -97,7 +97,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         """Test Function to check campaign list"""
         response = self.client.get('/campaign/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/campaign/list.html')
+        self.assertTemplateUsed(response, 'dialer_campaign/campaign/list.html')
 
         request = self.factory.get('/campaign/')
         request.user = self.user
@@ -253,7 +253,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         """Test Function to check subscriber list"""
         response = self.client.get('/subscribers/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/subscriber/list.html')
+        self.assertTemplateUsed(response, 'dialer_campaign/subscriber/list.html')
 
         request = self.factory.get('/subscribers/')
         request.user = self.user

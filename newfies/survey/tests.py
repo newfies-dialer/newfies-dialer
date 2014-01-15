@@ -92,7 +92,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         """Test Function survey view list"""
         response = self.client.get('/module/sealed_survey/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/survey/sealed_survey_list.html')
+        self.assertTemplateUsed(response, 'survey/sealed_survey_list.html')
 
         request = self.factory.get('/module/sealed_survey/')
         request.user = self.user
@@ -104,7 +104,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         """Test Function survey view list"""
         response = self.client.get('/module/survey/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/survey/survey_list.html')
+        self.assertTemplateUsed(response, 'survey/survey_list.html')
 
         request = self.factory.get('/module/survey/')
         request.user = self.user
@@ -117,7 +117,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/module/survey/add/')
         self.assertTrue(response.context['form'], SurveyForm())
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
+        self.assertTemplateUsed(response, 'survey/survey_change.html')
 
         request = self.factory.post('/module/survey/add/', {'name': 'test_survey'}, follow=True)
         request.user = self.user
@@ -129,7 +129,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         """Test Function survey view update"""
         response = self.client.get('/module/survey/1/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/survey/survey_change.html')
+        self.assertTemplateUsed(response, 'survey/survey_change.html')
 
         request = self.factory.post('/module/survey/1/', {'name': 'test_survey'}, follow=True)
         request.user = self.user

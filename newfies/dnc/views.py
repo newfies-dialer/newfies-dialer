@@ -11,10 +11,8 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.contrib.auth.decorators import login_required, \
-    permission_required
-from django.http import HttpResponseRedirect, HttpResponse, \
-    Http404
+from django.contrib.auth.decorators import login_required, permission_required
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
@@ -22,8 +20,7 @@ from dnc.models import DNC, DNCContact
 from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
     DNCContact_fileImport, DNCContact_fileExport
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
-from dialer_campaign.function_def import user_dialer_setting_msg, \
-    type_field_chk
+from dialer_campaign.function_def import user_dialer_setting_msg, type_field_chk
 from common.common_functions import get_pagination_vars, striplist
 from common.common_constants import EXPORT_CHOICE
 import tablib
@@ -40,7 +37,7 @@ def dnc_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/dnc_list/list.html
+        * ``template`` - dnc/dnc_list/list.html
 
     **Logic Description**:
 
@@ -55,7 +52,7 @@ def dnc_list(request):
 
     dnc_list = DNC.objects.filter(user=request.user).order_by(sort_order)
 
-    template = 'frontend/dnc_list/list.html'
+    template = 'dnc/dnc_list/list.html'
     data = {
         'msg': request.session.get('msg'),
         'dnc_list': dnc_list,
@@ -79,7 +76,7 @@ def dnc_add(request):
     **Attributes**:
 
         * ``form`` - DNCForm
-        * ``template`` - frontend/dnc_list/change.html
+        * ``template`` - dnc/dnc_list/change.html
 
     **Logic Description**:
 
@@ -96,7 +93,7 @@ def dnc_add(request):
             request.session["msg"] = _('"%(name)s" added.') %\
                 {'name': request.POST['name']}
             return HttpResponseRedirect(dnc_list_redirect_url)
-    template = 'frontend/dnc_list/change.html'
+    template = 'dnc/dnc_list/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -180,7 +177,7 @@ def dnc_change(request, object_id):
 
         * ``object_id`` - Selected dnc object
         * ``form`` - DNCForm
-        * ``template`` - frontend/dnc_list/change.html
+        * ``template`` - dnc/dnc_list/change.html
 
     **Logic Description**:
 
@@ -201,7 +198,7 @@ def dnc_change(request, object_id):
                     % {'name': request.POST['name']}
                 return HttpResponseRedirect(dnc_list_redirect_url)
 
-    template = 'frontend/dnc_list/change.html'
+    template = 'dnc/dnc_list/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -218,7 +215,7 @@ def dnc_contact_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/dnc_contact/list.html
+        * ``template`` - dnc/dnc_contact/list.html
         * ``form`` - ContactSearchForm
 
     **Logic Description**:
@@ -302,7 +299,7 @@ def dnc_contact_list(request):
         phone_number_list = all_phone_number_list[start_page:end_page]
         phone_number_count = all_phone_number_list.count()
 
-    template = 'frontend/dnc_contact/list.html'
+    template = 'dnc/dnc_contact/list.html'
     data = {
         'phone_number_list': phone_number_list,
         'all_phone_number_list': all_phone_number_list,
@@ -330,7 +327,7 @@ def dnc_contact_add(request):
     **Attributes**:
 
         * ``form`` - DNCContactForm
-        * ``template`` - frontend/dnc_contact/change.html
+        * ``template`` - dnc/dnc_contact/change.html
 
     **Logic Description**:
 
@@ -344,15 +341,13 @@ def dnc_contact_add(request):
         form = DNCContactForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('"%(name)s" added.') %\
-                {'name': request.POST['phone_number']}
+            request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['phone_number']}
             return HttpResponseRedirect(dnc_contact_redirect_url)
         else:
             if len(request.POST['phone_number']) > 0:
-                error_msg = _('"%(name)s" cannot be added.') %\
-                    {'name': request.POST['phone_number']}
+                error_msg = _('"%(name)s" cannot be added.') % {'name': request.POST['phone_number']}
 
-    template = 'frontend/dnc_contact/change.html'
+    template = 'dnc/dnc_contact/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -411,7 +406,7 @@ def dnc_contact_change(request, object_id):
 
         * ``object_id`` - Selected dnc contact object
         * ``form`` - DNCContactForm
-        * ``template`` - frontend/dnc_contact/change.html
+        * ``template`` - dnc/dnc_contact/change.html
 
     **Logic Description**:
 
@@ -436,7 +431,7 @@ def dnc_contact_change(request, object_id):
                     % {'name': request.POST['phone_number']}
                 return HttpResponseRedirect(dnc_contact_redirect_url)
 
-    template = 'frontend/dnc_contact/change.html'
+    template = 'dnc/dnc_contact/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -453,7 +448,7 @@ def dnc_contact_import(request):
     **Attributes**:
 
         * ``form`` - DNCContact_fileImport
-        * ``template`` - frontend/dnc/import_contact.html
+        * ``template`` - dnc/dnc_contact/import_contact.html
 
     **Logic Description**:
 
@@ -541,7 +536,7 @@ def dnc_contact_import(request):
         'type_error_import_list': type_error_import_list,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
     })
-    template = 'frontend/dnc_contact/import_dnc_contact.html'
+    template = 'dnc/dnc_contact/import_dnc_contact.html'
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
 
@@ -591,7 +586,7 @@ def dnc_contact_export_view(request):
     **Attributes**:
 
         * ``form`` - DNCContact_fileExport
-        * ``template`` - frontend/dnc_contact/export_dnc_contact.html
+        * ``template`` - dnc/dnc_contact/export_dnc_contact.html
 
     **Logic Description**:
 
@@ -604,7 +599,7 @@ def dnc_contact_export_view(request):
         export_to = request.POST['export_to']
         return HttpResponseRedirect(dnc_contact_redirect_url + 'export/?format=' + export_to + '&dnc_list_id=' + dnc_list_id)
 
-    template = 'frontend/dnc_contact/export_dnc_contact.html'
+    template = 'dnc/dnc_contact/export_dnc_contact.html'
     data = {
         'form': form,
         'action': 'update',

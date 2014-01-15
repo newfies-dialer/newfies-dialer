@@ -72,7 +72,7 @@ def voipcall_report(request):
     **Attributes**:
 
         * ``form`` - VoipSearchForm
-        * ``template`` - frontend/report/voipcall_report.html
+        * ``template`` - dialer_cdr/voipcall_report.html
 
     **Logic Description**:
 
@@ -86,8 +86,7 @@ def voipcall_report(request):
                            'used_gateway', 'callerid', 'callid', 'phone_number',
                            'duration', 'billsec', 'amd_status']
     default_sort_field = 'starting_date'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
@@ -211,7 +210,7 @@ def voipcall_report(request):
 
     voipcall_list = voipcall_list.order_by(sort_order)[start_page:end_page]
 
-    template = 'frontend/report/voipcall_report.html'
+    template = 'dialer_cdr/voipcall_report.html'
     data = {
         'form': form,
         'total_data': daily_data['total_data'],

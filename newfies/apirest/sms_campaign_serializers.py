@@ -15,8 +15,8 @@
 #
 from rest_framework import serializers
 from dialer_campaign.function_def import user_dialer_setting, dialer_setting_limit
-from sms_module.models import SMSCampaign
-from sms_module.function_def import check_sms_dialer_setting
+from mod_sms.models import SMSCampaign
+from mod_sms.function_def import check_sms_dialer_setting
 from dialer_contact.models import Phonebook
 from sms.models import Gateway as SMSGateway
 

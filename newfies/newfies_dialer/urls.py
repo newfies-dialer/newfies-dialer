@@ -29,7 +29,7 @@ from frontend_notification.urls import urlpatterns as urlpatterns_frontend_notif
 from mod_registration.urls import urlpatterns as urlpatterns_mod_registration
 #from agent.urls import urlpatterns as urlpatterns_agent
 #from callcenter.urls import urlpatterns as urlpatterns_callcenter
-from sms_module.urls import urlpatterns as urlpatterns_sms_module
+from mod_sms.urls import urlpatterns as urlpatterns_mod_sms
 from dajaxice.core import dajaxice_autodiscover, dajaxice_config
 from django.contrib import admin
 import os
@@ -81,7 +81,7 @@ urlpatterns += urlpatterns_frontend_notification
 #urlpatterns += urlpatterns_agent
 #urlpatterns += urlpatterns_callcenter
 urlpatterns += urlpatterns_appointment
-urlpatterns += urlpatterns_sms_module
+urlpatterns += urlpatterns_mod_sms
 
 urlpatterns += patterns('',
     (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),

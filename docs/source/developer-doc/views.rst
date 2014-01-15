@@ -347,7 +347,7 @@ Newfies-Dialer Views
   .. autofunction:: alarm_change
 
 
-.. automodule:: sms_module.views
+.. automodule:: mod_sms.views
 
 .. _sms_campaign_list:
 

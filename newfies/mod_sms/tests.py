@@ -16,17 +16,17 @@
 from django.contrib.auth.models import User
 from django.core.management import call_command
 from django.test import TestCase
-from sms_module.models import SMSCampaign, SMSMessage, SMSCampaignSubscriber
-from sms_module.views import sms_campaign_list, sms_campaign_add,\
+from mod_sms.models import SMSCampaign, SMSMessage, SMSCampaignSubscriber
+from mod_sms.views import sms_campaign_list, sms_campaign_add,\
     sms_campaign_change, sms_campaign_del, update_sms_campaign_status_admin,\
     update_sms_campaign_status_cust, sms_dashboard, sms_report, export_sms_report,\
     get_url_sms_campaign_status, common_sms_campaign_status
-from sms_module.tasks import init_smsrequest, check_sms_campaign_pendingcall, spool_sms_nocampaign,\
+from mod_sms.tasks import init_smsrequest, check_sms_campaign_pendingcall, spool_sms_nocampaign,\
     sms_campaign_running, SMSImportPhonebook, sms_campaign_spool_contact, sms_collect_subscriber,\
     sms_campaign_expire_check, resend_sms_update_smscampaignsubscriber
-from sms_module.constants import SMS_CAMPAIGN_STATUS
+from mod_sms.constants import SMS_CAMPAIGN_STATUS
 from user_profile.models import UserProfile
-from sms_module.forms import SMSDashboardForm
+from mod_sms.forms import SMSDashboardForm
 from frontend.constants import SEARCH_TYPE
 from common.utils import BaseAuthenticatedClient
 from datetime import datetime
@@ -39,42 +39,42 @@ class SMSAdminView(BaseAuthenticatedClient):
 
     def test_admin_sms_campaign_view_list(self):
         """Test Function to check admin campaign list"""
-        response = self.client.get('/admin/sms_module/smscampaign/')
+        response = self.client.get('/admin/mod_sms/smscampaign/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_sms_campaign_view_add(self):
         """Test Function to check admin campaign add"""
-        response = self.client.get('/admin/sms_module/smscampaign/add/')
+        response = self.client.get('/admin/mod_sms/smscampaign/add/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_sms_subscriber_view_list(self):
         """Test Function to check admin subscriber list"""
-        response = self.client.get('/admin/sms_module/smscampaignsubscriber/')
+        response = self.client.get('/admin/mod_sms/smscampaignsubscriber/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_sms_subscriber_view_add(self):
         """Test Function to check admin subscriber add"""
-        response = self.client.get('/admin/sms_module/smscampaignsubscriber/add/')
+        response = self.client.get('/admin/mod_sms/smscampaignsubscriber/add/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_sms_template_view_list(self):
         """Test Function to check admin subscriber list"""
-        response = self.client.get('/admin/sms_module/smstemplate/')
+        response = self.client.get('/admin/mod_sms/smstemplate/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_sms_template_view_add(self):
         """Test Function to check admin subscriber add"""
-        response = self.client.get('/admin/sms_module/smstemplate/add/')
+        response = self.client.get('/admin/mod_sms/smstemplate/add/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_smsmessage_view_list(self):
         """Test Function to check admin subscriber list"""
-        response = self.client.get('/admin/sms_module/smsmessage/')
+        response = self.client.get('/admin/mod_sms/smsmessage/')
         self.failUnlessEqual(response.status_code, 200)
 
     def test_admin_smsmessage_report(self):
         """Test Function to check admin subscriber add"""
-        response = self.client.get('/admin/sms_module/smsmessage/sms_daily_report/')
+        response = self.client.get('/admin/mod_sms/smsmessage/sms_daily_report/')
         self.failUnlessEqual(response.status_code, 200)
 
 
@@ -90,7 +90,7 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         """Test Function to check sms campaign list"""
         response = self.client.get('/sms_campaign/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'sms_module/list.html')
+        self.assertTemplateUsed(response, 'mod_sms/list.html')
 
         request = self.factory.get('/sms_campaign/')
         request.user = self.user
@@ -165,7 +165,7 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         response = update_sms_campaign_status_admin(request, 1, 1)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'],
-            '/admin/sms_module/smscampaign/')
+            '/admin/mod_sms/smscampaign/')
 
     def test_update_sms_campaign_status_cust(self):
         request = self.factory.post(
@@ -202,7 +202,7 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/sms_dashboard/')
         self.assertTrue(response.context['form'], SMSDashboardForm(self.user))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'sms_module/sms_dashboard.html')
+        self.assertTemplateUsed(response, 'mod_sms/sms_dashboard.html')
 
         request = self.factory.post('/sms_dashboard/',
             {'smscampaign': '1',
@@ -273,7 +273,7 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/sms_report/')
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(
-            response, 'sms_module/sms_report.html')
+            response, 'mod_sms/sms_report.html')
 
         response = self.client.post(
             '/sms_report/', data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),

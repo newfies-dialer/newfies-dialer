@@ -189,27 +189,27 @@ class SMSCampaign(Model):
         # active - 1 | pause - 2 | abort - 3 | stop - 4
         if self.status == SMS_CAMPAIGN_STATUS.START:
             return "<a href='%s'>Pause</a> | <a href='%s'>Abort</a> | <a href='%s'>Stop</a>" % (
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.PAUSE]),
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.ABORT]),
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.END]))
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.PAUSE]),
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.ABORT]),
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.END]))
 
         if self.status == SMS_CAMPAIGN_STATUS.PAUSE:
             return "<a href='%s'>Start</a> | <a href='%s'>Abort</a> | <a href='%s'>Stop</a>" % (
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.START]),
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.ABORT]),
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.END]))
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.START]),
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.ABORT]),
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.END]))
 
         if self.status == SMS_CAMPAIGN_STATUS.ABORT:
             return "<a href='%s'>Start</a> | <a href='%s'>Pause</a> | <a href='%s'>Stop</a>" % (
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.START]),
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.PAUSE]),
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.END]))
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.START]),
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.PAUSE]),
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.END]))
 
         if self.status == SMS_CAMPAIGN_STATUS.END:
             return "<a href='%s'>Start</a> | <a href='%s'>Pause</a> | <a href='%s'>Abort</a>" % (
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.START]),
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.PAUSE]),
-                reverse('sms_module.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.ABORT]))
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.START]),
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.PAUSE]),
+                reverse('mod_sms.views.update_sms_campaign_status_admin', args=[self.pk, SMS_CAMPAIGN_STATUS.ABORT]))
 
     update_sms_campaign_status.allow_tags = True
     update_sms_campaign_status.short_description = _('action')

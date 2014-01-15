@@ -370,7 +370,7 @@ class sms_campaign_expire_check(PeriodicTask):
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.info("TASK :: sms_campaign_expire_check")
-        from sms_module.views import common_sms_campaign_status
+        from mod_sms.views import common_sms_campaign_status
         for sms_campaign in SMSCampaign.objects.get_expired_sms_campaign():
             logger.debug("=> SMS Campaign name %s (id:%s)" % (sms_campaign.name,
                                                               sms_campaign.id))

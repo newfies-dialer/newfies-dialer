@@ -9,7 +9,7 @@ from dialer_cdr.models import Callrequest
 from mod_mailer.models import MailTemplate
 from datetime import datetime
 from django.utils.timezone import utc
-from sms_module.models import SMSTemplate
+from mod_sms.models import SMSTemplate
 
 
 class Alarm(models.Model):

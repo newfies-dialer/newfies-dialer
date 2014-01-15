@@ -149,7 +149,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
         **Attributes**:
 
             * ``form`` - AdminSMSSearchForm
-            * ``template`` - admin/sms_module/smsmessage/sms_report.html
+            * ``template`` - admin/mod_sms/smsmessage/sms_report.html
 
         **Logic Description**:
 
@@ -264,7 +264,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
         })
 
         return render_to_response(
-            'admin/sms_module/smsmessage/sms_report.html', context_instance=ctx)
+            'admin/mod_sms/smsmessage/sms_report.html', context_instance=ctx)
 
     def export_sms_report(self, request):
         """Export a CSV file of SMS records

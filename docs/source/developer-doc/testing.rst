@@ -49,7 +49,7 @@ How to run test
 
     $ python manage.py test appointment
 
-    $ python manage.py test sms_module
+    $ python manage.py test mod_sms
 
 
 .. toctree::

@@ -13,9 +13,9 @@
 #
 
 from django.template.defaultfilters import register
-from sms_module.constants import SMS_CAMPAIGN_STATUS
-from sms_module.function_def import get_sms_campaign_status_name
-from sms_module.views import get_url_sms_campaign_status, make_duplicate_sms_campaign,\
+from mod_sms.constants import SMS_CAMPAIGN_STATUS
+from mod_sms.function_def import get_sms_campaign_status_name
+from mod_sms.views import get_url_sms_campaign_status, make_duplicate_sms_campaign,\
     sms_campaign_textmessage
 
 

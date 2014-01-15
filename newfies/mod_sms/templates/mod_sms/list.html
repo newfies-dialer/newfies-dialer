@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags sms_module_tags %}
+{% load i18n pagination_tags common_tags mod_sms_tags %}
 
 {% block extra_files %}
     {% include "frontend/custom_jquery_select_all.html" %}
@@ -58,7 +58,7 @@
             {% trans "action"|capfirst %} <span class="caret"></span>
             </button>
             <ul class="dropdown-menu" role="menu">
-                {% if perms.sms_module.delete_smscampaign %}
+                {% if perms.mod_sms.delete_smscampaign %}
                     <li><a href="#" onclick="delete_button()">{% trans "delete selected"|capfirst %}</a></li>
                 {% endif %}
                 <li>
@@ -66,7 +66,7 @@
                 </li>
             </ul>
         </div>
-        {% if perms.sms_module.add_smscampaign %}
+        {% if perms.mod_sms.add_smscampaign %}
             <button type="button" class="btn btn-info" onclick="add_button()">
                 <i class="fa fa-plus"></i> {% trans "add"|title %}
             </button>
@@ -106,10 +106,10 @@
                                 <td>{% get_sms_campaign_status_url row.id row.status %} - {{ row.status|get_sms_campaign_status|safe }}
                                 </td>
                                 <td>
-                                    {% if perms.sms_module.change_smscampaign %}
+                                    {% if perms.mod_sms.change_smscampaign %}
                                         <a href="{{ row.id }}/" title="{% trans 'update sms campaign'|capfirst %}"><i class="fa fa-edit"></i></a>
                                     {% endif %}
-                                    {% if perms.sms_module.delete_smscampaign %}
+                                    {% if perms.mod_sms.delete_smscampaign %}
                                         <a id="id_delete_confirm" href="del/{{ row.id }}/" title="{% trans 'delete sms campaign'|capfirst %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
                                     {{ row.id|create_duplicate_sms_campaign|safe }}

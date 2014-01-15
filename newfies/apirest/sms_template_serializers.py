@@ -14,7 +14,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import serializers
-from sms_module.models import SMSTemplate
+from mod_sms.models import SMSTemplate
 
 
 class SMSTemplateSerializer(serializers.HyperlinkedModelSerializer):

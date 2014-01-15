@@ -16,7 +16,7 @@ from django.core.management.base import BaseCommand
 from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
-from sms_module.models import SMSMessage, SMSCampaign
+from mod_sms.models import SMSMessage, SMSCampaign
 from random import choice
 from uuid import uuid1
 import random

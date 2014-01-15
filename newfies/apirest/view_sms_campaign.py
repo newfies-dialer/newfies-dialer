@@ -18,7 +18,7 @@ from rest_framework import viewsets
 from apirest.sms_campaign_serializers import SMSCampaignSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from sms_module.models import SMSCampaign
+from mod_sms.models import SMSCampaign
 from permissions import CustomObjectPermissions
 
 

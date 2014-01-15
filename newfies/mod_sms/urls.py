@@ -14,7 +14,7 @@
 
 from django.conf.urls import patterns
 
-urlpatterns = patterns('sms_module.views',
+urlpatterns = patterns('mod_sms.views',
 
     # SMS Campaign urls
     (r'^sms_dashboard/$', 'sms_dashboard'),

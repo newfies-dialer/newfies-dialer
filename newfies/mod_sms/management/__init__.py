@@ -15,7 +15,7 @@
 from django.conf import settings
 from django.db.models import signals
 from django.utils.translation import ugettext_noop as _
-from sms_module.constants import SMS_NOTIFICATION_NAME
+from mod_sms.constants import SMS_NOTIFICATION_NAME
 
 
 if "notification" in settings.INSTALLED_APPS:

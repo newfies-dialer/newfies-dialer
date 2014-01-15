@@ -24,7 +24,9 @@ from django.utils.timezone import utc
 
 
 def field_list(name, user=None):
-    """Return List of SMSCampaign"""
+    """
+    Return List of SMSCampaign
+    """
     if name == "smscampaign" and user is not None:
         list = SMSCampaign.objects.filter(user=user)
     if name == "smscampaign" and user is None:

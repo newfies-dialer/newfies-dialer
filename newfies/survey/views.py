@@ -26,8 +26,7 @@ from dialer_campaign.models import Campaign
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from survey.models import Survey_template, Survey, Section_template, Section,\
-    Branching_template, Branching,\
-    Result, ResultAggregate
+    Branching_template, Branching, Result, ResultAggregate
 from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
@@ -79,7 +78,7 @@ def survey_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/list.html
+        * ``template`` - survey/list.html
 
     **Logic Description**:
 
@@ -97,7 +96,7 @@ def survey_list(request):
     survey_list = Survey_template.objects\
         .values('id', 'name', 'description', 'updated_date')\
         .filter(user=request.user).order_by(sort_order)
-    template = 'frontend/survey/survey_list.html'
+    template = 'survey/survey_list.html'
     data = {
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
@@ -120,7 +119,7 @@ def survey_add(request):
     **Attributes**:
 
         * ``form`` - SurveyForm
-        * ``template`` - frontend/survey/change.html
+        * ``template`` - survey/change.html
 
     **Logic Description**:
 
@@ -138,7 +137,7 @@ def survey_add(request):
                 {'name': request.POST['name']}
             return HttpResponseRedirect(
                 redirect_url_to_survey_list + '%s/' % (obj.id))
-    template = 'frontend/survey/survey_change.html'
+    template = 'survey/survey_change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -252,7 +251,7 @@ def section_add(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/section_change.html
+        * ``template`` - survey/section_change.html
 
     **Logic Description**:
 
@@ -320,7 +319,7 @@ def section_add(request):
         else:
             form = form_data['form']
 
-    template = 'frontend/survey/section_change.html'
+    template = 'survey/section_change.html'
     data = {
         'form': form,
         'survey_id': survey_id,
@@ -380,7 +379,7 @@ def section_change(request, id):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/section_change.html
+        * ``template`` - survey/section_change.html
 
     **Logic Description**:
 
@@ -467,7 +466,7 @@ def section_change(request, id):
         else:
             form = form_data['form']
 
-    template = 'frontend/survey/section_change.html'
+    template = 'survey/section_change.html'
     data = {
         'form': form,
         'survey_id': section.survey_id,
@@ -512,13 +511,13 @@ def section_delete(request, id):
         request.session["msg"] = _('section is deleted successfully.')
         return HttpResponseRedirect(redirect_url_to_survey_list + '%s/' % (survey_id))
 
-    template = 'frontend/survey/section_delete_confirmation.html'
+    template = 'survey/section_delete_confirmation.html'
     data = {
         'section_type': section.type,
         'section_id': section.id,
     }
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('survey.change_section', login_url='/')
@@ -529,7 +528,7 @@ def section_script_change(request, id):
     **Attributes**:
 
         * ``form`` - ScriptForm
-        * ``template`` - frontend/survey/section_script_change.html
+        * ``template`` - survey/section_script_change.html
 
     **Logic Description**:
 
@@ -549,7 +548,7 @@ def section_script_change(request, id):
         else:
             request.session["err_msg"] = True
 
-    template = 'frontend/survey/section_script_change.html'
+    template = 'survey/section_script_change.html'
     data = {
         'form': form,
         'survey_id': section.survey_id,
@@ -560,7 +559,7 @@ def section_script_change(request, id):
     request.session["msg"] = ''
     request.session['err_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -621,7 +620,7 @@ def section_branch_add(request):
     **Attributes**:
 
         * ``form`` - BranchingForm
-        * ``template`` - frontend/survey/section_branch_change.html
+        * ``template`` - survey/section_branch_change.html
 
     **Logic Description**:
 
@@ -651,7 +650,7 @@ def section_branch_add(request):
                 form._errors["keys"] = _("duplicate keys with goto.")
                 request.session["err_msg"] = True
 
-    template = 'frontend/survey/section_branch_change.html'
+    template = 'survey/section_branch_change.html'
     data = {
         'form': form,
         'survey_id': section_survey_id,
@@ -675,7 +674,7 @@ def section_branch_change(request, id):
     **Attributes**:
 
         * ``form`` - BranchingForm
-        * ``template`` - frontend/survey/section_branch_change.html
+        * ``template`` - survey/section_branch_change.html
 
     **Logic Description**:
 
@@ -714,7 +713,7 @@ def section_branch_change(request, id):
             form._errors["keys"] = _("duplicate record keys with goto.")
             request.session["err_msg"] = True
 
-    template = 'frontend/survey/section_branch_change.html'
+    template = 'survey/section_branch_change.html'
     data = {
         'form': form,
         'survey_id': branching.section.survey_id,
@@ -728,7 +727,7 @@ def section_branch_change(request, id):
     request.session["msg"] = ''
     request.session['err_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('survey.change_survey', login_url='/')
@@ -740,7 +739,7 @@ def survey_change(request, object_id):
 
         * ``object_id`` - Selected survey object
         * ``form`` - SurveyForm
-        * ``template`` - frontend/survey/change.html
+        * ``template`` - survey/change.html
 
     **Logic Description**:
 
@@ -770,7 +769,7 @@ def survey_change(request, object_id):
                     % {'name': request.POST['name']}
                 return HttpResponseRedirect(redirect_url_to_survey_list)
 
-    template = 'frontend/survey/survey_change.html'
+    template = 'survey/survey_change.html'
 
     data = {
         'survey_obj_id': object_id,
@@ -807,7 +806,7 @@ def sealed_survey_view(request, object_id):
     branching_section_list =\
         branching_list.values_list('section_id', flat=True).distinct()
 
-    template = 'frontend/survey/sealed_survey_view.html'
+    template = 'survey/sealed_survey_view.html'
 
     data = {
         'survey_obj_id': object_id,
@@ -820,7 +819,7 @@ def sealed_survey_view(request, object_id):
         'SECTION_TYPE': SECTION_TYPE,
     }
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def survey_cdr_daily_report(all_call_list):
@@ -894,7 +893,7 @@ def survey_report(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/survey_report.html
+        * ``template`` - survey/survey_report.html
 
     **Logic Description**:
 
@@ -1030,7 +1029,7 @@ def survey_report(request):
         if request.method == 'POST':
             request.session["err_msg"] = _('no campaign attached with survey.')
 
-    template = 'frontend/survey/survey_report.html'
+    template = 'survey/survey_report.html'
 
     data = {
         'rows': rows,
@@ -1145,16 +1144,15 @@ def survey_campaign_result(request, id):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/survey_campaign_result.html
+        * ``template`` - survey/survey_campaign_result.html
 
     **Logic Description**:
 
         * List all survey result which belong to callrequest.
     """
-    result = Result.objects\
-        .filter(callrequest=VoIPCall.objects.get(pk=id).callrequest_id)\
+    result = Result.objects.filter(callrequest=VoIPCall.objects.get(pk=id).callrequest_id)\
         .order_by('section')
-    template = 'frontend/survey/survey_campaign_result.html'
+    template = 'survey/survey_campaign_result.html'
     data = {
         'result': result,
         'MEDIA_ROOT': settings.MEDIA_ROOT,
@@ -1162,7 +1160,7 @@ def survey_campaign_result(request, id):
     request.session['msg'] = ''
     request.session['err_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('survey.export_survey', login_url='/')
@@ -1233,7 +1231,7 @@ def import_survey(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/import_survey.html
+        * ``template`` - survey/import_survey.html
         * ``form`` - SurveyFileImport
     """
     form = SurveyFileImport()
@@ -1248,7 +1246,7 @@ def import_survey(request):
                                                         user=request.user)
 
             records = csv.reader(request.FILES['survey_file'],
-                delimiter='|', quotechar='"')
+                                 delimiter='|', quotechar='"')
 
             new_old_section = {}
 
@@ -1262,7 +1260,7 @@ def import_survey(request):
                     continue
 
                 #if length of row is 27, it's a section
-                if  len(row) == 27:
+                if len(row) == 27:
                     try:
                         # for section
                         section_template_obj = Section_template.objects.create(
@@ -1301,7 +1299,7 @@ def import_survey(request):
                         type_error_import_list.append(row)
 
                 #if length of row is 3, it's a branching
-                if  len(row) == 3:
+                if len(row) == 3:
                     new_section_id = ''
                     new_goto_section_id = ''
 
@@ -1311,9 +1309,8 @@ def import_survey(request):
                     if row[2]:
                         new_goto_section_id = new_old_section[int(row[2])]
 
-                    duplicate_count = \
-                        Branching_template.objects.filter(keys=row[0],
-                                                          section_id=new_section_id).count()
+                    duplicate_count = Branching_template.objects.filter(
+                        keys=row[0], section_id=new_section_id).count()
                     if duplicate_count == 0:
                         try:
                             Branching_template.objects.create(
@@ -1330,7 +1327,7 @@ def import_survey(request):
         else:
             request.session["err_msg"] = True
 
-    template = 'frontend/survey/import_survey.html'
+    template = 'survey/import_survey.html'
     data = {
         'form': form,
         'section_row': section_row,
@@ -1340,7 +1337,7 @@ def import_survey(request):
     }
     request.session['err_msg'] = ''
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @permission_required('survey.view_sealed_survey', login_url='/')
@@ -1350,7 +1347,7 @@ def sealed_survey_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/sealed_survey_list.html
+        * ``template`` - survey/sealed_survey_list.html
 
     **Logic Description**:
 
@@ -1368,7 +1365,7 @@ def sealed_survey_list(request):
         .values('id', 'name', 'description', 'updated_date', 'campaign__name')\
         .filter(user=request.user).order_by(sort_order)
 
-    template = 'frontend/survey/sealed_survey_list.html'
+    template = 'survey/sealed_survey_list.html'
     data = {
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
@@ -1404,7 +1401,7 @@ def seal_survey(request, object_id):
         else:
             request.session['err_msg'] = True
 
-    template = 'frontend/survey/seal_survey.html'
+    template = 'survey/seal_survey.html'
     data = {
         'form': form,
         'err_msg': request.session.get('err_msg'),

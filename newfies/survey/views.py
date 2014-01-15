@@ -1061,7 +1061,6 @@ def export_surveycall_report(request):
     response = HttpResponse(mimetype='text/' + format)
     # force download.
     response['Content-Disposition'] = 'attachment;filename=export.' + format
-    #writer = csv.writer(response)
     if request.session.get('session_surveycalls_kwargs'):
         kwargs = request.session.get('session_surveycalls_kwargs')
         qs = VoIPCall.objects.filter(**kwargs)
@@ -1114,11 +1113,9 @@ def export_surveycall_report(request):
         data = tablib.Dataset(*result_row, headers=tuple(column_list))
         if format == 'xls':
             response.write(data.xls)
-
-        if format == 'csv':
+        elif format == 'csv':
             response.write(data.csv)
-
-        if format == 'json':
+        elif format == 'json':
             response.write(data.json)
     return response
 
@@ -1226,18 +1223,14 @@ def import_survey(request):
     if request.method == 'POST':
         form = SurveyFileImport(request.POST, request.FILES)
         if form.is_valid():
-
             new_survey = Survey_template.objects.create(name=request.POST['name'],
                                                         user=request.user)
-
             records = csv.reader(request.FILES['survey_file'],
                                  delimiter='|', quotechar='"')
-
             new_old_section = {}
 
             # disconnect post_save_add_script signal from Section_template
             post_save.disconnect(post_save_add_script, sender=Section_template)
-
             # Read each row
             for row in records:
                 row = striplist(row)
@@ -1287,10 +1280,8 @@ def import_survey(request):
                 if len(row) == 3:
                     new_section_id = ''
                     new_goto_section_id = ''
-
                     if row[1]:
                         new_section_id = new_old_section[int(row[1])]
-
                     if row[2]:
                         new_goto_section_id = new_old_section[int(row[2])]
 

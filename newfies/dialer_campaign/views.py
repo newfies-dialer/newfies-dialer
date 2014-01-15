@@ -73,7 +73,7 @@ def update_campaign_status_cust(request, pk, status):
 
     #Check if no phonebook attached
     if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
-        request.session['error_msg'] = _('you mush assign a phonebook to your campaign before starting it')
+        request.session['error_msg'] = _('you must assign a phonebook to your campaign before starting it')
     else:
         recipient = request.user
         frontend_send_notification(request, status, recipient)
@@ -98,8 +98,8 @@ def update_campaign_status_cust(request, pk, status):
 
 @login_required
 def notify_admin(request):
-    """Notify administrator regarding dialer setting configuration for
-       system user via mail
+    """
+    Url to notify the administrators regarding the user dialer settings configuration via mail
     """
     # Get all the admin users - admin superuser
     all_admin_user = User.objects.filter(is_superuser=True)
@@ -200,10 +200,8 @@ def get_campaign_survey_view(campaign_object):
             link = _return_link('survey', campaign_object.object_id)
 
     if campaign_object.status and int(campaign_object.status) != CAMPAIGN_STATUS.START:
-
         if campaign_object.content_type.model == 'survey_template':
             link = _return_link('survey_template', campaign_object.object_id)
-
         if campaign_object.content_type.model == 'survey':
             link = _return_link('survey', campaign_object.object_id)
 
@@ -516,6 +514,7 @@ def campaign_change(request, object_id):
                               context_instance=RequestContext(request))
 
 
+# TODO: move more logic to model and use view to focus more on the display
 def make_duplicate_survey(campaign_obj, new_campaign):
     """Make duplicate survey with section & branching
        & return new survey object id
@@ -744,12 +743,6 @@ def subscriber_list(request):
     if kwargs:
         subscriber_list = subscriber_list.filter(**kwargs)
         request.session['subscriber_list_kwargs'] = kwargs
-    #if contact_name:
-    #    # Search on contact name
-    #    q = (Q(last_name__icontains=contact_name) |
-    #         Q(first_name__icontains=contact_name))
-    #    if q:
-    #        contact_list = contact_list.filter(q)
 
     all_subscriber_list = subscriber_list.order_by(sort_order)
     subscriber_list = all_subscriber_list[start_page:end_page]
@@ -826,11 +819,9 @@ def subscriber_export(request):
 
         if format == 'xls':
             response.write(data.xls)
-
-        if format == 'csv':
+        elif format == 'csv':
             response.write(data.csv)
-
-        if format == 'json':
+        elif format == 'json':
             response.write(data.json)
 
     return response

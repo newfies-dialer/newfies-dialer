@@ -1050,11 +1050,9 @@ def export_sms_report(request):
 
     if format == 'xls':
         response.write(data.xls)
-
-    if format == 'csv':
+    elif format == 'csv':
         response.write(data.csv)
-
-    if format == 'json':
+    elif format == 'json':
         response.write(data.json)
 
     return response

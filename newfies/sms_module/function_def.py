@@ -23,6 +23,7 @@ from datetime import datetime
 from django.utils.timezone import utc
 
 
+#TODO: Not sure this is a good refactoring, better to get rid of it and replace where we use field_list
 def field_list(name, user=None):
     """
     Return List of SMSCampaign

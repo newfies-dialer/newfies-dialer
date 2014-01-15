@@ -42,7 +42,7 @@ def phonebook_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/phonebook/list.html
+        * ``template`` - dialer_contact/phonebook/list.html
 
     **Logic Description**:
 
@@ -60,7 +60,7 @@ def phonebook_list(request):
         .annotate(contact_count=Count('contact'))\
         .filter(user=request.user).order_by(sort_order)
 
-    template = 'frontend/phonebook/list.html'
+    template = 'dialer_contact/phonebook/list.html'
     data = {
         'msg': request.session.get('msg'),
         'phonebook_list': phonebook_list,
@@ -84,7 +84,7 @@ def phonebook_add(request):
     **Attributes**:
 
         * ``form`` - PhonebookForm
-        * ``template`` - frontend/phonebook/change.html
+        * ``template`` - dialer_contact/phonebook/change.html
 
     **Logic Description**:
 
@@ -98,10 +98,9 @@ def phonebook_add(request):
             obj = form.save(commit=False)
             obj.user = request.user
             obj.save()
-            request.session["msg"] = _('"%(name)s" added.') %\
-                {'name': request.POST['name']}
+            request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
             return HttpResponseRedirect('/phonebook/')
-    template = 'frontend/phonebook/change.html'
+    template = 'dialer_contact/phonebook/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -186,7 +185,7 @@ def phonebook_change(request, object_id):
 
         * ``object_id`` - Selected phonebook object
         * ``form`` - PhonebookForm
-        * ``template`` - frontend/phonebook/change.html
+        * ``template`` - dialer_contact/phonebook/change.html
 
     **Logic Description**:
 
@@ -202,11 +201,10 @@ def phonebook_change(request, object_id):
             form = PhonebookForm(request.POST, instance=phonebook)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['name']}
+                request.session["msg"] = _('"%(name)s" is updated.') % {'name': request.POST['name']}
                 return HttpResponseRedirect('/phonebook/')
 
-    template = 'frontend/phonebook/change.html'
+    template = 'dialer_contact/phonebook/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -223,7 +221,7 @@ def contact_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/contact/list.html
+        * ``template`` - dialer_contact/contact/list.html
         * ``form`` - ContactSearchForm
 
     **Logic Description**:
@@ -323,7 +321,7 @@ def contact_list(request):
         contact_list = all_contact_list[start_page:end_page]
         contact_count = all_contact_list.count()
 
-    template = 'frontend/contact/list.html'
+    template = 'dialer_contact/contact/list.html'
     data = {
         'contact_list': contact_list,
         'all_contact_list': all_contact_list,
@@ -351,7 +349,7 @@ def contact_add(request):
     **Attributes**:
 
         * ``form`` - ContactForm
-        * ``template`` - frontend/contact/change.html
+        * ``template`` - dialer_contact/contact/change.html
 
     **Logic Description**:
 
@@ -385,7 +383,7 @@ def contact_add(request):
                 error_msg = _('"%s" cannot be added.') % request.POST['contact']
 
     phonebook_count = Phonebook.objects.filter(user=request.user).count()
-    template = 'frontend/contact/change.html'
+    template = 'dialer_contact/contact/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -444,7 +442,7 @@ def contact_change(request, object_id):
 
         * ``object_id`` - Selected contact object
         * ``form`` - ContactForm
-        * ``template`` - frontend/contact/change.html
+        * ``template`` - dialer_contact/contact/change.html
 
     **Logic Description**:
 
@@ -467,7 +465,7 @@ def contact_change(request, object_id):
                 request.session["msg"] = _('"%s" is updated.') % request.POST['contact']
                 return HttpResponseRedirect('/contact/')
 
-    template = 'frontend/contact/change.html'
+    template = 'dialer_contact/contact/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -484,7 +482,7 @@ def contact_import(request):
     **Attributes**:
 
         * ``form`` - Contact_fileImport
-        * ``template`` - frontend/contact/import_contact.html
+        * ``template`` - dialer_contact/contact/import_contact.html
 
     **Logic Description**:
 
@@ -617,6 +615,6 @@ def contact_import(request):
                           'type_error_import_list': type_error_import_list,
                           'dialer_setting_msg': user_dialer_setting_msg(request.user),
                           })
-    template = 'frontend/contact/import_contact.html'
+    template = 'dialer_contact/contact/import_contact.html'
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

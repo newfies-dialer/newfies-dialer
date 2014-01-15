@@ -192,7 +192,7 @@ def sms_campaign_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/sms_campaign/list.html
+        * ``template`` - sms_module/list.html
 
     **Logic Description**:
 
@@ -257,7 +257,7 @@ def sms_campaign_list(request):
         smscampaign_list = all_smscampaign_list[start_page:end_page]
         smscampaign_count = all_smscampaign_list.count()
 
-    template = 'frontend/sms_campaign/list.html'
+    template = 'sms_module/list.html'
     data = {
         'form': form,
         'smscampaign_list': smscampaign_list,
@@ -286,7 +286,7 @@ def sms_campaign_add(request):
     **Attributes**:
 
         * ``form`` - SMSCampaignForm
-        * ``template`` - frontend/sms_campaign/change.html
+        * ``template`` - sms_module/change.html
 
     **Logic Description**:
 
@@ -329,7 +329,7 @@ def sms_campaign_add(request):
                 {'name': request.POST['name']}
             return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
-    template = 'frontend/sms_campaign/change.html'
+    template = 'sms_module/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -395,7 +395,7 @@ def sms_campaign_change(request, object_id):
 
         * ``object_id`` - Selected campaign object
         * ``form`` - SMSCampaignForm
-        * ``template`` - frontend/sms_campaign/change.html
+        * ``template`` - sms_module/change.html
 
     **Logic Description**:
 
@@ -425,7 +425,7 @@ def sms_campaign_change(request, object_id):
                     % {'name': request.POST['name']}
                 return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
-    template = 'frontend/sms_campaign/change.html'
+    template = 'sms_module/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -444,7 +444,7 @@ def sms_campaign_duplicate(request, id):
 
         * ``id`` - Selected sms campaign object
         * ``form`` - DuplicateSMSCampaignForm
-        * ``template`` - frontend/sms_campaign/sms_campaign_duplicate.html
+        * ``template`` - sms_module/sms_campaign_duplicate.html
     """
     # If dialer setting is not attached with user, redirect to sms campaign list
     if not user_dialer_setting(request.user):
@@ -477,7 +477,7 @@ def sms_campaign_duplicate(request, id):
     else:
         request.session['error_msg'] = ''
 
-    template = 'frontend/sms_campaign/sms_campaign_duplicate.html'
+    template = 'sms_module/sms_campaign_duplicate.html'
     data = {
         'sms_campaign_id': id,
         'form': form,
@@ -496,14 +496,14 @@ def sms_campaign_text_message(request, object_id):
     **Attributes**:
 
         * ``object_id`` - Selected sms campaign object
-        * ``template`` - frontend/sms_campaign/sms_campaign_text_message.html
+        * ``template`` - sms_module/sms_campaign_text_message.html
     """
     # If dialer setting is not attached with user, redirect to sms campaign list
     if not user_dialer_setting(request.user):
         return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     sms_campaign = get_object_or_404(SMSCampaign, pk=object_id, user=request.user)
-    template = 'frontend/sms_campaign/sms_campaign_text_message.html'
+    template = 'sms_module/sms_campaign_text_message.html'
     data = {
         'sms_campaign': sms_campaign,
     }
@@ -526,7 +526,7 @@ def sms_dashboard(request, on_index=None):
 
     **Attributes**:
 
-        * ``template`` - frontend/sms_campaign/sms_dashboard.html
+        * ``template`` - sms_module/sms_dashboard.html
         * ``form`` - SMSDashboardForm
     """
     # All sms_campaign for logged in User
@@ -793,7 +793,7 @@ def sms_dashboard(request, on_index=None):
             'kwargs1': kwargs1,
         }
 
-    template = 'frontend/sms_campaign/sms_dashboard.html'
+    template = 'sms_module/sms_dashboard.html'
 
     data = {
         'form': form,
@@ -849,7 +849,7 @@ def sms_report(request):
     **Attributes**:
 
         * ``form`` - SMSSearchForm
-        * ``template`` - frontend/sms_campaign/sms_report.html
+        * ``template`` - sms_module/sms_report.html
 
     **Logic Description**:
 
@@ -983,7 +983,7 @@ def sms_report(request):
     else:
         total_sms = 0
 
-    template = 'frontend/sms_campaign/sms_report.html'
+    template = 'sms_module/sms_report.html'
     data = {
         'form': form,
         'from_date': from_date,

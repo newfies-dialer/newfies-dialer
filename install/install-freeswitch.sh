@@ -191,6 +191,7 @@ esac
 
 echo "Installing from source"
 #Add alias fs_cli
+alias fs_cli='/usr/local/freeswitch/bin/fs_cli'
 chk=`grep "fs_cli" ~/.bashrc|wc -l`
 if [ $chk -lt 1 ] ; then
     echo "alias fs_cli='/usr/local/freeswitch/bin/fs_cli'" >> ~/.bashrc

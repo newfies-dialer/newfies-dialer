@@ -53,7 +53,7 @@ def calendar_user_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/appointment/calendar_user/list.html
+        * ``template`` - appointment/calendar_user/list.html
 
     **Logic Description**:
 
@@ -70,7 +70,7 @@ def calendar_user_list(request):
     calendar_user_list = CalendarUserProfile.objects \
         .filter(manager=request.user).order_by(sort_order)
 
-    template = 'frontend/appointment/calendar_user/list.html'
+    template = 'appointment/calendar_user/list.html'
     data = {
         'msg': request.session.get('msg'),
         'calendar_user_list': calendar_user_list,
@@ -94,7 +94,7 @@ def calendar_user_add(request):
     **Attributes**:
 
         * ``form`` - CalendarUserCreationForm
-        * ``template`` - frontend/appointment/calendar_user/change.html
+        * ``template`` - appointment/calendar_user/change.html
 
     **Logic Description**:
 
@@ -118,7 +118,7 @@ def calendar_user_add(request):
             return HttpResponseRedirect(
                 redirect_url_to_calendar_user_list + '%s/' % str(calendar_user_profile.id))
 
-    template = 'frontend/appointment/calendar_user/change.html'
+    template = 'appointment/calendar_user/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -183,7 +183,7 @@ def calendar_user_change(request, object_id):
 
         * ``object_id`` - Selected calendar_user object
         * ``form`` - CalendarUserChangeDetailExtendForm, CalendarUserNameChangeForm
-        * ``template`` - frontend/appointment/calendar_user/change.html
+        * ``template`` - appointment/calendar_user/change.html
 
     **Logic Description**:
 
@@ -219,7 +219,7 @@ def calendar_user_change(request, object_id):
                         % {'name': calendar_user_profile.user}
                     return HttpResponseRedirect(redirect_url_to_calendar_user_list)
 
-    template = 'frontend/appointment/calendar_user/change.html'
+    template = 'appointment/calendar_user/change.html'
     data = {
         'form': form,
         'calendar_user_username_form': calendar_user_username_form,
@@ -238,7 +238,7 @@ def calendar_user_change_password(request, object_id):
     **Attributes**:
 
         * ``form`` - CalendarUserPasswordChangeForm
-        * ``template`` - 'frontend/appointment/calendar_user/change_password.html',
+        * ``template`` - 'appointment/calendar_user/change_password.html',
              'frontend/registration/user_detail_change.html'
 
     **Logic Description**:
@@ -262,7 +262,7 @@ def calendar_user_change_password(request, object_id):
         else:
             error_pass = _('please correct the errors below.')
 
-    template = 'frontend/appointment/calendar_user/change_password.html'
+    template = 'appointment/calendar_user/change_password.html'
     data = {
         'calendar_user_username': calendar_user_username,
         'user_password_form': user_password_form,
@@ -282,7 +282,7 @@ def calendar_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/appointment/calendar/list.html
+        * ``template`` - appointment/calendar/list.html
 
     **Logic Description**:
 
@@ -301,7 +301,7 @@ def calendar_list(request):
     calendar_list = Calendar.objects.filter(
         user_id__in=calendar_user_id_list).order_by(sort_order)
 
-    template = 'frontend/appointment/calendar/list.html'
+    template = 'appointment/calendar/list.html'
     data = {
         'msg': request.session.get('msg'),
         'calendar_list': calendar_list,
@@ -325,7 +325,7 @@ def calendar_add(request):
     **Attributes**:
 
         * ``form`` - CalendarForm
-        * ``template`` - frontend/appointment/calendar/change.html
+        * ``template`` - appointment/calendar/change.html
 
     **Logic Description**:
 
@@ -342,7 +342,7 @@ def calendar_add(request):
             request.session["msg"] = _('"%s" is added.') % request.POST['name']
             return HttpResponseRedirect(redirect_url_to_calendar_list)
 
-    template = 'frontend/appointment/calendar/change.html'
+    template = 'appointment/calendar/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -399,7 +399,7 @@ def calendar_change(request, object_id):
 
         * ``object_id`` - Selected calendar object
         * ``form`` - CalendarForm
-        * ``template`` - frontend/appointment/calendar/change.html
+        * ``template`` - appointment/calendar/change.html
 
     **Logic Description**:
 
@@ -422,7 +422,7 @@ def calendar_change(request, object_id):
                 request.session["msg"] = _('"%s" is updated.') % request.POST['name']
                 return HttpResponseRedirect(redirect_url_to_calendar_list)
 
-    template = 'frontend/appointment/calendar/change.html'
+    template = 'appointment/calendar/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -439,7 +439,7 @@ def calendar_setting_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/appointment/calendar_setting/list.html
+        * ``template`` - appointment/calendar_setting/list.html
 
     **Logic Description**:
 
@@ -456,7 +456,7 @@ def calendar_setting_list(request):
 
     calendar_setting_list = CalendarSetting.objects.filter(user=request.user).order_by(sort_order)
 
-    template = 'frontend/appointment/calendar_setting/list.html'
+    template = 'appointment/calendar_setting/list.html'
     data = {
         'msg': request.session.get('msg'),
         'calendar_setting_list': calendar_setting_list,
@@ -480,7 +480,7 @@ def calendar_setting_add(request):
     **Attributes**:
 
         * ``form`` - CalendarSettingForm
-        * ``template`` - frontend/appointment/calendar_setting/change.html
+        * ``template`` - appointment/calendar_setting/change.html
 
     **Logic Description**:
 
@@ -499,7 +499,7 @@ def calendar_setting_add(request):
             request.session["msg"] = _('"%s" is added.') % obj
             return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
 
-    template = 'frontend/appointment/calendar_setting/change.html'
+    template = 'appointment/calendar_setting/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -557,7 +557,7 @@ def calendar_setting_change(request, object_id):
 
         * ``object_id`` - Selected calendar_setting object
         * ``form`` - CalendarSettingForm
-        * ``template`` - frontend/appointment/calendar_setting/change.html
+        * ``template`` - appointment/calendar_setting/change.html
 
     **Logic Description**:
 
@@ -580,7 +580,7 @@ def calendar_setting_change(request, object_id):
                 request.session["msg"] = _('"%s" is updated.') % obj
                 return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
 
-    template = 'frontend/appointment/calendar_setting/change.html'
+    template = 'appointment/calendar_setting/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -598,7 +598,7 @@ def event_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/appointment/event/list.html
+        * ``template`` - appointment/event/list.html
 
     **Logic Description**:
 
@@ -678,7 +678,7 @@ def event_list(request):
         event_list = event_list.filter(**kwargs)
     event_list = event_list[start_page:end_page]
 
-    template = 'frontend/appointment/event/list.html'
+    template = 'appointment/event/list.html'
     data = {
         'form': form,
         'msg': request.session.get('msg'),
@@ -703,7 +703,7 @@ def event_add(request):
     **Attributes**:
 
         * ``form`` - EventForm
-        * ``template`` - frontend/appointment/event/change.html
+        * ``template`` - appointment/event/change.html
 
     **Logic Description**:
 
@@ -720,7 +720,7 @@ def event_add(request):
             request.session["msg"] = _('"%s" is added.') % request.POST['title']
             return HttpResponseRedirect(redirect_url_to_event_list)
 
-    template = 'frontend/appointment/event/change.html'
+    template = 'appointment/event/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -777,7 +777,7 @@ def event_change(request, object_id):
 
         * ``object_id`` - Selected event object
         * ``form`` - EventForm
-        * ``template`` - frontend/appointment/event/change.html
+        * ``template`` - appointment/event/change.html
 
     **Logic Description**:
 
@@ -800,7 +800,7 @@ def event_change(request, object_id):
                 request.session["msg"] = _('"%s" is updated.') % request.POST['title']
                 return HttpResponseRedirect(redirect_url_to_event_list)
 
-    template = 'frontend/appointment/event/change.html'
+    template = 'appointment/event/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -817,7 +817,7 @@ def alarm_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/appointment/alarm/list.html
+        * ``template`` - appointment/alarm/list.html
 
     **Logic Description**:
 
@@ -837,7 +837,7 @@ def alarm_list(request):
     alarm_list = Alarm.objects.filter(
         event__calendar__user_id__in=calendar_user_id_list).order_by(sort_order)
 
-    template = 'frontend/appointment/alarm/list.html'
+    template = 'appointment/alarm/list.html'
     data = {
         'msg': request.session.get('msg'),
         'alarm_list': alarm_list,
@@ -861,7 +861,7 @@ def alarm_add(request):
     **Attributes**:
 
         * ``form`` - AlarmForm
-        * ``template`` - frontend/appointment/alarm/change.html
+        * ``template`` - appointment/alarm/change.html
 
     **Logic Description**:
 
@@ -878,7 +878,7 @@ def alarm_add(request):
             request.session["msg"] = _('"%s" is added.') % obj
             return HttpResponseRedirect(redirect_url_to_alarm_list)
 
-    template = 'frontend/appointment/alarm/change.html'
+    template = 'appointment/alarm/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -935,7 +935,7 @@ def alarm_change(request, object_id):
 
         * ``object_id`` - Selected alarm object
         * ``form`` - AlarmForm
-        * ``template`` - frontend/appointment/alarm/change.html
+        * ``template`` - appointment/alarm/change.html
 
     **Logic Description**:
 
@@ -958,7 +958,7 @@ def alarm_change(request, object_id):
                 request.session["msg"] = _('"%s" is updated.') % alarm
                 return HttpResponseRedirect(redirect_url_to_alarm_list)
 
-    template = 'frontend/appointment/alarm/change.html'
+    template = 'appointment/alarm/change.html'
     data = {
         'form': form,
         'action': 'update',

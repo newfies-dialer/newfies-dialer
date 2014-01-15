@@ -37,7 +37,7 @@ redirect_url_to_agent_list = '/module/agent/'
 
 def agent_login_form(request):
     """agent login Page"""
-    template = 'frontend/agent/login_form.html'
+    template = 'agent/login_form.html'
     data = {}
     return render_to_response(template, data,
         context_instance=RequestContext(request))
@@ -45,7 +45,7 @@ def agent_login_form(request):
 
 def agent_login(request):
     """agent login Page"""
-    template = 'frontend/agent/login.html'
+    template = 'agent/login.html'
     data = {
         'action': 'tabs-1',
     }
@@ -55,7 +55,7 @@ def agent_login(request):
 
 def agent_logout(request):
     """agent login Page"""
-    template = 'frontend/agent/logout.html'
+    template = 'agent/logout.html'
     data = {
         'action': 'tabs-2',
     }
@@ -91,9 +91,9 @@ def agent_dashboard(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/agent/dashboard.html
+        * ``template`` - agent/dashboard.html
     """
-    template = 'frontend/agent/dashboard.html'
+    template = 'agent/dashboard.html'
 
     data = {
     }
@@ -110,7 +110,7 @@ def agent_change_password(request, object_id):
     **Attributes**:
 
         * ``form`` - AgentPasswordChangeForm
-        * ``template`` - 'frontend/agent/change_password.html',
+        * ``template`` - 'agent/change_password.html',
              'frontend/registration/user_detail_change.html'
 
     **Logic Description**:
@@ -135,7 +135,7 @@ def agent_change_password(request, object_id):
         else:
             error_pass = _('please correct the errors below.')
 
-    template = 'frontend/agent/change_password.html'
+    template = 'agent/change_password.html'
     data = {
         'agent_username': agent_username,
         'user_password_form': user_password_form,
@@ -160,7 +160,7 @@ def agent_detail(request):
                               instance=user_detail_extened)
     user_password_form = PasswordChangeForm(user=request.user)
 
-    template = 'frontend/agent/agent_detail.html'
+    template = 'agent/agent_detail.html'
     data = {
         'user_detail_form': user_detail_form,
         'user_detail_extened_form': user_detail_extened_form,
@@ -254,7 +254,7 @@ def agent_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/agent/list.html
+        * ``template`` - agent/list.html
 
     **Logic Description**:
 
@@ -268,10 +268,9 @@ def agent_list(request):
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
-    agent_list = AgentProfile.objects \
-        .filter(manager=request.user).order_by(sort_order)
+    agent_list = AgentProfile.objects.filter(manager=request.user).order_by(sort_order)
 
-    template = 'frontend/agent/list.html'
+    template = 'agent/list.html'
     data = {
         'msg': request.session.get('msg'),
         'agent_list': agent_list,
@@ -295,7 +294,7 @@ def agent_add(request):
     **Attributes**:
 
         * ``form`` - AgentCreationForm
-        * ``template`` - frontend/agent/change.html
+        * ``template`` - agent/change.html
 
     **Logic Description**:
 
@@ -320,7 +319,7 @@ def agent_add(request):
                 {'name': request.POST['username']}
             return HttpResponseRedirect(redirect_url_to_agent_list + '%s/' % str(new_agent_profile.id))
 
-    template = 'frontend/agent/change.html'
+    template = 'agent/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -385,7 +384,7 @@ def agent_change(request, object_id):
 
         * ``object_id`` - Selected agent object
         * ``form`` - AgentChangeDetailExtendForm, AgentNameChangeForm
-        * ``template`` - frontend/agent/change.html
+        * ``template`` - agent/change.html
 
     **Logic Description**:
 
@@ -422,7 +421,7 @@ def agent_change(request, object_id):
                         % {'name': agent_profile.user}
                     return HttpResponseRedirect(redirect_url_to_agent_list)
 
-    template = 'frontend/agent/change.html'
+    template = 'agent/change.html'
     data = {
         'form': form,
         'agent_username_form': agent_username_form,

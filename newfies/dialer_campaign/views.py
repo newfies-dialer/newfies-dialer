@@ -224,7 +224,7 @@ def campaign_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/campaign/list.html
+        * ``template`` - dialer_campaign/campaign/list.html
 
     **Logic Description**:
 
@@ -288,7 +288,7 @@ def campaign_list(request):
         campaign_list = all_campaign_list[start_page:end_page]
         campaign_count = all_campaign_list.count()
 
-    template = 'frontend/campaign/list.html'
+    template = 'dialer_campaign/campaign/list.html'
     data = {
         'form': form,
         'search_tag': search_tag,
@@ -334,7 +334,7 @@ def campaign_add(request):
     **Attributes**:
 
         * ``form`` - CampaignForm
-        * ``template`` - frontend/campaign/change.html
+        * ``template`` - dialer_campaign/campaign/change.html
 
     **Logic Description**:
 
@@ -379,7 +379,7 @@ def campaign_add(request):
                 {'name': request.POST['name']}
             return HttpResponseRedirect('/campaign/')
 
-    template = 'frontend/campaign/change.html'
+    template = 'dialer_campaign/campaign/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -448,7 +448,7 @@ def campaign_change(request, object_id):
 
         * ``object_id`` - Selected campaign object
         * ``form`` - CampaignForm
-        * ``template`` - frontend/campaign/change.html
+        * ``template`` - dialer_campaign/campaign/change.html
 
     **Logic Description**:
 
@@ -502,7 +502,7 @@ def campaign_change(request, object_id):
                 request.session['error_msg'] = ''
                 return HttpResponseRedirect('/campaign/')
 
-    template = 'frontend/campaign/change.html'
+    template = 'dialer_campaign/campaign/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -565,7 +565,7 @@ def campaign_duplicate(request, id):
 
         * ``id`` - Selected campaign object
         * ``form`` - DuplicateCampaignForm
-        * ``template`` - frontend/campaign/campaign_duplicate.html
+        * ``template`` - dialer_campaign/campaign/campaign_duplicate.html
     """
     form = DuplicateCampaignForm(request.user)
     request.session['error_msg'] = ''
@@ -606,7 +606,7 @@ def campaign_duplicate(request, id):
     else:
         request.session['error_msg'] = ''
 
-    template = 'frontend/campaign/campaign_duplicate.html'
+    template = 'dialer_campaign/campaign/campaign_duplicate.html'
     data = {
         'campaign_id': id,
         'form': form,
@@ -624,7 +624,7 @@ def subscriber_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/subscriber/list.html
+        * ``template`` - dialer_campaign/subscriber/list.html
         * ``form`` - SubscriberSearchForm
 
     **Logic Description**:
@@ -755,7 +755,7 @@ def subscriber_list(request):
     subscriber_list = all_subscriber_list[start_page:end_page]
     subscriber_count = all_subscriber_list.count()
 
-    template = 'frontend/subscriber/list.html'
+    template = 'dialer_campaign/subscriber/list.html'
     data = {
         'subscriber_list': subscriber_list,
         'all_subscriber_list': all_subscriber_list,

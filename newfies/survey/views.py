@@ -86,8 +86,7 @@ def survey_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
-    pagination_data =\
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
     PAGE_SIZE = pagination_data['PAGE_SIZE']
@@ -133,8 +132,7 @@ def survey_add(request):
             obj = form.save(commit=False)
             obj.user = User.objects.get(username=request.user)
             obj.save()
-            request.session["msg"] = _('"%(name)s" added.') %\
-                {'name': request.POST['name']}
+            request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
             return HttpResponseRedirect(
                 redirect_url_to_survey_list + '%s/' % (obj.id))
     template = 'survey/survey_change.html'
@@ -178,8 +176,7 @@ def survey_del(request, object_id):
         survey = get_object_or_404(
             Survey_template, pk=object_id, user=request.user)
         # 1) delete survey
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': survey.name}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': survey.name}
         # delete sections as well as branching which are belong to survey
         delete_section_branching(survey)
         survey.delete()
@@ -486,8 +483,7 @@ def section_change(request, id):
 def section_delete(request, id):
     """Delete section and branching records
     """
-    section = get_object_or_404(
-        Section_template, pk=int(id), survey__user=request.user)
+    section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
     if request.GET.get('delete'):
         # perform delete
         survey_id = section.survey_id
@@ -534,8 +530,7 @@ def section_script_change(request, id):
 
         *
     """
-    section = get_object_or_404(
-        Section_template, pk=int(id), survey__user=request.user)
+    section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
 
     form = ScriptForm(instance=section)
     if request.method == 'POST':
@@ -585,8 +580,7 @@ def section_script_play(request, id):
         else:
             #Flite
             script_hexdigest = hashlib.md5(script_text).hexdigest()
-            file_path = '%s/tts/flite_%s' % \
-                (settings.MEDIA_ROOT, script_hexdigest)
+            file_path = '%s/tts/flite_%s' % (settings.MEDIA_ROOT, script_hexdigest)
             audio_file_path = file_path + '.wav'
             text_file_path = file_path + '.txt'
 
@@ -746,16 +740,13 @@ def survey_change(request, object_id):
         * Update/delete selected survey from the survey list
           via SurveyForm & get redirected to survey list
     """
-    survey = get_object_or_404(
-        Survey_template, pk=object_id, user=request.user)
-
+    survey = get_object_or_404(Survey_template, pk=object_id, user=request.user)
     section_list = Section_template.objects.filter(survey=survey).order_by('order')
-    form = SurveyForm(instance=survey)
-    branching_list = Branching_template.objects\
-        .filter(section__survey=survey).order_by('id')
 
-    branching_section_list = \
-        branching_list.values_list('section_id', flat=True).distinct()
+    form = SurveyForm(instance=survey)
+    branching_list = Branching_template.objects.filter(section__survey=survey).order_by('id')
+
+    branching_section_list = branching_list.values_list('section_id', flat=True).distinct()
 
     if request.method == 'POST':
         if request.POST.get('delete'):
@@ -765,8 +756,7 @@ def survey_change(request, object_id):
             form = SurveyForm(request.POST, request.user, instance=survey)
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%(name)s" is updated.')\
-                    % {'name': request.POST['name']}
+                request.session["msg"] = _('"%(name)s" is updated.') % {'name': request.POST['name']}
                 return HttpResponseRedirect(redirect_url_to_survey_list)
 
     template = 'survey/survey_change.html'
@@ -790,24 +780,21 @@ def survey_change(request, object_id):
 def sealed_survey_view(request, object_id):
     """View sealed survey
 
+    **Attributes**:
+
+        * ``object_id`` - Selected survey object
+        * ``template`` - survey/sealed_survey_view.html
+
     **Logic Description**:
 
         * Update/delete selected survey from the survey list
           via SurveyForm & get redirected to survey list
     """
-    survey = get_object_or_404(
-        Survey, pk=object_id, user=request.user)
-
+    survey = get_object_or_404(Survey, pk=object_id, user=request.user)
     section_list = Section.objects.filter(survey=survey).order_by('order')
-
-    branching_list = Branching.objects\
-        .filter(section__survey=survey).order_by('id')
-
-    branching_section_list =\
-        branching_list.values_list('section_id', flat=True).distinct()
-
+    branching_list = Branching.objects.filter(section__survey=survey).order_by('id')
+    branching_section_list = branching_list.values_list('section_id', flat=True).distinct()
     template = 'survey/sealed_survey_view.html'
-
     data = {
         'survey_obj_id': object_id,
         'survey': survey,
@@ -830,8 +817,7 @@ def survey_cdr_daily_report(all_call_list):
     total_avg_duration = 0
 
     # Daily Survey VoIP call report
-    select_data =\
-        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+    select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
     # Get Total from VoIPCall table for Daily Call Report
     total_data = all_call_list.extra(select=select_data)\
@@ -881,8 +867,7 @@ def survey_audio_recording(audio_file):
             (file_url, os.path.basename(file_url))
         return player_string
     else:
-        return '<br/><span class="label label-important">%s</span>' %\
-               _('no recording')
+        return '<br/><span class="label label-important">%s</span>' % _('no recording')
 
 
 @permission_required('survey.view_survey_report', login_url='/')

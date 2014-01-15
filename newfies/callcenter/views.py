@@ -35,7 +35,7 @@ def queue_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/queue/list.html
+        * ``template`` - callcenter/queue/list.html
 
     **Logic Description**:
 
@@ -52,7 +52,7 @@ def queue_list(request):
     queue_list = Queue.objects\
         .filter(manager=request.user).order_by(sort_order)
 
-    template = 'frontend/queue/list.html'
+    template = 'callcenter/queue/list.html'
     data = {
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
@@ -77,7 +77,7 @@ def queue_add(request):
     **Attributes**:
 
         * ``form`` - QueueFrontEndForm
-        * ``template`` - frontend/queue/change.html
+        * ``template`` - callcenter/queue/change.html
 
     **Logic Description**:
 
@@ -96,7 +96,7 @@ def queue_add(request):
                 {'name': obj.name}
             return HttpResponseRedirect(redirect_url_to_queue_list)
 
-    template = 'frontend/queue/change.html'
+    template = 'callcenter/queue/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -183,7 +183,7 @@ def queue_change(request, object_id):
 
         * ``object_id`` - Selected queue object
         * ``form`` - QueueFrontEndForm
-        * ``template`` - frontend/queue/change.html
+        * ``template`` - callcenter/queue/change.html
 
     **Logic Description**:
 
@@ -208,7 +208,7 @@ def queue_change(request, object_id):
                     % {'name': obj.name}
                 return HttpResponseRedirect(redirect_url_to_queue_list)
 
-    template = 'frontend/queue/change.html'
+    template = 'callcenter/queue/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -225,7 +225,7 @@ def tier_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/tier/list.html
+        * ``template`` - callcenter/tier/list.html
 
     **Logic Description**:
 
@@ -241,7 +241,7 @@ def tier_list(request):
     tier_list = Tier.objects\
         .filter(manager=request.user).order_by(sort_order)
 
-    template = 'frontend/tier/list.html'
+    template = 'callcenter/tier/list.html'
     data = {
         'msg': request.session.get('msg'),
         'tier_list': tier_list,
@@ -265,7 +265,7 @@ def tier_add(request):
     **Attributes**:
 
         * ``form`` - TierFrontEndForm
-        * ``template`` - frontend/tier/change.html
+        * ``template`` - callcenter/tier/change.html
 
     **Logic Description**:
 
@@ -280,11 +280,10 @@ def tier_add(request):
             obj.manager = Manager.objects.get(username=request.user)
             obj.save()
 
-            request.session["msg"] = _('"%(name)s" tier is added.') %\
-                {'name': obj.id}
+            request.session["msg"] = _('"%(name)s" tier is added.') % {'name': obj.id}
             return HttpResponseRedirect(redirect_url_to_tier_list)
 
-    template = 'frontend/tier/change.html'
+    template = 'callcenter/tier/change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -343,7 +342,7 @@ def tier_change(request, object_id):
 
         * ``object_id`` - Selected tier object
         * ``form`` - TierFrontEndForm
-        * ``template`` - frontend/tier/change.html
+        * ``template`` - callcenter/tier/change.html
 
     **Logic Description**:
 
@@ -368,7 +367,7 @@ def tier_change(request, object_id):
                     % {'id': tier.id}
                 return HttpResponseRedirect(redirect_url_to_tier_list)
 
-    template = 'frontend/tier/change.html'
+    template = 'callcenter/tier/change.html'
     data = {
         'form': form,
         'action': 'update',

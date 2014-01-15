@@ -36,7 +36,7 @@ def audio_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/audio/audio_list.html
+        * ``template`` - dialer_audio/audio_list.html
 
     **Logic Description**:
 
@@ -52,7 +52,7 @@ def audio_list(request):
     audio_list = AudioFile.objects.filter(user=request.user).order_by(sort_order)
     domain = Site.objects.get_current().domain
 
-    template = 'frontend/audio/audio_list.html'
+    template = 'dialer_audio/audio_list.html'
     data = {
         'audio_list': audio_list,
         'total_audio': audio_list.count(),
@@ -77,7 +77,7 @@ def audio_add(request):
     **Attributes**:
 
         * ``form`` - SurveyCustomerAudioFileForm
-        * ``template`` - frontend/audio/audio_change.html
+        * ``template`` - dialer_audio/audio_change.html
 
     **Logic Description**:
 
@@ -95,7 +95,7 @@ def audio_add(request):
                 {'name': request.POST['name']}
             return HttpResponseRedirect(audio_redirect_url)
 
-    template = 'frontend/audio/audio_change.html'
+    template = 'dialer_audio/audio_change.html'
     data = {
         'form': form,
         'action': 'add',
@@ -169,7 +169,7 @@ def audio_change(request, object_id):
     **Attributes**:
 
         * ``form`` - SurveyCustomerAudioFileForm
-        * ``template`` - frontend/audio/audio_change.html
+        * ``template`` - dialer_audio/audio_change.html
 
     **Logic Description**:
 
@@ -190,7 +190,7 @@ def audio_change(request, object_id):
                 form.save()
                 return HttpResponseRedirect(audio_redirect_url)
 
-    template = 'frontend/audio/audio_change.html'
+    template = 'dialer_audio/audio_change.html'
     data = {
         'form': form,
         'action': 'update',

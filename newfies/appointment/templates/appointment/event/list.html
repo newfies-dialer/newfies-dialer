@@ -12,7 +12,7 @@
 
 {% block content %}
 <div id="form_collapse" class="collapse">
-    <form class="well form-search" method="POST" action="." enctype="multipart/form-data">
+    <form class="well" method="POST" action="." enctype="multipart/form-data">
         {% csrf_token %}
         <div class="row">
             {% get_fieldset start_date,calendar_id,calendar_user_id as search_event from form %}

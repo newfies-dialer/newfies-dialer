@@ -11,7 +11,7 @@
 
 {% block content %}
 <div id="form_collapse" class="collapse">
-    <form class="well form-search" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
         <div class="row">
             {% get_fieldset phonebook_id,status as search from form %}
             {% for field in search %}

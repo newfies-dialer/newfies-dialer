@@ -14,7 +14,7 @@
 
 {% block content %}
 <div id="form_collapse" class="collapse">
-    <form class="well form-search" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+    <form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
         <div class="row">
             {% get_fieldset survey_id,from_date,to_date as campaign_fields from form %}
             {% for field in campaign_fields.visible_fields %}

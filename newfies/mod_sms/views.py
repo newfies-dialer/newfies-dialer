@@ -30,6 +30,7 @@ from frontend.constants import SEARCH_TYPE
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import get_pagination_vars, ceil_strdate,\
     percentage, getvar, unset_session_var
+from common.common_constants import EXPORT_CHOICE
 from mod_sms.models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
 from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
     SMS_NOTIFICATION_NAME, SMS_REPORT_COLUMN_NAME, COLOR_SMS_DISPOSITION,\
@@ -1048,11 +1049,11 @@ def export_sms_report(request):
 
     data = tablib.Dataset(*list_val, headers=headers)
 
-    if format == 'xls':
+    if format == EXPORT_CHOICE.XLS:
         response.write(data.xls)
-    elif format == 'csv':
+    elif format == EXPORT_CHOICE.CSV:
         response.write(data.csv)
-    elif format == 'json':
+    elif format == EXPORT_CHOICE.JSON:
         response.write(data.json)
 
     return response

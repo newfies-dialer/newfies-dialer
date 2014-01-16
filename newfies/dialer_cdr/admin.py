@@ -29,6 +29,7 @@ from dialer_cdr.forms import AdminVoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
     voipcall_search_admin_form_fun
 from common.common_functions import getvar
+from common.common_constants import EXPORT_CHOICE
 # from common.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
@@ -315,11 +316,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         data = tablib.Dataset(*list_val, headers=headers)
 
-        if format == 'xls':
+        if format == EXPORT_CHOICE.XLS:
             response.write(data.xls)
-        elif format == 'csv':
+        elif format == EXPORT_CHOICE.CSV:
             response.write(data.csv)
-        elif format == 'json':
+        elif format == EXPORT_CHOICE.JSON:
             response.write(data.json)
 
         return response

@@ -569,11 +569,9 @@ def dnc_contact_export(request):
 
     if format == EXPORT_CHOICE.XLS:
         response.write(data.xls)
-
-    if format == EXPORT_CHOICE.CSV:
+    elif format == EXPORT_CHOICE.CSV:
         response.write(data.csv)
-
-    if format == EXPORT_CHOICE.JSON:
+    elif format == EXPORT_CHOICE.JSON:
         response.write(data.json)
 
     return response

@@ -38,6 +38,7 @@ from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESUL
 from survey.models import post_save_add_script
 from common.common_functions import striplist, variable_value, ceil_strdate,\
     get_pagination_vars
+from common.common_constants import EXPORT_CHOICE
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
@@ -173,8 +174,7 @@ def survey_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        survey = get_object_or_404(
-            Survey_template, pk=object_id, user=request.user)
+        survey = get_object_or_404(Survey_template, pk=object_id, user=request.user)
         # 1) delete survey
         request.session["msg"] = _('"%(name)s" is deleted.') % {'name': survey.name}
         # delete sections as well as branching which are belong to survey
@@ -1111,11 +1111,11 @@ def export_surveycall_report(request):
             result_row.append(result_row_list)
 
         data = tablib.Dataset(*result_row, headers=tuple(column_list))
-        if format == 'xls':
+        if format == EXPORT_CHOICE.XLS:
             response.write(data.xls)
-        elif format == 'csv':
+        elif format == EXPORT_CHOICE.CSV:
             response.write(data.csv)
-        elif format == 'json':
+        elif format == EXPORT_CHOICE.JSON:
             response.write(data.json)
     return response
 

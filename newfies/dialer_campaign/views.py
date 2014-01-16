@@ -39,6 +39,7 @@ from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import ceil_strdate, getvar, \
     get_pagination_vars, unset_session_var
+from common.common_constants import EXPORT_CHOICE
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from django.utils.timezone import utc
@@ -777,11 +778,11 @@ def subscriber_export(request):
 
         data = tablib.Dataset(*list_val, headers=headers)
 
-        if format == 'xls':
+        if format == EXPORT_CHOICE.XLS:
             response.write(data.xls)
-        elif format == 'csv':
+        elif format == EXPORT_CHOICE.CSV:
             response.write(data.csv)
-        elif format == 'json':
+        elif format == EXPORT_CHOICE.JSON:
             response.write(data.json)
 
     return response

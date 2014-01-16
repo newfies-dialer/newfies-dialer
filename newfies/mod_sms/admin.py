@@ -26,6 +26,7 @@ from django.db.models import Count
 from django.utils.translation import ungettext
 from dialer_campaign.function_def import dialer_setting_limit
 from common.common_functions import variable_value
+from common.common_constants import EXPORT_CHOICE
 from mod_sms.models import SMSCampaign, SMSCampaignSubscriber, SMSMessage, SMSTemplate
 from mod_sms.function_def import check_sms_dialer_setting,\
     sms_record_common_fun, sms_search_admin_form_fun
@@ -308,11 +309,11 @@ class SMSMessageAdmin(admin.ModelAdmin):
 
         data = tablib.Dataset(*list_val, headers=headers)
 
-        if format == 'xls':
+        if format == EXPORT_CHOICE.XLS:
             response.write(data.xls)
-        elif format == 'csv':
+        elif format == EXPORT_CHOICE.CSV:
             response.write(data.csv)
-        elif format == 'json':
+        elif format == EXPORT_CHOICE.JSON:
             response.write(data.json)
         return response
 

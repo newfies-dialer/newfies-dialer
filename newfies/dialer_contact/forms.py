@@ -14,6 +14,7 @@
 
 from django import forms
 from django.forms import ModelForm, Textarea
+from django.forms.widgets import NumberInput
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.constants import STATUS_CHOICE
@@ -115,9 +116,8 @@ class ContactForm(ModelForm):
 
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-    #TODO: when moving to 1.6 check https://docs.djangoproject.com/en/1.6/ref/forms/widgets/#numberinput
     contact_no = forms.CharField(label=_('contact number'), required=False,
-                                 widget=forms.TextInput(attrs={'size': 15}))
+                                 widget=NumberInput())
     # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
     #                                     choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
     contact_name = forms.CharField(label=_('contact name'), required=False,
@@ -129,8 +129,6 @@ class ContactSearchForm(forms.Form):
 
     def __init__(self, user, *args, **kwargs):
         super(ContactSearchForm, self).__init__(*args, **kwargs)
-        # To get user's phonebook list
-
         change_field_list = [
             'contact_no', 'contact_name', 'phonebook', 'contact_status'
         ]

@@ -208,6 +208,20 @@
 <script src="{{ STATIC_URL }}newfies/js/sidebar-offcanvas.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}bootstrap-switch/build/js/bootstrap-switch.min.js" type="text/javascript"></script>
 <script src="{{ STATIC_URL }}newfies/js/extra_footer.js" type="text/javascript"></script>
+<script type="text/javascript">
+// toggle event for forms
+$(function() {
 
+    $("#form_collapse").on('hidden.bs.collapse', function() {
+        $('#toggle_btn_i_span').text('{% trans "open search"|title %}');
+        $('#toggle_btn_i').attr('class', 'glyphicon glyphicon-zoom-in');
+    });
+
+    $("#form_collapse").on('shown.bs.collapse', function() {
+        $('#toggle_btn_i_span').text('{% trans "hide search"|title %}');
+        $('#toggle_btn_i').attr('class', 'glyphicon glyphicon-zoom-out');
+    });
+});
+</script>
 </body>
 </html>

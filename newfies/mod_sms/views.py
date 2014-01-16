@@ -30,14 +30,14 @@ from frontend.constants import SEARCH_TYPE
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import get_pagination_vars, ceil_strdate,\
     percentage, getvar, unset_session_var
-from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
-from constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
+from mod_sms.models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
+from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
     SMS_NOTIFICATION_NAME, SMS_REPORT_COLUMN_NAME, COLOR_SMS_DISPOSITION,\
     SMS_SUBSCRIBER_STATUS, SMS_MESSAGE_STATUS
-from forms import SMSCampaignForm, SMSDashboardForm, SMSSearchForm,\
+from mod_sms.forms import SMSCampaignForm, SMSDashboardForm, SMSSearchForm,\
     SMSCampaignSearchForm, DuplicateSMSCampaignForm
-from function_def import check_sms_dialer_setting
-from tasks import sms_collect_subscriber
+from mod_sms.function_def import check_sms_dialer_setting
+from mod_sms.tasks import sms_collect_subscriber
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta

@@ -20,8 +20,7 @@ from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.function_def import user_dialer_setting
 from dialer_contact.forms import SearchForm, AdminSearchForm
 from sms.models.message import MESSAGE_STATUSES
-from models import SMSCampaign, get_unique_code
-from function_def import field_list
+from mod_sms.models import SMSCampaign, get_unique_code
 from frontend.constants import SEARCH_TYPE
 from bootstrap3_datetime.widgets import DateTimePicker
 from dialer_campaign.forms import get_phonebook_list, \
@@ -33,11 +32,11 @@ def get_smscampaign_list(user=None):
     camp_list = []
     camp_list.append((0, _('all').upper()))
     if user is None:
-        pb_list = field_list("smscampaign")
+        pb_list = SMSCampaign.objects.all()
     else:
-        pb_list = field_list("smscampaign", user)
+        pb_list = SMSCampaign.objects.filter(user=user)
     for i in pb_list:
-        camp_list.append((int(i[0]), i[1]))
+        camp_list.append((i.id, i.name))
     return camp_list
 
 
@@ -50,9 +49,8 @@ class SMSCampaignForm(ModelForm):
 
     class Meta:
         model = SMSCampaign
-        fields = ['campaign_code', 'name', 'callerid',
-                  'sms_gateway', 'phonebook',
-                  'extra_data', 'text_message',
+        fields = ['campaign_code', 'name', 'callerid', 'sms_gateway',
+                  'phonebook', 'extra_data', 'text_message',
                   'frequency', 'maxretry', 'intervalretry',
                   'startingdate', 'expirationdate',
                   'daily_start_time', 'daily_stop_time',
@@ -115,9 +113,8 @@ class SMSCampaignAdminForm(ModelForm):
         model = SMSCampaign
         fields = ['campaign_code', 'name', 'description', 'user', 'status',
                   'callerid', 'startingdate', 'expirationdate', 'sms_gateway',
-                  'text_message', 'phonebook',
-                  'frequency', 'maxretry', 'intervalretry',
-                  'daily_start_time', 'daily_stop_time',
+                  'text_message', 'phonebook', 'frequency', 'maxretry',
+                  'intervalretry', 'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
                   'saturday', 'sunday']
 

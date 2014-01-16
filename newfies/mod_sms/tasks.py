@@ -20,8 +20,8 @@ from celery.decorators import task
 from common.only_one_task import only_one
 from celery.utils.log import get_task_logger
 from sms.tasks import SendMessage
-from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
-from constants import SMS_SUBSCRIBER_STATUS, SMS_CAMPAIGN_STATUS
+from mod_sms.models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
+from mod_sms.constants import SMS_SUBSCRIBER_STATUS, SMS_CAMPAIGN_STATUS
 from dialer_campaign.function_def import user_dialer_setting
 from datetime import datetime, timedelta
 from django.utils.timezone import utc

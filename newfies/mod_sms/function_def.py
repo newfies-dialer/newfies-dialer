@@ -12,33 +12,14 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from dialer_cdr.function_def import return_query_string
-from dialer_contact.models import Phonebook, Contact
+from dialer_contact.models import Contact
 from common.common_functions import variable_value
 from user_profile.models import UserProfile
-from sms.models import Gateway as SMS_Gateway
-from models import SMSCampaign
+from mod_sms.models import SMSCampaign
 #from dialer_setting.models import DialerSetting
-from constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR
+from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR
 from datetime import datetime
 from django.utils.timezone import utc
-
-
-#TODO: Not sure this is a good refactoring, better to get rid of it and replace where we use field_list
-def field_list(name, user=None):
-    """
-    Return List of SMSCampaign
-    """
-    if name == "smscampaign" and user is not None:
-        list = SMSCampaign.objects.filter(user=user)
-    if name == "smscampaign" and user is None:
-        list = SMSCampaign.objects.all()
-    if name == "phonebook" and user is None:
-        list = Phonebook.objects.all()
-    if name == "phonebook" and user is not None:
-        list = Phonebook.objects.filter(user=user)
-    if name == "gateway" and user is not None:
-        list = SMS_Gateway.objects.all()
-    return ((l.id, l.name) for l in list)
 
 
 def get_sms_campaign_status_name(id):

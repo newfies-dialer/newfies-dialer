@@ -26,10 +26,10 @@ from django.db.models import Count
 from django.utils.translation import ungettext
 from dialer_campaign.function_def import dialer_setting_limit
 from common.common_functions import variable_value
-from models import SMSCampaign, SMSCampaignSubscriber, SMSMessage, SMSTemplate
-from function_def import check_sms_dialer_setting,\
+from mod_sms.models import SMSCampaign, SMSCampaignSubscriber, SMSMessage, SMSTemplate
+from mod_sms.function_def import check_sms_dialer_setting,\
     sms_record_common_fun, sms_search_admin_form_fun
-from forms import AdminSMSSearchForm
+from mod_sms.forms import AdminSMSSearchForm
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
 from django.utils.timezone import utc

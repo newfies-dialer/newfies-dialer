@@ -532,7 +532,7 @@ def campaign_duplicate(request, id):
         if form.is_valid():
 
             original_camp = campaign_obj = Campaign.objects.get(pk=id)
-            #Make duplicate survey
+            #Make duplicate campaign/survey
             new_survey_id = campaign_obj.object_id
 
             campaign_obj.pk = None
@@ -549,7 +549,7 @@ def campaign_duplicate(request, id):
             campaign_obj.save()
 
             if campaign_obj.content_type.model == 'survey':
-                survey_obj = campaign_obj.content_type.model_class().objects.get(pk=campaign_obj.object_id)
+                survey_obj = original_camp.content_type.model_class().objects.get(pk=original_camp.object_id)
                 new_survey_id = survey_obj.create_duplicate_survey(original_camp, campaign_obj)
 
             campaign_obj.object_id = new_survey_id

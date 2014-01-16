@@ -34,7 +34,7 @@ from dialer_campaign.function_def import check_dialer_setting, dialer_setting_li
     user_dialer_setting, user_dialer_setting_msg, get_subscriber_status, \
     get_subscriber_disposition
 from dialer_campaign.tasks import collect_subscriber
-from survey.models import Section, Branching, Survey_template
+from survey.models import Survey_template
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import ceil_strdate, getvar, \
@@ -514,47 +514,6 @@ def campaign_change(request, object_id):
                               context_instance=RequestContext(request))
 
 
-# TODO: move more logic to model and use view to focus more on the display
-def make_duplicate_survey(campaign_obj, new_campaign):
-    """Make duplicate survey with section & branching
-       & return new survey object id
-    """
-    survey_obj = campaign_obj.content_type.model_class().objects.get(pk=campaign_obj.object_id)
-    original_survey_id = survey_obj.id
-
-    # make clone of survey
-    survey_obj.pk = None
-    survey_obj.campaign = new_campaign
-    survey_obj.save()
-
-    old_new_section_dict = {}
-    section_objs = Section.objects.filter(survey_id=original_survey_id).order_by('order')
-    for section_obj in section_objs:
-        old_section_id = section_obj.id
-
-        # make clone of section
-        section_obj.pk = None
-        section_obj.survey = survey_obj
-        section_obj.save()
-
-        old_new_section_dict[old_section_id] = section_obj.id
-
-    for old_section_id, new_section_id in old_new_section_dict.iteritems():
-        branching_objs = Branching.objects.filter(section_id=old_section_id)
-
-        for branching_obj in branching_objs:
-            new_goto_id = None
-            if branching_obj.goto_id is not None:
-                new_goto_id = old_new_section_dict[branching_obj.goto_id]
-
-            branching_obj.pk = None
-            branching_obj.section_id = new_section_id
-            branching_obj.goto_id = new_goto_id
-            branching_obj.save()
-
-    return survey_obj.id
-
-
 @login_required
 def campaign_duplicate(request, id):
     """
@@ -590,7 +549,8 @@ def campaign_duplicate(request, id):
             campaign_obj.save()
 
             if campaign_obj.content_type.model == 'survey':
-                new_survey_id = make_duplicate_survey(original_camp, campaign_obj)
+                survey_obj = campaign_obj.content_type.model_class().objects.get(pk=campaign_obj.object_id)
+                new_survey_id = survey_obj.create_duplicate_survey(original_camp, campaign_obj)
 
             campaign_obj.object_id = new_survey_id
             campaign_obj.save()

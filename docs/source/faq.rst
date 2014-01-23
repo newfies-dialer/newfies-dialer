@@ -137,7 +137,7 @@ Acapela needs to be configured in 2 places:
 
 1. On the Web interface
 
-Edit the file /usr/share/newfies-dialer/settings_local.py and find::
+Edit the file /usr/share/newfies-dialer/newfies_dialer/settings_local.py and find::
 
     #TEXT-TO-SPEECH
     #==============
@@ -215,3 +215,21 @@ Completion Retry:
 
     The Completion Retry interval and number of times to retry is set in the
     campaign under the "Dialer Completion Settings" section.
+
+
+.. _faq-change-ip-address:
+
+How to change your IP address
+-----------------------------
+
+During the installation Newfies-Dialer Web interface are bind to the detected IP, if you change the IP or want to change the interface to which is bind you then need change the settings ALLOWED_HOSTS. Please find some documentation about this settings at https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
+
+The configuration file on your server is located at /usr/share/newfies-dialer/newfies_dialer/settings_local.py
+
+After changes in settings_local.py you will need to restart supervisord:
+
+    /etc/init.d/supervisor stop
+
+Then to start it back:
+
+    /etc/init.d/supervisor start

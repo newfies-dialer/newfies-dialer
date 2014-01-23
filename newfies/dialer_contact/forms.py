@@ -88,6 +88,16 @@ class PhonebookForm(ModelForm):
             self.fields[i].widget.attrs['class'] = "form-control"
 
 
+def phonebook_list(user):
+    """Return phonebook list of logged in user"""
+    phonebook_list = Phonebook.objects.filter(user=user).order_by('id')
+    result_list = []
+    result_list.append((0, '---'))
+    for phonebook in phonebook_list:
+        result_list.append((phonebook.id, phonebook.name))
+    return result_list
+
+
 class ContactForm(ModelForm):
     """Contact ModelForm"""
 
@@ -110,8 +120,7 @@ class ContactForm(ModelForm):
 
         # To get user's phonebook list
         if user:
-            self.fields['phonebook'].choices = Phonebook.objects.values_list('id', 'name')\
-                .filter(user=user).order_by('id')
+            self.fields['phonebook'].choices = phonebook_list(user)
 
 
 class ContactSearchForm(forms.Form):
@@ -136,10 +145,4 @@ class ContactSearchForm(forms.Form):
             self.fields[i].widget.attrs['class'] = "form-control"
 
         if user:
-            pb_list_user = []
-            pb_list_user.append((0, '---'))
-            phonebook_list = Phonebook.objects.values_list('id', 'name').filter(user=user).order_by('id')
-            for i in phonebook_list:
-                pb_list_user.append((i[0], i[1]))
-
-            self.fields['phonebook'].choices = pb_list_user
+            self.fields['phonebook'].choices = phonebook_list(user)

@@ -328,8 +328,7 @@ class BranchingForm(ModelForm):
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 
-        self.fields['goto'].choices = \
-            get_section_question_list(survey_id, section_id)
+        self.fields['goto'].choices = get_section_question_list(survey_id, section_id)
 
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"

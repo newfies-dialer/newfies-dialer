@@ -525,10 +525,6 @@ def section_script_change(request, id):
 
         * ``form`` - ScriptForm
         * ``template`` - survey/section_script_change.html
-
-    **Logic Description**:
-
-        *
     """
     section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
 

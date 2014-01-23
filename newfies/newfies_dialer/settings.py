@@ -224,6 +224,7 @@ INSTALLED_APPS = (
     'notification',
     'survey',
     'dnc',
+    'frontend',
     #'agent',
     #'callcenter',
     'appointment',

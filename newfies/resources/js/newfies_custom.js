@@ -29,7 +29,7 @@ $(document).ready(function(){
         .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
         .find(".portlet-header")
         .addClass("ui-widget-header ui-corner-all")
-        .append('<a class="btn btn-xs right-side-icon" role="button" href="#" title="{% trans "move"|title %}"><i class="fa fa-arrows"></i></a>')
+        .append('<a class="btn btn-xs right-side-icon" role="button" href="#" title="' + gettext('move') + '"><i class="fa fa-arrows"></i></a>')
         .end()
         .find(".portlet-content");
 
@@ -38,7 +38,7 @@ $(document).ready(function(){
         .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
         .find(".portlet-header")
         .addClass("ui-widget-header ui-corner-all")
-        .append('<a class="btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "collapse"|title %}"><i class="fa fa-arrow-circle-up"></i></a>')
+        .append('<a class="btn btn-xs right-side-icon" role="button"  href="#" title="' + gettext('collapse') + '"><i class="fa fa-arrow-circle-up"></i></a>')
         .end()
         .find(".portlet-content");
 
@@ -47,7 +47,7 @@ $(document).ready(function(){
         .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
         .find(".portlet-header")
         .addClass("ui-widget-header ui-corner-all")
-        .append('<a class="section-delete btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "delete section"|title %}"><i class="fa fa-trash-o"></i></a>')
+        .append('<a class="section-delete btn btn-xs right-side-icon" role="button"  href="#" title="' + gettext('delete section') + '"><i class="fa fa-trash-o"></i></a>')
         .end()
         .find(".portlet-content");
 
@@ -56,7 +56,7 @@ $(document).ready(function(){
         .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
         .find(".portlet-header")
         .addClass("ui-widget-header ui-corner-all")
-        .append('<a class="section-branch btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "branch"|title %}"><i class="fa fa-random"></i></a>')
+        .append('<a class="section-branch btn btn-xs right-side-icon" role="button"  href="#" title="' + gettext('branch') + '"><i class="fa fa-random"></i></a>')
         .end()
         .find(".portlet-content");
 
@@ -65,7 +65,7 @@ $(document).ready(function(){
         .addClass("ui-widget ui-widget-content ui-helper-clearfix ui-corner-all")
         .find(".portlet-header")
         .addClass("ui-widget-header ui-corner-all")
-        .append('<a class="section-edit btn btn-xs right-side-icon" role="button"  href="#" title="{% trans "edit section"|title %}"><i class="fa fa-pencil fa-fw"></i></a>')
+        .append('<a class="section-edit btn btn-xs right-side-icon" role="button"  href="#" title="' + gettext('edit section') + '"><i class="fa fa-pencil fa-fw"></i></a>')
         .end()
         .find(".portlet-content");
 

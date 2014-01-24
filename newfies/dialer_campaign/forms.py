@@ -98,17 +98,23 @@ class CampaignForm(ModelForm):
 
         if user:
             self.fields['ds_user'].initial = user
+            list_gw = []
             dnc_list = []
             phonebook_list = get_phonebook_list(user)
             self.fields['phonebook'].choices = phonebook_list
             self.fields['phonebook'].initial = str(phonebook_list[0][0])
 
+            list = UserProfile.objects.get(user=user).userprofile_gateway.all()
+            gw_list = ((l.id, l.name) for l in list)
+
             dnc_list.append(('', '---'))
-            dnc_obj_list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
-            for l in dnc_obj_list:
+            list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            for l in list:
                 dnc_list.append((l[0], l[1]))
             self.fields['dnc'].choices = dnc_list
 
+            for i in gw_list:
+                list_gw.append((i[0], i[1]))
             self.fields['aleg_gateway'].choices = UserProfile.objects.get(user=user)\
                 .userprofile_gateway.all().values_list('id', 'name')
 
@@ -234,15 +240,13 @@ class SubscriberReportForm(SearchForm):
 
     def __init__(self, *args, **kwargs):
         super(SubscriberReportForm, self).__init__(*args, **kwargs)
-        campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
-        self.fields['campaign_id'].choices = campaign_list
-        list = []
-        list.append((0, ''))
+        camp_list = []
+        camp_list.append((0, _('all').upper()))
         campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
         for i in campaign_list:
-            list.append((i[0], i[1]))
+            camp_list.append((i[0], i[1]))
 
-        self.fields['campaign_id'].choices = list
+        self.fields['campaign_id'].choices = camp_list
 
 
 class SubscriberAdminForm(ModelForm):

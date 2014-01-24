@@ -34,7 +34,7 @@ from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
 from common.intermediate_model_base_class import Model
-from common.common_functions import get_unique_code
+from common.common_functions import get_unique_code, percentage
 import jsonfield
 import logging
 import re
@@ -329,7 +329,7 @@ class Campaign(Model):
 
     def get_campaign_type(self):
         """Get campaign type"""
-        if self.content_type.name[0:6] == 'Survey':
+        if self.content_type.model == 'survey':
             return ugettext('survey')
         return ugettext('voice app')
 
@@ -397,8 +397,7 @@ class Campaign(Model):
         count_contact = int(count_contact)
 
         if count_contact > 0:
-            percentage_pixel = (float(subscriber_count) / count_contact) * 100
-            percentage_pixel = int(percentage_pixel)
+            percentage_pixel = int(percentage(subscriber_count, count_contact))
         else:
             percentage_pixel = 0
         subscriber_count_string = "subscribers (" + str(subscriber_count) + ")"

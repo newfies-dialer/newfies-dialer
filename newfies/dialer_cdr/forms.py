@@ -48,9 +48,7 @@ class VoipSearchForm(SearchForm):
             self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's campaign list which are attached with voipcall
         if user:
-
             self.fields['leg_type'].choices = get_leg_type_list()
-
             camp_list = []
             camp_list.append((0, _('all').upper()))
             content_type_list = ['survey']
@@ -58,12 +56,12 @@ class VoipSearchForm(SearchForm):
                 if user.is_superuser:
                     campaign_list = Campaign.objects.values_list('id', 'name')\
                         .filter(content_type__model__in=content_type_list,
-                                has_been_started=True) \
+                                has_been_started=True)\
                         .order_by('-id')
                 else:
                     campaign_list = Campaign.objects.values_list('id', 'name')\
                         .filter(user=user, content_type__model__in=content_type_list,
-                                has_been_started=True) \
+                                has_been_started=True)\
                         .order_by('-id')
 
                 for i in campaign_list:
@@ -89,9 +87,11 @@ class AdminVoipSearchForm(AdminSearchForm):
         campaign_list.append((0, _('all').upper()))
         content_type_list = ['survey']
 
-        campaign_list = Campaign.objects.values_list('id', 'name') \
+        camp_list = Campaign.objects.values_list('id', 'name')\
             .filter(content_type__model__in=content_type_list,
-                    has_been_started=True) \
+                    has_been_started=True)\
             .order_by('-id')
+        for i in camp_list:
+            campaign_list.append((i[0], i[1]))
 
         self.fields['campaign_id'].choices = campaign_list

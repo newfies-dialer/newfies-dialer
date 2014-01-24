@@ -382,8 +382,7 @@ def calendar_del(request, object_id):
         try:
             calendar_list = Calendar.objects.extra(where=['id IN (%s)' % values])
             if calendar_list:
-                request.session["msg"] = \
-                    _('%s calendar(s) are deleted.') % calendar_list.count()
+                request.session["msg"] = _('%s calendar(s) are deleted.') % calendar_list.count()
                 calendar_list.delete()
         except:
             raise Http404
@@ -760,8 +759,7 @@ def event_del(request, object_id):
         try:
             event_list = Event.objects.extra(where=['id IN (%s)' % values])
             if event_list:
-                request.session["msg"] = \
-                    _('%s event(s) are deleted.') % event_list.count()
+                request.session["msg"] = _('%s event(s) are deleted.') % event_list.count()
                 event_list.delete()
         except:
             raise Http404

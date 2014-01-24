@@ -98,24 +98,19 @@ class CampaignForm(ModelForm):
 
         if user:
             self.fields['ds_user'].initial = user
-            list_gw = []
             dnc_list = []
             phonebook_list = get_phonebook_list(user)
             self.fields['phonebook'].choices = phonebook_list
             self.fields['phonebook'].initial = str(phonebook_list[0][0])
 
-            list = UserProfile.objects.get(user=user).userprofile_gateway.all()
-            gw_list = ((l.id, l.name) for l in list)
-
             dnc_list.append(('', '---'))
-            list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
-            for l in list:
+            dnc_obj_list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            for l in dnc_obj_list:
                 dnc_list.append((l[0], l[1]))
             self.fields['dnc'].choices = dnc_list
 
-            for i in gw_list:
-                list_gw.append((i[0], i[1]))
-            self.fields['aleg_gateway'].choices = list_gw
+            self.fields['aleg_gateway'].choices = UserProfile.objects.get(user=user)\
+                .userprofile_gateway.all().values_list('id', 'name')
 
             if instance.has_been_duplicated:
                 from survey.models import Survey

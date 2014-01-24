@@ -39,7 +39,6 @@ def get_calendar_user_list(calendar_user_list):
         'id', 'username').filter(id__in=calendar_user_list).order_by('id')
     for l in calendar_user_list:
         list_calendar_user.append((l[0], l[1]))
-
     return list_calendar_user
 
 

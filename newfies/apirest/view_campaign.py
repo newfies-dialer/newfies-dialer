@@ -27,7 +27,7 @@ class CampaignViewSet(viewsets.ModelViewSet):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "2013-06-13 13:13:33", "expirationdate": "2013-06-14 13:13:33", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "1", "content_type": "survey_template", "object_id" : "1", "extra_data": "2000", "phonebook_id": "1", "voicemail": "True", "amd_behavior": "1", "voicemail_audiofile": "1", "dnc": "", "phonebook": "1"}' http://localhost:8000/rest-api/campaigns/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"name": "mycampaign", "description": "", "callerid": "1239876", "startingdate": "2013-06-13 13:13:33", "expirationdate": "2013-06-14 13:13:33", "frequency": "20", "callmaxduration": "50", "maxretry": "3", "intervalretry": "3000", "calltimeout": "45", "aleg_gateway": "/rest-api/gateway/1/", "sms_gateway": "/rest-api/sms-gateway/1/", "content_type": "/rest-api/content-type/49/", "object_id" : "1", "extra_data": "2000", "voicemail": "True", "amd_behavior": "1", "voicemail_audiofile": "1", "dnc": "/rest-api/dnc/1/", "phonebook": "1"}' http://localhost:8000/rest-api/campaigns/
 
         Response::
 

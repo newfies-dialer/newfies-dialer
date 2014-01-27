@@ -190,3 +190,31 @@ function sms_campaign_stop_button(){
     sms_campaign_stop_flag = true;
     $('#ListForm').submit();
 }
+
+//////////////////////
+// Datepicker code ///
+//////////////////////
+
+$("#id_from_date_picker").on("change.dp",function (e) {
+   $('#id_to_date_picker').data("DateTimePicker").setStartDate(e.date);
+});
+$("#id_to_date_picker").on("change.dp",function (e) {
+   $('#id_from_date_picker').data("DateTimePicker").setEndDate(e.date);
+});
+
+$("#id_startingdate_picker").on("change.dp",function (e) {
+   $('#id_expirationdate_picker').data("DateTimePicker").setStartDate(e.date);
+});
+$("#id_expirationdate_picker").on("change.dp",function (e) {
+   $('#id_startingdate_picker').data("DateTimePicker").setEndDate(e.date);
+});
+
+if(document.location.href.search("/calendar/") != -1 || document.location.href.search("/alarm/") != -1 ) {
+
+    $("#id_start_picker").on("change.dp",function (e) {
+       $('#id_end_picker').data("DateTimePicker").setStartDate(e.date);
+    });
+    $("#id_end_picker").on("change.dp",function (e) {
+       $('#id_start_picker').data("DateTimePicker").setEndDate(e.date);
+    });
+}

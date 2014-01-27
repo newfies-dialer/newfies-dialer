@@ -28,14 +28,11 @@
             </div>
             {% endfor %}
         </div>
-        <input class="btn btn-primary" type=submit name=submit value="{% trans 'search'|title %}" />&nbsp;
+        <input class="btn btn-primary" type="submit" name="submit" value="{% trans 'search'|title %}" />&nbsp;
     </form>
 </div>
 
-<button id="toggle_btn" type="button" class="btn btn-default btn-sm" data-toggle="collapse" data-target="#form_collapse">
-    <i id="toggle_btn_i" class="glyphicon glyphicon-zoom-in"></i>
-    <span id="toggle_btn_i_span">{% trans "open search"|title %}</span>
-</button>
+{% include "frontend/common_search_toggle_button.html" %}
 
 <script type="text/javascript">
 function delete_button()

@@ -142,8 +142,7 @@ def audio_del(request, object_id):
             values = request.POST.getlist('select')
             values = ", ".join(["%s" % el for el in values])
 
-            audio_list = AudioFile.objects \
-                .filter(user=request.user) \
+            audio_list = AudioFile.objects.filter(user=request.user)\
                 .extra(where=['id IN (%s)' % values])
 
             request.session["msg"] = _('%(count)s audio(s) are deleted.') \
@@ -184,8 +183,7 @@ def audio_change(request, object_id):
             audio_change(request, object_id)
             return HttpResponseRedirect(audio_redirect_url)
         else:
-            form = DialerAudioFileForm(
-                request.POST, request.FILES, instance=obj)
+            form = DialerAudioFileForm(request.POST, request.FILES, instance=obj)
             if form.is_valid():
                 form.save()
                 return HttpResponseRedirect(audio_redirect_url)

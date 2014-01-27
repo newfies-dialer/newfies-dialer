@@ -67,7 +67,7 @@ def calendar_user_list(request):
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
-    calendar_user_list = CalendarUserProfile.objects \
+    calendar_user_list = CalendarUserProfile.objects\
         .filter(manager=request.user).order_by(sort_order)
 
     template = 'appointment/calendar_user/list.html'
@@ -149,8 +149,7 @@ def calendar_user_del(request, object_id):
             CalendarUserProfile, pk=object_id, manager_id=request.user.id)
         calendar_user = CalendarUser.objects.get(pk=calendar_user_profile.user_id)
 
-        request.session["msg"] = _('"%(name)s" is deleted.') \
-            % {'name': calendar_user}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': calendar_user}
         calendar_user.delete()
     else:
         # When object_id is 0 (Multiple records delete)

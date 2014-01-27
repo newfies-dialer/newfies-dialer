@@ -49,8 +49,7 @@ def queue_list(request):
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
-    queue_list = Queue.objects\
-        .filter(manager=request.user).order_by(sort_order)
+    queue_list = Queue.objects.filter(manager=request.user).order_by(sort_order)
 
     template = 'callcenter/queue/list.html'
     data = {
@@ -238,8 +237,7 @@ def tier_list(request):
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
-    tier_list = Tier.objects\
-        .filter(manager=request.user).order_by(sort_order)
+    tier_list = Tier.objects.filter(manager=request.user).order_by(sort_order)
 
     template = 'callcenter/tier/list.html'
     data = {
@@ -324,8 +322,7 @@ def tier_del(request, object_id):
         try:
             tier_list = Tier.objects.extra(where=['id IN (%s)' % values])
             if tier_list:
-                request.session["msg"] =\
-                    _('%(count)s tier(s) are deleted.')\
+                request.session["msg"] = _('%(count)s tier(s) are deleted.')\
                     % {'count': tier_list.count()}
                 tier_list.delete()
         except:
@@ -349,8 +346,7 @@ def tier_change(request, object_id):
         * Update/delete selected tier from the tier list
           via TierFrontEndForm & get redirected to the tier list
     """
-    tier = get_object_or_404(
-        Tier, pk=object_id, manager=request.user)
+    tier = get_object_or_404(Tier, pk=object_id, manager=request.user)
 
     form = TierFrontEndForm(request.user.id, instance=tier)
     if request.method == 'POST':

@@ -1,10 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load i18n pagination_tags common_tags appointment_tags %}
 
-{% block extra_files %}
-    {% include "frontend/custom_jquery_select_all.html" %}
-{% endblock %}
-
 {% block content_header %}
     <h1>{% trans "alarms"|title %} <small>{% trans "list, add and edit alarm"|capfirst %}</small></h1>
 {% endblock %}

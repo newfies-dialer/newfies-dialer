@@ -31,23 +31,6 @@
 
 {% include "frontend/common_search_toggle_button.html" %}
 <div>&nbsp;</div>
-<script type="text/javascript">
-    function add_button()
-    {
-        window.location = 'add/';
-    }
-    function delete_button()
-    {
-        $('#ListForm').submit();
-    }
-
-    var sms_campaign_stop_flag;
-    function sms_campaign_stop_button(){
-        sms_campaign_stop_flag = true;
-        $('#ListForm').submit();
-    }
-</script>
-
 <div class="row">
     <div class="col-md-12">
         <div class="btn-group">

@@ -51,7 +51,7 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         """Test Function to check audio list"""
         response = self.client.get('/module/audio/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/audio/audio_list.html')
+        self.assertTemplateUsed(response, 'dialer_audio/audio_list.html')
 
         request = self.factory.get('/module/audio/')
         request.user = self.user

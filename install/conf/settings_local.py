@@ -14,8 +14,8 @@
 
 import os
 
-DEBUG = True
-TEMPLATE_DEBUG = DEBUG
+DEBUG = False
+TEMPLATE_DEBUG = False
 
 ADMINS = (
     # ('Your Name', 'your_email@domain.com'),

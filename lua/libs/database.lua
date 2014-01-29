@@ -259,7 +259,7 @@ function Database:load_all(campaign_id, contact_id, alarm_request_id)
     else
         self.app_type = 'voice_app'
         self:db_debugger("ERROR", "Error: voice_app("..self.campaign_info.content_type_id..
-            ") is not supported")
+            " != "..content_type_id..") is not supported")
         return false
     end
     local survey_id = self.campaign_info.object_id

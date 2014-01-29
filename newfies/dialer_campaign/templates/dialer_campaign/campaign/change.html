@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags %}
+{% load i18n common_tags dialer_campaign_tags %}
 
 {% block extra_files %}
     {{ form.media }}
@@ -38,43 +38,13 @@
                             {{ field }}
                         {% endfor %}
                         {% for field in campaign_fields.visible_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <div class="col-xs-8">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-block">
-                                        {{ field.errors|removetags:"ul li"|safe }}
-                                    </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
-                                </span>
-                                </div>
-                            </div>
-                        </div>
+                            {% field_html_code field %}
                         {% endfor %}
                     </div>
                     <div class="row">
                         {% get_fieldset extra_data,dnc,description,phonebook as campaign_fields from form %}
                         {% for field in campaign_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|capfirst }}</label>
-                                    {{ field }}
-                                    {% if field.errors %}
-                                        <span class="help-block">
-                                            {{ field.errors|removetags:"ul li"|safe|capfirst }}
-                                        </span>
-                                    {% endif %}
-                                    <span class="help-block">
-                                        {{ field.help_text|capfirst }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                            {% field_html_code field %}
                         {% endfor %}
                     </div>
                 </fieldset>
@@ -87,22 +57,7 @@
                     <div class="row">
                         {% get_fieldset aleg_gateway,frequency,callmaxduration,maxretry,intervalretry,calltimeout as campaign_settings_fields from form %}
                         {% for field in campaign_settings_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                    {{ field }}
-                                    {% if field.errors %}
-                                        <span class="help-block">
-                                            {{ field.errors|removetags:"ul li"|safe }}
-                                        </span>
-                                    {% endif %}
-                                    <span class="help-block">
-                                        {{ field.help_text|capfirst }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                            {% field_html_code field %}
                         {% endfor %}
                     </div>
                 </fieldset>
@@ -111,22 +66,7 @@
                     <div class="row">
                     {% get_fieldset completion_maxretry,completion_intervalretry as campaign_settings_fields from form %}
                     {% for field in campaign_settings_fields %}
-                    <div class="col-md-6">
-                        <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <div class="col-xs-8">
-                                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="help-block">
-                                        {{ field.errors|removetags:"ul li"|safe }}
-                                    </span>
-                                {% endif %}
-                                <span class="help-block">
-                                    {{ field.help_text|capfirst }}
-                                </span>
-                            </div>
-                        </div>
-                    </div>
+                        {% field_html_code field %}
                     {% endfor %}
                 </div>
                 </fieldset>
@@ -135,22 +75,7 @@
                     <div class="row">
                         {% get_fieldset sms_gateway as campaign_settings_fields from form %}
                         {% for field in campaign_settings_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
-                                    {{ field }}
-                                    {% if field.errors %}
-                                        <span class="help-block">
-                                            {{ field.errors|removetags:"ul li"|safe }}
-                                        </span>
-                                    {% endif %}
-                                    <span class="help-block">
-                                        {{ field.help_text|capfirst }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                            {% field_html_code field %}
                         {% endfor %}
                     </div>
                 </fieldset>
@@ -179,22 +104,7 @@
                 <div class="row">
                     {% get_fieldset amd_behavior,voicemail_audiofile as campaign_fields from form %}
                     {% for field in campaign_fields.visible_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                    {{ field }}
-                                    {% if field.errors %}
-                                        <span class="help-block">
-                                            {{ field.errors|removetags:"ul li"|safe }}
-                                        </span>
-                                    {% endif %}
-                                    <span class="help-block">
-                                        {{ field.help_text|capfirst }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                        {% field_html_code field %}
                     {% endfor %}
                 </div>
             </div>
@@ -226,22 +136,7 @@
                 <div class="row">
                     {% get_fieldset startingdate,expirationdate,daily_start_time,daily_stop_time as date_fields from form %}
                     {% for field in date_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                    {{ field }}
-                                    {% if field.errors %}
-                                        <span class="help-block">
-                                            {{ field.errors|removetags:"ul li"|safe }}
-                                        </span>
-                                    {% endif %}
-                                    <span class="help-block">
-                                        {{ field.help_text|capfirst }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                        {% field_html_code field %}
                     {% endfor %}
                 </div>
 
@@ -254,22 +149,7 @@
                 <div class="row">
                     {% get_fieldset agent_script,lead_disposition,external_link as callcenter_settings_fields from form %}
                     {% for field in callcenter_settings_fields %}
-                        <div class="col-md-6">
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                <div class="col-xs-8">
-                                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                                    {{ field }}
-                                    {% if field.errors %}
-                                        <span class="help-block">
-                                            {{ field.errors|removetags:"ul li"|safe }}
-                                        </span>
-                                    {% endif %}
-                                    <span class="help-block">
-                                        {{ field.help_text|capfirst }}
-                                    </span>
-                                </div>
-                            </div>
-                        </div>
+                        {% field_html_code field %}
                     {% endfor %}
                 </div>
             </div>

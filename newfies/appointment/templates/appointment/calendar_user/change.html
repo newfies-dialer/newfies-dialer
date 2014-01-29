@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags %}
+{% load i18n common_tags utils_tags %}
 
 {% block content_header %}
     <h1>
@@ -74,22 +74,7 @@
             {{ field }}
         {% endfor %}
         {% for field in cal_user_fields.visible_fields %}
-            <div class="col-md-6">
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
-                <div class="col-xs-8">
-                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                    {{ field }}
-                    {% if field.errors %}
-                        <span class="help-block">
-                            {{ field.errors|removetags:"ul li"|safe }}
-                        </span>
-                    {% endif %}
-                    <span class="help-block">
-                        {{ field.help_text|capfirst }}
-                    </span>
-                    </div>
-                </div>
-            </div>
+            {% field_html_code field 'col-md-6' 'col-xs-8' %}
         {% endfor %}
     </div>
     {% include "frontend/common_submit_buttons.html" %}

@@ -40,13 +40,11 @@
 
             <div class="row">
                 {% get_fieldset daily_start,daily_stop,advance_notice,maxretry,retry_delay as alarm_fields from form %}
-                {% for field in alarm_fields.hidden_fields %}
-                    {{ field }}
-                {% endfor %}
                 {% for field in alarm_fields.visible_fields %}
                     {% field_html_code field %}
                 {% endfor %}
             </div>
+
         </div>
 
         <div id="tabs-3" class="tab-pane {% if action == 'tabs-3' %}active{% endif %}">

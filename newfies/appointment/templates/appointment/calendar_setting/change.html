@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags %}
+{% load i18n common_tags utils_tags %}
 
 {% block content_header %}
     <h1>
@@ -19,43 +19,13 @@
     <div class="row">
         {% get_fieldset label,callerid,caller_name,call_timeout as calendarsetting_fields from form %}
         {% for field in calendarsetting_fields.visible_fields %}
-        <div class="col-md-6">
-            <div class="form-group {% if field.errors %}has-error{% endif %}">
-            <div class="col-xs-8">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-block">
-                        {{ field.errors|removetags:"ul li"|safe }}
-                    </span>
-                {% endif %}
-                <span class="help-block">
-                    {{ field.help_text|capfirst }}
-                </span>
-                </div>
-            </div>
-        </div>
+            {% field_html_code field 'col-md-6' 'col-xs-8' %}
         {% endfor %}
     </div>
     <div class="row">
         {% get_fieldset survey,aleg_gateway,sms_gateway as calendarsetting_fields from form %}
         {% for field in calendarsetting_fields.visible_fields %}
-        <div class="col-md-6">
-            <div class="form-group {% if field.errors %}has-error{% endif %}">
-            <div class="col-xs-8">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-block">
-                        {{ field.errors|removetags:"ul li"|safe }}
-                    </span>
-                {% endif %}
-                <span class="help-block">
-                    {{ field.help_text|capfirst }}
-                </span>
-                </div>
-            </div>
-        </div>
+            {% field_html_code field 'col-md-6' 'col-xs-8' %}
         {% endfor %}
     </div>
     {% if AMD %}
@@ -78,22 +48,7 @@
         <div class="row">
             {% get_fieldset amd_behavior,voicemail_audiofile as calendarsetting_fields from form %}
             {% for field in calendarsetting_fields.visible_fields %}
-                <div class="col-md-6">
-                    <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-8">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-block">
-                                    {{ field.errors|removetags:"ul li"|safe }}
-                                </span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ field.help_text|capfirst }}
-                            </span>
-                        </div>
-                    </div>
-                </div>
+                {% field_html_code field 'col-md-6' 'col-xs-8' %}
             {% endfor %}
         </div>
     {% endif %}

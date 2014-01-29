@@ -30,10 +30,10 @@ def field_html_code(field, col_class_1='col-md-6', col_class_2='col-xs-8'):
     """
     error_class = ''
     if field.errors:
-        error_class = ' has-error'
+        error_class = 'has-error'
 
     div_string = '<div class="%s">' % col_class_1
-    div_string += '<div class="form-group%s">' % (error_class)
+    div_string += '<div class="form-group %s">' % (error_class)
     div_string += '<div class="%s"><label class="control-label" for="%s">%s</label>%s' % (
         col_class_2, field.auto_id, word_capital(field.label), field)
 

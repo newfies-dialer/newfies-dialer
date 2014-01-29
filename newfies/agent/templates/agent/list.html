@@ -1,27 +1,11 @@
 {% extends "frontend/master.html" %}
 {% load i18n pagination_tags common_tags agent_tags %}
 
-{% block extra_files %}
-    {% include "frontend/custom_jquery_select_all.html" %}
-{% endblock %}
-
 {% block content_header %}
     <h1>{% trans "agent"|title %} <small>{% trans "list, add and edit agents"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
-
-<script type="text/javascript">
-    function add_button()
-    {
-        window.location = 'add/';
-    }
-
-    function delete_button()
-    {
-        $('#ListForm').submit();
-    }
-</script>
 <div class="row">
     <div class="col-md-12">
         <div class="btn-group">

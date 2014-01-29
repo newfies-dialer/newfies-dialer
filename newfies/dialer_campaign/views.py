@@ -644,12 +644,13 @@ def subscriber_list(request):
             campaign_id = request.session.get('session_campaign_id')
             agent_id = request.session.get('session_agent_id')
             status = request.session.get('session_status')
-            form = SubscriberSearchForm(request.user,
-                                        initial={'from_date': start_date.strftime('%Y-%m-%d'),
-                                                 'to_date': end_date.strftime('%Y-%m-%d'),
-                                                 'campaign_id': campaign_id,
-                                                 'agent_id': agent_id,
-                                                 'status': status})
+            form = SubscriberSearchForm(
+                request.user,
+                initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                         'to_date': end_date.strftime('%Y-%m-%d'),
+                         'campaign_id': campaign_id,
+                         'agent_id': agent_id,
+                         'status': status})
         else:
             post_var_with_page = 1
             if request.method == 'GET':
@@ -665,8 +666,10 @@ def subscriber_list(request):
         start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
         end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999).replace(tzinfo=utc)
 
-        form = SubscriberSearchForm(request.user, initial={'from_date': from_date,
-                                                           'to_date': to_date})
+        form = SubscriberSearchForm(
+            request.user,
+            initial={'from_date': from_date,
+                     'to_date': to_date})
         # unset session var
         request.session['session_start_date'] = start_date
         request.session['session_end_date'] = end_date

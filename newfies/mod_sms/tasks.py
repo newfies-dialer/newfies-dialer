@@ -166,6 +166,7 @@ class check_sms_campaign_pendingcall(Task):
 
         return True
 
+
 class spool_sms_nocampaign(PeriodicTask):
     """A periodic task that checks the sms not assigned to a campaign, create and tasks the calls
 

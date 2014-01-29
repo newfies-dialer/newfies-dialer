@@ -205,7 +205,7 @@ class sms_campaign_running(PeriodicTask):
         sms_campaign_running.delay()
     """
     run_every = timedelta(seconds=int(60 / DIV_MIN))
-    #NOTE : until we implement a PID Controller : 
+    #NOTE : until we implement a PID Controller :
     #http://en.wikipedia.org/wiki/PID_controller
 
     #The sms_campaign have to run every minutes in order to control the number

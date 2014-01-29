@@ -199,13 +199,15 @@ def date_range(start, end, q):
     """
     r = (end + timedelta(days=1) - start).days
     if int(q) <= 2:
-        return list(rrule(DAILY,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
+        return list(rrule(
+            DAILY,
+            dtstart=parse(str(start)),
+            until=parse(str(end))))
     if int(q) >= 3:
-        return list(rrule(HOURLY, interval=1,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
+        return list(rrule(
+            HOURLY, interval=1,
+            dtstart=parse(str(start)),
+            until=parse(str(end))))
     else:
         return [start + timedelta(days=i) for i in range(r)]
 

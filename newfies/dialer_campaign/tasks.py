@@ -33,7 +33,7 @@ from common_functions import debug_query
 # from common_functions import isint
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
-DIV_MIN = 10  # This will divide the minutes by that value and allow to not wait too long for the calls
+DIV_MIN = 10  # Divide minute by that value & allow not waiting long for calls
 
 logger = get_task_logger(__name__)
 
@@ -67,8 +67,9 @@ class pending_call_processing(Task):
     @only_one(ikey="check_pendingcall", timeout=LOCK_EXPIRE)
     def run(self, campaign_id):
         """
-        This task retrieves the next outbound call to be made for a given campaign,
-        and will create a new callrequest and schedule a task to process those calls
+        This task retrieves the next outbound call to be made for a given
+        campaign, and will create a new callrequest and schedule a task to
+        process those calls
 
         **Attributes**:
 
@@ -80,7 +81,9 @@ class pending_call_processing(Task):
         debug_query(0)
 
         try:
-            obj_campaign = Campaign.objects.select_related('user__userprofile__dialersetting', 'aleg_gateway', 'content_type').get(id=campaign_id)
+            obj_campaign = Campaign.objects\
+                .select_related('user__userprofile__dialersetting', 'aleg_gateway', 'content_type')\
+                .get(id=campaign_id)
         except:
             logger.error("Can't find this campaign")
             return False
@@ -91,7 +94,7 @@ class pending_call_processing(Task):
 
         debug_query(1)
 
-        #TODO: move this logic of setting call_type after post_save of CallRequest
+        #TODO: move this logic of setting call_type after CallRequest post_save
         # Default call_type
         call_type = CALLREQUEST_TYPE.ALLOW_RETRY
         # Check campaign's maxretry
@@ -115,12 +118,14 @@ class pending_call_processing(Task):
         # Get the subscriber of this campaign
         # get_pending_subscriber get Max 1000 records
         if frequency >= 10:
-            callfrequency = int(frequency / DIV_MIN) + 1  # 1000 per minutes 101
-            #callfrequency = int(frequency) + 1  # 1000 per minutes 101
+            callfrequency = int(frequency / DIV_MIN) + 1  # 1000 per minutes
+            #callfrequency = int(frequency) + 1  # 1000 per minutes
         else:
             callfrequency = frequency
-        (list_subscriber, no_subscriber) = obj_campaign.get_pending_subscriber_update(callfrequency, SUBSCRIBER_STATUS.IN_PROCESS)
-        logger.info("##subscriber=%d campaign_id=%d callfrequency=%d frequency=%d" % (no_subscriber, campaign_id, callfrequency, frequency))
+        (list_subscriber, no_subscriber) = obj_campaign\
+            .get_pending_subscriber_update(callfrequency, SUBSCRIBER_STATUS.IN_PROCESS)
+        logger.info("##subscriber=%d campaign_id=%d callfreq=%d freq=%d" %
+                    no_subscriber, campaign_id, callfrequency, frequency)
         debug_query(3)
 
         if no_subscriber == 0:
@@ -136,7 +141,8 @@ class pending_call_processing(Task):
             count = count + 1
             second_towait = floor(count * time_to_wait)
             ms_addtowait = (count * time_to_wait) - second_towait
-            logger.info("Init CallRequest in %d seconds (cmpg:%d,subscriber:%d)" % (second_towait, campaign_id, elem_camp_subscriber.id))
+            logger.info("Init CallRequest in %d seconds (cmpg:%d,subscr:%d)" %
+                        second_towait, campaign_id, elem_camp_subscriber.id)
 
             phone_number = elem_camp_subscriber.duplicate_contact
             debug_query(4)
@@ -160,7 +166,8 @@ class pending_call_processing(Task):
 
             debug_query(5)
 
-            #TODO: idea to speed up, create bluck of 10(Y) and then send a list of callrequest_id to init_callrequest
+            #TODO: idea to speed up, create bluck of 10(Y) and then send a list
+            # of callrequest_id to init_callrequest
 
             # Create Callrequest
             new_callrequest = Callrequest(
@@ -205,8 +212,9 @@ class campaign_running(PeriodicTask):
     **Usage**:
 
         campaign_running.delay()
+
     """
-    run_every = timedelta(seconds=int(60 / DIV_MIN)) 
+    run_every = timedelta(seconds=int(60 / DIV_MIN))
     # NOTE : until we implement a PID Controller :
     # http://en.wikipedia.org/wiki/PID_controller
 

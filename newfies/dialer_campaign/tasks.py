@@ -206,7 +206,7 @@ class campaign_running(PeriodicTask):
 
         campaign_running.delay()
     """
-    run_every = timedelta(seconds=int(60 / DIV_MIN))
+    run_every = timedelta(seconds=int(60 / DIV_MIN)) 
     # NOTE : until we implement a PID Controller :
     # http://en.wikipedia.org/wiki/PID_controller
 

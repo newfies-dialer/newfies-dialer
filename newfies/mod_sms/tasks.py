@@ -92,76 +92,79 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
 
 
 #TODO: Put a priority on this task
-@task()
-def check_sms_campaign_pendingcall(sms_campaign_id):
-    """This will execute the outbound calls in the sms_campaign
+class check_sms_campaign_pendingcall(Task):
+    @only_one(ikey="check_pendingsms", timeout=LOCK_EXPIRE)
+    def run(self, sms_campaign_id):
+        """This will execute the outbound calls in the sms_campaign
 
-    **Attributes**:
+        **Attributes**:
 
-        * ``sms_campaign_id`` - SMSCampaign ID
+            * ``sms_campaign_id`` - SMSCampaign ID
 
-    **Usage**:
+        **Usage**:
 
-        check_sms_campaign_pendingcall.delay(sms_campaign_id)
-    """
-    logger.info("TASK :: check_sms_campaign_pendingcall = %s" % str(sms_campaign_id))
-    try:
-        obj_sms_campaign = SMSCampaign.objects.get(id=sms_campaign_id)
-    except:
-        logger.error('Cannot find this SMS Campaign')
-        return False
+            check_sms_campaign_pendingcall.delay(sms_campaign_id)
+        """
+        logger = self.get_logger()
 
-    #TODO: Control the Speed
-    #if there is many task pending we should slow down
-    frequency = obj_sms_campaign.frequency  # default 10 calls per minutes
+        logger.info("TASK :: check_sms_campaign_pendingcall = %s" % str(sms_campaign_id))
+        try:
+            obj_sms_campaign = SMSCampaign.objects.get(id=sms_campaign_id)
+        except:
+            logger.error('Cannot find this SMS Campaign')
+            return False
 
-    #Speed
-    #check if the other tasks send for this sms_campaign finished to be ran
+        #TODO: Control the Speed
+        #if there is many task pending we should slow down
+        frequency = obj_sms_campaign.frequency  # default 10 calls per minutes
 
-    #Get the subscriber of this sms_campaign
-    # get_pending_subscriber get Max 1000 records
-    list_subscriber = obj_sms_campaign.get_pending_subscriber_update(
-        frequency, SMS_SUBSCRIBER_STATUS.IN_PROCESS)
-    if list_subscriber:
-        logger.debug("Number of subscriber found : %d" % len(list_subscriber))
+        #Speed
+        #check if the other tasks send for this sms_campaign finished to be ran
 
-    try:
-        no_subscriber = list_subscriber.count()
-    except AttributeError:
-        no_subscriber = 0
+        #Get the subscriber of this sms_campaign
+        # get_pending_subscriber get Max 1000 records
+        list_subscriber = obj_sms_campaign.get_pending_subscriber_update(
+            frequency, SMS_SUBSCRIBER_STATUS.IN_PROCESS)
+        if list_subscriber:
+            logger.debug("Number of subscriber found : %d" % len(list_subscriber))
 
-    if no_subscriber == 0:
-        logger.info("No Subscriber to proceed on this sms_campaign")
-        return False
+        try:
+            no_subscriber = list_subscriber.count()
+        except AttributeError:
+            no_subscriber = 0
 
-    #find how to dispatch them in the current minutes
-    time_to_wait = int(60 / DIV_MIN) / no_subscriber
-    count = 0
+        if no_subscriber == 0:
+            logger.info("No Subscriber to proceed on this sms_campaign")
+            return False
 
-    for elem_camp_subscriber in list_subscriber:
-        """Loop on Subscriber and start the initcall task"""
-        count = count + 1
-        logger.info(
-            "Add Message for Subscriber (%s) & wait (%s) " % (str(elem_camp_subscriber.id), str(time_to_wait)))
+        #find how to dispatch them in the current minutes
+        time_to_wait = 6.0 / no_subscriber
+        count = 0
 
-        #Check if the contact is authorized
-        if not obj_sms_campaign.is_authorized_contact(elem_camp_subscriber.contact.contact):
-            logger.error("Error : Contact not authorized")
-            elem_camp_subscriber.status = SMS_SUBSCRIBER_STATUS.NOT_AUTHORIZED  # Update to Not Authorized
-            elem_camp_subscriber.save()
-            return True
+        for elem_camp_subscriber in list_subscriber:
+            """Loop on Subscriber and start the initcall task"""
+            count = count + 1
+            logger.info("Add SMS Message for Subscriber (%s) & wait (%s) " % (str(elem_camp_subscriber.id), str(time_to_wait)))
 
-        #Todo Check if it's a good practice / implement a PID algorithm
-        second_towait = ceil(count * time_to_wait)
-        launch_date = datetime.utcnow().replace(tzinfo=utc) + timedelta(seconds=second_towait)
+            #Check if the contact is authorized
+            if not obj_sms_campaign.is_authorized_contact(elem_camp_subscriber.contact.contact):
+                logger.error("Error : Contact not authorized")
+                elem_camp_subscriber.status = SMS_SUBSCRIBER_STATUS.NOT_AUTHORIZED  # Update to Not Authorized
+                elem_camp_subscriber.save()
+                return True
 
-        logger.warning("Init SMS in %s at %s" % (str(second_towait), launch_date.strftime("%b %d %Y %I:%M:%S")))
+            #Todo Check if it's a good practice / implement a PID algorithm
+            second_towait = ceil(count * time_to_wait)
+            launch_date = datetime.utcnow().replace(tzinfo=utc) + timedelta(seconds=second_towait)
 
-        # Send sms through init_smsrequest
-        init_smsrequest.apply_async(
-            args=[elem_camp_subscriber, obj_sms_campaign],
-            countdown=second_towait)
+            logger.warning("Init SMS in %s at %s" % (str(second_towait), launch_date.strftime("%b %d %Y %I:%M:%S")))
 
+            # Send sms through init_smsrequest
+            init_smsrequest.apply_async(
+                args=[elem_camp_subscriber, obj_sms_campaign],
+                countdown=second_towait)
+
+        return True
 
 class spool_sms_nocampaign(PeriodicTask):
     """A periodic task that checks the sms not assigned to a campaign, create and tasks the calls
@@ -202,14 +205,13 @@ class sms_campaign_running(PeriodicTask):
         sms_campaign_running.delay()
     """
     run_every = timedelta(seconds=int(60 / DIV_MIN))
-    #NOTE : until we implement a PID Controller :
+    #NOTE : until we implement a PID Controller : 
     #http://en.wikipedia.org/wiki/PID_controller
 
     #The sms_campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
 
-    @only_one(ikey="sms_campaign_running", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger = self.get_logger(**kwargs)
         logger.warning("TASK :: Check if there is sms_campaign_running")
@@ -217,7 +219,8 @@ class sms_campaign_running(PeriodicTask):
         for sms_campaign in SMSCampaign.objects.get_running_sms_campaign():
             logger.debug("=> SMS Campaign name %s (id:%s)" % (sms_campaign.name,
                                                               sms_campaign.id))
-            check_sms_campaign_pendingcall.delay(sms_campaign.id)
+            keytask = 'check_smscampaign_pendingsms-%d' % (sms_campaign.id)
+            check_sms_campaign_pendingcall.delay(sms_campaign.id, keytask=keytask)
 
 
 #!!! USED

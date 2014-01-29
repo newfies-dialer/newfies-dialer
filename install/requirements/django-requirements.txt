@@ -26,7 +26,7 @@ switch2bill-common==2.8.4
 django-extensions==1.2.5
 django-nvd3==0.5.0
 git+git://github.com/Star2Billing/django-notification
-django-frontend-notification==0.1.8
+django-frontend-notification==0.1.9
 django-genericadmin==0.6.1
 django-bower==4.8.1
 django-cors-headers==0.12

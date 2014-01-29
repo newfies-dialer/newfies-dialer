@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags %}
+{% load i18n common_tags utils_tags %}
 
 {% block extra_files %}
     {{ form.media }}
@@ -32,22 +32,7 @@
                     {{ field }}
                 {% endfor %}
                 {% for field in general_fields.visible_fields %}
-                    <div class="col-md-6">
-                        <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-8">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-block">
-                                    {{ field.errors|removetags:"ul li"|safe }}
-                                </span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ field.help_text|capfirst }}
-                            </span>
-                            </div>
-                        </div>
-                    </div>
+                    {% field_html_code field %}
                 {% endfor %}
             </div>
         </div>
@@ -59,22 +44,7 @@
                     {{ field }}
                 {% endfor %}
                 {% for field in alarm_fields.visible_fields %}
-                    <div class="col-md-6">
-                        <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-8">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-block">
-                                    {{ field.errors|removetags:"ul li"|safe }}
-                                </span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ field.help_text|capfirst }}
-                            </span>
-                            </div>
-                        </div>
-                    </div>
+                    {% field_html_code field %}
                 {% endfor %}
             </div>
         </div>
@@ -86,22 +56,7 @@
                     {{ field }}
                 {% endfor %}
                 {% for field in result_fields.visible_fields %}
-                    <div class="col-md-6">
-                        <div class="form-group {% if field.errors %}has-error{% endif %}">
-                        <div class="col-xs-8">
-                            <label class="control-label" for="{{ field.auto_id }}">{{ field.label|wordcap }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-block">
-                                    {{ field.errors|removetags:"ul li"|safe }}
-                                </span>
-                            {% endif %}
-                            <span class="help-block">
-                                {{ field.help_text|capfirst }}
-                            </span>
-                            </div>
-                        </div>
-                    </div>
+                    {% field_html_code field %}
                 {% endfor %}
             </div>
         </div>

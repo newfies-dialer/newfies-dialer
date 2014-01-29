@@ -14,6 +14,7 @@
 
 from django.utils.safestring import mark_safe
 from django.template.defaultfilters import register
+from common.common_functions import word_capital
 import re
 
 
@@ -34,7 +35,7 @@ def field_html_code(field, col_class_1='col-md-6', col_class_2='col-xs-8'):
     div_string = '<div class="%s">' % col_class_1
     div_string += '<div class="form-group%s">' % (error_class)
     div_string += '<div class="%s"><label class="control-label" for="%s">%s</label>%s' % (
-        col_class_2, field.auto_id, field.label.title(), field)
+        col_class_2, field.auto_id, word_capital(field.label), field)
 
     if field.errors:
         div_string += '<span class="help-block">%s</span>' % striphtml(str(field.errors)).capitalize()

@@ -13,19 +13,12 @@
 #
 
 from django.db.models import get_model
-from django.utils.safestring import mark_safe
 from django.template.defaultfilters import register
 from dialer_campaign.constants import CAMPAIGN_STATUS
 from dialer_campaign.views import make_duplicate_campaign
 from dialer_campaign.function_def import get_campaign_status_name, get_subscriber_disposition, \
     get_subscriber_status
 from dialer_campaign.views import get_campaign_survey_view, get_url_campaign_status
-import re
-
-
-def striphtml(data):
-    p = re.compile(r'<.*?>')
-    return mark_safe(p.sub('', data))
 
 
 @register.filter(name='campaign_status')
@@ -122,25 +115,3 @@ def check_url_for_template_width(current_url):
             if path in current_url:
                 return True
         return False
-
-
-@register.simple_tag(name='field_html_code')
-def field_html_code(field):
-    """
-    Usage: {% field_html_code field %}
-    """
-    error_class = ''
-    if field.errors:
-        error_class = ' has-error'
-
-    div_string = '<div class="col-md-6">'
-    div_string += '<div class="form-group%s">' % (error_class)
-    div_string += '<div class="col-xs-8"><label class="control-label" for="%s">%s</label>%s' % (field.auto_id, field.label.title(), field)
-
-    if field.errors:
-        div_string += '<span class="help-block">%s</span>' % striphtml(str(field.errors)).capitalize()
-
-    div_string += '<span class="help-block">%s</span>' % (field.help_text.capitalize())
-    div_string += '</div></div></div>'
-
-    return mark_safe(div_string)

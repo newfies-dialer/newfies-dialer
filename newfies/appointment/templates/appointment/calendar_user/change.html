@@ -22,32 +22,12 @@
         <div class="row">
             {% get_fieldset username as calendar_user_fields from calendar_user_username_form %}
             {% for field in calendar_user_fields.visible_fields %}
-            <div class="col-md-6">
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
-                <div class="col-xs-8">
-                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                    {{ field }}
-                    {% if field.errors %}
-                        <span class="help-block">
-                            {{ field.errors|removetags:"ul li"|safe }}
-                        </span>
-                    {% endif %}
-                    <span class="help-block">
-                        {{ field.help_text|capfirst }}
-                    </span>
-                    </div>
-                </div>
-            </div>
+                {% field_html_code field 'col-md-6' 'col-xs-8' %}
             {% endfor %}
 
             {% get_fieldset password as calendar_user_fields from calendar_user_username_form %}
             {% for field in calendar_user_fields.visible_fields %}
-            <div class="col-md-6">
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
-                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                    {{ field }}
-                </div>
-            </div>
+                {% field_html_code field 'col-md-6' '' False False %}
             {% endfor %}
         </div>
     {% else %}

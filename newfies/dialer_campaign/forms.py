@@ -268,7 +268,7 @@ for i in SUBSCRIBER_STATUS:
 class SubscriberSearchForm(SearchForm):
     """Search Form on Subscriber List"""
     campaign_id = forms.ChoiceField(label=_('campaign'), required=True)
-    agent_id = forms.ChoiceField(label=_('agent'), required=True)
+    #agent_id = forms.ChoiceField(label=_('agent'), required=True)
     status = forms.ChoiceField(label=_('status'),
                                choices=subscriber_status_list,
                                required=False)

@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags appointment_tags %}
+{% load i18n pagination_tags common_tags appointment_tags utils_tags %}
 
 {% block extra_files %}
     {{ form.media }}
@@ -16,14 +16,7 @@
         <div class="row">
             {% get_fieldset start_date,calendar_id,calendar_user_id as search_event from form %}
             {% for field in search_event %}
-            <div class="col-md-4 {% if field.errors %} error{% endif %}">
-                <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
-                <span class="help-block">{{ field.help_text|capfirst }} </span>
-            </div>
+                {% search_form_field_html_code field 'col-md-4' %}
             {% endfor %}
         </div>
         <input class="btn btn-primary" type="submit" name="submit" value="{% trans 'search'|title %}" />

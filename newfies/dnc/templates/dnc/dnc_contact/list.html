@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags pagination_tags %}
+{% load i18n common_tags pagination_tags utils_tags %}
 
 {% block content_header %}
     <h1>{% trans "DNC" %} {% trans "contacts"|title %} <small>{% trans "list, add and edit Do Not Call contacts"|capfirst %}</small></h1>
@@ -8,20 +8,10 @@
 {% block content %}
 <div id="form_collapse" class="collapse">
     <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-
         <div class="row">
             {% get_fieldset phone_number,dnc as search_contact from form %}
             {% for field in search_contact %}
-            <div class="col-md-4 {% if field.errors %} error{% endif %}">
-                <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
-                <div class="input">
-                    {{ field }}
-                    {% if field.errors %}
-                        <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
-                    {% endif %}
-                    <span class="help-block">{{ field.help_text|capfirst }} </span>
-                </div>
-            </div>
+                {% search_form_field_html_code field 'col-md-4' %}
             {% endfor %}
         </div>
         <input class="btn btn-primary" type="submit" name="submit" value="{% trans 'search'|title %}" />

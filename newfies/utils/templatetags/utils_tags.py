@@ -64,3 +64,27 @@ def field_html_code(field, col_class_1='col-md-6', col_class_2='col-xs-8', flag_
         div_string += '</div>\n'
 
     return mark_safe(div_string)
+
+
+@register.simple_tag(name='search_form_field_html_code')
+def search_form_field_html_code(field, col_class_1='col-md-6', flag_error_text=True, flag_help_text=True):
+    """
+    Usage: {% search_form_field_html_code field 'col-md-6' %}
+    """
+    div_string = ''
+    div_string += '<div class="%s %s">\n' % (
+        col_class_1, 'has-error' if field.errors else '')
+
+    div_string += stab(1) + '<label class="control-label" for="%s">%s</label>\n' % (
+        field.auto_id, word_capital(field.label))
+    div_string += stab(1) + '%s\n' % (field)
+
+    if field.errors and flag_error_text:
+        div_string += stab(1) + '<span class="help-block">%s</span>\n' % striphtml(str(field.errors)).capitalize()
+
+    if flag_help_text:
+        div_string += stab(1) + '<span class="help-block">%s</span>\n' % (field.help_text.capitalize())
+
+    div_string += '</div>\n'
+
+    return mark_safe(div_string)

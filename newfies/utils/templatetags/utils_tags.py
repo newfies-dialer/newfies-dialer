@@ -18,6 +18,13 @@ from common.common_functions import word_capital
 import re
 
 
+def stab(tab=1):
+    """
+    create space tabulation
+    """
+    return ' ' * 4 * tab
+
+
 def striphtml(data):
     p = re.compile(r'<.*?>')
     return mark_safe(p.sub('', data))
@@ -32,15 +39,18 @@ def field_html_code(field, col_class_1='col-md-6', col_class_2='col-xs-8'):
     if field.errors:
         error_class = 'has-error'
 
-    div_string = '<div class="%s">' % col_class_1
-    div_string += '<div class="form-group %s">' % (error_class)
-    div_string += '<div class="%s"><label class="control-label" for="%s">%s</label>%s' % (
-        col_class_2, field.auto_id, word_capital(field.label), field)
+    div_string = '<div class="%s">\n' % col_class_1
+    div_string += stab(1) + '<div class="form-group %s">\n' % (error_class)
+    div_string += stab(2) + '<div class="%s">\n' % col_class_2
+    div_string += stab(3) + '<label class="control-label" for="%s">%s</label>\n' % (
+        field.auto_id, word_capital(field.label))
+    div_string += stab(3) + '%s\n' % field
 
     if field.errors:
-        div_string += '<span class="help-block">%s</span>' % striphtml(str(field.errors)).capitalize()
+        div_string += stab(3) + '<span class="help-block">%s</span>\n' % striphtml(str(field.errors)).capitalize()
 
-    div_string += '<span class="help-block">%s</span>' % (field.help_text.capitalize())
-    div_string += '</div></div></div>'
-
+    div_string += stab(3) + '<span class="help-block">%s</span>\n' % (field.help_text.capitalize())
+    div_string += stab(2) + '</div>\n'
+    div_string += stab(1) + '</div>\n'
+    div_string += '</div>\n'
     return mark_safe(div_string)

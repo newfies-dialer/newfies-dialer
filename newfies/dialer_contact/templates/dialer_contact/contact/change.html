@@ -39,7 +39,7 @@
             <div class="row">
                 {% get_fieldset unit_number,address,city,state,country,unit_number,additional_vars,description as contact_fields from form %}
                 {% for field in contact_fields.visible_fields %}
-                    {% field_html_code field 'col-md-6' 'col-xs-8' %}
+                    {% field_html_code field  %}
                 {% endfor %}
             </div>
         </div>

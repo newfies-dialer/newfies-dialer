@@ -1361,7 +1361,6 @@ def seal_survey(request, object_id):
     form = SealSurveyForm()
     if request.method == 'POST':
         form = SealSurveyForm(request.POST)
-        print form.errors
         if form.is_valid():
             survey_template = get_object_or_404(
                 Survey_template, pk=object_id, user=request.user)

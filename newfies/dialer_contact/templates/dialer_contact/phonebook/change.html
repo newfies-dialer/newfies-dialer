@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n activelink %}
+{% load i18n activelink utils_tags %}
 
 {% block content_header %}
     <h1>
@@ -18,16 +18,7 @@
 <form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
     {% for field in form %}
     <div class="row">
-        <div class="form-group {% if field.errors %}has-error{% endif %}">
-            <div class="col-xs-6">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
-                    <span class="help-block">{{ field.help_text|capfirst }} </span>
-            </div>
-        </div>
+        {% field_html_code field '' 'col-xs-6' %}
     </div>
     {% endfor %}
 

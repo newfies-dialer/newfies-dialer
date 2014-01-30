@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n %}
+{% load i18n utils_tags %}
 
 {% block header_files %}
 {% endblock %}
@@ -52,20 +52,7 @@
                 {% csrf_token %}
                     <div class="modal-body">
                         <div class="row">
-                            <div class="form-group {% if form.script.errors %}has-error{% endif %}">
-                                <div class="col-xs-12">
-                                    <label class="control-label" for="{{ form.script.auto_id }}">{{ form.script.label|title }}</label>
-                                    {{ form.script }}
-                                    {% if form.script.errors %}
-                                        <span class="help-block">
-                                            {{ form.script.errors|removetags:"ul li"|safe }}
-                                        </span>
-                                    {% endif %}
-                                    <span class="help-block">
-                                        {{ form.script.help_text|safe }}
-                                    </span>
-                                </div>
-                            </div>
+                            {% field_html_code form.script '' 'col-xs-12' %}
                         </div>
                     </div>
                     <div class="modal-footer" align="right">

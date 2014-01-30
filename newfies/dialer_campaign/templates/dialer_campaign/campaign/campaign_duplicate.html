@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags %}
+{% load i18n common_tags utils_tags %}
 
 {% block header_files %}
 {% endblock %}
@@ -52,16 +52,7 @@
                             {{ field }}
                         {% endfor %}
                         {% for field in campaign_fields.visible_fields %}
-
-                            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                                <label for="id_{{ field.name }}" class="control-label">{{ field.label|title }}</label>
-                                {{ field }}
-                                {% if field.errors %}
-                                    <span class="{% if field.errors %}has-error{% endif %}">{{ field.errors|removetags:"ul li"|safe }}</span>
-                                {% endif %}
-                                <span class="help-block">{{ field.help_text|capfirst }} </span>
-                            </div>
-
+                            {% field_html_code field '' '' %}
                         {% endfor %}
                     </div>
 

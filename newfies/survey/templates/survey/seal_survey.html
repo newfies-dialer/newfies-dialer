@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n %}
+{% load i18n utils_tags %}
 
 {% block header_files %}
 {% endblock %}
@@ -50,14 +50,7 @@
                 <form method="post" role="form" action="/module/seal_survey/{{ object_id }}/" enctype="multipart/form-data" >{% csrf_token %}
                     <div class="modal-body">
                         {% for field in form %}
-                        <div class="form-group {% if field.errors %}has-error{% endif %}">
-                            <label for="id_{{ field.name }}" class="control-label">{{ field.label|title }}</label>
-                            {{ field }}
-                            {% if field.errors %}
-                                <span class="help-block {% if field.errors %}has-error{% endif %}">{{ field.errors|removetags:"ul li"|safe }}</span>
-                            {% endif %}
-                            <span class="help-block">{{ field.help_text|capfirst }} </span>
-                        </div>
+                            {% field_html_code field '' '' %}
                         {% endfor %}
                     </div>
                     <div class="modal-footer">
@@ -72,6 +65,8 @@
         {% if err_msg %}
             </div>
         {% endif %}
+
+    {% include "frontend/extra_modal_footer.html" %}
 
     {% endblock %}
 

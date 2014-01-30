@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags %}
+{% load i18n common_tags utils_tags %}
 
 {% block content_header %}
     <h1>
@@ -20,44 +20,14 @@
         <div class="row">
             {% get_fieldset name,strategy as form_fields from form %}
             {% for field in form_fields.visible_fields %}
-            <div class="col-md-6">
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
-                    <div class="col-xs-8">
-                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                        {{ field }}
-                        {% if field.errors %}
-                            <span class="help-block">
-                                {{ field.errors|removetags:"ul li"|safe }}
-                            </span>
-                        {% endif %}
-                        <span class="help-block">
-                            {{ field.help_text|capfirst }}
-                        </span>
-                    </div>
-                </div>
-            </div>
+                {% field_html_code field 'col-md-6' 'col-xs-8' %}
             {% endfor %}
         </div>
 
         <div class="row">
             {% get_fieldset moh_sound,record_template,time_base_score,tier_rule_wait_second,discard_abandoned_after,max_wait_time,max_wait_time_with_no_agent,max_wait_time_with_no_agent_time_reached as form_fields from form %}
             {% for field in form_fields.visible_fields %}
-            <div class="col-md-6">
-                <div class="form-group {% if field.errors %}has-error{% endif %}">
-                    <div class="col-xs-8">
-                        <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                        {{ field }}
-                        {% if field.errors %}
-                            <span class="help-block">
-                                {{ field.errors|removetags:"ul li"|safe }}
-                            </span>
-                        {% endif %}
-                        <span class="help-block">
-                            {{ field.help_text|capfirst }}
-                        </span>
-                    </div>
-                </div>
-            </div>
+                {% field_html_code field 'col-md-6' 'col-xs-8' %}
             {% endfor %}
         </div>
         <div class="row">

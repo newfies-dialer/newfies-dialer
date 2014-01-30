@@ -36,11 +36,6 @@ def field_html_code(field, col_class_1='col-md-6', col_class_2='col-xs-8', flag_
     Usage: {% field_html_code field 'col-md-6' 'col-xs-8' %}
     """
     div_string = ''
-    # TODO : country field in Update Calendar User creating problem error
-    # UnicodeDecodeError at /module/calendar_user/x/
-    # 'ascii' codec can't decode byte 0xc3 in position 188: ordinal not in range(128)
-    #print field.name
-    #if field.name != 'country':
     if col_class_1:
         div_string = '<div class="%s">\n' % col_class_1
 

@@ -49,7 +49,32 @@
 
 
     <div class="row">
-        {% get_fieldset calendar_setting,accountcode,address,city,state,country,zip_code,phone_no,fax,company_name,company_website,language,note as cal_user_fields from form %}
+        {% get_fieldset calendar_setting,accountcode,address,city,state as cal_user_fields from form %}
+        {% for field in cal_user_fields.hidden_fields %}
+            {{ field }}
+        {% endfor %}
+        {% for field in cal_user_fields.visible_fields %}
+            {% field_html_code field 'col-md-6' 'col-xs-8' %}
+        {% endfor %}
+
+        <!--This code add to avoid error for country field-->
+        {# TODO : country field in Update Calendar User creating problem error #}
+        {# UnicodeDecodeError at /module/calendar_user/x/ #}
+        {# 'ascii' codec can't decode byte 0xc3 in position 188: ordinal not in range(128) #}
+        <div class="col-md-6">
+            <div class="form-group ">
+                <div class="col-xs-8">
+                    <label class="control-label" for="{{ form.country.auto_id }}">{{ form.country.label|title }}</label>
+                    {{ form.country }}
+                    {% if form.country.errors %}
+                        <span class="help-block">{{ form.country.errors|removetags:"ul li"|safe }}</span>
+                    {% endif %}
+                        <span class="help-block">{{ form.country.help_text|capfirst }} </span>
+                </div>
+            </div>
+        </div>
+
+        {% get_fieldset zip_code,phone_no,fax,company_name,company_website,language,note as cal_user_fields from form %}
         {% for field in cal_user_fields.hidden_fields %}
             {{ field }}
         {% endfor %}

@@ -16,7 +16,7 @@
         <div class="row">
             {% get_fieldset start_date,calendar_id,calendar_user_id as search_event from form %}
             {% for field in search_event %}
-                {% search_form_field_html_code field 'col-md-4' %}
+                {% field_html_code field 'col-md-4' %}
             {% endfor %}
         </div>
         <input class="btn btn-primary" type="submit" name="submit" value="{% trans 'search'|title %}" />

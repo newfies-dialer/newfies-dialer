@@ -67,8 +67,12 @@
                         {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS or form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE %}
 
                             <div class="row">
-                                {% field_html_code form.retries 'col-md-6 col-xs-10' %}
-                                {% field_html_code form.timeout 'col-md-6 col-xs-10' %}
+                                {% if form.retries %}
+                                    {% field_html_code form.retries 'col-md-6 col-xs-10' %}
+                                {% endif %}
+                                {% if form.timeout %}
+                                    {% field_html_code form.timeout 'col-md-6 col-xs-10' %}
+                                {% endif %}
                             </div>
 
                         {% endif %}

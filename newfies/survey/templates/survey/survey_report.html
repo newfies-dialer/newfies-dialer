@@ -16,7 +16,7 @@
         <div class="row">
             {% get_fieldset survey_id,from_date,to_date as campaign_fields from form %}
             {% for field in campaign_fields.visible_fields %}
-                {% search_form_field_html_code field 'col-md-4' %}
+                {% field_html_code field 'col-md-4' %}
             {% endfor %}
         </div>
         <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}">

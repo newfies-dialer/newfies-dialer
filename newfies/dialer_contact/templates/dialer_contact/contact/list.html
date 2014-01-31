@@ -11,7 +11,7 @@
     <div class="row">
         {% get_fieldset contact_no,contact_name,phonebook,contact_status as search_contact from form %}
         {% for field in search_contact %}
-            {% search_form_field_html_code field 'col-md-3' %}
+            {% field_html_code field 'col-md-3' %}
         {% endfor %}
     </div>
     <input class="btn btn-primary" type="submit" name="submit" value="{% trans 'search'|title %}" />

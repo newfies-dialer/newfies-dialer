@@ -50,7 +50,7 @@
                 <form method="post" role="form" action="/module/seal_survey/{{ object_id }}/" enctype="multipart/form-data" >{% csrf_token %}
                     <div class="modal-body">
                         {% for field in form %}
-                            {% field_html_code field '' '' %}
+                            {% field_html_code field '' %}
                         {% endfor %}
                     </div>
                     <div class="modal-footer">

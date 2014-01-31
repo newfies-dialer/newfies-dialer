@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons dialer_cdr_tags %}
+{% load i18n pagination_tags common_tags icons dialer_cdr_tags utils_tags %}
 
 {% block extra_files %}
     {{ form.media }}
@@ -16,14 +16,7 @@
             <div class="row">
                 {% get_fieldset from_date,to_date,status,campaign_id,leg_type as campaign_fields from form %}
                 {% for field in campaign_fields.visible_fields %}
-                    <div class="col-md-4 {% if field.errors %} error{% endif %}">
-                        <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
-                        {{ field }}
-                        {% if field.errors %}
-                            <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
-                        {% endif %}
-                        <span class="help-block">{{ field.help_text|capfirst }} </span>
-                    </div>
+                    {% field_html_code field 'col-md-4' %}
                 {% endfor %}
             </div>
 

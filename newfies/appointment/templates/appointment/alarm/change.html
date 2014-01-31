@@ -28,31 +28,22 @@
         <div id="tabs-1" class="tab-pane active">
             <div class="row">
                 {% get_fieldset alarm_phonenumber,alarm_email,event,method,survey,mail_template,sms_template,date_start_notice as general_fields from form %}
-                {% for field in general_fields.hidden_fields %}
-                    {{ field }}
-                {% endfor %}
                 {% for field in general_fields.visible_fields %}
                     {% field_html_code field %}
                 {% endfor %}
             </div>
         </div>
         <div id="tabs-2" class="tab-pane {% if action == 'tabs-2' %}active{% endif %}">
-
             <div class="row">
-                {% get_fieldset daily_start,daily_stop,advance_notice,maxretry,retry_delay as alarm_fields from form %}
+                {% get_fieldset daily_start,daily_stop,maxretry,retry_delay,advance_notice as alarm_fields from form %}
                 {% for field in alarm_fields.visible_fields %}
                     {% field_html_code field %}
                 {% endfor %}
             </div>
-
         </div>
-
         <div id="tabs-3" class="tab-pane {% if action == 'tabs-3' %}active{% endif %}">
             <div class="row">
                 {% get_fieldset result,url_cancel,phonenumber_sms_failure,url_confirm,phonenumber_transfer as result_fields from form %}
-                {% for field in result_fields.hidden_fields %}
-                    {{ field }}
-                {% endfor %}
                 {% for field in result_fields.visible_fields %}
                     {% field_html_code field %}
                 {% endfor %}

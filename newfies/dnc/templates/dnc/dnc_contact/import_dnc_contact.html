@@ -28,7 +28,7 @@
 <form class="well" role="form" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
     {% for field in form %}
     <div class="row">
-        {% field_html_code field '' 'col-xs-4' %}
+        {% field_html_code field 'col-xs-4' %}
     </div>
     {% endfor %}
     <div class="text-right">

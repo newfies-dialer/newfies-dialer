@@ -25,13 +25,13 @@
         <div class="row">
             {% get_fieldset title,calendar,start,end,creator,end_recurring_period,rule as event_fields from form %}
             {% for field in event_fields.visible_fields %}
-                {% field_html_code field 'col-md-6' 'col-xs-8' %}
+                {% field_html_code field %}
             {% endfor %}
         </div>
         <div class="row">
             {% get_fieldset description,data as event_fields from form %}
             {% for field in event_fields.visible_fields %}
-                {% field_html_code field 'col-md-6' 'col-xs-8' %}
+                {% field_html_code field %}
             {% endfor %}
         </div>
     <fieldset>

@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n utils_tags %}
 {% if msg_detail %}
     <br/>
     <div class="alert alert-success">
@@ -17,31 +17,13 @@
 <form class="well" role="form" action="" method="post">{% csrf_token %}
     {% for field in user_detail_form %}
     <div class="row">
-        <div class="form-group {% if field.errors %}has-error{% endif %}">
-            <div class="col-md-3 col-xs-8">
-                <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
-                    <span class="help-block">{{ field.help_text|capfirst }} </span>
-            </div>
-        </div>
+        {% field_html_code field 'col-md-3 col-xs-8' %}
     </div>
     {% endfor %}
 
     {% for field in user_detail_extened_form %}
         <div class="row">
-            <div class="form-group {% if field.errors %}has-error{% endif %}">
-                <div class="col-md-3 col-xs-8">
-                    <label class="control-label" for="{{ field.auto_id }}">{{ field.label|title }}</label>
-                    {{ field }}
-                    {% if field.errors %}
-                        <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
-                    {% endif %}
-                        <span class="help-block">{{ field.help_text|capfirst }} </span>
-                </div>
-            </div>
+            {% field_html_code field 'col-md-3 col-xs-8' %}
         </div>
     {% endfor %}
     <div class="text-right">

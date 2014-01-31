@@ -237,8 +237,8 @@ class AlarmForm(ModelForm):
         self.fields.keyOrder = [
             'date_start_notice', 'event', 'alarm_phonenumber', 'alarm_email',
             'method', 'survey', 'mail_template', 'sms_template',
-            'daily_start', 'daily_stop', 'advance_notice', 'maxretry',
-            'result', 'retry_delay', 'url_cancel', 'phonenumber_sms_failure',
+            'daily_start', 'daily_stop', 'maxretry', 'retry_delay', 'advance_notice',
+            'result', 'url_cancel', 'phonenumber_sms_failure',
             'url_confirm', 'phonenumber_transfer']
 
         for i in self.fields.keyOrder:

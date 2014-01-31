@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags %}
+{% load i18n common_tags utils_tags %}
 
 {% block header_files %}
 {% endblock %}
@@ -61,59 +61,14 @@
                     <!-- modal content-->
 
                         <div class="row">
-                            <div class="col-md-10">
-                                <div class="form-group {% if form.type.errors %}has-error{% endif %}">
-                                    <div class="col-xs-12">
-                                        <label class="control-label" for="{{ form.type.auto_id }}">{{ form.type.label|capfirst }}</label>
-                                        {{ form.type }}
-                                        {% if form.type.errors %}
-                                            <span class="help-block">
-                                                {{ form.type.errors|removetags:"ul li"|safe }}
-                                            </span>
-                                        {% endif %}
-                                        <span class="help-block">
-                                            {{ form.type.help_text|capfirst }}
-                                        </span>
-                                    </div>
-                                </div>
-                            </div>
+                            {% field_html_code form.type 'col-md-10 col-xs-12' %}
                         </div>
 
                         {% if form.type.value|convert_to_int == SECTION_TYPE.MULTI_CHOICE or form.type.value|convert_to_int == SECTION_TYPE.RATING_SECTION or form.type.value|convert_to_int == SECTION_TYPE.CAPTURE_DIGITS or form.type.value|convert_to_int == SECTION_TYPE.CONFERENCE %}
 
                             <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group {% if form.retries.errors %}has-error{% endif %}">
-                                        <div class="col-xs-10">
-                                            <label class="control-label" for="{{ form.retries.auto_id }}">{{ form.retries.label|capfirst }}</label>
-                                            {{ form.retries }}
-                                            {% if form.retries.errors %}
-                                                <span class="help-block">
-                                                    {{ form.retries.errors|removetags:"ul li"|safe }}
-                                                </span>
-                                            {% endif %}
-                                            <span class="help-block">
-                                                {{ form.retries.help_text|capfirst }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6">
-                                    <div class="form-group {% if form.timeout.errors %}has-error{% endif %}">
-                                        <div class="col-xs-10">
-                                            <label class="control-label" for="{{ form.timeout.auto_id }}">{{ form.timeout.label|capfirst }}</label>
-                                            {{ form.timeout }}
-                                            {% if form.timeout.errors %}
-                                                <span class="help-block">
-                                                    {{ form.timeout.errors|removetags:"ul li"|safe }}
-                                                </span>
-                                            {% endif %}
-                                            <span class="help-block">
-                                                {{ form.timeout.help_text|capfirst }}
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                                {% field_html_code form.retries 'col-md-6 col-xs-10' %}
+                                {% field_html_code form.timeout 'col-md-6 col-xs-10' %}
                             </div>
 
                         {% endif %}

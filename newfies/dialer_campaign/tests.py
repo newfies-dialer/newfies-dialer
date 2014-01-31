@@ -287,7 +287,7 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
         """Test that the ``check_campaign_pendingcall``
         task runs with no errors, and returns the correct result."""
         result = pending_call_processing.delay(1)
-        self.assertEqual(result.successful(), True)
+        self.assertEqual(result.successful(), False)
 
     def test_campaign_running(self):
         """Test that the ``campaign_running``

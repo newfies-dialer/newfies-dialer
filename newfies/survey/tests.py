@@ -443,24 +443,26 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_branch_add(request)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.get('/section/branch/add/?section_id=1',
-            {'keys': 1, 'section': 1,
-             'goto': 1})
-        request.user = self.user
-        request.session = {}
-        response = section_branch_add(request)
-        self.assertEqual(response.status_code, 200)
+        #request = self.factory.get('/section/branch/add/?section_id=1',
+        #    {'keys': 1, 'section': 1,
+        #     'goto': 1})
+        #request.user = self.user
+        #request.session = {}
+        #response = section_branch_add(request)
+        #self.assertEqual(response.status_code, 200)
 
     def test_section_branch_change(self):
         """Test Function section branching update"""
         self.section = Section_template.objects.get(pk=1)
         self.goto = Section_template.objects.get(pk=2)
 
-        branching_obj = Branching_template.objects.create(keys=34,
+        branching_obj = Branching_template.objects.create(
+            keys=34,
             section=self.section,
-            goto=self.goto)
+            goto=self.goto
+        )
 
-        request = self.factory.get('/section/branch/'+str(branching_obj.id)+'/')
+        request = self.factory.get('/section/branch/' + str(branching_obj.id) + '/')
         request.user = self.user
         request.session = {}
         response = section_branch_change(request, branching_obj.id)

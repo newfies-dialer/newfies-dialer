@@ -25,7 +25,7 @@
 
     {% if err_msg %}
         {% include "frontend/extra_modal_header.html" %}
-
+        {% include "frontend/extra_modal_footer.html" %}
         <script type="text/javascript" charset="utf-8">
             $(window).load(function(){
                 $('#section-modal').modal('show');
@@ -61,12 +61,12 @@
                     <div class="row">
                         <div class="col-md-6">
                             <script type="text/javascript">
-                            $(function () {
-                                $("#button-anything").on('click', function() {
-                                    $("#id_keys").attr('value', 'any');
+                            $(function() {
+                                $('#button-anything').change( function() {
+                                    $("#id_keys").val('any');
                                 });
-                                $("#button-invalid").on('click', function() {
-                                    $("#id_keys").attr('value', 'invalid');
+                                $('#button-invalid').change( function() {
+                                    $("#id_keys").val('invalid');
                                 });
                             });
                             </script>
@@ -119,8 +119,6 @@
 {% if err_msg %}
 </div>
 {% endif %}
-
-{% include "frontend/extra_modal_footer.html" %}
 
 {% endblock %}
 

@@ -4,6 +4,9 @@
 {% block header_files %}
 {% endblock %}
 
+{% block bootstrap_switch_js %}
+{% endblock %}
+
 {% block extra_files %}
 {% endblock %}
 
@@ -11,9 +14,6 @@
 {% endblock %}
 
 {% block header %}
-{% endblock %}
-
-{% block newfies_custom_js %}
 {% endblock %}
 
 {% block menu %}
@@ -61,7 +61,7 @@
                     <div class="row">
                         <div class="col-md-6">
                             <script type="text/javascript">
-                            $(function() {
+                            $(document).ready(function () {
                                 $("#button-anything").on('click', function() {
                                     $("#id_keys").attr('value', 'any');
                                 });

@@ -55,3 +55,20 @@ def field_html_code(field, main_class='col-md-6 col-xs-8', flag_error_text=True,
         field_help_text=field_help_text)
 
     return mark_safe(htmlcell)
+
+
+@register.filter(name='check_url_for_template_width')
+def check_url_for_template_width(current_url):
+    """"""
+    full_width_on_requested_path = [
+        '/dashboard/', '/sms_dashboard/', '/campaign/', '/sms_campaign/',
+        'user_detail_change', '/audio/', '/user_notification/',
+    ]
+    if current_url == '/':
+        return True
+    else:
+        current_url = str(current_url)
+        for path in full_width_on_requested_path:
+            if path in current_url:
+                return True
+        return False

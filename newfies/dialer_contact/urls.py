@@ -11,8 +11,8 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.conf.urls import patterns
-
+from django.conf.urls import patterns, url
+from dialer_contact.views import PhonebookList
 
 urlpatterns = patterns('dialer_contact.views',
     # Phonebook urls
@@ -28,4 +28,6 @@ urlpatterns = patterns('dialer_contact.views',
     (r'^contact_import/$', 'contact_import'),
     (r'^contact/del/(.+)/$', 'contact_del'),
     (r'^contact/(.+)/$', 'contact_change'),
+
+    url(r'^phonebooks/$', PhonebookList.as_view()),
 )

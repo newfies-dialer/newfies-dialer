@@ -88,9 +88,6 @@ def survey_list(request):
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
     survey_list = Survey_template.objects\
@@ -100,7 +97,6 @@ def survey_list(request):
     data = {
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'SURVEY_COLUMN_NAME': SURVEY_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
@@ -902,8 +898,6 @@ def survey_report(request):
                            'disposition', 'id']
     default_sort_field = 'starting_date'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
@@ -1016,7 +1010,6 @@ def survey_report(request):
         'rows': rows,
         'all_call_list': all_call_list,
         'call_count': all_call_list.count() if all_call_list else 0,
-        'PAGE_SIZE': PAGE_SIZE,
         'SURVEY_CALL_RESULT_NAME': SURVEY_CALL_RESULT_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'total_data': survey_cdr_daily_data['total_data'],
@@ -1328,9 +1321,6 @@ def sealed_survey_list(request):
     sort_col_field_list = ['id', 'name', 'updated_date', 'campaign']
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
     survey_list = Survey.objects\
@@ -1341,7 +1331,6 @@ def sealed_survey_list(request):
     data = {
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'SEALED_SURVEY_COLUMN_NAME': SEALED_SURVEY_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),

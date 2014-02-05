@@ -49,7 +49,7 @@
                     </tr>
                     </thead>
                     {% if calendar_setting_list %}
-                        {% autopaginate calendar_setting_list PAGE_SIZE %}
+                        {% autopaginate calendar_setting_list newfies_page_size %}
                         {% for row in calendar_setting_list %}
                             <tr>
                                 <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>

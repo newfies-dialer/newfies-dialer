@@ -45,8 +45,6 @@ def queue_list(request):
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
     queue_list = Queue.objects.filter(manager=request.user).order_by(sort_order)
@@ -57,7 +55,6 @@ def queue_list(request):
         'error_msg': request.session.get('error_msg'),
         'queue_list': queue_list,
         'total_queue': queue_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'QUEUE_COLUMN_NAME': QUEUE_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -233,18 +230,13 @@ def tier_list(request):
     sort_col_field_list = ['agent', 'queue', 'level', 'position', 'updated_date']
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
-
     tier_list = Tier.objects.filter(manager=request.user).order_by(sort_order)
-
     template = 'callcenter/tier/list.html'
     data = {
         'msg': request.session.get('msg'),
         'tier_list': tier_list,
         'total_tier': tier_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'TIER_COLUMN_NAME': TIER_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'dialer_setting_msg': user_dialer_setting_msg(request.user),

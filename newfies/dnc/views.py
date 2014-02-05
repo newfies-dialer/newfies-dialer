@@ -46,8 +46,6 @@ def dnc_list(request):
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
     dnc_list = DNC.objects.filter(user=request.user).order_by(sort_order)
@@ -57,7 +55,6 @@ def dnc_list(request):
         'msg': request.session.get('msg'),
         'dnc_list': dnc_list,
         'total_dnc': dnc_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'DNC_COLUMN_NAME': DNC_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -225,8 +222,6 @@ def dnc_contact_list(request):
     sort_col_field_list = ['id', 'dnc', 'phone_number', 'updated_date']
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
@@ -304,7 +299,6 @@ def dnc_contact_list(request):
         'phone_number_list': phone_number_list,
         'all_phone_number_list': all_phone_number_list,
         'total_phone_numbers': phone_number_count,
-        'PAGE_SIZE': PAGE_SIZE,
         'DNC_CONTACT_COLUMN_NAME': DNC_CONTACT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),

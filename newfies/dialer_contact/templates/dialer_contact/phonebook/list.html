@@ -43,7 +43,7 @@
                     </tr>
                     </thead>
                     {% if phonebook_list %}
-                        {% autopaginate phonebook_list PAGE_SIZE %}
+                        {% autopaginate phonebook_list newfies_page_size %}
                         {% for row in phonebook_list %}
                             <tr>
                                 <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>

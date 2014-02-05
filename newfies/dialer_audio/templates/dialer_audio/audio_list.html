@@ -50,7 +50,7 @@
                 </tr>
                 </thead>
                 {% if audio_list %}
-                    {% autopaginate audio_list PAGE_SIZE %}
+                    {% autopaginate audio_list newfies_page_size %}
                     {% for row in audio_list %}
                         <tr>
                             <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>

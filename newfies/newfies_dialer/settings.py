@@ -156,6 +156,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     "context_processors.newfies_version",
+    "context_processors.newfies_page_size",
     #needed by Sentry
     "django.core.context_processors.request",
 )

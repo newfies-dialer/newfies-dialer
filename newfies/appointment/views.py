@@ -64,7 +64,6 @@ def calendar_user_list(request):
     pagination_data = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
 
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
     calendar_user_list = CalendarUserProfile.objects\
@@ -75,7 +74,6 @@ def calendar_user_list(request):
         'msg': request.session.get('msg'),
         'calendar_user_list': calendar_user_list,
         'total_calendar_user': calendar_user_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'CALENDAR_USER_COLUMN_NAME': CALENDAR_USER_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -292,8 +290,6 @@ def calendar_list(request):
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
     calendar_user_id_list = get_calendar_user_id_list(request.user)
@@ -305,7 +301,6 @@ def calendar_list(request):
         'msg': request.session.get('msg'),
         'calendar_list': calendar_list,
         'total_calendar': calendar_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'CALENDAR_COLUMN_NAME': CALENDAR_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -448,8 +443,6 @@ def calendar_setting_list(request):
                            'sms_gateway']
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
     calendar_setting_list = CalendarSetting.objects.filter(user=request.user).order_by(sort_order)
@@ -459,7 +452,6 @@ def calendar_setting_list(request):
         'msg': request.session.get('msg'),
         'calendar_setting_list': calendar_setting_list,
         'total_calendar_setting': calendar_setting_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'CALENDAR_SETTING_COLUMN_NAME': CALENDAR_SETTING_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -610,8 +602,6 @@ def event_list(request):
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
@@ -682,7 +672,6 @@ def event_list(request):
         'msg': request.session.get('msg'),
         'event_list': event_list,
         'total_event': event_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'EVENT_COLUMN_NAME': EVENT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -826,8 +815,6 @@ def alarm_list(request):
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
 
     calendar_user_id_list = get_calendar_user_id_list(request.user)
@@ -839,7 +826,6 @@ def alarm_list(request):
         'msg': request.session.get('msg'),
         'alarm_list': alarm_list,
         'total_alarm': alarm_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'ALARM_COLUMN_NAME': ALARM_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'dialer_setting_msg': user_dialer_setting_msg(request.user),

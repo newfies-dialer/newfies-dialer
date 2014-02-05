@@ -50,10 +50,7 @@ def phonebook_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
     sort_order = pagination_data['sort_order']
 
     phonebook_list = Phonebook.objects\
@@ -65,7 +62,6 @@ def phonebook_list(request):
         'msg': request.session.get('msg'),
         'phonebook_list': phonebook_list,
         'total_phonebook': phonebook_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'PHONEBOOK_COLUMN_NAME': PHONEBOOK_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
@@ -232,10 +228,8 @@ def contact_list(request):
                            'first_name', 'last_name', 'email',
                            'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
@@ -243,7 +237,7 @@ def contact_list(request):
     form = ContactSearchForm(request.user)
     phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
         .filter(user=request.user)
-    search_tag = 1
+
     contact_no = ''
     contact_name = ''
     phonebook = ''
@@ -312,10 +306,11 @@ def contact_list(request):
 
         if contact_name:
             # Search on contact name
-            q = (Q(last_name__icontains=contact_name) |
-                 Q(first_name__icontains=contact_name))
-            if q:
-                contact_list = contact_list.filter(q)
+            contact_name_filter = (
+                Q(last_name__icontains=contact_name) | Q(first_name__icontains=contact_name)
+            )
+            if contact_name_filter:
+                contact_list = contact_list.filter(contact_name_filter)
 
         all_contact_list = contact_list.order_by(sort_order)
         contact_list = all_contact_list[start_page:end_page]
@@ -326,14 +321,12 @@ def contact_list(request):
         'contact_list': contact_list,
         'all_contact_list': all_contact_list,
         'total_contacts': contact_count,
-        'PAGE_SIZE': PAGE_SIZE,
         'CONTACT_COLUMN_NAME': CONTACT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
-        'search_tag': search_tag,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

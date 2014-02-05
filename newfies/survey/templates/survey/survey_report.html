@@ -147,7 +147,7 @@
                 </tr>
                 </thead>
                 {% if rows %}
-                    {% autopaginate all_call_list PAGE_SIZE %}
+                    {% autopaginate all_call_list newfies_page_size %}
                     {% for row in rows %}
                         <tr>
                             <td>{{ row.starting_date }}</td>

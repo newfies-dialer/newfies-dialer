@@ -234,8 +234,6 @@ def campaign_list(request):
     sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
@@ -293,7 +291,6 @@ def campaign_list(request):
         'search_tag': search_tag,
         'campaign_list': campaign_list,
         'total_campaign': campaign_count,
-        'PAGE_SIZE': PAGE_SIZE,
         'CAMPAIGN_COLUMN_NAME': CAMPAIGN_COLUMN_NAME,
         'CAMPAIGN_STATUS': CAMPAIGN_STATUS,
         'col_name_with_order': pagination_data['col_name_with_order'],
@@ -596,15 +593,11 @@ def subscriber_list(request):
                            'disposition', 'collected_data', 'agent']
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
 
     form = SubscriberSearchForm(request.user)
-
-    search_tag = 1
     campaign_id = ''
     agent_id = ''
     status = 'all'
@@ -717,14 +710,12 @@ def subscriber_list(request):
         'subscriber_list': subscriber_list,
         'all_subscriber_list': all_subscriber_list,
         'total_subscribers': subscriber_count,
-        'PAGE_SIZE': PAGE_SIZE,
         'SUBSCRIBER_COLUMN_NAME': SUBSCRIBER_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
-        'search_tag': search_tag,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

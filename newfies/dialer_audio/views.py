@@ -46,8 +46,6 @@ def audio_list(request):
     default_sort_field = 'id'
     pagination_data = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     audio_list = AudioFile.objects.filter(user=request.user).order_by(sort_order)
     domain = Site.objects.get_current().domain
@@ -56,7 +54,6 @@ def audio_list(request):
     data = {
         'audio_list': audio_list,
         'total_audio': audio_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'AUDIO_COLUMN_NAME': AUDIO_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'domain': domain,

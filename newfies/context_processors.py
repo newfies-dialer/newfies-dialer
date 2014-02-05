@@ -17,3 +17,8 @@ from django.conf import settings
 
 def newfies_version(request):
     return {'newfies_version': newfies_dialer.__version__, 'SURVEYDEV': settings.SURVEYDEV}
+
+
+def newfies_page_size(request):
+    """return the value of PAGE_SIZE in templates"""
+    return {'newfies_page_size': settings.PAGE_SIZE}

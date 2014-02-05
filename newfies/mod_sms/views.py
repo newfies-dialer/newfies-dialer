@@ -206,7 +206,6 @@ def sms_campaign_list(request):
     pagination_data = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
 
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
@@ -264,7 +263,6 @@ def sms_campaign_list(request):
         'smscampaign_list': smscampaign_list,
         'search_tag': search_tag,
         'total_campaign': smscampaign_count,
-        'PAGE_SIZE': PAGE_SIZE,
         'SMS_CAMPAIGN_COLUMN_NAME': SMS_CAMPAIGN_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
@@ -867,7 +865,6 @@ def sms_report(request):
     pagination_data = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
 
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
@@ -992,7 +989,6 @@ def sms_report(request):
         'sms_list': sms_list,
         'sms_count': all_sms_list.count() if all_sms_list else 0,
         'SMS_REPORT_COLUMN_NAME': SMS_REPORT_COLUMN_NAME,
-        'PAGE_SIZE': PAGE_SIZE,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'start_date': start_date,
         'end_date': end_date,

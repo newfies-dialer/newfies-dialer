@@ -47,7 +47,7 @@
                     </tr>
                     </thead>
                     {% if survey_list %}
-                        {% autopaginate survey_list PAGE_SIZE %}
+                        {% autopaginate survey_list newfies_page_size %}
                         {% for row in survey_list %}
                             <tr>
                                 <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>

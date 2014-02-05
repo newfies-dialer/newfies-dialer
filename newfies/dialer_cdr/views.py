@@ -88,8 +88,6 @@ def voipcall_report(request):
                            'duration', 'billsec', 'amd_status']
     default_sort_field = 'starting_date'
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
@@ -222,7 +220,6 @@ def voipcall_report(request):
         'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'all_voipcall_list': all_voipcall_list,
         'voipcall_list': voipcall_list,
-        'PAGE_SIZE': PAGE_SIZE,
         'CDR_REPORT_COLUMN_NAME': CDR_REPORT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'search_tag': search_tag,

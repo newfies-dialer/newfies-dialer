@@ -62,7 +62,7 @@
                     </tr>
                     </thead>
                     {% if subscriber_list %}
-                        {% autopaginate all_subscriber_list PAGE_SIZE %}
+                        {% autopaginate all_subscriber_list newfies_page_size %}
                         {% for row in subscriber_list %}
                             <tr>
                                 <td>{{ row.contact }}</td>

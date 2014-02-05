@@ -33,12 +33,11 @@ from common.common_functions import get_pagination_vars, ceil_strdate,\
 from common.common_constants import EXPORT_CHOICE
 from mod_sms.models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
 from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
-    SMS_NOTIFICATION_NAME, SMS_REPORT_COLUMN_NAME, COLOR_SMS_DISPOSITION,\
+    SMS_REPORT_COLUMN_NAME, COLOR_SMS_DISPOSITION, SMS_NOTIFICATION_NAME,\
     SMS_SUBSCRIBER_STATUS, SMS_MESSAGE_STATUS
 from mod_sms.forms import SMSCampaignForm, SMSDashboardForm, SMSSearchForm,\
     SMSCampaignSearchForm, DuplicateSMSCampaignForm
-from mod_sms.function_def import check_sms_dialer_setting
-from mod_sms.tasks import sms_collect_subscriber
+from mod_sms.function_def import check_sms_dialer_setting, get_sms_notification_status
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
@@ -47,31 +46,6 @@ import time
 
 
 redirect_url_to_smscampaign_list = '/sms_campaign/'
-
-
-def get_sms_notification_status(status):
-    """To differentiate campaign & sms campaign status
-
-    >>> get_sms_notification_status(1)
-    9
-
-    >>> get_sms_notification_status(2)
-    10
-
-    >>> get_sms_notification_status(3)
-    11
-
-    >>> get_sms_notification_status(4)
-    12
-    """
-    if status == SMS_CAMPAIGN_STATUS.START:
-        return SMS_NOTIFICATION_NAME.sms_campaign_started
-    if status == SMS_CAMPAIGN_STATUS.PAUSE:
-        return SMS_NOTIFICATION_NAME.sms_campaign_paused
-    if status == SMS_CAMPAIGN_STATUS.ABORT:
-        return SMS_NOTIFICATION_NAME.sms_campaign_aborted
-    if status == SMS_CAMPAIGN_STATUS.END:
-        return SMS_NOTIFICATION_NAME.sms_campaign_stopped
 
 
 @login_required

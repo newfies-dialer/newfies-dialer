@@ -17,7 +17,8 @@ from common.common_functions import variable_value
 from user_profile.models import UserProfile
 from mod_sms.models import SMSCampaign
 #from dialer_setting.models import DialerSetting
-from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR
+from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR,\
+    SMS_NOTIFICATION_NAME
 from datetime import datetime
 from django.utils.timezone import utc
 
@@ -159,7 +160,7 @@ def sms_record_common_fun(request):
     if len(kwargs) == 0:
         tday = datetime.utcnow().replace(tzinfo=utc)
         kwargs['send_date__gte'] = datetime(tday.year, tday.month, tday.day,
-            0, 0, 0, 0).replace(tzinfo=utc)
+                                            0, 0, 0, 0).replace(tzinfo=utc)
     return kwargs
 
 
@@ -202,3 +203,28 @@ def sms_search_admin_form_fun(request):
         query_string = return_query_string(query_string, smscampaign_string)
 
     return query_string
+
+
+def get_sms_notification_status(status):
+    """To differentiate campaign & sms campaign status
+
+    >>> get_sms_notification_status(1)
+    9
+
+    >>> get_sms_notification_status(2)
+    10
+
+    >>> get_sms_notification_status(3)
+    11
+
+    >>> get_sms_notification_status(4)
+    12
+    """
+    if status == SMS_CAMPAIGN_STATUS.START:
+        return SMS_NOTIFICATION_NAME.sms_campaign_started
+    if status == SMS_CAMPAIGN_STATUS.PAUSE:
+        return SMS_NOTIFICATION_NAME.sms_campaign_paused
+    if status == SMS_CAMPAIGN_STATUS.ABORT:
+        return SMS_NOTIFICATION_NAME.sms_campaign_aborted
+    if status == SMS_CAMPAIGN_STATUS.END:
+        return SMS_NOTIFICATION_NAME.sms_campaign_stopped

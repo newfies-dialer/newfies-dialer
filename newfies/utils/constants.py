@@ -11,12 +11,3 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-
-from django_lets_go.utils import Choice
-from django.utils.translation import ugettext_lazy as _
-
-
-class Export_choice(Choice):
-    CSV = 'csv', _('csv').upper()
-    XLS = 'xls', _('xls').upper()
-    JSON = 'json', _('json').upper()

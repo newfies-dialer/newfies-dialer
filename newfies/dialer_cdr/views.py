@@ -24,7 +24,7 @@ from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
 from django_lets_go.common_functions import ceil_strdate, unset_session_var, \
     get_pagination_vars
-from utils.constants import Export_choice
+from utils.helper import Export_choice
 from datetime import datetime
 from django.utils.timezone import utc
 import tablib

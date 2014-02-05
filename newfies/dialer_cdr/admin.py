@@ -29,7 +29,7 @@ from dialer_cdr.forms import AdminVoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
     voipcall_search_admin_form_fun
 from django_lets_go.common_functions import getvar
-from utils.constants import Export_choice
+from utils.helper import Export_choice
 # from django_lets_go.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime

@@ -24,7 +24,7 @@ from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
 from django_lets_go.common_functions import ceil_strdate, unset_session_var, \
     get_pagination_vars
-from utils.constants import EXPORT_CHOICE
+from utils.constants import Export_choice
 from datetime import datetime
 from django.utils.timezone import utc
 import tablib
@@ -286,11 +286,11 @@ def export_voipcall_report(request):
 
         data = tablib.Dataset(*list_val, headers=headers)
 
-        if format == EXPORT_CHOICE.XLS:
+        if format == Export_choice.XLS:
             response.write(data.xls)
-        elif format == EXPORT_CHOICE.CSV:
+        elif format == Export_choice.CSV:
             response.write(data.csv)
-        elif format == EXPORT_CHOICE.JSON:
+        elif format == Export_choice.JSON:
             response.write(data.json)
 
     return response

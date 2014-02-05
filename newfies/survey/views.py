@@ -38,7 +38,7 @@ from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESUL
 from survey.models import post_save_add_script
 from django_lets_go.common_functions import striplist, variable_value, ceil_strdate,\
     get_pagination_vars
-from utils.constants import EXPORT_CHOICE
+from utils.constants import Export_choice
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
@@ -1095,11 +1095,11 @@ def export_surveycall_report(request):
             result_row.append(result_row_list)
 
         data = tablib.Dataset(*result_row, headers=tuple(column_list))
-        if format == EXPORT_CHOICE.XLS:
+        if format == Export_choice.XLS:
             response.write(data.xls)
-        elif format == EXPORT_CHOICE.CSV:
+        elif format == Export_choice.CSV:
             response.write(data.csv)
-        elif format == EXPORT_CHOICE.JSON:
+        elif format == Export_choice.JSON:
             response.write(data.json)
     return response
 

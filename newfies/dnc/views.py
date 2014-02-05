@@ -22,7 +22,7 @@ from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
 from dialer_campaign.function_def import type_field_chk
 from django_lets_go.common_functions import get_pagination_vars, striplist
-from utils.constants import EXPORT_CHOICE
+from utils.constants import Export_choice
 import tablib
 import csv
 
@@ -552,11 +552,11 @@ def dnc_contact_export(request):
 
     data = tablib.Dataset(*list_val, headers=headers)
 
-    if format == EXPORT_CHOICE.XLS:
+    if format == Export_choice.XLS:
         response.write(data.xls)
-    elif format == EXPORT_CHOICE.CSV:
+    elif format == Export_choice.CSV:
         response.write(data.csv)
-    elif format == EXPORT_CHOICE.JSON:
+    elif format == Export_choice.JSON:
         response.write(data.json)
 
     return response
@@ -576,7 +576,7 @@ def dnc_contact_export_view(request):
         * DNC contacts export form will be redirected to ``/dnc_contact/export/`` view
           with format & dnc_list_id parameters
     """
-    form = DNCContact_fileExport(request.user, initial={'export_to': EXPORT_CHOICE.CSV})
+    form = DNCContact_fileExport(request.user, initial={'export_to': Export_choice.CSV})
     if request.method == 'POST':
         dnc_list_id = request.POST['dnc_list']
         export_to = request.POST['export_to']

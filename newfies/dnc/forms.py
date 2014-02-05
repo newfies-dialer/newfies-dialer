@@ -19,7 +19,7 @@ from django.utils.safestring import mark_safe
 from django.forms.util import ErrorList
 from dnc.models import DNC, DNCContact
 from dialer_contact.forms import FileImport
-from utils.constants import EXPORT_CHOICE
+from utils.constants import Export_choice
 
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
@@ -36,7 +36,7 @@ class Exportfile(forms.Form):
     Abstract Form : export file in various format e.g. XLS, CSV, JSON
     """
     export_to = forms.TypedChoiceField(label=_('export to').capitalize(), required=True,
-                                       choices=list(EXPORT_CHOICE),
+                                       choices=list(Export_choice),
                                        widget=forms.RadioSelect(renderer=HorizRadioRenderer))
 
 

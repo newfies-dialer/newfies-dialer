@@ -16,7 +16,7 @@ from django_lets_go.utils import Choice
 from django.utils.translation import ugettext_lazy as _
 
 
-class EXPORT_CHOICE(Choice):
+class Export_choice(Choice):
     CSV = 'csv', _('csv').upper()
     XLS = 'xls', _('xls').upper()
     JSON = 'json', _('json').upper()

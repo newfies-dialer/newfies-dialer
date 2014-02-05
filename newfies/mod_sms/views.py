@@ -30,7 +30,7 @@ from frontend.constants import SEARCH_TYPE
 from frontend_notification.views import frontend_send_notification
 from django_lets_go.common_functions import get_pagination_vars, ceil_strdate,\
     percentage, getvar, unset_session_var
-from utils.constants import EXPORT_CHOICE
+from utils.constants import Export_choice
 from mod_sms.models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
 from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
     SMS_REPORT_COLUMN_NAME, COLOR_SMS_DISPOSITION, SMS_NOTIFICATION_NAME,\
@@ -983,11 +983,11 @@ def export_sms_report(request):
 
     data = tablib.Dataset(*list_val, headers=headers)
 
-    if format == EXPORT_CHOICE.XLS:
+    if format == Export_choice.XLS:
         response.write(data.xls)
-    elif format == EXPORT_CHOICE.CSV:
+    elif format == Export_choice.CSV:
         response.write(data.csv)
-    elif format == EXPORT_CHOICE.JSON:
+    elif format == Export_choice.JSON:
         response.write(data.json)
 
     return response

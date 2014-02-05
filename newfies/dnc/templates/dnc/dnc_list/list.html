@@ -45,7 +45,7 @@
                     </tr>
                     </thead>
                     {% if dnc_list %}
-                        {% autopaginate dnc_list PAGE_SIZE %}
+                        {% autopaginate dnc_list newfies_page_size %}
                         {% for row in dnc_list %}
                             <tr>
                                 <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>

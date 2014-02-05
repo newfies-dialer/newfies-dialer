@@ -31,7 +31,7 @@ from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm, \
 from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME, \
     SUBSCRIBER_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
-    user_dialer_setting, user_dialer_setting_msg, get_subscriber_status, \
+    user_dialer_setting, get_subscriber_status, \
     get_subscriber_disposition
 from dialer_campaign.tasks import collect_subscriber
 from survey.models import Survey_template
@@ -297,7 +297,6 @@ def campaign_list(request):
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'info_msg': request.session.get('info_msg'),
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -715,7 +714,6 @@ def subscriber_list(request):
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

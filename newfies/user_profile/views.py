@@ -20,7 +20,6 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import common_contact_authorization
-from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
 from user_profile.forms import UserChangeDetailForm, \
@@ -129,7 +128,6 @@ def customer_detail_change(request):
         'error_pass': error_pass,
         'error_number': error_number,
         'dialer_set': dialer_set,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'action': action,
     }
     return render_to_response(template, data, context_instance=RequestContext(request))

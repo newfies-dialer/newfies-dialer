@@ -24,7 +24,7 @@ from dialer_contact.models import Contact
 from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.views import tpl_control_icon
 from dialer_campaign.function_def import date_range, user_dialer_setting, \
-    user_dialer_setting_msg, dialer_setting_limit
+    dialer_setting_limit
 from frontend.function_def import calculate_date
 from frontend.constants import SEARCH_TYPE
 from frontend_notification.views import frontend_send_notification
@@ -268,7 +268,6 @@ def sms_campaign_list(request):
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'info_msg': request.session.get('info_msg'),
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -332,7 +331,6 @@ def sms_campaign_add(request):
     data = {
         'form': form,
         'action': 'add',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(
         template, data, context_instance=RequestContext(request))
@@ -428,7 +426,6 @@ def sms_campaign_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(
         template, data, context_instance=RequestContext(request))
@@ -797,7 +794,6 @@ def sms_dashboard(request, on_index=None):
     data = {
         'form': form,
         'SEARCH_TYPE': SEARCH_TYPE,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'pb_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
         'total_record': total_record,
@@ -998,7 +994,6 @@ def sms_report(request):
         'status': status,
         'total_data': total_data.reverse(),
         'total_sms': total_sms,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
 
     return render_to_response(

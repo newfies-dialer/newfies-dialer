@@ -24,8 +24,7 @@ from django.utils.translation import ugettext as _
 from dialer_contact.models import Contact
 from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_campaign.function_def import date_range, \
-    user_dialer_setting_msg
+from dialer_campaign.function_def import date_range
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
@@ -99,7 +98,6 @@ def login_view(request):
         'loginform': loginform,
         'errorlogin': errorlogin,
         'is_authenticated': request.user.is_authenticated(),
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
 
     return render_to_response(template, data,
@@ -120,7 +118,6 @@ def index(request):
         'user': request.user,
         'loginform': LoginForm(),
         'errorlogin': errorlogin,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
 
     return render_to_response(template, data,
@@ -464,7 +461,6 @@ def customer_dashboard(request, on_index=None):
     template = 'frontend/dashboard.html'
     data = {
         'form': form,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'campaign_phonebook_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
         'total_duration_sum': total_duration_sum,

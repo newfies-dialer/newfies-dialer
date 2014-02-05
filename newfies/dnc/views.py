@@ -20,7 +20,7 @@ from dnc.models import DNC, DNCContact
 from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
     DNCContact_fileImport, DNCContact_fileExport
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
-from dialer_campaign.function_def import user_dialer_setting_msg, type_field_chk
+from dialer_campaign.function_def import type_field_chk
 from common.common_functions import get_pagination_vars, striplist
 from common.common_constants import EXPORT_CHOICE
 import tablib
@@ -57,7 +57,6 @@ def dnc_list(request):
         'total_dnc': dnc_list.count(),
         'DNC_COLUMN_NAME': DNC_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -94,7 +93,6 @@ def dnc_add(request):
     data = {
         'form': form,
         'action': 'add',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -199,7 +197,6 @@ def dnc_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -304,7 +301,6 @@ def dnc_contact_list(request):
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'search_tag': search_tag,
     }
     request.session['msg'] = ''
@@ -346,7 +342,6 @@ def dnc_contact_add(request):
         'form': form,
         'action': 'add',
         'error_msg': error_msg,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -429,7 +424,6 @@ def dnc_contact_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -528,7 +522,6 @@ def dnc_contact_import(request):
         'error_msg': error_msg,
         'success_import_list': success_import_list,
         'type_error_import_list': type_error_import_list,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     })
     template = 'dnc/dnc_contact/import_dnc_contact.html'
     return render_to_response(template, data,
@@ -595,7 +588,6 @@ def dnc_contact_export_view(request):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

@@ -19,7 +19,6 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.db.models import Sum, Avg, Count
 from django.conf import settings
-from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
@@ -92,7 +91,6 @@ def voipcall_report(request):
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
 
-    search_tag = 1
     action = 'tabs-1'
 
     if request.method == 'POST':
@@ -217,12 +215,10 @@ def voipcall_report(request):
         'total_calls': daily_data['total_calls'],
         'total_avg_duration': daily_data['total_avg_duration'],
         'max_duration': daily_data['max_duration'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'all_voipcall_list': all_voipcall_list,
         'voipcall_list': voipcall_list,
         'CDR_REPORT_COLUMN_NAME': CDR_REPORT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'search_tag': search_tag,
         'start_date': start_date,
         'end_date': end_date,
         'action': action,

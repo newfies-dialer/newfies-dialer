@@ -49,35 +49,6 @@ import time
 redirect_url_to_smscampaign_list = '/sms_campaign/'
 
 
-def common_sms_campaign_status(pk, status):
-    """SMS Campaign Status (e.g. start | stop | abort | pause) needs to be changed.
-    It is a common function for the admin and customer UI's
-
-    **Attributes**:
-
-        * ``pk`` - primary key of the sms campaign record
-        * ``status`` - selected status for the sms campaign record
-
-    **Logic Description**:
-
-        * Selected SMS Campaign's status needs to be changed.
-          Changed status can be start, stop or pause.
-
-        * This function is used by ``update_sms_campaign_status_admin()`` &
-          ``update_sms_campaign_status_cust()``
-    """
-    smscampaign = SMSCampaign.objects.get(pk=pk)
-    previous_status = smscampaign.status
-    smscampaign.status = status
-    smscampaign.save()
-
-    # Start tasks to import subscriber
-    if status == SMS_CAMPAIGN_STATUS.START and previous_status != SMS_CAMPAIGN_STATUS.START:
-        sms_collect_subscriber.delay(pk)
-
-    return smscampaign.user
-
-
 def get_sms_notification_status(status):
     """To differentiate campaign & sms campaign status
 
@@ -107,7 +78,8 @@ def get_sms_notification_status(status):
 def update_sms_campaign_status_admin(request, pk, status):
     """SMS Campaign Status (e.g. start|stop|pause|abort) can be changed from
     admin interface (via sms campaign list)"""
-    recipient = common_sms_campaign_status(pk, status)
+    smscampaign = SMSCampaign.objects.get(pk=pk)
+    recipient = smscampaign.common_sms_campaign_status(status)
     sms_notification_status = get_sms_notification_status(int(status))
     frontend_send_notification(request, sms_notification_status, recipient)
     return HttpResponseRedirect(
@@ -118,7 +90,8 @@ def update_sms_campaign_status_admin(request, pk, status):
 def update_sms_campaign_status_cust(request, pk, status):
     """SMS Campaign Status (e.g. start|stop|pause|abort) can be changed from
     customer interface (via sms campaign list)"""
-    recipient = common_sms_campaign_status(pk, status)
+    smscampaign = SMSCampaign.objects.get(pk=pk)
+    recipient = smscampaign.common_sms_campaign_status(status)
     sms_notification_status = get_sms_notification_status(int(status))
     frontend_send_notification(request, sms_notification_status, recipient)
     return HttpResponseRedirect(redirect_url_to_smscampaign_list)

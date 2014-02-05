@@ -362,6 +362,33 @@ class SMSCampaign(Model):
             elem_subscriber.save()
         return list_subscriber
 
+    def common_sms_campaign_status(self, status):
+        """SMS Campaign Status (e.g. start | stop | abort | pause) needs to be changed.
+        It is a common function for the admin and customer UI's
+
+        **Attributes**:
+
+            * ``status`` - selected status for the sms campaign record
+
+        **Logic Description**:
+
+            * Selected SMS Campaign's status needs to be changed.
+              Changed status can be start, stop or pause.
+
+            * This function is used by ``update_sms_campaign_status_admin()`` &
+              ``update_sms_campaign_status_cust()``
+        """
+        previous_status = self.status
+        self.status = status
+        self.save()
+
+        # Start tasks to import subscriber
+        if status == SMS_CAMPAIGN_STATUS.START and previous_status != SMS_CAMPAIGN_STATUS.START:
+            from mod_sms.tasks import sms_collect_subscriber
+            sms_collect_subscriber.delay(self.id)
+
+        return self.user
+
 
 class SMSCampaignSubscriber(Model):
     """This defines the Contact imported to a SMSCampaign

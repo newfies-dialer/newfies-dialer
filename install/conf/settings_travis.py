@@ -40,3 +40,4 @@ LOGGING = {
 
 INSTALLED_APPS += ('django_nose', )
 TEST_RUNNER = 'django_nose.run_tests'
+PAGE_SIZE = 10

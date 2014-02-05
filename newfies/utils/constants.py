@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from utils import Choice
+from django_lets_go.utils import Choice
 from django.utils.translation import ugettext_lazy as _
 
 

@@ -16,7 +16,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.management import call_command
 from django.test import TestCase
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import VoipSearchForm

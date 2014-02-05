@@ -27,8 +27,8 @@ from dialer_campaign.function_def import check_dialer_setting, \
     dialer_setting_limit
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from common.common_functions import striplist
-from common.app_label_renamer import AppLabelRenamer
+from django_lets_go.common_functions import striplist
+from django_lets_go.app_label_renamer import AppLabelRenamer
 import csv
 import json
 AppLabelRenamer(native_app_label=u'dialer_contact', app_label=_('Dialer Contact')).main()

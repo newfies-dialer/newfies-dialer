@@ -141,7 +141,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     #'pagination.middleware.PaginationMiddleware',
     'linaro_django_pagination.middleware.PaginationMiddleware',
-    'common.filter_persist_middleware.FilterPersistMiddleware',
+    'django_lets_go.filter_persist_middleware.FilterPersistMiddleware',
     'audiofield.middleware.threadlocals.ThreadLocals',
 )
 
@@ -213,7 +213,7 @@ INSTALLED_APPS = (
     'linaro_django_pagination',
     #'memcache_status',
     'country_dialcode',
-    'common',
+    'django_lets_go',
     'sms',
     'mod_sms',
     'dialer_contact',

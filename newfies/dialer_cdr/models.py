@@ -21,7 +21,7 @@ from dialer_campaign.models import Campaign, Subscriber
 from dialer_cdr.constants import CALLREQUEST_STATUS,\
     CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION,\
     VOIPCALL_AMD_STATUS
-from common.intermediate_model_base_class import Model
+from django_lets_go.intermediate_model_base_class import Model
 from country_dialcode.models import Prefix
 from datetime import datetime
 from django.utils.timezone import utc

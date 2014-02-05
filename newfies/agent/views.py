@@ -28,7 +28,7 @@ from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm, \
     AgentNameChangeForm, AgentCreationForm, AgentPasswordChangeForm
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
-from common.common_functions import get_pagination_vars
+from django_lets_go.common_functions import get_pagination_vars
 #import json
 
 redirect_url_to_agent_list = '/module/agent/'

@@ -15,7 +15,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
-from common.language_field import LanguageField
+from django_lets_go.language_field import LanguageField
 from django_countries.fields import CountryField
 from dialer_gateway.models import Gateway
 from dialer_settings.models import DialerSetting

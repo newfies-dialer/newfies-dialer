@@ -15,7 +15,7 @@
 from django.contrib.auth.models import User
 from django.test import TestCase
 from django.http import Http404
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 from django.db.models.signals import post_save
 from survey.models import Survey, Survey_template, Section,\
     Section_template, Branching, Branching_template, Result, \

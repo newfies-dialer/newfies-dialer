@@ -28,9 +28,9 @@ from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import AdminVoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, \
     voipcall_search_admin_form_fun
-from common.common_functions import getvar
-from common.common_constants import EXPORT_CHOICE
-# from common.app_label_renamer import AppLabelRenamer
+from django_lets_go.common_functions import getvar
+from utils.constants import EXPORT_CHOICE
+# from django_lets_go.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
 from django.utils.timezone import utc

@@ -28,9 +28,9 @@ from dialer_campaign.function_def import date_range, user_dialer_setting, \
 from frontend.function_def import calculate_date
 from frontend.constants import SEARCH_TYPE
 from frontend_notification.views import frontend_send_notification
-from common.common_functions import get_pagination_vars, ceil_strdate,\
+from django_lets_go.common_functions import get_pagination_vars, ceil_strdate,\
     percentage, getvar, unset_session_var
-from common.common_constants import EXPORT_CHOICE
+from utils.constants import EXPORT_CHOICE
 from mod_sms.models import SMSCampaign, SMSCampaignSubscriber, SMSMessage
 from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_COLUMN_NAME,\
     SMS_REPORT_COLUMN_NAME, COLOR_SMS_DISPOSITION, SMS_NOTIFICATION_NAME,\

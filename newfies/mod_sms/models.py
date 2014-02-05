@@ -26,8 +26,8 @@ from user_profile.models import UserProfile
 from sms.models import Message
 from sms.models import Gateway
 from constants import SMS_CAMPAIGN_STATUS, SMS_SUBSCRIBER_STATUS
-from common.intermediate_model_base_class import Model
-from common.common_functions import get_unique_code
+from django_lets_go.intermediate_model_base_class import Model
+from django_lets_go.common_functions import get_unique_code
 from datetime import datetime
 from django.utils.timezone import utc
 

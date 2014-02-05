@@ -13,7 +13,7 @@
 #
 from dialer_cdr.function_def import return_query_string
 from dialer_contact.models import Contact
-from common.common_functions import variable_value
+from django_lets_go.common_functions import variable_value
 from user_profile.models import UserProfile
 from mod_sms.models import SMSCampaign
 #from dialer_setting.models import DialerSetting

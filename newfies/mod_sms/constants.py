@@ -13,7 +13,7 @@
 #
 
 from django.utils.translation import ugettext as _
-from common.utils import Choice
+from django_lets_go.utils import Choice
 
 
 class SMS_CAMPAIGN_STATUS(Choice):

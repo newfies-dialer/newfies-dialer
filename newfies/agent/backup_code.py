@@ -17,7 +17,7 @@ from agent.models import AgentProfile, Agent
 from agent.forms import AgentChangeDetailExtendForm
 from agent.views import agent_detail_change, agent_list, agent_add, agent_change, agent_del
 from user_profile.forms import UserChangeDetailForm
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class AgentProfileAdminView(BaseAuthenticatedClient):

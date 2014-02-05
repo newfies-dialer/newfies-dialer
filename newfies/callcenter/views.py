@@ -20,7 +20,7 @@ from user_profile.models import Manager
 from callcenter.models import Queue, Tier
 from callcenter.constants import QUEUE_COLUMN_NAME, TIER_COLUMN_NAME
 from callcenter.forms import QueueFrontEndForm, TierFrontEndForm
-from common.common_functions import get_pagination_vars
+from django_lets_go.common_functions import get_pagination_vars
 from survey.models import Section_template
 
 redirect_url_to_queue_list = '/module/queue/'

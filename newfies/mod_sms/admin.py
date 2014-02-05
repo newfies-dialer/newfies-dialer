@@ -25,8 +25,8 @@ from django.shortcuts import render_to_response
 from django.db.models import Count
 from django.utils.translation import ungettext
 from dialer_campaign.function_def import dialer_setting_limit
-from common.common_functions import variable_value
-from common.common_constants import EXPORT_CHOICE
+from django_lets_go.common_functions import variable_value
+from utils.constants import EXPORT_CHOICE
 from mod_sms.models import SMSCampaign, SMSCampaignSubscriber, SMSMessage, SMSTemplate
 from mod_sms.function_def import check_sms_dialer_setting,\
     sms_record_common_fun, sms_search_admin_form_fun

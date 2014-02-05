@@ -21,7 +21,7 @@ from dnc.views import dnc_add, dnc_change, dnc_list, dnc_del,\
     dnc_contact_del, get_dnc_contact_count, dnc_contact_import
 from dnc.forms import DNCForm, DNCContactForm, DNCContactSearchForm,\
     DNCContact_fileImport
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 #import os
 
 #csv_file = open(

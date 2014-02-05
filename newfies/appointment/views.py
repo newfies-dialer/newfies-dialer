@@ -32,7 +32,7 @@ from appointment.models.users import CalendarUserProfile, CalendarUser, \
     CalendarSetting
 from appointment.function_def import get_calendar_user_id_list
 from user_profile.models import Manager
-from common.common_functions import ceil_strdate, getvar, \
+from django_lets_go.common_functions import ceil_strdate, getvar, \
     get_pagination_vars, unset_session_var
 from datetime import datetime
 from django.utils.timezone import utc

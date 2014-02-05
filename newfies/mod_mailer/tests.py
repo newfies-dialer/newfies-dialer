@@ -15,7 +15,7 @@
 #from django.test import TestCase
 #from django.contrib.auth.models import User
 #from django.conf import settings
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class ModMailerAdminView(BaseAuthenticatedClient):

@@ -14,7 +14,7 @@
 
 from django.utils.safestring import mark_safe
 from django.template.defaultfilters import register
-from common.common_functions import word_capital
+from django_lets_go.common_functions import word_capital
 import re
 from string import Template
 

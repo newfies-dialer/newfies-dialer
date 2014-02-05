@@ -20,7 +20,7 @@ from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
 from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile, AudioField
-from common.language_field import LanguageField
+from django_lets_go.language_field import LanguageField
 from adminsortable.models import Sortable
 from south.modelsinspector import add_introspection_rules
 

@@ -28,7 +28,7 @@ from mod_sms.constants import SMS_CAMPAIGN_STATUS
 from user_profile.models import UserProfile
 from mod_sms.forms import SMSDashboardForm
 from frontend.constants import SEARCH_TYPE
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 from datetime import datetime
 from django.utils.timezone import utc
 from uuid import uuid1

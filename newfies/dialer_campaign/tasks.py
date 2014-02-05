@@ -24,7 +24,7 @@ from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from dialer_contact.tasks import collect_subscriber
 from dnc.models import DNCContact
-from common.only_one_task import only_one
+from django_lets_go.only_one_task import only_one
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
 from math import floor

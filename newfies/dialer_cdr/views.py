@@ -22,9 +22,9 @@ from django.conf import settings
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
-from common.common_functions import ceil_strdate, unset_session_var, \
+from django_lets_go.common_functions import ceil_strdate, unset_session_var, \
     get_pagination_vars
-from common.common_constants import EXPORT_CHOICE
+from utils.constants import EXPORT_CHOICE
 from datetime import datetime
 from django.utils.timezone import utc
 import tablib

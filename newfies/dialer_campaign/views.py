@@ -37,9 +37,9 @@ from dialer_campaign.tasks import collect_subscriber
 from survey.models import Survey_template
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from common.common_functions import ceil_strdate, getvar, \
+from django_lets_go.common_functions import ceil_strdate, getvar, \
     get_pagination_vars, unset_session_var
-from common.common_constants import EXPORT_CHOICE
+from utils.constants import EXPORT_CHOICE
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from django.utils.timezone import utc

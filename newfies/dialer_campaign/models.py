@@ -33,8 +33,8 @@ from dnc.models import DNC
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
-from common.intermediate_model_base_class import Model
-from common.common_functions import get_unique_code, percentage
+from django_lets_go.intermediate_model_base_class import Model
+from django_lets_go.common_functions import get_unique_code, percentage
 import jsonfield
 import logging
 import re

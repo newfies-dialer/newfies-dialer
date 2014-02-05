@@ -28,7 +28,7 @@ from dialer_campaign.tasks import campaign_running, pending_call_processing,\
     collect_subscriber, campaign_expire_check
 from dialer_settings.models import DialerSetting
 from dialer_campaign.constants import SUBSCRIBER_STATUS
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class DialerCampaignView(BaseAuthenticatedClient):

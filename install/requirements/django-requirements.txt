@@ -22,7 +22,7 @@ django-admin-tools==0.5.1
 django-country-dialcode==0.4.8
 django-audiofield==0.5.8
 django-admin-tools-stats==0.5.3
-switch2bill-common==2.8.5
+django-lets-go==2.8.5
 django-extensions==1.2.5
 django-nvd3==0.5.0
 git+git://github.com/Star2Billing/django-notification

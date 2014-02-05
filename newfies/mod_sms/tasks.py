@@ -17,7 +17,7 @@ from django.conf import settings
 from celery.task import PeriodicTask
 from celery.task import Task
 from celery.decorators import task
-from common.only_one_task import only_one
+from django_lets_go.only_one_task import only_one
 from celery.utils.log import get_task_logger
 from sms.tasks import SendMessage
 from mod_sms.models import SMSCampaign, SMSCampaignSubscriber, SMSMessage

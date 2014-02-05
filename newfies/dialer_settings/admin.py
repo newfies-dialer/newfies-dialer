@@ -15,7 +15,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from dialer_settings.models import DialerSetting
-from common.app_label_renamer import AppLabelRenamer
+from django_lets_go.app_label_renamer import AppLabelRenamer
 AppLabelRenamer(native_app_label=u'dialer_settings', app_label=_('Dialer Settings')).main()
 
 

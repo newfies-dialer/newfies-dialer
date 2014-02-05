@@ -18,7 +18,7 @@ from celery.decorators import task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign, Subscriber
 from user_profile.models import UserProfile
-# from common.only_one_task import only_one
+# from django_lets_go.only_one_task import only_one
 
 logger = get_task_logger(__name__)
 

@@ -13,7 +13,7 @@
 #
 
 from django.core.management import call_command
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 from frontend.forms import LoginForm, DashboardForm
 from frontend.views import customer_dashboard, index, \
     login_view, logout_view

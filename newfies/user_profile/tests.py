@@ -20,7 +20,7 @@ from user_profile.forms import UserChangeDetailForm,\
     UserChangeDetailExtendForm, CheckPhoneNumberForm
 from user_profile.views import customer_detail_change
 from dialer_settings.models import DialerSetting
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class UserProfileAdminView(BaseAuthenticatedClient):

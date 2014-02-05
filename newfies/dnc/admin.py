@@ -15,7 +15,7 @@
 from django.contrib import admin
 from django.utils.translation import ugettext_lazy as _
 from dnc.models import DNC, DNCContact
-from common.app_label_renamer import AppLabelRenamer
+from django_lets_go.app_label_renamer import AppLabelRenamer
 AppLabelRenamer(native_app_label=u'dnc', app_label=_('do not call').title()).main()
 
 

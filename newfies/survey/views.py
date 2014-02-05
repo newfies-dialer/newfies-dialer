@@ -36,9 +36,9 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME,\
     SEALED_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
-from common.common_functions import striplist, variable_value, ceil_strdate,\
+from django_lets_go.common_functions import striplist, variable_value, ceil_strdate,\
     get_pagination_vars
-from common.common_constants import EXPORT_CHOICE
+from utils.constants import EXPORT_CHOICE
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta

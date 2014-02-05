@@ -14,7 +14,7 @@
 
 #from django.contrib.auth.models import User
 #from django.conf import settings
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 from appointment.models.users import CalendarSetting, CalendarUser, CalendarUserProfile
 from appointment.models.calendars import Calendar
 from appointment.models.events import Event

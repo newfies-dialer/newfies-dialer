@@ -30,7 +30,7 @@ from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
-from common.common_functions import percentage
+from django_lets_go.common_functions import percentage
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta

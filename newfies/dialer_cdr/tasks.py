@@ -33,7 +33,7 @@ from sms.tasks import SendMessage
 from dialer_gateway.utils import prepare_phonenumber
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
-from common.only_one_task import only_one
+from django_lets_go.only_one_task import only_one
 from common_functions import debug_query
 from uuid import uuid1
 from time import sleep

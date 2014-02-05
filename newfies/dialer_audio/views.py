@@ -23,7 +23,7 @@ from django.utils.translation import ugettext as _
 from dialer_audio.constants import AUDIO_COLUMN_NAME
 from dialer_audio.forms import DialerAudioFileForm
 from audiofield.models import AudioFile
-from common.common_functions import get_pagination_vars
+from django_lets_go.common_functions import get_pagination_vars
 import os.path
 
 audio_redirect_url = '/module/audio/'

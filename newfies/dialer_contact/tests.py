@@ -27,7 +27,7 @@ from dialer_contact.views import phonebook_add, \
     get_contact_count
 from dialer_campaign.views import get_url_campaign_status
 from dialer_contact.tasks import collect_subscriber
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 from datetime import datetime
 from django.utils.timezone import utc
 #import os

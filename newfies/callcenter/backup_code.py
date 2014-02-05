@@ -19,7 +19,7 @@ from callcenter.forms import QueueForm, QueueFrontEndForm,\
     TierForm, TierFrontEndForm
 from callcenter.views import queue_list, queue_add, queue_change, queue_del,\
     tier_list, tier_add, tier_change, tier_del
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class CallcenterAdminView(BaseAuthenticatedClient):

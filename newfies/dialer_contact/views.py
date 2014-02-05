@@ -29,7 +29,7 @@ from dialer_campaign.function_def import check_dialer_setting, type_field_chk,\
     dialer_setting_limit
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from common.common_functions import striplist, getvar,\
+from django_lets_go.common_functions import striplist, getvar,\
     get_pagination_vars, unset_session_var
 import csv
 import json

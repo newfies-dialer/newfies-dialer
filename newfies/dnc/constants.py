@@ -13,7 +13,7 @@
 #
 
 from django.utils.translation import ugettext_lazy as _
-from common.utils import Choice
+from django_lets_go.utils import Choice
 
 
 class DNC_COLUMN_NAME(Choice):
@@ -28,9 +28,3 @@ class DNC_CONTACT_COLUMN_NAME(Choice):
     dnc = _('dnc').upper()
     phone_number = _('phone number')
     date = _('date')
-
-
-class EXPORT_CHOICE(Choice):
-    CSV = 'csv', _('csv').upper()
-    XLS = 'xls', _('xls').upper()
-    JSON = 'json', _('json').upper()

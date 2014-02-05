@@ -22,7 +22,7 @@ def newfies_version(request):
 
 def newfies_page_size(request):
     """return the value of PAGE_SIZE in templates"""
-    return {'newfies_page_size': settings.PAGE_SIZE}
+    return {'newfies_page_size': settings.PAGE_SIZE if settings.PAGE_SIZE else 10}
 
 
 def newfies_dialer_setting_msg(request):

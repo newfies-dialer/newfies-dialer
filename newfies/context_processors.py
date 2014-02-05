@@ -13,6 +13,7 @@
 #
 import newfies_dialer
 from django.conf import settings
+from dialer_campaign.function_def import user_dialer_setting_msg
 
 
 def newfies_version(request):
@@ -22,3 +23,8 @@ def newfies_version(request):
 def newfies_page_size(request):
     """return the value of PAGE_SIZE in templates"""
     return {'newfies_page_size': settings.PAGE_SIZE}
+
+
+def newfies_dialer_setting_msg(request):
+    """return dialer_setting_msg in templates"""
+    return {'dialer_setting_msg': user_dialer_setting_msg(request.user)}

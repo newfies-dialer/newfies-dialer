@@ -79,7 +79,7 @@
                     </tr>
                     </thead>
                     {% if sms_list %}
-                        {% autopaginate all_sms_list PAGE_SIZE %}
+                        {% autopaginate all_sms_list newfies_page_size %}
                         {% for row in sms_list %}
                             <tr>
                                 <td>{{ row.send_date }}</td>

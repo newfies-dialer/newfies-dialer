@@ -25,8 +25,8 @@ from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
     PhonebookForm, ContactForm
 from dialer_contact.constants import PHONEBOOK_COLUMN_NAME, CONTACT_COLUMN_NAME
 from dialer_contact.constants import STATUS_CHOICE
-from dialer_campaign.function_def import check_dialer_setting,\
-    dialer_setting_limit, user_dialer_setting_msg, type_field_chk
+from dialer_campaign.function_def import check_dialer_setting, type_field_chk,\
+    dialer_setting_limit
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
 from common.common_functions import striplist, getvar,\
@@ -64,7 +64,6 @@ def phonebook_list(request):
         'total_phonebook': phonebook_list.count(),
         'PHONEBOOK_COLUMN_NAME': PHONEBOOK_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -100,7 +99,6 @@ def phonebook_add(request):
     data = {
         'form': form,
         'action': 'add',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -204,7 +202,6 @@ def phonebook_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -326,7 +323,6 @@ def contact_list(request):
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -382,7 +378,6 @@ def contact_add(request):
         'action': 'add',
         'error_msg': error_msg,
         'phonebook_count': phonebook_count,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -462,7 +457,6 @@ def contact_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -600,14 +594,13 @@ def contact_import(request):
                'total_rows': total_rows}
 
     data = RequestContext(request, {
-                          'form': form,
-                          'csv_data': csv_data,
-                          'msg': msg,
-                          'error_msg': error_msg,
-                          'success_import_list': success_import_list,
-                          'type_error_import_list': type_error_import_list,
-                          'dialer_setting_msg': user_dialer_setting_msg(request.user),
-                          })
+        'form': form,
+        'csv_data': csv_data,
+        'msg': msg,
+        'error_msg': error_msg,
+        'success_import_list': success_import_list,
+        'type_error_import_list': type_error_import_list,
+    })
     template = 'dialer_contact/contact/import_contact.html'
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

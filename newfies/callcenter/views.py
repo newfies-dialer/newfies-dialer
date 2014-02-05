@@ -20,7 +20,6 @@ from user_profile.models import Manager
 from callcenter.models import Queue, Tier
 from callcenter.constants import QUEUE_COLUMN_NAME, TIER_COLUMN_NAME
 from callcenter.forms import QueueFrontEndForm, TierFrontEndForm
-from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import get_pagination_vars
 from survey.models import Section_template
 
@@ -57,7 +56,6 @@ def queue_list(request):
         'total_queue': queue_list.count(),
         'QUEUE_COLUMN_NAME': QUEUE_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -96,7 +94,6 @@ def queue_add(request):
     data = {
         'form': form,
         'action': 'add',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -208,7 +205,6 @@ def queue_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -239,7 +235,6 @@ def tier_list(request):
         'total_tier': tier_list.count(),
         'TIER_COLUMN_NAME': TIER_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -277,7 +272,6 @@ def tier_add(request):
     data = {
         'form': form,
         'action': 'add',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -359,7 +353,6 @@ def tier_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

@@ -32,7 +32,6 @@ from appointment.models.users import CalendarUserProfile, CalendarUser, \
     CalendarSetting
 from appointment.function_def import get_calendar_user_id_list
 from user_profile.models import Manager
-from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import ceil_strdate, getvar, \
     get_pagination_vars, unset_session_var
 from datetime import datetime
@@ -76,7 +75,6 @@ def calendar_user_list(request):
         'total_calendar_user': calendar_user_list.count(),
         'CALENDAR_USER_COLUMN_NAME': CALENDAR_USER_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -120,7 +118,6 @@ def calendar_user_add(request):
     data = {
         'form': form,
         'action': 'add',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -221,7 +218,6 @@ def calendar_user_change(request, object_id):
         'form': form,
         'calendar_user_username_form': calendar_user_username_form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -303,7 +299,6 @@ def calendar_list(request):
         'total_calendar': calendar_list.count(),
         'CALENDAR_COLUMN_NAME': CALENDAR_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -341,7 +336,6 @@ def calendar_add(request):
         'form': form,
         'action': 'add',
         'error_msg': error_msg,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -419,7 +413,6 @@ def calendar_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -454,7 +447,6 @@ def calendar_setting_list(request):
         'total_calendar_setting': calendar_setting_list.count(),
         'CALENDAR_SETTING_COLUMN_NAME': CALENDAR_SETTING_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -495,7 +487,6 @@ def calendar_setting_add(request):
         'action': 'add',
         'error_msg': error_msg,
         'AMD': settings.AMD,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -575,7 +566,6 @@ def calendar_setting_change(request, object_id):
         'form': form,
         'action': 'update',
         'AMD': settings.AMD,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -674,7 +664,6 @@ def event_list(request):
         'total_event': event_list.count(),
         'EVENT_COLUMN_NAME': EVENT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -712,7 +701,6 @@ def event_add(request):
         'form': form,
         'action': 'add',
         'error_msg': error_msg,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -790,7 +778,6 @@ def event_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -828,7 +815,6 @@ def alarm_list(request):
         'total_alarm': alarm_list.count(),
         'ALARM_COLUMN_NAME': ALARM_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -866,7 +852,6 @@ def alarm_add(request):
         'form': form,
         'action': 'add',
         'error_msg': error_msg,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -945,7 +930,6 @@ def alarm_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

@@ -28,7 +28,6 @@ from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm, \
     AgentNameChangeForm, AgentCreationForm, AgentPasswordChangeForm
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
-from dialer_campaign.function_def import user_dialer_setting_msg
 from common.common_functions import get_pagination_vars
 #import json
 
@@ -275,7 +274,6 @@ def agent_list(request):
         'total_agent': agent_list.count(),
         'AGENT_COLUMN_NAME': AGENT_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -320,7 +318,6 @@ def agent_add(request):
     data = {
         'form': form,
         'action': 'add',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -423,7 +420,6 @@ def agent_change(request, object_id):
         'form': form,
         'agent_username_form': agent_username_form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

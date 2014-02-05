@@ -113,9 +113,8 @@ def get_branching_count(section_id, branch_id):
     """
     calculate branching count
     """
-    branch_list = Branching_template \
-        .objects.values_list('id', flat=True).filter(section_id=section_id)\
-        .order_by('id')
+    branch_list = Branching_template.objects.values_list('id', flat=True)\
+        .filter(section_id=section_id).order_by('id')
     branch_count = branch_list.count()
     # for default branching option to remove delete option
     if branch_list[0] == branch_id:

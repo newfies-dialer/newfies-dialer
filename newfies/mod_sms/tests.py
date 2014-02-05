@@ -20,7 +20,7 @@ from mod_sms.models import SMSCampaign, SMSMessage, SMSCampaignSubscriber
 from mod_sms.views import sms_campaign_list, sms_campaign_add,\
     sms_campaign_change, sms_campaign_del, update_sms_campaign_status_admin,\
     update_sms_campaign_status_cust, sms_dashboard, sms_report, export_sms_report,\
-    get_url_sms_campaign_status, common_sms_campaign_status
+    get_url_sms_campaign_status
 from mod_sms.tasks import init_smsrequest, check_sms_campaign_pendingcall, spool_sms_nocampaign,\
     sms_campaign_running, SMSImportPhonebook, sms_campaign_spool_contact, sms_collect_subscriber,\
     sms_campaign_expire_check, resend_sms_update_smscampaignsubscriber
@@ -441,10 +441,10 @@ class SMSCampaignModel(TestCase):
         self.smscampaign.get_pending_subscriber()
         self.smscampaign.get_pending_subscriber_update()
 
-        common_sms_campaign_status(self.smscampaign.id, SMS_CAMPAIGN_STATUS.START)
-        common_sms_campaign_status(self.smscampaign.id, SMS_CAMPAIGN_STATUS.PAUSE)
-        common_sms_campaign_status(self.smscampaign.id, SMS_CAMPAIGN_STATUS.ABORT)
-        common_sms_campaign_status(self.smscampaign.id, SMS_CAMPAIGN_STATUS.END)
+        self.smscampaign.common_sms_campaign_status(SMS_CAMPAIGN_STATUS.START)
+        self.smscampaign.common_sms_campaign_status(SMS_CAMPAIGN_STATUS.PAUSE)
+        self.smscampaign.common_sms_campaign_status(SMS_CAMPAIGN_STATUS.ABORT)
+        self.smscampaign.common_sms_campaign_status(SMS_CAMPAIGN_STATUS.END)
 
         self.assertEqual(self.smssubscriber.sms_campaign, self.smscampaign)
 

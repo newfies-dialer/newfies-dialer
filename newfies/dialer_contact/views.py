@@ -34,35 +34,6 @@ from common.common_functions import striplist, getvar,\
 import csv
 import json
 
-from django.views.generic import ListView
-
-
-class PhonebookList(ListView):
-    model = Phonebook
-
-    def get_context_data(self, **kwargs):
-        # Call the base implementation first to get a context
-        context = super(PhonebookList, self).get_context_data(**kwargs)
-        sort_col_field_list = ['id', 'name', 'updated_date']
-        default_sort_field = 'id'
-        pagination_data = get_pagination_vars(self.request, sort_col_field_list, default_sort_field)
-
-        PAGE_SIZE = pagination_data['PAGE_SIZE']
-        sort_order = pagination_data['sort_order']
-
-        phonebook_list = Phonebook.objects\
-            .annotate(contact_count=Count('contact'))\
-            .filter(user=self.request.user).order_by(sort_order)
-
-        context['msg'] = self.request.session.get('msg')
-        context['phonebook_list'] = phonebook_list
-        context['total_phonebook'] = phonebook_list.count()
-        context['PAGE_SIZE'] = PAGE_SIZE
-        context['PHONEBOOK_COLUMN_NAME'] = PHONEBOOK_COLUMN_NAME
-        context['col_name_with_order'] = pagination_data['col_name_with_order']
-        context['dialer_setting_msg'] = user_dialer_setting_msg(self.request.user)
-        return context
-
 
 @permission_required('dialer_contact.view_phonebook', login_url='/')
 @login_required
@@ -79,7 +50,8 @@ def phonebook_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = \
+        get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
     PAGE_SIZE = pagination_data['PAGE_SIZE']
     sort_order = pagination_data['sort_order']

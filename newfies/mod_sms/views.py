@@ -212,7 +212,6 @@ def sms_campaign_list(request):
 
     phonebook_id = ''
     status = 'all'
-    search_tag = 1
     if request.method == 'POST':
         form = SMSCampaignSearchForm(request.user, request.POST)
         if form.is_valid():
@@ -261,7 +260,6 @@ def sms_campaign_list(request):
     data = {
         'form': form,
         'smscampaign_list': smscampaign_list,
-        'search_tag': search_tag,
         'total_campaign': smscampaign_count,
         'SMS_CAMPAIGN_COLUMN_NAME': SMS_CAMPAIGN_COLUMN_NAME,
         'col_name_with_order': pagination_data['col_name_with_order'],
@@ -871,7 +869,6 @@ def sms_report(request):
     smscampaign = ''
 
     form = SMSSearchForm(request.user)
-    search_tag = 1
     action = 'tabs-1'
     kwargs = {}
 
@@ -989,7 +986,6 @@ def sms_report(request):
         'start_date': start_date,
         'end_date': end_date,
         'to_date': to_date,
-        'search_tag': search_tag,
         'action': action,
         'status': status,
         'total_data': total_data.reverse(),

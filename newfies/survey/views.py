@@ -883,7 +883,6 @@ def survey_report(request):
     form = SurveyDetailReportForm(request.user,
                                   initial={'from_date': from_date,
                                            'to_date': to_date})
-    search_tag = 1
     survey_result = ''
 
     survey_cdr_daily_data = {
@@ -906,7 +905,6 @@ def survey_report(request):
     action = 'tabs-1'
     campaign_obj = ''
     if request.method == 'POST':
-        #search_tag = 1
         form = SurveyDetailReportForm(request.user, request.POST)
         if form.is_valid():
             # set session var value
@@ -938,7 +936,6 @@ def survey_report(request):
             from_date = request.session.get('session_from_date')
             to_date = request.session.get('session_to_date')
             survey_id = request.session.get('session_survey_id')
-            search_tag = request.session.get('session_search_tag')
         else:
             from_date
     except NameError:
@@ -948,14 +945,12 @@ def survey_report(request):
                     relativedelta(months=1)) -
                     relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)
-        search_tag = 0
 
         # unset session var value
         request.session['session_from_date'] = from_date
         request.session['session_to_date'] = to_date
         request.session['session_survey_id'] = ''
         request.session['session_surveycalls_kwargs'] = ''
-        request.session['session_search_tag'] = search_tag
 
     start_date = ceil_strdate(from_date, 'start')
     end_date = ceil_strdate(to_date, 'end')
@@ -1022,7 +1017,6 @@ def survey_report(request):
         'form': form,
         'survey_result': survey_result,
         'action': action,
-        'search_tag': search_tag,
         'start_date': start_date,
         'end_date': end_date,
         'campaign_obj': campaign_obj,

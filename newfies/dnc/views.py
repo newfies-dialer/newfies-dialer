@@ -226,7 +226,6 @@ def dnc_contact_list(request):
     form = DNCContactSearchForm(request.user)
     dnc_id_list = DNC.objects.values_list('id', flat=True)\
         .filter(user=request.user)
-    search_tag = 1
     phone_number = ''
     dnc = ''
 
@@ -301,7 +300,6 @@ def dnc_contact_list(request):
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,
-        'search_tag': search_tag,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

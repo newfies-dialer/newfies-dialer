@@ -596,7 +596,6 @@ def event_list(request):
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
 
-    #search_tag = 1
     start_date = ''
     calendar_id = ''
     calendar_user_id = ''

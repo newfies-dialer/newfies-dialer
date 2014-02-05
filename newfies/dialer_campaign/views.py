@@ -240,7 +240,6 @@ def campaign_list(request):
 
     phonebook_id = ''
     status = 'all'
-    search_tag = 1
     if request.method == 'POST':
         form = CampaignSearchForm(request.user, request.POST)
         if form.is_valid():
@@ -288,7 +287,6 @@ def campaign_list(request):
     template = 'dialer_campaign/campaign/list.html'
     data = {
         'form': form,
-        'search_tag': search_tag,
         'campaign_list': campaign_list,
         'total_campaign': campaign_count,
         'CAMPAIGN_COLUMN_NAME': CAMPAIGN_COLUMN_NAME,

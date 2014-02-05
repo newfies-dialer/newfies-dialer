@@ -39,7 +39,6 @@ from django.views.generic import ListView
 
 class PhonebookList(ListView):
     model = Phonebook
-    template_name = 'dialer_contact/phonebook/list.html'
 
     def get_context_data(self, **kwargs):
         # Call the base implementation first to get a context

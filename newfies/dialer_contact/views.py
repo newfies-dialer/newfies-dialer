@@ -34,6 +34,9 @@ from common.common_functions import striplist, getvar,\
 import csv
 import json
 
+redirect_url_to_phonebook_list = '/phonebook/'
+redirect_url_to_contact_list = '/contact/'
+
 
 @permission_required('dialer_contact.view_phonebook', login_url='/')
 @login_required
@@ -94,7 +97,7 @@ def phonebook_add(request):
             obj.user = request.user
             obj.save()
             request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
-            return HttpResponseRedirect('/phonebook/')
+            return HttpResponseRedirect(redirect_url_to_phonebook_list)
     template = 'dialer_contact/phonebook/change.html'
     data = {
         'form': form,
@@ -167,7 +170,7 @@ def phonebook_del(request, object_id):
         except:
             raise Http404
 
-    return HttpResponseRedirect('/phonebook/')
+    return HttpResponseRedirect(redirect_url_to_phonebook_list)
 
 
 @permission_required('dialer_contact.change_phonebook', login_url='/')
@@ -190,13 +193,14 @@ def phonebook_change(request, object_id):
     form = PhonebookForm(instance=phonebook)
     if request.method == 'POST':
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/phonebook/del/%s/' % object_id)
+            return HttpResponseRedirect('%sdel/%s/' % (
+                redirect_url_to_phonebook_list, object_id))
         else:
             form = PhonebookForm(request.POST, instance=phonebook)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%(name)s" is updated.') % {'name': request.POST['name']}
-                return HttpResponseRedirect('/phonebook/')
+                return HttpResponseRedirect(redirect_url_to_phonebook_list)
 
     template = 'dialer_contact/phonebook/change.html'
     data = {
@@ -356,7 +360,7 @@ def contact_add(request):
 
             # contact limit reached
             frontend_send_notification(request, NOTIFICATION_NAME.contact_limit_reached)
-            return HttpResponseRedirect("/contact/")
+            return HttpResponseRedirect(redirect_url_to_contact_list)
 
     form = ContactForm(request.user)
     error_msg = False
@@ -366,7 +370,7 @@ def contact_add(request):
         if form.is_valid():
             form.save()
             request.session["msg"] = _('"%s" is added.') % request.POST['contact']
-            return HttpResponseRedirect('/contact/')
+            return HttpResponseRedirect(redirect_url_to_contact_list)
         else:
             if len(request.POST['contact']) > 0:
                 error_msg = _('"%s" cannot be added.') % request.POST['contact']
@@ -418,7 +422,7 @@ def contact_del(request, object_id):
                 contact_list.delete()
         except:
             raise Http404
-    return HttpResponseRedirect('/contact/')
+    return HttpResponseRedirect(redirect_url_to_contact_list)
 
 
 @permission_required('dialer_contact.change_contact', login_url='/')
@@ -444,14 +448,15 @@ def contact_change(request, object_id):
     if request.method == 'POST':
         # Delete contact
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/contact/del/%s/' % object_id)
+            return HttpResponseRedirect('%sdel/%s/' % (
+                redirect_url_to_contact_list, object_id))
         else:
             # Update contact
             form = ContactForm(request.user, request.POST, instance=contact)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('"%s" is updated.') % request.POST['contact']
-                return HttpResponseRedirect('/contact/')
+                return HttpResponseRedirect(redirect_url_to_contact_list)
 
     template = 'dialer_contact/contact/change.html'
     data = {
@@ -494,7 +499,7 @@ def contact_import(request):
 
             # contact limit reached
             frontend_send_notification(request, NOTIFICATION_NAME.contact_limit_reached)
-            return HttpResponseRedirect("/contact/")
+            return HttpResponseRedirect(redirect_url_to_contact_list)
 
     form = Contact_fileImport(request.user)
     csv_data = ''
@@ -526,7 +531,7 @@ def contact_import(request):
             total_rows = len(list(records))
             BULK_SIZE = 1000
             csv_data = csv.reader(request.FILES['csv_file'],
-                             delimiter='|', quotechar='"')
+                                  delimiter='|', quotechar='"')
             #Get Phonebook Obj
             phonebook = get_object_or_404(
                 Phonebook, pk=request.POST['phonebook'],

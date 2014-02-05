@@ -871,6 +871,7 @@ def survey_report(request):
     **Attributes**:
 
         * ``template`` - survey/survey_report.html
+        * ``form`` - SurveyDetailReportForm
 
     **Logic Description**:
 
@@ -1120,7 +1121,6 @@ def survey_campaign_result(request, id):
     template = 'survey/survey_campaign_result.html'
     data = {
         'result': result,
-        'MEDIA_ROOT': settings.MEDIA_ROOT,
     }
     request.session['msg'] = ''
     request.session['err_msg'] = ''

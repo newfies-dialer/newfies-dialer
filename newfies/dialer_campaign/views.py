@@ -46,6 +46,8 @@ from django.utils.timezone import utc
 import re
 import tablib
 
+redirect_url_to_campaign_list = '/campaign/'
+
 
 @login_required
 def update_campaign_status_admin(request, pk, status):
@@ -68,7 +70,7 @@ def update_campaign_status_cust(request, pk, status):
     obj_campaign.status = status
     obj_campaign.save()
 
-    pagination_path = '/campaign/'
+    pagination_path = redirect_url_to_campaign_list
     if request.session.get('pagination_path'):
         pagination_path = request.session.get('pagination_path')
 
@@ -340,7 +342,7 @@ def campaign_add(request):
     if not user_dialer_setting(request.user):
         request.session['error_msg'] = \
             _("in order to add a campaign, you need to have your settings configured properly, please contact the admin.")
-        return HttpResponseRedirect("/campaign/")
+        return HttpResponseRedirect(redirect_url_to_campaign_list)
 
     # Check dialer setting limit
     if request.user and request.method != 'POST':
@@ -352,7 +354,7 @@ def campaign_add(request):
 
             # campaign limit reached
             frontend_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
-            return HttpResponseRedirect("/campaign/")
+            return HttpResponseRedirect(redirect_url_to_campaign_list)
 
     form = CampaignForm(request.user)
     # Add campaign
@@ -370,7 +372,7 @@ def campaign_add(request):
 
             request.session["msg"] = _('"%(name)s" added.') % \
                 {'name': request.POST['name']}
-            return HttpResponseRedirect('/campaign/')
+            return HttpResponseRedirect(redirect_url_to_campaign_list)
 
     template = 'dialer_campaign/campaign/change.html'
     data = {
@@ -429,7 +431,7 @@ def campaign_del(request, object_id):
         except:
             raise Http404
 
-    return HttpResponseRedirect('/campaign/')
+    return HttpResponseRedirect(redirect_url_to_campaign_list)
 
 
 @permission_required('dialer_campaign.change_campaign', login_url='/')
@@ -450,11 +452,10 @@ def campaign_change(request, object_id):
     """
     # If dialer setting is not attached with user, redirect to campaign list
     if not user_dialer_setting(request.user):
-        return HttpResponseRedirect("/campaign/")
+        return HttpResponseRedirect(redirect_url_to_campaign_list)
 
     campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
-    content_object = "type:%s-id:%s" % \
-        (campaign.content_type_id, campaign.object_id)
+    content_object = "type:%s-id:%s" % (campaign.content_type_id, campaign.object_id)
     form = CampaignForm(request.user,
                         instance=campaign,
                         initial={'content_object': content_object})
@@ -466,7 +467,8 @@ def campaign_change(request, object_id):
     if request.method == 'POST':
         # Delete campaign
         if request.POST.get('delete'):
-            return HttpResponseRedirect('/campaign/del/%s/' % object_id)
+            return HttpResponseRedirect('%sdel/%s/' % (
+                redirect_url_to_campaign_list, object_id))
         else:
             # Update campaign
             form = CampaignForm(request.user, request.POST, instance=campaign)
@@ -493,7 +495,7 @@ def campaign_change(request, object_id):
                 request.session["msg"] = _('the campaign "%(name)s" is updated.') \
                     % {'name': request.POST['name']}
                 request.session['error_msg'] = ''
-                return HttpResponseRedirect('/campaign/')
+                return HttpResponseRedirect(redirect_url_to_campaign_list)
 
     template = 'dialer_campaign/campaign/change.html'
     data = {
@@ -554,7 +556,7 @@ def campaign_duplicate(request, id):
             for pb in request.POST.getlist('phonebook'):
                 campaign_obj.phonebook.add(pb)
 
-            return HttpResponseRedirect('/campaign/')
+            return HttpResponseRedirect(redirect_url_to_campaign_list)
         else:
             request.session['error_msg'] = True
     else:

@@ -22,7 +22,7 @@ from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
 from dialer_campaign.function_def import type_field_chk
 from django_lets_go.common_functions import get_pagination_vars, striplist
-from utils.helper import Export_choice
+from mod_utils.helper import Export_choice
 import tablib
 import csv
 

@@ -38,7 +38,7 @@ from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESUL
 from survey.models import post_save_add_script
 from django_lets_go.common_functions import striplist, variable_value, ceil_strdate,\
     get_pagination_vars
-from utils.helper import Export_choice
+from mod_utils.helper import Export_choice
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta

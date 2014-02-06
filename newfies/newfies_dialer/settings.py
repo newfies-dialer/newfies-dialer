@@ -232,7 +232,7 @@ INSTALLED_APPS = (
     #'callcenter',
     'appointment',
     'mod_mailer',
-    'utils',
+    'mod_utils',
     #'raven.contrib.django',
     'frontend_notification',
     'django_nvd3',

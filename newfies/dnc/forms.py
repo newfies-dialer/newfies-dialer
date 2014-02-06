@@ -19,7 +19,7 @@ from django.utils.safestring import mark_safe
 from django.forms.util import ErrorList
 from dnc.models import DNC, DNCContact
 from dialer_contact.forms import FileImport
-from utils.helper import Export_choice
+from mod_utils.helper import Export_choice
 
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):

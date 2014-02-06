@@ -39,7 +39,7 @@ from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
 from django_lets_go.common_functions import ceil_strdate, getvar, \
     get_pagination_vars, unset_session_var
-from utils.helper import Export_choice
+from mod_utils.helper import Export_choice
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
 from django.utils.timezone import utc

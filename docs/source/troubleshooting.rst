@@ -57,6 +57,16 @@ All the logs are centralized into one single directory **/var/log/newfies/**
 **newfieslua_logs_%%.log.log** : This contains the phone system logs
 
 
+.. _config-files:
+
+Where are located the config files
+==================================
+
+Newfies-Dialer configuration file is located by default at /usr/share/newfies-dialer/newfies_dialer/settings_local.py
+
+`settings_local.py` contains all the local changes specific to your installation, this file is inherited from /usr/share/newfies-dialer/newfies_dialer/settings.py, therefore you can copy settings to settings_local.py and overwrite the default configuration.
+
+
 .. _enable-debug:
 
 Enable the debug
@@ -65,8 +75,7 @@ Enable the debug
 When you get a message "Server Error, You've encountered an error!", you might want
 to enable the debugger to get a full traceback of the error.
 
-To enable the debugger, edit the file /usr/share/newfies-dialer/settings_local.py
-and set those settings as follow::
+To enable the debugger, edit the file /usr/share/newfies-dialer/newfies_dialer/settings_local.py and set those settings as follow::
 
     DEBUG = True
     TEMPLATE_DEBUG = DEBUG
@@ -94,7 +103,6 @@ You should:
     2. Make sure that you configured a Dialer Setting for the user running the campaign, although there will be a warning for this on the Customer UI : http://your-ip:8008/admin/dialer_settings/dialersetting/
 
 If there is an existing Call Request, check the status, and check the Celery log stored in /var/log/newfies
-
 
 
 .. _run-debug-mode:
@@ -228,9 +236,4 @@ Backend :
 
 
 If there are still problems, then raise a support question on the mailing-list http://groups.google.com/group/newfies-dialer or our forum, http://forum.newfies-dialer.org/, alternatively, contact newfies-dialer@star2billing.com for commercial support.
-
-
-
-
-
 

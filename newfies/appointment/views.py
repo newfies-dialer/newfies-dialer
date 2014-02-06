@@ -44,6 +44,8 @@ redirect_url_to_calendar_list = '/module/calendar/'
 redirect_url_to_event_list = '/module/event/'
 redirect_url_to_alarm_list = '/module/alarm/'
 
+successfully_added_string = _('"%s" is added')
+
 
 @permission_required('appointment.view_calendar_user', login_url='/')
 @login_required
@@ -328,7 +330,7 @@ def calendar_add(request):
         form = CalendarForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('"%s" is added.') % request.POST['name']
+            request.session["msg"] = successfully_added_string % request.POST['name']
             return HttpResponseRedirect(redirect_url_to_calendar_list)
 
     template = 'appointment/calendar/change.html'
@@ -478,7 +480,7 @@ def calendar_setting_add(request):
             obj = form.save(commit=False)
             obj.user = request.user
             obj.save()
-            request.session["msg"] = _('"%s" is added.') % obj
+            request.session["msg"] = successfully_added_string % obj
             return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
 
     template = 'appointment/calendar_setting/change.html'
@@ -692,7 +694,7 @@ def event_add(request):
         form = EventForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            request.session["msg"] = _('"%s" is added.') % request.POST['title']
+            request.session["msg"] = successfully_added_string % request.POST['title']
             return HttpResponseRedirect(redirect_url_to_event_list)
 
     template = 'appointment/event/change.html'
@@ -843,7 +845,7 @@ def alarm_add(request):
         form = AlarmForm(request.user, request.POST)
         if form.is_valid():
             obj = form.save()
-            request.session["msg"] = _('"%s" is added.') % obj
+            request.session["msg"] = successfully_added_string % obj
             return HttpResponseRedirect(redirect_url_to_alarm_list)
 
     template = 'appointment/alarm/change.html'

@@ -27,7 +27,7 @@ from dialer_contact.forms import SearchForm
 #from agent.function_def import agent_list
 #from agent.models import AgentProfile, Agent
 from user_profile.models import UserProfile
-from common.common_functions import get_unique_code
+from django_lets_go.common_functions import get_unique_code
 from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
 

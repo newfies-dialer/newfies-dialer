@@ -16,6 +16,7 @@ from django.conf import settings
 from django.db.models import signals
 from django.utils.translation import ugettext_noop as _
 from user_profile.constants import NOTIFICATION_NAME
+from mod_sms.constants import SMS_NOTIFICATION_NAME
 
 
 #Info about management.py
@@ -65,6 +66,43 @@ if "notification" in settings.INSTALLED_APPS:
             _("call request not found"),
             _("call request not found"),
             NOTIFICATION_NAME.callrequest_not_found)
+
+        # mod_sms notification
+        notification.create_notice_type(
+            "sms_campaign_started",
+            _("SMS Campaign started"),
+            _("SMS Campaign started"),
+            SMS_NOTIFICATION_NAME.sms_campaign_started)
+        notification.create_notice_type(
+            "sms_campaign_paused",
+            _("SMS Campaign paused"),
+            _("SMS Campaign paused"),
+            SMS_NOTIFICATION_NAME.sms_campaign_paused)
+        notification.create_notice_type(
+            "sms_campaign_aborted",
+            _("SMS Campaign aborted"),
+            _("SMS Campaign aborted"),
+            SMS_NOTIFICATION_NAME.sms_campaign_aborted)
+        notification.create_notice_type(
+            "sms_campaign_stopped",
+            _("SMS Campaign stopped"),
+            _("SMS Campaign stopped"),
+            SMS_NOTIFICATION_NAME.sms_campaign_stopped)
+        notification.create_notice_type(
+            "sms_campaign_limit_reached",
+            _("SMS Campaign limit reached"),
+            _("SMS Campaign limit reached"),
+            SMS_NOTIFICATION_NAME.sms_campaign_limit_reached)
+        notification.create_notice_type(
+            "sms_contact_limit_reached",
+            _("SMS Contact limit reached"),
+            _("SMS Contact limit reached"),
+            SMS_NOTIFICATION_NAME.sms_contact_limit_reached)
+        notification.create_notice_type(
+            "sms_dialer_setting_configuration",
+            _("SMS Dialer setting configuration"),
+            _("The SMS Dialer settings needs to be mapped with dialer settings by the administrator"),
+            SMS_NOTIFICATION_NAME.sms_dialer_setting_configuration)
     signals.post_syncdb.connect(create_notice_types, sender=notification)
 else:
     print "Skipping creation of NoticeTypes as notification app not found"

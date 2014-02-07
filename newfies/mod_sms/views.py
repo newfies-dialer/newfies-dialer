@@ -70,14 +70,6 @@ def update_sms_campaign_status_cust(request, pk, status):
     return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
 
-def count_contact_of_smscampaign(smscampaign_id):
-    """Count no of Contacts from phonebook belonging to the sms campaign"""
-    count_contact = Contact.objects.filter(phonebook__smscampaign=smscampaign_id).count()
-    if not count_contact:
-        return str("phonebook empty")
-    return count_contact
-
-
 # SMSCampaign
 @permission_required('mod_sms.view_smscampaign', login_url='/')
 @login_required

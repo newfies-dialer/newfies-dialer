@@ -36,6 +36,7 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME,\
     SEALED_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
+from survey.function_def import getaudio_acapela
 from django_lets_go.common_functions import striplist, variable_value, ceil_strdate,\
     get_pagination_vars
 from mod_utils.helper import Export_choice
@@ -50,26 +51,6 @@ import os
 
 testdebug = False
 redirect_url_to_survey_list = '/module/survey/'
-
-
-def getaudio_acapela(text, tts_language='en'):
-    """
-    Run Acapela Text2Speech and return audio url
-    """
-    import acapela
-    DIRECTORY = settings.MEDIA_ROOT + '/tts/'
-    if not tts_language:
-        tts_language = 'en'
-    tts_acapela = acapela.Acapela(
-        settings.ACCOUNT_LOGIN, settings.APPLICATION_LOGIN,
-        settings.APPLICATION_PASSWORD, settings.SERVICE_URL,
-        settings.QUALITY, DIRECTORY)
-    tts_acapela.prepare(
-        text, tts_language, settings.ACAPELA_GENDER,
-        settings.ACAPELA_INTONATION)
-    output_filename = tts_acapela.run()
-    audiofile = 'tts/' + output_filename
-    return audiofile
 
 
 @permission_required('survey.view_survey', login_url='/')
@@ -378,9 +359,8 @@ def section_change(request, id):
 
         * update section object via section_update_form function
     """
-    section = get_object_or_404(Section_template,
-                                pk=int(id),
-                                survey__user=request.user)
+    section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
+
     if (section.type == SECTION_TYPE.PLAY_MESSAGE
        or section.type == SECTION_TYPE.HANGUP_SECTION
        or section.type == SECTION_TYPE.DNC):
@@ -479,15 +459,14 @@ def section_change(request, id):
 def section_delete(request, id):
     """Delete section and branching records
     """
-    section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
+    section = get_object_or_404(Section_template, pk=id, survey__user=request.user)
     if request.GET.get('delete'):
         # perform delete
         survey_id = section.survey_id
 
         # Re-order section while deleting one section
-        section_list_reorder = Section_template.objects\
-            .filter(survey=section.survey)\
-            .exclude(pk=int(id))
+        section_list_reorder = Section_template.objects.filter(survey=section.survey)\
+            .exclude(pk=id)
         for reordered in section_list_reorder:
             if section.order < reordered.order:
                 reordered.order = reordered.order - 1
@@ -522,7 +501,7 @@ def section_script_change(request, id):
         * ``form`` - ScriptForm
         * ``template`` - survey/section_script_change.html
     """
-    section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
+    section = get_object_or_404(Section_template, pk=id, survey__user=request.user)
 
     form = ScriptForm(instance=section)
     if request.method == 'POST':
@@ -561,7 +540,7 @@ def section_script_play(request, id):
         * Create text file from section script
         * Convert text file into wav file
     """
-    section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
+    section = get_object_or_404(Section_template, pk=id, survey__user=request.user)
 
     if section.script:
         script_text = section.script
@@ -622,8 +601,8 @@ def section_branch_add(request):
         section = Section_template.objects.get(pk=int(section_id))
         section_survey_id = section.survey_id
         section_type = section.type
-        form = BranchingForm(
-            section.survey_id, section.id, initial={'section': section_id})
+        form = BranchingForm(section.survey_id, section.id, initial={'section': section_id})
+
         if request.method == 'POST':
             form = BranchingForm(
                 section.survey_id, section.id, request.POST)

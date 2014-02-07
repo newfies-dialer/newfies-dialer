@@ -212,3 +212,11 @@ def get_sms_notification_status(status):
         return SMS_NOTIFICATION_NAME.sms_campaign_aborted
     if status == SMS_CAMPAIGN_STATUS.END:
         return SMS_NOTIFICATION_NAME.sms_campaign_stopped
+
+
+def count_contact_of_smscampaign(smscampaign_id):
+    """Count no of Contacts from phonebook belonging to the sms campaign"""
+    count_contact = Contact.objects.filter(phonebook__smscampaign=smscampaign_id).count()
+    if not count_contact:
+        return str("phonebook empty")
+    return count_contact

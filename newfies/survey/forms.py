@@ -43,10 +43,9 @@ def get_section_question_list(survey_id, section_id):
     list_sq = []
     list_sq.append(('', _('hangup').capitalize()))
 
-    list = Section_template.objects.filter(survey_id=survey_id)\
-        .exclude(pk=section_id)\
-        .exclude(id__in=section_branch_list)
-    for i in list:
+    section_list = Section_template.objects.filter(survey_id=survey_id)\
+        .exclude(pk=section_id).exclude(id__in=section_branch_list)
+    for i in section_list:
         if i.question:
             q_string = i.question
         else:

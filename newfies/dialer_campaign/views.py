@@ -196,7 +196,6 @@ def campaign_list(request):
         'campaign_list': campaign_list,
         'total_campaign': campaign_count,
         'CAMPAIGN_COLUMN_NAME': CAMPAIGN_COLUMN_NAME,
-        'CAMPAIGN_STATUS': CAMPAIGN_STATUS,
         'col_name_with_order': pagination_data['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),

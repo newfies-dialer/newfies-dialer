@@ -11,3 +11,24 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
+from django.conf import settings
+
+
+def getaudio_acapela(text, tts_language='en'):
+    """
+    Run Acapela Text2Speech and return audio url
+    """
+    import acapela
+    DIRECTORY = settings.MEDIA_ROOT + '/tts/'
+    if not tts_language:
+        tts_language = 'en'
+    tts_acapela = acapela.Acapela(
+        settings.ACCOUNT_LOGIN, settings.APPLICATION_LOGIN,
+        settings.APPLICATION_PASSWORD, settings.SERVICE_URL,
+        settings.QUALITY, DIRECTORY)
+    tts_acapela.prepare(
+        text, tts_language, settings.ACAPELA_GENDER,
+        settings.ACAPELA_INTONATION)
+    output_filename = tts_acapela.run()
+    audiofile = 'tts/' + output_filename
+    return audiofile

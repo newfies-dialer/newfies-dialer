@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from survey.views import survey_audio_recording
 from survey.models import Section_template, Branching_template
 from survey.constants import SECTION_TYPE
+from mod_utils.function_def import common_function_to_get_status_value
 
 
 @register.filter(name='section_type_name')
@@ -32,15 +33,7 @@ def section_type_name(value):
     >>> section_type_name(0)
     ''
     """
-    if not value:
-        return ''
-    TYPE = dict(SECTION_TYPE)
-    try:
-        status = TYPE[value]
-    except:
-        status = ''
-
-    return str(status)
+    return common_function_to_get_status_value(value, SECTION_TYPE)
 
 
 @register.filter(name='que_res_string')
@@ -90,9 +83,9 @@ def get_branching_goto_field(section_id, selected_value):
     section_obj = Section_template.objects.get(id=section_id)
     #We don't need a lazy translation in this case
     option_list = '<option value="">%s</option>' % _('hang up').encode('utf-8')
-    list = Section_template.objects.filter(survey_id=section_obj.survey_id)\
+    section_list = Section_template.objects.filter(survey_id=section_obj.survey_id)\
         .order_by('id')
-    for i in list:
+    for i in section_list:
         if i.question:
             q_string = i.question
         else:

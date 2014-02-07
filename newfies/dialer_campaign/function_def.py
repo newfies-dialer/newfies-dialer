@@ -17,6 +17,7 @@ from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.constants import SUBSCRIBER_STATUS
 from user_profile.models import UserProfile
+from mod_utils.function_def import common_function_to_get_status_value
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
 from datetime import timedelta
@@ -199,15 +200,7 @@ def user_dialer_setting_msg(user):
 
 def get_subscriber_status(value):
     """Get subscriber status name"""
-    if not value:
-        return ''
-    STATUS = dict(SUBSCRIBER_STATUS)
-    try:
-        status = STATUS[value].encode('utf-8')
-    except:
-        status = ''
-
-    return str(status)
+    return common_function_to_get_status_value(value, SUBSCRIBER_STATUS)
 
 
 def get_subscriber_disposition(campaign_id, val):

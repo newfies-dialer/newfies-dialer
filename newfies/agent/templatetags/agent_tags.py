@@ -13,17 +13,10 @@
 #
 from django.template.defaultfilters import register
 from agent.constants import AGENT_STATUS
+from mod_utils.function_def import common_function_to_get_status_value
 
 
 @register.filter(name='agent_status_name')
 def agent_status_name(value):
     """agent status name"""
-    if not value:
-        return ''
-    STATUS = dict(AGENT_STATUS)
-    try:
-        status = STATUS[value].encode('utf-8')
-    except:
-        status = ''
-
-    return str(status)
+    return common_function_to_get_status_value(value, AGENT_STATUS)

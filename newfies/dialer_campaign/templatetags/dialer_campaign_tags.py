@@ -17,7 +17,8 @@ from django.template.defaultfilters import register
 from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from django.utils.translation import ugettext as _
 from dialer_campaign.function_def import get_subscriber_disposition, get_subscriber_status
-from mod_utils.function_def import get_common_campaign_status_url, get_common_campaign_status
+from mod_utils.function_def import get_common_campaign_status_url, get_common_campaign_status,\
+    common_function_to_get_status_value
 
 
 @register.filter(name='campaign_status')
@@ -39,15 +40,7 @@ def campaign_status(value):
     >>> campaign_status(0)
     ''
     """
-    if not value:
-        return ''
-    STATUS = dict(CAMPAIGN_STATUS)
-    try:
-        status = STATUS[value].encode('utf-8')
-    except:
-        status = ''
-
-    return str(status)
+    return common_function_to_get_status_value(value, CAMPAIGN_STATUS)
 
 
 @register.filter(name='get_campaign_status')

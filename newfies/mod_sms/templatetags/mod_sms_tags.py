@@ -15,7 +15,8 @@
 from django.template.defaultfilters import register
 from django.utils.translation import ugettext as _
 from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR
-from mod_utils.function_def import get_common_campaign_status_url, get_common_campaign_status
+from mod_utils.function_def import get_common_campaign_status_url, get_common_campaign_status,\
+    common_function_to_get_status_value
 
 
 @register.filter(name='sms_campaign_status')
@@ -37,15 +38,7 @@ def sms_campaign_status(value):
     >>> sms_campaign_status(0)
     ''
     """
-    if not value:
-        return ''
-    STATUS = dict(SMS_CAMPAIGN_STATUS)
-    try:
-        status = STATUS[value]
-    except:
-        status = ''
-
-    return str(status)
+    return common_function_to_get_status_value(value, SMS_CAMPAIGN_STATUS)
 
 
 @register.filter(name='get_sms_campaign_status')

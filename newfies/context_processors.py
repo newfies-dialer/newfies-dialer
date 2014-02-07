@@ -28,3 +28,8 @@ def newfies_page_size(request):
 def newfies_dialer_setting_msg(request):
     """return dialer_setting_msg in templates"""
     return {'dialer_setting_msg': user_dialer_setting_msg(request.user)}
+
+
+def newfies_audio_debug_flag(request):
+    """return audio_debug_flag in templates"""
+    return {'AUDIO_DEBUG': settings.AUDIO_DEBUG}

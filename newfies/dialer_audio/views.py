@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.conf import settings
 from django.contrib.sites.models import Site
 from django.contrib.auth.decorators import login_required, \
     permission_required
@@ -58,7 +57,6 @@ def audio_list(request):
         'col_name_with_order': pagination_data['col_name_with_order'],
         'domain': domain,
         'msg': request.session.get('msg'),
-        'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -96,7 +94,6 @@ def audio_add(request):
     data = {
         'form': form,
         'action': 'add',
-        'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -189,7 +186,6 @@ def audio_change(request, object_id):
     data = {
         'form': form,
         'action': 'update',
-        'AUDIO_DEBUG': settings.AUDIO_DEBUG,
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

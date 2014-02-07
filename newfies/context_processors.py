@@ -20,16 +20,7 @@ def newfies_version(request):
     return {'newfies_version': newfies_dialer.__version__, 'SURVEYDEV': settings.SURVEYDEV}
 
 
-def newfies_page_size(request):
-    """return the value of PAGE_SIZE in templates"""
-    return {'newfies_page_size': settings.PAGE_SIZE if settings.PAGE_SIZE else 10}
-
-
-def newfies_dialer_setting_msg(request):
-    """return dialer_setting_msg in templates"""
-    return {'dialer_setting_msg': user_dialer_setting_msg(request.user)}
-
-
-def newfies_audio_debug_flag(request):
-    """return audio_debug_flag in templates"""
-    return {'AUDIO_DEBUG': settings.AUDIO_DEBUG}
+def newfies_common_template_variable(request):
+    """Return common_template_variable"""
+    newfies_page_size = settings.PAGE_SIZE if settings.PAGE_SIZE else 10
+    return {'newfies_page_size': newfies_page_size, 'dialer_setting_msg': user_dialer_setting_msg(request.user), 'AUDIO_DEBUG': settings.AUDIO_DEBUG, 'AMD': settings.AMD}

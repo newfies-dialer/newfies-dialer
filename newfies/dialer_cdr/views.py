@@ -223,7 +223,6 @@ def voipcall_report(request):
         'start_date': start_date,
         'end_date': end_date,
         'action': action,
-        'AMD': settings.AMD,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

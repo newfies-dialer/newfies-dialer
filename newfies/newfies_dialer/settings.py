@@ -157,9 +157,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.messages.context_processors.messages",
     # newfies custom context_processors
     "context_processors.newfies_version",
-    "context_processors.newfies_page_size",
-    "context_processors.newfies_dialer_setting_msg",
-    "context_processors.newfies_audio_debug_flag",
+    "context_processors.newfies_common_template_variable",
     #needed by Sentry
     "django.core.context_processors.request",
 )

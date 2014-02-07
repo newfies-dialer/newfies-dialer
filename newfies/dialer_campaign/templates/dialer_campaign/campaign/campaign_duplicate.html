@@ -21,6 +21,7 @@
 
         {% if err_msg %}
             {% include "frontend/extra_modal_header.html" %}
+            {% include "frontend/extra_modal_footer.html" %}
             <script type="text/javascript" charset="utf-8">
                 $(window).load(function(){
                     $('#campaign-duplicate').modal('show');
@@ -65,8 +66,6 @@
     {% if err_msg %}
         </div>
     {% endif %}
-
-    {% include "frontend/extra_modal_footer.html" %}
 
     {% endblock %}
 

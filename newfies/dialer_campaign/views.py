@@ -211,13 +211,6 @@ def get_campaign_survey_view(campaign_object):
     return link
 
 
-def make_duplicate_campaign(campaign_object_id):
-    """Create link to make duplicate campaign"""
-    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
-           % (campaign_object_id, _('duplicate this campaign').capitalize())
-    return link
-
-
 @permission_required('dialer_campaign.view_campaign', login_url='/')
 @login_required
 def campaign_list(request):

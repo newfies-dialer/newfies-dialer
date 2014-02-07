@@ -15,7 +15,7 @@
 from django.db.models import get_model
 from django.template.defaultfilters import register
 from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
-from dialer_campaign.views import make_duplicate_campaign
+from django.utils.translation import ugettext as _
 from dialer_campaign.function_def import get_subscriber_disposition,\
     get_subscriber_status
 from dialer_campaign.views import get_campaign_survey_view, get_url_campaign_status
@@ -67,21 +67,14 @@ def get_campaign_status(id):
     >>> get_campaign_status(4)
     '<font color="red">STOPPED</font>'
     """
-    for i in CAMPAIGN_STATUS:
-        if i[0] == id:
-            #return i[1]
-            if i[1] == 'START':
-                return '<font color="%s">STARTED</font>' \
-                       % (CAMPAIGN_STATUS_COLOR[id])
-            if i[1] == 'PAUSE':
-                return '<font color="%s">PAUSED</font>' \
-                       % (CAMPAIGN_STATUS_COLOR[id])
-            if i[1] == 'ABORT':
-                return '<font color="%s">ABORTED</font>' \
-                       % (CAMPAIGN_STATUS_COLOR[id])
-            if i[1] == 'END':
-                return '<font color="%s">STOPPED</font>' \
-                       % (CAMPAIGN_STATUS_COLOR[id])
+    if CAMPAIGN_STATUS.START == id:
+        return '<font color="%s">STARTED</font>' % (CAMPAIGN_STATUS_COLOR[id])
+    elif CAMPAIGN_STATUS.PAUSE == id:
+        return '<font color="%s">PAUSED</font>' % (CAMPAIGN_STATUS_COLOR[id])
+    elif CAMPAIGN_STATUS.ABORT == id:
+        return '<font color="%s">ABORTED</font>' % (CAMPAIGN_STATUS_COLOR[id])
+    else:
+        return '<font color="%s">STOPPED</font>' % (CAMPAIGN_STATUS_COLOR[id])
 
 
 @register.simple_tag(name='get_app_name')
@@ -97,7 +90,9 @@ def get_app_name(app_label, model_name, object_id):
 
 @register.filter(name='create_duplicate_campaign')
 def create_duplicate_campaign(camp_id):
-    link = make_duplicate_campaign(camp_id)
+    """Create link to make duplicate campaign"""
+    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
+           % (camp_id, _('duplicate this campaign').capitalize())
     return link
 
 

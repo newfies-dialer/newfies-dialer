@@ -23,7 +23,6 @@ from django.conf import settings
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
-from django.db.models import get_model
 from dialer_contact.models import Phonebook
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm, \
@@ -121,94 +120,6 @@ def notify_admin(request):
             request.session['has_notified'] = True
 
     return HttpResponseRedirect('/dashboard/')
-
-
-def tpl_control_icon(icon):
-    """
-    function to produce control html icon
-    """
-    return '<i class="fa %s icon-small"></i>' % (icon)
-
-
-def get_url_campaign_status(id, status):
-    """
-    Helper to display campaign status button on the grid
-    """
-    #Store html for campaign control button
-    control_play_style = tpl_control_icon('fa-play')
-    control_pause_style = tpl_control_icon('fa-pause')
-    control_abort_style = tpl_control_icon('fa-eject')
-    control_stop_style = tpl_control_icon('fa-stop')
-
-    #set different url for the campaign status
-    url_cpg_status = 'update_campaign_status_cust/%s' % str(id)
-    url_cpg_start = '%s/%s/' % (url_cpg_status, CAMPAIGN_STATUS.START)
-    url_cpg_pause = '%s/%s/' % (url_cpg_status, CAMPAIGN_STATUS.PAUSE)
-    url_cpg_abort = '%s/%s/' % (url_cpg_status, CAMPAIGN_STATUS.ABORT)
-    url_cpg_stop = '%s/%s/' % (url_cpg_status, CAMPAIGN_STATUS.END)
-
-    #according to the current status, disable link and change the button color
-    if status == CAMPAIGN_STATUS.START:
-        url_cpg_start = '#'
-        control_play_style = tpl_control_icon('fa-play')
-    elif status == CAMPAIGN_STATUS.PAUSE:
-        url_cpg_pause = '#'
-        control_pause_style = tpl_control_icon('fa-pause')
-    elif status == CAMPAIGN_STATUS.ABORT:
-        url_cpg_abort = '#'
-        control_abort_style = tpl_control_icon('fa-eject')
-    elif status == CAMPAIGN_STATUS.END:
-        url_cpg_stop = '#'
-        control_stop_style = tpl_control_icon('fa-stop')
-
-    #return all the html button for campaign status management
-    return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
-        (url_cpg_start, _("start").capitalize(), control_play_style,
-         url_cpg_pause, _("pause").capitalize(), control_pause_style,
-         url_cpg_abort, _("abort").capitalize(), control_abort_style,
-         url_cpg_stop, _("stop").capitalize(), control_stop_style)
-
-
-def get_app_name(app_label, model_name, object_id):
-    """To get app name from app_label, model_name & object_id"""
-    try:
-        return get_model(app_label, model_name).objects.get(pk=object_id)
-    except:
-        return '-'
-
-
-def _return_link(app_name, obj_id):
-    """
-    Return link on campaign listing view
-    """
-    link = ''
-    # Object view links
-    if app_name == 'survey':
-        link = '<a id="id_survey_seal_%s" href="#sealed-survey" url="/module/sealed_survey_view/%s/" title="%s" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>' % \
-            (obj_id, obj_id, _('view sealed survey').title())
-
-    # Object edit links
-    if app_name == 'survey_template':
-        link = '<a href="/module/survey/%s/" target="_blank" title="%s"><i class="fa fa-search"></i></a>' % \
-            (obj_id, _('edit survey').title())
-
-    return link
-
-
-def get_campaign_survey_view(campaign_object):
-    """display view button on campaign list"""
-    link = ''
-    if campaign_object.status and int(campaign_object.status) == CAMPAIGN_STATUS.START:
-        if campaign_object.content_type.model == 'survey':
-            link = _return_link('survey', campaign_object.object_id)
-
-    if campaign_object.status and int(campaign_object.status) != CAMPAIGN_STATUS.START:
-        if campaign_object.content_type.model == 'survey_template':
-            link = _return_link('survey_template', campaign_object.object_id)
-        if campaign_object.content_type.model == 'survey':
-            link = _return_link('survey', campaign_object.object_id)
-
-    return link
 
 
 @permission_required('dialer_campaign.view_campaign', login_url='/')

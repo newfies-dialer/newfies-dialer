@@ -25,17 +25,14 @@ from django.utils.timezone import utc
 
 def get_sms_campaign_status_name(id):
     """To get status name from SMS_CAMPAIGN_STATUS"""
-    for i in SMS_CAMPAIGN_STATUS:
-        if i[0] == id:
-            #return i[1]
-            if i[1] == 'START':
-                return '<font color="%s">STARTED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
-            if i[1] == 'PAUSE':
-                return '<font color="%s">PAUSED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
-            if i[1] == 'ABORT':
-                return '<font color="%s">ABORTED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
-            if i[1] == 'END':
-                return '<font color="%s">STOPPED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
+    if SMS_CAMPAIGN_STATUS.START == id:
+        return '<font color="%s">STARTED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
+    elif SMS_CAMPAIGN_STATUS.PAUSE == id:
+        return '<font color="%s">PAUSED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
+    elif SMS_CAMPAIGN_STATUS.ABORT == id:
+        return '<font color="%s">ABORTED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
+    else:
+        return '<font color="%s">STOPPED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
 
 
 def check_sms_dialer_setting(request, check_for, field_value=''):

@@ -22,7 +22,6 @@ from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from dialer_contact.models import Contact
 from dialer_contact.constants import CONTACT_STATUS
-from dialer_campaign.views import tpl_control_icon
 from dialer_campaign.function_def import date_range, user_dialer_setting, \
     dialer_setting_limit
 from frontend.function_def import calculate_date
@@ -43,7 +42,6 @@ from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
 import tablib
 import time
-
 
 redirect_url_to_smscampaign_list = '/sms_campaign/'
 
@@ -77,59 +75,6 @@ def count_contact_of_smscampaign(smscampaign_id):
     if not count_contact:
         return str("phonebook empty")
     return count_contact
-
-
-def get_url_sms_campaign_status(id, status):
-    """
-    Helper to display campaign status button on the grid
-    """
-    #Store html for campaign control button
-    control_play_style = tpl_control_icon('fa-play')
-    control_pause_style = tpl_control_icon('fa-pause')
-    control_abort_style = tpl_control_icon('fa-eject')
-    control_stop_style = tpl_control_icon('fa-stop')
-
-    #set different url for the campaign status
-    url_cpg_status = 'update_sms_campaign_status_cust/%s' % str(id)
-    url_cpg_start = '%s/%s/' % (url_cpg_status, SMS_CAMPAIGN_STATUS.START)
-    url_cpg_pause = '%s/%s/' % (url_cpg_status, SMS_CAMPAIGN_STATUS.PAUSE)
-    url_cpg_abort = '%s/%s/' % (url_cpg_status, SMS_CAMPAIGN_STATUS.ABORT)
-    url_cpg_stop = '%s/%s/' % (url_cpg_status, SMS_CAMPAIGN_STATUS.END)
-
-    #according to the current status, disable link and change the button color
-    if status == SMS_CAMPAIGN_STATUS.START:
-        url_cpg_start = '#'
-        control_play_style = tpl_control_icon('fa-play')
-    elif status == SMS_CAMPAIGN_STATUS.PAUSE:
-        url_cpg_pause = '#'
-        control_pause_style = tpl_control_icon('fa-pause')
-    elif status == SMS_CAMPAIGN_STATUS.ABORT:
-        url_cpg_abort = '#'
-        control_abort_style = tpl_control_icon('fa-eject')
-    elif status == SMS_CAMPAIGN_STATUS.END:
-        url_cpg_stop = '#'
-        control_stop_style = tpl_control_icon('fa-stop')
-
-    #return all the html button for campaign status management
-    return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" %\
-           (url_cpg_start, _("start").title(), control_play_style,
-            url_cpg_pause, _("pause").title(), control_pause_style,
-            url_cpg_abort, _("abort").title(), control_abort_style,
-            url_cpg_stop, _("stop").title(), control_stop_style)
-
-
-def make_duplicate_sms_campaign(sms_campaign_id):
-    """Create link to make duplicate campaign"""
-    link = '<a href="#sms-campaign-duplicate"  url="/sms_campaign/duplicate/%s/" class="sms-campaign-duplicate" data-toggle="modal" data-controls-modal="sms-campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
-           % (sms_campaign_id, _('duplicate this sms campaign').capitalize())
-    return link
-
-
-def sms_campaign_textmessage(sms_campaign_id):
-    """Create link to get sms campaign's text-message"""
-    link = '<a href="#sms-campaign-textmessage"  url="/sms_campaign/text_message/%s/" class="sms-campaign-textmessage" data-toggle="modal" data-controls-modal="sms-campaign-textmessage" title="%s"><i class="fa fa-search"></i></a>' \
-           % (sms_campaign_id, _('get text-message of this sms campaign').capitalize())
-    return link
 
 
 # SMSCampaign

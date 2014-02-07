@@ -225,3 +225,53 @@ def get_subscriber_disposition(campaign_id, val):
         return dsp_dict[val]
     except:
         return '-'
+
+
+def tpl_control_icon(icon):
+    """
+    function to produce control html icon
+    """
+    return '<i class="fa %s icon-small"></i>' % (icon)
+
+
+def get_common_campaign_status_url(id, status, status_link, STATUS_OF_CAMPAIGN):
+    """
+    Helper to display campaign status button on the grid
+
+    example : get_common_campaign_status_url(id, status, 'update_campaign_status_cust/', CAMPAIGN_STATUS)
+
+              get_common_campaign_status_url(id, status, 'update_sms_campaign_status_cust/', SMS_CAMPAIGN_STATUS)
+    """
+    #Store html for campaign control button
+    control_play_style = tpl_control_icon('fa-play')
+    control_pause_style = tpl_control_icon('fa-pause')
+    control_abort_style = tpl_control_icon('fa-eject')
+    control_stop_style = tpl_control_icon('fa-stop')
+
+    #set different url for the campaign status
+    url_cpg_status = status_link + '%s' % str(id)
+    url_cpg_start = '%s/%s/' % (url_cpg_status, STATUS_OF_CAMPAIGN.START)
+    url_cpg_pause = '%s/%s/' % (url_cpg_status, STATUS_OF_CAMPAIGN.PAUSE)
+    url_cpg_abort = '%s/%s/' % (url_cpg_status, STATUS_OF_CAMPAIGN.ABORT)
+    url_cpg_stop = '%s/%s/' % (url_cpg_status, STATUS_OF_CAMPAIGN.END)
+
+    #according to the current status, disable link and change the button color
+    if status == STATUS_OF_CAMPAIGN.START:
+        url_cpg_start = '#'
+        control_play_style = tpl_control_icon('fa-play')
+    elif status == STATUS_OF_CAMPAIGN.PAUSE:
+        url_cpg_pause = '#'
+        control_pause_style = tpl_control_icon('fa-pause')
+    elif status == STATUS_OF_CAMPAIGN.ABORT:
+        url_cpg_abort = '#'
+        control_abort_style = tpl_control_icon('fa-eject')
+    elif status == STATUS_OF_CAMPAIGN.END:
+        url_cpg_stop = '#'
+        control_stop_style = tpl_control_icon('fa-stop')
+
+    #return all the html button for campaign status management
+    return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
+        (url_cpg_start, _("start").capitalize(), control_play_style,
+         url_cpg_pause, _("pause").capitalize(), control_pause_style,
+         url_cpg_abort, _("abort").capitalize(), control_abort_style,
+         url_cpg_stop, _("stop").capitalize(), control_stop_style)

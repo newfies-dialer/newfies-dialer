@@ -21,11 +21,11 @@ from dialer_campaign.models import Campaign, Subscriber,\
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add,\
     campaign_change, campaign_del, notify_admin,\
-    update_campaign_status_admin,\
-    get_url_campaign_status, campaign_duplicate, subscriber_list,\
+    update_campaign_status_admin, campaign_duplicate, subscriber_list,\
     subscriber_export
 from dialer_campaign.tasks import campaign_running, pending_call_processing,\
     collect_subscriber, campaign_expire_check
+from dialer_campaign.templatetags.dialer_campaign_tags import get_campaign_status_url
 from dialer_settings.models import DialerSetting
 from dialer_campaign.constants import SUBSCRIBER_STATUS
 from django_lets_go.utils import BaseAuthenticatedClient
@@ -365,22 +365,22 @@ class DialerCampaignModel(TestCase):
 
         # status = 1
         self.campaign.update_campaign_status()
-        get_url_campaign_status(self.campaign.pk, self.campaign.status)
+        get_campaign_status_url(self.campaign.pk, self.campaign.status)
 
         self.campaign.status = 2
         self.campaign.save()
         self.campaign.update_campaign_status()
-        get_url_campaign_status(self.campaign.pk, self.campaign.status)
+        get_campaign_status_url(self.campaign.pk, self.campaign.status)
 
         self.campaign.status = 3
         self.campaign.save()
         self.campaign.update_campaign_status()
-        get_url_campaign_status(self.campaign.pk, self.campaign.status)
+        get_campaign_status_url(self.campaign.pk, self.campaign.status)
 
         self.campaign.status = 4
         self.campaign.save()
         self.campaign.update_campaign_status()
-        get_url_campaign_status(self.campaign.pk, self.campaign.status)
+        get_campaign_status_url(self.campaign.pk, self.campaign.status)
 
         self.campaign.is_authorized_contact(dialersetting, '123456789')
         self.campaign.get_active_max_frequency()

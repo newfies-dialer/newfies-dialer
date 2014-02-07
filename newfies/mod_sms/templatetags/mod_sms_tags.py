@@ -13,10 +13,10 @@
 #
 
 from django.template.defaultfilters import register
+from django.utils.translation import ugettext as _
 from mod_sms.constants import SMS_CAMPAIGN_STATUS
 from mod_sms.function_def import get_sms_campaign_status_name
-from mod_sms.views import get_url_sms_campaign_status, make_duplicate_sms_campaign,\
-    sms_campaign_textmessage
+from dialer_campaign.function_def import get_common_campaign_status_url
 
 
 @register.filter(name='sms_campaign_status')
@@ -56,16 +56,21 @@ def get_sms_campaign_status(id):
 
 @register.simple_tag(name='get_sms_campaign_status_url')
 def get_sms_campaign_status_url(id, status):
-    return get_url_sms_campaign_status(id, status)
+    return get_common_campaign_status_url(
+        id, status, 'update_sms_campaign_status_cust/', SMS_CAMPAIGN_STATUS)
 
 
 @register.filter(name='create_duplicate_sms_campaign')
-def create_duplicate_sms_campaign(id):
-    link = make_duplicate_sms_campaign(id)
+def create_duplicate_sms_campaign(sms_campaign_id):
+    """Create link to make duplicate campaign"""
+    link = '<a href="#sms-campaign-duplicate"  url="/sms_campaign/duplicate/%s/" class="sms-campaign-duplicate" data-toggle="modal" data-controls-modal="sms-campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
+           % (sms_campaign_id, _('duplicate this sms campaign').capitalize())
     return link
 
 
 @register.filter(name='get_sms_campaign_textmessage')
-def get_sms_campaign_textmessage(id):
-    link = sms_campaign_textmessage(id)
+def get_sms_campaign_textmessage(sms_campaign_id):
+    """Create link to get sms campaign's text-message"""
+    link = '<a href="#sms-campaign-textmessage"  url="/sms_campaign/text_message/%s/" class="sms-campaign-textmessage" data-toggle="modal" data-controls-modal="sms-campaign-textmessage" title="%s"><i class="fa fa-search"></i></a>' \
+           % (sms_campaign_id, _('get text-message of this sms campaign').capitalize())
     return link

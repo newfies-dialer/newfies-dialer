@@ -275,3 +275,19 @@ def get_common_campaign_status_url(id, status, status_link, STATUS_OF_CAMPAIGN):
          url_cpg_pause, _("pause").capitalize(), control_pause_style,
          url_cpg_abort, _("abort").capitalize(), control_abort_style,
          url_cpg_stop, _("stop").capitalize(), control_stop_style)
+
+
+def get_common_campaign_status(id, STATUS_OF_CAMPAIGN, STATUS_COLOR):
+    """To get status name from CAMPAIGN_STATUS as well as SMS_CAMPAIGN_STATUS
+
+    example : get_common_campaign_status(id, CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR)
+              get_common_campaign_status(id, SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR)
+    """
+    if STATUS_OF_CAMPAIGN.START == id:
+        return '<font color="%s">STARTED</font>' % (STATUS_COLOR[id])
+    elif STATUS_OF_CAMPAIGN.PAUSE == id:
+        return '<font color="%s">PAUSED</font>' % (STATUS_COLOR[id])
+    elif STATUS_OF_CAMPAIGN.ABORT == id:
+        return '<font color="%s">ABORTED</font>' % (STATUS_COLOR[id])
+    else:
+        return '<font color="%s">STOPPED</font>' % (STATUS_COLOR[id])

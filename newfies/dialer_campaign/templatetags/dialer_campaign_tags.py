@@ -17,7 +17,7 @@ from django.template.defaultfilters import register
 from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from django.utils.translation import ugettext as _
 from dialer_campaign.function_def import get_subscriber_disposition,\
-    get_subscriber_status, get_common_campaign_status_url
+    get_subscriber_status, get_common_campaign_status_url, get_common_campaign_status
 
 
 @register.filter(name='campaign_status')
@@ -66,14 +66,7 @@ def get_campaign_status(id):
     >>> get_campaign_status(4)
     '<font color="red">STOPPED</font>'
     """
-    if CAMPAIGN_STATUS.START == id:
-        return '<font color="%s">STARTED</font>' % (CAMPAIGN_STATUS_COLOR[id])
-    elif CAMPAIGN_STATUS.PAUSE == id:
-        return '<font color="%s">PAUSED</font>' % (CAMPAIGN_STATUS_COLOR[id])
-    elif CAMPAIGN_STATUS.ABORT == id:
-        return '<font color="%s">ABORTED</font>' % (CAMPAIGN_STATUS_COLOR[id])
-    else:
-        return '<font color="%s">STOPPED</font>' % (CAMPAIGN_STATUS_COLOR[id])
+    return get_common_campaign_status(id, CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR)
 
 
 @register.simple_tag(name='get_app_name')

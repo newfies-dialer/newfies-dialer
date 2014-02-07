@@ -14,9 +14,8 @@
 
 from django.template.defaultfilters import register
 from django.utils.translation import ugettext as _
-from mod_sms.constants import SMS_CAMPAIGN_STATUS
-from mod_sms.function_def import get_sms_campaign_status_name
-from dialer_campaign.function_def import get_common_campaign_status_url
+from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR
+from dialer_campaign.function_def import get_common_campaign_status_url, get_common_campaign_status
 
 
 @register.filter(name='sms_campaign_status')
@@ -51,7 +50,7 @@ def sms_campaign_status(value):
 
 @register.filter(name='get_sms_campaign_status')
 def get_sms_campaign_status(id):
-    return get_sms_campaign_status_name(id)
+    return get_common_campaign_status(id, SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR)
 
 
 @register.simple_tag(name='get_sms_campaign_status_url')

@@ -17,22 +17,9 @@ from django_lets_go.common_functions import variable_value
 from user_profile.models import UserProfile
 from mod_sms.models import SMSCampaign
 #from dialer_setting.models import DialerSetting
-from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR,\
-    SMS_NOTIFICATION_NAME
+from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_NOTIFICATION_NAME
 from datetime import datetime
 from django.utils.timezone import utc
-
-
-def get_sms_campaign_status_name(id):
-    """To get status name from SMS_CAMPAIGN_STATUS"""
-    if SMS_CAMPAIGN_STATUS.START == id:
-        return '<font color="%s">STARTED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
-    elif SMS_CAMPAIGN_STATUS.PAUSE == id:
-        return '<font color="%s">PAUSED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
-    elif SMS_CAMPAIGN_STATUS.ABORT == id:
-        return '<font color="%s">ABORTED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
-    else:
-        return '<font color="%s">STOPPED</font>' % SMS_CAMPAIGN_STATUS_COLOR[id]
 
 
 def check_sms_dialer_setting(request, check_for, field_value=''):

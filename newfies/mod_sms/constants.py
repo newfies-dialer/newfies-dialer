@@ -22,6 +22,8 @@ class SMS_CAMPAIGN_STATUS(Choice):
     ABORT = 3, 'ABORT'
     END = 4, 'END'
 
+SMS_CAMPAIGN_STATUS_COLOR = {1: "green", 2: "blue", 3: "orange", 4: "red"}
+
 
 class SMS_SUBSCRIBER_STATUS(Choice):
     PENDING = 1, _('pending').upper()
@@ -41,8 +43,6 @@ class SMS_CAMPAIGN_COLUMN_NAME(Choice):
     totalcontact = _('total contact').title()
     status = _('status').title()
     action = _('action').title()
-
-SMS_CAMPAIGN_STATUS_COLOR = {1: "green", 2: "blue", 3: "orange", 4: "red"}
 
 
 class SMS_NOTIFICATION_NAME(Choice):

@@ -16,8 +16,8 @@ from django.db.models import get_model
 from django.template.defaultfilters import register
 from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from django.utils.translation import ugettext as _
-from dialer_campaign.function_def import get_subscriber_disposition,\
-    get_subscriber_status, get_common_campaign_status_url, get_common_campaign_status
+from dialer_campaign.function_def import get_subscriber_disposition, get_subscriber_status
+from mod_utils.function_def import get_common_campaign_status_url, get_common_campaign_status
 
 
 @register.filter(name='campaign_status')

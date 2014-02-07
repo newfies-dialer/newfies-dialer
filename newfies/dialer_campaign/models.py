@@ -49,7 +49,7 @@ class CampaignManager(models.Manager):
         """Return all the active campaigns which will be running based on
         the expiry date, the daily start/stop time and days of the week"""
         kwargs = {}
-        kwargs['status'] = 1
+        kwargs['status'] = CAMPAIGN_STATUS.START
         tday = datetime.utcnow().replace(tzinfo=utc)
         kwargs['startingdate__lte'] = datetime(tday.year, tday.month, tday.day,
             tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)

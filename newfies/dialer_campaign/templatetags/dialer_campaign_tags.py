@@ -14,9 +14,9 @@
 
 from django.db.models import get_model
 from django.template.defaultfilters import register
-from dialer_campaign.constants import CAMPAIGN_STATUS
+from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
 from dialer_campaign.views import make_duplicate_campaign
-from dialer_campaign.function_def import get_campaign_status_name, get_subscriber_disposition, \
+from dialer_campaign.function_def import get_subscriber_disposition,\
     get_subscriber_status
 from dialer_campaign.views import get_campaign_survey_view, get_url_campaign_status
 
@@ -53,7 +53,35 @@ def campaign_status(value):
 
 @register.filter(name='get_campaign_status')
 def get_campaign_status(id):
-    return get_campaign_status_name(id)
+    """To get status name from CAMPAIGN_STATUS
+
+    >>> get_campaign_status(1)
+    '<font color="green">STARTED</font>'
+
+    >>> get_campaign_status(2)
+    '<font color="blue">PAUSED</font>'
+
+    >>> get_campaign_status(3)
+    '<font color="orange">ABORTED</font>'
+
+    >>> get_campaign_status(4)
+    '<font color="red">STOPPED</font>'
+    """
+    for i in CAMPAIGN_STATUS:
+        if i[0] == id:
+            #return i[1]
+            if i[1] == 'START':
+                return '<font color="%s">STARTED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
+            if i[1] == 'PAUSE':
+                return '<font color="%s">PAUSED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
+            if i[1] == 'ABORT':
+                return '<font color="%s">ABORTED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
+            if i[1] == 'END':
+                return '<font color="%s">STOPPED</font>' \
+                       % (CAMPAIGN_STATUS_COLOR[id])
 
 
 @register.simple_tag(name='get_app_name')

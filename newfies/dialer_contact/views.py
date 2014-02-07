@@ -25,12 +25,11 @@ from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
     PhonebookForm, ContactForm
 from dialer_contact.constants import PHONEBOOK_COLUMN_NAME, CONTACT_COLUMN_NAME
 from dialer_contact.constants import STATUS_CHOICE
-from dialer_campaign.function_def import check_dialer_setting, type_field_chk,\
-    dialer_setting_limit
+from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
 from django_lets_go.common_functions import striplist, getvar,\
-    get_pagination_vars, unset_session_var
+    get_pagination_vars, unset_session_var, source_desti_field_chk
 import csv
 import json
 
@@ -289,7 +288,7 @@ def contact_list(request):
         kwargs['status'] = contact_status
 
     contact_no_type = '1'
-    contact_no = type_field_chk(contact_no, contact_no_type, 'contact')
+    contact_no = source_desti_field_chk(contact_no, contact_no_type, 'contact')
     for i in contact_no:
         kwargs[i] = contact_no[i]
 

@@ -20,8 +20,7 @@ from dnc.models import DNC, DNCContact
 from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
     DNCContact_fileImport, DNCContact_fileExport
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
-from dialer_campaign.function_def import type_field_chk
-from django_lets_go.common_functions import get_pagination_vars, striplist
+from django_lets_go.common_functions import get_pagination_vars, striplist, source_desti_field_chk
 from mod_utils.helper import Export_choice
 import tablib
 import csv
@@ -270,7 +269,7 @@ def dnc_contact_list(request):
         kwargs['dnc_id'] = dnc
 
     phone_number_type = '1'
-    phone_number = type_field_chk(phone_number, phone_number_type, 'phone_number')
+    phone_number = source_desti_field_chk(phone_number, phone_number_type, 'phone_number')
     for i in phone_number:
         kwargs[i] = phone_number[i]
 
@@ -279,8 +278,7 @@ def dnc_contact_list(request):
     phone_number_count = 0
 
     if dnc_id_list:
-        phone_number_list = DNCContact.objects.values('id', 'dnc__name',
-            'phone_number', 'updated_date')\
+        phone_number_list = DNCContact.objects.values('id', 'dnc__name', 'phone_number', 'updated_date')\
             .filter(dnc__in=dnc_id_list)
 
         if kwargs:

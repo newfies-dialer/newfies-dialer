@@ -20,7 +20,7 @@ django-dajaxice-ng==0.5.6
 linaro-django-pagination==2.0.2
 django-admin-tools==0.5.1
 django-country-dialcode==0.5.1
-django-audiofield==0.5.9
+django-audiofield==0.6.1
 django-admin-tools-stats==0.5.5
 django-lets-go==2.9.1
 django-extensions==1.2.5

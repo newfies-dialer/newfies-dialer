@@ -14,22 +14,22 @@
 
 from django.template.defaultfilters import register
 from appointment.constants import EVENT_STATUS, ALARM_STATUS, ALARM_METHOD
-from mod_utils.function_def import common_function_to_get_status_value
+from mod_utils.function_def import get_status_value
 
 
 @register.filter(name='event_status')
 def event_status(value):
     """Event Status Templatetag"""
-    return common_function_to_get_status_value(value, EVENT_STATUS)
+    return get_status_value(value, EVENT_STATUS)
 
 
 @register.filter(name='alarm_status')
 def alarm_status(value):
     """Alarm Status Templatetag"""
-    return common_function_to_get_status_value(value, ALARM_STATUS)
+    return get_status_value(value, ALARM_STATUS)
 
 
 @register.filter(name='alarm_method')
 def alarm_method(value):
     """Alarm Method Templatetag"""
-    return common_function_to_get_status_value(value, ALARM_METHOD)
+    return get_status_value(value, ALARM_METHOD)

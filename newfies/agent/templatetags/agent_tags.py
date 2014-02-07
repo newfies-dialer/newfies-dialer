@@ -13,10 +13,10 @@
 #
 from django.template.defaultfilters import register
 from agent.constants import AGENT_STATUS
-from mod_utils.function_def import common_function_to_get_status_value
+from mod_utils.function_def import get_status_value
 
 
 @register.filter(name='agent_status_name')
 def agent_status_name(value):
     """agent status name"""
-    return common_function_to_get_status_value(value, AGENT_STATUS)
+    return get_status_value(value, AGENT_STATUS)

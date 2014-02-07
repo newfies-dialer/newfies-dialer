@@ -81,11 +81,11 @@ def get_common_campaign_status(id, STATUS_OF_CAMPAIGN, STATUS_COLOR):
         return '<font color="%s">STOPPED</font>' % (STATUS_COLOR[id])
 
 
-def common_function_to_get_status_value(value, STATUS_LIST):
+def get_status_value(value, STATUS_LIST):
     """common function to get status value
 
-    example: common_function_to_get_status_value(1, EVENT_STATUS)
-             common_function_to_get_status_value(3, ALARM_STATUS)
+    example: get_status_value(1, EVENT_STATUS)
+             get_status_value(3, ALARM_STATUS)
     """
     if not value:
         return ''

@@ -13,7 +13,7 @@
 
 from django.template.defaultfilters import register
 from dialer_cdr.constants import LEG_TYPE, VOIPCALL_AMD_STATUS
-from mod_utils.function_def import common_function_to_get_status_value
+from mod_utils.function_def import get_status_value
 
 
 @register.filter(name='leg_type_name')
@@ -29,7 +29,7 @@ def leg_type_name(value):
     >>> leg_type_name(0)
     ''
     """
-    return common_function_to_get_status_value(value, LEG_TYPE)
+    return get_status_value(value, LEG_TYPE)
 
 
 @register.filter(name='amd_status_name')
@@ -45,4 +45,4 @@ def amd_status_name(value):
     >>> amd_status_name(0)
     ''
     """
-    return common_function_to_get_status_value(value, VOIPCALL_AMD_STATUS)
+    return get_status_value(value, VOIPCALL_AMD_STATUS)

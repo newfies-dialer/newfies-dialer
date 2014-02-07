@@ -17,7 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from survey.views import survey_audio_recording
 from survey.models import Section_template, Branching_template
 from survey.constants import SECTION_TYPE
-from mod_utils.function_def import common_function_to_get_status_value
+from mod_utils.function_def import get_status_value
 
 
 @register.filter(name='section_type_name')
@@ -33,7 +33,7 @@ def section_type_name(value):
     >>> section_type_name(0)
     ''
     """
-    return common_function_to_get_status_value(value, SECTION_TYPE)
+    return get_status_value(value, SECTION_TYPE)
 
 
 @register.filter(name='que_res_string')

@@ -14,10 +14,10 @@
 
 from django.template.defaultfilters import register
 from callcenter.constants import STRATEGY
-from mod_utils.function_def import common_function_to_get_status_value
+from mod_utils.function_def import get_status_value
 
 
 @register.filter(name='strategy_name')
 def strategy_name(value):
     """strategy name"""
-    return common_function_to_get_status_value(value, STRATEGY)
+    return get_status_value(value, STRATEGY)

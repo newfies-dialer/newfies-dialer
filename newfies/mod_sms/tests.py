@@ -19,8 +19,8 @@ from django.test import TestCase
 from mod_sms.models import SMSCampaign, SMSMessage, SMSCampaignSubscriber
 from mod_sms.views import sms_campaign_list, sms_campaign_add,\
     sms_campaign_change, sms_campaign_del, update_sms_campaign_status_admin,\
-    update_sms_campaign_status_cust, sms_dashboard, sms_report, export_sms_report,\
-    get_url_sms_campaign_status
+    update_sms_campaign_status_cust, sms_dashboard, sms_report, export_sms_report
+from mod_sms.templatetags.mod_sms_tags import get_sms_campaign_status_url
 from mod_sms.tasks import init_smsrequest, check_sms_campaign_pendingcall, spool_sms_nocampaign,\
     sms_campaign_running, SMSImportPhonebook, sms_campaign_spool_contact, sms_collect_subscriber,\
     sms_campaign_expire_check, resend_sms_update_smscampaignsubscriber
@@ -420,17 +420,17 @@ class SMSCampaignModel(TestCase):
         self.smscampaign.status = SMS_CAMPAIGN_STATUS.PAUSE
         self.smscampaign.save()
         self.smscampaign.update_sms_campaign_status()
-        get_url_sms_campaign_status(self.smscampaign.pk, self.smscampaign.status)
+        get_sms_campaign_status_url(self.smscampaign.pk, self.smscampaign.status)
 
         self.smscampaign.status = SMS_CAMPAIGN_STATUS.ABORT
         self.smscampaign.save()
         self.smscampaign.update_sms_campaign_status()
-        get_url_sms_campaign_status(self.smscampaign.pk, self.smscampaign.status)
+        get_sms_campaign_status_url(self.smscampaign.pk, self.smscampaign.status)
 
         self.smscampaign.status = SMS_CAMPAIGN_STATUS.END
         self.smscampaign.save()
         self.smscampaign.update_sms_campaign_status()
-        get_url_sms_campaign_status(self.smscampaign.pk, self.smscampaign.status)
+        get_sms_campaign_status_url(self.smscampaign.pk, self.smscampaign.status)
 
         self.smscampaign.is_authorized_contact('123456789')
 

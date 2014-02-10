@@ -126,6 +126,8 @@ end
 --
 -- Create TTS audio using a speech processing engine
 --
+-- TODO: name tts to synthesize
+--
 function tts(text, tts_dir)
 
     local md5 = require "md5"

@@ -31,18 +31,22 @@ class AdminSearchForm(forms.Form):
 
 class SearchForm(AdminSearchForm):
     """General Search Form with From & To date para."""
-    from_date = forms.CharField(label=_('from'), required=False, max_length=10,
-                                widget=DateTimePicker(options={"format": "YYYY-MM-DD",
-                                                               "pickTime": False}))
-    to_date = forms.CharField(label=_('to'), required=False, max_length=10,
-                              widget=DateTimePicker(options={"format": "YYYY-MM-DD",
-                                                             "pickTime": False}))
+    from_date = forms.CharField(
+        label=_('from'), required=False, max_length=10,
+        widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
+    to_date = forms.CharField(
+        label=_('to'), required=False, max_length=10,
+        widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
 
 
 class FileImport(forms.Form):
     """General Form : CSV file upload"""
-    csv_file = forms.FileField(label=_('upload CSV file using the pipe "|" as the field delimiter, e.g. 1234567890|surname|forename|email@somewhere.com|test-contact|1|address|city|state|US|unit|{"age":"32","title":"doctor"}|'),
-            required=True, error_messages={'required': 'please upload a CSV File'})
+    csv_file = forms.FileField(
+        label=_('upload CSV file using the pipe "|" as the field delimiter, e.g. ' +
+                '1234567890|surname|forename|email@somewhere.com|test-contact|1|' +
+                'address|city|state|US|unit|{"age":"32","title":"doctor"}|'),
+        required=True,
+        error_messages={'required': 'please upload a CSV File'})
 
     def clean_csv_file(self):
         """Form Validation :  File extension Check"""
@@ -57,9 +61,9 @@ class FileImport(forms.Form):
 
 class Contact_fileImport(FileImport):
     """Admin Form : Import CSV file with phonebook"""
-    phonebook = forms.ChoiceField(label=_("phonebook"),
-                                  required=False,
-                                  help_text=_("select phonebook"))
+    phonebook = forms.ChoiceField(
+        label=_("phonebook"), required=False,
+        help_text=_("select phonebook"))
 
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)
@@ -73,7 +77,6 @@ class Contact_fileImport(FileImport):
 
 class PhonebookForm(ModelForm):
     """Phonebook ModelForm"""
-
     class Meta:
         model = Phonebook
         fields = ['name', 'description']
@@ -127,8 +130,6 @@ class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
     contact_no = forms.CharField(label=_('contact number'), required=False,
                                  widget=NumberInput())
-    # contact_no_type = forms.ChoiceField(label='', required=False, initial=1,
-    #                                     choices=list(CHOICE_TYPE), widget=forms.RadioSelect)
     contact_name = forms.CharField(label=_('contact name'), required=False,
                                    widget=forms.TextInput(attrs={'size': 15}))
     phonebook = forms.ChoiceField(label=_('phonebook'), required=False)

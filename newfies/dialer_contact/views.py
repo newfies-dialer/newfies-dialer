@@ -89,15 +89,11 @@ def phonebook_add(request):
         * Add a new phonebook which will belong to the logged in user
           via the phonebookForm & get redirected to the phonebook list
     """
-    form = PhonebookForm()
-    if request.method == 'POST':
-        form = PhonebookForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
-            request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
-            return HttpResponseRedirect(redirect_url_to_phonebook_list)
+    form = PhonebookForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save(user=request.user)
+        request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
+        return HttpResponseRedirect(redirect_url_to_phonebook_list)
     template = 'dialer_contact/phonebook/change.html'
     data = {
         'form': form,

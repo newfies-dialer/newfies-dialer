@@ -12,6 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django import forms
+from django.forms import ModelForm
 from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from mod_utils.helper import Export_choice
@@ -34,3 +35,15 @@ class Exportfile(forms.Form):
                                        choices=list(Export_choice),
                                        widget=forms.RadioSelect(renderer=HorizRadioRenderer))
 
+
+class SaveUserModelForm(ModelForm):
+    """SaveUserModelForm ModelForm"""
+
+    def save(self, *args, **kwargs):
+        """save that retrieve the user"""
+        self.user = kwargs.pop('user', None)
+        kwargs['commit'] = False
+        obj = super(SaveUserModelForm, self).save(*args, **kwargs)
+        if self.user:
+            obj.user = self.user
+        obj.save()

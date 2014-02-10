@@ -21,6 +21,7 @@ from dialer_contact.constants import STATUS_CHOICE
 from dialer_campaign.function_def import get_phonebook_list
 #from dialer_contact.constants import CHOICE_TYPE
 from bootstrap3_datetime.widgets import DateTimePicker
+from mod_utils.forms import SaveUserModelForm
 
 
 class AdminSearchForm(forms.Form):
@@ -75,7 +76,7 @@ class Contact_fileImport(FileImport):
             self.fields['phonebook'].choices = get_phonebook_list(user)
 
 
-class PhonebookForm(ModelForm):
+class PhonebookForm(SaveUserModelForm):
     """Phonebook ModelForm"""
     class Meta:
         model = Phonebook

@@ -40,7 +40,8 @@ redirect_url_to_contact_list = '/contact/'
 @permission_required('dialer_contact.view_phonebook', login_url='/')
 @login_required
 def phonebook_list(request):
-    """Phonebook list for the logged in user
+    """
+    Phonebook list for the logged in user
 
     **Attributes**:
 
@@ -262,10 +263,11 @@ def contact_list(request):
             contact_name = request.session.get('session_contact_name')
             contact_status = request.session.get('session_contact_status')
             phonebook = request.session.get('session_phonebook')
-            form = ContactSearchForm(request.user, initial={'contact_no': contact_no,
-                                                            'contact_name': contact_name,
-                                                            'status': contact_status,
-                                                            'phonebook': phonebook})
+            form = ContactSearchForm(request.user,
+                                     initial={'contact_no': contact_no,
+                                              'contact_name': contact_name,
+                                              'status': contact_status,
+                                              'phonebook': phonebook})
         else:
             post_var_with_page = 1
             if request.method == 'GET':
@@ -297,8 +299,8 @@ def contact_list(request):
     contact_count = 0
 
     if phonebook_id_list:
-        contact_list = Contact.objects.values('id', 'phonebook__name', 'contact',
-            'last_name', 'first_name', 'email', 'status', 'updated_date')\
+        contact_list = Contact.objects.values(
+            'id', 'phonebook__name', 'contact', 'last_name', 'first_name', 'email', 'status', 'updated_date') \
             .filter(phonebook__in=phonebook_id_list)
 
         if kwargs:
@@ -548,7 +550,7 @@ def contact_import(request):
                     break
 
                 if len(row[9]) > 2:
-                    error_msg = _("invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 codes (http://en.wikipedia.org/wiki/ISO_3166-1)")
+                    error_msg = _("invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 codes")
                     type_error_import_list.append(row)
                     break
 

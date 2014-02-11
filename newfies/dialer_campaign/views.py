@@ -134,25 +134,25 @@ def campaign_list(request):
 
         * List all campaigns belonging to the logged in user
     """
-    form = CampaignSearchForm(request.user)
+    form = CampaignSearchForm(request.user, request.POST or None)
     request.session['pagination_path'] = request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
-    sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
+    sort_col_field_list = [
+        'id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
     sort_order = pagination_data['sort_order']
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
 
     phonebook_id = ''
     status = 'all'
-    if request.method == 'POST':
-        form = CampaignSearchForm(request.user, request.POST)
-        if form.is_valid():
-            field_list = ['phonebook_id', 'status']
-            unset_session_var(request, field_list)
+    if form.is_valid():
+        field_list = ['phonebook_id', 'status']
+        unset_session_var(request, field_list)
 
-            phonebook_id = getvar(request, 'phonebook_id', setsession=True)
-            status = getvar(request, 'status', setsession=True)
+        phonebook_id = getvar(request, 'phonebook_id', setsession=True)
+        status = getvar(request, 'status', setsession=True)
 
     post_var_with_page = 0
     try:
@@ -160,8 +160,9 @@ def campaign_list(request):
             post_var_with_page = 1
             phonebook_id = request.session.get('session_phonebook_id')
             status = request.session.get('session_status')
-            form = CampaignSearchForm(request.user, initial={'status': status,
-                                                             'phonebook_id': phonebook_id})
+            form = CampaignSearchForm(request.user,
+                                      initial={'status': status,
+                                               'phonebook_id': phonebook_id})
         else:
             post_var_with_page = 1
             if request.method == 'GET':
@@ -182,7 +183,8 @@ def campaign_list(request):
     if status and status != 'all':
         kwargs['status'] = status
 
-    campaign_list = Campaign.objects.filter(user=request.user).order_by(sort_order)
+    campaign_list = Campaign.objects.filter(user=request.user)\
+        .order_by(sort_order)
     campaign_count = campaign_list.count()
     if kwargs:
         all_campaign_list = campaign_list.filter(**kwargs).order_by(sort_order)
@@ -255,26 +257,25 @@ def campaign_add(request):
             request.session['msg'] = msg
 
             # campaign limit reached
-            frontend_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
+            frontend_send_notification(
+                request, NOTIFICATION_NAME.campaign_limit_reached)
             return HttpResponseRedirect(redirect_url_to_campaign_list)
 
-    form = CampaignForm(request.user)
+    form = CampaignForm(request.user, request.POST or None)
     # Add campaign
-    if request.method == 'POST':
-        form = CampaignForm(request.user, request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            contenttype = get_content_type(form.cleaned_data['content_object'])
-            obj.content_type = contenttype['object_type']
-            obj.object_id = contenttype['object_id']
-            obj.user = request.user
-            obj.save()
+    if form.is_valid():
+        obj = form.save(commit=False)
+        contenttype = get_content_type(form.cleaned_data['content_object'])
+        obj.content_type = contenttype['object_type']
+        obj.object_id = contenttype['object_id']
+        obj.user = request.user
+        obj.save()
 
-            form.save_m2m()
+        form.save_m2m()
 
-            request.session["msg"] = _('"%(name)s" added.') % \
-                {'name': request.POST['name']}
-            return HttpResponseRedirect(redirect_url_to_campaign_list)
+        request.session["msg"] = _('"%(name)s" added.') % \
+            {'name': request.POST['name']}
+        return HttpResponseRedirect(redirect_url_to_campaign_list)
 
     template = 'dialer_campaign/campaign/change.html'
     data = {
@@ -357,8 +358,7 @@ def campaign_change(request, object_id):
 
     campaign = get_object_or_404(Campaign, pk=object_id, user=request.user)
     content_object = "type:%s-id:%s" % (campaign.content_type_id, campaign.object_id)
-    form = CampaignForm(request.user,
-                        instance=campaign,
+    form = CampaignForm(request.user, request.POST or None, instance=campaign,
                         initial={'content_object': content_object})
 
     if campaign.status == CAMPAIGN_STATUS.START:
@@ -372,8 +372,6 @@ def campaign_change(request, object_id):
                 redirect_url_to_campaign_list, object_id))
         else:
             # Update campaign
-            form = CampaignForm(request.user, request.POST, instance=campaign)
-
             if form.is_valid():
                 form.save()
                 obj = form.save(commit=False)
@@ -384,8 +382,7 @@ def campaign_change(request, object_id):
                 # while campaign status is running
                 if campaign.status == CAMPAIGN_STATUS.START:
                     if request.POST.get('selected_phonebook'):
-                        selected_phonebook = str(request.POST.get('selected_phonebook')) \
-                            .split(',')
+                        selected_phonebook = str(request.POST.get('selected_phonebook')).split(',')
                         obj.phonebook = Phonebook.objects.filter(id__in=selected_phonebook)
 
                 contenttype = get_content_type(selected_content_object)
@@ -422,12 +419,10 @@ def campaign_duplicate(request, id):
         * ``form`` - DuplicateCampaignForm
         * ``template`` - dialer_campaign/campaign/campaign_duplicate.html
     """
-    form = DuplicateCampaignForm(request.user)
+    form = DuplicateCampaignForm(request.user, request.POST or None)
     request.session['error_msg'] = ''
     if request.method == 'POST':
-        form = DuplicateCampaignForm(request.user, request.POST)
         if form.is_valid():
-
             original_camp = campaign_obj = Campaign.objects.get(pk=id)
             #Make duplicate campaign/survey
             new_survey_id = campaign_obj.object_id
@@ -459,8 +454,6 @@ def campaign_duplicate(request, id):
             return HttpResponseRedirect(redirect_url_to_campaign_list)
         else:
             request.session['error_msg'] = True
-    else:
-        request.session['error_msg'] = ''
 
     template = 'dialer_campaign/campaign/campaign_duplicate.html'
     data = {
@@ -496,36 +489,33 @@ def subscriber_list(request):
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
 
-    form = SubscriberSearchForm(request.user)
+    form = SubscriberSearchForm(request.user, request.POST or None)
     campaign_id = ''
     agent_id = ''
     status = 'all'
 
-    if request.method == 'POST':
-        form = SubscriberSearchForm(request.user, request.POST)
+    if form.is_valid():
+        field_list = ['start_date', 'end_date', 'status',
+                      'campaign_id', 'agent_id']
+        unset_session_var(request, field_list)
+        campaign_id = getvar(request, 'campaign_id', setsession=True)
+        agent_id = getvar(request, 'agent_id', setsession=True)
 
-        if form.is_valid():
-            field_list = ['start_date', 'end_date', 'status',
-                          'campaign_id', 'agent_id']
-            unset_session_var(request, field_list)
-            campaign_id = getvar(request, 'campaign_id', setsession=True)
-            agent_id = getvar(request, 'agent_id', setsession=True)
+        if request.POST.get('from_date'):
+            # From
+            from_date = request.POST['from_date']
+            start_date = ceil_strdate(from_date, 'start')
+            request.session['session_start_date'] = start_date
 
-            if request.POST.get('from_date'):
-                # From
-                from_date = request.POST['from_date']
-                start_date = ceil_strdate(from_date, 'start')
-                request.session['session_start_date'] = start_date
+        if request.POST.get('to_date'):
+            # To
+            to_date = request.POST['to_date']
+            end_date = ceil_strdate(to_date, 'end')
+            request.session['session_end_date'] = end_date
 
-            if request.POST.get('to_date'):
-                # To
-                to_date = request.POST['to_date']
-                end_date = ceil_strdate(to_date, 'end')
-                request.session['session_end_date'] = end_date
-
-            status = request.POST.get('status')
-            if status != 'all':
-                request.session['session_status'] = status
+        status = request.POST.get('status')
+        if status != 'all':
+            request.session['session_status'] = status
 
     post_var_with_page = 0
     try:

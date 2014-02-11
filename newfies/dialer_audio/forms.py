@@ -13,9 +13,10 @@
 #
 
 from audiofield.forms import CustomerAudioFileForm
+from mod_utils.forms import SaveUserModelForm
 
 
-class DialerAudioFileForm(CustomerAudioFileForm):
+class DialerAudioFileForm(CustomerAudioFileForm, SaveUserModelForm):
 
     def __init__(self, *args, **kwargs):
         super(DialerAudioFileForm, self).__init__(*args, **kwargs)

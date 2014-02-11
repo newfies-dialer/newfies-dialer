@@ -79,16 +79,12 @@ def audio_add(request):
         * Add a new audio which will belong to the logged in user
           via the CustomerAudioFileForm & get redirected to the audio list
     """
-    form = DialerAudioFileForm()
-    if request.method == 'POST':
-        form = DialerAudioFileForm(request.POST, request.FILES)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
-            request.session["msg"] = _('"%(name)s" added.') % \
-                {'name': request.POST['name']}
-            return HttpResponseRedirect(audio_redirect_url)
+    form = DialerAudioFileForm(request.POST or None, request.FILES or None)
+    if form.is_valid():
+        form.save(user=request.user)
+        request.session["msg"] = _('"%(name)s" added.') % \
+            {'name': request.POST['name']}
+        return HttpResponseRedirect(audio_redirect_url)
 
     template = 'dialer_audio/audio_change.html'
     data = {
@@ -170,17 +166,16 @@ def audio_change(request, object_id):
           via the CustomerAudioFileForm & get redirected to the audio list
     """
     obj = get_object_or_404(AudioFile, pk=object_id, user=request.user)
-    form = DialerAudioFileForm(instance=obj)
+    form = DialerAudioFileForm(
+        request.POST or None, request.FILES or None, instance=obj)
 
-    if request.method == 'POST':
+    if form.is_valid():
         if request.POST.get('delete'):
             audio_change(request, object_id)
             return HttpResponseRedirect(audio_redirect_url)
         else:
-            form = DialerAudioFileForm(request.POST, request.FILES, instance=obj)
-            if form.is_valid():
-                form.save()
-                return HttpResponseRedirect(audio_redirect_url)
+            form.save()
+            return HttpResponseRedirect(audio_redirect_url)
 
     template = 'dialer_audio/audio_change.html'
     data = {

@@ -23,12 +23,22 @@ from mod_utils.forms import Exportfile
 # from django.core.urlresolvers import reverse
 from mod_utils.forms import SaveUserModelForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Button, Fieldset, HTML
+from crispy_forms.layout import Submit, Layout, Button, Fieldset, HTML, Field
 from crispy_forms.bootstrap import FormActions, StrictButton
 
 
+def pop_btn_add_update_delete(layout_section):
+    """
+    function to remove the first button and add update and delete button
+    """
+    # TODO: this might become a function in mod_utils
+    layout_section.pop(0)
+    layout_section.append(Submit('update', _('update').capitalize(), css_class='btn btn-info'))
+    layout_section.append(Submit('delete', _('delete').capitalize(), css_class='btn btn-danger'))
+
+
 class DNCListForm(SaveUserModelForm):
-    """DNC List ModelForm"""
+    """DNC List Form"""
 
     class Meta:
         model = DNC
@@ -64,12 +74,19 @@ class DNCListForm(SaveUserModelForm):
                 #HTML('<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Default text here</a> '),
                 #HTML('<button type="submit" id="add" name="add" class="btn btn-primary" value="submit"><i class="fa fa-save fa-lg"></i> Save</button>'),
                 Submit('save', _('save').capitalize()),
-                # Submit('save', _('delete').capitalize(), css_class='btn btn-danger')
-                #Button('cancel', 'Cancel')
             )
         )
 
         super(DNCListForm, self).__init__(*args, **kwargs)
+
+
+class DNCListFormUpdate(DNCListForm):
+    """DNC List Form for Update
+    This form add a delete button and change save button to update
+    """
+    def __init__(self, *args, **kwargs):
+        super(DNCListFormUpdate, self).__init__(*args, **kwargs)
+        pop_btn_add_update_delete(self.helper.layout[1])
 
 
 class DNCContactSearchForm(forms.Form):

@@ -17,7 +17,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from dnc.models import DNC, DNCContact
-from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
+from dnc.forms import DNCListForm, DNCContactSearchForm, DNCContactForm,\
     DNCContact_fileImport, DNCContact_fileExport
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
 from django_lets_go.common_functions import get_pagination_vars, striplist, source_desti_field_chk
@@ -70,15 +70,15 @@ def dnc_add(request):
 
     **Attributes**:
 
-        * ``form`` - DNCForm
+        * ``form`` - DNCListForm
         * ``template`` - dnc/dnc_list/change.html
 
     **Logic Description**:
 
         * Add a new DNC which will belong to the logged in user
-          via the DNCForm & get redirected to the dnc list
+          via the DNCListForm & get redirected to the dnc list
     """
-    form = DNCForm(request.POST or None)
+    form = DNCListForm(request.POST or None)
     if form.is_valid():
         form.save(user=request.user)
         request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
@@ -165,16 +165,16 @@ def dnc_change(request, object_id):
     **Attributes**:
 
         * ``object_id`` - Selected dnc object
-        * ``form`` - DNCForm
+        * ``form`` - DNCListForm
         * ``template`` - dnc/dnc_list/change.html
 
     **Logic Description**:
 
         * Update/delete selected dnc from the dnc list
-          via DNCForm & get redirected to dnc list
+          via DNCListForm & get redirected to dnc list
     """
     dnc = get_object_or_404(DNC, pk=object_id, user=request.user)
-    form = DNCForm(request.POST or None, instance=dnc)
+    form = DNCListForm(request.POST or None, instance=dnc)
     if form.is_valid():
         if request.POST.get('delete'):
             dnc_del(request, object_id)

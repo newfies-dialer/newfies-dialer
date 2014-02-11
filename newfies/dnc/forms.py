@@ -27,7 +27,7 @@ from crispy_forms.layout import Submit, Layout, Button, Fieldset, HTML
 from crispy_forms.bootstrap import FormActions, StrictButton
 
 
-class DNCForm(SaveUserModelForm):
+class DNCListForm(SaveUserModelForm):
     """DNC List ModelForm"""
 
     class Meta:
@@ -64,12 +64,12 @@ class DNCForm(SaveUserModelForm):
                 #HTML('<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Default text here</a> '),
                 #HTML('<button type="submit" id="add" name="add" class="btn btn-primary" value="submit"><i class="fa fa-save fa-lg"></i> Save</button>'),
                 Submit('save', _('save').capitalize()),
-                Submit('save', _('delete').capitalize(), css_class='btn btn-danger')
+                # Submit('save', _('delete').capitalize(), css_class='btn btn-danger')
                 #Button('cancel', 'Cancel')
             )
         )
 
-        super(DNCForm, self).__init__(*args, **kwargs)
+        super(DNCListForm, self).__init__(*args, **kwargs)
 
 
 class DNCContactSearchForm(forms.Form):

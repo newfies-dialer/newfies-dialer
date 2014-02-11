@@ -19,7 +19,7 @@ from dnc.models import DNC, DNCContact
 from dnc.views import dnc_add, dnc_change, dnc_list, dnc_del,\
     dnc_contact_list, dnc_contact_add, dnc_contact_change, \
     dnc_contact_del, get_dnc_contact_count, dnc_contact_import
-from dnc.forms import DNCForm, DNCContactForm, DNCContactSearchForm,\
+from dnc.forms import DNCListForm, DNCContactForm, DNCContactSearchForm,\
     DNCContact_fileImport
 from django_lets_go.utils import BaseAuthenticatedClient
 #import os
@@ -269,12 +269,12 @@ class DNCModel(TestCase):
 
     def test_dnc_form(self):
         self.assertEqual(self.dnc.name, 'test_dnc')
-        form = DNCForm({'name': 'sample_dnc'})
+        form = DNCListForm({'name': 'sample_dnc'})
         obj = form.save(commit=False)
         obj.user = self.user
         obj.save()
 
-        form = DNCForm(instance=self.dnc)
+        form = DNCListForm(instance=self.dnc)
         self.assertTrue(isinstance(form.instance, DNC))
 
     def test_dnc_contact_form(self):

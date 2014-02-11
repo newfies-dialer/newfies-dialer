@@ -52,13 +52,13 @@ def customer_detail_change(request):
         if not settings.DEMO_MODE:
             user_detail_extened.save()
 
-    user_detail_form = UserChangeDetailForm(request.user,
+    user_detail_form = UserChangeDetailForm(request.user, request.POST or None,
                                             instance=user_detail)
-    user_detail_extened_form = UserChangeDetailExtendForm(request.user,
+    user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST or None,
                                                           instance=user_detail_extened)
 
-    user_password_form = UserPasswordChangeForm(user=request.user)
-    check_phone_no_form = CheckPhoneNumberForm()
+    user_password_form = UserPasswordChangeForm(request.POST or None, user=request.user)
+    check_phone_no_form = CheckPhoneNumberForm(request.POST or None)
 
     msg_detail = ''
     msg_pass = ''
@@ -73,10 +73,6 @@ def customer_detail_change(request):
 
     if request.method == 'POST':
         if request.POST['form-type'] == "change-detail":
-            user_detail_form = UserChangeDetailForm(
-                request.user, request.POST, instance=user_detail)
-            user_detail_extened_form = UserChangeDetailExtendForm(
-                request.user, request.POST, instance=user_detail_extened)
             action = 'tabs-1'
             if (user_detail_form.is_valid()
                and user_detail_extened_form.is_valid()):
@@ -89,7 +85,6 @@ def customer_detail_change(request):
                 error_detail = _('please correct the errors below.')
         elif request.POST['form-type'] == "check-number":  # check phone no
             action = 'tabs-4'
-            check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
             if check_phone_no_form.is_valid():
                 dialersetting = request.user.get_profile().dialersetting
                 if not common_contact_authorization(dialersetting, request.POST['phone_number']):
@@ -99,8 +94,6 @@ def customer_detail_change(request):
             else:
                 error_number = _('please correct the errors below.')
         else:  # "change-password"
-            user_password_form = UserPasswordChangeForm(user=request.user,
-                                                        data=request.POST)
             action = 'tabs-2'
             if user_password_form.is_valid():
                 #DEMO / Disable

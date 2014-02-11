@@ -79,7 +79,7 @@ def dnc_add(request):
           via the DNCForm & get redirected to the dnc list
     """
     form = DNCForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
+    if form.is_valid():
         form.save(user=request.user)
         request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
         return HttpResponseRedirect(dnc_list_redirect_url)
@@ -174,18 +174,16 @@ def dnc_change(request, object_id):
           via DNCForm & get redirected to dnc list
     """
     dnc = get_object_or_404(DNC, pk=object_id, user=request.user)
-    form = DNCForm(instance=dnc)
-    if request.method == 'POST':
+    form = DNCForm(request.POST or None, instance=dnc)
+    if form.is_valid():
         if request.POST.get('delete'):
             dnc_del(request, object_id)
             return HttpResponseRedirect(dnc_list_redirect_url)
         else:
-            form = DNCForm(request.POST, instance=dnc)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['name']}
-                return HttpResponseRedirect(dnc_list_redirect_url)
+            form.save()
+            request.session["msg"] = _('"%(name)s" is updated.') \
+                % {'name': request.POST['name']}
+            return HttpResponseRedirect(dnc_list_redirect_url)
 
     template = 'dnc/dnc_list/change.html'
     data = {
@@ -217,25 +215,23 @@ def dnc_contact_list(request):
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
 
-    form = DNCContactSearchForm(request.user)
+    form = DNCContactSearchForm(request.user, request.POST or None)
     dnc_id_list = DNC.objects.values_list('id', flat=True)\
         .filter(user=request.user)
     phone_number = ''
     dnc = ''
 
-    if request.method == 'POST':
-        form = DNCContactSearchForm(request.user, request.POST)
-        if form.is_valid():
-            request.session['session_phone_number'] = ''
-            request.session['session_dnc'] = ''
+    if form.is_valid():
+        request.session['session_phone_number'] = ''
+        request.session['session_dnc'] = ''
 
-            if request.POST.get('phone_number'):
-                phone_number = request.POST.get('phone_number')
-                request.session['session_phone_number'] = phone_number
+        if request.POST.get('phone_number'):
+            phone_number = request.POST.get('phone_number')
+            request.session['session_phone_number'] = phone_number
 
-            if request.POST.get('dnc'):
-                dnc = request.POST.get('dnc')
-                request.session['session_dnc'] = dnc
+        if request.POST.get('dnc'):
+            dnc = request.POST.get('dnc')
+            request.session['session_dnc'] = dnc
 
     post_var_with_page = 0
     try:
@@ -315,24 +311,17 @@ def dnc_contact_add(request):
         * Add new dnc contact belonging to the logged in user
           via DNCContactForm & get redirected to the contact list
     """
-    form = DNCContactForm(request.user)
-    error_msg = False
+    form = DNCContactForm(request.user, request.POST or None)
     # Add dnc contact
-    if request.method == 'POST':
-        form = DNCContactForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['phone_number']}
-            return HttpResponseRedirect(dnc_contact_redirect_url)
-        else:
-            if len(request.POST['phone_number']) > 0:
-                error_msg = _('"%(name)s" cannot be added.') % {'name': request.POST['phone_number']}
+    if form.is_valid():
+        form.save()
+        request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['phone_number']}
+        return HttpResponseRedirect(dnc_contact_redirect_url)
 
     template = 'dnc/dnc_contact/change.html'
     data = {
         'form': form,
         'action': 'add',
-        'error_msg': error_msg,
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -358,8 +347,7 @@ def dnc_contact_del(request, object_id):
             DNCContact, pk=object_id, dnc__user=request.user)
 
         # Delete dnc contact
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': dnc_contact.phone_number}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': dnc_contact.phone_number}
         dnc_contact.delete()
     else:
         # When object_id is 0 (Multiple records delete)
@@ -393,23 +381,19 @@ def dnc_contact_change(request, object_id):
         * Update/delete selected dnc contact from the dnc contact list
           via DNCContactForm & get redirected to the dnc contact list
     """
-    dnc_contact = get_object_or_404(
-        DNCContact, pk=object_id, dnc__user=request.user)
-
-    form = DNCContactForm(request.user, instance=dnc_contact)
-    if request.method == 'POST':
+    dnc_contact = get_object_or_404(DNCContact, pk=object_id, dnc__user=request.user)
+    form = DNCContactForm(request.user, request.POST or None, instance=dnc_contact)
+    if form.is_valid():
         # Delete dnc contact
         if request.POST.get('delete'):
             dnc_contact_del(request, object_id)
             return HttpResponseRedirect(dnc_contact_redirect_url)
         else:
             # Update dnc contact
-            form = DNCContactForm(request.user, request.POST, instance=dnc_contact)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['phone_number']}
-                return HttpResponseRedirect(dnc_contact_redirect_url)
+            form.save()
+            request.session["msg"] = _('"%(name)s" is updated.') \
+                % {'name': request.POST['phone_number']}
+            return HttpResponseRedirect(dnc_contact_redirect_url)
 
     template = 'dnc/dnc_contact/change.html'
     data = {
@@ -440,7 +424,7 @@ def dnc_contact_import(request):
         * total_rows - Total no. of records in the CSV file
         * retail_record_count - No. of records imported from the CSV file
     """
-    form = DNCContact_fileImport(request.user)
+    form = DNCContact_fileImport(request.user, request.POST or None, request.FILES or None)
     csv_data = ''
     msg = ''
     error_msg = ''
@@ -449,63 +433,62 @@ def dnc_contact_import(request):
     contact_cnt = 0
     dup_contact_cnt = 0
     bulk_record = []
-    if request.method == 'POST':
-        form = DNCContact_fileImport(request.user, request.POST, request.FILES)
-        if form.is_valid():
-            # col_no - field name
-            #  0     - contact
-            # To count total rows of CSV file
-            #Get DNC Obj
-            dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
 
-            records = csv.reader(request.FILES['csv_file'])
-            total_rows = len(list(records))
-            BULK_SIZE = 1000
-            csv_data = csv.reader(request.FILES['csv_file'])
+    if form.is_valid():
+        # col_no - field name
+        #  0     - contact
+        # To count total rows of CSV file
+        #Get DNC Obj
+        dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
 
-            #Read each Row
-            for row in csv_data:
-                row = striplist(row)
-                if not row or str(row[0]) == 0:
-                    continue
+        records = csv.reader(request.FILES['csv_file'])
+        total_rows = len(list(records))
+        BULK_SIZE = 1000
+        csv_data = csv.reader(request.FILES['csv_file'])
 
-                #Check field type
-                try:
-                    int(row[0])
-                except ValueError:
-                    error_msg = _("Some of the imported data was invalid!")
-                    type_error_import_list.append(row)
-                    continue
+        #Read each Row
+        for row in csv_data:
+            row = striplist(row)
+            if not row or str(row[0]) == 0:
+                continue
 
-                bulk_record.append(
-                    DNCContact(
-                        dnc_id=dnc.id,
-                        phone_number=row[0])
-                )
-                contact_cnt = contact_cnt + 1
-                if contact_cnt < 100:
-                    #We want to display only 100 lines of the success import
-                    success_import_list.append(row)
+            #Check field type
+            try:
+                int(row[0])
+            except ValueError:
+                error_msg = _("Some of the imported data was invalid!")
+                type_error_import_list.append(row)
+                continue
 
-                if contact_cnt % BULK_SIZE == 0:
-                    #Bulk insert
-                    DNCContact.objects.bulk_create(bulk_record)
-                    bulk_record = []
+            bulk_record.append(
+                DNCContact(
+                    dnc_id=dnc.id,
+                    phone_number=row[0])
+            )
+            contact_cnt = contact_cnt + 1
+            if contact_cnt < 100:
+                #We want to display only 100 lines of the success import
+                success_import_list.append(row)
 
-            if bulk_record:
-                #Remaining record
+            if contact_cnt % BULK_SIZE == 0:
+                #Bulk insert
                 DNCContact.objects.bulk_create(bulk_record)
                 bulk_record = []
 
-        #check if there is contact imported
-        if contact_cnt > 0:
-            msg = _('%(contact_cnt)s DNC contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
-                % {'contact_cnt': contact_cnt,
-                   'total_rows': total_rows}
+        if bulk_record:
+            #Remaining record
+            DNCContact.objects.bulk_create(bulk_record)
+            bulk_record = []
 
-        if dup_contact_cnt > 0:
-            error_msg = _('Duplicate DNC contact(s) %(dup_contact_cnt)s are not inserted!!') \
-                % {'dup_contact_cnt': dup_contact_cnt}
+    #check if there is contact imported
+    if contact_cnt > 0:
+        msg = _('%(contact_cnt)s DNC contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
+            % {'contact_cnt': contact_cnt,
+               'total_rows': total_rows}
+
+    if dup_contact_cnt > 0:
+        error_msg = _('Duplicate DNC contact(s) %(dup_contact_cnt)s are not inserted!!') \
+            % {'dup_contact_cnt': dup_contact_cnt}
 
     data = RequestContext(request, {
         'form': form,
@@ -569,8 +552,8 @@ def dnc_contact_export_view(request):
         * DNC contacts export form will be redirected to ``/dnc_contact/export/`` view
           with format & dnc_list_id parameters
     """
-    form = DNCContact_fileExport(request.user, initial={'export_to': Export_choice.CSV})
-    if request.method == 'POST':
+    form = DNCContact_fileExport(request.user, request.POST or None, initial={'export_to': Export_choice.CSV})
+    if form.is_valid():
         dnc_list_id = request.POST['dnc_list']
         export_to = request.POST['export_to']
         return HttpResponseRedirect(dnc_contact_redirect_url + 'export/?format=' + export_to + '&dnc_list_id=' + dnc_list_id)

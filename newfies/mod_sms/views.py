@@ -84,7 +84,7 @@ def sms_campaign_list(request):
 
         * List all sms campaigns belonging to the logged in user
     """
-    form = SMSCampaignSearchForm(request.user)
+    form = SMSCampaignSearchForm(request.user, request.POST or None)
     sort_col_field_list = ['id', 'name', 'startingdate', 'status',
                            'totalcontact']
     default_sort_field = 'id'
@@ -97,14 +97,13 @@ def sms_campaign_list(request):
 
     phonebook_id = ''
     status = 'all'
-    if request.method == 'POST':
-        form = SMSCampaignSearchForm(request.user, request.POST)
-        if form.is_valid():
-            field_list = ['phonebook_id', 'status']
-            unset_session_var(request, field_list)
 
-            phonebook_id = getvar(request, 'phonebook_id', setsession=True)
-            status = getvar(request, 'status', setsession=True)
+    if form.is_valid():
+        field_list = ['phonebook_id', 'status']
+        unset_session_var(request, field_list)
+
+        phonebook_id = getvar(request, 'phonebook_id', setsession=True)
+        status = getvar(request, 'status', setsession=True)
 
     post_var_with_page = 0
     try:
@@ -196,19 +195,17 @@ def sms_campaign_add(request):
                 request, SMS_NOTIFICATION_NAME.sms_campaign_limit_reached)
             return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
-    form = SMSCampaignForm(request.user)
+    form = SMSCampaignForm(request.user, request.POST or None)
     # Add sms campaign
-    if request.method == 'POST':
-        form = SMSCampaignForm(request.user, request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = User.objects.get(username=request.user)
-            obj.save()
-            form.save_m2m()
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.user = User.objects.get(username=request.user)
+        obj.save()
+        form.save_m2m()
 
-            request.session["msg"] = _('"%(name)s" is added.') %\
-                {'name': request.POST['name']}
-            return HttpResponseRedirect(redirect_url_to_smscampaign_list)
+        request.session["msg"] = _('"%(name)s" is added.') %\
+            {'name': request.POST['name']}
+        return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     template = 'mod_sms/change.html'
     data = {
@@ -287,23 +284,18 @@ def sms_campaign_change(request, object_id):
         return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     sms_campaign = get_object_or_404(SMSCampaign, pk=object_id, user=request.user)
-    form = SMSCampaignForm(request.user, instance=sms_campaign)
-    if request.method == 'POST':
+    form = SMSCampaignForm(request.user, request.POST or None, instance=sms_campaign)
+    if form.is_valid():
         # Delete sms campaign
         if request.POST.get('delete'):
             sms_campaign_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_smscampaign_list)
         else:
             # Update sms campaign
-            form = SMSCampaignForm(
-                request.user, request.POST, instance=sms_campaign)
-
-            if form.is_valid():
-                obj = form.save()
-                obj.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['name']}
-                return HttpResponseRedirect(redirect_url_to_smscampaign_list)
+            obj = form.save()
+            obj.save()
+            request.session["msg"] = _('"%(name)s" is updated.') % {'name': request.POST['name']}
+            return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     template = 'mod_sms/change.html'
     data = {
@@ -329,10 +321,9 @@ def sms_campaign_duplicate(request, id):
     if not user_dialer_setting(request.user):
         return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
-    form = DuplicateSMSCampaignForm(request.user)
+    form = DuplicateSMSCampaignForm(request.user, request.POST or None)
     request.session['error_msg'] = ''
     if request.method == 'POST':
-        form = DuplicateSMSCampaignForm(request.user, request.POST)
         if form.is_valid():
             sms_campaign_obj = SMSCampaign.objects.get(pk=id)
 
@@ -353,8 +344,6 @@ def sms_campaign_duplicate(request, id):
             return HttpResponseRedirect(redirect_url_to_smscampaign_list)
         else:
             request.session['error_msg'] = True
-    else:
-        request.session['error_msg'] = ''
 
     template = 'mod_sms/sms_campaign_duplicate.html'
     data = {
@@ -418,7 +407,7 @@ def sms_dashboard(request, on_index=None):
         phonebook__smscampaign__in=sms_campaign_id_list,
         status=CONTACT_STATUS.ACTIVE).count()
 
-    form = SMSDashboardForm(request.user)
+    form = SMSDashboardForm(request.user, request.POST or None)
 
     total_record = dict()
     total_sms_count = 0
@@ -439,8 +428,7 @@ def sms_dashboard(request, on_index=None):
     # selected_sms_campaign should not be empty
     if selected_sms_campaign:
 
-        if request.method == 'POST':
-            form = SMSDashboardForm(request.user, request.POST)
+        if form.is_valid():
             selected_sms_campaign = request.POST['smscampaign']
             search_type = request.POST['search_type']
 
@@ -753,37 +741,35 @@ def sms_report(request):
     status = 'all'
     smscampaign = ''
 
-    form = SMSSearchForm(request.user)
+    form = SMSSearchForm(request.user, request.POST or None)
     action = 'tabs-1'
     kwargs = {}
 
-    if request.method == 'POST':
-        form = SMSSearchForm(request.user, request.POST)
-        if form.is_valid():
-            request.session['session_start_date'] = ''
-            request.session['session_end_date'] = ''
-            request.session['session_status'] = ''
-            request.session['session_smscampaign'] = ''
+    if form.is_valid():
+        request.session['session_start_date'] = ''
+        request.session['session_end_date'] = ''
+        request.session['session_status'] = ''
+        request.session['session_smscampaign'] = ''
 
-            if request.POST.get('from_date'):
-                # From
-                from_date = request.POST['from_date']
-                start_date = ceil_strdate(from_date, 'start')
-                request.session['session_start_date'] = start_date
+        if request.POST.get('from_date'):
+            # From
+            from_date = request.POST['from_date']
+            start_date = ceil_strdate(from_date, 'start')
+            request.session['session_start_date'] = start_date
 
-            if request.POST.get('to_date'):
-                # To
-                to_date = request.POST['to_date']
-                end_date = ceil_strdate(to_date, 'end')
-                request.session['session_end_date'] = end_date
+        if request.POST.get('to_date'):
+            # To
+            to_date = request.POST['to_date']
+            end_date = ceil_strdate(to_date, 'end')
+            request.session['session_end_date'] = end_date
 
-            status = request.POST.get('status')
-            if status != 'all':
-                request.session['session_status'] = status
+        status = request.POST.get('status')
+        if status != 'all':
+            request.session['session_status'] = status
 
-            smscampaign = request.POST.get('smscampaign')
-            if smscampaign != '0':
-                request.session['session_smscampaign'] = smscampaign
+        smscampaign = request.POST.get('smscampaign')
+        if smscampaign != '0':
+            request.session['session_smscampaign'] = smscampaign
 
     post_var_with_page = 0
     try:
@@ -815,9 +801,8 @@ def sms_report(request):
         end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999).replace(tzinfo=utc)
         status = 'all'
         smscampaign = ''
-        form = SMSSearchForm(
-            request.user, initial={'from_date': from_date, 'to_date': to_date,
-                                   'status': status, 'smscampaign': smscampaign})
+        form = SMSSearchForm(request.user, initial={'from_date': from_date, 'to_date': to_date,
+                                                    'status': status, 'smscampaign': smscampaign})
         # unset session var
         request.session['session_start_date'] = start_date
         request.session['session_end_date'] = end_date

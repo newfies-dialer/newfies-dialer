@@ -55,11 +55,9 @@ class ContactAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(ContactAdmin, self).get_urls()
         my_urls = patterns('',
-                           (r'^add/$',
-                            self.admin_site.admin_view(self.add_view)),
-                           (r'^import_contact/$',
-                            self.admin_site.admin_view(self.import_contact)),
-                           )
+            (r'^add/$', self.admin_site.admin_view(self.add_view)),
+            (r'^import_contact/$', self.admin_site.admin_view(self.import_contact)),
+        )
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
@@ -132,92 +130,88 @@ class ContactAdmin(admin.ModelAdmin):
         type_error_import_list = []
         contact_cnt = 0
         bulk_record = []
-        if request.method == 'POST':
-            form = Contact_fileImport(
-                request.user, request.POST, request.FILES)
-            if form.is_valid():
-                # col_no - field name
-                #  0     - contact
-                #  1     - last_name
-                #  2     - first_name
-                #  3     - email
-                #  4     - description
-                #  5     - status
-                #  6     - address
-                #  7     - city
-                #  8     - state
-                #  9     - country
-                # 10     - unit_number
-                # 11     - additional_vars
-                # To count total rows of CSV file
-                records = csv.reader(
-                    request.FILES['csv_file'], delimiter='|', quotechar='"')
-                total_rows = len(list(records))
-                BULK_SIZE = 1000
-                rdr = csv.reader(
-                    request.FILES['csv_file'], delimiter='|', quotechar='"')
+        form = Contact_fileImport(request.user, request.POST or None, request.FILES or None)
+        if form.is_valid():
+            # col_no - field name
+            #  0     - contact
+            #  1     - last_name
+            #  2     - first_name
+            #  3     - email
+            #  4     - description
+            #  5     - status
+            #  6     - address
+            #  7     - city
+            #  8     - state
+            #  9     - country
+            # 10     - unit_number
+            # 11     - additional_vars
+            # To count total rows of CSV file
+            records = csv.reader(
+                request.FILES['csv_file'], delimiter='|', quotechar='"')
+            total_rows = len(list(records))
+            BULK_SIZE = 1000
+            rdr = csv.reader(
+                request.FILES['csv_file'], delimiter='|', quotechar='"')
 
-                #Get Phonebook Obj
-                phonebook = Phonebook.objects.get(pk=request.POST['phonebook'])
+            #Get Phonebook Obj
+            phonebook = Phonebook.objects.get(pk=request.POST['phonebook'])
 
-                contact_cnt = 0
-                # Read each Row
-                for row in rdr:
-                    row = striplist(row)
-                    if not row or str(row[0]) == 0:
-                        continue
+            contact_cnt = 0
+            # Read each Row
+            for row in rdr:
+                row = striplist(row)
+                if not row or str(row[0]) == 0:
+                    continue
 
-                    # check field type
-                    if not int(row[5]):
-                        error_msg = _("invalid value for import! please check the import samples or phonebook is not valid")
-                        type_error_import_list.append(row)
-                        break
+                # check field type
+                if not int(row[5]):
+                    error_msg = _("invalid value for import! please check the import samples or phonebook is not valid")
+                    type_error_import_list.append(row)
+                    break
 
-                    if len(row[9]) > 2:
-                        error_msg = _("invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 codes (http://en.wikipedia.org/wiki/ISO_3166-1)")
-                        type_error_import_list.append(row)
-                        break
+                if len(row[9]) > 2:
+                    error_msg = _("invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 codes (http://en.wikipedia.org/wiki/ISO_3166-1)")
+                    type_error_import_list.append(row)
+                    break
 
-                    row_11 = ''
-                    if row[11]:
-                        row_11 = json.loads(row[11])
+                row_11 = ''
+                if row[11]:
+                    row_11 = json.loads(row[11])
 
-                    bulk_record.append(
-                        Contact(
-                            phonebook=phonebook,
-                            contact=row[0],
-                            last_name=row[1],
-                            first_name=row[2],
-                            email=row[3],
-                            description=row[4],
-                            status=int(row[5]),
-                            address=row[6],
-                            city=row[7],
-                            state=row[8],
-                            country=row[9],
-                            unit_number=row[10],
-                            additional_vars=row_11)
-                    )
+                bulk_record.append(
+                    Contact(
+                        phonebook=phonebook,
+                        contact=row[0],
+                        last_name=row[1],
+                        first_name=row[2],
+                        email=row[3],
+                        description=row[4],
+                        status=int(row[5]),
+                        address=row[6],
+                        city=row[7],
+                        state=row[8],
+                        country=row[9],
+                        unit_number=row[10],
+                        additional_vars=row_11)
+                )
 
-                    contact_cnt = contact_cnt + 1
-                    if contact_cnt < 100:
-                        success_import_list.append(row)
+                contact_cnt = contact_cnt + 1
+                if contact_cnt < 100:
+                    success_import_list.append(row)
 
-                    if contact_cnt % BULK_SIZE == 0:
-                        # Bulk insert
-                        Contact.objects.bulk_create(bulk_record)
-                        bulk_record = []
+                if contact_cnt % BULK_SIZE == 0:
+                    # Bulk insert
+                    Contact.objects.bulk_create(bulk_record)
+                    bulk_record = []
 
-                # remaining record
-                Contact.objects.bulk_create(bulk_record)
-                bulk_record = []
+            # remaining record
+            Contact.objects.bulk_create(bulk_record)
+            bulk_record = []
 
-                #check if there is contact imported
-                if contact_cnt > 0:
-                    msg = _('%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s row(s)!')\
-                        % {'contact_cnt': contact_cnt, 'total_rows': total_rows}
-        else:
-            form = Contact_fileImport(request.user)
+            #check if there is contact imported
+            if contact_cnt > 0:
+                msg = _('%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s row(s)!')\
+                    % {'contact_cnt': contact_cnt, 'total_rows': total_rows}
 
         ctx = RequestContext(request, {
             'form': form,

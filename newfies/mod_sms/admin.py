@@ -160,8 +160,8 @@ class SMSMessageAdmin(admin.ModelAdmin):
         opts = SMSMessage._meta
 
         query_string = ''
-        form = AdminSMSSearchForm()
-        if request.method == 'POST':
+        form = AdminSMSSearchForm(request.POST or None)
+        if form.is_valid():
             query_string = sms_search_admin_form_fun(request)
             return HttpResponseRedirect(
                 "/admin/" + opts.app_label + "/" + opts.object_name.lower() + "/?" + query_string)
@@ -226,9 +226,8 @@ class SMSMessageAdmin(admin.ModelAdmin):
         opts = SMSMessage._meta
         kwargs = {}
 
-        form = AdminSMSSearchForm()
-        if request.method == 'POST':
-            form = AdminSMSSearchForm(request.POST)
+        form = AdminSMSSearchForm(request.POST or None)
+        if form.is_valid():
             kwargs = sms_record_common_fun(request)
             request.session['from_date'] = request.POST.get('from_date')
             request.session['to_date'] = request.POST.get('to_date')

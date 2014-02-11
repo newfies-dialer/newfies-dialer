@@ -47,3 +47,4 @@ class SaveUserModelForm(ModelForm):
         if self.user:
             obj.user = self.user
         obj.save()
+        return obj

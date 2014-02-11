@@ -56,8 +56,7 @@ def phonebook_list(request):
     pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
     sort_order = pagination_data['sort_order']
 
-    phonebook_list = Phonebook.objects\
-        .annotate(contact_count=Count('contact'))\
+    phonebook_list = Phonebook.objects.annotate(contact_count=Count('contact'))\
         .filter(user=request.user).order_by(sort_order)
 
     template = 'dialer_contact/phonebook/list.html'
@@ -148,19 +147,16 @@ def phonebook_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete all contacts belonging to a phonebook
-            contact_list = Contact.objects\
-                .filter(phonebook__user=request.user)\
+            contact_list = Contact.objects.filter(phonebook__user=request.user)\
                 .extra(where=['phonebook_id IN (%s)' % values])
             if contact_list:
                 contact_list.delete()
 
             # 2) delete phonebook
-            phonebook_list = Phonebook.objects\
-                .filter(user=request.user)\
+            phonebook_list = Phonebook.objects.filter(user=request.user)\
                 .extra(where=['id IN (%s)' % values])
             if phonebook_list:
-                request.session["msg"] =\
-                    _('%(count)s phonebook(s) are deleted.')\
+                request.session["msg"] = _('%(count)s phonebook(s) are deleted.')\
                     % {'count': phonebook_list.count()}
                 phonebook_list.delete()
         except:

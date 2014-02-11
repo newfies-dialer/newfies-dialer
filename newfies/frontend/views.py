@@ -69,30 +69,27 @@ def login_view(request):
     """
     template = 'frontend/index.html'
     errorlogin = ''
+    loginform = LoginForm(request.POST or None)
 
-    if request.method == 'POST':
-        loginform = LoginForm(request.POST)
-        if loginform.is_valid():
-            cd = loginform.cleaned_data
-            user = authenticate(username=cd['user'],
-                                password=cd['password'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    request.session['has_notified'] = False
-                    # Redirect to a success page (dashboard).
-                    return HttpResponseRedirect('/dashboard/')
-                else:
-                    # Return a 'disabled account' error message
-                    errorlogin = _('disabled account')
+    if loginform.is_valid():
+        cd = loginform.cleaned_data
+        user = authenticate(username=cd['user'],
+                            password=cd['password'])
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                request.session['has_notified'] = False
+                # Redirect to a success page (dashboard).
+                return HttpResponseRedirect('/dashboard/')
             else:
-                # Return an 'invalid login' error message.
-                errorlogin = _('invalid login.')
+                # Return a 'disabled account' error message
+                errorlogin = _('disabled account')
         else:
-            # Return an 'Valid User Credentials' error message.
-            errorlogin = _('enter valid user credentials.')
+            # Return an 'invalid login' error message.
+            errorlogin = _('invalid login.')
     else:
-        loginform = LoginForm()
+        # Return an 'Valid User Credentials' error message.
+        errorlogin = _('enter valid user credentials.')
 
     data = {
         'loginform': loginform,
@@ -161,7 +158,7 @@ def customer_dashboard(request, on_index=None):
         .filter(phonebook__campaign__in=campaign_id_list, status=CONTACT_STATUS.ACTIVE)\
         .count()
 
-    form = DashboardForm(request.user)
+    form = DashboardForm(request.user, request.POST or None)
     logging.debug('Got Campaign list')
 
     total_record = dict()
@@ -181,8 +178,7 @@ def customer_dashboard(request, on_index=None):
 
     # selected_campaign should not be empty
     if selected_campaign:
-        if request.method == 'POST':
-            form = DashboardForm(request.user, request.POST)
+        if form.is_valid():
             selected_campaign = request.POST['campaign']
             search_type = request.POST['search_type']
 

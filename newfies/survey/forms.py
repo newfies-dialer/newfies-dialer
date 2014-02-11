@@ -21,6 +21,7 @@ from survey.models import Survey_template, Section_template, \
     Branching_template, Survey
 from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile
+from mod_utils.forms import SaveUserModelForm
 
 
 def get_audiofile_list(user):
@@ -105,7 +106,7 @@ def get_rating_choice_list(section_id):
     return list_sq
 
 
-class SurveyForm(ModelForm):
+class SurveyForm(SaveUserModelForm):
     """Survey ModelForm"""
 
     class Meta:

@@ -33,8 +33,12 @@ def pop_btn_add_update_delete(layout_section):
     """
     # TODO: this might become a function in mod_utils
     layout_section.pop(0)
-    layout_section.append(Submit('update', _('update').capitalize(), css_class='btn btn-info'))
-    layout_section.append(Submit('delete', _('delete').capitalize(), css_class='btn btn-danger'))
+    layout_section.append(
+        HTML('<button type="submit" id="update" name="update" class="btn btn-primary" value="submit">'
+             '<i class="fa fa-edit fa-lg"></i> Update</button>')),
+    layout_section.append(
+        HTML('<button type="submit" id="delete" name="delete" class="btn btn-primary" value="submit">'
+             '<i class="fa fa-trash-o fa-lg"></i> Update</button>')),
 
 
 class DNCListForm(SaveUserModelForm):
@@ -51,19 +55,9 @@ class DNCListForm(SaveUserModelForm):
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'well'
-        # self.helper.form_id = 'id-exampleForm'
-        # self.helper.form_method = 'post'
-        # self.helper.form_action = '/'
-
-        # cancel_url = reverse('<object>:list')
-        # if self.instance:
-        #     cancel_url = reverse('<object>:view', kwargs={'pk': self.instance.id})
-        cancel_url = ''
-
-        # self.helper.add_input(Submit('submit', 'Submit'))
-
         self.helper.label_class = 'col-md-12'
         self.helper.field_class = 'col-md-6'
+
         self.helper.layout = Layout(
             Fieldset(
                 '',
@@ -71,9 +65,8 @@ class DNCListForm(SaveUserModelForm):
                 'description'
             ),
             FormActions(
-                #HTML('<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Default text here</a> '),
-                #HTML('<button type="submit" id="add" name="add" class="btn btn-primary" value="submit"><i class="fa fa-save fa-lg"></i> Save</button>'),
-                Submit('save', _('save').capitalize()),
+                HTML('<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
+                     '<i class="fa fa-save fa-lg"></i> Save</button>'),
             )
         )
 

@@ -78,17 +78,15 @@ def queue_add(request):
         * Add a new queue which will belong to the logged in manager
           via the UserCreationForm & get redirected to the queue list
     """
-    form = QueueFrontEndForm()
-    if request.method == 'POST':
-        form = QueueFrontEndForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.manager = Manager.objects.get(username=request.user)
-            obj.save()
+    form = QueueFrontEndForm(request.POST or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.manager = Manager.objects.get(username=request.user)
+        obj.save()
 
-            request.session["msg"] = _('"%(name)s" queue is added.') %\
-                {'name': obj.name}
-            return HttpResponseRedirect(redirect_url_to_queue_list)
+        request.session["msg"] = _('"%(name)s" queue is added.') %\
+            {'name': obj.name}
+        return HttpResponseRedirect(redirect_url_to_queue_list)
 
     template = 'callcenter/queue/change.html'
     data = {
@@ -183,23 +181,20 @@ def queue_change(request, object_id):
         * Update/delete selected queue from the queue list
           via QueueFrontEndForm & get redirected to the queue list
     """
-    queue = get_object_or_404(
-        Queue, pk=object_id, manager=request.user)
+    queue = get_object_or_404(Queue, pk=object_id, manager=request.user)
 
-    form = QueueFrontEndForm(instance=queue)
-    if request.method == 'POST':
+    form = QueueFrontEndForm(request.POST or None, instance=queue)
+    if form.is_valid():
         # Delete queue
         if request.POST.get('delete'):
             queue_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_queue_list)
         else:
             # Update queue
-            form = QueueFrontEndForm(request.POST, instance=queue)
-            if form.is_valid():
-                obj = form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': obj.name}
-                return HttpResponseRedirect(redirect_url_to_queue_list)
+            obj = form.save()
+            request.session["msg"] = _('"%(name)s" is updated.') \
+                % {'name': obj.name}
+            return HttpResponseRedirect(redirect_url_to_queue_list)
 
     template = 'callcenter/queue/change.html'
     data = {
@@ -223,9 +218,11 @@ def tier_list(request):
 
         * List all tier which belong to the logged in manager.
     """
-    sort_col_field_list = ['agent', 'queue', 'level', 'position', 'updated_date']
+    sort_col_field_list = [
+        'agent', 'queue', 'level', 'position', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
     sort_order = pagination_data['sort_order']
     tier_list = Tier.objects.filter(manager=request.user).order_by(sort_order)
     template = 'callcenter/tier/list.html'
@@ -257,16 +254,14 @@ def tier_add(request):
         * Add a new tier which will belong to the logged in manager
           via the TierFrontEndForm & get redirected to the tier list
     """
-    form = TierFrontEndForm(request.user.id)
-    if request.method == 'POST':
-        form = TierFrontEndForm(request.user.id, request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.manager = Manager.objects.get(username=request.user)
-            obj.save()
+    form = TierFrontEndForm(request.user.id, request.POST or None)
+    if form.is_valid():
+        obj = form.save(commit=False)
+        obj.manager = Manager.objects.get(username=request.user)
+        obj.save()
 
-            request.session["msg"] = _('"%(name)s" tier is added.') % {'name': obj.id}
-            return HttpResponseRedirect(redirect_url_to_tier_list)
+        request.session["msg"] = _('"%(name)s" tier is added.') % {'name': obj.id}
+        return HttpResponseRedirect(redirect_url_to_tier_list)
 
     template = 'callcenter/tier/change.html'
     data = {
@@ -334,20 +329,19 @@ def tier_change(request, object_id):
     """
     tier = get_object_or_404(Tier, pk=object_id, manager=request.user)
 
-    form = TierFrontEndForm(request.user.id, instance=tier)
-    if request.method == 'POST':
+    form = TierFrontEndForm(
+        request.user.id, request.POST or None, instance=tier)
+    if form.is_valid():
         # Delete tier
         if request.POST.get('delete'):
             tier_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_tier_list)
         else:
             # Update tier
-            form = TierFrontEndForm(request.user.id, request.POST, instance=tier)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(id)s" tier is updated.') \
-                    % {'id': tier.id}
-                return HttpResponseRedirect(redirect_url_to_tier_list)
+            form.save()
+            request.session["msg"] = _('"%(id)s" tier is updated.') \
+                % {'id': tier.id}
+            return HttpResponseRedirect(redirect_url_to_tier_list)
 
     template = 'callcenter/tier/change.html'
     data = {

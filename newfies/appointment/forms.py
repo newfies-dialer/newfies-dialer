@@ -125,8 +125,8 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
 
         self.fields.keyOrder = [
             'calendar_setting', 'accountcode', 'address',
-            'city', 'state', 'country', 'zip_code', 'phone_no', 'fax', 'company_name',
-            'company_website', 'language', 'note',
+            'city', 'state', 'country', 'zip_code', 'phone_no', 'fax',
+            'company_name', 'company_website', 'language', 'note',
         ]
         list_calendar_setting = []
         list_calendar_setting.append((0, _('select calendar setting').title()))
@@ -206,12 +206,13 @@ class EventForm(ModelForm):
 
 class EventSearchForm(forms.Form):
     """Event Search Form"""
-    start_date = forms.CharField(label=_('start date'), required=False, max_length=20,
-                                 widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}))
-    calendar_id = forms.ChoiceField(label=_('calendar'), required=False,
-                                    choices=[('0', '---')])
-    calendar_user_id = forms.ChoiceField(label=_('calendar user'), required=False,
-                                         choices=[('0', '---')])
+    start_date = forms.CharField(
+        label=_('start date'), required=False, max_length=20,
+        widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}))
+    calendar_id = forms.ChoiceField(
+        label=_('calendar'), required=False, choices=[('0', '---')])
+    calendar_user_id = forms.ChoiceField(
+        label=_('calendar user'), required=False, choices=[('0', '---')])
 
     def __init__(self, user, *args, **kwargs):
         super(EventSearchForm, self).__init__(*args, **kwargs)
@@ -238,8 +239,8 @@ class AlarmForm(ModelForm):
         self.fields.keyOrder = [
             'date_start_notice', 'event', 'alarm_phonenumber', 'alarm_email',
             'method', 'survey', 'mail_template', 'sms_template',
-            'daily_start', 'daily_stop', 'maxretry', 'retry_delay', 'advance_notice',
-            'result', 'url_cancel', 'phonenumber_sms_failure',
+            'daily_start', 'daily_stop', 'maxretry', 'retry_delay',
+            'advance_notice', 'result', 'url_cancel', 'phonenumber_sms_failure',
             'url_confirm', 'phonenumber_transfer']
 
         for i in self.fields.keyOrder:

@@ -21,12 +21,13 @@ from dialer_contact.forms import FileImport
 from mod_utils.forms import Exportfile
 
 # from django.core.urlresolvers import reverse
+from mod_utils.forms import SaveUserModelForm
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Submit, Layout, Button, Fieldset, HTML
 from crispy_forms.bootstrap import FormActions, StrictButton
 
 
-class DNCForm(ModelForm):
+class DNCForm(SaveUserModelForm):
     """DNC List ModelForm"""
 
     class Meta:
@@ -55,41 +56,25 @@ class DNCForm(ModelForm):
         self.helper.field_class = 'col-md-6'
         self.helper.layout = Layout(
             Fieldset(
-                'first arg is the legend of the fieldset',
+                '',
                 'name',
                 'description'
             ),
             FormActions(
-                HTML('<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Default text here</a> '),
-                HTML('<button type="submit" id="add" name="add" class="btn btn-primary" value="submit"><i class="fa fa-save fa-lg"></i> Save</button>'),
-                Submit('save', 'Save changes'),
-                Button('cancel', 'Cancel')
+                #HTML('<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Default text here</a> '),
+                #HTML('<button type="submit" id="add" name="add" class="btn btn-primary" value="submit"><i class="fa fa-save fa-lg"></i> Save</button>'),
+                Submit('save', _('save').capitalize()),
+                Submit('save', _('delete').capitalize(), css_class='btn btn-danger')
+                #Button('cancel', 'Cancel')
             )
         )
 
         super(DNCForm, self).__init__(*args, **kwargs)
 
 
-class DNCForm_old(ModelForm):
-    """DNC ModelForm"""
-
-    class Meta:
-        model = DNC
-        fields = ['name', 'description']
-        exclude = ('user',)
-        widgets = {
-            'description': Textarea(attrs={'cols': 26, 'rows': 3}),
-        }
-
-    def __init__(self, *args, **kwargs):
-        super(DNCForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
-
-
 class DNCContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-    phone_number = forms.CharField(label=_('phone number'), required=False)
+    phone_number = forms.IntegerField(label=_('phone number'), required=False)
     dnc = forms.ChoiceField(label=_('Do Not Call list').title(), required=False)
 
     def __init__(self, user, *args, **kwargs):
@@ -105,16 +90,6 @@ class DNCContactSearchForm(forms.Form):
                 dnc_list_user.append((i[0], i[1]))
 
             self.fields['dnc'].choices = dnc_list_user
-
-    def clean_phone_number(self):
-        phone_number = self.cleaned_data.get('phone_number', None)
-        try:
-            int(phone_number)
-        except:
-            msg = _('Please enter a valid phone number')
-            self._errors['phone_number'] = ErrorList([msg])
-            del self.cleaned_data['phone_number']
-        return phone_number
 
 
 class DNCContactForm(ModelForm):

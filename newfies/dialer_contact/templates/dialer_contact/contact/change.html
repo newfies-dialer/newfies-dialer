@@ -22,7 +22,13 @@
     <div class="tab-content">
         <div id="tabs-1" class="tab-pane active">
             <div class="row">
-                {% get_fieldset phonebook,contact,status,last_name,first_name,email as contact_fields from form %}
+                {% get_fieldset phonebook,contact as contact_fields from form %}
+                {% for field in contact_fields.visible_fields %}
+                    {% field_html_code field %}
+                {% endfor %}
+            </div>
+            <div class="row">
+                {% get_fieldset status,last_name,first_name,email as contact_fields from form %}
                 {% for field in contact_fields.visible_fields %}
                     {% field_html_code field %}
                 {% endfor %}

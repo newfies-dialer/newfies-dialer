@@ -78,16 +78,11 @@ def dnc_add(request):
         * Add a new DNC which will belong to the logged in user
           via the DNCForm & get redirected to the dnc list
     """
-    form = DNCForm()
-    if request.method == 'POST':
-        form = DNCForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
-            request.session["msg"] = _('"%(name)s" added.') %\
-                {'name': request.POST['name']}
-            return HttpResponseRedirect(dnc_list_redirect_url)
+    form = DNCForm(request.POST or None)
+    if request.method == 'POST' and form.is_valid():
+        form.save(user=request.user)
+        request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
+        return HttpResponseRedirect(dnc_list_redirect_url)
     template = 'dnc/dnc_list/change.html'
     data = {
         'form': form,

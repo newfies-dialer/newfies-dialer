@@ -186,17 +186,16 @@ def phonebook_change(request, object_id):
           via PhonebookForm & get redirected to phonebook list
     """
     phonebook = get_object_or_404(Phonebook, pk=object_id, user=request.user)
-    form = PhonebookForm(instance=phonebook)
-    if request.method == 'POST':
+    form = PhonebookForm(request.POST or None, instance=phonebook)
+    if form.is_valid():
         if request.POST.get('delete'):
             return HttpResponseRedirect('%sdel/%s/' % (
                 redirect_url_to_phonebook_list, object_id))
         else:
-            form = PhonebookForm(request.POST, instance=phonebook)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') % {'name': request.POST['name']}
-                return HttpResponseRedirect(redirect_url_to_phonebook_list)
+            form.save()
+            request.session["msg"] = _('"%(name)s" is updated.') % {
+                'name': request.POST['name']}
+            return HttpResponseRedirect(redirect_url_to_phonebook_list)
 
     template = 'dialer_contact/phonebook/change.html'
     data = {
@@ -231,7 +230,7 @@ def contact_list(request):
     start_page = pagination_data['start_page']
     end_page = pagination_data['end_page']
 
-    form = ContactSearchForm(request.user)
+    form = ContactSearchForm(request.user, request.POST or None)
     phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
         .filter(user=request.user)
 
@@ -239,17 +238,17 @@ def contact_list(request):
     contact_name = ''
     phonebook = ''
     contact_status = STATUS_CHOICE.ALL
-    if request.method == 'POST':
-        form = ContactSearchForm(request.user, request.POST)
-        if form.is_valid():
-            field_list = ['contact_no', 'contact_name',
-                          'contact_status', 'phonebook']
-            unset_session_var(request, field_list)
 
-            contact_no = getvar(request, 'contact_no', setsession=True)
-            contact_name = getvar(request, 'contact_name', setsession=True)
-            contact_status = getvar(request, 'contact_status', setsession=True)
-            phonebook = getvar(request, 'phonebook', setsession=True)
+    if form.is_valid():
+        field_list = [
+            'contact_no', 'contact_name', 'contact_status', 'phonebook'
+        ]
+        unset_session_var(request, field_list)
+
+        contact_no = getvar(request, 'contact_no', setsession=True)
+        contact_name = getvar(request, 'contact_name', setsession=True)
+        contact_status = getvar(request, 'contact_status', setsession=True)
+        phonebook = getvar(request, 'phonebook', setsession=True)
 
     post_var_with_page = 0
     try:
@@ -296,7 +295,8 @@ def contact_list(request):
 
     if phonebook_id_list:
         contact_list = Contact.objects.values(
-            'id', 'phonebook__name', 'contact', 'last_name', 'first_name', 'email', 'status', 'updated_date') \
+            'id', 'phonebook__name', 'contact', 'last_name', 'first_name',
+            'email', 'status', 'updated_date')\
             .filter(phonebook__in=phonebook_id_list)
 
         if kwargs:
@@ -359,26 +359,17 @@ def contact_add(request):
             frontend_send_notification(request, NOTIFICATION_NAME.contact_limit_reached)
             return HttpResponseRedirect(redirect_url_to_contact_list)
 
-    form = ContactForm(request.user)
-    error_msg = False
+    form = ContactForm(request.user, request.POST or None)
     # Add contact
-    if request.method == 'POST':
-        form = ContactForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            request.session["msg"] = _('"%s" is added.') % request.POST['contact']
-            return HttpResponseRedirect(redirect_url_to_contact_list)
-        else:
-            if len(request.POST['contact']) > 0:
-                error_msg = _('"%s" cannot be added.') % request.POST['contact']
+    if form.is_valid():
+        form.save()
+        request.session["msg"] = _('"%s" is added.') % request.POST['contact']
+        return HttpResponseRedirect(redirect_url_to_contact_list)
 
-    phonebook_count = Phonebook.objects.filter(user=request.user).count()
     template = 'dialer_contact/contact/change.html'
     data = {
         'form': form,
         'action': 'add',
-        'error_msg': error_msg,
-        'phonebook_count': phonebook_count,
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -441,19 +432,17 @@ def contact_change(request, object_id):
     contact = get_object_or_404(
         Contact, pk=object_id, phonebook__user=request.user)
 
-    form = ContactForm(request.user, instance=contact)
-    if request.method == 'POST':
+    form = ContactForm(request.user, request.POST or None, instance=contact)
+    if form.is_valid():
         # Delete contact
         if request.POST.get('delete'):
             return HttpResponseRedirect('%sdel/%s/' % (
                 redirect_url_to_contact_list, object_id))
         else:
             # Update contact
-            form = ContactForm(request.user, request.POST, instance=contact)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%s" is updated.') % request.POST['contact']
-                return HttpResponseRedirect(redirect_url_to_contact_list)
+            form.save()
+            request.session["msg"] = _('"%s" is updated.') % request.POST['contact']
+            return HttpResponseRedirect(redirect_url_to_contact_list)
 
     template = 'dialer_contact/contact/change.html'
     data = {
@@ -498,7 +487,7 @@ def contact_import(request):
             frontend_send_notification(request, NOTIFICATION_NAME.contact_limit_reached)
             return HttpResponseRedirect(redirect_url_to_contact_list)
 
-    form = Contact_fileImport(request.user)
+    form = Contact_fileImport(request.user, request.POST or None, request.FILES or None)
     csv_data = ''
     msg = ''
     error_msg = ''
@@ -506,88 +495,87 @@ def contact_import(request):
     type_error_import_list = []
     contact_cnt = 0
     bulk_record = []
-    if request.method == 'POST':
-        form = Contact_fileImport(request.user, request.POST, request.FILES)
-        if form.is_valid():
-            # col_no - field name
-            #  0     - contact
-            #  1     - last_name
-            #  2     - first_name
-            #  3     - email
-            #  4     - description
-            #  5     - status
-            #  6     - address
-            #  7     - city
-            #  8     - country
-            #  9     - country
-            # 10     - unit_number
-            # 11     - additional_vars
-            # To count total rows of CSV file
-            records = csv.reader(request.FILES['csv_file'],
-                                 delimiter='|', quotechar='"')
-            total_rows = len(list(records))
-            BULK_SIZE = 1000
-            csv_data = csv.reader(request.FILES['csv_file'],
-                                  delimiter='|', quotechar='"')
-            #Get Phonebook Obj
-            phonebook = get_object_or_404(
-                Phonebook, pk=request.POST['phonebook'],
-                user=request.user)
-            #Read each Row
-            for row in csv_data:
-                row = striplist(row)
-                if not row or str(row[0]) == 0:
-                    continue
 
-                #Check field type
-                if not int(row[5]):
-                    error_msg = _("invalid value for import! please check the import samples or phonebook is not valid")
-                    type_error_import_list.append(row)
-                    break
+    if form.is_valid():
+        # col_no - field name
+        #  0     - contact
+        #  1     - last_name
+        #  2     - first_name
+        #  3     - email
+        #  4     - description
+        #  5     - status
+        #  6     - address
+        #  7     - city
+        #  8     - country
+        #  9     - country
+        # 10     - unit_number
+        # 11     - additional_vars
+        # To count total rows of CSV file
+        records = csv.reader(request.FILES['csv_file'],
+                             delimiter='|', quotechar='"')
+        total_rows = len(list(records))
+        BULK_SIZE = 1000
+        csv_data = csv.reader(request.FILES['csv_file'],
+                              delimiter='|', quotechar='"')
+        #Get Phonebook Obj
+        phonebook = get_object_or_404(
+            Phonebook, pk=request.POST['phonebook'],
+            user=request.user)
+        #Read each Row
+        for row in csv_data:
+            row = striplist(row)
+            if not row or str(row[0]) == 0:
+                continue
 
-                if len(row[9]) > 2:
-                    error_msg = _("invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 codes")
-                    type_error_import_list.append(row)
-                    break
+            #Check field type
+            if not int(row[5]):
+                error_msg = _("invalid value for import! please check the import samples or phonebook is not valid")
+                type_error_import_list.append(row)
+                break
 
-                row_11 = ''
-                if row[11]:
-                    try:
-                        row_11 = json.loads(row[11])
-                    except:
-                        row_11 = ''
+            if len(row[9]) > 2:
+                error_msg = _("invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 codes")
+                type_error_import_list.append(row)
+                break
 
-                bulk_record.append(
-                    Contact(
-                        phonebook=phonebook,
-                        contact=row[0],
-                        last_name=row[1],
-                        first_name=row[2],
-                        email=row[3],
-                        description=row[4],
-                        status=int(row[5]),
-                        address=row[6],
-                        city=row[7],
-                        state=row[8],
-                        country=row[9],  # Note: country needs to be a country code (CA, ES)
-                        unit_number=row[10],
-                        additional_vars=row_11)
-                )
+            row_11 = ''
+            if row[11]:
+                try:
+                    row_11 = json.loads(row[11])
+                except:
+                    row_11 = ''
 
-                contact_cnt = contact_cnt + 1
+            bulk_record.append(
+                Contact(
+                    phonebook=phonebook,
+                    contact=row[0],
+                    last_name=row[1],
+                    first_name=row[2],
+                    email=row[3],
+                    description=row[4],
+                    status=int(row[5]),
+                    address=row[6],
+                    city=row[7],
+                    state=row[8],
+                    country=row[9],  # Note: country needs to be a country code (CA, ES)
+                    unit_number=row[10],
+                    additional_vars=row_11)
+            )
 
-                if contact_cnt < 100:
-                    #We want to display only 100 lines of the success import
-                    success_import_list.append(row)
+            contact_cnt = contact_cnt + 1
 
-                if contact_cnt % BULK_SIZE == 0:
-                    #Bulk insert
-                    Contact.objects.bulk_create(bulk_record)
-                    bulk_record = []
+            if contact_cnt < 100:
+                #We want to display only 100 lines of the success import
+                success_import_list.append(row)
 
-            # remaining record
-            Contact.objects.bulk_create(bulk_record)
-            bulk_record = []
+            if contact_cnt % BULK_SIZE == 0:
+                #Bulk insert
+                Contact.objects.bulk_create(bulk_record)
+                bulk_record = []
+
+        # remaining record
+        Contact.objects.bulk_create(bulk_record)
+        bulk_record = []
 
     #check if there is contact imported
     if contact_cnt > 0:

@@ -136,21 +136,14 @@ def campaign_list(request):
     """
     form = CampaignSearchForm(request.user, request.POST or None)
     request.session['pagination_path'] = request.META['PATH_INFO'] + '?' + request.META['QUERY_STRING']
-    sort_col_field_list = [
-        'id', 'name', 'startingdate', 'status', 'totalcontact']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-    start_page = pag_vars['start_page']
-    end_page = pag_vars['end_page']
-
+    sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
     phonebook_id = ''
     status = 'all'
+
     if form.is_valid():
         field_list = ['phonebook_id', 'status']
         unset_session_var(request, field_list)
-
         phonebook_id = getvar(request, 'phonebook_id', setsession=True)
         status = getvar(request, 'status', setsession=True)
 
@@ -167,31 +160,25 @@ def campaign_list(request):
             post_var_with_page = 1
             if request.method == 'GET':
                 post_var_with_page = 0
-    except:
+    except:  # TODO: set error to except
         pass
 
     if post_var_with_page == 0:
-        # default
-        # unset session var
+        # default / unset session var
         field_list = ['status', 'phonebook_id']
         unset_session_var(request, field_list)
 
-    kwargs = {}
+    #Set search on user as default
+    kwargs = {'user': request.user}
     if phonebook_id and phonebook_id != '0':
         kwargs['phonebook__id__in'] = [int(phonebook_id)]
-
     if status and status != 'all':
         kwargs['status'] = status
 
-    campaign_list = Campaign.objects.filter(user=request.user)\
-        .order_by(sort_order)
+    # campaign_list = Campaign.objects.filter(user=request.user).order_by(pag_vars['sort_order'])
+    campaign_list = Campaign.objects.filter(user=request.user).filter(**kwargs).order_by(pag_vars['sort_order'])
     campaign_count = campaign_list.count()
-    if kwargs:
-        all_campaign_list = campaign_list.filter(**kwargs).order_by(sort_order)
-        campaign_list = all_campaign_list[start_page:end_page]
-        campaign_count = all_campaign_list.count()
 
-    template = 'dialer_campaign/campaign/list.html'
     data = {
         'form': form,
         'campaign_list': campaign_list,
@@ -205,7 +192,7 @@ def campaign_list(request):
     request.session['msg'] = ''
     request.session['error_msg'] = ''
     request.session['info_msg'] = ''
-    return render_to_response(template, data,
+    return render_to_response('dialer_campaign/campaign/list.html', data,
                               context_instance=RequestContext(request))
 
 

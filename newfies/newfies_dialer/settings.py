@@ -155,6 +155,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.csrf",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
+    "notification.context_processors.notification",
     # newfies custom context_processors
     "context_processors.newfies_version",
     "context_processors.newfies_common_template_variable",

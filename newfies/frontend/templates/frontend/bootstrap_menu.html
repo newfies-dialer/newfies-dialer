@@ -81,11 +81,11 @@
             </li>
         </ul>
 
-        {# get_notice_count user as notice_count #}
+        {% get_notice_count user as notice_count %}
         <ul class="nav navbar-nav navbar-right">
             <li id="fat-menu-1" class="{% ifactive '/user_detail_change/' %}active{% endifactive %}">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ user.username|capfirst }}
-                    <span class="badge">{# notice_count #}</span>
+                    <span class="badge">{{ notice_count }}</span>
                     <b class="caret"></b>
                 </a>
                 <ul class="dropdown-menu">
@@ -100,7 +100,7 @@
                     <li class="divider"></li>
                     <li class="{% ifactive '/user_notification/' %}active{% endifactive %}">
                         <a href="/user_notification/">{% trans "notifications"|title %}
-                            <span class="badge">{# notice_count #}</span>
+                            <span class="badge">{{ notice_count }}</span>
                         </a>
                     </li>
                     {% if perms.user_profile.view_api_explorer %}

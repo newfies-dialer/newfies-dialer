@@ -96,22 +96,18 @@ def calendar_user_add(request):
         * Add a new calendar user which will belong to the logged in manager
           via the UserCreationForm & get redirected to the calendar user list
     """
-    form = CalendarUserCreationForm(request.user)
-    if request.method == 'POST':
-        form = CalendarUserCreationForm(request.user, request.POST)
-        if form.is_valid():
-            calendar_user = form.save()
-
-            calendar_user_profile = CalendarUserProfile.objects.create(
-                user=calendar_user,
-                manager=Manager.objects.get(username=request.user),
-                calendar_setting_id=request.POST['calendar_setting_id']
-            )
-
-            request.session["msg"] = _('"%(name)s" added as calendar user.') % \
-                {'name': request.POST['username']}
-            return HttpResponseRedirect(
-                redirect_url_to_calendar_user_list + '%s/' % str(calendar_user_profile.id))
+    form = CalendarUserCreationForm(request.user, request.POST or None)
+    if form.is_valid():
+        calendar_user = form.save()
+        calendar_user_profile = CalendarUserProfile.objects.create(
+            user=calendar_user,
+            manager=Manager.objects.get(username=request.user),
+            calendar_setting_id=request.POST['calendar_setting_id']
+        )
+        request.session["msg"] = _('"%(name)s" added as calendar user.') % \
+            {'name': request.POST['username']}
+        return HttpResponseRedirect(
+            redirect_url_to_calendar_user_list + '%s/' % str(calendar_user_profile.id))
 
     template = 'appointment/calendar_user/change.html'
     data = {
@@ -183,34 +179,32 @@ def calendar_user_change(request, object_id):
         * Update/delete selected calendar user from the calendar_user list
           via CalendarUserChangeDetailExtendForm & get redirected to calendar_user list
     """
-    calendar_user_profile = get_object_or_404(CalendarUserProfile, pk=object_id, manager_id=request.user.id)
-    calendar_user_userdetail = get_object_or_404(CalendarUser, pk=calendar_user_profile.user_id)
+    calendar_user_profile = get_object_or_404(
+        CalendarUserProfile, pk=object_id, manager_id=request.user.id)
+    calendar_user_userdetail = get_object_or_404(
+        CalendarUser, pk=calendar_user_profile.user_id)
 
-    form = CalendarUserChangeDetailExtendForm(request.user, instance=calendar_user_profile)
+    form = CalendarUserChangeDetailExtendForm(
+        request.user, request.POST or None, instance=calendar_user_profile)
     calendar_user_username_form = CalendarUserNameChangeForm(
+        request.POST or None,
         initial={'username': calendar_user_userdetail.username,
-                 'password': calendar_user_userdetail.password})
+                 'password': calendar_user_userdetail.password},
+        instance=calendar_user_userdetail)
 
-    if request.method == 'POST':
+    if calendar_user_username_form.is_valid():
         if request.POST.get('delete'):
             calendar_user_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_calendar_user_list)
         else:
-            form = CalendarUserChangeDetailExtendForm(request.user, request.POST, instance=calendar_user_profile)
-
-            calendar_user_username_form = CalendarUserNameChangeForm(request.POST,
-                initial={'password': calendar_user_userdetail.password},
-                instance=calendar_user_userdetail)
-
             # Save calendar_user username
-            if calendar_user_username_form.is_valid():
-                calendar_user_username_form.save()
+            calendar_user_username_form.save()
 
-                if form.is_valid():
-                    form.save()
-                    request.session["msg"] = _('"%(name)s" is updated.') \
-                        % {'name': calendar_user_profile.user}
-                    return HttpResponseRedirect(redirect_url_to_calendar_user_list)
+            if form.is_valid():
+                form.save()
+                request.session["msg"] = _('"%(name)s" is updated.') \
+                    % {'name': calendar_user_profile.user}
+                return HttpResponseRedirect(redirect_url_to_calendar_user_list)
 
     template = 'appointment/calendar_user/change.html'
     data = {
@@ -237,29 +231,20 @@ def calendar_user_change_password(request, object_id):
 
         * Reset calendar_user password.
     """
-    msg_pass = ''
-    error_pass = ''
-
     calendar_user_userdetail = get_object_or_404(CalendarUser, pk=object_id)
     calendar_user_username = calendar_user_userdetail.username
 
-    user_password_form = CalendarUserPasswordChangeForm(user=calendar_user_userdetail)
-    if request.method == 'POST':
-        user_password_form = CalendarUserPasswordChangeForm(user=calendar_user_userdetail,
-                                                            data=request.POST)
-        if user_password_form.is_valid():
-            user_password_form.save()
-            request.session["msg"] = _('%s password has been changed.' % calendar_user_username)
-            return HttpResponseRedirect(redirect_url_to_calendar_user_list)
-        else:
-            error_pass = _('please correct the errors below.')
+    user_password_form = CalendarUserPasswordChangeForm(
+        calendar_user_userdetail, request.POST or None)
+    if user_password_form.is_valid():
+        user_password_form.save()
+        request.session["msg"] = _('%s password has been changed.' % calendar_user_username)
+        return HttpResponseRedirect(redirect_url_to_calendar_user_list)
 
     template = 'appointment/calendar_user/change_password.html'
     data = {
         'calendar_user_username': calendar_user_username,
         'user_password_form': user_password_form,
-        'msg_pass': msg_pass,
-        'error_pass': error_pass,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -320,21 +305,17 @@ def calendar_add(request):
         * Add new contact belonging to the logged in user
           via ContactForm & get redirected to the contact list
     """
-    form = CalendarForm(request.user)
-    error_msg = False
+    form = CalendarForm(request.user, request.POST or None)
     # Add contact
-    if request.method == 'POST':
-        form = CalendarForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            request.session["msg"] = _('"%s" is added') % request.POST['name']
-            return HttpResponseRedirect(redirect_url_to_calendar_list)
+    if form.is_valid():
+        form.save()
+        request.session["msg"] = _('"%s" is added') % request.POST['name']
+        return HttpResponseRedirect(redirect_url_to_calendar_list)
 
     template = 'appointment/calendar/change.html'
     data = {
         'form': form,
         'action': 'add',
-        'error_msg': error_msg,
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -367,7 +348,8 @@ def calendar_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
 
         try:
-            calendar_list = Calendar.objects.extra(where=['id IN (%s)' % values])
+            calendar_list = Calendar.objects.extra(
+                where=['id IN (%s)' % values])
             if calendar_list:
                 request.session["msg"] = _('%s calendar(s) are deleted.') % calendar_list.count()
                 calendar_list.delete()
@@ -393,20 +375,17 @@ def calendar_change(request, object_id):
           via CalendarForm & get redirected to the calendar list
     """
     calendar = get_object_or_404(Calendar, pk=object_id)
-
-    form = CalendarForm(request.user, instance=calendar)
-    if request.method == 'POST':
+    form = CalendarForm(request.user, request.POST or None, instance=calendar)
+    if form.is_valid():
         # Delete calendar
         if request.POST.get('delete'):
             calendar_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_calendar_list)
         else:
             # Update calendar
-            form = CalendarForm(request.user, request.POST, instance=calendar)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%s" is updated.') % request.POST['name']
-                return HttpResponseRedirect(redirect_url_to_calendar_list)
+            form.save()
+            request.session["msg"] = _('"%s" is updated.') % request.POST['name']
+            return HttpResponseRedirect(redirect_url_to_calendar_list)
 
     template = 'appointment/calendar/change.html'
     data = {
@@ -434,10 +413,12 @@ def calendar_setting_list(request):
                            'call_timeout', 'survey', 'aleg_gateway',
                            'sms_gateway']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pagination_data = get_pagination_vars(
+        request, sort_col_field_list, default_sort_field)
     sort_order = pagination_data['sort_order']
 
-    calendar_setting_list = CalendarSetting.objects.filter(user=request.user).order_by(sort_order)
+    calendar_setting_list = CalendarSetting.objects.filter(user=request.user)\
+        .order_by(sort_order)
 
     template = 'appointment/calendar_setting/list.html'
     data = {
@@ -468,23 +449,17 @@ def calendar_setting_add(request):
         * Add new calendar_setting belonging to the logged in user
           via ContactSettingForm & get redirected to the calendar_setting list
     """
-    form = CalendarSettingForm(request.user)
-    error_msg = False
+    form = CalendarSettingForm(request.user, request.POST or None)
     # Add calendar_setting
-    if request.method == 'POST':
-        form = CalendarSettingForm(request.user, request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
-            request.session["msg"] = _('"%s" is added') % obj
-            return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
+    if form.is_valid():
+        obj = form.save(user=request.user)
+        request.session["msg"] = _('"%s" is added') % obj
+        return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
 
     template = 'appointment/calendar_setting/change.html'
     data = {
         'form': form,
         'action': 'add',
-        'error_msg': error_msg,
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -517,10 +492,10 @@ def calendar_setting_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
 
         try:
-            calendar_setting = CalendarSetting.objects.extra(where=['id IN (%s)' % values])
+            calendar_setting = CalendarSetting.objects.extra(
+                where=['id IN (%s)' % values])
             if calendar_setting:
-                request.session["msg"] = \
-                    _('%s calendar setting(s) are deleted.') % calendar_setting.count()
+                request.session["msg"] = _('%s calendar setting(s) are deleted.') % calendar_setting.count()
                 calendar_setting.delete()
         except:
             raise Http404
@@ -545,19 +520,17 @@ def calendar_setting_change(request, object_id):
     """
     calendar_setting = get_object_or_404(CalendarSetting, pk=object_id)
 
-    form = CalendarSettingForm(request.user, instance=calendar_setting)
-    if request.method == 'POST':
+    form = CalendarSettingForm(
+        request.user, request.POST or None, instance=calendar_setting)
+    if form.is_valid():
         # Delete calendar_setting
         if request.POST.get('delete'):
             calendar_setting_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
         else:
-            # Update calendar_setting
-            form = CalendarSettingForm(request.user, request.POST, instance=calendar_setting)
-            if form.is_valid():
-                obj = form.save()
-                request.session["msg"] = _('"%s" is updated.') % obj
-                return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
+            obj = form.save()
+            request.session["msg"] = _('"%s" is updated.') % obj
+            return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
 
     template = 'appointment/calendar_setting/change.html'
     data = {
@@ -582,7 +555,7 @@ def event_list(request):
         * List all events which belong to the logged in user.
     """
     today = datetime.utcnow().replace(tzinfo=utc)
-    form = EventSearchForm(request.user,
+    form = EventSearchForm(request.user, request.POST or None,
                            initial={'start': today.strftime('%Y-%m-%d %H:%M:%S')})
     sort_col_field_list = ['id', 'start', 'end', 'title',
                            'calendar', 'status', 'created_on']
@@ -597,19 +570,17 @@ def event_list(request):
     calendar_id = ''
     calendar_user_id = ''
 
-    if request.method == 'POST':
-        form = EventSearchForm(request.user, request.POST)
-        if form.is_valid():
-            field_list = ['start_date', 'calendar_id', 'calendar_user_id']
-            unset_session_var(request, field_list)
+    if form.is_valid():
+        field_list = ['start_date', 'calendar_id', 'calendar_user_id']
+        unset_session_var(request, field_list)
 
-            if request.POST.get('start_date'):
-                # start date
-                start_date = ceil_strdate(request.POST['start_date'], 'start')
-                request.session['session_start_date'] = start_date
+        if request.POST.get('start_date'):
+            # start date
+            start_date = ceil_strdate(request.POST['start_date'], 'start')
+            request.session['session_start_date'] = start_date
 
-            calendar_id = getvar(request, 'calendar_id', setsession=True)
-            calendar_user_id = getvar(request, 'calendar_user_id', setsession=True)
+        calendar_id = getvar(request, 'calendar_id', setsession=True)
+        calendar_user_id = getvar(request, 'calendar_user_id', setsession=True)
 
     post_var_with_page = 0
     try:
@@ -682,21 +653,17 @@ def event_add(request):
         * Add new event belonging to the logged in user
           via EventForm & get redirected to the event list
     """
-    form = EventForm(request.user)
-    error_msg = False
+    form = EventForm(request.user, request.POST or None)
     # Add event
-    if request.method == 'POST':
-        form = EventForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            request.session["msg"] = _('"%s" is added') % request.POST['title']
-            return HttpResponseRedirect(redirect_url_to_event_list)
+    if form.is_valid():
+        form.save()
+        request.session["msg"] = _('"%s" is added') % request.POST['title']
+        return HttpResponseRedirect(redirect_url_to_event_list)
 
     template = 'appointment/event/change.html'
     data = {
         'form': form,
         'action': 'add',
-        'error_msg': error_msg,
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -756,19 +723,17 @@ def event_change(request, object_id):
     """
     event = get_object_or_404(Event, pk=object_id)
 
-    form = EventForm(request.user, instance=event)
-    if request.method == 'POST':
+    form = EventForm(request.user, request.POST or None, instance=event)
+    if form.is_valid():
         # Delete event
         if request.POST.get('delete'):
             event_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_event_list)
         else:
             # Update event
-            form = EventForm(request.user, request.POST, instance=event)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%s" is updated.') % request.POST['title']
-                return HttpResponseRedirect(redirect_url_to_event_list)
+            form.save()
+            request.session["msg"] = _('"%s" is updated.') % request.POST['title']
+            return HttpResponseRedirect(redirect_url_to_event_list)
 
     template = 'appointment/event/change.html'
     data = {
@@ -833,21 +798,17 @@ def alarm_add(request):
         * Add new alarm belonging to the logged in user
           via AlarmForm & get redirected to the alarm list
     """
-    form = AlarmForm(request.user)
-    error_msg = False
+    form = AlarmForm(request.user, request.POST or None)
     # Add alarm
-    if request.method == 'POST':
-        form = AlarmForm(request.user, request.POST)
-        if form.is_valid():
-            obj = form.save()
-            request.session["msg"] = _('"%s" is added') % obj
-            return HttpResponseRedirect(redirect_url_to_alarm_list)
+    if form.is_valid():
+        obj = form.save()
+        request.session["msg"] = _('"%s" is added') % obj
+        return HttpResponseRedirect(redirect_url_to_alarm_list)
 
     template = 'appointment/alarm/change.html'
     data = {
         'form': form,
         'action': 'add',
-        'error_msg': error_msg,
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))
@@ -908,19 +869,17 @@ def alarm_change(request, object_id):
     """
     alarm = get_object_or_404(Alarm, pk=object_id)
 
-    form = AlarmForm(request.user, instance=alarm)
-    if request.method == 'POST':
+    form = AlarmForm(request.user, request.POST or None, instance=alarm)
+    if form.is_valid():
         # Delete alarm
         if request.POST.get('delete'):
             alarm_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_alarm_list)
         else:
             # Update alarm
-            form = AlarmForm(request.user, request.POST, instance=alarm)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%s" is updated.') % alarm
-                return HttpResponseRedirect(redirect_url_to_alarm_list)
+            form.save()
+            request.session["msg"] = _('"%s" is updated.') % alarm
+            return HttpResponseRedirect(redirect_url_to_alarm_list)
 
     template = 'appointment/alarm/change.html'
     data = {

@@ -26,6 +26,7 @@ from appointment.function_def import get_calendar_user_id_list, get_calendar_use
     get_calendar_list, get_all_calendar_user_id_list, manager_list_of_calendar_user
 from survey.models import Survey
 from user_profile.models import UserProfile
+from mod_utils.forms import SaveUserModelForm
 from bootstrap3_datetime.widgets import DateTimePicker
 
 
@@ -67,7 +68,7 @@ class CalendarUserProfileForm(ModelForm):
         self.fields['manager'].choices = manager_list_of_calendar_user()
 
 
-class CalendarSettingForm(ModelForm):
+class CalendarSettingForm(SaveUserModelForm):
     """CalendarSetting ModelForm"""
 
     class Meta:

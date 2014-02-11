@@ -90,7 +90,7 @@ def phonebook_add(request):
           via the phonebookForm & get redirected to the phonebook list
     """
     form = PhonebookForm(request.POST or None)
-    if request.method == 'POST' and form.is_valid():
+    if form.is_valid():
         form.save(user=request.user)
         request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
         return HttpResponseRedirect(redirect_url_to_phonebook_list)

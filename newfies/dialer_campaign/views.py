@@ -147,15 +147,14 @@ def campaign_list(request):
         phonebook_id = getvar(request, 'phonebook_id', setsession=True)
         status = getvar(request, 'status', setsession=True)
 
+    #TODO: not clear what post_var_with_page does? maybe we can find a more elegant way
     post_var_with_page = 0
     try:
         if request.GET.get('page') or request.GET.get('sort_by'):
             post_var_with_page = 1
             phonebook_id = request.session.get('session_phonebook_id')
             status = request.session.get('session_status')
-            form = CampaignSearchForm(request.user,
-                                      initial={'status': status,
-                                               'phonebook_id': phonebook_id})
+            form = CampaignSearchForm(request.user, initial={'status': status, 'phonebook_id': phonebook_id})
         else:
             post_var_with_page = 1
             if request.method == 'GET':
@@ -192,8 +191,7 @@ def campaign_list(request):
     request.session['msg'] = ''
     request.session['error_msg'] = ''
     request.session['info_msg'] = ''
-    return render_to_response('dialer_campaign/campaign/list.html', data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_campaign/campaign/list.html', data, context_instance=RequestContext(request))
 
 
 def get_content_type(object_string):

@@ -241,7 +241,10 @@ INSTALLED_APPS = (
     'djangobower',
     'activelink',
     'bootstrap3_datetime',
+    'crispy_forms',
 )
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Django extensions
 try:

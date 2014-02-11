@@ -1,5 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load i18n utils_tags %}
+{% load crispy_forms_tags %}
 
 {% block content_header %}
     <h1>
@@ -15,13 +16,6 @@
 
 {% block content %}
 
-<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    {% for field in form %}
-    <div class="row">
-        {% field_html_code field 'col-md-6 col-xs-10' %}
-    </div>
-    {% endfor %}
-    {% include "frontend/common_submit_buttons.html" %}
-</form>
+{% crispy form form.helper %}
 
 {% endblock %}

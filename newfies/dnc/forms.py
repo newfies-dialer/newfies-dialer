@@ -20,8 +20,57 @@ from dnc.models import DNC, DNCContact
 from dialer_contact.forms import FileImport
 from mod_utils.forms import Exportfile
 
+# from django.core.urlresolvers import reverse
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Submit, Layout, Button, Fieldset, HTML
+from crispy_forms.bootstrap import FormActions, StrictButton
+
 
 class DNCForm(ModelForm):
+    """DNC List ModelForm"""
+
+    class Meta:
+        model = DNC
+        fields = ['name', 'description']
+        exclude = ('user',)
+        widgets = {
+            'description': Textarea(attrs={'cols': 26, 'rows': 3}),
+        }
+
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        # self.helper.form_id = 'id-exampleForm'
+        # self.helper.form_method = 'post'
+        # self.helper.form_action = '/'
+
+        # cancel_url = reverse('<object>:list')
+        # if self.instance:
+        #     cancel_url = reverse('<object>:view', kwargs={'pk': self.instance.id})
+        cancel_url = ''
+
+        # self.helper.add_input(Submit('submit', 'Submit'))
+
+        self.helper.label_class = 'col-md-12'
+        self.helper.field_class = 'col-md-6'
+        self.helper.layout = Layout(
+            Fieldset(
+                'first arg is the legend of the fieldset',
+                'name',
+                'description'
+            ),
+            FormActions(
+                HTML('<a href="#" class="btn btn-default"><span class="glyphicon glyphicon-plus-sign"></span> Default text here</a> '),
+                HTML('<button type="submit" id="add" name="add" class="btn btn-primary" value="submit"><i class="fa fa-save fa-lg"></i> Save</button>'),
+                Submit('save', 'Save changes'),
+                Button('cancel', 'Cancel')
+            )
+        )
+
+        super(DNCForm, self).__init__(*args, **kwargs)
+
+
+class DNCForm_old(ModelForm):
     """DNC ModelForm"""
 
     class Meta:

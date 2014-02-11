@@ -68,8 +68,8 @@ def survey_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    sort_order = pag_vars['sort_order']
 
     survey_list = Survey_template.objects\
         .values('id', 'name', 'description', 'updated_date')\
@@ -79,7 +79,7 @@ def survey_list(request):
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
         'SURVEY_COLUMN_NAME': SURVEY_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'msg': request.session.get('msg'),
     }
     request.session['msg'] = ''
@@ -855,10 +855,10 @@ def survey_report(request):
     sort_col_field_list = ['starting_date', 'phone_number', 'duration',
                            'disposition', 'id']
     default_sort_field = 'starting_date'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    sort_order = pag_vars['sort_order']
+    start_page = pag_vars['start_page']
+    end_page = pag_vars['end_page']
 
     survey_id = ''
     action = 'tabs-1'
@@ -963,7 +963,7 @@ def survey_report(request):
         'all_call_list': all_call_list,
         'call_count': all_call_list.count() if all_call_list else 0,
         'SURVEY_CALL_RESULT_NAME': SURVEY_CALL_RESULT_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'total_data': survey_cdr_daily_data['total_data'],
         'total_duration': survey_cdr_daily_data['total_duration'],
         'total_calls': survey_cdr_daily_data['total_calls'],
@@ -1269,8 +1269,8 @@ def sealed_survey_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date', 'campaign']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    sort_order = pag_vars['sort_order']
 
     survey_list = Survey.objects.values('id', 'name', 'description', 'updated_date', 'campaign__name')\
         .filter(user=request.user).order_by(sort_order)
@@ -1280,7 +1280,7 @@ def sealed_survey_list(request):
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
         'SEALED_SURVEY_COLUMN_NAME': SEALED_SURVEY_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'msg': request.session.get('msg'),
     }
     request.session['msg'] = ''

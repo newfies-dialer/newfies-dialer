@@ -261,9 +261,9 @@ def agent_list(request):
     """
     sort_col_field_list = ['user', 'status', 'contact', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
+    sort_order = pag_vars['sort_order']
 
     agent_list = AgentProfile.objects.filter(manager=request.user).order_by(sort_order)
 
@@ -273,7 +273,7 @@ def agent_list(request):
         'agent_list': agent_list,
         'total_agent': agent_list.count(),
         'AGENT_COLUMN_NAME': AGENT_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

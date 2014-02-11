@@ -42,9 +42,9 @@ def queue_list(request):
     """
     sort_col_field_list = ['name', 'strategy', 'time_base_score', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
+    sort_order = pag_vars['sort_order']
 
     queue_list = Queue.objects.filter(manager=request.user).order_by(sort_order)
 
@@ -55,7 +55,7 @@ def queue_list(request):
         'queue_list': queue_list,
         'total_queue': queue_list.count(),
         'QUEUE_COLUMN_NAME': QUEUE_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -221,9 +221,9 @@ def tier_list(request):
     sort_col_field_list = [
         'agent', 'queue', 'level', 'position', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
+    sort_order = pag_vars['sort_order']
     tier_list = Tier.objects.filter(manager=request.user).order_by(sort_order)
     template = 'callcenter/tier/list.html'
     data = {
@@ -231,7 +231,7 @@ def tier_list(request):
         'tier_list': tier_list,
         'total_tier': tier_list.count(),
         'TIER_COLUMN_NAME': TIER_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

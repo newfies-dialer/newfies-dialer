@@ -43,9 +43,9 @@ def audio_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
+    sort_order = pag_vars['sort_order']
     audio_list = AudioFile.objects.filter(user=request.user).order_by(sort_order)
     domain = Site.objects.get_current().domain
 
@@ -54,7 +54,7 @@ def audio_list(request):
         'audio_list': audio_list,
         'total_audio': audio_list.count(),
         'AUDIO_COLUMN_NAME': AUDIO_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'domain': domain,
         'msg': request.session.get('msg'),
     }

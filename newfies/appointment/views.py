@@ -59,10 +59,10 @@ def calendar_user_list(request):
     """
     sort_col_field_list = ['user', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
 
-    sort_order = pagination_data['sort_order']
+    sort_order = pag_vars['sort_order']
 
     calendar_user_list = CalendarUserProfile.objects\
         .filter(manager=request.user).order_by(sort_order)
@@ -73,7 +73,7 @@ def calendar_user_list(request):
         'calendar_user_list': calendar_user_list,
         'total_calendar_user': calendar_user_list.count(),
         'CALENDAR_USER_COLUMN_NAME': CALENDAR_USER_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -268,9 +268,9 @@ def calendar_list(request):
     sort_col_field_list = ['id', 'name', 'user', 'max_concurrent',
                            'created_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
+    sort_order = pag_vars['sort_order']
 
     calendar_user_id_list = get_calendar_user_id_list(request.user)
     calendar_list = Calendar.objects.filter(
@@ -282,7 +282,7 @@ def calendar_list(request):
         'calendar_list': calendar_list,
         'total_calendar': calendar_list.count(),
         'CALENDAR_COLUMN_NAME': CALENDAR_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -413,9 +413,9 @@ def calendar_setting_list(request):
                            'call_timeout', 'survey', 'aleg_gateway',
                            'sms_gateway']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
+    sort_order = pag_vars['sort_order']
 
     calendar_setting_list = CalendarSetting.objects.filter(user=request.user)\
         .order_by(sort_order)
@@ -426,7 +426,7 @@ def calendar_setting_list(request):
         'calendar_setting_list': calendar_setting_list,
         'total_calendar_setting': calendar_setting_list.count(),
         'CALENDAR_SETTING_COLUMN_NAME': CALENDAR_SETTING_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -560,11 +560,11 @@ def event_list(request):
     sort_col_field_list = ['id', 'start', 'end', 'title',
                            'calendar', 'status', 'created_on']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
+    sort_order = pag_vars['sort_order']
+    start_page = pag_vars['start_page']
+    end_page = pag_vars['end_page']
 
     start_date = ''
     calendar_id = ''
@@ -630,7 +630,7 @@ def event_list(request):
         'event_list': event_list,
         'total_event': event_list.count(),
         'EVENT_COLUMN_NAME': EVENT_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -761,9 +761,9 @@ def alarm_list(request):
                            'daily_stop', 'method', 'survey', 'event',
                            'date_start_notice', 'status']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
+    sort_order = pag_vars['sort_order']
 
     calendar_user_id_list = get_calendar_user_id_list(request.user)
     alarm_list = Alarm.objects.filter(
@@ -775,7 +775,7 @@ def alarm_list(request):
         'alarm_list': alarm_list,
         'total_alarm': alarm_list.count(),
         'ALARM_COLUMN_NAME': ALARM_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''

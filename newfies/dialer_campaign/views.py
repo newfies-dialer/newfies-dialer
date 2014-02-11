@@ -139,11 +139,11 @@ def campaign_list(request):
     sort_col_field_list = [
         'id', 'name', 'startingdate', 'status', 'totalcontact']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
+    sort_order = pag_vars['sort_order']
+    start_page = pag_vars['start_page']
+    end_page = pag_vars['end_page']
 
     phonebook_id = ''
     status = 'all'
@@ -197,7 +197,7 @@ def campaign_list(request):
         'campaign_list': campaign_list,
         'total_campaign': campaign_count,
         'CAMPAIGN_COLUMN_NAME': CAMPAIGN_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'info_msg': request.session.get('info_msg'),
@@ -484,10 +484,10 @@ def subscriber_list(request):
                            'completion_count_attempt', 'status',
                            'disposition', 'collected_data', 'agent']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    sort_order = pag_vars['sort_order']
+    start_page = pag_vars['start_page']
+    end_page = pag_vars['end_page']
 
     form = SubscriberSearchForm(request.user, request.POST or None)
     campaign_id = ''
@@ -600,7 +600,7 @@ def subscriber_list(request):
         'all_subscriber_list': all_subscriber_list,
         'total_subscribers': subscriber_count,
         'SUBSCRIBER_COLUMN_NAME': SUBSCRIBER_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,

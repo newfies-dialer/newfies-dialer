@@ -87,10 +87,10 @@ def voipcall_report(request):
                            'used_gateway', 'callerid', 'callid', 'phone_number',
                            'duration', 'billsec', 'amd_status']
     default_sort_field = 'starting_date'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    sort_order = pag_vars['sort_order']
+    start_page = pag_vars['start_page']
+    end_page = pag_vars['end_page']
 
     action = 'tabs-1'
     form = VoipSearchForm(request.user, request.POST or None)
@@ -215,7 +215,7 @@ def voipcall_report(request):
         'all_voipcall_list': all_voipcall_list,
         'voipcall_list': voipcall_list,
         'CDR_REPORT_COLUMN_NAME': CDR_REPORT_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'start_date': start_date,
         'end_date': end_date,
         'action': action,

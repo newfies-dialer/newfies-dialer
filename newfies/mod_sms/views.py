@@ -88,12 +88,12 @@ def sms_campaign_list(request):
     sort_col_field_list = ['id', 'name', 'startingdate', 'status',
                            'totalcontact']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
 
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
+    sort_order = pag_vars['sort_order']
+    start_page = pag_vars['start_page']
+    end_page = pag_vars['end_page']
 
     phonebook_id = ''
     status = 'all'
@@ -146,7 +146,7 @@ def sms_campaign_list(request):
         'smscampaign_list': smscampaign_list,
         'total_campaign': smscampaign_count,
         'SMS_CAMPAIGN_COLUMN_NAME': SMS_CAMPAIGN_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'info_msg': request.session.get('info_msg'),
@@ -729,12 +729,12 @@ def sms_report(request):
                            'status', 'status_message', 'gateway']
     default_sort_field = 'send_date'
 
-    pagination_data = get_pagination_vars(
+    pag_vars = get_pagination_vars(
         request, sort_col_field_list, default_sort_field)
 
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
+    sort_order = pag_vars['sort_order']
+    start_page = pag_vars['start_page']
+    end_page = pag_vars['end_page']
 
     from_date = ''
     to_date = ''
@@ -852,7 +852,7 @@ def sms_report(request):
         'sms_list': sms_list,
         'sms_count': all_sms_list.count() if all_sms_list else 0,
         'SMS_REPORT_COLUMN_NAME': SMS_REPORT_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'start_date': start_date,
         'end_date': end_date,
         'to_date': to_date,

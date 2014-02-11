@@ -45,10 +45,8 @@ def dnc_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
-
-    dnc_list = DNC.objects.filter(user=request.user).order_by(sort_order)
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    dnc_list = DNC.objects.filter(user=request.user).order_by(pag_vars['sort_order'])
 
     template = 'dnc/dnc_list/list.html'
     data = {
@@ -56,7 +54,7 @@ def dnc_list(request):
         'dnc_list': dnc_list,
         'total_dnc': dnc_list.count(),
         'DNC_COLUMN_NAME': DNC_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -210,11 +208,7 @@ def dnc_contact_list(request):
         * List all dnc contacts from dnc lists belonging to the logged in user
     """
     sort_col_field_list = ['id', 'dnc', 'phone_number', 'updated_date']
-    default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
 
     form = DNCContactSearchForm(request.user, request.POST or None)
     dnc_id_list = DNC.objects.values_list('id', flat=True)\
@@ -276,8 +270,8 @@ def dnc_contact_list(request):
         if kwargs:
             phone_number_list = phone_number_list.filter(**kwargs)
 
-        all_phone_number_list = phone_number_list.order_by(sort_order)
-        phone_number_list = all_phone_number_list[start_page:end_page]
+        all_phone_number_list = phone_number_list.order_by(pag_vars['sort_order'])
+        phone_number_list = all_phone_number_list[pag_vars['start_page']:pag_vars['end_page']]
         phone_number_count = all_phone_number_list.count()
 
     template = 'dnc/dnc_contact/list.html'
@@ -286,7 +280,7 @@ def dnc_contact_list(request):
         'all_phone_number_list': all_phone_number_list,
         'total_phone_numbers': phone_number_count,
         'DNC_CONTACT_COLUMN_NAME': DNC_CONTACT_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,

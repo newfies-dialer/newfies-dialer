@@ -53,8 +53,8 @@ def phonebook_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pagination_data['sort_order']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    sort_order = pag_vars['sort_order']
 
     phonebook_list = Phonebook.objects.annotate(contact_count=Count('contact'))\
         .filter(user=request.user).order_by(sort_order)
@@ -65,7 +65,7 @@ def phonebook_list(request):
         'phonebook_list': phonebook_list,
         'total_phonebook': phonebook_list.count(),
         'PHONEBOOK_COLUMN_NAME': PHONEBOOK_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
@@ -220,11 +220,11 @@ def contact_list(request):
                            'first_name', 'last_name', 'email',
                            'updated_date']
     default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
 
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
+    sort_order = pag_vars['sort_order']
+    start_page = pag_vars['start_page']
+    end_page = pag_vars['end_page']
 
     form = ContactSearchForm(request.user, request.POST or None)
     phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
@@ -316,7 +316,7 @@ def contact_list(request):
         'all_contact_list': all_contact_list,
         'total_contacts': contact_count,
         'CONTACT_COLUMN_NAME': CONTACT_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,

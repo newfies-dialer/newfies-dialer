@@ -500,6 +500,9 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 MAILER_EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
+# EMAIL_ADMIN will be used for forget password email sent
+EMAIL_ADMIN = 'newfies_admin@localhost.com'
+
 # ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'
 

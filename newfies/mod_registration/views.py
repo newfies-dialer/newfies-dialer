@@ -15,7 +15,8 @@
 from django.contrib.auth.views import password_reset, password_reset_done,\
     password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect
-from frontend.forms import LoginForm
+from frontend.forms import LoginForm, ForgotForm
+from django.conf import settings
 
 
 def cust_password_reset(request):
@@ -26,13 +27,16 @@ def cust_password_reset(request):
     ``password_reset_form``
     """
     if not request.user.is_authenticated():
-        data = {'loginform': LoginForm()}
+        data = {
+            'loginform': LoginForm(),
+            'forgotform': ForgotForm(),
+        }
         return password_reset(
             request,
             template_name='mod_registration/password_reset_form.html',
             email_template_name='mod_registration/password_reset_email.html',
             post_reset_redirect='/password_reset/done/',
-            from_email='newfies_admin@localhost.com',
+            from_email=settings.EMAIL_ADMIN,
             extra_context=data)
     else:
         return HttpResponseRedirect("/")
@@ -46,7 +50,10 @@ def cust_password_reset_done(request):
     password.
     """
     if not request.user.is_authenticated():
-        data = {'loginform': LoginForm()}
+        data = {
+            'loginform': LoginForm(),
+            'forgotform': ForgotForm(),
+        }
         return password_reset_done(
             request, template_name='mod_registration/password_reset_done.html',
             extra_context=data)

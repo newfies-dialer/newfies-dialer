@@ -19,14 +19,21 @@ from frontend.constants import SEARCH_TYPE
 
 class LoginForm(forms.Form):
     """Client Login Form"""
-    user = forms.CharField(max_length=30,
-        label=_('username'), required=True)
+    user = forms.CharField(max_length=30, label=_('username'), required=True)
     user.widget.attrs['class'] = 'form-control'
     user.widget.attrs['placeholder'] = _('Username')
-    password = forms.CharField(max_length=30, label=_('password'),
+    password = forms.CharField(
+        max_length=30, label=_('password'),
         required=True, widget=forms.PasswordInput())
     password.widget.attrs['class'] = 'form-control'
     password.widget.attrs['placeholder'] = _('Password')
+
+
+class ForgotForm(forms.Form):
+    """Forgot password Form"""
+    email = forms.EmailField(max_length=60, label=_('email'), required=True)
+    email.widget.attrs['class'] = 'form-control'
+    email.widget.attrs['placeholder'] = _('email')
 
 
 class DashboardForm(forms.Form):

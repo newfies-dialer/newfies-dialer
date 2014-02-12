@@ -827,7 +827,7 @@ def survey_report(request):
     campaign_obj = ''
     rows = []
     survey_id = ''
-
+    post_var_with_page = 0
     if form.is_valid():
         # set session var value
         request.session['session_from_date'] = ''
@@ -835,6 +835,7 @@ def survey_report(request):
         request.session['session_survey_id'] = ''
         request.session['session_surveycalls_kwargs'] = ''
         request.session['session_survey_cdr_daily_data'] = {}
+        post_var_with_page = 1
 
         if "from_date" in request.POST:
             # From
@@ -850,14 +851,17 @@ def survey_report(request):
         if survey_id:
             request.session['session_survey_id'] = survey_id
 
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            from_date = request.session.get('session_from_date')
-            to_date = request.session.get('session_to_date')
-            survey_id = request.session.get('session_survey_id')
-        else:
-            from_date
-    except NameError:
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        from_date = request.session.get('session_from_date')
+        to_date = request.session.get('session_to_date')
+        survey_id = request.session.get('session_survey_id')
+        post_var_with_page = 1
+        form = SurveyDetailReportForm(request.user, initial={'from_date': from_date,
+                                                             'to_date': to_date,
+                                                             'survey_id': survey_id})
+    if post_var_with_page == 0:
+        # default
+        # unset session var
         tday = datetime.utcnow().replace(tzinfo=utc)
         from_date = tday.strftime('%Y-%m-01')
         last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999).replace(tzinfo=utc) +
@@ -1246,8 +1250,7 @@ def seal_survey(request, object_id):
     form = SealSurveyForm(request.POST or None)
     if request.method == 'POST':
         if form.is_valid():
-            survey_template = get_object_or_404(
-                Survey_template, pk=object_id, user=request.user)
+            survey_template = get_object_or_404(Survey_template, pk=object_id, user=request.user)
             survey_template.name = request.POST.get('name', survey_template.name)
             survey_template.copy_survey_template()
             request.session['msg'] = '(%s) survey is sealed successfully' % survey_template.name

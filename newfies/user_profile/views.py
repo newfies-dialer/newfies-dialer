@@ -52,7 +52,7 @@ def customer_detail_change(request):
     user_detail_form = UserChangeDetailForm(request.user, request.POST or None, instance=user_detail)
     user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST or None, instance=user_detail_extened)
 
-    user_password_form = UserPasswordChangeForm(request.POST or None, user=request.user)
+    user_password_form = UserPasswordChangeForm(request.user, request.POST or None)
     check_phone_no_form = CheckPhoneNumberForm(request.POST or None)
 
     msg_detail = ''

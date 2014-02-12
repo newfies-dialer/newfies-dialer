@@ -158,6 +158,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     # newfies custom context_processors
     "context_processors.newfies_version",
     "context_processors.newfies_common_template_variable",
+    # django-notification
+    "notification.context_processors.notification",
     #needed by Sentry
     "django.core.context_processors.request",
 )

@@ -966,9 +966,8 @@ def export_surveycall_report(request):
     response['Content-Disposition'] = 'attachment;filename=export.' + format
     if request.session.get('session_surveycalls_kwargs'):
         kwargs = request.session.get('session_surveycalls_kwargs')
+        campaign_obj = kwargs['callrequest__campaign']
         qs = VoIPCall.objects.filter(**kwargs)
-        campaign_id = request.session['session_campaign_id']
-        campaign_obj = Campaign.objects.get(pk=campaign_id)
         column_list_base = ['starting_date', 'phone_number', 'duration', 'disposition']
         column_list = list(column_list_base)
 

@@ -111,7 +111,8 @@ def notify_admin(request):
                 request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
             # Send mail to ADMINS
             subject = _('dialer setting configuration').title()
-            message = _('Notification - User Dialer Setting. The user "%(user)s" - "%(user_id)s" is not properly configured to use the system, please configure their dialer settings.') % \
+            message = _('Notification - User Dialer Setting. The user "%(user)s" - "%(user_id)s" is not properly '
+                        'configured to use the system, please configure their dialer settings.') % \
                 {'user': request.user, 'user_id': request.user.id}
             # mail_admins() is a shortcut for sending an email to the site admins,
             # as defined in the ADMINS setting
@@ -227,7 +228,7 @@ def campaign_add(request):
     # If dialer setting is not attached with user, redirect to campaign list
     if not user_dialer_setting(request.user):
         request.session['error_msg'] = \
-            _("in order to add a campaign, you need to have your settings configured properly, please contact the admin.")
+            _("your settings aren't configured properly, please contact the admin.")
         return HttpResponseRedirect(redirect_url_to_campaign_list)
 
     # Check dialer setting limit
@@ -299,9 +300,11 @@ def campaign_del(request, object_id):
             if campaign_list:
                 if stop_campaign:
                     campaign_list.update(status=CAMPAIGN_STATUS.END)
-                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') % {'count': campaign_list.count()}
+                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') % \
+                        {'count': campaign_list.count()}
                 else:
-                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') % {'count': campaign_list.count()}
+                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') % \
+                        {'count': campaign_list.count()}
                     campaign_list.delete()
         except:
             raise Http404
@@ -334,7 +337,7 @@ def campaign_change(request, object_id):
                         initial={'content_object': content_object})
 
     if campaign.status == CAMPAIGN_STATUS.START:
-        request.session['info_msg'] = _('the campaign is started, you can only edit Dialer settings and Campaign schedule')
+        request.session['info_msg'] = _('Started campaign can only edit the dialer settings and the scheduler')
 
     if request.method == 'POST':
         # Delete campaign

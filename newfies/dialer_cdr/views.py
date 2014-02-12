@@ -36,11 +36,10 @@ def get_voipcall_daily_data(voipcall_list):
     select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
     # Get Total Rrecords from VoIPCall Report table for Daily Call Report
-    total_data = voipcall_list.extra(select=select_data) \
-        .values('starting_date') \
-        .annotate(Count('starting_date')) \
-        .annotate(Sum('duration')) \
-        .annotate(Avg('duration')) \
+    total_data = voipcall_list.extra(select=select_data).values('starting_date')\
+        .annotate(Count('starting_date'))\
+        .annotate(Sum('duration'))\
+        .annotate(Avg('duration'))\
         .order_by('-starting_date')
 
     # Following code will count total voip calls, duration
@@ -83,21 +82,17 @@ def voipcall_report(request):
 
         * ``request.session['voipcall_record_kwargs']`` - stores voipcall kwargs
     """
-    sort_col_field_list = ['starting_date', 'leg_type', 'disposition',
-                           'used_gateway', 'callerid', 'callid', 'phone_number',
-                           'duration', 'billsec', 'amd_status']
-    default_sort_field = 'starting_date'
-    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-    start_page = pag_vars['start_page']
-    end_page = pag_vars['end_page']
-
+    sort_col_field_list = ['starting_date', 'leg_type', 'disposition', 'used_gateway', 'callerid',
+                           'callid', 'phone_number', 'duration', 'billsec', 'amd_status']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='starting_date')
+    post_var_with_page = 0
     action = 'tabs-1'
     form = VoipSearchForm(request.user, request.POST or None)
     if form.is_valid():
         field_list = ['start_date', 'end_date',
                       'disposition', 'campaign_id', 'leg_type']
         unset_session_var(request, field_list)
+        post_var_with_page = 1
 
         if request.POST.get('from_date'):
             # From
@@ -123,26 +118,18 @@ def voipcall_report(request):
         if leg_type and leg_type != '':
             request.session['session_leg_type'] = leg_type
 
-    post_var_with_page = 0
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            post_var_with_page = 1
-            start_date = request.session.get('session_start_date')
-            end_date = request.session.get('session_end_date')
-            disposition = request.session.get('session_disposition')
-            campaign_id = request.session.get('session_campaign_id')
-            leg_type = request.session.get('session_leg_type')
-            form = VoipSearchForm(request.user, initial={'from_date': start_date.strftime('%Y-%m-%d'),
-                                                         'to_date': end_date.strftime('%Y-%m-%d'),
-                                                         'status': disposition,
-                                                         'campaign_id': campaign_id,
-                                                         'leg_type': leg_type})
-        else:
-            post_var_with_page = 1
-            if request.method == 'GET':
-                post_var_with_page = 0
-    except:
-        pass
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
+        start_date = request.session.get('session_start_date')
+        end_date = request.session.get('session_end_date')
+        disposition = request.session.get('session_disposition')
+        campaign_id = request.session.get('session_campaign_id')
+        leg_type = request.session.get('session_leg_type')
+        form = VoipSearchForm(request.user, initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                                                     'to_date': end_date.strftime('%Y-%m-%d'),
+                                                     'status': disposition,
+                                                     'campaign_id': campaign_id,
+                                                     'leg_type': leg_type})
 
     if post_var_with_page == 0:
         # default
@@ -202,9 +189,8 @@ def voipcall_report(request):
         daily_data = get_voipcall_daily_data(voipcall_list)
         request.session['voipcall_daily_data'] = daily_data
 
-    voipcall_list = voipcall_list.order_by(sort_order)[start_page:end_page]
+    voipcall_list = voipcall_list.order_by(pag_vars['sort_order'])[pag_vars['start_page']:pag_vars['end_page']]
 
-    template = 'dialer_cdr/voipcall_report.html'
     data = {
         'form': form,
         'total_data': daily_data['total_data'],
@@ -222,8 +208,7 @@ def voipcall_report(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_cdr/voipcall_report.html', data, context_instance=RequestContext(request))
 
 
 @login_required

@@ -58,16 +58,8 @@ def calendar_user_list(request):
         * List all calendar_user which belong to the logged in manager.
     """
     sort_col_field_list = ['user', 'updated_date']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-
-    sort_order = pag_vars['sort_order']
-
-    calendar_user_list = CalendarUserProfile.objects\
-        .filter(manager=request.user).order_by(sort_order)
-
-    template = 'appointment/calendar_user/list.html'
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
+    calendar_user_list = CalendarUserProfile.objects.filter(manager=request.user).order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'calendar_user_list': calendar_user_list,
@@ -77,7 +69,7 @@ def calendar_user_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
+    return render_to_response('appointment/calendar_user/list.html', data,
                               context_instance=RequestContext(request))
 
 
@@ -104,18 +96,14 @@ def calendar_user_add(request):
             manager=Manager.objects.get(username=request.user),
             calendar_setting_id=request.POST['calendar_setting_id']
         )
-        request.session["msg"] = _('"%(name)s" added as calendar user.') % \
-            {'name': request.POST['username']}
-        return HttpResponseRedirect(
-            redirect_url_to_calendar_user_list + '%s/' % str(calendar_user_profile.id))
+        request.session["msg"] = _('"%(name)s" added as calendar user.') % {'name': request.POST['username']}
+        return HttpResponseRedirect(redirect_url_to_calendar_user_list + '%s/' % str(calendar_user_profile.id))
 
-    template = 'appointment/calendar_user/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar_user/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.delete_calendaruserprofile', login_url='/')
@@ -135,8 +123,7 @@ def calendar_user_del(request, object_id):
     if int(object_id) != 0:
         # When object_id is not 0
         # 1) delete calendar_user profile & calendar_user
-        calendar_user_profile = get_object_or_404(
-            CalendarUserProfile, pk=object_id, manager_id=request.user.id)
+        calendar_user_profile = get_object_or_404(CalendarUserProfile, pk=object_id, manager_id=request.user.id)
         calendar_user = CalendarUser.objects.get(pk=calendar_user_profile.user_id)
 
         request.session["msg"] = _('"%(name)s" is deleted.') % {'name': calendar_user}
@@ -147,15 +134,12 @@ def calendar_user_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete all calendar users belonging to a managers
-            calendar_user_list = CalendarUserProfile.objects\
-                .filter(manager_id=request.user.id)\
-                .extra(where=['id IN (%s)' % values])
+            calendar_user_list = CalendarUserProfile.objects.filter(manager_id=request.user.id).extra(where=['id IN (%s)' % values])
 
             if calendar_user_list:
                 user_list = calendar_user_list.values_list('user_id', flat=True)
                 calendar_users = CalendarUser.objects.filter(pk__in=user_list)
-                request.session["msg"] = _('%(count)s calendar user(s) are deleted.')\
-                    % {'count': calendar_user_list.count()}
+                request.session["msg"] = _('%(count)s calendar user(s) are deleted.') % {'count': calendar_user_list.count()}
                 calendar_users.delete()
         except:
             raise Http404
@@ -179,13 +163,10 @@ def calendar_user_change(request, object_id):
         * Update/delete selected calendar user from the calendar_user list
           via CalendarUserChangeDetailExtendForm & get redirected to calendar_user list
     """
-    calendar_user_profile = get_object_or_404(
-        CalendarUserProfile, pk=object_id, manager_id=request.user.id)
-    calendar_user_userdetail = get_object_or_404(
-        CalendarUser, pk=calendar_user_profile.user_id)
+    calendar_user_profile = get_object_or_404(CalendarUserProfile, pk=object_id, manager_id=request.user.id)
+    calendar_user_userdetail = get_object_or_404(CalendarUser, pk=calendar_user_profile.user_id)
 
-    form = CalendarUserChangeDetailExtendForm(
-        request.user, request.POST or None, instance=calendar_user_profile)
+    form = CalendarUserChangeDetailExtendForm(request.user, request.POST or None, instance=calendar_user_profile)
     calendar_user_username_form = CalendarUserNameChangeForm(
         request.POST or None,
         initial={'username': calendar_user_userdetail.username,
@@ -202,18 +183,14 @@ def calendar_user_change(request, object_id):
 
             if form.is_valid():
                 form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': calendar_user_profile.user}
+                request.session["msg"] = _('"%(name)s" is updated.') % {'name': calendar_user_profile.user}
                 return HttpResponseRedirect(redirect_url_to_calendar_user_list)
-
-    template = 'appointment/calendar_user/change.html'
     data = {
         'form': form,
         'calendar_user_username_form': calendar_user_username_form,
         'action': 'update',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar_user/change.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -241,15 +218,13 @@ def calendar_user_change_password(request, object_id):
         request.session["msg"] = _('%s password has been changed.' % calendar_user_username)
         return HttpResponseRedirect(redirect_url_to_calendar_user_list)
 
-    template = 'appointment/calendar_user/change_password.html'
     data = {
         'calendar_user_username': calendar_user_username,
         'user_password_form': user_password_form,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar_user/change_password.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.view_calendar', login_url='/')
@@ -265,18 +240,11 @@ def calendar_list(request):
 
         * List all calendars which belong to the logged in user.
     """
-    sort_col_field_list = ['id', 'name', 'user', 'max_concurrent',
-                           'created_date']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-
+    sort_col_field_list = ['id', 'name', 'user', 'max_concurrent', 'created_date']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
     calendar_user_id_list = get_calendar_user_id_list(request.user)
-    calendar_list = Calendar.objects.filter(
-        user_id__in=calendar_user_id_list).order_by(sort_order)
+    calendar_list = Calendar.objects.filter(user_id__in=calendar_user_id_list).order_by(pag_vars['sort_order'])
 
-    template = 'appointment/calendar/list.html'
     data = {
         'msg': request.session.get('msg'),
         'calendar_list': calendar_list,
@@ -286,8 +254,7 @@ def calendar_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.add_calendar', login_url='/')
@@ -312,13 +279,11 @@ def calendar_add(request):
         request.session["msg"] = _('"%s" is added') % request.POST['name']
         return HttpResponseRedirect(redirect_url_to_calendar_list)
 
-    template = 'appointment/calendar/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.delete_calendar', login_url='/')
@@ -348,8 +313,7 @@ def calendar_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
 
         try:
-            calendar_list = Calendar.objects.extra(
-                where=['id IN (%s)' % values])
+            calendar_list = Calendar.objects.extra(where=['id IN (%s)' % values])
             if calendar_list:
                 request.session["msg"] = _('%s calendar(s) are deleted.') % calendar_list.count()
                 calendar_list.delete()
@@ -387,13 +351,11 @@ def calendar_change(request, object_id):
             request.session["msg"] = _('"%s" is updated.') % request.POST['name']
             return HttpResponseRedirect(redirect_url_to_calendar_list)
 
-    template = 'appointment/calendar/change.html'
     data = {
         'form': form,
         'action': 'update',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.view_calendarsetting', login_url='/')
@@ -409,18 +371,10 @@ def calendar_setting_list(request):
 
         * List all calendar settings which belong to the logged in user.
     """
-    sort_col_field_list = ['id', 'label', 'callerid', 'caller_name',
-                           'call_timeout', 'survey', 'aleg_gateway',
-                           'sms_gateway']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-
-    calendar_setting_list = CalendarSetting.objects.filter(user=request.user)\
-        .order_by(sort_order)
-
-    template = 'appointment/calendar_setting/list.html'
+    sort_col_field_list = ['id', 'label', 'callerid', 'caller_name', 'call_timeout',
+                           'survey', 'aleg_gateway', 'sms_gateway']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
+    calendar_setting_list = CalendarSetting.objects.filter(user=request.user).order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'calendar_setting_list': calendar_setting_list,
@@ -430,8 +384,7 @@ def calendar_setting_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar_setting/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.add_calendarsetting', login_url='/')
@@ -455,14 +408,11 @@ def calendar_setting_add(request):
         obj = form.save(user=request.user)
         request.session["msg"] = _('"%s" is added') % obj
         return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
-
-    template = 'appointment/calendar_setting/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar_setting/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.delete_calendarsetting', login_url='/')
@@ -492,8 +442,7 @@ def calendar_setting_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
 
         try:
-            calendar_setting = CalendarSetting.objects.extra(
-                where=['id IN (%s)' % values])
+            calendar_setting = CalendarSetting.objects.extra(where=['id IN (%s)' % values])
             if calendar_setting:
                 request.session["msg"] = _('%s calendar setting(s) are deleted.') % calendar_setting.count()
                 calendar_setting.delete()
@@ -520,8 +469,7 @@ def calendar_setting_change(request, object_id):
     """
     calendar_setting = get_object_or_404(CalendarSetting, pk=object_id)
 
-    form = CalendarSettingForm(
-        request.user, request.POST or None, instance=calendar_setting)
+    form = CalendarSettingForm(request.user, request.POST or None, instance=calendar_setting)
     if form.is_valid():
         # Delete calendar_setting
         if request.POST.get('delete'):
@@ -532,12 +480,11 @@ def calendar_setting_change(request, object_id):
             request.session["msg"] = _('"%s" is updated.') % obj
             return HttpResponseRedirect(redirect_url_to_calendar_setting_list)
 
-    template = 'appointment/calendar_setting/change.html'
     data = {
         'form': form,
         'action': 'update',
     }
-    return render_to_response(template, data,
+    return render_to_response('appointment/calendar_setting/change.html', data,
                               context_instance=RequestContext(request))
 
 
@@ -555,21 +502,14 @@ def event_list(request):
         * List all events which belong to the logged in user.
     """
     today = datetime.utcnow().replace(tzinfo=utc)
-    form = EventSearchForm(request.user, request.POST or None,
-                           initial={'start': today.strftime('%Y-%m-%d %H:%M:%S')})
-    sort_col_field_list = ['id', 'start', 'end', 'title',
-                           'calendar', 'status', 'created_on']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-    start_page = pag_vars['start_page']
-    end_page = pag_vars['end_page']
+    form = EventSearchForm(request.user, request.POST or None, initial={'start': today.strftime('%Y-%m-%d %H:%M:%S')})
+    sort_col_field_list = ['id', 'start', 'end', 'title', 'calendar', 'status', 'created_on']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
 
     start_date = ''
     calendar_id = ''
     calendar_user_id = ''
-
+    post_var_with_page = 0
     if form.is_valid():
         field_list = ['start_date', 'calendar_id', 'calendar_user_id']
         unset_session_var(request, field_list)
@@ -581,24 +521,17 @@ def event_list(request):
 
         calendar_id = getvar(request, 'calendar_id', setsession=True)
         calendar_user_id = getvar(request, 'calendar_user_id', setsession=True)
+        post_var_with_page = 1
 
-    post_var_with_page = 0
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            post_var_with_page = 1
-            start_date = request.session.get('session_start_date')
-            calendar_id = request.session.get('session_calendar_id')
-            calendar_user_id = request.session.get('session_calendar_user_id')
-            form = EventSearchForm(request.user, initial={'start_date': start_date,
-                                                          'calendar_id': calendar_id,
-                                                          'calendar_user_id': calendar_user_id,
-                                                          })
-        else:
-            post_var_with_page = 1
-            if request.method == 'GET':
-                post_var_with_page = 0
-    except:
-        pass
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
+        start_date = request.session.get('session_start_date')
+        calendar_id = request.session.get('session_calendar_id')
+        calendar_user_id = request.session.get('session_calendar_user_id')
+        form = EventSearchForm(request.user, initial={'start_date': start_date,
+                                                      'calendar_id': calendar_id,
+                                                      'calendar_user_id': calendar_user_id,
+                                                      })
 
     if post_var_with_page == 0:
         # default
@@ -617,13 +550,10 @@ def event_list(request):
         kwargs['creator_id'] = calendar_user_id
 
     calendar_user_id_list = get_calendar_user_id_list(request.user)
-    event_list = Event.objects.filter(
-        calendar__user_id__in=calendar_user_id_list).order_by(sort_order)
+    event_list = Event.objects.filter(calendar__user_id__in=calendar_user_id_list).order_by(pag_vars['sort_order'])
     if kwargs:
         event_list = event_list.filter(**kwargs)
-    event_list = event_list[start_page:end_page]
-
-    template = 'appointment/event/list.html'
+    event_list = event_list[pag_vars['start_page']:pag_vars['end_page']]
     data = {
         'form': form,
         'msg': request.session.get('msg'),
@@ -634,8 +564,7 @@ def event_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/event/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.add_event', login_url='/')
@@ -659,14 +588,11 @@ def event_add(request):
         form.save()
         request.session["msg"] = _('"%s" is added') % request.POST['title']
         return HttpResponseRedirect(redirect_url_to_event_list)
-
-    template = 'appointment/event/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/event/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.delete_event', login_url='/')
@@ -722,7 +648,6 @@ def event_change(request, object_id):
           via EventForm & get redirected to the event list
     """
     event = get_object_or_404(Event, pk=object_id)
-
     form = EventForm(request.user, request.POST or None, instance=event)
     if form.is_valid():
         # Delete event
@@ -735,13 +660,11 @@ def event_change(request, object_id):
             request.session["msg"] = _('"%s" is updated.') % request.POST['title']
             return HttpResponseRedirect(redirect_url_to_event_list)
 
-    template = 'appointment/event/change.html'
     data = {
         'form': form,
         'action': 'update',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/event/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.view_alarm', login_url='/')
@@ -760,16 +683,9 @@ def alarm_list(request):
     sort_col_field_list = ['id', 'alarm_phonenumber', 'alarm_email', 'daily_start',
                            'daily_stop', 'method', 'survey', 'event',
                            'date_start_notice', 'status']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
     calendar_user_id_list = get_calendar_user_id_list(request.user)
-    alarm_list = Alarm.objects.filter(
-        event__calendar__user_id__in=calendar_user_id_list).order_by(sort_order)
-
-    template = 'appointment/alarm/list.html'
+    alarm_list = Alarm.objects.filter(event__calendar__user_id__in=calendar_user_id_list).order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'alarm_list': alarm_list,
@@ -779,8 +695,7 @@ def alarm_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/alarm/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.add_alarm', login_url='/')
@@ -805,13 +720,11 @@ def alarm_add(request):
         request.session["msg"] = _('"%s" is added') % obj
         return HttpResponseRedirect(redirect_url_to_alarm_list)
 
-    template = 'appointment/alarm/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/alarm/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.delete_alarm', login_url='/')
@@ -843,8 +756,7 @@ def alarm_del(request, object_id):
         try:
             alarm_list = Alarm.objects.extra(where=['id IN (%s)' % values])
             if alarm_list:
-                request.session["msg"] = \
-                    _('%s alarm(s) are deleted.') % alarm_list.count()
+                request.session["msg"] = _('%s alarm(s) are deleted.') % alarm_list.count()
                 alarm_list.delete()
         except:
             raise Http404
@@ -881,10 +793,8 @@ def alarm_change(request, object_id):
             request.session["msg"] = _('"%s" is updated.') % alarm
             return HttpResponseRedirect(redirect_url_to_alarm_list)
 
-    template = 'appointment/alarm/change.html'
     data = {
         'form': form,
         'action': 'update',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/alarm/change.html', data, context_instance=RequestContext(request))

@@ -231,7 +231,6 @@ def agent_detail_change(request):
             else:
                 error_pass = _('please correct the errors below.')
 
-    template = 'frontend/registration/user_detail_change.html'
     data = {
         'user_detail_form': user_detail_form,
         'user_detail_extened_form': user_detail_extened_form,
@@ -242,8 +241,7 @@ def agent_detail_change(request):
         'error_pass': error_pass,
         'action': action,
     }
-    return render_to_response(template, data,
-           context_instance=RequestContext(request))
+    return render_to_response('frontend/registration/user_detail_change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('agent.view_agent', login_url='/')
@@ -260,14 +258,8 @@ def agent_list(request):
         * List all agents which belong to the logged in manager.
     """
     sort_col_field_list = ['user', 'status', 'contact', 'updated_date']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-
-    agent_list = AgentProfile.objects.filter(manager=request.user).order_by(sort_order)
-
-    template = 'agent/list.html'
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
+    agent_list = AgentProfile.objects.filter(manager=request.user).order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'agent_list': agent_list,
@@ -277,8 +269,7 @@ def agent_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('agent/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('agent.add_agentprofile', login_url='/')
@@ -314,13 +305,11 @@ def agent_add(request):
                 {'name': request.POST['username']}
             return HttpResponseRedirect(redirect_url_to_agent_list + '%s/' % str(new_agent_profile.id))
 
-    template = 'agent/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('agent/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('agent.delete_agentprofile', login_url='/')
@@ -340,12 +329,10 @@ def agent_del(request, object_id):
     if int(object_id) != 0:
         # When object_id is not 0
         # 1) delete agent profile & agent
-        agent_profile = get_object_or_404(
-            AgentProfile, pk=object_id, manager_id=request.user.id)
+        agent_profile = get_object_or_404(AgentProfile, pk=object_id, manager_id=request.user.id)
         agent = Agent.objects.get(pk=agent_profile.user_id)
 
-        request.session["msg"] = _('"%(name)s" is deleted.') \
-            % {'name': agent}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': agent}
         agent.delete()
     else:
         # When object_id is 0 (Multiple records delete)
@@ -353,15 +340,12 @@ def agent_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete all agents belonging to a managers
-            agent_list = AgentProfile.objects \
-                .filter(manager_id=request.user.id) \
-                .extra(where=['id IN (%s)' % values])
+            agent_list = AgentProfile.objects.filter(manager_id=request.user.id).extra(where=['id IN (%s)' % values])
 
             if agent_list:
                 user_list = agent_list.values_list('user_id', flat=True)
                 agents = Agent.objects.filter(pk__in=user_list)
-                request.session["msg"] = _('%(count)s agent(s) are deleted.') \
-                    % {'count': agent_list.count()}
+                request.session["msg"] = _('%(count)s agent(s) are deleted.')  % {'count': agent_list.count()}
                 agents.delete()
         except:
             raise Http404
@@ -398,12 +382,10 @@ def agent_change(request, object_id):
             agent_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_agent_list)
         else:
-            form = AgentChangeDetailExtendForm(request.user, request.POST,
-                                               instance=agent_profile)
+            form = AgentChangeDetailExtendForm(request.user, request.POST, instance=agent_profile)
 
             agent_username_form = AgentNameChangeForm(
-                request.POST, initial={'password': agent_userdetail.password},
-                instance=agent_userdetail)
+                request.POST, initial={'password': agent_userdetail.password}, instance=agent_userdetail)
 
             # Save agent username
             if agent_username_form.is_valid():
@@ -411,15 +393,11 @@ def agent_change(request, object_id):
 
                 if form.is_valid():
                     form.save()
-                    request.session["msg"] = _('"%(name)s" is updated.') \
-                        % {'name': agent_profile.user}
+                    request.session["msg"] = _('"%(name)s" is updated.') % {'name': agent_profile.user}
                     return HttpResponseRedirect(redirect_url_to_agent_list)
-
-    template = 'agent/change.html'
     data = {
         'form': form,
         'agent_username_form': agent_username_form,
         'action': 'update',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('agent/change.html', data, context_instance=RequestContext(request))

@@ -41,14 +41,8 @@ def queue_list(request):
         * List all queue which belong to the logged in manager.
     """
     sort_col_field_list = ['name', 'strategy', 'time_base_score', 'updated_date']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-
-    queue_list = Queue.objects.filter(manager=request.user).order_by(sort_order)
-
-    template = 'callcenter/queue/list.html'
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
+    queue_list = Queue.objects.filter(manager=request.user).order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
@@ -59,8 +53,7 @@ def queue_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('callcenter/queue/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('callcenter.add_queue', login_url='/')
@@ -83,18 +76,14 @@ def queue_add(request):
         obj = form.save(commit=False)
         obj.manager = Manager.objects.get(username=request.user)
         obj.save()
-
-        request.session["msg"] = _('"%(name)s" queue is added.') %\
-            {'name': obj.name}
+        request.session["msg"] = _('"%(name)s" queue is added.') % {'name': obj.name}
         return HttpResponseRedirect(redirect_url_to_queue_list)
 
-    template = 'callcenter/queue/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('callcenter/queue/change.html', data, context_instance=RequestContext(request))
 
 
 def queue_delete_allow(queue_id):
@@ -130,13 +119,10 @@ def queue_del(request, object_id):
 
         if queue_delete_allow(object_id):
             # Delete queue
-            request.session["msg"] = _('"%(name)s" is deleted.')\
-                % {'name': queue.name}
+            request.session["msg"] = _('"%(name)s" is deleted.') % {'name': queue.name}
             queue.delete()
         else:
-            request.session["error_msg"] = \
-                _('"%(name)s" is not allowed to delete because it is being used with survey.')\
-                % {'name': queue.name}
+            request.session["error_msg"] = _('"%(name)s" is not allowed to delete because it is being used with survey.') % {'name': queue.name}
     else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
@@ -154,11 +140,9 @@ def queue_del(request, object_id):
                         not_deleted_list.append(str(queue_obj.name))
 
                 if deleted_list:
-                    request.session["msg"] =\
-                        _('%s queue(s) are deleted.') % deleted_list
+                    request.session["msg"] = _('%s queue(s) are deleted.') % deleted_list
                 if not_deleted_list:
-                    request.session["error_msg"] =\
-                        _('%s queue(s) are not deleted because they are being used with surveys.')\
+                    request.session["error_msg"] = _('%s queue(s) are not deleted because they are being used with surveys.')\
                         % not_deleted_list
         except:
             raise Http404
@@ -182,7 +166,6 @@ def queue_change(request, object_id):
           via QueueFrontEndForm & get redirected to the queue list
     """
     queue = get_object_or_404(Queue, pk=object_id, manager=request.user)
-
     form = QueueFrontEndForm(request.POST or None, instance=queue)
     if form.is_valid():
         # Delete queue
@@ -192,17 +175,14 @@ def queue_change(request, object_id):
         else:
             # Update queue
             obj = form.save()
-            request.session["msg"] = _('"%(name)s" is updated.') \
-                % {'name': obj.name}
+            request.session["msg"] = _('"%(name)s" is updated.') % {'name': obj.name}
             return HttpResponseRedirect(redirect_url_to_queue_list)
 
-    template = 'callcenter/queue/change.html'
     data = {
         'form': form,
         'action': 'update',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('callcenter/queue/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('callcenter.view_tier', login_url='/')
@@ -218,14 +198,9 @@ def tier_list(request):
 
         * List all tier which belong to the logged in manager.
     """
-    sort_col_field_list = [
-        'agent', 'queue', 'level', 'position', 'updated_date']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-    tier_list = Tier.objects.filter(manager=request.user).order_by(sort_order)
-    template = 'callcenter/tier/list.html'
+    sort_col_field_list = ['agent', 'queue', 'level', 'position', 'updated_date']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
+    tier_list = Tier.objects.filter(manager=request.user).order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'tier_list': tier_list,
@@ -235,8 +210,7 @@ def tier_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('callcenter/tier/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('callcenter.add_tier', login_url='/')
@@ -262,13 +236,11 @@ def tier_add(request):
 
         request.session["msg"] = _('"%(name)s" tier is added.') % {'name': obj.id}
         return HttpResponseRedirect(redirect_url_to_tier_list)
-
-    template = 'callcenter/tier/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
+    return render_to_response('callcenter/tier/change.html', data,
                               context_instance=RequestContext(request))
 
 
@@ -288,12 +260,10 @@ def tier_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        tier = get_object_or_404(
-            Tier, pk=object_id, manager=request.user)
+        tier = get_object_or_404(Tier, pk=object_id, manager=request.user)
 
         # Delete tier
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': tier.id}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': tier.id}
         tier.delete()
     else:
         # When object_id is 0 (Multiple records delete)
@@ -303,8 +273,7 @@ def tier_del(request, object_id):
         try:
             tier_list = Tier.objects.extra(where=['id IN (%s)' % values])
             if tier_list:
-                request.session["msg"] = _('%(count)s tier(s) are deleted.')\
-                    % {'count': tier_list.count()}
+                request.session["msg"] = _('%(count)s tier(s) are deleted.') % {'count': tier_list.count()}
                 tier_list.delete()
         except:
             raise Http404
@@ -328,9 +297,7 @@ def tier_change(request, object_id):
           via TierFrontEndForm & get redirected to the tier list
     """
     tier = get_object_or_404(Tier, pk=object_id, manager=request.user)
-
-    form = TierFrontEndForm(
-        request.user.id, request.POST or None, instance=tier)
+    form = TierFrontEndForm(request.user.id, request.POST or None, instance=tier)
     if form.is_valid():
         # Delete tier
         if request.POST.get('delete'):
@@ -339,14 +306,11 @@ def tier_change(request, object_id):
         else:
             # Update tier
             form.save()
-            request.session["msg"] = _('"%(id)s" tier is updated.') \
-                % {'id': tier.id}
+            request.session["msg"] = _('"%(id)s" tier is updated.') % {'id': tier.id}
             return HttpResponseRedirect(redirect_url_to_tier_list)
 
-    template = 'callcenter/tier/change.html'
     data = {
         'form': form,
         'action': 'update',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('callcenter/tier/change.html', data, context_instance=RequestContext(request))

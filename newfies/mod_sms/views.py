@@ -55,8 +55,7 @@ def update_sms_campaign_status_admin(request, pk, status):
     recipient = smscampaign.common_sms_campaign_status(status)
     sms_notification_status = get_sms_notification_status(int(status))
     frontend_send_notification(request, sms_notification_status, recipient)
-    return HttpResponseRedirect(
-        reverse("admin:mod_sms_smscampaign_changelist"))
+    return HttpResponseRedirect(reverse("admin:mod_sms_smscampaign_changelist"))
 
 
 @login_required
@@ -85,40 +84,25 @@ def sms_campaign_list(request):
         * List all sms campaigns belonging to the logged in user
     """
     form = SMSCampaignSearchForm(request.user, request.POST or None)
-    sort_col_field_list = ['id', 'name', 'startingdate', 'status',
-                           'totalcontact']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-
-    sort_order = pag_vars['sort_order']
-    start_page = pag_vars['start_page']
-    end_page = pag_vars['end_page']
+    sort_col_field_list = ['id', 'name', 'startingdate', 'status', 'totalcontact']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
 
     phonebook_id = ''
     status = 'all'
-
+    post_var_with_page = 0
     if form.is_valid():
         field_list = ['phonebook_id', 'status']
         unset_session_var(request, field_list)
-
+        post_var_with_page = 1
         phonebook_id = getvar(request, 'phonebook_id', setsession=True)
         status = getvar(request, 'status', setsession=True)
 
-    post_var_with_page = 0
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            post_var_with_page = 1
-            phonebook_id = request.session.get('session_phonebook_id')
-            status = request.session.get('session_status')
-            form = SMSCampaignSearchForm(request.user, initial={'status': status,
-                                                                'phonebook_id': phonebook_id})
-        else:
-            post_var_with_page = 1
-            if request.method == 'GET':
-                post_var_with_page = 0
-    except:
-        pass
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
+        phonebook_id = request.session.get('session_phonebook_id')
+        status = request.session.get('session_status')
+        form = SMSCampaignSearchForm(request.user, initial={'status': status,
+                                                            'phonebook_id': phonebook_id})
 
     if post_var_with_page == 0:
         # default
@@ -133,14 +117,13 @@ def sms_campaign_list(request):
     if status and status != 'all':
         kwargs['status'] = status
 
-    smscampaign_list = SMSCampaign.objects.filter(user=request.user).order_by(sort_order)
+    smscampaign_list = SMSCampaign.objects.filter(user=request.user).order_by(pag_vars['sort_order'])
     smscampaign_count = smscampaign_list.count()
     if kwargs:
-        all_smscampaign_list = smscampaign_list.filter(**kwargs).order_by(sort_order)
-        smscampaign_list = all_smscampaign_list[start_page:end_page]
+        all_smscampaign_list = smscampaign_list.filter(**kwargs).order_by(pag_vars['sort_order'])
+        smscampaign_list = all_smscampaign_list[pag_vars['start_page']:pag_vars['end_page']]
         smscampaign_count = all_smscampaign_list.count()
 
-    template = 'mod_sms/list.html'
     data = {
         'form': form,
         'smscampaign_list': smscampaign_list,
@@ -154,8 +137,7 @@ def sms_campaign_list(request):
     request.session['msg'] = ''
     request.session['error_msg'] = ''
     request.session['info_msg'] = ''
-    return render_to_response(
-        template, data, context_instance=RequestContext(request))
+    return render_to_response('mod_sms/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('mod_sms.add_smscampaign', login_url='/')
@@ -191,8 +173,7 @@ def sms_campaign_add(request):
             request.session['msg'] = msg
 
             # sms campaign limit reached
-            frontend_send_notification(
-                request, SMS_NOTIFICATION_NAME.sms_campaign_limit_reached)
+            frontend_send_notification(request, SMS_NOTIFICATION_NAME.sms_campaign_limit_reached)
             return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     form = SMSCampaignForm(request.user, request.POST or None)
@@ -202,18 +183,14 @@ def sms_campaign_add(request):
         obj.user = User.objects.get(username=request.user)
         obj.save()
         form.save_m2m()
-
-        request.session["msg"] = _('"%(name)s" is added.') %\
-            {'name': request.POST['name']}
+        request.session["msg"] = _('"%(name)s" is added.') % {'name': request.POST['name']}
         return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
-    template = 'mod_sms/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(
-        template, data, context_instance=RequestContext(request))
+    return render_to_response('mod_sms/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('mod_sms.delete_smsmessage', login_url='/')
@@ -233,18 +210,15 @@ def sms_campaign_del(request, object_id):
     stop_sms_campaign = request.GET.get('stop_sms_campaign', False)
     try:
         # When object_id is not 0
-        sms_campaign = get_object_or_404(
-            SMSCampaign, pk=object_id, user=request.user)
+        sms_campaign = get_object_or_404(SMSCampaign, pk=object_id, user=request.user)
         # Delete/Stop sms campaign
         if sms_campaign:
             if stop_sms_campaign:
                 sms_campaign.status = SMS_CAMPAIGN_STATUS.END
                 sms_campaign.save()
-                request.session["msg"] = _('"%(name)s" is stopped.')\
-                    % {'name': sms_campaign.name}
+                request.session["msg"] = _('"%(name)s" is stopped.') % {'name': sms_campaign.name}
             else:
-                request.session["msg"] = _('"%(name)s" is deleted.')\
-                    % {'name': sms_campaign.name}
+                request.session["msg"] = _('"%(name)s" is deleted.') % {'name': sms_campaign.name}
                 sms_campaign.delete()
     except:
         # When object_id is 0 (Multiple records delete)
@@ -254,11 +228,9 @@ def sms_campaign_del(request, object_id):
         if sms_campaign_list:
             if stop_sms_campaign:
                 sms_campaign_list.update(status=SMS_CAMPAIGN_STATUS.END)
-                request.session["msg"] = _('%(count)s sms campaign(s) are stopped.')\
-                    % {'count': sms_campaign_list.count()}
+                request.session["msg"] = _('%(count)s sms campaign(s) are stopped.') % {'count': sms_campaign_list.count()}
             else:
-                request.session["msg"] = _('%(count)s sms campaign(s) are deleted.')\
-                    % {'count': sms_campaign_list.count()}
+                request.session["msg"] = _('%(count)s sms campaign(s) are deleted.') % {'count': sms_campaign_list.count()}
                 sms_campaign_list.delete()
     return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
@@ -296,14 +268,11 @@ def sms_campaign_change(request, object_id):
             obj.save()
             request.session["msg"] = _('"%(name)s" is updated.') % {'name': request.POST['name']}
             return HttpResponseRedirect(redirect_url_to_smscampaign_list)
-
-    template = 'mod_sms/change.html'
     data = {
         'form': form,
         'action': 'update',
     }
-    return render_to_response(
-        template, data, context_instance=RequestContext(request))
+    return render_to_response('mod_sms/change.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -345,15 +314,13 @@ def sms_campaign_duplicate(request, id):
         else:
             request.session['error_msg'] = True
 
-    template = 'mod_sms/sms_campaign_duplicate.html'
     data = {
         'sms_campaign_id': id,
         'form': form,
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''
-    return render_to_response(
-        template, data, context_instance=RequestContext(request))
+    return render_to_response('mod_sms/sms_campaign_duplicate.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -371,13 +338,11 @@ def sms_campaign_text_message(request, object_id):
         return HttpResponseRedirect(redirect_url_to_smscampaign_list)
 
     sms_campaign = get_object_or_404(SMSCampaign, pk=object_id, user=request.user)
-    template = 'mod_sms/sms_campaign_text_message.html'
     data = {
         'sms_campaign': sms_campaign,
     }
     request.session['error_msg'] = ''
-    return render_to_response(
-        template, data, context_instance=RequestContext(request))
+    return render_to_response('mod_sms/sms_campaign_text_message.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('mod_sms.view_sms_dashboard', login_url='/')
@@ -398,8 +363,7 @@ def sms_dashboard(request, on_index=None):
         * ``form`` - SMSDashboardForm
     """
     # All sms_campaign for logged in User
-    sms_campaign_id_list = SMSCampaign.objects.values_list('id', flat=True)\
-        .filter(user=request.user).order_by('id')
+    sms_campaign_id_list = SMSCampaign.objects.values_list('id', flat=True).filter(user=request.user).order_by('id')
 
     # Contacts count which are active and belong to those phonebook(s) which is
     # associated with all sms campaign
@@ -660,8 +624,6 @@ def sms_dashboard(request, on_index=None):
             'kwargs1': kwargs1,
         }
 
-    template = 'mod_sms/sms_dashboard.html'
-
     data = {
         'form': form,
         'SEARCH_TYPE': SEARCH_TYPE,
@@ -703,8 +665,7 @@ def sms_dashboard(request, on_index=None):
     }
     if on_index == 'yes':
         return data
-    return render_to_response(
-        template, data, context_instance=RequestContext(request))
+    return render_to_response('mod_sms/sms_dashboard.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -725,16 +686,8 @@ def sms_report(request):
 
         * ``request.session['sms_record_qs']`` - stores sms query set
     """
-    sort_col_field_list = ['send_date', 'recipient_number', 'uuid',
-                           'status', 'status_message', 'gateway']
-    default_sort_field = 'send_date'
-
-    pag_vars = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-
-    sort_order = pag_vars['sort_order']
-    start_page = pag_vars['start_page']
-    end_page = pag_vars['end_page']
+    sort_col_field_list = ['send_date', 'recipient_number', 'uuid', 'status', 'status_message', 'gateway']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='send_date')
 
     from_date = ''
     to_date = ''
@@ -744,12 +697,13 @@ def sms_report(request):
     form = SMSSearchForm(request.user, request.POST or None)
     action = 'tabs-1'
     kwargs = {}
-
+    post_var_with_page = 0
     if form.is_valid():
         request.session['session_start_date'] = ''
         request.session['session_end_date'] = ''
         request.session['session_status'] = ''
         request.session['session_smscampaign'] = ''
+        post_var_with_page = 1
 
         if request.POST.get('from_date'):
             # From
@@ -771,26 +725,18 @@ def sms_report(request):
         if smscampaign != '0':
             request.session['session_smscampaign'] = smscampaign
 
-    post_var_with_page = 0
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            post_var_with_page = 1
-            start_date = request.session.get('session_start_date')
-            end_date = request.session.get('session_end_date')
-            status = request.session.get('session_status')
-            smscampaign = request.session.get('session_smscampaign')
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
+        start_date = request.session.get('session_start_date')
+        end_date = request.session.get('session_end_date')
+        status = request.session.get('session_status')
+        smscampaign = request.session.get('session_smscampaign')
 
-            form = SMSSearchForm(request.user,
-                                 initial={'from_date': start_date.strftime('%Y-%m-%d'),
-                                          'to_date': end_date.strftime('%Y-%m-%d'),
-                                          'status': status,
-                                          'smscampaign': smscampaign})
-        else:
-            post_var_with_page = 1
-            if request.method == 'GET':
-                post_var_with_page = 0
-    except:
-        pass
+        form = SMSSearchForm(request.user,
+                             initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                                      'to_date': end_date.strftime('%Y-%m-%d'),
+                                      'status': status,
+                                      'smscampaign': smscampaign})
 
     if post_var_with_page == 0:
         # default
@@ -826,14 +772,13 @@ def sms_report(request):
 
     smslist = SMSMessage.objects.filter(**kwargs)
     all_sms_list = smslist.values_list('id', flat=True)
-    sms_list = smslist.order_by(sort_order)[start_page:end_page]
+    sms_list = smslist.order_by(pag_vars['sort_order'])[pag_vars['start_page']:pag_vars['end_page']]
 
     # Session variable is used to get record set with searched option
     # into export file
     request.session['sms_record_qs'] = smslist
 
     select_data = {"send_date": "SUBSTR(CAST(send_date as CHAR(30)),1,10)"}
-
     # Get Total Rrecords from SMSMessage Report table for Daily SMS Report
     total_data = all_sms_list.extra(select=select_data).values('send_date')\
         .annotate(Count('send_date')).order_by('-send_date')
@@ -844,7 +789,6 @@ def sms_report(request):
     else:
         total_sms = 0
 
-    template = 'mod_sms/sms_report.html'
     data = {
         'form': form,
         'from_date': from_date,
@@ -862,8 +806,7 @@ def sms_report(request):
         'total_sms': total_sms,
     }
 
-    return render_to_response(
-        template, data, context_instance=RequestContext(request))
+    return render_to_response('mod_sms/sms_report.html', data, context_instance=RequestContext(request))
 
 
 @login_required

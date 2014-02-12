@@ -478,6 +478,7 @@ def subscriber_list(request):
     campaign_id = ''
     agent_id = ''
     status = 'all'
+    start_date = end_date = None
 
     if form.is_valid():
         field_list = ['start_date', 'end_date', 'status',
@@ -626,7 +627,7 @@ def subscriber_export(request):
             subscriber_list = subscriber_list.filter(**kwargs)
 
         headers = ('contact', 'updated_date', 'count_attempt', 'completion_count_attempt',
-                   'status', 'disposition', 'collected_data', 'agent', )
+                   'status', 'disposition', 'collected_data', )  # 'agent',
 
         list_val = []
         for i in subscriber_list:
@@ -634,14 +635,16 @@ def subscriber_export(request):
             if format == 'json' or format == 'xls':
                 updated_date = str(i.updated_date)
 
-            list_val.append((i.contact.contact,
-                             updated_date,
-                             i.count_attempt,
-                             i.completion_count_attempt,
-                             get_subscriber_status(i.status),
-                             get_subscriber_disposition(i.campaign_id, i.disposition),
-                             i.collected_data,
-                             i.agent, ))
+            list_val.append((
+                i.contact.contact,
+                updated_date,
+                i.count_attempt,
+                i.completion_count_attempt,
+                get_subscriber_status(i.status),
+                get_subscriber_disposition(i.campaign_id, i.disposition),
+                i.collected_data,
+                # i.agent,
+            ))
 
         data = tablib.Dataset(*list_val, headers=headers)
 

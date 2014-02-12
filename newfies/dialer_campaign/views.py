@@ -140,27 +140,25 @@ def campaign_list(request):
     pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
     phonebook_id = ''
     status = 'all'
+    post_var_with_page = 0
 
     if form.is_valid():
         field_list = ['phonebook_id', 'status']
         unset_session_var(request, field_list)
         phonebook_id = getvar(request, 'phonebook_id', setsession=True)
         status = getvar(request, 'status', setsession=True)
+        post_var_with_page = 1
 
     #TODO: not clear what post_var_with_page does? maybe we can find a more elegant way
-    post_var_with_page = 0
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            post_var_with_page = 1
-            phonebook_id = request.session.get('session_phonebook_id')
-            status = request.session.get('session_status')
-            form = CampaignSearchForm(request.user, initial={'status': status, 'phonebook_id': phonebook_id})
-        else:
-            post_var_with_page = 1
-            if request.method == 'GET':
-                post_var_with_page = 0
-    except:  # TODO: set error to except
-        pass
+    # This logic to retain searched result set while accessing pagination or sorting on column
+    # post_var_with_page will check following thing
+    # 1) if page has previously searched value, then post_var_with_page become 1
+    # 2) if not then post_var_with_page remain 0 & flush the session variables' value
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
+        phonebook_id = request.session.get('session_phonebook_id')
+        status = request.session.get('session_status')
+        form = CampaignSearchForm(request.user, initial={'status': status, 'phonebook_id': phonebook_id})
 
     if post_var_with_page == 0:
         # default / unset session var
@@ -175,7 +173,7 @@ def campaign_list(request):
         kwargs['status'] = status
 
     # campaign_list = Campaign.objects.filter(user=request.user).order_by(pag_vars['sort_order'])
-    campaign_list = Campaign.objects.filter(user=request.user).filter(**kwargs).order_by(pag_vars['sort_order'])
+    campaign_list = Campaign.objects.filter(**kwargs).order_by(pag_vars['sort_order'])
     campaign_count = campaign_list.count()
 
     data = {

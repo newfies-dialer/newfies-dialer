@@ -325,4 +325,6 @@ class CampaignSearchForm(forms.Form):
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
-            self.fields['phonebook_id'].choices = get_phonebook_list(user)
+            result_list = get_phonebook_list(user)
+            result_list.insert(0, ('0', _('ALL')))
+            self.fields['phonebook_id'].choices = result_list

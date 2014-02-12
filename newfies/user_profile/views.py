@@ -14,16 +14,13 @@
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import common_contact_authorization
-from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
-from user_profile.forms import UserChangeDetailForm, \
-    UserChangeDetailExtendForm, UserPasswordChangeForm,\
+from user_profile.forms import UserChangeDetailForm, UserChangeDetailExtendForm, UserPasswordChangeForm,\
     CheckPhoneNumberForm
 
 
@@ -52,12 +49,10 @@ def customer_detail_change(request):
         if not settings.DEMO_MODE:
             user_detail_extened.save()
 
-    user_detail_form = UserChangeDetailForm(request.user, request.POST or None,
-                                            instance=user_detail)
-    user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST or None,
-                                                          instance=user_detail_extened)
+    user_detail_form = UserChangeDetailForm(request.user, request.POST or None, instance=user_detail)
+    user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST or None, instance=user_detail_extened)
 
-    user_password_form = UserPasswordChangeForm(request.POST or None, user=request.user)
+    user_password_form = UserPasswordChangeForm(request.user, request.POST or None)
     check_phone_no_form = CheckPhoneNumberForm(request.POST or None)
 
     msg_detail = ''
@@ -108,7 +103,6 @@ def customer_detail_change(request):
     except:
         dialer_set = ''
 
-    template = 'user_profile/user_detail_change.html'
     data = {
         'user_detail_form': user_detail_form,
         'user_detail_extened_form': user_detail_extened_form,
@@ -123,4 +117,4 @@ def customer_detail_change(request):
         'dialer_set': dialer_set,
         'action': action,
     }
-    return render_to_response(template, data, context_instance=RequestContext(request))
+    return render_to_response('user_profile/user_detail_change.html', data, context_instance=RequestContext(request))

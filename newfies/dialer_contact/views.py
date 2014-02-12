@@ -52,14 +52,8 @@ def phonebook_list(request):
         * List all phonebooks which belong to the logged in user.
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-
-    phonebook_list = Phonebook.objects.annotate(contact_count=Count('contact'))\
-        .filter(user=request.user).order_by(sort_order)
-
-    template = 'dialer_contact/phonebook/list.html'
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field="id")
+    phonebook_list = Phonebook.objects.annotate(contact_count=Count('contact')).filter(user=request.user).order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'phonebook_list': phonebook_list,
@@ -69,8 +63,7 @@ def phonebook_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_contact/phonebook/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_contact.add_phonebook', login_url='/')
@@ -93,13 +86,12 @@ def phonebook_add(request):
         form.save(user=request.user)
         request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
         return HttpResponseRedirect(redirect_url_to_phonebook_list)
-    template = 'dialer_contact/phonebook/change.html'
+
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_contact/phonebook/change.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -130,16 +122,14 @@ def phonebook_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        phonebook = get_object_or_404(
-            Phonebook, pk=object_id, user=request.user)
+        phonebook = get_object_or_404(Phonebook, pk=object_id, user=request.user)
 
         # 1) delete all contacts belonging to a phonebook
         contact_list = Contact.objects.filter(phonebook=phonebook)
         contact_list.delete()
 
         # 2) delete phonebook
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': phonebook.name}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': phonebook.name}
         phonebook.delete()
     else:
         # When object_id is 0 (Multiple records delete)
@@ -147,17 +137,14 @@ def phonebook_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete all contacts belonging to a phonebook
-            contact_list = Contact.objects.filter(phonebook__user=request.user)\
-                .extra(where=['phonebook_id IN (%s)' % values])
+            contact_list = Contact.objects.filter(phonebook__user=request.user).extra(where=['phonebook_id IN (%s)' % values])
             if contact_list:
                 contact_list.delete()
 
             # 2) delete phonebook
-            phonebook_list = Phonebook.objects.filter(user=request.user)\
-                .extra(where=['id IN (%s)' % values])
+            phonebook_list = Phonebook.objects.filter(user=request.user).extra(where=['id IN (%s)' % values])
             if phonebook_list:
-                request.session["msg"] = _('%(count)s phonebook(s) are deleted.')\
-                    % {'count': phonebook_list.count()}
+                request.session["msg"] = _('%(count)s phonebook(s) are deleted.') % {'count': phonebook_list.count()}
                 phonebook_list.delete()
         except:
             raise Http404
@@ -185,21 +172,17 @@ def phonebook_change(request, object_id):
     form = PhonebookForm(request.POST or None, instance=phonebook)
     if form.is_valid():
         if request.POST.get('delete'):
-            return HttpResponseRedirect('%sdel/%s/' % (
-                redirect_url_to_phonebook_list, object_id))
+            return HttpResponseRedirect('%sdel/%s/' % (redirect_url_to_phonebook_list, object_id))
         else:
             form.save()
-            request.session["msg"] = _('"%(name)s" is updated.') % {
-                'name': request.POST['name']}
+            request.session["msg"] = _('"%(name)s" is updated.') % {'name': request.POST['name']}
             return HttpResponseRedirect(redirect_url_to_phonebook_list)
 
-    template = 'dialer_contact/phonebook/change.html'
     data = {
         'form': form,
         'action': 'update',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_contact/phonebook/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_contact.view_contact', login_url='/')
@@ -216,61 +199,42 @@ def contact_list(request):
 
         * List all contacts from phonebooks belonging to the logged in user
     """
-    sort_col_field_list = ['id', 'phonebook', 'contact', 'status',
-                           'first_name', 'last_name', 'email',
-                           'updated_date']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    sort_order = pag_vars['sort_order']
-    start_page = pag_vars['start_page']
-    end_page = pag_vars['end_page']
-
+    sort_col_field_list = ['id', 'phonebook', 'contact', 'status', 'first_name', 'last_name', 'email', 'updated_date']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
     form = ContactSearchForm(request.user, request.POST or None)
-    phonebook_id_list = Phonebook.objects.values_list('id', flat=True)\
-        .filter(user=request.user)
+    phonebook_id_list = Phonebook.objects.values_list('id', flat=True).filter(user=request.user)
 
     contact_no = ''
     contact_name = ''
     phonebook = ''
     contact_status = STATUS_CHOICE.ALL
-
+    post_var_with_page = 0
     if form.is_valid():
-        field_list = [
-            'contact_no', 'contact_name', 'contact_status', 'phonebook'
-        ]
+        field_list = ['contact_no', 'contact_name', 'contact_status', 'phonebook']
         unset_session_var(request, field_list)
 
         contact_no = getvar(request, 'contact_no', setsession=True)
         contact_name = getvar(request, 'contact_name', setsession=True)
         contact_status = getvar(request, 'contact_status', setsession=True)
         phonebook = getvar(request, 'phonebook', setsession=True)
+        post_var_with_page = 1
 
-    post_var_with_page = 0
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            post_var_with_page = 1
-            contact_no = request.session.get('session_contact_no')
-            contact_name = request.session.get('session_contact_name')
-            contact_status = request.session.get('session_contact_status')
-            phonebook = request.session.get('session_phonebook')
-            form = ContactSearchForm(request.user,
-                                     initial={'contact_no': contact_no,
-                                              'contact_name': contact_name,
-                                              'status': contact_status,
-                                              'phonebook': phonebook})
-        else:
-            post_var_with_page = 1
-            if request.method == 'GET':
-                post_var_with_page = 0
-    except:
-        pass
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
+        contact_no = request.session.get('session_contact_no')
+        contact_name = request.session.get('session_contact_name')
+        contact_status = request.session.get('session_contact_status')
+        phonebook = request.session.get('session_phonebook')
+        form = ContactSearchForm(request.user,
+                                 initial={'contact_no': contact_no,
+                                          'contact_name': contact_name,
+                                          'status': contact_status,
+                                          'phonebook': phonebook})
 
     if post_var_with_page == 0:
         # default
         # unset session var
-        field_list = ['contact_no', 'contact_name',
-                      'contact_status', 'phonebook']
+        field_list = ['contact_no', 'contact_name', 'contact_status', 'phonebook']
         unset_session_var(request, field_list)
 
     kwargs = {}
@@ -290,9 +254,7 @@ def contact_list(request):
     contact_count = 0
 
     if phonebook_id_list:
-        contact_list = Contact.objects.values(
-            'id', 'phonebook__name', 'contact', 'last_name', 'first_name',
-            'email', 'status', 'updated_date')\
+        contact_list = Contact.objects.values('id', 'phonebook__name', 'contact', 'last_name', 'first_name', 'email', 'status', 'updated_date')\
             .filter(phonebook__in=phonebook_id_list)
 
         if kwargs:
@@ -306,11 +268,10 @@ def contact_list(request):
             if contact_name_filter:
                 contact_list = contact_list.filter(contact_name_filter)
 
-        all_contact_list = contact_list.order_by(sort_order)
-        contact_list = all_contact_list[start_page:end_page]
+        all_contact_list = contact_list.order_by(pag_vars['sort_order'])
+        contact_list = all_contact_list[pag_vars['start_page']:pag_vars['end_page']]
         contact_count = all_contact_list.count()
 
-    template = 'dialer_contact/contact/list.html'
     data = {
         'contact_list': contact_list,
         'all_contact_list': all_contact_list,
@@ -323,8 +284,7 @@ def contact_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_contact/contact/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_contact.add_contact', login_url='/')
@@ -347,8 +307,7 @@ def contact_add(request):
     # Check dialer setting limit
     if request.user and request.method == 'POST':
         if check_dialer_setting(request, check_for="contact"):
-            request.session['msg'] = \
-                _("you have too many contacts. you are allowed a maximum of %(limit)s") % \
+            request.session['msg'] = _("you have too many contacts. you are allowed a maximum of %(limit)s") % \
                 {'limit': dialer_setting_limit(request, limit_for="contact")}
 
             # contact limit reached
@@ -362,12 +321,11 @@ def contact_add(request):
         request.session["msg"] = _('"%s" is added.') % request.POST['contact']
         return HttpResponseRedirect(redirect_url_to_contact_list)
 
-    template = 'dialer_contact/contact/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
+    return render_to_response('dialer_contact/contact/change.html', data,
                               context_instance=RequestContext(request))
 
 
@@ -387,8 +345,7 @@ def contact_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        contact = get_object_or_404(
-            Contact, pk=object_id, phonebook__user=request.user)
+        contact = get_object_or_404(Contact, pk=object_id, phonebook__user=request.user)
 
         # Delete contact
         request.session["msg"] = _('"%s" is deleted.') % contact.contact
@@ -401,8 +358,7 @@ def contact_del(request, object_id):
         try:
             contact_list = Contact.objects.extra(where=['id IN (%s)' % values])
             if contact_list:
-                request.session["msg"] =\
-                    _('%s contact(s) are deleted.') % contact_list.count()
+                request.session["msg"] = _('%s contact(s) are deleted.') % contact_list.count()
                 contact_list.delete()
         except:
             raise Http404
@@ -425,28 +381,23 @@ def contact_change(request, object_id):
         * Update/delete selected contact from the contact list
           via ContactForm & get redirected to the contact list
     """
-    contact = get_object_or_404(
-        Contact, pk=object_id, phonebook__user=request.user)
+    contact = get_object_or_404(Contact, pk=object_id, phonebook__user=request.user)
 
     form = ContactForm(request.user, request.POST or None, instance=contact)
     if form.is_valid():
         # Delete contact
         if request.POST.get('delete'):
-            return HttpResponseRedirect('%sdel/%s/' % (
-                redirect_url_to_contact_list, object_id))
+            return HttpResponseRedirect('%sdel/%s/' % (redirect_url_to_contact_list, object_id))
         else:
             # Update contact
             form.save()
             request.session["msg"] = _('"%s" is updated.') % request.POST['contact']
             return HttpResponseRedirect(redirect_url_to_contact_list)
-
-    template = 'dialer_contact/contact/change.html'
     data = {
         'form': form,
         'action': 'update',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_contact/contact/change.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -475,8 +426,7 @@ def contact_import(request):
     if request.user and request.method == 'POST':
         # check  Max Number of contacts
         if check_dialer_setting(request, check_for="contact"):
-            request.session['msg'] = \
-                _("you have too many contacts. you are allowed a maximum of %(limit)s") % \
+            request.session['msg'] = _("you have too many contacts. you are allowed a maximum of %(limit)s") % \
                 {'limit': dialer_setting_limit(request, limit_for="contact")}
 
             # contact limit reached
@@ -507,16 +457,12 @@ def contact_import(request):
         # 10     - unit_number
         # 11     - additional_vars
         # To count total rows of CSV file
-        records = csv.reader(request.FILES['csv_file'],
-                             delimiter='|', quotechar='"')
+        records = csv.reader(request.FILES['csv_file'], delimiter='|', quotechar='"')
         total_rows = len(list(records))
         BULK_SIZE = 1000
-        csv_data = csv.reader(request.FILES['csv_file'],
-                              delimiter='|', quotechar='"')
+        csv_data = csv.reader(request.FILES['csv_file'], delimiter='|', quotechar='"')
         #Get Phonebook Obj
-        phonebook = get_object_or_404(
-            Phonebook, pk=request.POST['phonebook'],
-            user=request.user)
+        phonebook = get_object_or_404(Phonebook, pk=request.POST['phonebook'], user=request.user)
         #Read each Row
         for row in csv_data:
             row = striplist(row)
@@ -576,8 +522,7 @@ def contact_import(request):
     #check if there is contact imported
     if contact_cnt > 0:
         msg = _('%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
-            % {'contact_cnt': contact_cnt,
-               'total_rows': total_rows}
+            % {'contact_cnt': contact_cnt, 'total_rows': total_rows}
 
     data = RequestContext(request, {
         'form': form,
@@ -587,6 +532,4 @@ def contact_import(request):
         'success_import_list': success_import_list,
         'type_error_import_list': type_error_import_list,
     })
-    template = 'dialer_contact/contact/import_contact.html'
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_contact/contact/import_contact.html', data, context_instance=RequestContext(request))

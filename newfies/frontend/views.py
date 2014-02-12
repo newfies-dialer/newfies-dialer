@@ -67,14 +67,11 @@ def login_view(request):
         * If submitted user credentials are valid then system will redirect to
           the dashboard.
     """
-    template = 'frontend/index.html'
     errorlogin = ''
     loginform = LoginForm(request.POST or None)
-
     if loginform.is_valid():
         cd = loginform.cleaned_data
-        user = authenticate(username=cd['user'],
-                            password=cd['password'])
+        user = authenticate(username=cd['user'], password=cd['password'])
         if user is not None:
             if user.is_active:
                 login(request, user)
@@ -97,8 +94,7 @@ def login_view(request):
         'is_authenticated': request.user.is_authenticated(),
     }
 
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('frontend/index.html', data, context_instance=RequestContext(request))
 
 
 def index(request):
@@ -109,27 +105,20 @@ def index(request):
         * ``form`` - LoginForm
         * ``template`` - frontend/index.html
     """
-    template = 'frontend/index.html'
-    errorlogin = ''
     data = {
         'user': request.user,
         'loginform': LoginForm(),
-        'errorlogin': errorlogin,
+        'errorlogin': '',
     }
-
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('frontend/index.html', data, context_instance=RequestContext(request))
 
 
 def pleaselog(request):
-    template = 'frontend/index.html'
-
     data = {
         'loginform': LoginForm(),
         'notlogged': True,
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('frontend/index.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.view_dashboard', login_url='/')
@@ -149,14 +138,12 @@ def customer_dashboard(request, on_index=None):
     """
     logging.debug('Start Dashboard')
     # All campaign for logged in User
-    campaign_id_list = Campaign.objects.values_list('id', flat=True)\
-        .filter(user=request.user).order_by('id')
+    campaign_id_list = Campaign.objects.values_list('id', flat=True).filter(user=request.user).order_by('id')
 
     # Contacts count which are active and belong to those phonebook(s) which is
     # associated with all campaign
     pb_active_contact_count = Contact.objects\
-        .filter(phonebook__campaign__in=campaign_id_list, status=CONTACT_STATUS.ACTIVE)\
-        .count()
+        .filter(phonebook__campaign__in=campaign_id_list, status=CONTACT_STATUS.ACTIVE).count()
 
     form = DashboardForm(request.user, request.POST or None)
     logging.debug('Got Campaign list')
@@ -454,7 +441,6 @@ def customer_dashboard(request, on_index=None):
                        "color_list": color_list}
         hangup_analytic_chartdata = {'x': xdata, 'y1': ydata, 'extra1': extra_serie}
 
-    template = 'frontend/dashboard.html'
     data = {
         'form': form,
         'campaign_phonebook_active_contact_count': pb_active_contact_count,
@@ -496,6 +482,5 @@ def customer_dashboard(request, on_index=None):
     }
     if on_index == 'yes':
         return data
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('frontend/dashboard.html', data, context_instance=RequestContext(request))
 

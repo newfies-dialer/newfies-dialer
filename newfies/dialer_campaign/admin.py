@@ -93,9 +93,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
         # Check dialer setting limit
         # check Max Number of running campaigns
         if check_dialer_setting(request, check_for="campaign"):
-            msg = _("you have too many campaigns. max allowed %(limit)s") \
-                % {'limit':
-                    dialer_setting_limit(request, limit_for="campaign")}
+            msg = _("you have too many campaigns. max allowed %(limit)s") % {'limit': dialer_setting_limit(request, limit_for="campaign")}
             messages.error(request, msg)
 
             return HttpResponseRedirect(
@@ -169,11 +167,9 @@ class SubscriberAdmin(admin.ModelAdmin):
                 kwargs['campaign_id'] = campaign_id
 
             select_data = {"updated_date": "SUBSTR(CAST(updated_date as CHAR(30)),1,10)"}
-            subscriber = Subscriber.objects \
-                .filter(**kwargs) \
-                .extra(select=select_data) \
-                .values('updated_date', 'status') \
-                .annotate(Count('updated_date')) \
+            subscriber = Subscriber.objects.filter(**kwargs).extra(select=select_data)\
+                .values('updated_date', 'status')\
+                .annotate(Count('updated_date'))\
                 .order_by('updated_date')
 
             for i in subscriber:
@@ -214,7 +210,6 @@ class SubscriberAdmin(admin.ModelAdmin):
             'title': _('subscriber report'),
         })
 
-        return render_to_response('admin/dialer_campaign/subscriber/subscriber_report.html',
-               context_instance=ctx)
+        return render_to_response('admin/dialer_campaign/subscriber/subscriber_report.html', context_instance=ctx)
 
 admin.site.register(Subscriber, SubscriberAdmin)

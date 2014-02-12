@@ -140,27 +140,24 @@ def campaign_list(request):
     pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
     phonebook_id = ''
     status = 'all'
+    post_var_with_page = 0
 
     if form.is_valid():
         field_list = ['phonebook_id', 'status']
         unset_session_var(request, field_list)
         phonebook_id = getvar(request, 'phonebook_id', setsession=True)
         status = getvar(request, 'status', setsession=True)
+        post_var_with_page = 1
 
-    #TODO: not clear what post_var_with_page does? maybe we can find a more elegant way
-    post_var_with_page = 0
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            post_var_with_page = 1
-            phonebook_id = request.session.get('session_phonebook_id')
-            status = request.session.get('session_status')
-            form = CampaignSearchForm(request.user, initial={'status': status, 'phonebook_id': phonebook_id})
-        else:
-            post_var_with_page = 1
-            if request.method == 'GET':
-                post_var_with_page = 0
-    except:  # TODO: set error to except
-        pass
+    # This logic to retain searched result set while accessing pagination or sorting on column
+    # post_var_with_page will check following thing
+    # 1) if page has previously searched value, then post_var_with_page become 1
+    # 2) if not then post_var_with_page remain 0 & flush the session variables' value
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
+        phonebook_id = request.session.get('session_phonebook_id')
+        status = request.session.get('session_status')
+        form = CampaignSearchForm(request.user, initial={'status': status, 'phonebook_id': phonebook_id})
 
     if post_var_with_page == 0:
         # default / unset session var
@@ -174,9 +171,9 @@ def campaign_list(request):
     if status and status != 'all':
         kwargs['status'] = status
 
-    # campaign_list = Campaign.objects.filter(user=request.user).order_by(pag_vars['sort_order'])
-    campaign_list = Campaign.objects.filter(user=request.user).filter(**kwargs).order_by(pag_vars['sort_order'])
-    campaign_count = campaign_list.count()
+    all_campaign_list = Campaign.objects.filter(**kwargs).order_by(pag_vars['sort_order'])
+    campaign_list = all_campaign_list[pag_vars['start_page']:pag_vars['end_page']]
+    campaign_count = all_campaign_list.count()
 
     data = {
         'form': form,
@@ -258,17 +255,14 @@ def campaign_add(request):
 
         form.save_m2m()
 
-        request.session["msg"] = _('"%(name)s" added.') % \
-            {'name': request.POST['name']}
+        request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
         return HttpResponseRedirect(redirect_url_to_campaign_list)
 
-    template = 'dialer_campaign/campaign/change.html'
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_campaign/campaign/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.delete_campaign', login_url='/')
@@ -292,32 +286,25 @@ def campaign_del(request, object_id):
         if stop_campaign:
             campaign.status = CAMPAIGN_STATUS.END
             campaign.save()
-            request.session["msg"] = _('the campaign "%(name)s" has been stopped.') \
-                % {'name': campaign.name}
+            request.session["msg"] = _('the campaign "%(name)s" has been stopped.') % {'name': campaign.name}
         else:
-            request.session["msg"] = _('the campaign "%(name)s" has been deleted.') \
-                % {'name': campaign.name}
+            request.session["msg"] = _('the campaign "%(name)s" has been deleted.') % {'name': campaign.name}
             campaign.delete()
     else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         try:
-            campaign_list = Campaign.objects \
-                .filter(user=request.user) \
-                .extra(where=['id IN (%s)' % values])
+            campaign_list = Campaign.objects.filter(user=request.user).extra(where=['id IN (%s)' % values])
             if campaign_list:
                 if stop_campaign:
                     campaign_list.update(status=CAMPAIGN_STATUS.END)
-                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') \
-                        % {'count': campaign_list.count()}
+                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') % {'count': campaign_list.count()}
                 else:
-                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') \
-                        % {'count': campaign_list.count()}
+                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') % {'count': campaign_list.count()}
                     campaign_list.delete()
         except:
             raise Http404
-
     return HttpResponseRedirect(redirect_url_to_campaign_list)
 
 
@@ -347,14 +334,12 @@ def campaign_change(request, object_id):
                         initial={'content_object': content_object})
 
     if campaign.status == CAMPAIGN_STATUS.START:
-        request.session['info_msg'] = \
-            _('the campaign is started, you can only edit Dialer settings and Campaign schedule')
+        request.session['info_msg'] = _('the campaign is started, you can only edit Dialer settings and Campaign schedule')
 
     if request.method == 'POST':
         # Delete campaign
         if request.POST.get('delete'):
-            return HttpResponseRedirect('%sdel/%s/' % (
-                redirect_url_to_campaign_list, object_id))
+            return HttpResponseRedirect('%sdel/%s/' % (redirect_url_to_campaign_list, object_id))
         else:
             # Update campaign
             if form.is_valid():
@@ -375,12 +360,10 @@ def campaign_change(request, object_id):
                 obj.object_id = contenttype['object_id']
                 obj.save()
 
-                request.session["msg"] = _('the campaign "%(name)s" is updated.') \
-                    % {'name': request.POST['name']}
+                request.session["msg"] = _('the campaign "%(name)s" is updated.') % {'name': request.POST['name']}
                 request.session['error_msg'] = ''
                 return HttpResponseRedirect(redirect_url_to_campaign_list)
 
-    template = 'dialer_campaign/campaign/change.html'
     data = {
         'form': form,
         'action': 'update',
@@ -389,8 +372,7 @@ def campaign_change(request, object_id):
     }
     request.session['error_msg'] = ''
     request.session['info_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_campaign/campaign/change.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -440,15 +422,14 @@ def campaign_duplicate(request, id):
         else:
             request.session['error_msg'] = True
 
-    template = 'dialer_campaign/campaign/campaign_duplicate.html'
     data = {
         'campaign_id': id,
         'form': form,
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''
-    return render_to_response(
-        template, data, context_instance=RequestContext(request))
+    return render_to_response('dialer_campaign/campaign/campaign_duplicate.html', data,
+                              context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.view_subscriber', login_url='/')
@@ -465,27 +446,22 @@ def subscriber_list(request):
 
         * List all subscribers belonging to the logged in user & their campaign
     """
-    sort_col_field_list = ['contact', 'updated_date', 'count_attempt',
-                           'completion_count_attempt', 'status',
-                           'disposition', 'collected_data', 'agent']
-    default_sort_field = 'id'
-    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-    sort_order = pag_vars['sort_order']
-    start_page = pag_vars['start_page']
-    end_page = pag_vars['end_page']
-
+    sort_col_field_list = ['contact', 'updated_date', 'count_attempt', 'completion_count_attempt',
+                           'status', 'disposition', 'collected_data', 'agent']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
     form = SubscriberSearchForm(request.user, request.POST or None)
     campaign_id = ''
     agent_id = ''
     status = 'all'
     start_date = end_date = None
-
+    post_var_with_page = 0
     if form.is_valid():
         field_list = ['start_date', 'end_date', 'status',
                       'campaign_id', 'agent_id']
         unset_session_var(request, field_list)
         campaign_id = getvar(request, 'campaign_id', setsession=True)
         agent_id = getvar(request, 'agent_id', setsession=True)
+        post_var_with_page = 1
 
         if request.POST.get('from_date'):
             # From
@@ -503,28 +479,20 @@ def subscriber_list(request):
         if status != 'all':
             request.session['session_status'] = status
 
-    post_var_with_page = 0
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            post_var_with_page = 1
-            start_date = request.session.get('session_start_date')
-            end_date = request.session.get('session_end_date')
-            campaign_id = request.session.get('session_campaign_id')
-            agent_id = request.session.get('session_agent_id')
-            status = request.session.get('session_status')
-            form = SubscriberSearchForm(
-                request.user,
-                initial={'from_date': start_date.strftime('%Y-%m-%d'),
-                         'to_date': end_date.strftime('%Y-%m-%d'),
-                         'campaign_id': campaign_id,
-                         'agent_id': agent_id,
-                         'status': status})
-        else:
-            post_var_with_page = 1
-            if request.method == 'GET':
-                post_var_with_page = 0
-    except:
-        pass
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
+        start_date = request.session.get('session_start_date')
+        end_date = request.session.get('session_end_date')
+        campaign_id = request.session.get('session_campaign_id')
+        agent_id = request.session.get('session_agent_id')
+        status = request.session.get('session_status')
+        form = SubscriberSearchForm(
+            request.user,
+            initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                     'to_date': end_date.strftime('%Y-%m-%d'),
+                     'campaign_id': campaign_id,
+                     'agent_id': agent_id,
+                     'status': status})
 
     if post_var_with_page == 0:
         # default
@@ -534,10 +502,7 @@ def subscriber_list(request):
         start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
         end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999).replace(tzinfo=utc)
 
-        form = SubscriberSearchForm(
-            request.user,
-            initial={'from_date': from_date,
-                     'to_date': to_date})
+        form = SubscriberSearchForm(request.user, initial={'from_date': from_date, 'to_date': to_date})
         # unset session var
         request.session['session_start_date'] = start_date
         request.session['session_end_date'] = end_date
@@ -557,8 +522,8 @@ def subscriber_list(request):
     if campaign_id and campaign_id != '0':
         kwargs['campaign_id'] = campaign_id
 
-    if agent_id and agent_id != '0':
-        kwargs['agent_id'] = agent_id
+    #if agent_id and agent_id != '0':
+    #    kwargs['agent_id'] = agent_id
 
     if status and status != 'all':
         kwargs['status'] = status
@@ -576,11 +541,10 @@ def subscriber_list(request):
         subscriber_list = subscriber_list.filter(**kwargs)
         request.session['subscriber_list_kwargs'] = kwargs
 
-    all_subscriber_list = subscriber_list.order_by(sort_order)
-    subscriber_list = all_subscriber_list[start_page:end_page]
+    all_subscriber_list = subscriber_list.order_by(pag_vars['sort_order'])
+    subscriber_list = all_subscriber_list[pag_vars['start_page']:pag_vars['end_page']]
     subscriber_count = all_subscriber_list.count()
 
-    template = 'dialer_campaign/subscriber/list.html'
     data = {
         'subscriber_list': subscriber_list,
         'all_subscriber_list': all_subscriber_list,
@@ -593,8 +557,7 @@ def subscriber_list(request):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_campaign/subscriber/list.html', data, context_instance=RequestContext(request))
 
 
 @login_required

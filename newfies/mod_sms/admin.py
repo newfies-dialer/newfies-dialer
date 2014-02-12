@@ -263,8 +263,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
             'title': _('SMS aggregate report'),
         })
 
-        return render_to_response(
-            'admin/mod_sms/smsmessage/sms_report.html', context_instance=ctx)
+        return render_to_response('admin/mod_sms/smsmessage/sms_report.html', context_instance=ctx)
 
     def export_sms_report(self, request):
         """Export a CSV file of SMS records

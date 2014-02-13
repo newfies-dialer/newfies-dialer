@@ -27,9 +27,10 @@ def cust_password_reset(request):
     ``password_reset_form``
     """
     if not request.user.is_authenticated():
+        print request.method
         data = {
-            'loginform': LoginForm(),
-            'forgotform': ForgotForm(),
+            'loginform': LoginForm(request.POST or None),
+            'forgotform': ForgotForm(request.POST or None),
         }
         return password_reset(
             request,

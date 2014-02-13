@@ -33,7 +33,6 @@ class ForgotForm(forms.Form):
     """Forgot password Form"""
     email = forms.EmailField(max_length=60, label=_('email'), required=True)
     email.widget.attrs['class'] = 'form-control'
-    email.widget.attrs['placeholder'] = _('email')
 
 
 class DashboardForm(forms.Form):

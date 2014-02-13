@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags pagination_tags utils_tags %}
+{% load i18n common_tags pagination_tags crispy_forms_tags %}
 
 {% block content_header %}
     <h1>{% trans "contacts"|title %} <small>{% trans "list, add and edit contacts"|capfirst %}</small></h1>
@@ -7,15 +7,9 @@
 
 {% block content %}
 
-<form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    <div class="row">
-        {% get_fieldset contact_no,contact_name,phonebook,contact_status as search_contact from form %}
-        {% for field in search_contact %}
-            {% field_html_code field 'col-md-3' %}
-        {% endfor %}
-    </div>
-    <input class="btn btn-primary" type="submit" name="submit" value="{% trans 'search'|title %}" />
-</form>
+{# contact search form #}
+{% crispy form form.helper %}
+
 <div>&nbsp;</div>
 <div class="row">
     <div class="col-md-12">

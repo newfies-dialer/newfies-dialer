@@ -163,8 +163,7 @@ class DNCContact_fileExport(Exportfile):
     """
     DNC Contact Export
     """
-    dnc_list = forms.ChoiceField(label=_("DNC list"), required=True,
-                                 help_text=_("select DNC list"))
+    dnc_list = forms.ChoiceField(label=_("DNC list"), required=True, help_text=_("select DNC list"))
 
     def __init__(self, user, *args, **kwargs):
         super(DNCContact_fileExport, self).__init__(*args, **kwargs)

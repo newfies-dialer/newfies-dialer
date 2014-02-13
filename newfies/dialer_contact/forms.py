@@ -43,7 +43,7 @@ class SearchForm(AdminSearchForm):
 class FileImport(forms.Form):
     """General Form : CSV file upload"""
     csv_file = forms.FileField(
-        label=_('upload CSV file using the pipe "|" as the field delimiter, e.g. ' +
+        label=_('Upload CSV file using the pipe "|" as the field delimiter, e.g. ' +
                 '1234567890|surname|forename|email@somewhere.com|test-contact|1|' +
                 'address|city|state|US|unit|{"age":"32","title":"doctor"}|'),
         required=True,
@@ -61,9 +61,17 @@ class FileImport(forms.Form):
 
 class Contact_fileImport(FileImport):
     """Admin Form : Import CSV file with phonebook"""
-    phonebook = forms.ChoiceField(label=_("phonebook"), required=False, help_text=_("select phonebook"))
+    phonebook = forms.ChoiceField(label=_("phonebook").capitalize(), required=False, help_text=_("select phonebook"))
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div(Fieldset('', 'phonebook', 'csv_file')),
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'import')
         super(Contact_fileImport, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['phonebook', 'csv_file']
         for i in self.fields.keyOrder:
@@ -137,16 +145,25 @@ class ContactForm(ModelForm):
 
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-    contact_no = forms.CharField(label=_('contact number'), required=False,
-                                 widget=NumberInput())
-    contact_name = forms.CharField(label=_('contact name'), required=False,
-                                   widget=forms.TextInput(attrs={'size': 15}))
-    phonebook = forms.ChoiceField(label=_('phonebook'), required=False)
-    contact_status = forms.TypedChoiceField(label=_('status'), required=False,
-                                            choices=list(STATUS_CHOICE),
+    contact_no = forms.CharField(label=_('contact number').capitalize(), required=False, widget=NumberInput())
+    contact_name = forms.CharField(label=_('contact name').capitalize(), required=False, widget=forms.TextInput(attrs={'size': 15}))
+    phonebook = forms.ChoiceField(label=_('phonebook').capitalize(), required=False)
+    contact_status = forms.TypedChoiceField(label=_('status').capitalize(), required=False, choices=list(STATUS_CHOICE),
                                             initial=STATUS_CHOICE.ALL)
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div('contact_no', css_class='col-md-3'),
+                Div('contact_name', css_class='col-md-3'),
+                Div('phonebook', css_class='col-md-3'),
+                Div('contact_status', css_class='col-md-3'),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
         super(ContactSearchForm, self).__init__(*args, **kwargs)
         change_field_list = [
             'contact_no', 'contact_name', 'phonebook', 'contact_status'

@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags utils_tags %}
+{% load i18n common_tags crispy_forms_tags %}
 
 {% block extra_files %}
     <style>
@@ -70,17 +70,8 @@
 </div>
 <br/><br/>
 
-
-<form class="well" role="form" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
-    {% for field in form %}
-        {% field_html_code field '' %}
-    {% endfor %}
-    <div class="text-right">
-        <button type="submit" class="btn btn-primary" value="submit">
-            <i class="fa fa-save fa-lg"></i> {% trans "import"|wordcap %}
-        </button>
-    </div>
-</form>
+{# import form #}
+{% crispy form form.helper %}
 
 {% if success_import_list %}
 <div class="table-responsive">

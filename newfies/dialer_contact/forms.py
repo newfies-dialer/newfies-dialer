@@ -21,7 +21,9 @@ from dialer_contact.constants import STATUS_CHOICE
 from dialer_campaign.function_def import get_phonebook_list
 #from dialer_contact.constants import CHOICE_TYPE
 from bootstrap3_datetime.widgets import DateTimePicker
-from mod_utils.forms import SaveUserModelForm
+from mod_utils.forms import SaveUserModelForm, common_submit_buttons
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, Div
 
 
 class AdminSearchForm(forms.Form):
@@ -32,11 +34,9 @@ class AdminSearchForm(forms.Form):
 
 class SearchForm(AdminSearchForm):
     """General Search Form with From & To date para."""
-    from_date = forms.CharField(
-        label=_('from'), required=False, max_length=10,
+    from_date = forms.CharField(label=_('from'), required=False, max_length=10,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
-    to_date = forms.CharField(
-        label=_('to'), required=False, max_length=10,
+    to_date = forms.CharField(label=_('to'), required=False, max_length=10,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
 
 
@@ -56,15 +56,12 @@ class FileImport(forms.Form):
         if str(filename).split(".")[1].lower() in file_exts:
             return filename
         else:
-            raise forms.ValidationError(_(u'document types accepted: %s' %
-                                          ' '.join(file_exts)))
+            raise forms.ValidationError(_(u'document types accepted: %s' % ' '.join(file_exts)))
 
 
 class Contact_fileImport(FileImport):
     """Admin Form : Import CSV file with phonebook"""
-    phonebook = forms.ChoiceField(
-        label=_("phonebook"), required=False,
-        help_text=_("select phonebook"))
+    phonebook = forms.ChoiceField(label=_("phonebook"), required=False, help_text=_("select phonebook"))
 
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)
@@ -87,9 +84,20 @@ class PhonebookForm(SaveUserModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div(Fieldset('', 'name', 'description', css_class='col-md-6')),
+            ),
+        )
         super(PhonebookForm, self).__init__(*args, **kwargs)
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
+        if self.instance.id:
+            common_submit_buttons(self.helper.layout, 'update')
+        else:
+            common_submit_buttons(self.helper.layout)
 
 
 def phonebook_list(user):

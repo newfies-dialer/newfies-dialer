@@ -1,14 +1,6 @@
 {% extends "frontend/master.html" %}
 {% load i18n utils_tags %}
-
-{% block extra_files %}
-    <style type="text/css">
-    .add {
-        background:transparent url('{{ STATIC_URL }}newfies/icons/add.png') no-repeat scroll left center;
-        padding:1px 1px 1px 20px;
-    }
-    </style>
-{% endblock %}
+{% load crispy_forms_tags %}
 
 {% block content_header %}
     <h1>
@@ -16,14 +8,14 @@
             {% trans "update"|title %}
         {% else %}
             {% trans "add"|title %}
-        {% endif %} {% trans "DNC" %} {% trans "contact"|title %}
+        {% endif %}
+        {% trans "dnc"|upper %} {% trans "contact"|title %}
         <small>{% trans "add DNC contact details"|capfirst %}</small>
     </h1>
 {% endblock %}
 
 {% block content %}
-
-<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
+<!--<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
 
     {% for field in form %}
     <div class="row">
@@ -31,6 +23,7 @@
     </div>
     {% endfor %}
     {% include "frontend/common_submit_buttons.html" %}
-</form>
+</form>-->
+{% crispy form form.helper %}
 
 {% endblock %}

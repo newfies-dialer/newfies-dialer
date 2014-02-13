@@ -105,13 +105,29 @@ class DNCContactForm(ModelForm):
         fields = ['dnc', 'phone_number']
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.label_class = 'col-md-12'
+        self.helper.field_class = 'col-md-6'
+
+        self.helper.layout = Layout(
+            Fieldset(
+                '',
+                'dnc',
+                'phone_number'
+            )
+        )
         super(DNCContactForm, self).__init__(*args, **kwargs)
         # To get user's dnc list
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
-            self.fields['dnc'].choices = DNC.objects.values_list('id', 'name')\
-                .filter(user=user).order_by('id')
+            self.fields['dnc'].choices = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+
+        if self.instance.id:
+            pop_btn_add_update_delete(self.helper.layout, 'update')
+        else:
+            pop_btn_add_update_delete(self.helper.layout)
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number', None)

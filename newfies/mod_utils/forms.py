@@ -80,7 +80,5 @@ def common_submit_buttons(layout_section, default_action='add'):
                  ),
         ))
     elif default_action == 'search':
-        layout_section.append(
-            FormActions((Submit('submit', 'Search'))
-        )
+        layout_section.append(FormActions(Submit('search', 'Search'),))
     return layout_section

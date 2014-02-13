@@ -63,7 +63,7 @@ class CampaignForm(ModelForm):
         model = Campaign
         fields = ['campaign_code', 'name',
                   'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
-                  'content_object', # 'content_type', 'object_id'
+                  'content_object',  # 'content_type', 'object_id'
                   'extra_data', 'dnc', 'description', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',

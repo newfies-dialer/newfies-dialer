@@ -32,17 +32,20 @@ def pop_btn_add_update_delete(layout_section, default_action='add'):
     function to remove the first button and add update and delete button
     """
     # TODO: this might become a function in mod_utils
+    start_div = '<div class="row"><div class="col-md-12 text-right">'
+    end_div = '</div></div>'
     if default_action == 'update':
         layout_section.append(FormActions(
-            HTML('<button type="submit" id="update" name="update" class="btn btn-primary" value="submit">'
-             '<i class="fa fa-edit fa-lg"></i> Update</button>'),
-            HTML('<button type="submit" id="delete" name="delete" class="btn btn-danger" value="submit">'
-             '<i class="fa fa-trash-o fa-lg"></i> Delete</button>')
+            HTML('%s<button type="submit" id="update" name="update" class="btn btn-primary" value="submit">'
+                 '<i class="fa fa-edit fa-lg"></i> Update</button>'
+                 '<button type="submit" id="delete" name="delete" class="btn btn-danger" value="submit">'
+                 '<i class="fa fa-trash-o fa-lg"></i> Delete</button>%s' % (start_div, end_div))
         ))
     elif default_action == 'add':
         layout_section.append(FormActions(
-            HTML('<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
-                 '<i class="fa fa-save fa-lg"></i> Save</button>'),
+            HTML('%s<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
+                 '<i class="fa fa-save fa-lg"></i> Save</button>%s' % (start_div, end_div)
+                 ),
         ))
 
 

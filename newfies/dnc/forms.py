@@ -27,18 +27,23 @@ from crispy_forms.layout import Submit, Layout, Button, Fieldset, HTML, Field
 from crispy_forms.bootstrap import FormActions, StrictButton
 
 
-def pop_btn_add_update_delete(layout_section):
+def pop_btn_add_update_delete(layout_section, default_action='add'):
     """
     function to remove the first button and add update and delete button
     """
     # TODO: this might become a function in mod_utils
-    layout_section.pop(0)
-    layout_section.append(
-        HTML('<button type="submit" id="update" name="update" class="btn btn-primary" value="submit">'
-             '<i class="fa fa-edit fa-lg"></i> Update</button>')),
-    layout_section.append(
-        HTML('<button type="submit" id="delete" name="delete" class="btn btn-primary" value="submit">'
-             '<i class="fa fa-trash-o fa-lg"></i> Update</button>')),
+    if default_action == 'update':
+        layout_section.append(FormActions(
+            HTML('<button type="submit" id="update" name="update" class="btn btn-primary" value="submit">'
+             '<i class="fa fa-edit fa-lg"></i> Update</button>'),
+            HTML('<button type="submit" id="delete" name="delete" class="btn btn-danger" value="submit">'
+             '<i class="fa fa-trash-o fa-lg"></i> Delete</button>')
+        ))
+    elif default_action == 'add':
+        layout_section.append(FormActions(
+            HTML('<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
+                 '<i class="fa fa-save fa-lg"></i> Save</button>'),
+        ))
 
 
 class DNCListForm(SaveUserModelForm):
@@ -63,23 +68,13 @@ class DNCListForm(SaveUserModelForm):
                 '',
                 'name',
                 'description'
-            ),
-            FormActions(
-                HTML('<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
-                     '<i class="fa fa-save fa-lg"></i> Save</button>'),
             )
         )
-
         super(DNCListForm, self).__init__(*args, **kwargs)
-
-
-class DNCListFormUpdate(DNCListForm):
-    """DNC List Form for Update
-    This form add a delete button and change save button to update
-    """
-    def __init__(self, *args, **kwargs):
-        super(DNCListFormUpdate, self).__init__(*args, **kwargs)
-        pop_btn_add_update_delete(self.helper.layout[1])
+        if self.instance.id:
+            pop_btn_add_update_delete(self.helper.layout, 'update')
+        else:
+            pop_btn_add_update_delete(self.helper.layout)
 
 
 class DNCContactSearchForm(forms.Form):

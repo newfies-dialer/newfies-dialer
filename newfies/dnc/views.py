@@ -17,8 +17,7 @@ from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from dnc.models import DNC, DNCContact
-from dnc.forms import DNCListForm, DNCListFormUpdate, \
-    DNCContactSearchForm, DNCContactForm,\
+from dnc.forms import DNCListForm, DNCContactSearchForm, DNCContactForm,\
     DNCContact_fileImport, DNCContact_fileExport
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
 from django_lets_go.common_functions import get_pagination_vars, striplist, source_desti_field_chk
@@ -159,7 +158,7 @@ def dnc_change(request, object_id):
           via DNCListForm & get redirected to dnc list
     """
     dnc = get_object_or_404(DNC, pk=object_id, user=request.user)
-    form = DNCListFormUpdate(request.POST or None, instance=dnc)
+    form = DNCListForm(request.POST or None, instance=dnc)
     if form.is_valid():
         if request.POST.get('delete'):
             dnc_del(request, object_id)

@@ -17,6 +17,10 @@ from django.utils.safestring import mark_safe
 from django.utils.translation import ugettext_lazy as _
 from mod_utils.helper import Export_choice
 
+from crispy_forms.layout import HTML
+from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Submit
+
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
     """This overrides widget method to put radio buttons horizontally
@@ -48,3 +52,35 @@ class SaveUserModelForm(ModelForm):
             obj.user = self.user
         obj.save()
         return obj
+
+
+def common_submit_buttons(layout_section, default_action='add'):
+    """
+    function to remove the first button and add update and delete button
+    """
+    start_div = '<div class="row"><div class="col-md-12 text-right">'
+    end_div = '</div></div>'
+    if default_action == 'update':
+        layout_section.append(FormActions(
+            HTML('%s<button type="submit" id="update" name="update" class="btn btn-primary" value="submit">'
+                 '<i class="fa fa-edit fa-lg"></i> Update</button>'
+                 '<button type="submit" id="delete" name="delete" class="btn btn-danger" value="submit">'
+                 '<i class="fa fa-trash-o fa-lg"></i> Delete</button>%s' % (start_div, end_div))
+        ))
+    elif default_action == 'add':
+        layout_section.append(FormActions(
+            HTML('%s<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
+                 '<i class="fa fa-save fa-lg"></i> Save</button>%s' % (start_div, end_div)
+                 ),
+        ))
+    elif default_action == 'import':
+        layout_section.append(FormActions(
+            HTML('%s<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
+                 '<i class="fa fa-save fa-lg"></i> Import</button>%s' % (start_div, end_div)
+                 ),
+        ))
+    elif default_action == 'search':
+        layout_section.append(
+            FormActions((Submit('submit', 'Search'))
+        )
+    return layout_section

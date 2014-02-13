@@ -21,32 +21,9 @@ from dialer_contact.forms import FileImport
 from mod_utils.forms import Exportfile
 
 # from django.core.urlresolvers import reverse
-from mod_utils.forms import SaveUserModelForm
+from mod_utils.forms import SaveUserModelForm, common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Submit, Layout, Button, Fieldset, HTML, Field
-from crispy_forms.bootstrap import FormActions, StrictButton
-
-
-def pop_btn_add_update_delete(layout_section, default_action='add'):
-    """
-    function to remove the first button and add update and delete button
-    """
-    # TODO: this might become a function in mod_utils
-    start_div = '<div class="row"><div class="col-md-12 text-right">'
-    end_div = '</div></div>'
-    if default_action == 'update':
-        layout_section.append(FormActions(
-            HTML('%s<button type="submit" id="update" name="update" class="btn btn-primary" value="submit">'
-                 '<i class="fa fa-edit fa-lg"></i> Update</button>'
-                 '<button type="submit" id="delete" name="delete" class="btn btn-danger" value="submit">'
-                 '<i class="fa fa-trash-o fa-lg"></i> Delete</button>%s' % (start_div, end_div))
-        ))
-    elif default_action == 'add':
-        layout_section.append(FormActions(
-            HTML('%s<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
-                 '<i class="fa fa-save fa-lg"></i> Save</button>%s' % (start_div, end_div)
-                 ),
-        ))
+from crispy_forms.layout import Layout, Fieldset, Div
 
 
 class DNCListForm(SaveUserModelForm):
@@ -63,29 +40,34 @@ class DNCListForm(SaveUserModelForm):
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'well'
-        self.helper.label_class = 'col-md-12'
-        self.helper.field_class = 'col-md-6'
-
         self.helper.layout = Layout(
-            Fieldset(
-                '',
-                'name',
-                'description'
-            )
+            Div(
+                Div(Fieldset('', 'name', 'description', css_class='col-md-6')),
+            ),
         )
         super(DNCListForm, self).__init__(*args, **kwargs)
         if self.instance.id:
-            pop_btn_add_update_delete(self.helper.layout, 'update')
+            common_submit_buttons(self.helper.layout, 'update')
         else:
-            pop_btn_add_update_delete(self.helper.layout)
+            common_submit_buttons(self.helper.layout)
 
 
 class DNCContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-    phone_number = forms.IntegerField(label=_('phone number'), required=False)
+    phone_number = forms.IntegerField(label=_('phone number').title(), required=False)
     dnc = forms.ChoiceField(label=_('Do Not Call list').title(), required=False)
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div('phone_number', css_class='col-md-4'),
+                Div('dnc', css_class='col-md-4'),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
         super(DNCContactSearchForm, self).__init__(*args, **kwargs)
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
@@ -110,16 +92,12 @@ class DNCContactForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'well'
-        self.helper.label_class = 'col-md-12'
-        self.helper.field_class = 'col-md-6'
-
         self.helper.layout = Layout(
-            Fieldset(
-                '',
-                'dnc',
-                'phone_number'
-            )
+            Div(
+                Div(Fieldset('', 'dnc', 'phone_number', css_class='col-md-6')),
+            ),
         )
+        common_submit_buttons(self.helper.layout, 'search')
         super(DNCContactForm, self).__init__(*args, **kwargs)
         # To get user's dnc list
         for i in self.fields.keyOrder:
@@ -128,9 +106,9 @@ class DNCContactForm(ModelForm):
             self.fields['dnc'].choices = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
 
         if self.instance.id:
-            pop_btn_add_update_delete(self.helper.layout, 'update')
+            common_submit_buttons(self.helper.layout, 'update')
         else:
-            pop_btn_add_update_delete(self.helper.layout)
+            common_submit_buttons(self.helper.layout)
 
     def clean_phone_number(self):
         phone_number = self.cleaned_data.get('phone_number', None)
@@ -159,11 +137,17 @@ def get_dnc_list(user):
 
 class DNCContact_fileImport(FileImport):
     """Admin Form : Import CSV file with DNC list"""
-    dnc_list = forms.ChoiceField(label=_("DNC List"),
-                                 required=True,
-                                 help_text=_("select DNC list"))
+    dnc_list = forms.ChoiceField(label=_("DNC List"), required=True, help_text=_("select DNC list"))
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div(Fieldset('', 'dnc_list', 'csv_file', css_class='col-md-6')),
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'import')
         super(DNCContact_fileImport, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['dnc_list', 'csv_file']
         for i in self.fields.keyOrder:
@@ -172,7 +156,7 @@ class DNCContact_fileImport(FileImport):
         # and not user.is_superuser
         if user:
             self.fields['dnc_list'].choices = get_dnc_list(user)
-            self.fields['csv_file'].label = _('upload CSV file')
+            self.fields['csv_file'].label = _('Upload CSV file')
 
 
 class DNCContact_fileExport(Exportfile):

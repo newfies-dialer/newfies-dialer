@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags pagination_tags utils_tags %}
+{% load i18n common_tags pagination_tags crispy_forms_tags %}
 
 {% block content_header %}
     <h1>{% trans "DNC" %} {% trans "contacts"|title %} <small>{% trans "list, add and edit Do Not Call contacts"|capfirst %}</small></h1>
@@ -7,15 +7,7 @@
 
 {% block content %}
 <div id="form_collapse" class="collapse">
-    <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-        <div class="row">
-            {% get_fieldset phone_number,dnc as search_contact from form %}
-            {% for field in search_contact %}
-                {% field_html_code field 'col-md-4' 'col-xs-4' %}
-            {% endfor %}
-        </div>
-        <input class="btn btn-primary" type="submit" name="submit" value="{% trans 'search'|title %}" />
-    </form>
+    {% crispy form form.helper %}
 </div>
 {% include "frontend/common_search_toggle_button.html" %}
 <div>&nbsp;</div>

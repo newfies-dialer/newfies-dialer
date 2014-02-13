@@ -1,6 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n utils_tags %}
-{% load crispy_forms_tags %}
+{% load i18n crispy_forms_tags %}
 
 {% block content_header %}
     <h1>
@@ -15,7 +14,5 @@
 {% endblock %}
 
 {% block content %}
-
-{% crispy form form.helper %}
-
+	{% crispy form form.helper %}
 {% endblock %}

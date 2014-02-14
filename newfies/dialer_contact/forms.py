@@ -34,9 +34,9 @@ class AdminSearchForm(forms.Form):
 
 class SearchForm(AdminSearchForm):
     """General Search Form with From & To date para."""
-    from_date = forms.CharField(label=_('from'), required=False, max_length=10,
+    from_date = forms.CharField(label=_('from').capitalize(), required=False, max_length=10,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
-    to_date = forms.CharField(label=_('to'), required=False, max_length=10,
+    to_date = forms.CharField(label=_('to').capitalize(), required=False, max_length=10,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
 
 

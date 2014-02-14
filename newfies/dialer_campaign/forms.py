@@ -30,6 +30,9 @@ from user_profile.models import UserProfile
 from django_lets_go.common_functions import get_unique_code
 from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
+from mod_utils.forms import SaveUserModelForm, common_submit_buttons
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset, Div
 
 
 def get_object_choices(available_objects):
@@ -267,13 +270,23 @@ for i in SUBSCRIBER_STATUS:
 
 class SubscriberSearchForm(SearchForm):
     """Search Form on Subscriber List"""
-    campaign_id = forms.ChoiceField(label=_('campaign'), required=True)
+    campaign_id = forms.ChoiceField(label=_('campaign').capitalize(), required=True)
     #agent_id = forms.ChoiceField(label=_('agent'), required=True)
-    status = forms.ChoiceField(label=_('status'),
-                               choices=subscriber_status_list,
-                               required=False)
+    status = forms.ChoiceField(label=_('status').capitalize(), choices=subscriber_status_list, required=False)
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div('from_date', css_class='col-md-3'),
+                Div('to_date', css_class='col-md-3'),
+                Div('campaign_id', css_class='col-md-3'),
+                Div('status', css_class='col-md-3'),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
         super(SubscriberSearchForm, self).__init__(*args, **kwargs)
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
@@ -281,11 +294,9 @@ class SubscriberSearchForm(SearchForm):
             camp_list = []
             camp_list.append((0, _('all').upper()))
             if user.is_superuser:
-                campaign_list = Campaign.objects.values_list('id', 'name') \
-                    .all().order_by('-id')
+                campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
             else:
-                campaign_list = Campaign.objects.values_list('id', 'name') \
-                    .filter(user=user).order_by('-id')
+                campaign_list = Campaign.objects.values_list('id', 'name').filter(user=user).order_by('-id')
 
             for i in campaign_list:
                 camp_list.append((i[0], i[1]))
@@ -293,16 +304,12 @@ class SubscriberSearchForm(SearchForm):
             """
             agent_list = []
             agent_list.append((0, _('all').upper()))
-
             if user.is_superuser:
-                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True) \
-                    .filter(is_agent=True)
+                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True).filter(is_agent=True)
             else:
-                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True) \
-                    .filter(is_agent=True, manager=user)
+                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True).filter(is_agent=True, manager=user)
 
-            a_list = Agent.objects.values_list('id', 'username') \
-                .filter(id__in=agent_profile_list)
+            a_list = Agent.objects.values_list('id', 'username').filter(id__in=agent_profile_list)
             for i in a_list:
                 agent_list.append((i[0], i[1]))
             self.fields['agent_id'].choices = agent_list
@@ -318,9 +325,19 @@ for i in CAMPAIGN_STATUS:
 
 class CampaignSearchForm(forms.Form):
     phonebook_id = forms.ChoiceField(label=_("phonebook"), )
-    status = forms.ChoiceField(label=_("status"), choices=campaign_status_list, )
+    status = forms.ChoiceField(label=_("status"), choices=campaign_status_list)
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div('phonebook_id', css_class='col-md-3'),
+                Div('status', css_class='col-md-3'),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
         super(CampaignSearchForm, self).__init__(*args, **kwargs)
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"

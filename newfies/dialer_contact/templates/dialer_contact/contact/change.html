@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags utils_tags %}
+{% load i18n common_tags utils_tags crispy_forms_tags %}
 
 {% block content_header %}
     <h1>
@@ -13,7 +13,8 @@
 {% endblock %}
 
 {% block content %}
-<ul class="nav nav-tabs">
+{% crispy form form.helper %}
+<!--<ul class="nav nav-tabs">
     <li class="active"><a href="#tabs-1" data-toggle="tab">{% trans "general"|title %}</a></li>
     <li class="{% if action == 'tabs-2' %}active{% endif %}"><a href="#tabs-2" data-toggle="tab">{% trans "advanced data"|title %}</a></li>
 </ul>
@@ -46,6 +47,6 @@
     </div>
     <br/>
     {% include "frontend/common_submit_buttons.html" %}
-</form>
+</form>-->
 
 {% endblock %}

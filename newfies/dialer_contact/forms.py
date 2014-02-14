@@ -23,6 +23,7 @@ from dialer_campaign.function_def import get_phonebook_list
 from bootstrap3_datetime.widgets import DateTimePicker
 from mod_utils.forms import SaveUserModelForm, common_submit_buttons
 from crispy_forms.helper import FormHelper
+from crispy_forms.bootstrap import TabHolder, Tab
 from crispy_forms.layout import Layout, Fieldset, Div
 
 
@@ -129,10 +130,49 @@ class ContactForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.labels_uppercase = True
+
+        if self.instance.id:
+            form_action = common_submit_buttons(default_action='update')
+        else:
+            form_action = common_submit_buttons(default_action='add')
+
+        self.helper.layout = Layout(
+            TabHolder(
+                Tab('general',
+                    Div(
+                        Div('phonebook', css_class='col-md-6'),
+                        Div('contact', css_class='col-md-6'),
+                        Div('last_name', css_class='col-md-6'),
+                        Div('first_name', css_class='col-md-6'),
+                        Div('status', css_class='col-md-6'),
+                        Div('email', css_class='col-md-6'),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab('advanced data',
+                    Div(
+                        Div('unit_number', css_class='col-md-6'),
+                        Div('address', css_class='col-md-6'),
+                        Div('city', css_class='col-md-6'),
+                        Div('state', css_class='col-md-6'),
+                        Div('country', css_class='col-md-6'),
+                        Div('description', css_class='col-md-6'),
+                        Div('additional_vars', css_class='col-md-6'),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+            ),
+        )
+
         self.fields.keyOrder = [
             'phonebook', 'contact', 'last_name', 'first_name', 'status', 'email',
-            'unit_number', 'address', 'city', 'state', 'country',
-            'description', 'additional_vars'
+            'unit_number', 'address', 'city', 'state', 'country', 'description', 'additional_vars'
         ]
 
         for i in self.fields.keyOrder:

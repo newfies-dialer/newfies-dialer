@@ -54,31 +54,39 @@ class SaveUserModelForm(ModelForm):
         return obj
 
 
-def common_submit_buttons(layout_section, default_action='add'):
+def common_submit_buttons(layout_section=None, default_action='add'):
     """
     function to remove the first button and add update and delete button
     """
     start_div = '<div class="row"><div class="col-md-12 text-right">'
     end_div = '</div></div>'
     if default_action == 'update':
-        layout_section.append(FormActions(
+        form_action = FormActions(
             HTML('%s<button type="submit" id="update" name="update" class="btn btn-primary" value="submit">'
                  '<i class="fa fa-edit fa-lg"></i> Update</button>'
                  '<button type="submit" id="delete" name="delete" class="btn btn-danger" value="submit">'
                  '<i class="fa fa-trash-o fa-lg"></i> Delete</button>%s' % (start_div, end_div))
-        ))
+        )
+        if layout_section is None:
+            return form_action
+        layout_section.append(form_action)
     elif default_action == 'add':
-        layout_section.append(FormActions(
+        form_action = FormActions(
             HTML('%s<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
                  '<i class="fa fa-save fa-lg"></i> Save</button>%s' % (start_div, end_div)
                  ),
-        ))
+        )
+        if layout_section is None:
+            return form_action
+        layout_section.append(form_action)
     elif default_action == 'import':
-        layout_section.append(FormActions(
+        form_action = FormActions(
             HTML('%s<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
                  '<i class="fa fa-save fa-lg"></i> Import</button>%s' % (start_div, end_div)
                  ),
-        ))
+        )
+        layout_section.append(form_action)
     elif default_action == 'search':
-        layout_section.append(FormActions(Submit('search', 'Search'),))
+        form_action = FormActions(Submit('search', 'Search'))
+        layout_section.append(form_action)
     return layout_section

@@ -324,8 +324,8 @@ for i in CAMPAIGN_STATUS:
 
 
 class CampaignSearchForm(forms.Form):
-    phonebook_id = forms.ChoiceField(label=_("phonebook"), )
-    status = forms.ChoiceField(label=_("status"), choices=campaign_status_list)
+    phonebook_id = forms.ChoiceField(label=_("phonebook").capitalize(), )
+    status = forms.ChoiceField(label=_("status").capitalize(), choices=campaign_status_list)
 
     def __init__(self, user, *args, **kwargs):
         self.helper = FormHelper()

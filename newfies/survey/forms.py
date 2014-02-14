@@ -378,7 +378,7 @@ class SurveyDetailReportForm(SearchForm):
         )
         common_submit_buttons(self.helper.layout, 'search')
         super(SurveyDetailReportForm, self).__init__(*args, **kwargs)
-        for i in ['survey_id', 'from_date', 'to_date']:
+        for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
 
         if user:

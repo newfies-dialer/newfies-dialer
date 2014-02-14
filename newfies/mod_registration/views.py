@@ -15,7 +15,8 @@
 from django.contrib.auth.views import password_reset, password_reset_done,\
     password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect
-from frontend.forms import LoginForm, ForgotForm
+from frontend.forms import LoginForm
+from mod_registration.forms import ForgotForm
 from django.conf import settings
 
 

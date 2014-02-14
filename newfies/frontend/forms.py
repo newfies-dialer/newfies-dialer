@@ -22,17 +22,9 @@ class LoginForm(forms.Form):
     user = forms.CharField(max_length=30, label=_('username'), required=True)
     user.widget.attrs['class'] = 'form-control'
     user.widget.attrs['placeholder'] = _('Username')
-    password = forms.CharField(
-        max_length=30, label=_('password'),
-        required=True, widget=forms.PasswordInput())
+    password = forms.CharField(max_length=30, label=_('password'), required=True, widget=forms.PasswordInput())
     password.widget.attrs['class'] = 'form-control'
     password.widget.attrs['placeholder'] = _('Password')
-
-
-class ForgotForm(forms.Form):
-    """Forgot password Form"""
-    email = forms.EmailField(max_length=60, label=_('email'), required=True)
-    email.widget.attrs['class'] = 'form-control'
 
 
 class DashboardForm(forms.Form):

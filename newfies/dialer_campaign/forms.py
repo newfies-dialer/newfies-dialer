@@ -138,14 +138,20 @@ class CampaignForm(ModelForm):
                 from survey.forms import get_audiofile_list
                 self.fields['voicemail_audiofile'].choices = get_audiofile_list(user)
 
-        # if campaign is running
-        if instance.status == CAMPAIGN_STATUS.START:
+        # If campaign is running or has been started
+        if instance.status == CAMPAIGN_STATUS.START or instance.has_been_started:
             self.fields['name'].widget.attrs['readonly'] = True
             self.fields['caller_name'].widget.attrs['readonly'] = True
             self.fields['callerid'].widget.attrs['readonly'] = True
             self.fields['extra_data'].widget.attrs['readonly'] = True
-            self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
+            self.fields['phonebook'].widget.attrs['readonly'] = True
             self.fields['lead_disposition'].widget.attrs['readonly'] = True
+            self.fields['dnc'].widget.attrs['readonly'] = True
+            self.fields['aleg_gateway'].widget.attrs['readonly'] = True
+            self.fields['sms_gateway'].widget.attrs['readonly'] = True
+            self.fields['voicemail'].widget.attrs['readonly'] = True
+            self.fields['amd_behavior'].widget.attrs['readonly'] = True
+            self.fields['voicemail_audiofile'].widget.attrs['readonly'] = True
 
             selected_phonebook = ''
             if instance.phonebook.all():

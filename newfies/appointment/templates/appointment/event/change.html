@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags utils_tags %}
+{% load i18n common_tags crispy_forms_tags %}
 
 {% block extra_files %}
     {{ form.media }}
@@ -18,24 +18,5 @@
 {% endblock %}
 
 {% block content %}
-
-<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    <fieldset>
-        <legend>{% trans "event settings"|title %}</legend>
-        <div class="row">
-            {% get_fieldset title,calendar,start,end,creator,end_recurring_period,rule as event_fields from form %}
-            {% for field in event_fields.visible_fields %}
-                {% field_html_code field %}
-            {% endfor %}
-        </div>
-        <div class="row">
-            {% get_fieldset description,data as event_fields from form %}
-            {% for field in event_fields.visible_fields %}
-                {% field_html_code field %}
-            {% endfor %}
-        </div>
-    <fieldset>
-    {% include "frontend/common_submit_buttons.html" %}
-</form>
-
+    {% crispy form form.helper %}
 {% endblock %}

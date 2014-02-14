@@ -28,7 +28,7 @@ from mod_utils.forms import SaveUserModelForm
 from bootstrap3_datetime.widgets import DateTimePicker
 from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div
+from crispy_forms.layout import Layout, Div, Fieldset
 
 
 class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
@@ -39,9 +39,7 @@ class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
 
 
 class CalendarUserCreationForm(UserCreationForm):
-    calendar_setting_id = forms.ChoiceField(label=_('calendar setting'),
-                                            required=True,
-                                            choices=[('', '---')])
+    calendar_setting_id = forms.ChoiceField(label=_('calendar setting'), required=True, choices=[('', '---')])
 
     def __init__(self, manager, *args, **kwargs):
         super(CalendarUserCreationForm, self).__init__(*args, **kwargs)
@@ -192,12 +190,28 @@ class EventForm(ModelForm):
         }
 
     def __init__(self, user, *args, **kwargs):
-        super(EventForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = [
-            'title', 'calendar', 'creator', 'rule', 'start', 'end',
-            'end_recurring_period', 'description', 'data'
-        ]
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('Event settings'),
+            Div(
+                Div('title', css_class='col-md-6'),
+                Div('calendar', css_class='col-md-6'),
+                Div('creator', css_class='col-md-6'),
+                Div('rule', css_class='col-md-6'),
+                Div('start', css_class='col-md-6'),
+                Div('end', css_class='col-md-6'),
+                Div('end_recurring_period', css_class='col-md-6'),
+                css_class='row'
+            ),
+            Div(
+                Div('description', css_class='col-md-6'),
+                Div('data', css_class='col-md-6'),
+                css_class='row'
+            ),
+        )
 
+        super(EventForm, self).__init__(*args, **kwargs)
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         calendar_user_list = get_calendar_user_id_list(user)

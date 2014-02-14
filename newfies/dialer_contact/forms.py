@@ -169,11 +169,6 @@ class ContactForm(ModelForm):
             ),
         )
 
-        self.fields.keyOrder = [
-            'phonebook', 'contact', 'last_name', 'first_name', 'status', 'email',
-            'unit_number', 'address', 'city', 'state', 'country', 'description', 'additional_vars'
-        ]
-
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
 

@@ -81,8 +81,7 @@ def update_campaign_status_cust(request, pk, status):
 
         # Notify user while campaign Start
         if int(status) == CAMPAIGN_STATUS.START and not obj_campaign.has_been_started:
-            request.session['info_msg'] = _('the campaign global settings cannot be edited when the campaign is started')
-
+            request.session['info_msg'] = _('campaign global settings cannot be edited when the campaign is started')
             # change has_been_started flag
             obj_campaign.has_been_started = True
             obj_campaign.save()
@@ -437,7 +436,8 @@ def campaign_duplicate(request, id):
 @permission_required('dialer_campaign.view_subscriber', login_url='/')
 @login_required
 def subscriber_list(request):
-    """Subscriber list for the logged in user
+    """
+    Subscriber list for the logged in user
 
     **Attributes**:
 

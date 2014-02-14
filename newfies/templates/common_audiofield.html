@@ -13,7 +13,7 @@ ul.playlist li a {
 <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}audiofield/flashblock/flashblock.css" />
 <script type="text/javascript" src="{{ STATIC_URL }}audiofield/script/soundmanager2.js"></script>
 
-<script>
+<script type="text/javascript">
 
 /* --------
 
@@ -29,7 +29,7 @@ soundManager.preferFlash = true; // for visualization effects
 soundManager.useHighPerformance = true; // keep flash on screen, boost performance
 soundManager.wmode = 'transparent'; // transparent SWF, if possible
 soundManager.useFastPolling = true; // increased JS callback frequency
-soundManager.url = {{ STATIC_URL }}+'audiofield/swf/';
+soundManager.url = '{{ STATIC_URL }}audiofield/swf/';
 soundManager.debugFlash = false;
 {% if AUDIO_DEBUG %}
 soundManager.debugMode = true;

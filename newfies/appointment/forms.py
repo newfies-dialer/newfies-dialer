@@ -14,10 +14,8 @@
 from django import forms
 from django.forms import ModelForm
 from django.utils.translation import ugettext as _
-from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm,\
-    UserChangeForm
-from appointment.models.users import CalendarUserProfile, CalendarUser,\
-    CalendarSetting
+from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm, UserChangeForm
+from appointment.models.users import CalendarUserProfile, CalendarUser, CalendarSetting
 from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm
@@ -28,6 +26,9 @@ from survey.models import Survey
 from user_profile.models import UserProfile
 from mod_utils.forms import SaveUserModelForm
 from bootstrap3_datetime.widgets import DateTimePicker
+from mod_utils.forms import common_submit_buttons
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div
 
 
 class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
@@ -206,15 +207,23 @@ class EventForm(ModelForm):
 
 class EventSearchForm(forms.Form):
     """Event Search Form"""
-    start_date = forms.CharField(
-        label=_('start date'), required=False, max_length=20,
+    start_date = forms.CharField(label=_('start date').capitalize(), required=False, max_length=20,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}))
-    calendar_id = forms.ChoiceField(
-        label=_('calendar'), required=False, choices=[('0', '---')])
-    calendar_user_id = forms.ChoiceField(
-        label=_('calendar user'), required=False, choices=[('0', '---')])
+    calendar_id = forms.ChoiceField(label=_('calendar').capitalize(), required=False, choices=[('0', '---')])
+    calendar_user_id = forms.ChoiceField(label=_('calendar user').capitalize(), required=False, choices=[('0', '---')])
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div('start_date', css_class='col-md-4'),
+                Div('calendar_id', css_class='col-md-4'),
+                Div('calendar_user_id', css_class='col-md-4'),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
         super(EventSearchForm, self).__init__(*args, **kwargs)
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar_id'].choices = get_calendar_list(calendar_user_list)

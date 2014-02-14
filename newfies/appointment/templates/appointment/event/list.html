@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags appointment_tags utils_tags %}
+{% load i18n pagination_tags common_tags appointment_tags crispy_forms_tags %}
 
 {% block extra_files %}
     {{ form.media }}
@@ -11,16 +11,7 @@
 
 {% block content %}
 <div id="form_collapse" class="collapse">
-    <form class="well" method="POST" action="." enctype="multipart/form-data">
-        {% csrf_token %}
-        <div class="row">
-            {% get_fieldset start_date,calendar_id,calendar_user_id as search_event from form %}
-            {% for field in search_event %}
-                {% field_html_code field 'col-md-4' %}
-            {% endfor %}
-        </div>
-        <input class="btn btn-primary" type="submit" name="submit" value="{% trans 'search'|title %}" />
-    </form>
+    {% crispy form form.helper %}
 </div>
 
 {% include "frontend/common_search_toggle_button.html" %}

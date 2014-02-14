@@ -21,7 +21,9 @@ from survey.models import Survey_template, Section_template, \
     Branching_template, Survey
 from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile
-from mod_utils.forms import SaveUserModelForm
+from mod_utils.forms import SaveUserModelForm, common_submit_buttons
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div
 
 
 def get_audiofile_list(user):
@@ -360,24 +362,32 @@ class SurveyReportForm(forms.Form):
 
 
 class SurveyDetailReportForm(SearchForm):
-
-    survey_id = forms.ChoiceField(label=_('survey'), required=False)
+    """Survey Report Form"""
+    survey_id = forms.ChoiceField(label=_('survey').capitalize(), required=False)
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div('survey_id', css_class='col-md-4'),
+                Div('from_date', css_class='col-md-4'),
+                Div('to_date', css_class='col-md-4'),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
         super(SurveyDetailReportForm, self).__init__(*args, **kwargs)
-        change_field_list = ['survey_id', 'from_date', 'to_date']
-        for i in change_field_list:
+        for i in ['survey_id', 'from_date', 'to_date']:
             self.fields[i].widget.attrs['class'] = "form-control"
 
-        self.fields.keyOrder = change_field_list
         if user:
             survey_list = []
             survey_list.append((0, _('select survey').title()))
             if user.is_superuser:
                 survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name').all().order_by('-id')
             else:
-                survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name')\
-                    .filter(user=user).order_by('-id')
+                survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name').filter(user=user).order_by('-id')
 
             for i in survey_objs:
                 if i[2]:

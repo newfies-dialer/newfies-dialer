@@ -131,7 +131,6 @@ class ContactForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(ContactForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        self.helper.labels_uppercase = True
 
         if self.instance.id:
             form_action = common_submit_buttons(default_action='update')

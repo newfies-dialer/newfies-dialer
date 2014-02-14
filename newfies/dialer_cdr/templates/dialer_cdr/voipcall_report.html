@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n pagination_tags common_tags icons dialer_cdr_tags utils_tags %}
+{% load i18n pagination_tags common_tags icons dialer_cdr_tags crispy_forms_tags %}
 
 {% block extra_files %}
     {{ form.media }}
@@ -11,17 +11,7 @@
 
 {% block content %}
     <div id="form_collapse" class="collapse">
-        <form class="well" role="form" method="POST" action="." enctype="multipart/form-data">
-            {% csrf_token %}
-            <div class="row">
-                {% get_fieldset from_date,to_date,status,campaign_id,leg_type as campaign_fields from form %}
-                {% for field in campaign_fields.visible_fields %}
-                    {% field_html_code field 'col-md-4' %}
-                {% endfor %}
-            </div>
-
-            <input type="submit" value="{% trans 'search'|title %}" class="btn btn-primary"/>
-        </form>
+        {% crispy form form.helper %}
     </div>
 
     {% include "frontend/common_search_toggle_button.html" %}

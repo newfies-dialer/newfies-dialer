@@ -23,8 +23,12 @@ from sms.models.message import MESSAGE_STATUSES
 from mod_sms.models import SMSCampaign, get_unique_code
 from frontend.constants import SEARCH_TYPE
 from bootstrap3_datetime.widgets import DateTimePicker
-from dialer_campaign.forms import get_phonebook_list, \
+from dialer_campaign.forms import get_phonebook_list,\
     campaign_status_list as sms_campaign_status_list
+
+from mod_utils.forms import common_submit_buttons
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div
 
 
 def get_smscampaign_list(user=None):
@@ -155,15 +159,23 @@ class SMSDashboardForm(forms.Form):
 
 class SMSSearchForm(SearchForm):
     """SMS Report Search Parameters"""
-    status = forms.ChoiceField(label=_('status'), choices=message_list,
-                               required=False)
+    status = forms.ChoiceField(label=_('status'), choices=message_list, required=False)
     smscampaign = forms.ChoiceField(label=_('SMS Campaign'), required=False)
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div('from_date', css_class='col-md-4'),
+                Div('to_date', css_class='col-md-4'),
+                Div('status', css_class='col-md-4'),
+                Div('smscampaign', css_class='col-md-4'),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
         super(SMSSearchForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = [
-            'from_date', 'to_date', 'status', 'smscampaign'
-        ]
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
         if user:
@@ -187,11 +199,20 @@ class AdminSMSSearchForm(AdminSearchForm):
 
 
 class SMSCampaignSearchForm(forms.Form):
-    phonebook_id = forms.ChoiceField(label=_("phonebook"), )
-    status = forms.ChoiceField(label=_("status"),
-                               choices=sms_campaign_status_list, )
+    phonebook_id = forms.ChoiceField(label=_("phonebook").capitalize())
+    status = forms.ChoiceField(label=_("status").capitalize(), choices=sms_campaign_status_list)
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div('phonebook_id', css_class='col-md-3'),
+                Div('status', css_class='col-md-3'),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
         super(SMSCampaignSearchForm, self).__init__(*args, **kwargs)
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"

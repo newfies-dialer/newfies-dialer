@@ -176,6 +176,7 @@ def campaign_list(request):
 
     data = {
         'form': form,
+        'all_campaign_list': all_campaign_list,
         'campaign_list': campaign_list,
         'total_campaign': campaign_count,
         'CAMPAIGN_COLUMN_NAME': CAMPAIGN_COLUMN_NAME,

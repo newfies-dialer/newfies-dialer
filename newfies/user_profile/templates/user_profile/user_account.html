@@ -1,4 +1,4 @@
-{% load i18n utils_tags %}
+{% load i18n crispy_forms_tags %}
 {% if msg_detail %}
     <br/>
     <div class="alert alert-success">
@@ -14,20 +14,15 @@
 {% endif %}
 <br/>
 
-<form class="well" role="form" action="" method="post">{% csrf_token %}
+<form class="well" role="form" action="" method="post">
+    {% csrf_token %}
+    {% crispy user_detail_form user_detail_form.helper %}
+    {% crispy user_detail_extened_form user_detail_extened_form.helper %}
     <div class="row">
-    {% for field in user_detail_form %}
-        {% field_html_code field %}
-    {% endfor %}
-    </div>
-    <div class="row">
-    {% for field in user_detail_extened_form %}
-        {% field_html_code field %}
-    {% endfor %}
-    </div>
-    <div class="text-right">
-        <input type="hidden" name="action" value="tabs-1" />
-        <input type="hidden" name="form-type" value="change-detail" />
-        <input type="submit" class="btn btn-primary" value="{% trans 'change detail'|title %}" />
+        <div class="col-md-12 text-right">
+            <input type="hidden" name="action" value="tabs-1"/>
+            <input type="hidden" name="form-type" value="change-detail"/>
+            <input type="submit" class="btn btn-primary" value="{% trans 'change detail'|title %}"/>
+        </div>
     </div>
 </form>

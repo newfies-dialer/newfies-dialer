@@ -28,7 +28,8 @@ from dialer_campaign.forms import get_phonebook_list,\
 
 from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div
+from crispy_forms.layout import Layout, Div, Submit
+from crispy_forms.bootstrap import FormActions
 
 
 def get_smscampaign_list(user=None):
@@ -137,15 +138,22 @@ for i in MESSAGE_STATUSES:
 class SMSDashboardForm(forms.Form):
     """SMSDashboard Form"""
     smscampaign = forms.ChoiceField(label=_('SMS Campaign'), required=False)
-    search_type = forms.ChoiceField(label=_('type'), required=False,
-                                    initial=SEARCH_TYPE.D_Last_24_hours,
-                                    choices=list(SEARCH_TYPE))
+    search_type = forms.ChoiceField(label=_('type'), required=False, choices=list(SEARCH_TYPE),
+                                    initial=SEARCH_TYPE.D_Last_24_hours)
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+        self.helper.form_class = 'well form-inline text-right'
+        self.helper.layout = Layout(
+            Div(
+                Div('smscampaign', css_class='form-group'),
+                Div('search_type', css_class='form-group'),
+                Div(Submit('submit', _('Search')), css_class='form-group'),
+            ),
+        )
         super(SMSDashboardForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['smscampaign', 'search_type']
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
         # To get user's running campaign list
         if user:
             campaign_list = SMSCampaign.objects.filter(user=user).order_by('-id')

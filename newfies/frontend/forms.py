@@ -48,19 +48,25 @@ class LoginForm(forms.Form):
 class DashboardForm(forms.Form):
     """Dashboard Form"""
     campaign = forms.ChoiceField(label=_('campaign'), required=False)
-    search_type = forms.ChoiceField(label=_('type'), required=False,
-                                    initial=SEARCH_TYPE.D_Last_24_hours,
-                                    choices=list(SEARCH_TYPE))
+    search_type = forms.ChoiceField(label=_('type'), required=False, choices=list(SEARCH_TYPE),
+                                    initial=SEARCH_TYPE.D_Last_24_hours)
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_show_labels = False
+        self.helper.form_class = 'well form-inline text-right'
+        self.helper.layout = Layout(
+            Div(
+                Div('campaign', css_class='form-group'),
+                Div('search_type', css_class='form-group'),
+                Div(Submit('submit', _('Search')), css_class='form-group'),
+            ),
+        )
         super(DashboardForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['campaign', 'search_type']
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
         # To get user's running campaign list
         if user:
             campaign_list = Campaign.objects.filter(user=user).order_by('-id')
-
             campaign_choices = [(0, _('Select campaign'))]
             for cp in campaign_list:
                 campaign_choices.append((cp.id, unicode(cp.name)))

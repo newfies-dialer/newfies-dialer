@@ -54,13 +54,9 @@ class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
     ds_user = forms.CharField(widget=forms.HiddenInput)
-
     content_object = forms.ChoiceField(label=_("application"), )
-
-    selected_phonebook = forms.CharField(widget=forms.HiddenInput,
-                                         required=False)
-    selected_content_object = forms.CharField(widget=forms.HiddenInput,
-                                              required=False)
+    selected_phonebook = forms.CharField(widget=forms.HiddenInput, required=False)
+    selected_content_object = forms.CharField(widget=forms.HiddenInput, required=False)
 
     class Meta:
         model = Campaign
@@ -155,14 +151,12 @@ class CampaignForm(ModelForm):
 
             selected_phonebook = ''
             if instance.phonebook.all():
-                selected_phonebook = \
-                    ",".join(["%s" % (i.id) for i in instance.phonebook.all()])
+                selected_phonebook =  ",".join(["%s" % (i.id) for i in instance.phonebook.all()])
             self.fields['selected_phonebook'].initial = selected_phonebook
 
             self.fields['content_object'].widget.attrs['disabled'] = 'disabled'
             self.fields['content_object'].required = False
-            self.fields['selected_content_object'].initial = "type:%s-id:%s" \
-                % (instance.content_type.id, instance.object_id)
+            self.fields['selected_content_object'].initial = "type:%s-id:%s"  % (instance.content_type.id, instance.object_id)
 
     def clean(self):
         cleaned_data = self.cleaned_data

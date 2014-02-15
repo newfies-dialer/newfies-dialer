@@ -12,9 +12,11 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django import forms
+from django.forms.util import ErrorList
 from django.utils.translation import ugettext_lazy as _
+from django.contrib.auth.forms import SetPasswordForm
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Submit, Div
+from crispy_forms.layout import Layout, Submit, Div, Field
 from crispy_forms.bootstrap import FormActions
 
 
@@ -34,3 +36,24 @@ class ForgotForm(forms.Form):
             FormActions(Submit('submit', 'Reset my password'))
         )
         super(ForgotForm, self).__init__(*args, **kwargs)
+
+
+class CustomSetPasswordForm(SetPasswordForm):
+    """Set Password Form"""
+    def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.layout = Layout(
+            Div(
+                Div(
+                    Field('new_password1'),
+                    Field('new_password2'),
+                    Submit('submit', 'Change my password'),
+                    css_class='col-md-4'
+                ),
+                css_class='well col-md-12'
+            ),
+        )
+        super(CustomSetPasswordForm, self).__init__(*args, **kwargs)
+        #self.fields['new_password1'].required = True
+        #self.fields['new_password2'].required = True
+

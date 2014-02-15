@@ -14,7 +14,7 @@
 {% endif %}
 <br/>
 
-<form class="well" role="form" action="" method="post">
+<form class="well" role="form" action="." method="post">
     {% csrf_token %}
     {% crispy user_detail_form user_detail_form.helper %}
     {% crispy user_detail_extened_form user_detail_extened_form.helper %}

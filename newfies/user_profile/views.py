@@ -49,11 +49,11 @@ def customer_detail_change(request):
         if not settings.DEMO_MODE:
             user_detail_extened.save()
 
-    user_detail_form = UserChangeDetailForm(request.user, request.POST or None, instance=user_detail)
-    user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST or None, instance=user_detail_extened)
+    user_detail_form = UserChangeDetailForm(request.user, instance=user_detail)
+    user_detail_extened_form = UserChangeDetailExtendForm(request.user, instance=user_detail_extened)
 
-    user_password_form = UserPasswordChangeForm(request.user, request.POST or None)
-    check_phone_no_form = CheckPhoneNumberForm(request.POST or None)
+    user_password_form = UserPasswordChangeForm(request.user)
+    check_phone_no_form = CheckPhoneNumberForm()
 
     msg_detail = ''
     msg_pass = ''
@@ -69,6 +69,9 @@ def customer_detail_change(request):
     if request.method == 'POST':
         if request.POST['form-type'] == "change-detail":
             action = 'tabs-1'
+            user_detail_form = UserChangeDetailForm(request.user, request.POST, instance=user_detail)
+            user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST, instance=user_detail_extened)
+
             if (user_detail_form.is_valid()
                and user_detail_extened_form.is_valid()):
                 #DEMO / Disable
@@ -80,6 +83,7 @@ def customer_detail_change(request):
                 error_detail = _('please correct the errors below.')
         elif request.POST['form-type'] == "check-number":  # check phone no
             action = 'tabs-4'
+            check_phone_no_form = CheckPhoneNumberForm(request.POST)
             if check_phone_no_form.is_valid():
                 dialersetting = request.user.get_profile().dialersetting
                 if not common_contact_authorization(dialersetting, request.POST['phone_number']):
@@ -90,6 +94,7 @@ def customer_detail_change(request):
                 error_number = _('please correct the errors below.')
         else:  # "change-password"
             action = 'tabs-2'
+            user_password_form = UserPasswordChangeForm(request.user, request.POST)
             if user_password_form.is_valid():
                 #DEMO / Disable
                 if not settings.DEMO_MODE:

@@ -20,12 +20,18 @@ from user_profile.models import UserProfile
 from django.contrib.auth.forms import PasswordChangeForm
 #from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Div, Fieldset  # , Submit
+#from crispy_forms.bootstrap import FormActions
 
 
 class UserPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('', 'old_password', 'new_password1', 'new_password2', css_class='col-md-3 col-xs-8')
+        )
         super(UserPasswordChangeForm, self).__init__(*args, **kwargs)
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
@@ -41,7 +47,6 @@ class UserChangeDetailForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         self.helper = FormHelper()
-        #self.helper.form_class = 'well'
         self.helper.form_tag = False
         self.helper.disable_csrf = False
         css_class = 'col-md-4'
@@ -63,14 +68,12 @@ class UserChangeDetailExtendForm(ModelForm):
     """A form used to change the detail of a user in the Customer UI."""
     class Meta:
         model = UserProfile
-        fields = ["address", "city", "state", "country", "zip_code",
-                  "phone_no", "fax", "company_name", "company_website",
-                  "language", "note"]
+        fields = ["address", "city", "state", "country", "zip_code", "phone_no",
+                  "fax", "company_name", "company_website", "language", "note"]
 
     def __init__(self, user, *args, **kwargs):
         super(UserChangeDetailExtendForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
-        #self.helper.form_class = 'well'
         self.helper.form_tag = False
         self.helper.disable_csrf = False
         css_class = 'col-md-4'
@@ -93,15 +96,17 @@ class UserChangeDetailExtendForm(ModelForm):
 
 class CheckPhoneNumberForm(forms.Form):
     """A form used to check the phone number in the Customer UI."""
-    phone_number = forms.CharField(
-        label=_('verify phone number'),
-        required=True,
+    phone_number = forms.CharField(label=_('verify phone number').capitalize(), required=True,
         help_text=_("verify if a phone number is authorized to call"))
 
     def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('', 'phone_number', css_class='col-md-3 col-xs-8'),
+        )
         super(CheckPhoneNumberForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class UserProfileForm(ModelForm):

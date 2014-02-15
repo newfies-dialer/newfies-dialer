@@ -169,9 +169,6 @@ class ContactForm(ModelForm):
             ),
         )
 
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
-
         # To get user's phonebook list
         if user:
             self.fields['phonebook'].choices = phonebook_list(user)

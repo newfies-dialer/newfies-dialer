@@ -15,17 +15,16 @@
 <br/>
 
 <form class="well" role="form" action="" method="post">{% csrf_token %}
-    {% for field in user_detail_form %}
     <div class="row">
-        {% field_html_code field 'col-md-3 col-xs-8' %}
+    {% for field in user_detail_form %}
+        {% field_html_code field %}
+    {% endfor %}
     </div>
-    {% endfor %}
-
+    <div class="row">
     {% for field in user_detail_extened_form %}
-        <div class="row">
-            {% field_html_code field 'col-md-3 col-xs-8' %}
-        </div>
+        {% field_html_code field %}
     {% endfor %}
+    </div>
     <div class="text-right">
         <input type="hidden" name="action" value="tabs-1" />
         <input type="hidden" name="form-type" value="change-detail" />

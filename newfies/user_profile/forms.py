@@ -48,10 +48,10 @@ class UserChangeDetailExtendForm(ModelForm):
     """A form used to change the detail of a user in the Customer UI."""
     class Meta:
         model = UserProfile
-        #fields = ["address", "city", "state", "country", "zip_code",
-        #          "phone_no", "fax", "company_name", "company_website",
-        #          "language", "note"]
-        fields = ["address"]
+        fields = ["address", "city", "state", "country", "zip_code",
+                  "phone_no", "fax", "company_name", "company_website",
+                  "language", "note"]
+        #fields = ["address"]
 
     def __init__(self, user, *args, **kwargs):
         #self.user = user

@@ -75,8 +75,7 @@ class Contact_fileImport(FileImport):
         common_submit_buttons(self.helper.layout, 'import')
         super(Contact_fileImport, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['phonebook', 'csv_file']
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
         # To get user's phonebook list
         if user:  # and not user.is_superuser
             self.fields['phonebook'].choices = get_phonebook_list(user)
@@ -101,8 +100,6 @@ class PhonebookForm(SaveUserModelForm):
             ),
         )
         super(PhonebookForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
         if self.instance.id:
             common_submit_buttons(self.helper.layout, 'update')
         else:

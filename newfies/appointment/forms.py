@@ -46,18 +46,61 @@ class CalendarUserCreationForm(UserCreationForm):
     calendar_setting_id = forms.ChoiceField(label=_('calendar setting'), required=True, choices=[('', '---')])
 
     def __init__(self, manager, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = False
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('', 'username', 'password1', 'password2', 'calendar_setting_id', css_class='col-md-6 col-xs-8')
+        )
         super(CalendarUserCreationForm, self).__init__(*args, **kwargs)
 
         cal_setting_list = []
         setting_list = CalendarSetting.objects.filter(user=manager)
-
         cal_setting_list.append(('', _('select calendar setting').title()))
         for i in setting_list:
             cal_setting_list.append((i.id, i.label))
-
         self.fields['calendar_setting_id'].choices = cal_setting_list
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
+
+class CalendarUserChangeDetailExtendForm(ModelForm):
+    """A form used to change the detail of a CalendarUser in the manager UI."""
+
+    class Meta:
+        model = CalendarUserProfile
+        exclude = ('manager', 'user', )
+
+    def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = False
+        css_class = 'col-md-6'
+        self.helper.layout = Layout(
+            Div(
+                Div('calendar_setting', css_class=css_class),
+                Div('accountcode', css_class=css_class),
+                Div('address', css_class=css_class),
+                Div('city', css_class=css_class),
+                Div('state', css_class=css_class),
+                Div('country', css_class=css_class),
+                Div('zip_code', css_class=css_class),
+                Div('phone_no', css_class=css_class),
+                Div('fax', css_class=css_class),
+                Div('company_name', css_class=css_class),
+                Div('company_website', css_class=css_class),
+                Div('language', css_class=css_class),
+                Div('note', css_class=css_class),
+                css_class='row'
+            )
+        )
+        super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
+
+        list_calendar_setting = []
+        list_calendar_setting.append((0, _('select calendar setting').title()))
+        calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
+        for l in calendar_setting_list:
+            list_calendar_setting.append((l.id, l.label))
+        self.fields['calendar_setting'].choices = list_calendar_setting
 
 
 class CalendarUserProfileForm(ModelForm):
@@ -114,32 +157,6 @@ class CalendarUserNameChangeForm(UserChangeForm):
         for i in self.fields.keyOrder:
             if i == 'username':
                 self.fields[i].widget.attrs['class'] = "form-control"
-
-
-class CalendarUserChangeDetailExtendForm(ModelForm):
-    """A form used to change the detail of a CalendarUser in the manager UI."""
-
-    class Meta:
-        model = CalendarUserProfile
-        exclude = ('manager', 'user', )
-
-    def __init__(self, user, *args, **kwargs):
-        super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
-
-        self.fields.keyOrder = [
-            'calendar_setting', 'accountcode', 'address',
-            'city', 'state', 'country', 'zip_code', 'phone_no', 'fax',
-            'company_name', 'company_website', 'language', 'note',
-        ]
-        list_calendar_setting = []
-        list_calendar_setting.append((0, _('select calendar setting').title()))
-        calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
-        for l in calendar_setting_list:
-            list_calendar_setting.append((l.id, l.label))
-        self.fields['calendar_setting'].choices = list_calendar_setting
-
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CalendarForm(ModelForm):

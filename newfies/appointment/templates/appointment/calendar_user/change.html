@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags utils_tags %}
+{% load i18n common_tags utils_tags crispy_forms_tags %}
 
 {% block content_header %}
     <h1>
@@ -17,36 +17,17 @@
 {% block content %}
 
 <form class="well" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-
     {% if action == 'update' %}
         <div class="row">
-            {% get_fieldset username as calendar_user_fields from calendar_user_username_form %}
-            {% for field in calendar_user_fields.visible_fields %}
-                {% field_html_code field %}
-            {% endfor %}
-
-            {% get_fieldset password as calendar_user_fields from calendar_user_username_form %}
+            {% get_fieldset username,password as calendar_user_fields from calendar_user_username_form %}
             {% for field in calendar_user_fields.visible_fields %}
                 {% field_html_code field 'col-md-6' False False %}
             {% endfor %}
         </div>
+        {% crispy calendar_user_profile_form calendar_user_profile_form.helper %}
     {% else %}
-        {% for field in form %}
-            <div class="row">
-                {% field_html_code field %}
-            </div>
-        {% endfor %}
+        {% crispy form form.helper %}
     {% endif %}
-
-    <div class="row">
-        {% get_fieldset calendar_setting,accountcode,address,city,state,country,zip_code,phone_no,fax,company_name,company_website,language,note as cal_user_fields from form %}
-        {% for field in cal_user_fields.hidden_fields %}
-            {{ field }}
-        {% endfor %}
-        {% for field in cal_user_fields.visible_fields %}
-            {% field_html_code field %}
-        {% endfor %}
-    </div>
     {% include "frontend/common_submit_buttons.html" %}
 </form>
 

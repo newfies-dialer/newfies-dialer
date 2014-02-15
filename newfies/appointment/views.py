@@ -166,7 +166,7 @@ def calendar_user_change(request, object_id):
     calendar_user_profile = get_object_or_404(CalendarUserProfile, pk=object_id, manager_id=request.user.id)
     calendar_user_userdetail = get_object_or_404(CalendarUser, pk=calendar_user_profile.user_id)
 
-    form = CalendarUserChangeDetailExtendForm(request.user, request.POST or None, instance=calendar_user_profile)
+    calendar_user_profile_form = CalendarUserChangeDetailExtendForm(request.user, request.POST or None, instance=calendar_user_profile)
     calendar_user_username_form = CalendarUserNameChangeForm(
         request.POST or None,
         initial={'username': calendar_user_userdetail.username,
@@ -181,12 +181,12 @@ def calendar_user_change(request, object_id):
             # Save calendar_user username
             calendar_user_username_form.save()
 
-            if form.is_valid():
-                form.save()
+            if calendar_user_profile_form.is_valid():
+                calendar_user_profile_form.save()
                 request.session["msg"] = _('"%(name)s" is updated.') % {'name': calendar_user_profile.user}
                 return HttpResponseRedirect(redirect_url_to_calendar_user_list)
     data = {
-        'form': form,
+        'calendar_user_profile_form': calendar_user_profile_form,
         'calendar_user_username_form': calendar_user_username_form,
         'action': 'update',
     }

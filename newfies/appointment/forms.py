@@ -33,9 +33,13 @@ from crispy_forms.layout import Layout, Div, Fieldset
 
 class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
     def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('', 'password1', 'password2', css_class='col-md-4')
+        )
         super(CalendarUserPasswordChangeForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CalendarUserCreationForm(UserCreationForm):

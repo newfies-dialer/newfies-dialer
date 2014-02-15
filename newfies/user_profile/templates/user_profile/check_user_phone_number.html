@@ -14,11 +14,11 @@
 
 <br/>
 
-<form class="well" action="" method="post">{% csrf_token %}
+<form class="well" action="" method="post">
     {% crispy check_phone_no_form check_phone_no_form.helper %}
-   <div class="row">
+    <div class="row">
         <div class="col-md-12 text-right">
-            <input type="hidden" name="action" value="tabs-5" />
+            <input type="hidden" name="action" value="tabs-4" />
             <input type="hidden" name="form-type" value="check-number" />
             <input type="submit" class="btn btn-primary" value="{% trans 'check'|title %}" />
         </div>

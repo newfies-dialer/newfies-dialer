@@ -18,10 +18,8 @@ from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 from user_profile.models import UserProfile
 from django.contrib.auth.forms import PasswordChangeForm
-#from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Fieldset  # , Submit
-#from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Div, Fieldset
 
 
 class UserPasswordChangeForm(PasswordChangeForm):
@@ -33,8 +31,6 @@ class UserPasswordChangeForm(PasswordChangeForm):
             Fieldset('', 'old_password', 'new_password1', 'new_password2', css_class='col-md-3 col-xs-8')
         )
         super(UserPasswordChangeForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class UserChangeDetailForm(ModelForm):

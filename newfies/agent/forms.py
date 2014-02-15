@@ -16,13 +16,19 @@ from django.contrib.auth.forms import UserChangeForm
 from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm
 from agent.models import AgentProfile, Agent
 from agent.function_def import manager_list
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Fieldset
 
 
 class AgentPasswordChangeForm(AdminPasswordChangeForm):
     def __init__(self, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('', 'password1', 'password2', css_class='col-md-4')
+        )
         super(AgentPasswordChangeForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class AgentCreationForm(UserCreationForm):

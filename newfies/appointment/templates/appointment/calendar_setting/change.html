@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags utils_tags %}
+{% load i18n crispy_forms_tags %}
 
 {% block content_header %}
     <h1>
@@ -14,43 +14,5 @@
 {% endblock %}
 
 {% block content %}
-
-<form class="well" role="form" method="POST" action="." enctype="multipart/form-data">{% csrf_token %}
-    <div class="row">
-        {% get_fieldset label,callerid,caller_name,call_timeout as calendarsetting_fields from form %}
-        {% for field in calendarsetting_fields.visible_fields %}
-            {% field_html_code field %}
-        {% endfor %}
-    </div>
-    <div class="row">
-        {% get_fieldset survey,aleg_gateway,sms_gateway as calendarsetting_fields from form %}
-        {% for field in calendarsetting_fields.visible_fields %}
-            {% field_html_code field %}
-        {% endfor %}
-    </div>
-    {% if AMD %}
-        <div class="row">
-            <div class="col-md-6 col-xs-10">
-                <div class="btn-group" data-toggle="buttons">
-                    {% get_fieldset voicemail as settings_fields from form %}
-                    {% for field in settings_fields %}
-                        <label for="{{ field.auto_id }}">{{ field.label|wordcap }}</label><br/>
-                        <div class="make-switch switch-small">
-                        {{ field }}
-                        </div>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        <div>&nbsp;</div>
-        <div class="row">
-            {% get_fieldset amd_behavior,voicemail_audiofile as calendarsetting_fields from form %}
-            {% for field in calendarsetting_fields.visible_fields %}
-                {% field_html_code field %}
-            {% endfor %}
-        </div>
-    {% endif %}
-    {% include "frontend/common_submit_buttons.html" %}
-</form>
-
+    {% crispy form form.helper %}
 {% endblock %}

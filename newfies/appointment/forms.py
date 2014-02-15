@@ -13,6 +13,7 @@
 #
 from django import forms
 from django.forms import ModelForm
+from django.conf import settings
 from django.utils.translation import ugettext as _
 from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm, UserChangeForm
 from appointment.models.users import CalendarUserProfile, CalendarUser, CalendarSetting
@@ -28,7 +29,7 @@ from mod_utils.forms import SaveUserModelForm
 from bootstrap3_datetime.widgets import DateTimePicker
 from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Fieldset
+from crispy_forms.layout import Layout, Div, Fieldset, HTML
 
 
 class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
@@ -91,7 +92,7 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
                 Div('language', css_class=css_class),
                 Div('note', css_class=css_class),
                 css_class='row'
-            )
+            ),
         )
         super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
 
@@ -123,11 +124,55 @@ class CalendarSettingForm(SaveUserModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarSettingForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        css_class = 'col-md-6'
+
+        self.helper.layout = Layout(
+            Div(
+                Div('label', css_class=css_class),
+                Div('callerid', css_class=css_class),
+                Div('caller_name', css_class=css_class),
+                Div('call_timeout', css_class=css_class),
+                Div('survey', css_class=css_class),
+                Div('aleg_gateway', css_class=css_class),
+                Div('sms_gateway', css_class=css_class),
+                css_class='row'
+            ),
+        )
+        if settings.AMD:
+            self.helper.layout.append(
+                Div(
+                    Div(
+                        HTML("""
+                            <div class="btn-group" data-toggle="buttons">
+                                <label for="{{ form.voicemail.auto_id }}">{{ form.voicemail.label }}</label><br/>
+                                <div class="make-switch switch-small">
+                                {{ form.voicemail }}
+                                </div>
+                            </div>
+                            """), css_class='col-md-12 col-xs-10'
+                    ),
+                    css_class='row'
+                ),
+            )
+            self.helper.layout.append(
+                Div(
+                    Div('amd_behavior', css_class=css_class),
+                    Div('voicemail_audiofile', css_class=css_class),
+                    css_class='row'
+                )
+            )
+
+        if self.instance.id:
+            form_action = common_submit_buttons(default_action='update')
+        else:
+            form_action = common_submit_buttons(default_action='add')
+
+        self.helper.layout.append(form_action)
 
         list_survey = []
         list_survey.append((0, '---'))
-        survey_list = Survey.objects.values_list(
-            'id', 'name').filter(user=user).order_by('id')
+        survey_list = Survey.objects.values_list('id', 'name').filter(user=user).order_by('id')
         for l in survey_list:
             list_survey.append((l[0], l[1]))
         self.fields['survey'].choices = list_survey
@@ -138,11 +183,6 @@ class CalendarSettingForm(SaveUserModelForm):
         for l in gateway_list:
             list_gateway.append((l.id, l.name))
         self.fields['aleg_gateway'].choices = list_gateway
-
-        exclude_list = ['voicemail']
-        for i in self.fields.keyOrder:
-            if i not in exclude_list:
-                self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CalendarUserNameChangeForm(UserChangeForm):

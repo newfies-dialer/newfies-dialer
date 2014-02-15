@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django import forms
-from django.forms.util import ErrorList
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import SetPasswordForm
 from crispy_forms.helper import FormHelper
@@ -54,6 +53,3 @@ class CustomSetPasswordForm(SetPasswordForm):
             ),
         )
         super(CustomSetPasswordForm, self).__init__(*args, **kwargs)
-        #self.fields['new_password1'].required = True
-        #self.fields['new_password2'].required = True
-

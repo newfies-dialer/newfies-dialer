@@ -1,4 +1,4 @@
-{% load i18n utils_tags %}
+{% load i18n utils_tags crispy_forms_tags %}
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"><![endif]-->
 <!--[if IE 8]><html class="no-js lt-ie9"><![endif]-->
@@ -107,16 +107,7 @@
         <div class="row">
             {% if not user.is_authenticated %}
             <div class="col-6 col-sm-6 col-lg-6">
-                <form class="form-inline well" role="form" action="/login/" method="post">
-                    {% csrf_token %}
-                    {% for field in loginform %}
-                        <div class="form-group col-xs-3">
-                        {{ field }}
-                        </div>
-                    {% endfor %}
-                    <button class="btn btn-primary" type="submit">{% trans "login"|title %}</button>
-                    <a class="btn btn-warning" href="/password_reset/">{% trans "forgot password?"|capfirst %}</a>
-                </form>
+                {% crispy loginform loginform.helper %}
             </div>
             <div class="col-6 col-sm-6 col-lg-6">
                 <form class="form-inline well" role="form" action="/i18n/setlang/" method="post">

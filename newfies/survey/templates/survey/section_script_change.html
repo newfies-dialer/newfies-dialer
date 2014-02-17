@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n utils_tags %}
+{% load i18n crispy_forms_tags %}
 
 {% block header_files %}
 {% endblock %}
@@ -22,6 +22,7 @@
 
         {% if err_msg %}
             {% include "frontend/extra_modal_header.html" %}
+            {% include "frontend/extra_modal_footer.html" %}
             <script type="text/javascript" charset="utf-8">
                 $(window).load(function(){
                     $('#section-script-modal').modal('show');
@@ -47,13 +48,9 @@
                     </h3>
                 </div>
 
-
                 <form method="POST" action="/section/script/{{ section_id }}/" enctype="multipart/form-data" id="update_form">
-                {% csrf_token %}
                     <div class="modal-body">
-                        <div class="row">
-                            {% field_html_code form.script 'col-xs-12' %}
-                        </div>
+                        {% crispy form form.helper %}
                     </div>
                     <div class="modal-footer" align="right">
                         {% if action == 'update' %}
@@ -67,15 +64,12 @@
                         {% endif %}
                         <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
                     </div>
-
                 </form>
             </div>
         </div>
         {% if err_msg %}
             </div>
         {% endif %}
-
-    {% include "frontend/extra_modal_footer.html" %}
 
     {% endblock %}
 

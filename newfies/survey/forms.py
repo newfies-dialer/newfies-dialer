@@ -295,7 +295,15 @@ class ScriptForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(ScriptForm, self).__init__(*args, **kwargs)
-        self.fields['script'].widget.attrs['class'] = "form-control"
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        css_class = 'col-md-12'
+        self.helper.layout = Layout(
+            Div(
+                Div('script', css_class=css_class),
+                css_class='row'
+            )
+        )
 
 
 class BranchingForm(ModelForm):

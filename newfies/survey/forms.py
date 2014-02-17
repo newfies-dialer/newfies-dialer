@@ -117,11 +117,17 @@ class SurveyForm(SaveUserModelForm):
 
     def __init__(self, *args, **kwargs):
         super(SurveyForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['name', 'tts_language', 'description']
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Div(
+                Div('name', css_class='col-md-4'),
+                Div('tts_language', css_class='col-md-4'),
+                Div('description', css_class='col-md-4'),
+                css_class='row'
+            ),
+        )
         self.fields['description'].widget = forms.TextInput()
-
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class PlayMessageSectionForm(ModelForm):

@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n dajaxice_templatetags common_tags survey_tags %}
+{% load i18n dajaxice_templatetags common_tags survey_tags crispy_forms_tags %}
 
 {% block jquery_ui_js %}
     <!--jquery-ui js-->
@@ -27,22 +27,7 @@
 {% block content %}
 
 <form class="well" role="form" method="POST" action="." enctype="multipart/form-data" id="update_form">
-    {% csrf_token %}
-    <div class="row">
-        {% get_fieldset name,tts_language,description as survey_fields from form %}
-        {% for field in survey_fields.visible_fields %}
-            <div class="col-md-4 {% if field.errors %} error{% endif %}">
-                <label class="control-label" for="id_{{ field.name }}">{{ field.label|title }}</label>
-                {{ field }}
-                {% if field.errors %}
-                    <span class="help-block">{{ field.errors|removetags:"ul li"|safe }}</span>
-                {% endif %}
-                <span class="help-block">{{ field.help_text|capfirst }} </span>
-            </div>
-        {% endfor %}
-    </div>
-
-    <br/><br/>
+    {% crispy form form.helper %}
 
     {% if action == 'add' %}
         <div class="text-right">
@@ -51,7 +36,7 @@
             </button>
         </div>
     {% endif %}
-
+    <p>&nbsp;</p>
 
 {% if action == 'update' %}
 <div class="column">

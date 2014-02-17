@@ -28,6 +28,7 @@ class LoginForm(forms.Form):
     password.widget.attrs['placeholder'] = _('Password')
 
     def __init__(self, *args, **kwargs):
+        super(LoginForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_action = '/login/'
         self.helper.form_show_labels = False
@@ -42,7 +43,6 @@ class LoginForm(forms.Form):
                 HTML('<a class="btn btn-warning" href="/password_reset/">Forgot password?</a>'),
             ),
         )
-        super(LoginForm, self).__init__(*args, **kwargs)
 
 
 class DashboardForm(forms.Form):
@@ -52,6 +52,7 @@ class DashboardForm(forms.Form):
                                     initial=SEARCH_TYPE.D_Last_24_hours)
 
     def __init__(self, user, *args, **kwargs):
+        super(DashboardForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
         self.helper.form_class = 'well form-inline text-right'
@@ -62,7 +63,6 @@ class DashboardForm(forms.Form):
                 Div(Submit('submit', _('Search')), css_class='form-group'),
             ),
         )
-        super(DashboardForm, self).__init__(*args, **kwargs)
 
         # To get user's running campaign list
         if user:

@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n utils_tags %}
+{% load i18n crispy_forms_tags %}
 
 {% block bootstrap_switch_js %}
 {% endblock %}
@@ -9,26 +9,5 @@
 {% endblock %}
 
 {% block content %}
-    <form class="well" role="form" method="post" action="" enctype="multipart/form-data" >{% csrf_token %}
-        <div class="row">
-            {% field_html_code form.dnc_list 'col-md-4' %}
-        </div>
-        <div class="row">
-            <div class="col-md-4">
-                <b>{% trans "export to"|capfirst %} :</b>
-                <div class="btn-group" data-toggle="buttons">
-                    {% for choice in form.export_to.field.choices %}
-                    <label class="btn btn-default">
-                        <input name='{{ form.export_to.name }}' type='radio' value='{{ choice.0 }}'/> {{ choice.1 }}
-                    </label>
-                    {% endfor %}
-                </div>
-            </div>
-        </div>
-        <div class="text-right">
-            <button type="submit" name="submit" class="btn btn-primary" value="submit">
-                <i class="fa fa-save fa-lg"></i> {% trans "save"|capfirst %}
-            </button>
-        </div>
-    </form>
+    {% crispy form form.helper %}
 {% endblock %}

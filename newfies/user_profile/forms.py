@@ -24,13 +24,13 @@ from crispy_forms.layout import Layout, Div, Fieldset
 
 class UserPasswordChangeForm(PasswordChangeForm):
     def __init__(self, *args, **kwargs):
+        super(UserPasswordChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
             Fieldset('', 'old_password', 'new_password1', 'new_password2', css_class='col-md-3 col-xs-8')
         )
-        super(UserPasswordChangeForm, self).__init__(*args, **kwargs)
 
 
 class UserChangeDetailForm(ModelForm):
@@ -42,6 +42,7 @@ class UserChangeDetailForm(ModelForm):
         fields = ["last_name", "first_name", "email"]
 
     def __init__(self, user, *args, **kwargs):
+        super(UserChangeDetailForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = False
@@ -53,7 +54,6 @@ class UserChangeDetailForm(ModelForm):
                 Div('email', css_class=css_class),
             ),
         )
-        super(UserChangeDetailForm, self).__init__(*args, **kwargs)
 
         self.fields['last_name'].widget.attrs['ng-model'] = "user.last_name"
         self.fields['first_name'].widget.attrs['ng-model'] = "user.first_name"
@@ -96,13 +96,13 @@ class CheckPhoneNumberForm(forms.Form):
         help_text=_("verify if a phone number is authorized to call"))
 
     def __init__(self, *args, **kwargs):
+        super(CheckPhoneNumberForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
             Fieldset('', 'phone_number', css_class='col-md-3 col-xs-8'),
         )
-        super(CheckPhoneNumberForm, self).__init__(*args, **kwargs)
 
 
 class UserProfileForm(ModelForm):

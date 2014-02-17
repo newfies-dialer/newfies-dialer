@@ -25,6 +25,7 @@ class ForgotForm(forms.Form):
     email.widget.attrs['class'] = 'form-control'
 
     def __init__(self, *args, **kwargs):
+        super(ForgotForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -34,12 +35,12 @@ class ForgotForm(forms.Form):
             ),
             FormActions(Submit('submit', 'Reset my password'))
         )
-        super(ForgotForm, self).__init__(*args, **kwargs)
 
 
 class CustomSetPasswordForm(SetPasswordForm):
     """Set Password Form"""
     def __init__(self, *args, **kwargs):
+        super(CustomSetPasswordForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.layout = Layout(
             Div(
@@ -52,4 +53,3 @@ class CustomSetPasswordForm(SetPasswordForm):
                 css_class='well col-md-12'
             ),
         )
-        super(CustomSetPasswordForm, self).__init__(*args, **kwargs)

@@ -44,6 +44,7 @@ class VoipSearchForm(SearchForm):
     leg_type = forms.ChoiceField(label=_("leg type").capitalize(), choices=list(LEG_TYPE), required=False)
 
     def __init__(self, user, *args, **kwargs):
+        super(VoipSearchForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -57,9 +58,7 @@ class VoipSearchForm(SearchForm):
             ),
         )
         common_submit_buttons(self.helper.layout, 'search')
-        super(VoipSearchForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
         # To get user's campaign list which are attached with voipcall
         if user:
             self.fields['leg_type'].choices = get_leg_type_list()

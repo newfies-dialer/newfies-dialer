@@ -181,22 +181,17 @@ class ContactSearchForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'well'
+        css_class = 'col-md-3'
         self.helper.layout = Layout(
             Div(
-                Div('contact_no', css_class='col-md-3'),
-                Div('contact_name', css_class='col-md-3'),
-                Div('phonebook', css_class='col-md-3'),
-                Div('contact_status', css_class='col-md-3'),
+                Div('contact_no', css_class=css_class),
+                Div('contact_name', css_class=css_class),
+                Div('phonebook', css_class=css_class),
+                Div('contact_status', css_class=css_class),
                 css_class='row'
             ),
         )
         common_submit_buttons(self.helper.layout, 'search')
         super(ContactSearchForm, self).__init__(*args, **kwargs)
-        change_field_list = [
-            'contact_no', 'contact_name', 'phonebook', 'contact_status'
-        ]
-        for i in change_field_list:
-            self.fields[i].widget.attrs['class'] = "form-control"
-
         if user:
             self.fields['phonebook'].choices = phonebook_list(user)

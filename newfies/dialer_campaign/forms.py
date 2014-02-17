@@ -392,12 +392,13 @@ class SubscriberSearchForm(SearchForm):
     def __init__(self, user, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'well'
+        css_class = 'col-md-3'
         self.helper.layout = Layout(
             Div(
-                Div('from_date', css_class='col-md-3'),
-                Div('to_date', css_class='col-md-3'),
-                Div('campaign_id', css_class='col-md-3'),
-                Div('status', css_class='col-md-3'),
+                Div('from_date', css_class=css_class),
+                Div('to_date', css_class=css_class),
+                Div('campaign_id', css_class=css_class),
+                Div('status', css_class=css_class),
                 css_class='row'
             ),
         )
@@ -443,19 +444,19 @@ class CampaignSearchForm(forms.Form):
     status = forms.ChoiceField(label=_("status").capitalize(), choices=campaign_status_list)
 
     def __init__(self, user, *args, **kwargs):
+        super(CampaignSearchForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
+        css_class = 'col-md-3'
         self.helper.layout = Layout(
             Div(
-                Div('phonebook_id', css_class='col-md-3'),
-                Div('status', css_class='col-md-3'),
+                Div('phonebook_id', css_class=css_class),
+                Div('status', css_class=css_class),
                 css_class='row'
             ),
         )
         common_submit_buttons(self.helper.layout, 'search')
-        super(CampaignSearchForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
         if user:
             result_list = get_phonebook_list(user)
             result_list.insert(0, ('0', _('ALL')))

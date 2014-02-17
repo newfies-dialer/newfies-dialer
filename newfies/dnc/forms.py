@@ -23,7 +23,7 @@ from mod_utils.forms import Exportfile
 # from django.core.urlresolvers import reverse
 from mod_utils.forms import SaveUserModelForm, common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Div
+from crispy_forms.layout import Layout, Fieldset, Div, HTML
 
 
 class DNCListForm(SaveUserModelForm):
@@ -38,6 +38,7 @@ class DNCListForm(SaveUserModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        super(DNCListForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -45,7 +46,6 @@ class DNCListForm(SaveUserModelForm):
                 Div(Fieldset('', 'name', 'description', css_class='col-md-6')),
             ),
         )
-        super(DNCListForm, self).__init__(*args, **kwargs)
         if self.instance.id:
             common_submit_buttons(self.helper.layout, 'update')
         else:
@@ -58,6 +58,7 @@ class DNCContactSearchForm(forms.Form):
     dnc = forms.ChoiceField(label=_('Do Not Call list').title(), required=False)
 
     def __init__(self, user, *args, **kwargs):
+        super(DNCContactSearchForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -68,9 +69,6 @@ class DNCContactSearchForm(forms.Form):
             ),
         )
         common_submit_buttons(self.helper.layout, 'search')
-        super(DNCContactSearchForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
         # To get user's dnc list
         if user:
             dnc_list_user = []
@@ -90,6 +88,7 @@ class DNCContactForm(ModelForm):
         fields = ['dnc', 'phone_number']
 
     def __init__(self, user, *args, **kwargs):
+        super(DNCContactForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -98,10 +97,6 @@ class DNCContactForm(ModelForm):
             ),
         )
         common_submit_buttons(self.helper.layout, 'search')
-        super(DNCContactForm, self).__init__(*args, **kwargs)
-        # To get user's dnc list
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             self.fields['dnc'].choices = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
 
@@ -140,6 +135,7 @@ class DNCContact_fileImport(FileImport):
     dnc_list = forms.ChoiceField(label=_("DNC List"), required=True, help_text=_("select DNC list"))
 
     def __init__(self, user, *args, **kwargs):
+        super(DNCContact_fileImport, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -148,10 +144,7 @@ class DNCContact_fileImport(FileImport):
             ),
         )
         common_submit_buttons(self.helper.layout, 'import')
-        super(DNCContact_fileImport, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['dnc_list', 'csv_file']
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
         # To get user's dnc_list list
         # and not user.is_superuser
         if user:
@@ -167,8 +160,29 @@ class DNCContact_fileExport(Exportfile):
 
     def __init__(self, user, *args, **kwargs):
         super(DNCContact_fileExport, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['dnc_list', 'export_to', ]
-        self.fields['dnc_list'].widget.attrs['class'] = "form-control"
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div(Fieldset('', 'dnc_list', css_class='col-md-6')),
+                css_class='row'
+            ),
+            Div(
+                Div(HTML("""
+                    <b>Export to : </b>
+                    <div class="btn-group" data-toggle="buttons">
+                        {% for choice in form.export_to.field.choices %}
+                        <label class="btn btn-default">
+                            <input name='{{ form.export_to.name }}' type='radio' value='{{ choice.0 }}'/> {{ choice.1 }}
+                        </label>
+                        {% endfor %}
+                    </div>
+                   """), css_class='col-md-6'),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'add')
+
         # To get user's dnc_list list
         if user:  # and not user.is_superuser
             self.fields['dnc_list'].choices = get_dnc_list(user)

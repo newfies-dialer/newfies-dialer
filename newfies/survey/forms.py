@@ -366,6 +366,7 @@ class SurveyDetailReportForm(SearchForm):
     survey_id = forms.ChoiceField(label=_('survey').capitalize(), required=False)
 
     def __init__(self, user, *args, **kwargs):
+        super(SurveyDetailReportForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -377,9 +378,6 @@ class SurveyDetailReportForm(SearchForm):
             ),
         )
         common_submit_buttons(self.helper.layout, 'search')
-        super(SurveyDetailReportForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
         if user:
             survey_list = []
@@ -417,8 +415,7 @@ class SurveyFileImport(forms.Form):
         if str(filename).split(".")[1].lower() in file_exts:
             return filename
         else:
-            raise forms.ValidationError(_(u'document types accepted: %s' %
-                                          ' '.join(file_exts)))
+            raise forms.ValidationError(_(u'document types accepted: %s' % ' '.join(file_exts)))
 
 
 class SealSurveyForm(SurveyFileImport):

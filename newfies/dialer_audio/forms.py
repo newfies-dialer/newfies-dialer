@@ -21,14 +21,13 @@ from crispy_forms.layout import Layout, Fieldset, Div
 class DialerAudioFileForm(CustomerAudioFileForm, SaveUserModelForm):
 
     def __init__(self, *args, **kwargs):
+        super(DialerAudioFileForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
             Div(Fieldset('', 'name', 'audio_file', css_class='col-md-4')),
         )
-        super(DialerAudioFileForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
         if self.instance.id:
             common_submit_buttons(self.helper.layout, 'update')
         else:

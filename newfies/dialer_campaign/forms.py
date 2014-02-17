@@ -30,9 +30,9 @@ from user_profile.models import UserProfile
 from django_lets_go.common_functions import get_unique_code
 from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
-from mod_utils.forms import SaveUserModelForm, common_submit_buttons
+from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset, Div
+from crispy_forms.layout import Layout, Div, Field
 
 
 def get_object_choices(available_objects):
@@ -207,9 +207,19 @@ class DuplicateCampaignForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(DuplicateCampaignForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        css_class = 'col-md-12'
+        self.helper.layout = Layout(
+            Field('campaign_code'),
+            Div(
+                Div('name', css_class=css_class),
+                Div('phonebook', css_class=css_class),
+                css_class='row'
+            )
+        )
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
         if user:
             phonebook_list = get_phonebook_list(user)
             self.fields['phonebook'].choices = phonebook_list

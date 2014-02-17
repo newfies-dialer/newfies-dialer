@@ -28,8 +28,8 @@ from dialer_campaign.forms import get_phonebook_list,\
 
 from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit
-from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Div, Submit, Field
+#from crispy_forms.bootstrap import FormActions
 
 
 def get_smscampaign_list(user=None):
@@ -142,6 +142,7 @@ class SMSDashboardForm(forms.Form):
                                     initial=SEARCH_TYPE.D_Last_24_hours)
 
     def __init__(self, user, *args, **kwargs):
+        super(SMSDashboardForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_show_labels = False
         self.helper.form_class = 'well form-inline text-right'
@@ -152,7 +153,6 @@ class SMSDashboardForm(forms.Form):
                 Div(Submit('submit', _('Search')), css_class='form-group'),
             ),
         )
-        super(SMSDashboardForm, self).__init__(*args, **kwargs)
 
         # To get user's running campaign list
         if user:
@@ -171,6 +171,7 @@ class SMSSearchForm(SearchForm):
     smscampaign = forms.ChoiceField(label=_('SMS Campaign'), required=False)
 
     def __init__(self, user, *args, **kwargs):
+        super(SMSSearchForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -183,9 +184,6 @@ class SMSSearchForm(SearchForm):
             ),
         )
         common_submit_buttons(self.helper.layout, 'search')
-        super(SMSSearchForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             self.fields['smscampaign'].choices = get_smscampaign_list(user)
 
@@ -211,6 +209,7 @@ class SMSCampaignSearchForm(forms.Form):
     status = forms.ChoiceField(label=_("status").capitalize(), choices=sms_campaign_status_list)
 
     def __init__(self, user, *args, **kwargs):
+        super(SMSCampaignSearchForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -221,9 +220,6 @@ class SMSCampaignSearchForm(forms.Form):
             ),
         )
         common_submit_buttons(self.helper.layout, 'search')
-        super(SMSCampaignSearchForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             self.fields['phonebook_id'].choices = get_phonebook_list(user)
 
@@ -238,8 +234,18 @@ class DuplicateSMSCampaignForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(DuplicateSMSCampaignForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        css_class = 'col-md-12'
+        self.helper.layout = Layout(
+            Field('campaign_code'),
+            Div(
+                Div('name', css_class=css_class),
+                Div('phonebook', css_class=css_class),
+                css_class='row'
+            )
+        )
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
         if user:
             self.fields['phonebook'].choices = get_phonebook_list(user)

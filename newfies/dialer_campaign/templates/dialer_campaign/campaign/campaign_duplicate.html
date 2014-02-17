@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags utils_tags %}
+{% load i18n crispy_forms_tags %}
 
 {% block header_files %}
 {% endblock %}
@@ -43,15 +43,8 @@
                     </h3>
                 </div>
                 <form role="form" method="POST" action="/campaign_duplicate/{{ campaign_id }}/" enctype="multipart/form-data" id="update_form">
-                {% csrf_token %}
                     <div class="modal-body">
-                        {% get_fieldset campaign_code,name,phonebook as campaign_fields from form %}
-                        {% for field in campaign_fields.hidden_fields %}
-                            {{ field }}
-                        {% endfor %}
-                        {% for field in campaign_fields.visible_fields %}
-                            {% field_html_code field '' %}
-                        {% endfor %}
+                        {% crispy form form.helper %}
                     </div>
 
                     <div class="modal-footer" align="right">

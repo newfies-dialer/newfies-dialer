@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n common_tags utils_tags %}
+{% load i18n common_tags crispy_forms_tags %}
 
 {% block header_files %}
 {% endblock %}
@@ -45,11 +45,9 @@
                     <a id="id_close_x" class="close" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</a>
                     <h3>{% trans "import survey"|title %}</h3>
                 </div>
-                <form method="post" role="form" action="/module/import_survey/" enctype="multipart/form-data" >{% csrf_token %}
+                <form method="post" role="form" action="/module/import_survey/" enctype="multipart/form-data" >
                     <div class="modal-body">
-                        {% for field in form %}
-                            {% field_html_code field '' %}
-                        {% endfor %}
+                        {% crispy form form.helper %}
                     </div>
                     <div class="modal-footer">
                         <input type="submit" class="btn btn-primary" name="submit" value="{% trans "submit"|title %}" />

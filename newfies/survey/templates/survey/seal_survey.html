@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n utils_tags %}
+{% load i18n crispy_forms_tags %}
 
 {% block header_files %}
 {% endblock %}
@@ -45,11 +45,9 @@
                     <a id="id_close_x" class="close" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</a>
                     <h3>{% trans "seal survey"|title %}</h3>
                 </div>
-                <form method="post" role="form" action="/module/seal_survey/{{ object_id }}/" enctype="multipart/form-data" >{% csrf_token %}
+                <form method="post" role="form" action="/module/seal_survey/{{ object_id }}/" enctype="multipart/form-data" >
                     <div class="modal-body">
-                        {% for field in form %}
-                            {% field_html_code field '' %}
-                        {% endfor %}
+                        {% crispy form form.helper %}
                     </div>
                     <div class="modal-footer">
                         <button type="submit" class="btn btn-primary" value="{% trans 'save'|title %}">

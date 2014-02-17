@@ -62,10 +62,8 @@ def get_multi_question_choice_list(section_id):
     """
     Get survey question list for the user with a default none option
     """
-    keys_list = Branching_template.objects\
-        .values_list('keys', flat=True)\
-        .filter(section_id=int(section_id))\
-        .exclude(keys='')
+    keys_list = Branching_template.objects.values_list('keys', flat=True)\
+        .filter(section_id=int(section_id)).exclude(keys='')
     list_sq = []
     obj_section = Section_template.objects.get(id=int(section_id))
 
@@ -87,10 +85,8 @@ def get_rating_choice_list(section_id):
     Get survey rating laps for logged in user
     with default any other key option
     """
-    keys_list = Branching_template.objects\
-        .values_list('keys', flat=True)\
-        .filter(section_id=int(section_id))\
-        .exclude(keys='')
+    keys_list = Branching_template.objects.values_list('keys', flat=True)\
+        .filter(section_id=int(section_id)).exclude(keys='')
 
     obj_section = Section_template.objects.get(id=int(section_id))
 
@@ -119,11 +115,12 @@ class SurveyForm(SaveUserModelForm):
         super(SurveyForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
+        css_class = 'col-md-4'
         self.helper.layout = Layout(
             Div(
-                Div('name', css_class='col-md-4'),
-                Div('tts_language', css_class='col-md-4'),
-                Div('description', css_class='col-md-4'),
+                Div('name', css_class=css_class),
+                Div('tts_language', css_class=css_class),
+                Div('description', css_class=css_class),
                 css_class='row'
             ),
         )
@@ -135,8 +132,7 @@ class PlayMessageSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'retries',
-                  'audiofile', 'completed']
+        fields = ['type', 'survey', 'question', 'retries', 'audiofile', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(PlayMessageSectionForm, self).__init__(*args, **kwargs)
@@ -375,11 +371,12 @@ class SurveyDetailReportForm(SearchForm):
         super(SurveyDetailReportForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
+        css_class = 'col-md-4'
         self.helper.layout = Layout(
             Div(
-                Div('survey_id', css_class='col-md-4'),
-                Div('from_date', css_class='col-md-4'),
-                Div('to_date', css_class='col-md-4'),
+                Div('survey_id', css_class=css_class),
+                Div('from_date', css_class=css_class),
+                Div('to_date', css_class=css_class),
                 css_class='row'
             ),
         )
@@ -404,13 +401,22 @@ class SurveyDetailReportForm(SearchForm):
 
 class SurveyFileImport(forms.Form):
     """General Form : file upload"""
-    name = forms.CharField(label=_('survey name'), required=True)
-    survey_file = forms.FileField(label=_("upload File"), required=True,
-                                  error_messages={'required': 'please upload File'},
-                                  help_text=_("browse text file"))
+    name = forms.CharField(label=_('survey name').title(), required=True)
+    survey_file = forms.FileField(label=_("upload file").title(), required=True, help_text=_("browse text file"),
+                                  error_messages={'required': 'please upload File'})
 
     def __init__(self, *args, **kwargs):
         super(SurveyFileImport, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        css_class = 'col-md-12'
+        self.helper.layout = Layout(
+            Div(
+                Div('name', css_class=css_class),
+                Div('survey_file', css_class=css_class),
+                css_class='row'
+            )
+        )
         for i in self.fields.keyOrder:
             self.fields[i].widget.attrs['class'] = "form-control"
 
@@ -428,6 +434,12 @@ class SealSurveyForm(SurveyFileImport):
     """General Form : SealSurveyForm"""
     def __init__(self, *args, **kwargs):
         super(SealSurveyForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['name']
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        css_class = 'col-md-12'
+        self.helper.layout = Layout(
+            Div(
+                Div('name', css_class=css_class),
+                css_class='row'
+            )
+        )

@@ -28,8 +28,8 @@ from dialer_campaign.forms import get_phonebook_list,\
 
 from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Submit, Field
-#from crispy_forms.bootstrap import FormActions
+from crispy_forms.layout import Layout, Div, Submit, Field, HTML
+from crispy_forms.bootstrap import TabHolder, Tab
 
 
 def get_smscampaign_list(user=None):
@@ -49,18 +49,17 @@ class SMSCampaignForm(ModelForm):
     """SMSCampaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
     ds_user = forms.CharField(widget=forms.HiddenInput)
-
     #content_object = forms.ChoiceField(label=_("Application"),)
 
     class Meta:
         model = SMSCampaign
-        fields = ['campaign_code', 'name', 'callerid', 'sms_gateway',
-                  'phonebook', 'extra_data', 'text_message',
-                  'frequency', 'maxretry', 'intervalretry',
-                  'startingdate', 'expirationdate',
-                  'daily_start_time', 'daily_stop_time',
-                  'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                  'saturday', 'sunday', 'ds_user']
+        #fields = ['campaign_code', 'name', 'callerid', 'sms_gateway',
+        #          'phonebook', 'extra_data', 'text_message',
+        #          'frequency', 'maxretry', 'intervalretry',
+        #          'startingdate', 'expirationdate',
+        #          'daily_start_time', 'daily_stop_time',
+        #          'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
+        #          'saturday', 'sunday', 'ds_user']
         exclude = ('status',)
         widgets = {
             'extra_data': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -71,14 +70,75 @@ class SMSCampaignForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SMSCampaignForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+
+        if self.instance.id:
+            form_action = common_submit_buttons(default_action='update')
+        else:
+            form_action = common_submit_buttons(default_action='add')
+
+        week_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+        week_days_html = """<div class="row"><div class="col-md-12 col-xs-6">"""
+
+        for i in week_days:
+            week_days_html += """
+                <div class="col-md-3">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label for="{{ form.%s.auto_id }}">{{ form.%s.label }}</label><br/>
+                        <div class="make-switch switch-small">
+                        {{ form.%s }}
+                        </div>
+                    </div>
+                </div>
+                """ % (i, i, i)
+
+        week_days_html += """</div></div>"""
+        css_class = 'col-md-6'
+        self.helper.layout = Layout(
+            Field('campaign_code'),
+            Field('ds_user'),
+            TabHolder(
+                Tab('General Settings',
+                    Div(
+                        Div('name', css_class=css_class),
+                        Div('callerid', css_class=css_class),
+                        Div('sms_gateway', css_class=css_class),
+                        Div('phonebook', css_class=css_class),
+                        Div('extra_data', css_class=css_class),
+                        Div('text_message', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab('Completion Settings',
+                    Div(
+                        Div('frequency', css_class=css_class),
+                        Div('maxretry', css_class=css_class),
+                        Div('intervalretry', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab('schedule',
+                    Div(
+                        Div(HTML("""<label>Week days<label>"""), css_class="col-md-3"),
+                        HTML(week_days_html),
+                        HTML("""<div>&nbsp;</div>"""),
+                        Div('startingdate', css_class=css_class),
+                        Div('expirationdate', css_class=css_class),
+                        Div('daily_start_time', css_class=css_class),
+                        Div('daily_stop_time', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+            ),
+        )
+
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        exclude_list = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                        'saturday', 'sunday']
-
-        for i in self.fields.keyOrder:
-            if i not in exclude_list:
-                self.fields[i].widget.attrs['class'] = "form-control"
-
         if user:
             self.fields['ds_user'].initial = user
             phonebook_list = get_phonebook_list(user)
@@ -174,12 +234,13 @@ class SMSSearchForm(SearchForm):
         super(SMSSearchForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
+        css_class = 'col-md-4'
         self.helper.layout = Layout(
             Div(
-                Div('from_date', css_class='col-md-4'),
-                Div('to_date', css_class='col-md-4'),
-                Div('status', css_class='col-md-4'),
-                Div('smscampaign', css_class='col-md-4'),
+                Div('from_date', css_class=css_class),
+                Div('to_date', css_class=css_class),
+                Div('status', css_class=css_class),
+                Div('smscampaign', css_class=css_class),
                 css_class='row'
             ),
         )

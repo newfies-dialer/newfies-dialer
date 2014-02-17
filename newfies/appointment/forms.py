@@ -29,6 +29,7 @@ from mod_utils.forms import SaveUserModelForm
 from bootstrap3_datetime.widgets import DateTimePicker
 from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
+from crispy_forms.bootstrap import TabHolder, Tab
 from crispy_forms.layout import Layout, Div, Fieldset, HTML
 
 
@@ -322,16 +323,58 @@ class AlarmForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(AlarmForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
 
-        self.fields.keyOrder = [
-            'date_start_notice', 'event', 'alarm_phonenumber', 'alarm_email',
-            'method', 'survey', 'mail_template', 'sms_template',
-            'daily_start', 'daily_stop', 'maxretry', 'retry_delay',
-            'advance_notice', 'result', 'url_cancel', 'phonenumber_sms_failure',
-            'url_confirm', 'phonenumber_transfer']
+        if self.instance.id:
+            form_action = common_submit_buttons(default_action='update')
+        else:
+            form_action = common_submit_buttons(default_action='add')
 
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        css_class = 'col-md-6'
+        self.helper.layout = Layout(
+            TabHolder(
+                Tab('General settings',
+                    Div(
+                        Div('date_start_notice', css_class=css_class),
+                        Div('event', css_class=css_class),
+                        Div('alarm_phonenumber', css_class=css_class),
+                        Div('alarm_email', css_class=css_class),
+                        Div('method', css_class=css_class),
+                        Div('survey', css_class=css_class),
+                        Div('mail_template', css_class=css_class),
+                        Div('sms_template', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab('Alarm settings',
+                    Div(
+                        Div('daily_start', css_class=css_class),
+                        Div('daily_stop', css_class=css_class),
+                        Div('maxretry', css_class=css_class),
+                        Div('retry_delay', css_class=css_class),
+                        Div('advance_notice', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab('Result settings',
+                    Div(
+                        Div('result', css_class=css_class),
+                        Div('url_cancel', css_class=css_class),
+                        Div('phonenumber_sms_failure', css_class=css_class),
+                        Div('url_confirm', css_class=css_class),
+                        Div('phonenumber_transfer', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+            ),
+        )
+
         list_survey = []
         list_survey.append((0, '---'))
         survey_list = Survey.objects.values_list(

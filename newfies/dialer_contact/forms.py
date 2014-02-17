@@ -65,6 +65,7 @@ class Contact_fileImport(FileImport):
     phonebook = forms.ChoiceField(label=_("phonebook").capitalize(), required=False, help_text=_("select phonebook"))
 
     def __init__(self, user, *args, **kwargs):
+        super(Contact_fileImport, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -73,8 +74,6 @@ class Contact_fileImport(FileImport):
             ),
         )
         common_submit_buttons(self.helper.layout, 'import')
-        super(Contact_fileImport, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['phonebook', 'csv_file']
 
         # To get user's phonebook list
         if user:  # and not user.is_superuser
@@ -92,6 +91,7 @@ class PhonebookForm(SaveUserModelForm):
         }
 
     def __init__(self, *args, **kwargs):
+        super(PhonebookForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
@@ -99,7 +99,6 @@ class PhonebookForm(SaveUserModelForm):
                 Div(Fieldset('', 'name', 'description', css_class='col-md-6')),
             ),
         )
-        super(PhonebookForm, self).__init__(*args, **kwargs)
         if self.instance.id:
             common_submit_buttons(self.helper.layout, 'update')
         else:
@@ -133,17 +132,17 @@ class ContactForm(ModelForm):
             form_action = common_submit_buttons(default_action='update')
         else:
             form_action = common_submit_buttons(default_action='add')
-
+        css_class = 'col-md-6'
         self.helper.layout = Layout(
             TabHolder(
                 Tab('general',
                     Div(
-                        Div('phonebook', css_class='col-md-6'),
-                        Div('contact', css_class='col-md-6'),
-                        Div('last_name', css_class='col-md-6'),
-                        Div('first_name', css_class='col-md-6'),
-                        Div('status', css_class='col-md-6'),
-                        Div('email', css_class='col-md-6'),
+                        Div('phonebook', css_class=css_class),
+                        Div('contact', css_class=css_class),
+                        Div('last_name', css_class=css_class),
+                        Div('first_name', css_class=css_class),
+                        Div('status', css_class=css_class),
+                        Div('email', css_class=css_class),
                         css_class='row'
                     ),
                     form_action,
@@ -151,13 +150,13 @@ class ContactForm(ModelForm):
                     ),
                 Tab('advanced data',
                     Div(
-                        Div('unit_number', css_class='col-md-6'),
-                        Div('address', css_class='col-md-6'),
-                        Div('city', css_class='col-md-6'),
-                        Div('state', css_class='col-md-6'),
-                        Div('country', css_class='col-md-6'),
-                        Div('description', css_class='col-md-6'),
-                        Div('additional_vars', css_class='col-md-6'),
+                        Div('unit_number', css_class=css_class),
+                        Div('address', css_class=css_class),
+                        Div('city', css_class=css_class),
+                        Div('state', css_class=css_class),
+                        Div('country', css_class=css_class),
+                        Div('description', css_class=css_class),
+                        Div('additional_vars', css_class=css_class),
                         css_class='row'
                     ),
                     form_action,

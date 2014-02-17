@@ -32,7 +32,8 @@ from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
 from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Field
+from crispy_forms.layout import Layout, Div, Fieldset, Field, HTML
+from crispy_forms.bootstrap import TabHolder, Tab
 
 
 def get_object_choices(available_objects):
@@ -60,6 +61,7 @@ class CampaignForm(ModelForm):
 
     class Meta:
         model = Campaign
+        """
         fields = ['campaign_code', 'name',
                   'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
                   'content_object',  # 'content_type', 'object_id'
@@ -73,8 +75,9 @@ class CampaignForm(ModelForm):
                   'saturday', 'sunday', 'ds_user',
                   'selected_phonebook', 'selected_content_object',
                   'voicemail', 'amd_behavior', 'voicemail_audiofile',
-                  'agent_script', 'lead_disposition', 'external_link'
+                  #'agent_script', 'lead_disposition', 'external_link'
                   ]
+        """
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
             'agent_script': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -86,14 +89,116 @@ class CampaignForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+
+        if self.instance.id:
+            form_action = common_submit_buttons(default_action='update')
+        else:
+            form_action = common_submit_buttons(default_action='add')
+
+        week_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+        week_days_html = """<div class="row"><div class="col-md-12 col-xs-6">"""
+
+        for i in week_days:
+            week_days_html += """
+                <div class="col-md-3">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label for="{{ form.%s.auto_id }}">{{ form.%s.label }}</label><br/>
+                        <div class="make-switch switch-small">
+                        {{ form.%s }}
+                        </div>
+                    </div>
+                </div>
+                """ % (i, i, i)
+        week_days_html += """</div></div>"""
+        css_class = 'col-md-6'
+
+        self.helper.layout = Layout(
+            Field('campaign_code'),
+            Field('ds_user'),
+            TabHolder(
+                Tab('General',
+                    Div(
+                        Div(Fieldset('General Settings'), css_class='col-md-12'),
+                        Div('name', css_class=css_class),
+                        Div('callerid', css_class=css_class),
+                        Div('caller_name', css_class=css_class),
+                        Div('content_object', css_class=css_class),
+                        css_class='row'
+                    ),
+                    Div(
+                        Div('extra_data', css_class=css_class),
+                        Div('dnc', css_class=css_class),
+                        Div('description', css_class=css_class),
+                        Div('phonebook', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab('Dialer',
+                    Div(
+                        Div(Fieldset('Dialer Settings'), css_class='col-md-12'),
+                        Div('aleg_gateway', css_class=css_class),
+                        Div('frequency', css_class=css_class),
+                        Div('callmaxduration', css_class=css_class),
+                        Div('maxretry', css_class=css_class),
+                        Div('intervalretry', css_class=css_class),
+                        Div('calltimeout', css_class=css_class),
+                        Div(Fieldset('Dialer Completion Settings'), css_class='col-md-12'),
+                        Div('completion_maxretry', css_class=css_class),
+                        Div('completion_intervalretry', css_class=css_class),
+                        Div('sms_gateway', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab('schedule',
+                    Div(
+                        Div(Fieldset('Schedule Settings'), css_class='col-md-12'),
+                        Div(HTML("""<label>Week days<label>"""), css_class="col-md-3"),
+                        HTML(week_days_html),
+                        HTML("""<div>&nbsp;</div>"""),
+                        Div('startingdate', css_class=css_class),
+                        Div('expirationdate', css_class=css_class),
+                        Div('daily_start_time', css_class=css_class),
+                        Div('daily_stop_time', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+            ),
+        )
+
+        if settings.AMD:
+            amd_layot = Tab('voicemail',
+                            Div(
+                                Div(Fieldset('Voicemail Settings'), css_class='col-md-12'),
+                                Div(HTML("""
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label for="{{ form.voicemail.auto_id }}">{{ form.voicemail.label }}</label><br/>
+                                        <div class="make-switch switch-small">
+                                        {{ form.voicemail }}
+                                        </div>
+                                    </div>
+                                    """), css_class='col-md-12 col-xs-10'),
+                                HTML("""<div>&nbsp;</div>"""),
+                                Div('amd_behavior', css_class=css_class),
+                                Div('voicemail_audiofile', css_class=css_class),
+                                css_class='row'
+                            ),
+                            form_action,
+                            css_class='well'
+                            )
+            self.helper.layout[2].insert(2, amd_layot)
+        # hidden var
+        self.helper.layout.append(Field('selected_phonebook'))
+        self.helper.layout.append(Field('selected_content_object'))
+
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        exclude_list = ['voicemail', 'monday', 'tuesday', 'wednesday',
-                        'thursday', 'friday', 'saturday', 'sunday']
-
-        for i in self.fields.keyOrder:
-            if i not in exclude_list:
-                self.fields[i].widget.attrs['class'] = "form-control"
 
         if user:
             self.fields['ds_user'].initial = user

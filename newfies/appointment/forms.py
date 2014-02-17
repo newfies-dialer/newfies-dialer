@@ -34,19 +34,20 @@ from crispy_forms.layout import Layout, Div, Fieldset, HTML
 
 class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
     def __init__(self, *args, **kwargs):
+        super(CalendarUserPasswordChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
             Fieldset('', 'password1', 'password2', css_class='col-md-4')
         )
-        super(CalendarUserPasswordChangeForm, self).__init__(*args, **kwargs)
 
 
 class CalendarUserCreationForm(UserCreationForm):
     calendar_setting_id = forms.ChoiceField(label=_('calendar setting'), required=True, choices=[('', '---')])
 
     def __init__(self, manager, *args, **kwargs):
+        super(CalendarUserCreationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = False
@@ -54,8 +55,6 @@ class CalendarUserCreationForm(UserCreationForm):
         self.helper.layout = Layout(
             Fieldset('', 'username', 'password1', 'password2', 'calendar_setting_id', css_class='col-md-6 col-xs-8')
         )
-        super(CalendarUserCreationForm, self).__init__(*args, **kwargs)
-
         cal_setting_list = []
         setting_list = CalendarSetting.objects.filter(user=manager)
         cal_setting_list.append(('', _('select calendar setting').title()))
@@ -72,6 +71,7 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
         exclude = ('manager', 'user', )
 
     def __init__(self, user, *args, **kwargs):
+        super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.disable_csrf = False
@@ -94,8 +94,6 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
                 css_class='row'
             ),
         )
-        super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
-
         list_calendar_setting = []
         list_calendar_setting.append((0, _('select calendar setting').title()))
         calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
@@ -194,9 +192,6 @@ class CalendarUserNameChangeForm(UserChangeForm):
 
     def __init__(self, *args, **kwargs):
         super(CalendarUserNameChangeForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            if i == 'username':
-                self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CalendarForm(ModelForm):
@@ -207,10 +202,18 @@ class CalendarForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('', 'name', 'user', 'max_concurrent', css_class='col-xs-4')
+        )
+        if self.instance.id:
+            form_action = common_submit_buttons(default_action='update')
+        else:
+            form_action = common_submit_buttons(default_action='add')
+        self.helper.layout.append(form_action)
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['user'].choices = get_calendar_user_list(calendar_user_list)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class AdminCalendarForm(ModelForm):
@@ -253,21 +256,22 @@ class EventForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'well'
+        css_class = 'col-md-6'
         self.helper.layout = Layout(
             Fieldset('Event settings'),
             Div(
-                Div('title', css_class='col-md-6'),
-                Div('calendar', css_class='col-md-6'),
-                Div('creator', css_class='col-md-6'),
-                Div('rule', css_class='col-md-6'),
-                Div('start', css_class='col-md-6'),
-                Div('end', css_class='col-md-6'),
-                Div('end_recurring_period', css_class='col-md-6'),
+                Div('title', css_class=css_class),
+                Div('calendar', css_class=css_class),
+                Div('creator', css_class=css_class),
+                Div('rule', css_class=css_class),
+                Div('start', css_class=css_class),
+                Div('end', css_class=css_class),
+                Div('end_recurring_period', css_class=css_class),
                 css_class='row'
             ),
             Div(
-                Div('description', css_class='col-md-6'),
-                Div('data', css_class='col-md-6'),
+                Div('description', css_class=css_class),
+                Div('data', css_class=css_class),
                 css_class='row'
             ),
         )
@@ -290,11 +294,12 @@ class EventSearchForm(forms.Form):
     def __init__(self, user, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_class = 'well'
+        css_class = 'col-md-4'
         self.helper.layout = Layout(
             Div(
-                Div('start_date', css_class='col-md-4'),
-                Div('calendar_id', css_class='col-md-4'),
-                Div('calendar_user_id', css_class='col-md-4'),
+                Div('start_date', css_class=css_class),
+                Div('calendar_id', css_class=css_class),
+                Div('calendar_user_id', css_class=css_class),
                 css_class='row'
             ),
         )
@@ -303,8 +308,6 @@ class EventSearchForm(forms.Form):
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar_id'].choices = get_calendar_list(calendar_user_list)
         self.fields['calendar_user_id'].choices = get_calendar_user_list(calendar_user_list)
-        for i in ['calendar_id', 'calendar_user_id']:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class AlarmForm(ModelForm):

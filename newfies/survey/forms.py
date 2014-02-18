@@ -24,6 +24,7 @@ from audiofield.models import AudioFile
 from mod_utils.forms import SaveUserModelForm, common_submit_buttons
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Field, Fieldset, HTML
+from crispy_forms.bootstrap import AppendedText
 
 
 def get_audiofile_list(user):
@@ -126,19 +127,44 @@ class SurveyForm(SaveUserModelForm):
         )
         self.fields['description'].widget = forms.TextInput()
 
+html_code_of_completed_field = """
+                    <label for="{{ form.completed.auto_id }}">Completed</label><br/>
+                    <div class="make-switch switch-small">
+                    {{ form.completed }}
+                    </div>
+                    """
+append_html_code_to_audio_field = """<a href="#" id="helpover" rel="popover" data-placement="top" data-content="If an audio file is not selected, the script will be played using Text-To-Speech" data-original-title="information"><i class="fa-info"></i></a>"""
+
 
 class PlayMessageSectionForm(ModelForm):
     """PlayMessageForm ModelForm"""
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'retries', 'audiofile', 'completed']
+        #fields = ['type', 'survey', 'question',  'audiofile', 'completed']  # 'retries',
 
     def __init__(self, user, *args, **kwargs):
         super(PlayMessageSectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('survey'),
+            Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
+            Div(
+                Div('question', css_class='col-md-8 col-xs-12'),
+                Div('audiofile', css_class='col-md-4 col-xs-12'),
+                css_class='row'
+            ),
+            Div(
+                Div(HTML(html_code_of_completed_field), css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+        )
+        if self.instance.audiofile:
+            self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
+
         self.fields['survey'].widget = forms.HiddenInput()
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.fields['question'].label = _('section title').capitalize()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
@@ -149,24 +175,61 @@ class MultipleChoiceSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'retries',
-                  'key_0', 'key_1', 'key_2', 'key_3', 'key_4',
-                  'key_5', 'key_6', 'key_7', 'key_8', 'key_9',
-                  'timeout', 'audiofile', 'invalid_audiofile',
-                  'completed']
+        #fields = ['type', 'survey', 'question', 'retries', 'timeout', 'audiofile', 'invalid_audiofile',
+        #          'key_0', 'key_1', 'key_2', 'key_3', 'key_4', 'key_5', 'key_6', 'key_7', 'key_8', 'key_9',
+        #          'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(MultipleChoiceSectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('survey'),
+            Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
+            Div(
+                Div('question', css_class='col-md-8 col-xs-12'),
+                Div('audiofile', css_class='col-md-4 col-xs-12'),
+                css_class='row'
+            ),
+            Div(
+                Div('retries', css_class='col-md-6 col-xs-10'),
+                Div('timeout', css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+            Div(
+                Div(
+                    HTML("""configure valid multi-choice options. The value of each field will be shown in the survey report"""),
+                    css_class='col-md-12 col-xs-12'
+                ),
+                css_class='row'
+            ),
+            Div(
+                Div('key_0', css_class='col-xs-2'),
+                Div('key_1', css_class='col-xs-2'),
+                Div('key_2', css_class='col-xs-2'),
+                Div('key_3', css_class='col-xs-2'),
+                Div('key_4', css_class='col-xs-2'),
+                Div('key_5', css_class='col-xs-2'),
+                Div('key_6', css_class='col-xs-2'),
+                Div('key_7', css_class='col-xs-2'),
+                Div('key_8', css_class='col-xs-2'),
+                Div('key_9', css_class='col-xs-2'),
+                css_class='row'
+            ),
+            Div(Div('invalid_audiofile', css_class='col-md-6 col-xs-8'), css_class='row'),
+            Div(
+                Div(HTML(html_code_of_completed_field), css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+        )
+        if self.instance.audiofile:
+            self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
-            self.fields['audiofile'].widget.attrs['class'] = 'span2'
             self.fields['invalid_audiofile'].choices = self.fields['audiofile'].choices
-            self.fields['invalid_audiofile'].widget.attrs['class'] = 'span2'
 
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class RatingSectionForm(ModelForm):
@@ -174,12 +237,35 @@ class RatingSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'rating_laps',
-                  'retries', 'timeout', 'audiofile', 'invalid_audiofile',
-                  'completed']
+        #fields = ['type', 'survey', 'question', 'rating_laps',
+        #          'retries', 'timeout', 'audiofile', 'invalid_audiofile', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(RatingSectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('survey'),
+            Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
+            Div(
+                Div('question', css_class='col-md-8 col-xs-12'),
+                Div('audiofile', css_class='col-md-4 col-xs-12'),
+                css_class='row'
+            ),
+            Div(
+                Div('retries', css_class='col-md-4 col-xs-4'),
+                Div('timeout', css_class='col-md-4 col-xs-4'),
+                Div('rating_laps', css_class='col-md-4 col-xs-4'),
+                css_class='row'
+            ),
+            Div(Div('invalid_audiofile', css_class='col-md-6 col-xs-8'), css_class='row'),
+            Div(
+                Div(HTML(html_code_of_completed_field), css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+        )
+        if self.instance.audiofile:
+            self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
             self.fields['invalid_audiofile'].choices = self.fields['audiofile'].choices
@@ -187,8 +273,6 @@ class RatingSectionForm(ModelForm):
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['rating_laps'].widget.attrs['maxlength'] = 3
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CaptureDigitsSectionForm(ModelForm):
@@ -196,20 +280,56 @@ class CaptureDigitsSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'validate_number',
-                  'number_digits', 'min_number', 'max_number',
-                  'retries', 'timeout', 'audiofile', 'invalid_audiofile',
-                  'completed']
+        #fields = ['type', 'survey', 'question', 'validate_number', 'number_digits', 'min_number', 'max_number',
+        #          'retries', 'timeout', 'audiofile', 'invalid_audiofile', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(CaptureDigitsSectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('survey'),
+            Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
+            Div(
+                Div('question', css_class='col-md-8 col-xs-12'),
+                Div('audiofile', css_class='col-md-4 col-xs-12'),
+                css_class='row'
+            ),
+            Div(
+                Div('retries', css_class='col-md-6 col-xs-10'),
+                Div('timeout', css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+            Div(
+                Div(HTML("""
+                    <div class="btn-group" data-toggle="buttons">
+                        <label for="{{ form.validate_number.auto_id }}">{{ form.validate_number.label }}</label><br/>
+                        <div class="make-switch switch-small">
+                        {{ form.validate_number }}
+                        </div>
+                    </div>
+                """), css_class='col-md-4 col-xs-12'),
+                css_class='row'
+            ),
+            Div(
+                Div('number_digits', css_class='col-md-6 col-xs-10'),
+                Div('min_number', css_class='col-md-3 col-xs-10'),
+                Div('max_number', css_class='col-md-3 col-xs-10'),
+                css_class='row'
+            ),
+            Div(Div('invalid_audiofile', css_class='col-md-6 col-xs-8'), css_class='row'),
+            Div(
+                Div(HTML(html_code_of_completed_field), css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+        )
+        if self.instance.audiofile:
+            self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
 
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class RecordMessageSectionForm(ModelForm):
@@ -217,17 +337,33 @@ class RecordMessageSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'audiofile', 'completed']
+        #fields = ['type', 'survey', 'question', 'audiofile', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(RecordMessageSectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('survey'),
+            Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
+            Div(
+                Div('question', css_class='col-md-8 col-xs-12'),
+                Div('audiofile', css_class='col-md-4 col-xs-12'),
+                css_class='row'
+            ),
+            Div(
+                Div(HTML(html_code_of_completed_field), css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+        )
+        if self.instance.audiofile:
+            self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
 
         self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['question'].label = _('section title').capitalize()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class ConferenceSectionForm(ModelForm):
@@ -235,16 +371,33 @@ class ConferenceSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'audiofile', 'conference', 'completed']
+        #fields = ['type', 'survey', 'question', 'audiofile', 'conference', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(ConferenceSectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('survey'),
+            Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
+            Div(
+                Div('question', css_class='col-md-8 col-xs-12'),
+                Div('audiofile', css_class='col-md-4 col-xs-12'),
+                Div('conference', css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+            Div(
+                Div(HTML(html_code_of_completed_field), css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+        )
+        if self.instance.audiofile:
+            self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.fields['question'].label = _('section title').capitalize()
 
 
 class CallTransferSectionForm(ModelForm):
@@ -252,17 +405,33 @@ class CallTransferSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'audiofile', 'phonenumber',
-                  'completed']
+        #fields = ['type', 'survey', 'question', 'audiofile', 'phonenumber', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(CallTransferSectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('survey'),
+            Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
+            Div(
+                Div('question', css_class='col-md-8 col-xs-12'),
+                Div('audiofile', css_class='col-md-4 col-xs-12'),
+                Div('phonenumber', css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+            Div(
+                Div(HTML(html_code_of_completed_field), css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+        )
+        if self.instance.audiofile:
+            self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.fields['question'].label = _('section title').capitalize()
 
 
 class SMSSectionForm(ModelForm):
@@ -270,18 +439,35 @@ class SMSSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        fields = ['type', 'survey', 'question', 'retries',
-                  'audiofile', 'completed', 'sms_text']
+        #fields = ['type', 'survey', 'question', 'retries', 'audiofile', 'completed', 'sms_text']
         widgets = {
             'sms_text': Textarea(attrs={'cols': 23, 'rows': 2}),
         }
 
     def __init__(self, user, *args, **kwargs):
         super(SMSSectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('survey'),
+            Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
+            Div(
+                Div('question', css_class='col-md-8 col-xs-12'),
+                Div('audiofile', css_class='col-md-4 col-xs-12'),
+                css_class='row'
+            ),
+            Div(Div('retries', css_class='col-md-4 col-xs-4'), css_class='row'),
+            Div(Div('sms_text', css_class='col-md-10 col-xs-10'), css_class='row'),
+            Div(
+                Div(HTML(html_code_of_completed_field), css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+        )
+        if self.instance.audiofile:
+            self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
         self.fields['survey'].widget = forms.HiddenInput()
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+        self.fields['question'].label = _('section title').capitalize()
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
 

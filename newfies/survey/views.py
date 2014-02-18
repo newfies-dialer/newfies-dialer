@@ -180,6 +180,7 @@ def section_add_form(request, Form, survey, section_type):
     """
     save_tag = False
     new_obj = ''
+
     form = Form(request.user, initial={'survey': survey, 'type': section_type})
     if request.POST.get('add'):
         form = Form(request.user, request.POST, initial={'survey': survey, 'type': section_type})
@@ -220,6 +221,7 @@ def section_add(request):
     form = PlayMessageSectionForm(request.user, initial={'survey': survey})
 
     request.session['err_msg'] = ''
+
     if request.method == 'POST':
         # Play message
         if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:

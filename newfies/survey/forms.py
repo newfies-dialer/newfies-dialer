@@ -23,7 +23,7 @@ from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile
 from mod_utils.forms import SaveUserModelForm, common_submit_buttons
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div
+from crispy_forms.layout import Layout, Div, Field, Fieldset, HTML
 
 
 def get_audiofile_list(user):
@@ -311,10 +311,17 @@ class BranchingForm(ModelForm):
 
     class Meta:
         model = Branching_template
-        fields = ['keys', 'section', 'goto']
+        #fields = ['keys', 'section', 'goto']
 
     def __init__(self, survey_id, section_id, *args, **kwargs):
         super(BranchingForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        css_class = 'col-xs-6'
+        self.helper.layout = Layout(
+            Field('section'),
+        )
+
         #instance = getattr(self, 'instance', None)
         self.fields['section'].widget = forms.HiddenInput()
 
@@ -340,10 +347,47 @@ class BranchingForm(ModelForm):
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 
-        self.fields['goto'].choices = get_section_question_list(survey_id, section_id)
+            self.helper.layout.append(
+                Div(
+                    Field('keys'),
+                    Div('goto', css_class=css_class),
+                    css_class='row'
+                )
+            )
+        else:
+            if obj_section.type != SECTION_TYPE.HANGUP_SECTION and obj_section.type != SECTION_TYPE.DNC:
+                self.helper.layout.append(
+                    Div(
+                        Div(HTML(
+                            """
+                            <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default">
+                                    <input type="radio" name="keys_button" id="button-anything"> Any Other Key
+                                </label>
+                                <label class="btn btn-default">
+                                    <input type="radio" name="keys_button" id="button-invalid"> Invalid
+                                </label>
+                            </div>
+                            """
+                            ), css_class=css_class),
+                        css_class='row'
+                    )
+                )
+                self.helper.layout.append(
+                    Div(
+                        Div(Fieldset('', 'keys', 'goto'), css_class=css_class),
+                        css_class='row'
+                    )
+                )
+            else:
+                self.helper.layout.append(
+                    Div(
+                        Div(HTML('no branching, this will terminate the call'), css_class=css_class),
+                        css_class='row'
+                    )
+                )
 
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.fields['goto'].choices = get_section_question_list(survey_id, section_id)
 
 
 class SurveyReportForm(forms.Form):

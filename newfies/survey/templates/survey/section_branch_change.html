@@ -1,5 +1,5 @@
 {% extends "frontend/master.html" %}
-{% load i18n utils_tags %}
+{% load i18n crispy_forms_tags %}
 
 {% block header_files %}
 {% endblock %}
@@ -47,70 +47,36 @@
             </div>
 
             <form method="POST" action="{% if action == 'update' %}/section/branch/{{ branching_id }}/{% else %}/section/branch/add/?section_id={{ section_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
-            {% csrf_token %}
 
-            {{ form.section }}
-            <!--"keys" is hidden for section_type 1 (voice) & 5(record message)-->
-            <div class="modal-body">
-                {% if section_type != SECTION_TYPE.HANGUP_SECTION and section_type != SECTION_TYPE.DNC %}
-
-                {% if section_type == SECTION_TYPE.PLAY_MESSAGE or section_type == SECTION_TYPE.RECORD_MSG or section_type == SECTION_TYPE.CALL_TRANSFER or section_type == SECTION_TYPE.CONFERENCE or section_type == SECTION_TYPE.SMS %}
-                    {{ form.keys }}
-                {% else %}
-                    <div class="row">
-                        <div class="col-md-6">
-                            <script type="text/javascript">
-                            $(function() {
-                                $('#button-anything').change( function() {
-                                    $("#id_keys").val('any');
-                                });
-                                $('#button-invalid').change( function() {
-                                    $("#id_keys").val('invalid');
-                                });
+                <!--"keys" is hidden for section_type 1 (voice) & 5(record message)-->
+                <div class="modal-body">
+                    <script type="text/javascript">
+                        $(function() {
+                            $('#button-anything').change( function() {
+                                $("#id_keys").val('any');
                             });
-                            </script>
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default">
-                                    <input type="radio" name="keys_button" id="button-anything">{% trans "any other key"|title %}
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="keys_button" id="button-invalid"> {% trans "invalid"|title %}
-                                </label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row">
-                        {% field_html_code form.keys 'col-xs-6' %}
-                    </div>
-                {% endif %}
-
-                <div class="row">
-                    {% field_html_code form.goto 'col-xs-6' %}
+                            $('#button-invalid').change( function() {
+                                $("#id_keys").val('invalid');
+                            });
+                        });
+                    </script>
+                    {% crispy form form.helper %}
                 </div>
-                {% else %}
 
-                <div class="row">
-                    <div class="col-md-6">
-                        <span class="help-block">{% trans "no branching, this will terminate the call"|capfirst %}</span>
-                    </div>
-                </div>
-                {% endif %}
-            </div>
-
-            <div class="modal-footer">
-                {% if section_type != SECTION_TYPE.HANGUP_SECTION and section_type != SECTION_TYPE.DNC %}
-                    {% if action == 'update' %}
-                        <button type="submit" id="id_update" name="update" class="btn btn-primary" value="update">
-                            <i class="fa fa-edit fa-lg"></i> {% trans "update"|title %}
-                        </button>
-                    {% else %}
-                        <button type="submit" id="id_add" name="add" class="btn btn-primary" value="{% trans 'save'|title %}">
-                            <i class="fa fa-save fa-lg"></i> {% trans "save"|title %}
-                        </button>
+                <div class="modal-footer">
+                    {% if section_type != SECTION_TYPE.HANGUP_SECTION and section_type != SECTION_TYPE.DNC %}
+                        {% if action == 'update' %}
+                            <button type="submit" id="id_update" name="update" class="btn btn-primary" value="update">
+                                <i class="fa fa-edit fa-lg"></i> {% trans "update"|title %}
+                            </button>
+                        {% else %}
+                            <button type="submit" id="id_add" name="add" class="btn btn-primary" value="{% trans 'save'|title %}">
+                                <i class="fa fa-save fa-lg"></i> {% trans "save"|title %}
+                            </button>
+                        {% endif %}
                     {% endif %}
-                {% endif %}
-                <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
-            </div>
+                    <button id="id_close" type="button" class="btn btn-default" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>{% trans "close"|title %}</button>
+                </div>
             </form>
         </div>
     </div>

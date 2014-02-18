@@ -180,8 +180,9 @@ def section_add_form(request, Form, survey, section_type):
     """
     save_tag = False
     new_obj = ''
-    form = Form(request.user, request.POST or None, initial={'survey': survey, 'type': section_type})
+    form = Form(request.user, initial={'survey': survey, 'type': section_type})
     if request.POST.get('add'):
+        form = Form(request.user, request.POST, initial={'survey': survey, 'type': section_type})
         if form.is_valid():
             new_obj = form.save()
             request.session["msg"] = _('section is added successfully.')
@@ -216,7 +217,7 @@ def section_add(request):
     """
     survey_id = request.GET.get('survey_id')
     survey = Survey_template.objects.get(pk=survey_id)
-    form = PlayMessageSectionForm(request.user, request.POST or None, initial={'survey': survey})
+    form = PlayMessageSectionForm(request.user, initial={'survey': survey})
 
     request.session['err_msg'] = ''
     if request.method == 'POST':
@@ -304,8 +305,9 @@ def section_update_form(request, Form, section_type, section_instance):
 
     """
     save_tag = False
-    form = Form(request.user, request.POST or None, instance=section_instance, initial={'type': section_type})
+    form = Form(request.user, instance=section_instance, initial={'type': section_type})
     if request.POST.get('update'):
+        form = Form(request.user, request.POST, instance=section_instance, initial={'type': section_type})
         if form.is_valid():
             form.save()
             request.session["msg"] = _('section updated.')

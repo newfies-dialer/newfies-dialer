@@ -246,17 +246,21 @@ def campaign_add(request):
     form = CampaignForm(request.user, request.POST or None)
     # Add campaign
     if form.is_valid():
+        # obj = form.save(user=request.user, commit=False)
         obj = form.save(commit=False)
         contenttype = get_content_type(form.cleaned_data['content_object'])
         obj.content_type = contenttype['object_type']
         obj.object_id = contenttype['object_id']
         obj.user = request.user
         obj.save()
-
         form.save_m2m()
-
         request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
         return HttpResponseRedirect(redirect_url_to_campaign_list)
+    else:
+        print form.is_valid()
+        print get_content_type(form.cleaned_data['content_object'])
+        for error in form.errors:
+            print error
 
     data = {
         'form': form,

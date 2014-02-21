@@ -15,7 +15,6 @@
 from django import forms
 from django.conf import settings
 from django.forms.util import ErrorList
-from django.contrib.auth.models import User
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 
@@ -30,7 +29,7 @@ from user_profile.models import UserProfile
 from django_lets_go.common_functions import get_unique_code
 from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
-from mod_utils.forms import common_submit_buttons
+from mod_utils.forms import SaveUserModelForm, common_submit_buttons
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Fieldset, Field, HTML
 from crispy_forms.bootstrap import TabHolder, Tab
@@ -51,16 +50,17 @@ def get_object_choices(available_objects):
     return object_choices
 
 
-class CampaignForm(ModelForm):
+class CampaignForm(SaveUserModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
-    ds_user = forms.CharField(widget=forms.HiddenInput)
+    #ds_user = forms.CharField(widget=forms.HiddenInput)
     content_object = forms.ChoiceField(label=_("application"), )
     selected_phonebook = forms.CharField(widget=forms.HiddenInput, required=False)
     selected_content_object = forms.CharField(widget=forms.HiddenInput, required=False)
 
     class Meta:
         model = Campaign
+        exclude = ('user',)
         """
         fields = ['campaign_code', 'name',
                   'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
@@ -72,7 +72,7 @@ class CampaignForm(ModelForm):
                   'startingdate', 'expirationdate',
                   'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                  'saturday', 'sunday', 'ds_user',
+                  'saturday', 'sunday', #'ds_user',
                   'selected_phonebook', 'selected_content_object',
                   'voicemail', 'amd_behavior', 'voicemail_audiofile',
                   #'agent_script', 'lead_disposition', 'external_link'
@@ -90,6 +90,7 @@ class CampaignForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
+        self.user = user
 
         if self.instance.id:
             form_action = common_submit_buttons(default_action='update')
@@ -115,7 +116,7 @@ class CampaignForm(ModelForm):
 
         self.helper.layout = Layout(
             Field('campaign_code'),
-            Field('ds_user'),
+            # Field('ds_user'),
             TabHolder(
                 Tab('General',
                     Div(
@@ -178,7 +179,8 @@ class CampaignForm(ModelForm):
                                 Div(Fieldset('Voicemail Settings'), css_class='col-md-12'),
                                 Div(HTML("""
                                     <div class="btn-group" data-toggle="buttons">
-                                        <label for="{{ form.voicemail.auto_id }}">{{ form.voicemail.label }}</label><br/>
+                                        <label for="{{ form.voicemail.auto_id }}">{{ form.voicemail.label }}</label>
+                                        <br/>
                                         <div class="make-switch switch-small">
                                         {{ form.voicemail }}
                                         </div>
@@ -192,7 +194,7 @@ class CampaignForm(ModelForm):
                             form_action,
                             css_class='well'
                             )
-            self.helper.layout[2].insert(2, amd_layot)
+            self.helper.layout[1].insert(2, amd_layot)
         # hidden var
         self.helper.layout.append(Field('selected_phonebook'))
         self.helper.layout.append(Field('selected_content_object'))
@@ -200,8 +202,9 @@ class CampaignForm(ModelForm):
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
 
+        # user = self.user
         if user:
-            self.fields['ds_user'].initial = user
+            # self.fields['ds_user'].initial = user
             list_gw = []
             dnc_list = []
             phonebook_list = get_phonebook_list(user)
@@ -256,16 +259,17 @@ class CampaignForm(ModelForm):
 
             selected_phonebook = ''
             if instance.phonebook.all():
-                selected_phonebook =  ",".join(["%s" % (i.id) for i in instance.phonebook.all()])
+                selected_phonebook = ",".join(["%s" % (i.id) for i in instance.phonebook.all()])
             self.fields['selected_phonebook'].initial = selected_phonebook
 
             self.fields['content_object'].widget.attrs['disabled'] = 'disabled'
             self.fields['content_object'].required = False
-            self.fields['selected_content_object'].initial = "type:%s-id:%s"  % (instance.content_type.id, instance.object_id)
+            self.fields['selected_content_object'].initial = "type:%s-id:%s" % \
+                (instance.content_type.id, instance.object_id)
 
     def clean(self):
         cleaned_data = self.cleaned_data
-        ds_user = cleaned_data.get("ds_user")
+        # ds_user = cleaned_data.get("ds_user")
         frequency = cleaned_data.get('frequency')
         callmaxduration = cleaned_data.get('callmaxduration')
         maxretry = cleaned_data.get('maxretry')
@@ -277,7 +281,7 @@ class CampaignForm(ModelForm):
             self._errors['phonebook'] = ErrorList([msg])
             del self.cleaned_data['phonebook']
 
-        dialer_set = user_dialer_setting(User.objects.get(username=ds_user))
+        dialer_set = user_dialer_setting(self.user)
         if dialer_set:
             if frequency > dialer_set.max_frequency:
                 msg = _('maximum frequency limit of %d exceeded.' % dialer_set.max_frequency)
@@ -423,7 +427,8 @@ class SubscriberSearchForm(SearchForm):
             if user.is_superuser:
                 agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True).filter(is_agent=True)
             else:
-                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True).filter(is_agent=True, manager=user)
+                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True)\
+                    .filter(is_agent=True, manager=user)
 
             a_list = Agent.objects.values_list('id', 'username').filter(id__in=agent_profile_list)
             for i in a_list:

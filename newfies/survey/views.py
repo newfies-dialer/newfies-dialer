@@ -22,7 +22,6 @@ from django.db.models import Sum, Avg, Count
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.db.models.signals import post_save
-from dialer_campaign.models import Campaign
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from survey.models import Survey_template, Survey, Section_template, Section,\
@@ -274,7 +273,7 @@ def section_add(request):
 
         if form_data.get('save_tag'):
             return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
-                % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+                                        % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
         else:
             form = form_data['form']
 
@@ -374,8 +373,8 @@ def section_change(request, id):
     if request.method == 'POST' and request.POST.get('type'):
         # Play message or Hangup Section or DNC
         if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE or
-            int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION or
-            int(request.POST.get('type')) == SECTION_TYPE.DNC):
+           int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION or
+           int(request.POST.get('type')) == SECTION_TYPE.DNC):
             form_data = section_update_form(
                 request, PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
 
@@ -416,7 +415,7 @@ def section_change(request, id):
 
         if form_data.get('save_tag'):
             return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
-                % (section.survey_id, section.id))
+                                        % (section.survey_id, section.id))
         else:
             form = form_data['form']
 
@@ -534,8 +533,11 @@ def section_script_play(request, id):
 
                 #Convert file
                 conv = 'flite --setf duration_stretch=1.5 -voice awb -f %s -o %s' % (text_file_path, audio_file_path)
-                response = subprocess.Popen(conv.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                (filetype, error) = response.communicate()
+                try:
+                    response = subprocess.Popen(conv.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    (filetype, error) = response.communicate()
+                except OSError:
+                    raise Http404
 
         if os.path.isfile(audio_file_path):
             response = HttpResponse()

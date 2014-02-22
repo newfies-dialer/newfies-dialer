@@ -26,7 +26,7 @@ from bootstrap3_datetime.widgets import DateTimePicker
 from dialer_campaign.forms import get_phonebook_list,\
     campaign_status_list as sms_campaign_status_list
 
-from mod_utils.forms import common_submit_buttons
+from mod_utils.forms import SaveUserModelForm, common_submit_buttons
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, Field, HTML
 from crispy_forms.bootstrap import TabHolder, Tab
@@ -48,7 +48,6 @@ def get_smscampaign_list(user=None):
 class SMSCampaignForm(ModelForm):
     """SMSCampaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
-    ds_user = forms.CharField(widget=forms.HiddenInput)
     #content_object = forms.ChoiceField(label=_("Application"),)
 
     class Meta:
@@ -59,8 +58,8 @@ class SMSCampaignForm(ModelForm):
         #          'startingdate', 'expirationdate',
         #          'daily_start_time', 'daily_stop_time',
         #          'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-        #          'saturday', 'sunday', 'ds_user']
-        exclude = ('status',)
+        #          'saturday', 'sunday']
+        exclude = ('user', 'status', 'imported_phonebook')
         widgets = {
             'extra_data': Textarea(attrs={'cols': 23, 'rows': 3}),
             'text_message': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -70,6 +69,7 @@ class SMSCampaignForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(SMSCampaignForm, self).__init__(*args, **kwargs)
+        self.user = user
         self.helper = FormHelper()
 
         if self.instance.id:
@@ -96,7 +96,6 @@ class SMSCampaignForm(ModelForm):
         css_class = 'col-md-6'
         self.helper.layout = Layout(
             Field('campaign_code'),
-            Field('ds_user'),
             TabHolder(
                 Tab('General Settings',
                     Div(
@@ -140,14 +139,12 @@ class SMSCampaignForm(ModelForm):
 
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         if user:
-            self.fields['ds_user'].initial = user
             phonebook_list = get_phonebook_list(user)
             self.fields['phonebook'].choices = phonebook_list
             self.fields['phonebook'].initial = str(phonebook_list[0][0])
 
     def clean(self):
         cleaned_data = self.cleaned_data
-        ds_user = cleaned_data.get("ds_user")
         frequency = cleaned_data.get('frequency')
         maxretry = cleaned_data.get('maxretry')
         phonebook = cleaned_data.get('phonebook')
@@ -157,7 +154,7 @@ class SMSCampaignForm(ModelForm):
             self._errors['phonebook'] = ErrorList([msg])
             del self.cleaned_data['phonebook']
 
-        sms_dialer_set = user_dialer_setting(ds_user)
+        sms_dialer_set = user_dialer_setting(self.user)
         if sms_dialer_set:
             if frequency > sms_dialer_set.sms_max_frequency:
                 msg = _('Maximum Frequency limit of %d exceeded.' % sms_dialer_set.sms_max_frequency)

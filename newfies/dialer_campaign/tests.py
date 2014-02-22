@@ -126,8 +126,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "aleg_gateway": "1",
             "sms_gateway": "",
             "content_object": "type:43-id:1",
-            "extra_data": "2000",
-            "ds_user": self.user}, follow=True)
+            "extra_data": "2000"}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/campaign/add/', {
@@ -143,8 +142,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "aleg_gateway": "1",
             "sms_gateway": "",
             "content_object": "type:43-id:1",
-            "extra_data": "2000",
-            "ds_user": self.user}, follow=True)
+            "extra_data": "2000"}, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_add(request)
@@ -163,8 +161,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "aleg_gateway": "1",
             "sms_gateway": "",
             "content_object": "type:43-id:1",
-            "extra_data": "2000",
-            "ds_user": self.user}, follow=True)
+            "extra_data": "2000"}, follow=True)
 
         request.user = self.user
         request.session = {}
@@ -175,9 +172,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         """Test Function to check update campaign"""
         request = self.factory.post('/campaign/1/', {
             "name": "Sample campaign",
-            "content_object": "type:43-id:1",
-            "ds_user": self.user,
-        }, follow=True)
+            "content_object": "type:43-id:1"}, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_change(request, 1)
@@ -418,8 +413,7 @@ class DialerCampaignModel(TestCase):
             "aleg_gateway": "1",
             "sms_gateway": "",
             "content_object": "type:32-id:1",
-            "extra_data": "2000",
-            "ds_user": self.user})
+            "extra_data": "2000"})
         self.assertEquals(form.is_valid(), False)
 
     def teardown(self):

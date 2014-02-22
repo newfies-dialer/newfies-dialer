@@ -71,7 +71,7 @@ class CampaignForm(ModelForm):
                   'startingdate', 'expirationdate',
                   'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                  'saturday', 'sunday', #'ds_user',
+                  'saturday', 'sunday',
                   'selected_phonebook', 'selected_content_object',
                   'voicemail', 'amd_behavior', 'voicemail_audiofile',
                   #'agent_script', 'lead_disposition', 'external_link'

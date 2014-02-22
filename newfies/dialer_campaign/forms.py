@@ -29,7 +29,7 @@ from user_profile.models import UserProfile
 from django_lets_go.common_functions import get_unique_code
 from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
-from mod_utils.forms import SaveUserModelForm, common_submit_buttons
+from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Fieldset, Field, HTML
 from crispy_forms.bootstrap import TabHolder, Tab
@@ -50,17 +50,16 @@ def get_object_choices(available_objects):
     return object_choices
 
 
-class CampaignForm(SaveUserModelForm):
+class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
-    #ds_user = forms.CharField(widget=forms.HiddenInput)
     content_object = forms.ChoiceField(label=_("application"), )
     selected_phonebook = forms.CharField(widget=forms.HiddenInput, required=False)
     selected_content_object = forms.CharField(widget=forms.HiddenInput, required=False)
 
     class Meta:
         model = Campaign
-        exclude = ('user',)
+        exclude = ('user', 'status', 'content_type', 'object_id')
         """
         fields = ['campaign_code', 'name',
                   'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
@@ -89,9 +88,8 @@ class CampaignForm(SaveUserModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
-        self.helper = FormHelper()
         self.user = user
-
+        self.helper = FormHelper()
         if self.instance.id:
             form_action = common_submit_buttons(default_action='update')
         else:
@@ -116,7 +114,6 @@ class CampaignForm(SaveUserModelForm):
 
         self.helper.layout = Layout(
             Field('campaign_code'),
-            # Field('ds_user'),
             TabHolder(
                 Tab('General',
                     Div(
@@ -202,9 +199,7 @@ class CampaignForm(SaveUserModelForm):
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
 
-        # user = self.user
         if user:
-            # self.fields['ds_user'].initial = user
             list_gw = []
             dnc_list = []
             phonebook_list = get_phonebook_list(user)
@@ -269,7 +264,6 @@ class CampaignForm(SaveUserModelForm):
 
     def clean(self):
         cleaned_data = self.cleaned_data
-        # ds_user = cleaned_data.get("ds_user")
         frequency = cleaned_data.get('frequency')
         callmaxduration = cleaned_data.get('callmaxduration')
         maxretry = cleaned_data.get('maxretry')

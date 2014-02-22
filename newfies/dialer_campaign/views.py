@@ -226,27 +226,23 @@ def campaign_add(request):
     """
     # If dialer setting is not attached with user, redirect to campaign list
     if not user_dialer_setting(request.user):
-        request.session['error_msg'] = \
-            _("your settings aren't configured properly, please contact the admin.")
+        request.session['error_msg'] = _("your settings aren't configured properly, please contact the admin.")
         return HttpResponseRedirect(redirect_url_to_campaign_list)
 
     # Check dialer setting limit
     if request.user and request.method != 'POST':
         # check Max Number of running campaign
         if check_dialer_setting(request, check_for="campaign"):
-            msg = _("you have too many campaigns. Max allowed %(limit)s") \
-                % {'limit': dialer_setting_limit(request, limit_for="campaign")}
+            msg = _("you have too many campaigns. Max allowed %(limit)s") % {'limit': dialer_setting_limit(request, limit_for="campaign")}
             request.session['msg'] = msg
 
             # campaign limit reached
-            frontend_send_notification(
-                request, NOTIFICATION_NAME.campaign_limit_reached)
+            frontend_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
             return HttpResponseRedirect(redirect_url_to_campaign_list)
 
     form = CampaignForm(request.user, request.POST or None)
     # Add campaign
     if form.is_valid():
-        # obj = form.save(user=request.user, commit=False)
         obj = form.save(commit=False)
         contenttype = get_content_type(form.cleaned_data['content_object'])
         obj.content_type = contenttype['object_type']
@@ -256,11 +252,6 @@ def campaign_add(request):
         form.save_m2m()
         request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
         return HttpResponseRedirect(redirect_url_to_campaign_list)
-    else:
-        print form.is_valid()
-        print get_content_type(form.cleaned_data['content_object'])
-        for error in form.errors:
-            print error
 
     data = {
         'form': form,

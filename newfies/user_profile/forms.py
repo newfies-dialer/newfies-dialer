@@ -29,7 +29,7 @@ class UserPasswordChangeForm(PasswordChangeForm):
         self.helper.form_tag = False
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
-            Fieldset('', 'old_password', 'new_password1', 'new_password2', css_class='col-md-3 col-xs-8')
+            Fieldset('', 'old_password', 'new_password1', 'new_password2', css_class='col-md-4 col-xs-8')
         )
 
 
@@ -39,7 +39,7 @@ class UserChangeDetailForm(ModelForm):
 
     class Meta:
         model = User
-        fields = ["last_name", "first_name", "email"]
+        #fields = ["last_name", "first_name", "email"]
 
     def __init__(self, user, *args, **kwargs):
         super(UserChangeDetailForm, self).__init__(*args, **kwargs)
@@ -64,8 +64,8 @@ class UserChangeDetailExtendForm(ModelForm):
     """A form used to change the detail of a user in the Customer UI."""
     class Meta:
         model = UserProfile
-        fields = ["address", "city", "state", "country", "zip_code", "phone_no",
-                  "fax", "company_name", "company_website", "language", "note"]
+        #fields = ["address", "city", "state", "country", "zip_code", "phone_no",
+        #          "fax", "company_name", "company_website", "language", "note"]
 
     def __init__(self, user, *args, **kwargs):
         super(UserChangeDetailExtendForm, self).__init__(*args, **kwargs)
@@ -101,7 +101,7 @@ class CheckPhoneNumberForm(forms.Form):
         self.helper.form_tag = False
         self.helper.form_class = 'well'
         self.helper.layout = Layout(
-            Fieldset('', 'phone_number', css_class='col-md-3 col-xs-8'),
+            Fieldset('', 'phone_number', css_class='col-md-4 col-xs-8'),
         )
 
 

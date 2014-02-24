@@ -588,17 +588,16 @@ class SurveyReportForm(forms.Form):
         if user:
             camp_list = []
             camp_list.append((0, _('select campaign').title()))
-            try:
-                if user.is_superuser:
-                    campaign_list = Campaign.objects.values_list('id', 'name')\
-                        .filter(content_type__model='survey', has_been_started=True).order_by('-id')
-                else:
-                    campaign_list = Campaign.objects.values_list('id', 'name')\
-                        .filter(user=user, content_type__model='survey', has_been_started=True).order_by('-id')
-                for i in campaign_list:
-                    camp_list.append((i[0], i[1]))
-            except:
-                pass
+
+            if user.is_superuser:
+                campaign_list = Campaign.objects.values_list('id', 'name')\
+                    .filter(content_type__model='survey', has_been_started=True).order_by('-id')
+            else:
+                campaign_list = Campaign.objects.values_list('id', 'name')\
+                    .filter(user=user, content_type__model='survey', has_been_started=True).order_by('-id')
+            for i in campaign_list:
+                camp_list.append((i[0], i[1]))
+
             self.fields['campaign'].choices = camp_list
 
 

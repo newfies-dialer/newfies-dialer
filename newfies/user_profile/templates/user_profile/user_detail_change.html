@@ -39,7 +39,7 @@
             {% csrf_token %}
             <div class="row">
                 <div class="form-group">
-                    <div class="col-md-3 col-xs-8">
+                    <div class="col-md-4 col-xs-8">
                         <label>{% trans "change the language"|capfirst %}</label>
                         <select name="language" id="language-container" class="form-control">
                             {% for lang in LANGUAGES %}

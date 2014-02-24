@@ -40,7 +40,7 @@ class LoginForm(forms.Form):
             ),
             FormActions(
                 Submit('submit', 'Login'),
-                HTML('<a class="btn btn-warning" href="/password_reset/">Forgot password?</a>'),
+                HTML('<a class="btn btn-warning" href="/password_reset/">%s?</a>' % _('forgot password').capitalize()),
             ),
         )
 

@@ -135,7 +135,7 @@ class ContactForm(ModelForm):
         css_class = 'col-md-6'
         self.helper.layout = Layout(
             TabHolder(
-                Tab('general',
+                Tab(_('general').capitalize(),
                     Div(
                         Div('phonebook', css_class=css_class),
                         Div('contact', css_class=css_class),
@@ -148,7 +148,7 @@ class ContactForm(ModelForm):
                     form_action,
                     css_class='well'
                     ),
-                Tab('advanced data',
+                Tab(_('advanced data').capitalize(),
                     Div(
                         Div('unit_number', css_class=css_class),
                         Div('address', css_class=css_class),
@@ -179,6 +179,7 @@ class ContactSearchForm(forms.Form):
                                             initial=STATUS_CHOICE.ALL)
 
     def __init__(self, user, *args, **kwargs):
+        super(ContactSearchForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         css_class = 'col-md-3'
@@ -192,6 +193,6 @@ class ContactSearchForm(forms.Form):
             ),
         )
         common_submit_buttons(self.helper.layout, 'search')
-        super(ContactSearchForm, self).__init__(*args, **kwargs)
+
         if user:
             self.fields['phonebook'].choices = phonebook_list(user)

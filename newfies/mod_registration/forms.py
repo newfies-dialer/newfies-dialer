@@ -33,7 +33,7 @@ class ForgotForm(forms.Form):
                 Div('email', css_class='col-md-4'),
                 css_class='row'
             ),
-            FormActions(Submit('submit', 'Reset my password'))
+            FormActions(Submit('submit', _('reset my password').capitalize()))
         )
 
 
@@ -47,7 +47,7 @@ class CustomSetPasswordForm(SetPasswordForm):
                 Div(
                     Field('new_password1'),
                     Field('new_password2'),
-                    Submit('submit', 'Change my password'),
+                    Submit('submit', _('change my password').capitalize()),
                     css_class='col-md-4'
                 ),
                 css_class='well col-md-12'

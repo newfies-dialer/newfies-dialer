@@ -207,7 +207,7 @@ class SMSDashboardForm(forms.Form):
             Div(
                 Div('smscampaign', css_class='form-group'),
                 Div('search_type', css_class='form-group'),
-                Div(Submit('submit', _('Search')), css_class='form-group'),
+                Div(Submit('submit', _('search').title()), css_class='form-group'),
             ),
         )
 
@@ -270,10 +270,11 @@ class SMSCampaignSearchForm(forms.Form):
         super(SMSCampaignSearchForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
+        css_class = 'col-md-3'
         self.helper.layout = Layout(
             Div(
-                Div('phonebook_id', css_class='col-md-3'),
-                Div('status', css_class='col-md-3'),
+                Div('phonebook_id', css_class=css_class),
+                Div('status', css_class=css_class),
                 css_class='row'
             ),
         )

@@ -143,7 +143,7 @@ class CampaignForm(ModelForm):
                         Div('maxretry', css_class=css_class),
                         Div('intervalretry', css_class=css_class),
                         Div('calltimeout', css_class=css_class),
-                        Div(Fieldset('Dialer Completion Settings'), css_class='col-md-12'),
+                        Div(Fieldset(_('dialer completion settings').title()), css_class='col-md-12'),
                         Div('completion_maxretry', css_class=css_class),
                         Div('completion_intervalretry', css_class=css_class),
                         Div('sms_gateway', css_class=css_class),
@@ -171,7 +171,7 @@ class CampaignForm(ModelForm):
         )
 
         if settings.AMD:
-            amd_layot = Tab('voicemail',
+            amd_layot = Tab(_('voicemail').capitalize(),
                             Div(
                                 Div(Fieldset(_('voicemail settings').title()), css_class='col-md-12'),
                                 Div(HTML("""
@@ -206,12 +206,12 @@ class CampaignForm(ModelForm):
             self.fields['phonebook'].choices = phonebook_list
             self.fields['phonebook'].initial = str(phonebook_list[0][0])
 
-            list = UserProfile.objects.get(user=user).userprofile_gateway.all()
-            gw_list = ((l.id, l.name) for l in list)
+            gateway_list = UserProfile.objects.get(user=user).userprofile_gateway.all()
+            gw_list = ((l.id, l.name) for l in gateway_list)
 
             dnc_list.append(('', '---'))
-            list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
-            for l in list:
+            dnc_obj_list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            for l in dnc_obj_list:
                 dnc_list.append((l[0], l[1]))
             self.fields['dnc'].choices = dnc_list
 
@@ -402,8 +402,6 @@ class SubscriberSearchForm(SearchForm):
         )
         common_submit_buttons(self.helper.layout, 'search')
         super(SubscriberSearchForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             camp_list = []
             camp_list.append((0, _('all').upper()))

@@ -255,6 +255,7 @@ class EventForm(ModelForm):
         }
 
     def __init__(self, user, *args, **kwargs):
+        super(EventForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         css_class = 'col-md-6'
@@ -276,8 +277,6 @@ class EventForm(ModelForm):
                 css_class='row'
             ),
         )
-
-        super(EventForm, self).__init__(*args, **kwargs)
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar'].choices = get_calendar_list(calendar_user_list)
         self.fields['creator'].choices = get_calendar_user_list(calendar_user_list)
@@ -291,6 +290,7 @@ class EventSearchForm(forms.Form):
     calendar_user_id = forms.ChoiceField(label=_('calendar user').capitalize(), required=False, choices=[('0', '---')])
 
     def __init__(self, user, *args, **kwargs):
+        super(EventSearchForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
         self.helper.form_class = 'well'
         css_class = 'col-md-4'
@@ -303,7 +303,6 @@ class EventSearchForm(forms.Form):
             ),
         )
         common_submit_buttons(self.helper.layout, 'search')
-        super(EventSearchForm, self).__init__(*args, **kwargs)
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar_id'].choices = get_calendar_list(calendar_user_list)
         self.fields['calendar_user_id'].choices = get_calendar_user_list(calendar_user_list)

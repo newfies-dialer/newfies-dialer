@@ -294,11 +294,9 @@ def campaign_del(request, object_id):
             if campaign_list:
                 if stop_campaign:
                     campaign_list.update(status=CAMPAIGN_STATUS.END)
-                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') % \
-                        {'count': campaign_list.count()}
+                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') % {'count': campaign_list.count()}
                 else:
-                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') % \
-                        {'count': campaign_list.count()}
+                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') % {'count': campaign_list.count()}
                     campaign_list.delete()
         except:
             raise Http404

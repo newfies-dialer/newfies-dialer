@@ -97,7 +97,7 @@ class SMSCampaignForm(ModelForm):
         self.helper.layout = Layout(
             Field('campaign_code'),
             TabHolder(
-                Tab('General Settings',
+                Tab(_('general settings').title(),
                     Div(
                         Div('name', css_class=css_class),
                         Div('callerid', css_class=css_class),
@@ -110,7 +110,7 @@ class SMSCampaignForm(ModelForm):
                     form_action,
                     css_class='well'
                     ),
-                Tab('Completion Settings',
+                Tab(_('completion settings').title(),
                     Div(
                         Div('frequency', css_class=css_class),
                         Div('maxretry', css_class=css_class),
@@ -122,7 +122,7 @@ class SMSCampaignForm(ModelForm):
                     ),
                 Tab('schedule',
                     Div(
-                        Div(HTML("""<label>Week days<label>"""), css_class="col-md-3"),
+                        Div(HTML("""<label>%s<label>""" % (_('week days').capitalize())), css_class="col-md-3"),
                         HTML(week_days_html),
                         HTML("""<div>&nbsp;</div>"""),
                         Div('startingdate', css_class=css_class),

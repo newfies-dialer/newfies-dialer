@@ -53,7 +53,7 @@ def get_object_choices(available_objects):
 class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
-    content_object = forms.ChoiceField(label=_("application"), )
+    content_object = forms.ChoiceField(label=_("application").capitalize())
     selected_phonebook = forms.CharField(widget=forms.HiddenInput, required=False)
     selected_content_object = forms.CharField(widget=forms.HiddenInput, required=False)
 
@@ -115,9 +115,9 @@ class CampaignForm(ModelForm):
         self.helper.layout = Layout(
             Field('campaign_code'),
             TabHolder(
-                Tab('General',
+                Tab(_('general').title(),
                     Div(
-                        Div(Fieldset('General Settings'), css_class='col-md-12'),
+                        Div(Fieldset(_('general settings').title()), css_class='col-md-12'),
                         Div('name', css_class=css_class),
                         Div('callerid', css_class=css_class),
                         Div('caller_name', css_class=css_class),
@@ -136,7 +136,7 @@ class CampaignForm(ModelForm):
                     ),
                 Tab('Dialer',
                     Div(
-                        Div(Fieldset('Dialer Settings'), css_class='col-md-12'),
+                        Div(Fieldset(_('dialer settings').title()), css_class='col-md-12'),
                         Div('aleg_gateway', css_class=css_class),
                         Div('frequency', css_class=css_class),
                         Div('callmaxduration', css_class=css_class),
@@ -154,8 +154,8 @@ class CampaignForm(ModelForm):
                     ),
                 Tab('schedule',
                     Div(
-                        Div(Fieldset('Schedule Settings'), css_class='col-md-12'),
-                        Div(HTML("""<label>Week days<label>"""), css_class="col-md-3"),
+                        Div(Fieldset(_('schedule settings').title()), css_class='col-md-12'),
+                        Div(HTML("""<label>%s<label>""" % (_('week days').capitalize())), css_class="col-md-3"),
                         HTML(week_days_html),
                         HTML("""<div>&nbsp;</div>"""),
                         Div('startingdate', css_class=css_class),
@@ -173,7 +173,7 @@ class CampaignForm(ModelForm):
         if settings.AMD:
             amd_layot = Tab('voicemail',
                             Div(
-                                Div(Fieldset('Voicemail Settings'), css_class='col-md-12'),
+                                Div(Fieldset(_('voicemail settings').title()), css_class='col-md-12'),
                                 Div(HTML("""
                                     <div class="btn-group" data-toggle="buttons">
                                         <label for="{{ form.voicemail.auto_id }}">{{ form.voicemail.label }}</label>

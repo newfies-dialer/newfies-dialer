@@ -17,7 +17,7 @@ from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm
 from agent.models import AgentProfile, Agent
 from agent.function_def import manager_list
 from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Fieldset
+from crispy_forms.layout import Layout, Fieldset, Div
 
 
 class AgentPasswordChangeForm(AdminPasswordChangeForm):
@@ -34,8 +34,13 @@ class AgentPasswordChangeForm(AdminPasswordChangeForm):
 class AgentCreationForm(UserCreationForm):
     def __init__(self, *args, **kwargs):
         super(AgentCreationForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = False
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('', 'username', 'password1', 'password2', css_class='col-md-6 col-xs-8')
+        )
 
 
 class AgentNameChangeForm(UserChangeForm):
@@ -76,8 +81,24 @@ class AgentChangeDetailExtendForm(ModelForm):
     def __init__(self, user, *args, **kwargs):
         self.user = user
         super(AgentChangeDetailExtendForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = False
+        css_class = 'col-md-6'
+        self.helper.layout = Layout(
+            Div(
+                Div('type', css_class=css_class),
+                Div('call_timeout', css_class=css_class),
+                Div('contact', css_class=css_class),
+                Div('status', css_class=css_class),
+                Div('no_answer_delay_time', css_class=css_class),
+                Div('max_no_answer', css_class=css_class),
+                Div('wrap_up_time', css_class=css_class),
+                Div('reject_delay_time', css_class=css_class),
+                Div('busy_delay_time', css_class=css_class),
+                css_class='row'
+            ),
+        )
 
 
 class AgentDetailExtendForm(ModelForm):

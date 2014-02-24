@@ -12,10 +12,10 @@ Getting Started
 
 --
 
-Newfies is an open source VoIP Dialer based on distributed message passing.
+Newfies is an open source VoIP Dialer and SMS broadcasting system based on distributed message passing.
 It has been built to support cloud based servers and can also work on standalone servers.
-It uses `Freeswitch`_ (VoIP Server) to outbound calls, but support for other
-VoIP Servers such as `Asterisk`_ could be easily added in the future.
+It uses `Freeswitch`_ (VoIP Server) to outbound calls.
+
 The platform is focused on real-time operations and task call distributions
 to clustered brokers and workers.
 
@@ -24,11 +24,12 @@ with message brokers such as `RabbitMQ`_, `Redis`_ but support for Beanstalk,
 MongoDB, CouchDB and DBMS is also available.
 
 Newfies-Dialer provides an extensive set of APIs to easily integrate with
-third-party applications.
+third-party applications. Virtually every feature on the UI can be managed 
+via the API's. There is also an API explorer to test different features.
 
 Using very simple steps, Newfies-Dialer will help you create campaigns, add
 phonebooks, contacts, build audio messages and create complex telephony
-applications. Once your campaigns are ready to start, your messages
+applications. Once the campaigns are ready to start, the messages
 will be dispatched and delivered.
 
 .. _`Freeswitch`: http://www.freeswitch.org/
@@ -48,13 +49,16 @@ will be dispatched and delivered.
 Overview
 --------
 
-Newfies-Dialer can be installed and used by anyone who has a need for mass
-outbound calling, voice broadcasting or providing outbound IVR. Some of the
+Newfies-Dialer can be installed and used by anyone who has a need for SMS broadcasting, 
+mass outbound calling, voice broadcasting or providing outbound IVR Some of the
 potential uses for Newfies-Dialer are listed below.
 
 The system may be installed and used by either companies who wish to make calls
 on their own behalf, or by SaaS (Software as a Service) companies that want to
-provide bulk dialling facilities to their own customers.
+provide bulk dialling and SMS broadcasting facilities to their own customers.
+
+Newfies-Dialer can be configured on a single server, or for really high capacity 
+or high speed systems, Newfies-Dialer can be configured across multiple servers.
 
 
 .. _utility:
@@ -68,7 +72,7 @@ hardware, potentially delivering many millions of calls per day.
 When the called party answers the call, Newfies-Dialer passes the call to a telephony
 application that is custom designed to provide the desired behaviour.
 
-Below are examples of some of the uses for Newfies-Dialer
+Some examples of where Newfies-Dialer may be used follow:
 
 
     * **Telecasting**: Broadcast marketing or informational messages to customers and clients.
@@ -87,12 +91,12 @@ Below are examples of some of the uses for Newfies-Dialer
 
     * **Dissemination of information via phone**: Newfies-Dialer was originally
       designed to call large numbers of people and disseminate medical and health advice
-      via cellphone in 3rd world countries where often, literacy
-      levels are low. On a local scale, it can be used to disseminate information
-      about forthcoming community events.
+      via cellphone in 3rd world countries where often, literacy levels are low. On a 
+      local scale, it can be used to disseminate information about forthcoming community events.
 
     * **Mass Emergency broadcast**: Where there is a necessity to warn large numbers
-      of people in a short space of time, such as weather warnings.
+      of people in a short space of time, such as weather warnings, evacuation notices
+      and crime prevention.
 
     * **Subscription Reminders and Renewals**: Where a company sells an annual
       subscription for a product or service, Newfies-Dialer can be configured to
@@ -116,11 +120,11 @@ Features
     +-----------------+----------------------------------------------------+
     | Scheduling      | Supports recurring tasks like cron, or specifying  |
     |                 | an exact date or countdown for when the task       |
-    |                 | should be executed. Can re-try to the non connected|
-    |                 | numbers at a later time.                           |
+    |                 | should be executed. Can re-try failed calls at a   |
+    |                 | later time.                                        |
     +-----------------+----------------------------------------------------+
     | IVR support     | Accommodates multiple IVR scripts with options to  |
-    |                 | connect the user to some other IVR/phone number on |
+    |                 | connect the user to another IVR/phone number on    |
     |                 | pressing a key.                                    |
     +-----------------+----------------------------------------------------+
     | Web Interface   | Newfies-Dialer can be managed via a Web interface. |
@@ -129,13 +133,13 @@ Features
     +-----------------+----------------------------------------------------+
     | Import Contact  | Import contact details from a .csv file            |
     +-----------------+----------------------------------------------------+
-    | Multi-tenant    | It provies two different roles for end-user, staff |
-    |                 | and administrator. With Appointment reminder       |
+    | Multi-tenant    | It provies different roles for end-users, staff    |
+    |                 | and administrators. With Appointment reminders     |
     |                 | module, it also provides Calendar Users.           |
     +-----------------+----------------------------------------------------+
-    | RealTime Control| Control the speed of campaigns in realtime, Pause, |
-    |                 | Start and Stop buttons are also provided to control|
-    |                 | the campaigns                                      |
+    | RealTime Control| Control the speed of campaigns in realtime, as well|
+    |                 | as start, stop and pause buttons to control the    |
+    |                 | campaigns                                          |
     +-----------------+----------------------------------------------------+
     | Surveys         | IVR designer application enable the easy creation  |
     |                 | of survey application used. Survey reports can be  |

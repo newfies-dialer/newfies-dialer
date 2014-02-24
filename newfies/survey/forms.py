@@ -128,11 +128,12 @@ class SurveyForm(SaveUserModelForm):
         self.fields['description'].widget = forms.TextInput()
 
 html_code_of_completed_field = """
-                    <label for="{{ form.completed.auto_id }}">Completed</label><br/>
+                    <label for="{{ form.completed.auto_id }}">%s</label><br/>
                     <div class="make-switch switch-small">
                     {{ form.completed }}
                     </div>
-                    """
+                    """ % (_('completed').title())
+
 append_html_code_to_audio_field = """<a href="#" id="helpover" rel="popover" data-placement="top" data-content="If an audio file is not selected, the script will be played using Text-To-Speech" data-original-title="information"><i class="fa-info"></i></a>"""
 
 
@@ -198,7 +199,7 @@ class MultipleChoiceSectionForm(ModelForm):
             ),
             Div(
                 Div(
-                    HTML("""configure valid multi-choice options. The value of each field will be shown in the survey report"""),
+                    HTML("""%s""" % _('configure valid multi-choice options. The value of each field will be shown in the survey report')),
                     css_class='col-md-12 col-xs-12'
                 ),
                 css_class='row'
@@ -548,13 +549,13 @@ class BranchingForm(ModelForm):
                             """
                             <div class="btn-group" data-toggle="buttons">
                                 <label class="btn btn-default">
-                                    <input type="radio" name="keys_button" id="button-anything"> Any Other Key
+                                    <input type="radio" name="keys_button" id="button-anything"> %s
                                 </label>
                                 <label class="btn btn-default">
-                                    <input type="radio" name="keys_button" id="button-invalid"> Invalid
+                                    <input type="radio" name="keys_button" id="button-invalid"> %s
                                 </label>
                             </div>
-                            """
+                            """ % (_('any other key').title(), _('invalid').title())
                             ), css_class=css_class),
                         css_class='row'
                     )
@@ -568,7 +569,7 @@ class BranchingForm(ModelForm):
             else:
                 self.helper.layout.append(
                     Div(
-                        Div(HTML('no branching, this will terminate the call'), css_class=css_class),
+                        Div(HTML('%s' % _('no branching, this will terminate the call')), css_class=css_class),
                         css_class='row'
                     )
                 )
@@ -655,8 +656,6 @@ class SurveyFileImport(forms.Form):
                 css_class='row'
             )
         )
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
     def clean_csv_file(self):
         """Form Validation :  File extension Check"""

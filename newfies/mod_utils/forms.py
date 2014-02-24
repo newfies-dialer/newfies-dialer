@@ -63,9 +63,9 @@ def common_submit_buttons(layout_section=None, default_action='add'):
     if default_action == 'update':
         form_action = FormActions(
             HTML('%s<button type="submit" id="update" name="update" class="btn btn-primary" value="submit">'
-                 '<i class="fa fa-edit fa-lg"></i> Update</button>'
+                 '<i class="fa fa-edit fa-lg"></i> %s</button>'
                  '<button type="submit" id="delete" name="delete" class="btn btn-danger" value="submit">'
-                 '<i class="fa fa-trash-o fa-lg"></i> Delete</button>%s' % (start_div, end_div))
+                 '<i class="fa fa-trash-o fa-lg"></i> %s</button>%s' % (start_div, _('update').title(), _('delete').title(), end_div))
         )
         if layout_section is None:
             return form_action
@@ -73,7 +73,7 @@ def common_submit_buttons(layout_section=None, default_action='add'):
     elif default_action == 'add':
         form_action = FormActions(
             HTML('%s<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
-                 '<i class="fa fa-save fa-lg"></i> Save</button>%s' % (start_div, end_div)
+                 '<i class="fa fa-save fa-lg"></i> %s</button>%s' % (start_div, _('save').title(), end_div)
                  ),
         )
         if layout_section is None:
@@ -82,11 +82,11 @@ def common_submit_buttons(layout_section=None, default_action='add'):
     elif default_action == 'import':
         form_action = FormActions(
             HTML('%s<button type="submit" id="add" name="add" class="btn btn-primary" value="submit">'
-                 '<i class="fa fa-save fa-lg"></i> Import</button>%s' % (start_div, end_div)
+                 '<i class="fa fa-save fa-lg"></i> %s</button>%s' % (start_div, _('import').title(), end_div)
                  ),
         )
         layout_section.append(form_action)
     elif default_action == 'search':
-        form_action = FormActions(Submit('search', 'Search'))
+        form_action = FormActions(Submit('search', _('search').title()))
         layout_section.append(form_action)
     return layout_section

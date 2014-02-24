@@ -259,7 +259,7 @@ class EventForm(ModelForm):
         self.helper.form_class = 'well'
         css_class = 'col-md-6'
         self.helper.layout = Layout(
-            Fieldset('Event settings'),
+            Fieldset(_('event settings').capitalize()),
             Div(
                 Div('title', css_class=css_class),
                 Div('calendar', css_class=css_class),
@@ -278,8 +278,6 @@ class EventForm(ModelForm):
         )
 
         super(EventForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar'].choices = get_calendar_list(calendar_user_list)
         self.fields['creator'].choices = get_calendar_user_list(calendar_user_list)
@@ -333,7 +331,7 @@ class AlarmForm(ModelForm):
         css_class = 'col-md-6'
         self.helper.layout = Layout(
             TabHolder(
-                Tab('General settings',
+                Tab(_('general settings').title(),
                     Div(
                         Div('date_start_notice', css_class=css_class),
                         Div('event', css_class=css_class),
@@ -348,7 +346,7 @@ class AlarmForm(ModelForm):
                     form_action,
                     css_class='well'
                     ),
-                Tab('Alarm settings',
+                Tab(_('alarm settings').title(),
                     Div(
                         Div('daily_start', css_class=css_class),
                         Div('daily_stop', css_class=css_class),
@@ -360,7 +358,7 @@ class AlarmForm(ModelForm):
                     form_action,
                     css_class='well'
                     ),
-                Tab('Result settings',
+                Tab(_('result settings').title(),
                     Div(
                         Div('result', css_class=css_class),
                         Div('url_cancel', css_class=css_class),
@@ -377,8 +375,7 @@ class AlarmForm(ModelForm):
 
         list_survey = []
         list_survey.append((0, '---'))
-        survey_list = Survey.objects.values_list(
-            'id', 'name').filter(user=user).order_by('id')
+        survey_list = Survey.objects.values_list('id', 'name').filter(user=user).order_by('id')
         for l in survey_list:
             list_survey.append((l[0], l[1]))
         self.fields['survey'].choices = list_survey
@@ -387,9 +384,9 @@ class AlarmForm(ModelForm):
 
         list_event = []
         list_event.append((0, '---'))
-        event_list = Event.objects.values_list(
-            'id', 'title').filter(calendar__user_id__in=calendar_user_list,
-                                  status=EVENT_STATUS.PENDING).order_by('id')
+        event_list = Event.objects.values_list('id', 'title')\
+            .filter(calendar__user_id__in=calendar_user_list,
+                    status=EVENT_STATUS.PENDING).order_by('id')
         for l in event_list:
             list_event.append((l[0], l[1]))
         self.fields['event'].choices = list_event

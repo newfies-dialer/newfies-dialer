@@ -15,6 +15,9 @@ from django.forms import ModelForm
 from agent.function_def import manager_list, agentprofile_list
 from callcenter.models import Queue, Tier
 from callcenter.function_def import queue_list
+from mod_utils.forms import common_submit_buttons
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Fieldset, HTML
 
 
 class QueueForm(ModelForm):
@@ -37,14 +40,46 @@ class QueueFrontEndForm(ModelForm):
 
     def __init__(self, *args, **kwargs):
         super(QueueFrontEndForm, self).__init__(*args, **kwargs)
-        exclude_list = [
-            'tier_rules_apply', 'tier_rule_wait_multiply_level',
-            'tier_rule_no_agent_no_wait', 'abandoned_resume_allowed'
-        ]
+        self.helper = FormHelper()
+        css_class = 'col-md-6'
+        self.helper.form_class = 'well'
+        boolean_fields = ['tier_rules_apply', 'tier_rule_wait_multiply_level',
+                          'tier_rule_no_agent_no_wait', 'abandoned_resume_allowed']
+        boolean_fields_html = """<div class="row"><div class="col-md-12 col-xs-10">"""
 
-        for i in self.fields.keyOrder:
-            if i not in exclude_list:
-                self.fields[i].widget.attrs['class'] = "form-control"
+        for i in boolean_fields:
+            boolean_fields_html += """
+                <div class="col-xs-6">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label for="{{ form.%s.auto_id }}">{{ form.%s.label }}</label><br/>
+                        <div class="make-switch switch-small">
+                        {{ form.%s }}
+                        </div>
+                    </div>
+                </div>
+                """ % (i, i, i)
+        boolean_fields_html += """</div></div>"""
+
+        self.helper.layout = Layout(
+            Div(
+                Div('name', css_class=css_class),
+                Div('strategy', css_class=css_class),
+                Div('moh_sound', css_class=css_class),
+                Div('record_template', css_class=css_class),
+                Div('time_base_score', css_class=css_class),
+                Div('tier_rule_wait_second', css_class=css_class),
+                Div('discard_abandoned_after', css_class=css_class),
+                Div('max_wait_time', css_class=css_class),
+                Div('max_wait_time_with_no_agent', css_class=css_class),
+                Div('max_wait_time_with_no_agent_time_reached', css_class=css_class),
+                HTML(boolean_fields_html),
+                css_class='row'
+            ),
+        )
+        if self.instance.id:
+            common_submit_buttons(self.helper.layout, default_action='update')
+        else:
+            common_submit_buttons(self.helper.layout, default_action='add')
 
 
 class TierForm(ModelForm):
@@ -67,7 +102,16 @@ class TierFrontEndForm(ModelForm):
 
     def __init__(self, manager_id, *args, **kwargs):
         super(TierFrontEndForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Div(
+                Div(Fieldset('', 'agent', 'queue', 'level', 'position', css_class='col-md-6')),
+            ),
+        )
+        if self.instance.id:
+            common_submit_buttons(self.helper.layout, 'update')
+        else:
+            common_submit_buttons(self.helper.layout)
         self.fields['agent'].choices = agentprofile_list(manager_id)
         self.fields['queue'].choices = queue_list(manager_id)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"

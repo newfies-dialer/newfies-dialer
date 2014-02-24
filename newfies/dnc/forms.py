@@ -169,7 +169,7 @@ class DNCContact_fileExport(Exportfile):
             ),
             Div(
                 Div(HTML("""
-                    <b>Export to : </b>
+                    <b>%s : </b>
                     <div class="btn-group" data-toggle="buttons">
                         {% for choice in form.export_to.field.choices %}
                         <label class="btn btn-default">
@@ -177,7 +177,7 @@ class DNCContact_fileExport(Exportfile):
                         </label>
                         {% endfor %}
                     </div>
-                   """), css_class='col-md-6'),
+                   """ % _('export to').capitalize()), css_class='col-md-6'),
                 css_class='row'
             ),
         )

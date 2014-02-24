@@ -125,7 +125,7 @@ class pending_call_processing(Task):
         (list_subscriber, no_subscriber) = obj_campaign\
             .get_pending_subscriber_update(callfrequency, SUBSCRIBER_STATUS.IN_PROCESS)
         logger.info("##subscriber=%d campaign_id=%d callfreq=%d freq=%d" %
-                    no_subscriber, campaign_id, callfrequency, frequency)
+                    (no_subscriber, campaign_id, callfrequency, frequency))
         debug_query(3)
 
         if no_subscriber == 0:
@@ -142,7 +142,7 @@ class pending_call_processing(Task):
             second_towait = floor(count * time_to_wait)
             ms_addtowait = (count * time_to_wait) - second_towait
             logger.info("Init CallRequest in %d seconds (cmpg:%d,subscr:%d)" %
-                        second_towait, campaign_id, elem_camp_subscriber.id)
+                        (second_towait, campaign_id, elem_camp_subscriber.id))
 
             phone_number = elem_camp_subscriber.duplicate_contact
             debug_query(4)

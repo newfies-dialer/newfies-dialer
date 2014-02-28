@@ -203,6 +203,10 @@ class CampaignForm(ModelForm):
             list_gw = []
             dnc_list = []
             phonebook_list = get_phonebook_list(user)
+            if not phonebook_list:
+                phonebook_list = []
+                phonebook_list.append(('', '---'))
+
             self.fields['phonebook'].choices = phonebook_list
             self.fields['phonebook'].initial = str(phonebook_list[0][0])
 

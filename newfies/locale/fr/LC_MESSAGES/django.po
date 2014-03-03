@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-03 12:29+0100\n"
+"POT-Creation-Date: 2014-03-03 13:35+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -5255,11 +5255,10 @@ msgstr ""
 #: templates/admin/dialer_contact/contact/change_list.html:38
 #: templates/admin/mod_sms/smsmessage/change_list.html:28
 #: templates/admin/mod_sms/smsmessage/sms_report.html:25
-#, fuzzy
 msgid "Please correct the error below."
 msgid_plural "Please correct the errors below."
-msgstr[0] "Section"
-msgstr[1] "Section"
+msgstr[0] "S'il vous plaît corriger l'erreur ci-dessous"
+msgstr[1] "S'il vous plaît corriger les erreurs ci-dessous"
 
 #: templates/admin/dialer_campaign/subscriber/change_list.html:32
 #: templates/admin/dialer_cdr/voipcall/change_list.html:51
@@ -5294,7 +5293,6 @@ msgstr ""
 #: templates/admin/dialer_contact/contact/import_contact.html:73
 #: templates/admin/mod_sms/smsmessage/change_list.html:42
 #: templates/admin/mod_sms/smsmessage/sms_report.html:39
-#, fuzzy
 msgid "reset"
 msgstr "Réinitialiser"
 
@@ -5308,58 +5306,50 @@ msgstr "additional_vars"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:63
 msgid "CONTACT STATUS = ('1'-'ACTIVE') ('0'-'INACTIVE')"
-msgstr "CONTACTER STATUS = ('1 '-' ACTIVE ') ('0' - 'INACTIF')"
+msgstr "CONTACT STATUS = ('1 '-' ACTIVE ') ('0' - 'INACTIF')"
 
 #: templates/admin/dialer_contact/contact/import_contact.html:98
-#, fuzzy
 msgid "contact(s) imported"
 msgstr "Contact(s) importé"
 
 #: templates/admin/mod_sms/smsmessage/change_list.html:14
 #: templates/admin/mod_sms/smsmessage/sms_report.html:14
-#, fuzzy
 msgid "report"
-msgstr "Rapports"
+msgstr "rapport"
 
 #: templates/admin/mod_sms/smsmessage/change_list.html:60
 #, fuzzy
 msgid "SMS daily report"
-msgstr "Appelez-Rapport"
+msgstr "rapport SMS journalier"
 
 #: templates/admin/mod_sms/smsmessage/change_list.html:81
-#, fuzzy
 msgid "Filter"
 msgstr "Filtrer"
 
 #: templates/admin/mod_sms/smsmessage/sms_report.html:15
-#, fuzzy
 msgid "aggregate report"
-msgstr "Appelez rapport global"
+msgstr "agrégat rapport"
 
 #: templates/admin_tools/dashboard/modules/app_list.html:33
 #: templates/admin_tools/dashboard/modules/model_list.html:17
-#, fuzzy
 msgid "change"
 msgstr "Changer"
 
 #: templates/pagination/pagination.html:11
 #: templates/pagination/pagination.html:14
-#, fuzzy
 msgid "previous"
-msgstr "Précédent"
+msgstr "précédent"
 
 #: templates/pagination/pagination.html:37
 #: templates/pagination/pagination.html:40
 msgid "next"
-msgstr ""
+msgstr "suivant"
 
 #: templates/registration/logged_out.html:8
-#, fuzzy
 msgid "thank you for using Newfies-Dialer."
 msgstr "Merci d&#39;utiliser Newfies-Dialer."
 
 #: templates/registration/logged_out.html:10
-#, fuzzy
 msgid "log in again"
 msgstr "Connectez-vous à nouveau"
 
@@ -5372,85 +5362,70 @@ msgid "Email address"
 msgstr "Adresse e-mail"
 
 #: user_profile/forms.py:95
-#, fuzzy
 msgid "verify phone number"
-msgstr "numéro de téléphone"
+msgstr "vérifier le numéro de téléphone"
 
 #: user_profile/forms.py:96
-#, fuzzy
 msgid "verify if a phone number is authorized to call"
-msgstr "Vérification des numéros autorisé à appeler"
+msgstr "vérifier si le numéro est autorisé"
 
 #: user_profile/models.py:66
-#, fuzzy
 msgid "zip code"
 msgstr "Code postal"
 
 #: user_profile/models.py:70
-#, fuzzy
 msgid "fax Number"
 msgstr "Numéro de fax"
 
 #: user_profile/models.py:72
-#, fuzzy
 msgid "company name"
-msgstr "Raison sociale"
+msgstr ""
 
 #: user_profile/models.py:74
-#, fuzzy
 msgid "company website"
 msgstr "Site de la Société"
 
 #: user_profile/models.py:77
 msgid "note"
-msgstr ""
+msgstr "note"
 
 #: user_profile/models.py:105
 msgid "can see API-Explorer"
 msgstr "peut voir API-Explorer"
 
 #: user_profile/models.py:108
-#, fuzzy
 msgid "user profile"
 msgstr "Profil de l&#39;utilisateur"
 
 #: user_profile/models.py:109
-#, fuzzy
 msgid "user profiles"
 msgstr "Profil de l&#39;utilisateur"
 
 #: user_profile/models.py:134
-#, fuzzy
 msgid "managers"
-msgstr "Gestionnaire des tâches"
+msgstr "Gestionnaires"
 
 #: user_profile/models.py:155
-#, fuzzy
 msgid "admin"
 msgstr "Admin"
 
 #: user_profile/models.py:156
-#, fuzzy
 msgid "admins"
 msgstr "Administrateurs"
 
 #: user_profile/views.py:90
-#, fuzzy
 msgid "this phone number is not authorized."
 msgstr "Ce numéro de téléphone n&#39;est pas autorisé."
 
 #: user_profile/views.py:92
-#, fuzzy
 msgid "this phone number is authorized."
 msgstr "Ce numéro de téléphone est autorisée."
 
 #: user_profile/templates/user_profile/check_user_phone_number.html:23
-#, fuzzy
 msgid "check"
 msgstr "Vérifier"
 
 #: user_profile/templates/user_profile/user_change_password.html:25
-#, fuzzy
 msgid "change password"
 msgstr "Modifier mot de passe"
 
@@ -5459,260 +5434,45 @@ msgid "Password, account limits, phone number verification and language"
 msgstr ""
 
 #: user_profile/templates/user_profile/user_detail_change.html:11
-#, fuzzy
 msgid "account"
 msgstr "Compte"
 
 #: user_profile/templates/user_profile/user_detail_change.html:14
-#, fuzzy
 msgid "verify number"
-msgstr "Contactez nombre"
+msgstr "Vérifier le numéro"
 
 #: user_profile/templates/user_profile/user_detail_change.html:43
-#, fuzzy
 msgid "change the language"
-msgstr "Changer de langue"
+msgstr "Changer la langue"
 
 #: user_profile/templates/user_profile/user_dialer_settings.html:10
-#, fuzzy
 msgid "maximum call duration"
 msgstr "Durée d&#39;appel maximale"
 
 #: user_profile/templates/user_profile/user_dialer_settings.html:14
-#, fuzzy
 msgid "maximum retries"
 msgstr "Nombre maximal de tentatives"
 
 #: user_profile/templates/user_profile/user_dialer_settings.html:22
-#, fuzzy
 msgid "maximum campaigns"
 msgstr "Campagnes maximum"
 
 #: user_profile/templates/user_profile/user_dialer_settings.html:30
-#, fuzzy
 msgid "maximum number of contact per user"
-msgstr "Le nombre maximum de campagnes"
+msgstr "nombre maximum de contact par utilisateur"
 
 #: user_profile/templates/user_profile/user_dialer_settings.html:42
-#, fuzzy
 msgid "maximum SMS per minute"
-msgstr "Appels maximum par minute"
+msgstr "maximum de SMS par minute"
 
 #: user_profile/templates/user_profile/user_dialer_settings.html:46
-#, fuzzy
 msgid "maximum SMS retries"
-msgstr "Nombre maximal de tentatives"
+msgstr "Nombre maximal de tentatives par SMS"
 
 #: user_profile/templates/user_profile/user_dialer_settings.html:50
-#, fuzzy
 msgid "maximum SMS campaigns"
-msgstr "Campagnes maximum"
+msgstr "SMS Campagnes maximum"
 
 #: user_profile/templates/user_profile/user_dialer_settings.html:54
-#, fuzzy
 msgid "maximum subscribers per SMS campaign"
-msgstr "Abonnés maximum par campagne"
-
-#, fuzzy
-#~ msgid ""
-#~ "in order to add a campaign, you need to have your settings configured "
-#~ "properly, please contact the admin."
-#~ msgstr ""
-#~ "Afin d'ajouter une campagne, vous devez avoir configuré correctement les "
-#~ "paramètres, s'il vous plaît contactez l'administrateur."
-
-#, fuzzy
-#~ msgid "\"%s\" cannot be added."
-#~ msgstr "\"%(name)s\" ne peut pas être ajouté."
-
-#~ msgid "\"%(name)s\" cannot be added."
-#~ msgstr "\"%(name)s\" ne peut pas être ajouté."
-
-#~ msgid "Newfies-Dialer Documentation"
-#~ msgstr "Newfies-Dialer Documentation"
-
-#~ msgid "Newfies-Dialer : API Documentation"
-#~ msgstr "Newfies-Dialer : API Documentation"
-
-#, fuzzy
-#~ msgid "accepted methods"
-#~ msgstr "Méthodes acceptées"
-
-#, fuzzy
-#~ msgid "you must check at least one box!"
-#~ msgstr "Vous devez cocher au moins une case!"
-
-#~ msgid " voice app(s) are going to be deleted?"
-#~ msgstr "voix app(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " contact(s) are going to be deleted?"
-#~ msgstr "audio(s) vont être supprimés?"
-
-#~ msgid " survey(s) are going to be deleted?"
-#~ msgstr "enquête(s) vont être supprimés?"
-
-#~ msgid " audio(s) are going to be deleted?"
-#~ msgstr "audio(s) vont être supprimés?"
-
-#~ msgid " phonebook(s) are going to be deleted with "
-#~ msgstr "répertoire(s) vont être supprimés avec"
-
-#~ msgid " contact(s)?"
-#~ msgstr "contact(s)?"
-
-#, fuzzy
-#~ msgid " campaign(s) are going to be stopped?"
-#~ msgstr "campagne(s) vont être supprimés?"
-
-#~ msgid " campaign(s) are going to be deleted?"
-#~ msgstr "campagne(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " DNC(s) are going to be deleted with "
-#~ msgstr "répertoire(s) vont être supprimés avec"
-
-#, fuzzy
-#~ msgid " DNC contact(s) are going to be deleted?"
-#~ msgstr "audio(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " agent(s) are going to be deleted?"
-#~ msgstr "campagne(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " queue(s) are going to be deleted?"
-#~ msgstr "enquête(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " tier(s) are going to be deleted?"
-#~ msgstr "audio(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " calendar setting(s) are going to be deleted?"
-#~ msgstr "campagne(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " calendar user(s) are going to be deleted?"
-#~ msgstr "audio(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " calendar(s) are going to be deleted?"
-#~ msgstr "audio(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " event(s) are going to be deleted?"
-#~ msgstr "enquête(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " alarm(s) are going to be deleted?"
-#~ msgstr "audio(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " sms campaign(s) are going to be stopped?"
-#~ msgstr "campagne(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid " sms campaign(s) are going to be deleted?"
-#~ msgstr "campagne(s) vont être supprimés?"
-
-#, fuzzy
-#~ msgid "confirm deletion?"
-#~ msgstr "Confirmez la suppression?"
-
-#, fuzzy
-#~ msgid "please press OK to delete this phonebook with"
-#~ msgstr "S&#39;il vous plaît confirmer la suppression de ce répertoire avec"
-
-#~ msgid "contact(s)"
-#~ msgstr "contact (s)"
-
-#, fuzzy
-#~ msgid "please press OK to delete this DNC with"
-#~ msgstr "S&#39;il vous plaît confirmer la suppression de ce répertoire avec"
-
-#, fuzzy
-#~ msgid "login"
-#~ msgstr "Login"
-
-#, fuzzy
-#~ msgid "hide search"
-#~ msgstr "Masquer la recherche"
-
-#~ msgid "Newfies APIs"
-#~ msgstr "Newfies API"
-
-#, fuzzy
-#~ msgid "browser playground"
-#~ msgstr "Terrain de jeux navigateur"
-
-#, fuzzy
-#~ msgid "no"
-#~ msgstr "Infos"
-
-#, fuzzy
-#~ msgid "dialer"
-#~ msgstr "Alerter"
-
-#, fuzzy
-#~ msgid "schedule"
-#~ msgstr "Calendrier de campagne"
-
-#, fuzzy
-#~ msgid "SMS settings"
-#~ msgstr "Réglages"
-
-#, fuzzy
-#~ msgid "callcenter settings"
-#~ msgstr "Paramètres Dialer"
-
-#, fuzzy
-#~ msgid "completion"
-#~ msgstr "complète"
-
-#, fuzzy
-#~ msgid "show search"
-#~ msgstr "Masquer la recherche"
-
-#~ msgid ""
-#~ "If an audio file is not selected, the script will be played using Text-To-"
-#~ "Speech"
-#~ msgstr ""
-#~ "Si un fichier audio n&#39;est pas sélectionné, le script va être joué en "
-#~ "utilisant Text-To-Speech"
-
-#, fuzzy
-#~ msgid "information"
-#~ msgstr "pour plus d&#39;informations"
-
-#, fuzzy
-#~ msgid "collapse"
-#~ msgstr "Rétrecir"
-
-#, fuzzy
-#~ msgid "branch"
-#~ msgstr "Branche"
-
-#, fuzzy
-#~ msgid "edit section"
-#~ msgstr "Modifier la section"
-
-#, fuzzy
-#~ msgid "voice applications"
-#~ msgstr "Applications vocales"
-
-#, fuzzy
-#~ msgid "configure voice application"
-#~ msgstr "Configurer application vocale"
-
-#, fuzzy
-#~ msgid "list, add and edit voice applications"
-#~ msgstr "Liste, ajouter et modifier des applications vocales"
-
-#, fuzzy
-#~ msgid "update voiceapp"
-#~ msgstr "Mise à jour App Vocal"
-
-#, fuzzy
-#~ msgid "delete voiceapp"
-#~ msgstr "Supprimer App Vocal"
+msgstr "Abonnés maximum par campagne SMS"

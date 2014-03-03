@@ -710,12 +710,12 @@ msgstr "DATE_FORMAT"
 #: appointment/periods.py:282
 #, python-format
 msgid "Week: %(start)s-%(end)s"
-msgstr "Semana:% (start) s-% (final) s"
+msgstr "Semana: %(start)s-%(end)s"
 
 #: appointment/periods.py:307
 #, python-format
 msgid "Day: %(start)s-%(end)s"
-msgstr "Dia:% (start) s-% (final) s"
+msgstr "Dia: %(start)s-%(end)s"
 
 #: appointment/views.py:99
 #, fuzzy, python-format
@@ -731,39 +731,39 @@ msgstr "%(count)s contact(s) apagado com sucesso."
 #: appointment/views.py:720
 #, fuzzy, python-format
 msgid "\"%s\" is added"
-msgstr "\"%(name)s\" foi adicionado."
+msgstr "\"%s\" foi adicionado."
 
 #: appointment/views.py:308 appointment/views.py:437 appointment/views.py:617
 #: appointment/views.py:749 dialer_contact/views.py:351
 #, fuzzy, python-format
 msgid "\"%s\" is deleted."
-msgstr "\"%(name)s\" foi excluído."
+msgstr "\"%s\" foi excluído."
 
 #: appointment/views.py:318
 #, fuzzy, python-format
 msgid "%s calendar(s) are deleted."
-msgstr "%(count)s contact(s) apagado com sucesso."
+msgstr ""
 
 #: appointment/views.py:351 appointment/views.py:480 appointment/views.py:660
 #: appointment/views.py:793 dialer_contact/views.py:394
 #, fuzzy, python-format
 msgid "\"%s\" is updated."
-msgstr "\"%(name)s\" foi atualizado."
+msgstr "\"%s\" foi atualizado."
 
 #: appointment/views.py:447
 #, fuzzy, python-format
 msgid "%s calendar setting(s) are deleted."
-msgstr "%(count)s contact(s) apagado com sucesso."
+msgstr ""
 
 #: appointment/views.py:627
-#, fuzzy, python-format
+#, python-format
 msgid "%s event(s) are deleted."
-msgstr "%(count)s contact(s) apagado com sucesso."
+msgstr "%s evento(s) apagado com sucesso."
 
 #: appointment/views.py:759
-#, fuzzy, python-format
+#, python-format
 msgid "%s alarm(s) are deleted."
-msgstr "%(count)s contact(s) apagado com sucesso."
+msgstr "%s alarme(s) apagado com sucesso."
 
 #: appointment/models/alarms.py:20
 #, fuzzy
@@ -1033,7 +1033,7 @@ msgstr "ocorrências"
 #: appointment/models/events.py:339
 #, python-format
 msgid "%(start)s to %(end)s"
-msgstr "% (Start) s para% (final) s"
+msgstr "%(start)s para %(end)s"
 
 #: appointment/models/rules.py:6
 msgid "Yearly"
@@ -1401,19 +1401,19 @@ msgstr "\"%(name)s\" foi adicionado."
 msgid ""
 "\"%(name)s\" is not allowed to delete because it is being used with survey."
 msgstr ""
-"\"% (Name) s\" não é permitido excluir porque ele está sendo usado com "
+"\"%(name)s\" não é permitido excluir porque ele está sendo usado com "
 "pesquisa."
 
 #: callcenter/views.py:143
 #, fuzzy, python-format
 msgid "%s queue(s) are deleted."
-msgstr "%(count)s contact(s) apagado com sucesso."
+msgstr "%s fila(s) apagado com sucesso."
 
 #: callcenter/views.py:145
 #, python-format
 msgid "%s queue(s) are not deleted because they are being used with surveys."
 msgstr ""
-"% S fila (s) não são excluídos, porque eles estão sendo usados ​​com pesquisas."
+"%s fila(s) não são excluídos, porque eles estão sendo usados ​​com pesquisas."
 
 #: callcenter/views.py:237
 #, fuzzy, python-format
@@ -1428,7 +1428,7 @@ msgstr "%(count)s áudi(os) apagado(s) com sucesso."
 #: callcenter/views.py:309
 #, fuzzy, python-format
 msgid "\"%(id)s\" tier is updated."
-msgstr "\"%(name)s\" foi atualizado."
+msgstr "\"%(id)s\" foi atualizado."
 
 #: callcenter/templates/callcenter/queue/change.html:12
 msgid "it is belong to manager"
@@ -3508,7 +3508,7 @@ msgstr ""
 #: dnc/views.py:445
 #, python-format
 msgid "Duplicate DNC contact(s) %(dup_contact_cnt)s are not inserted!!"
-msgstr "Duplicar DNC contato (s)% (dup_contact_cnt) s não estão inseridos!"
+msgstr "Duplicar DNC contato(s) %(dup_contact_cnt)s não estão inseridos!"
 
 #: dnc/templates/dnc/dnc_contact/change.html:12
 #, fuzzy
@@ -4416,30 +4416,27 @@ msgstr "Não é possível encontrar a Campanha: %(id)s"
 #: mod_sms/management/commands/create_sms.py:82
 #, python-format
 msgid "No of SMS :%(count)s"
-msgstr "N º de SMS:%s (contagem)"
+msgstr "Nº de SMS :%(count)s"
 
 #: mod_sms/management/commands/create_sms.py:88
 msgid "\"sms_campaign_id|quantity\" \"sms_campaign_id|quantity\""
-msgstr "\"Sms_campaign_id | quantidade\" \"sms_campaign_id | quantidade\""
+msgstr "\"sms_campaign_id|quantity\" \"sms_campaign_id|quantity\""
 
 #: mod_sms/management/commands/create_sms.py:89
 msgid "Create new SMSs for a given sms_campaign_id"
 msgstr "Criar uma nova SMSs para um determinado sms_campaign_id"
 
 #: mod_sms/templates/mod_sms/change.html:14
-#, fuzzy
 msgid "set SMS campaign parameters"
-msgstr "Definir os parâmetros da campanha"
+msgstr "Definir os parâmetros da campanha SMS"
 
 #: mod_sms/templates/mod_sms/list.html:5
-#, fuzzy
 msgid "list, add and edit SMS campaigns"
-msgstr "Listar, adicionar e editar campanhas"
+msgstr "Listar, adicionar e editar campanhas SMS"
 
 #: mod_sms/templates/mod_sms/list.html:71
-#, fuzzy
 msgid "update sms campaign"
-msgstr "Campanha de atualização"
+msgstr "atualização SMS Campanha"
 
 #: mod_sms/templates/mod_sms/list.html:74
 #, fuzzy

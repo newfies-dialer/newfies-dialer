@@ -273,7 +273,6 @@ msgstr "Déconnexion"
 #: survey/templates/survey/section_script_change.html:43
 #: survey/templates/survey/section_script_change.html:58
 #: survey/templates/survey/survey_change.html:17
-#, fuzzy
 msgid "update"
 msgstr "Mettre à jour"
 
@@ -312,9 +311,8 @@ msgstr "Mettre à jour"
 #: survey/templates/survey/survey_list.html:27
 #: templates/admin_tools/dashboard/modules/app_list.html:26
 #: templates/admin_tools/dashboard/modules/model_list.html:13
-#, fuzzy
 msgid "add"
-msgstr "Ajouter"
+msgstr "ajouter"
 
 #: agent/templates/agent/change.html:12
 msgid "agent is belong to manager"
@@ -1945,167 +1943,135 @@ msgid "outbound Caller Name"
 msgstr "Sortant appelant Nom"
 
 #: dialer_campaign/models.py:186 mod_sms/models.py:126
-#, fuzzy
 msgid "finish"
-msgstr "Terminer"
+msgstr "terminer"
 
 #: dialer_campaign/models.py:189
-#, fuzzy
 msgid "daily start time"
-msgstr "Heure journalier de commencement"
+msgstr "heure journalier de commencement"
 
 #: dialer_campaign/models.py:191
-#, fuzzy
 msgid "daily stop time"
-msgstr "Heure journalier d'arrêt"
+msgstr "heure journalier d'arrêt"
 
 #: dialer_campaign/models.py:192 mod_sms/models.py:130
-#, fuzzy
 msgid "monday"
-msgstr "Lundi"
+msgstr "lundi"
 
 #: dialer_campaign/models.py:193 mod_sms/models.py:131
-#, fuzzy
 msgid "tuesday"
-msgstr "Mardi"
+msgstr "mardi"
 
 #: dialer_campaign/models.py:194 mod_sms/models.py:132
-#, fuzzy
 msgid "wednesday"
-msgstr "Mercredi"
+msgstr "mercredi"
 
 #: dialer_campaign/models.py:195 mod_sms/models.py:133
-#, fuzzy
 msgid "thursday"
-msgstr "Jeudi"
+msgstr "jeudi"
 
 #: dialer_campaign/models.py:196 mod_sms/models.py:134
-#, fuzzy
 msgid "friday"
-msgstr "Vendredi"
+msgstr "vendredi"
 
 #: dialer_campaign/models.py:197 mod_sms/models.py:135
-#, fuzzy
 msgid "saturday"
-msgstr "Samedi"
+msgstr "samedi"
 
 #: dialer_campaign/models.py:198 mod_sms/models.py:136
-#, fuzzy
 msgid "sunday"
-msgstr "Dimanche"
+msgstr "dimanche"
 
 #: dialer_campaign/models.py:202
-#, fuzzy
 msgid "calls per minute"
-msgstr "Appels par minute"
+msgstr "appels par minute"
 
 #: dialer_campaign/models.py:204
-#, fuzzy
 msgid "max call duration"
 msgstr "Durée d&#39;appel maximale"
 
 #: dialer_campaign/models.py:205
-#, fuzzy
 msgid "maximum call duration in seconds"
 msgstr "Durée d'appel maximale en quelques secondes"
 
 #: dialer_campaign/models.py:208 dialer_settings/models.py:49
 #: mod_sms/models.py:143
-#, fuzzy
 msgid "max retries"
 msgstr "Nombre maximal de tentatives"
 
 #: dialer_campaign/models.py:209 mod_sms/models.py:144
-#, fuzzy
 msgid "maximum retries per contact"
 msgstr "Nombre maximal de tentatives par contact"
 
 #: dialer_campaign/models.py:211
-#, fuzzy
 msgid "time between retries"
 msgstr "Temps entre les tentatives"
 
 #: dialer_campaign/models.py:212 mod_sms/models.py:147
-#, fuzzy
 msgid "time delay in seconds before retrying contact"
 msgstr "Temporisation, en secondes avant de réessayer de contact"
 
 #: dialer_campaign/models.py:214
-#, fuzzy
 msgid "completion max retries"
 msgstr "Max Retries d'achèvement"
 
 #: dialer_campaign/models.py:215
-#, fuzzy
 msgid "number of retries until a contact completes survey"
 msgstr "Montant de tentatives jusqu'à ce qu'un contact est terminé"
 
 #: dialer_campaign/models.py:217
-#, fuzzy
 msgid "completion time between retries"
 msgstr "Délai entre les tentatives pour complétion"
 
 #: dialer_campaign/models.py:218
-#, fuzzy
 msgid "time delay in seconds before retrying contact to complete survey"
 msgstr ""
 "Temporisation, en secondes avant de réessayer de contact pour l'achèvement"
 
 #: dialer_campaign/models.py:222
-#, fuzzy
 msgid "A-Leg gateway"
 msgstr "A-Leg passerelle"
 
 #: dialer_campaign/models.py:224
-#, fuzzy
 msgid "select outbound gateway"
 msgstr "Sélectionnez passerelle sortante"
 
 #: dialer_campaign/models.py:225 mod_sms/models.py:149 mod_sms/models.py:481
-#, fuzzy
 msgid "sms gateway"
-msgstr "Passerelle utilisée"
+msgstr "Passerelle SMS"
 
 #: dialer_campaign/models.py:234 mod_sms/models.py:155
-#, fuzzy
 msgid "extra parameters"
 msgstr "Paramètres supplémentaires"
 
 #: dialer_campaign/models.py:235 mod_sms/models.py:156
-#, fuzzy
 msgid "additional application parameters."
 msgstr "Paramètres d'application supplémentaires."
 
 #: dialer_campaign/models.py:238
-#, fuzzy
 msgid "imported phonebook"
 msgstr "Répertoire importés"
 
 #: dialer_campaign/models.py:240 mod_sms/constants.py:43 mod_sms/models.py:166
 #: survey/templates/survey/survey_report.html:33
-#, fuzzy
 msgid "total contact"
-msgstr "Contacter totale"
+msgstr "contacter totale"
 
 #: dialer_campaign/models.py:241 mod_sms/models.py:167
-#, fuzzy
 msgid "total contact for this campaign"
 msgstr "Contacter totale pour cette campagne"
 
 #: dialer_campaign/models.py:244
-#, fuzzy
 msgid "total contact that completed call / survey"
 msgstr "Contacter totale que Call complèté / Enquête"
 
 #: dialer_campaign/models.py:246
-#, fuzzy
 msgid "has been started"
-msgstr "Campagne a commencé"
+msgstr "a commencé"
 
 #: dialer_campaign/models.py:247
-#, fuzzy
 msgid "has been duplicated"
-msgstr "Campagne a commencé"
+msgstr ""
 
 #: dialer_campaign/models.py:248 dnc/templates/dnc/dnc_contact/list.html:5
 #: dnc/templates/dnc/dnc_contact/list.html:25
@@ -3743,23 +3709,19 @@ msgstr "Rapports d'enquêtes"
 
 #: frontend/templates/frontend/bootstrap_side_menu.html:70
 #: mod_sms/templates/mod_sms/sms_report.html:9
-#, fuzzy
 msgid "reports"
-msgstr "Rapports"
+msgstr "rapports"
 
 #: frontend/templates/frontend/bootstrap_side_menu.html:79
-#, fuzzy
 msgid "sealed surveys"
-msgstr "Supprimer l'enquête"
+msgstr ""
 
 #: frontend/templates/frontend/common_search_toggle_button.html:5
-#, fuzzy
 msgid "open search"
-msgstr "Masquer la recherche"
+msgstr "ouvrir recherche"
 
 #: frontend/templates/frontend/common_submit_buttons.html:10
 #: mod_utils/forms.py:68 survey/templates/survey/survey_change.html:311
-#, fuzzy
 msgid "delete"
 msgstr "Effacer"
 

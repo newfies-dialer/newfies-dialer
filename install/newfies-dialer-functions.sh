@@ -190,7 +190,6 @@ func_install_dependencies(){
             dpkg-reconfigure locales
 
             apt-get -y install python-software-properties
-            add-apt-repository -y ppa:chris-lea/node.js
             apt-get update
             apt-get -y remove apache2.2-common apache2
             apt-get -y install --reinstall language-pack-en
@@ -202,7 +201,19 @@ func_install_dependencies(){
             # for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
             # install Node & npm
-            apt-get -y install nodejs
+            #Install Node.js & NPM
+
+            cd /usr/src/
+            git clone https://github.com/joyent/node.git
+            cd node
+            # 'git tag' shows all available versions: select the latest stable.
+            git checkout v0.10.26
+            # Configure seems not to find libssl by default so we give it an explicit pointer.
+            # Optionally: you can isolate node by adding --prefix=/opt/node
+            ./configure --openssl-libpath=/usr/lib/ssl
+            make
+            make install
+            node -v
 
             # postgresql
             apt-get -y install postgresql-9.1 postgresql-contrib-9.1
@@ -211,14 +222,14 @@ func_install_dependencies(){
             /etc/init.d/postgresql start
 
             #Lua Deps
-            apt-get -y install liblua5.1-sql-postgres-dev
+            apt-get -y install lua5.1 liblua5.1-sql-postgres-dev
             #needed by lua-curl
             apt-get -y install libcurl4-openssl-dev
 
             #Memcached
             apt-get -y install memcached
             #Luarocks
-            apt-get -y install luarocks luasocket
+            apt-get -y install luarocks
             luarocks install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
 
         ;;

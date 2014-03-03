@@ -186,3 +186,7 @@ SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
 QUALITY = '22k'  # 22k, 8k, 8ka, 8kmu
 ACAPELA_GENDER = 'W'
 ACAPELA_INTONATION = 'NORMAL'
+
+# Django-bower
+# ------------
+BOWER_PATH = '/usr/local/bin/bower'

@@ -56,34 +56,45 @@ func_identify_os
 #Request the user to accept the license
 func_accept_license
 
-ExitFinish=0
+# ExitFinish=0
 
-while [ $ExitFinish -eq 0 ]; do
+# while [ $ExitFinish -eq 0 ]; do
 
-    # Show menu with Installation items
-    show_menu_newfies
+#     # Show menu with Installation items
+#     show_menu_newfies
+#     case $OPTION in
+#         1)
+#             func_install_frontend
+#             func_install_landing_page
+#             func_install_backend
+#             echo done
+#         ;;
+#         2)
+#             func_install_frontend
+#             func_install_landing_page
+#         ;;
+#         3)
+#             func_install_backend
+#         ;;
+#         0)
+#         ExitFinish=1
+#         ;;
+#         *)
+#     esac
+# done
 
-    case $OPTION in
-        1)
-            func_install_frontend
-            func_install_landing_page
-            func_install_backend
-            echo done
-        ;;
-        2)
-            func_install_frontend
-            func_install_landing_page
-        ;;
-        3)
-            func_install_backend
-        ;;
-        0)
-        ExitFinish=1
-        ;;
-        *)
-    esac
+#Don't ask and just install it all
+echo ""
+echo "Newfies-Diale will be installed!"
+echo ""
+echo "Press Enter to continue or CTRL-C to exit"
+echo ""
+read INPUT
 
-done
+func_install_frontend
+func_install_landing_page
+func_install_backend
+
 
 # Clean the system
 #=================

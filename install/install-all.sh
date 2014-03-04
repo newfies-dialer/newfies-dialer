@@ -88,10 +88,9 @@ echo ""
 echo "> > > This is only to be installed on a fresh new installation of Debian 7.X or CentOS 6.X! < < <"
 echo ""
 echo "It will install Newfies-Dialer and Freeswitch on your server"
-echo "Press Enter to continue or CTRL-C to exit"
 echo ""
-read TEMP
-
+echo ""
+echo ""
 
 case $DIST in
     'DEBIAN')

@@ -83,18 +83,18 @@ func_accept_license() {
     echo "Copyright (C) 2011-2014 Star2Billing S.L."
     echo ""
     echo ""
-    echo "I agree to be bound by the terms of the license - [YES/NO]"
-    echo ""
-    read ACCEPT
+    # echo "I agree to be bound by the terms of the license - [YES/NO]"
+    # echo ""
+    # read ACCEPT
 
-    while [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]  && [ "$ACCEPT" != "no" ]  && [ "$ACCEPT" != "No" ]  && [ "$ACCEPT" != "NO" ]; do
-        echo "I agree to be bound by the terms of the license - [YES/NO]"
-        read ACCEPT
-    done
-    if [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]; then
-        echo "License rejected !"
-        exit 0
-    fi
+    # while [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]  && [ "$ACCEPT" != "no" ]  && [ "$ACCEPT" != "No" ]  && [ "$ACCEPT" != "NO" ]; do
+    #     echo "I agree to be bound by the terms of the license - [YES/NO]"
+    #     read ACCEPT
+    # done
+    # if [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]; then
+    #     echo "License rejected !"
+    #     exit 0
+    # fi
 }
 
 

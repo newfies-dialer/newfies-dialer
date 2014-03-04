@@ -187,7 +187,10 @@ func_install_dependencies(){
             export LANG=en_US.UTF-8
             export LC_ALL=en_US.UTF-8
             locale-gen en_US.UTF-8
-            dpkg-reconfigure locales
+            locale-gen es_ES.UTF-8
+            locale-gen fr_FR.UTF-8
+            locale-gen pt_BR.UTF-8
+            #dpkg-reconfigure locales
 
             apt-get -y install python-software-properties
             apt-get update

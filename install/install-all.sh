@@ -85,7 +85,7 @@ gpgcheck = 0
 func_identify_os
 
 echo ""
-echo "> > > This is only to be installed on a fresh new installation of CentOS 6.X or Ubuntu 12.04 TLS! < < <"
+echo "> > > This is only to be installed on a fresh new installation of Debian 7.X or CentOS 6.X! < < <"
 echo ""
 echo "It will install Newfies-Dialer and Freeswitch on your server"
 echo "Press Enter to continue or CTRL-C to exit"

@@ -48,27 +48,6 @@ HTTP_PORT='8008'
 #Django bug https://code.djangoproject.com/ticket/16017
 export LANG="en_US.UTF-8"
 
-# Identify Linux Distribution type
-func_identify_os() {
-    if [ -f /etc/debian_version ] ; then
-        DIST='DEBIAN'
-        if [ "$(lsb_release -cs)" != "wheezy" ]; then
-            echo "This script is only intended to run on Debian 7.X or CentOS 6.X"
-            exit 255
-        fi
-    elif [ -f /etc/redhat-release ] ; then
-        DIST='CENTOS'
-        if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.3" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.4" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.5" ]; then
-            echo "This script is only intended to run on Debian 7.X or CentOS 6.X"
-            exit 255
-        fi
-    else
-        echo "This script is only intended to run on Debian 7.X or CentOS 6.X"
-        exit 1
-    fi
-}
-
-
 #Function accept_license
 func_accept_license() {
     clear

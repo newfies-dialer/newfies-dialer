@@ -182,6 +182,9 @@ func_install_dependencies(){
 
     case $DIST in
         'DEBIAN')
+            apt-get update
+            apt-get -y install --reinstall language-pack-en
+
             export LANGUAGE=en_US.UTF-8
             export LANG=en_US.UTF-8
             export LC_ALL=en_US.UTF-8
@@ -191,50 +194,43 @@ func_install_dependencies(){
             locale-gen pt_BR.UTF-8
             #dpkg-reconfigure locales
 
-            apt-get -y install python-software-properties
-            apt-get update
             apt-get -y remove apache2.2-common apache2
-            apt-get -y install --reinstall language-pack-en
 
+            #Install Postgresql
+            apt-get -y install libpq-dev
+            echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
+            wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+            apt-get update
+            apt-get -y install postgresql-9.3 postgresql-contrib-9.3
+            /etc/init.d/postgresql start
+
+            apt-get -y install python-software-properties
             apt-get -y install python-setuptools python-dev build-essential
             apt-get -y install nginx supervisor
             apt-get -y install git-core mercurial gawk cmake
             apt-get -y install python-pip
             # for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
-            # install Node & npm
-            #Install Node.js & NPM
 
-            cd /usr/src/
-            git clone https://github.com/joyent/node.git
-            cd node
+            #Install Node.js & NPM
+            cd /usr/src/ ; git clone https://github.com/joyent/node.git
             # 'git tag' shows all available versions: select the latest stable.
-            git checkout v0.10.26
+            cd node ; git checkout v0.10.26
             # Configure seems not to find libssl by default so we give it an explicit pointer.
             # Optionally: you can isolate node by adding --prefix=/opt/node
             ./configure --openssl-libpath=/usr/lib/ssl
-            make
-            make install
+            make ; make install
             node -v
-
-            # postgresql
-            apt-get -y install libpq-dev
-            apt-get -y install postgresql-9.1 postgresql-contrib-9.1
-
-            # start postgresql
-            /etc/init.d/postgresql start
 
             #Lua Deps
             apt-get -y install lua5.1 liblua5.1-sql-postgres-dev
             #needed by lua-curl
             apt-get -y install libcurl4-openssl-dev
-
             #Memcached
             apt-get -y install memcached
             #Luarocks
             apt-get -y install luarocks
             luarocks install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
-
         ;;
         'CENTOS')
             yum -y groupinstall "Development Tools"

@@ -143,7 +143,10 @@ install_fs_deb_packages() {
     #install Dependencies
     func_install_deps
 
-    apt-get install freeswitch-meta-vanilla
+    apt-get -y install freeswitch-meta-vanilla
+    apt-get -y install freeswitch-mod-vmd freeswitch-mod-python freeswitch-mod-sndfile freeswitch-sounds-en
+    apt-get -y install libfreeswitch-dev freeswitch-mod-lua freeswitch-mod-flite
+    apt-get -y install freeswitch-mod-esl freeswitch-mod-event-socket freeswitch-mod-curl
 }
 
 func_configure_fs() {
@@ -211,17 +214,26 @@ func_add_init_script() {
 case $DIST in
     'DEBIAN')
         #Install FreeSWITCH from Debian packages
-        install_fs_deb_packages
+        #install_fs_deb_packages
+
+        #!!! At the moment we cannot install from Deb packages cause we need the sources to compile
+        #libs/esl/python
+
+        #Install FreeSWITCH from sources
+        func_install_fs_sources
+        #Create alias fs_cli
+        func_create_alias_fs_cli
+        #Install init.d script
+        func_add_init_script
     ;;
     'CENTOS')
         #Install FreeSWITCH from sources
         func_install_fs_sources
-
         #Create alias fs_cli
-        #func_create_alias_fs_cli
+        func_create_alias_fs_cli
         #Install init.d script
         #*Not need if installed from deb packages
-        #func_add_init_script
+        func_add_init_script
     ;;
 esac
 

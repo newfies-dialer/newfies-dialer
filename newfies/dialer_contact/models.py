@@ -104,9 +104,9 @@ class Contact(Model):
     country = CountryField(blank=True, null=True, verbose_name=_('country'))
     unit_number = models.CharField(max_length=50, blank=True, null=True,
                                    verbose_name=_("unit number"))
-    additional_vars = jsonfield.JSONField(null=True, blank=True,
-                                          verbose_name=_('additional parameters (JSON)'),
-                                          help_text=_("enter the list of parameters in JSON format, e.g. {\"age\": \"32\"}"))
+    additional_vars = jsonfield.JSONField(
+        null=True, blank=True, verbose_name=_('additional parameters (JSON)'),
+        help_text=_("enter the list of parameters in JSON format, e.g. {\"age\": \"32\"}"))
     description = models.TextField(null=True, blank=True,
                                    verbose_name=_("notes"))
     created_date = models.DateTimeField(auto_now_add=True,
@@ -122,7 +122,8 @@ class Contact(Model):
         verbose_name_plural = _("contacts")
 
     def __unicode__(self):
-        return u"%s (%s)" % (self.contact, self.last_name)
+        #this will be used by duplicate_contact
+        return u"%s" % (self.contact)
 
     def contact_name(self):
         """Return Contact Name"""

@@ -96,8 +96,8 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
         # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
         sqlimport = "LOCK TABLE dialer_subscriber IN EXCLUSIVE MODE;" \
-            "INSERT INTO dialer_subscriber (contact_id, "\
-            "campaign_id, duplicate_contact, status, created_date, updated_date) "\
+            "INSERT INTO dialer_subscriber "\
+            "(contact_id, campaign_id, duplicate_contact, status, created_date, updated_date) "\
             "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\
             "WHERE phonebook_id=%d AND dialer_contact.status=1 AND NOT EXISTS (" \
             "SELECT 1 FROM dialer_subscriber WHERE "\

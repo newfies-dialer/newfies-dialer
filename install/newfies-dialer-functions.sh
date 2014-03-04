@@ -197,7 +197,7 @@ func_install_dependencies(){
             apt-get -y install python-setuptools python-dev build-essential
             apt-get -y install nginx supervisor
             apt-get -y install git-core mercurial gawk cmake
-            apt-get -y install python-pip python-dev
+            apt-get -y install python-pip
             # for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
             # install Node & npm
@@ -216,8 +216,9 @@ func_install_dependencies(){
             node -v
 
             # postgresql
-            apt-get -y install postgresql-9.1 postgresql-contrib-9.1
             apt-get -y install libpq-dev
+            apt-get -y install postgresql-9.1 postgresql-contrib-9.1
+
             # start postgresql
             /etc/init.d/postgresql start
 

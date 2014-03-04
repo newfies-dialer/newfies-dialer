@@ -84,8 +84,9 @@ func_accept_license
 # done
 
 #Don't ask and just install it all
+echo "-------------------------------------------------------------------------"
 echo ""
-echo "Newfies-Diale will be installed!"
+echo "Newfies-Dialer will be installed!"
 echo ""
 echo "Press Enter to continue or CTRL-C to exit"
 echo ""

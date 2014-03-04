@@ -82,7 +82,6 @@ func_accept_license() {
     echo ""
     echo "Copyright (C) 2011-2014 Star2Billing S.L."
     echo ""
-    echo ""
     # echo "I agree to be bound by the terms of the license - [YES/NO]"
     # echo ""
     # read ACCEPT

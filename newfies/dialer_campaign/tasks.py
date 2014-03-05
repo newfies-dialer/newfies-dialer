@@ -13,6 +13,7 @@
 #
 
 from django.core.exceptions import ObjectDoesNotExist
+from django.conf import settings
 from celery.task import PeriodicTask
 from celery.task import Task
 from celery.utils.log import get_task_logger
@@ -33,7 +34,8 @@ from common_functions import debug_query
 # from common_functions import isint
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
-DIV_MIN = 10  # Divide minute by that value & allow not waiting long for calls
+if settings.HEARTBEAT_MIN < 1 or settings.HEARTBEAT_MIN > 10:
+    settings.HEARTBEAT_MIN = 1
 
 logger = get_task_logger(__name__)
 
@@ -117,11 +119,12 @@ class pending_call_processing(Task):
 
         # Get the subscriber of this campaign
         # get_pending_subscriber get Max 1000 records
-        if frequency >= 10:
-            callfrequency = int(frequency / DIV_MIN) + 1  # 1000 per minutes
-            #callfrequency = int(frequency) + 1  # 1000 per minutes
+        if settings.HEARTBEAT_MIN == 1:  # 1 task per minute
+            callfrequency = frequency  # task run only once per minute, so we can assign frequency
         else:
-            callfrequency = frequency
+            callfrequency = int(frequency / settings.HEARTBEAT_MIN) + 1  # 1000 per minutes
+            #callfrequency = int(frequency) + 1  # 1000 per minutes
+
         (list_subscriber, no_subscriber) = obj_campaign\
             .get_pending_subscriber_update(callfrequency, SUBSCRIBER_STATUS.IN_PROCESS)
         logger.info("##subscriber=%d campaign_id=%d callfreq=%d freq=%d" %
@@ -132,8 +135,7 @@ class pending_call_processing(Task):
             return False
 
         # Set time to wait for balanced dispatching of calls
-        #time_to_wait = int(60 / DIV_MIN) / no_subscriber
-        time_to_wait = 6.0 / no_subscriber
+        time_to_wait = (60.0 / settings.HEARTBEAT_MIN) / no_subscriber
         count = 0
 
         for elem_camp_subscriber in list_subscriber:
@@ -214,7 +216,7 @@ class campaign_running(PeriodicTask):
         campaign_running.delay()
 
     """
-    run_every = timedelta(seconds=int(60 / DIV_MIN))
+    run_every = timedelta(seconds=int(60 / settings.HEARTBEAT_MIN))
     # NOTE : until we implement a PID Controller :
     # http://en.wikipedia.org/wiki/PID_controller
 

@@ -518,6 +518,9 @@ API_ALLOWED_IP = ['127.0.0.1', 'localhost']
 #======
 MAX_CALLS_PER_SECOND = 20  # By default configured to 20 calls per second
 
+# Number of time the spooling tasks will be run per minute,
+# value like 10 will allow not waiting too long for 1st calls
+HEARTBEAT_MIN = 10  # accepted value from 1 to 10
 
 # Frontend widget values
 CHANNEL_TYPE_VALUE = 1  # 0-Keep original, 1-Mono, 2-Stereo
@@ -657,4 +660,3 @@ try:
     from settings_local import *
 except ImportError:
     pass
-

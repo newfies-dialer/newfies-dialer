@@ -202,6 +202,7 @@ func_install_dependencies(){
             wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
             apt-get update
             apt-get -y install postgresql-9.3 postgresql-contrib-9.3
+            pg_createcluster 9.3 main --start
             /etc/init.d/postgresql start
 
             apt-get -y install python-software-properties

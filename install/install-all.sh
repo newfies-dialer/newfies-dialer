@@ -28,6 +28,7 @@ BRANCH='develop'
 func_identify_os() {
     if [ -f /etc/debian_version ] ; then
         DIST='DEBIAN'
+        apt-get -y install lsb-release
         if [ "$(lsb_release -cs)" != "wheezy" ]; then
             echo "This script is only intended to run on Debian 7.X or CentOS 6.X"
             exit 255

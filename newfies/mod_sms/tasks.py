@@ -83,8 +83,8 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
         obj_subscriber.save()
 
         # Send sms
-        logger.warning("Call SendMessage id:%d" % msg_obj.id)
-        SendMessage.delay(msg_obj.id, obj_subscriber.sms_campaign.sms_gateway_id)
+        logger.warning("Call msg_obj id:%d - gateway_id:%d" % (msg_obj.id, obj_sms_campaign.sms_gateway_id))
+        SendMessage.delay(msg_obj.id, obj_sms_campaign.sms_gateway_id)
     else:
         logger.error("Max retry exceeded, sub_id:%s" % obj_subscriber.id)
 

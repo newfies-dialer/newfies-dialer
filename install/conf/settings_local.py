@@ -189,4 +189,4 @@ ACAPELA_INTONATION = 'NORMAL'
 
 # Django-bower
 # ------------
-BOWER_PATH = '/usr/local/bin/bower'
+BOWER_PATH = '/usr/bin/bower'

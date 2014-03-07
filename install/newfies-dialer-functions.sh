@@ -182,6 +182,9 @@ func_install_dependencies(){
 
     case $DIST in
         'DEBIAN')
+            #Used by Node.js
+            echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
+
             apt-get update
             apt-get -y install --reinstall language-pack-en
 
@@ -215,14 +218,17 @@ func_install_dependencies(){
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
 
             #Install Node.js & NPM
-            cd /usr/src/ ; git clone https://github.com/joyent/node.git
-            # 'git tag' shows all available versions: select the latest stable.
-            cd node ; git checkout v0.10.26
-            # Configure seems not to find libssl by default so we give it an explicit pointer.
-            # Optionally: you can isolate node by adding --prefix=/opt/node
-            ./configure --openssl-libpath=/usr/lib/ssl
-            make ; make install
-            node -v
+            apt-get install nodejs-legacy
+            curl --insecure https://www.npmjs.org/install.sh | bash
+
+            # cd /usr/src/ ; git clone https://github.com/joyent/node.git
+            # # 'git tag' shows all available versions: select the latest stable.
+            # cd node ; git checkout v0.10.26
+            # # Configure seems not to find libssl by default so we give it an explicit pointer.
+            # # Optionally: you can isolate node by adding --prefix=/opt/node
+            # ./configure --openssl-libpath=/usr/lib/ssl
+            # make ; make install
+            # node -v
 
             #Lua Deps
             apt-get -y install lua5.1 liblua5.1-sql-postgres-dev

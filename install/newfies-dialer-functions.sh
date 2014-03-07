@@ -218,7 +218,7 @@ func_install_dependencies(){
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
 
             #Install Node.js & NPM
-            apt-get install nodejs-legacy
+            apt-get -y install nodejs-legacy
             curl --insecure https://www.npmjs.org/install.sh | bash
 
             # cd /usr/src/ ; git clone https://github.com/joyent/node.git

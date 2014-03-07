@@ -165,7 +165,6 @@ func_configure_fs() {
     [ -f modules.conf.xml ] && cp modules.conf.xml modules.conf.xml.bak
     sed -i -r \
     -e "s/<\!--\s?<load module=\"mod_lua\"\/>\s?-->/<load module=\"mod_lua\"\/>/g" \
-    -e "s/<\!--\s?<load module=\"mod_xml_curl\"\/>\s?-->/<load module=\"mod_xml_curl\"\/>/g" \
     -e "s/<\!--\s?<load module=\"mod_xml_cdr\"\/>\s?-->/<load module=\"mod_xml_cdr\"\/>/g" \
     -e "s/<\!--\s?<load module=\"mod_dingaling\"\/>\s?-->/<load module=\"mod_dingaling\"\/>/g" \
     -e "s/<\!--\s?<load module=\"mod_shell_stream\"\/>\s?-->/<load module=\"mod_shell_stream\"\/>/g" \

@@ -195,6 +195,7 @@ func_install_dependencies(){
             #dpkg-reconfigure locales
 
             apt-get -y remove apache2.2-common apache2
+            apt-get -y install sudo
 
             #Install Postgresql
             apt-get -y install libpq-dev

@@ -620,6 +620,8 @@ func_nginx_supervisor(){
     case $DIST in
         'DEBIAN')
             cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
+            cp /usr/src/newfies-dialer/install/supervisor/debian/supervisord /etc/init.d/supervisor
+            chmod +x /etc/rc.d/init.d/supervisor
         ;;
         'CENTOS')
             cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord /etc/init.d/supervisor
@@ -648,6 +650,8 @@ func_celery_supervisor(){
     case $DIST in
         'DEBIAN')
             cp /usr/src/newfies-dialer/install/supervisor/celery_newfies_dialer.conf /etc/supervisor/conf.d/
+            cp /usr/src/newfies-dialer/install/supervisor/debian/supervisord /etc/init.d/supervisor
+            chmod +x /etc/rc.d/init.d/supervisor
         ;;
         'CENTOS')
             cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord /etc/init.d/supervisor

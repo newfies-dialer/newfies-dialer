@@ -144,7 +144,8 @@ class check_sms_campaign_pendingcall(Task):
         for elem_camp_subscriber in list_subscriber:
             """Loop on Subscriber and start the initcall task"""
             count = count + 1
-            logger.info("Add SMS Message for Subscriber (%s) & wait (%s) " % (str(elem_camp_subscriber.id), str(time_to_wait)))
+            logger.info("Add SMS Message for Subscriber (%s) & wait (%s) " %
+                        (str(elem_camp_subscriber.id), str(time_to_wait)))
 
             #Check if the contact is authorized
             if not obj_sms_campaign.is_authorized_contact(elem_camp_subscriber.contact.contact):
@@ -336,7 +337,8 @@ def importcontact_custom_sql(sms_campaign_id, phonebook_id):
             (sms_campaign_id, phonebook_id)
 
     elif settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
-        # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
+        # Data insert operation -
+        # http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
         sqlimport = "LOCK TABLE sms_campaign_subscriber IN EXCLUSIVE MODE;" \
             "INSERT INTO sms_campaign_subscriber (contact_id, "\
             "sms_campaign_id, duplicate_contact, status, created_date, updated_date) "\

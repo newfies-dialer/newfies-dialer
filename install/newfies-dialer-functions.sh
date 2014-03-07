@@ -184,9 +184,7 @@ func_install_dependencies(){
         'DEBIAN')
             #Used by Node.js
             echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
-
             apt-get update
-            apt-get -y install --reinstall language-pack-en
 
             export LANGUAGE=en_US.UTF-8
             export LANG=en_US.UTF-8

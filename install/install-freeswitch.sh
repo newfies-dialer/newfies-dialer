@@ -101,7 +101,7 @@ func_install_fs_sources() {
     #Download and install FS from git repository.
     cd $FS_BASE_PATH
     rm -rf freeswitch
-    git clone git://git.freeswitch.org/freeswitch.git
+    git clone git://git.freeswitch.org/freeswitch.git --depth=1
     cd $FS_BASE_PATH/freeswitch
     git checkout $FS_VERSION
 

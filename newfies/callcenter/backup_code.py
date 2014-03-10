@@ -19,7 +19,7 @@ from callcenter.forms import QueueForm, QueueFrontEndForm,\
     TierForm, TierFrontEndForm
 from callcenter.views import queue_list, queue_add, queue_change, queue_del,\
     tier_list, tier_add, tier_change, tier_del
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class CallcenterAdminView(BaseAuthenticatedClient):
@@ -60,7 +60,7 @@ class CallcenterCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/module/queue/')
         self.assertEqual(response.context['module'], 'queue_list')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/queue/list.html')
+        self.assertTemplateUsed(response, 'callcenter/queue/list.html')
 
         request = self.factory.get('/module/queue/')
         request.user = manager
@@ -124,9 +124,8 @@ class CallcenterCustomerView(BaseAuthenticatedClient):
         """Test Function to check tier list"""
         manager = User.objects.get(pk=2)
         response = self.client.get('/module/tier/')
-        self.assertEqual(response.context['module'], 'tier_list')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/tier/list.html')
+        self.assertTemplateUsed(response, 'callcenter/tier/list.html')
 
         request = self.factory.get('/module/tier/')
         request.user = manager
@@ -138,7 +137,6 @@ class CallcenterCustomerView(BaseAuthenticatedClient):
         """Test Function to check add tier"""
         manager = User.objects.get(pk=2)
         response = self.client.get('/module/tier/add/')
-        self.assertEqual(response.context['action'], 'add')
         self.assertEqual(response.status_code, 200)
         response = self.client.post('/module/tier/add/', data={})
         self.assertEqual(response.context['action'], 'add')

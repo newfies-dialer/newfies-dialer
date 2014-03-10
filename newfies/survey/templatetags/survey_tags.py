@@ -17,15 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 from survey.views import survey_audio_recording
 from survey.models import Section_template, Branching_template
 from survey.constants import SECTION_TYPE
-
-
-@register.simple_tag(name='percentage_tag')
-def percentage_tag(fraction, population):
-    """Usage: {% percentage_tag fraction population %}"""
-    try:
-        return "%.2f%%" % ((float(fraction) / float(population)) * 100)
-    except:
-        return "0.00%"
+from mod_utils.function_def import get_status_value
 
 
 @register.filter(name='section_type_name')
@@ -41,15 +33,7 @@ def section_type_name(value):
     >>> section_type_name(0)
     ''
     """
-    if not value:
-        return ''
-    TYPE = dict(SECTION_TYPE)
-    try:
-        status = TYPE[value]
-    except:
-        status = ''
-
-    return str(status)
+    return get_status_value(value, SECTION_TYPE)
 
 
 @register.filter(name='que_res_string')
@@ -99,9 +83,9 @@ def get_branching_goto_field(section_id, selected_value):
     section_obj = Section_template.objects.get(id=section_id)
     #We don't need a lazy translation in this case
     option_list = '<option value="">%s</option>' % _('hang up').encode('utf-8')
-    list = Section_template.objects.filter(survey_id=section_obj.survey_id)\
+    section_list = Section_template.objects.filter(survey_id=section_obj.survey_id)\
         .order_by('id')
-    for i in list:
+    for i in section_list:
         if i.question:
             q_string = i.question
         else:
@@ -122,9 +106,8 @@ def get_branching_count(section_id, branch_id):
     """
     calculate branching count
     """
-    branch_list = Branching_template \
-        .objects.values_list('id', flat=True).filter(section_id=section_id)\
-        .order_by('id')
+    branch_list = Branching_template.objects.values_list('id', flat=True)\
+        .filter(section_id=section_id).order_by('id')
     branch_count = branch_list.count()
     # for default branching option to remove delete option
     if branch_list[0] == branch_id:

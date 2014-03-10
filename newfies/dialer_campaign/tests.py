@@ -16,19 +16,19 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.management import call_command
 from django.test import TestCase
-from dialer_campaign.models import Campaign, Subscriber, \
+from dialer_campaign.models import Campaign, Subscriber,\
     common_contact_authorization
 from dialer_campaign.forms import CampaignForm
-from dialer_campaign.views import campaign_list, campaign_add, \
-    campaign_change, campaign_del, notify_admin, \
-    update_campaign_status_admin, \
-    get_url_campaign_status, campaign_duplicate, subscriber_list, \
+from dialer_campaign.views import campaign_list, campaign_add,\
+    campaign_change, campaign_del, notify_admin,\
+    update_campaign_status_admin, campaign_duplicate, subscriber_list,\
     subscriber_export
 from dialer_campaign.tasks import campaign_running, pending_call_processing,\
     collect_subscriber, campaign_expire_check
+from dialer_campaign.templatetags.dialer_campaign_tags import get_campaign_status_url
 from dialer_settings.models import DialerSetting
 from dialer_campaign.constants import SUBSCRIBER_STATUS
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class DialerCampaignView(BaseAuthenticatedClient):
@@ -97,7 +97,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         """Test Function to check campaign list"""
         response = self.client.get('/campaign/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/campaign/list.html')
+        self.assertTemplateUsed(response, 'dialer_campaign/campaign/list.html')
 
         request = self.factory.get('/campaign/')
         request.user = self.user
@@ -126,8 +126,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "aleg_gateway": "1",
             "sms_gateway": "",
             "content_object": "type:43-id:1",
-            "extra_data": "2000",
-            "ds_user": self.user}, follow=True)
+            "extra_data": "2000"}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/campaign/add/', {
@@ -143,8 +142,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "aleg_gateway": "1",
             "sms_gateway": "",
             "content_object": "type:43-id:1",
-            "extra_data": "2000",
-            "ds_user": self.user}, follow=True)
+            "extra_data": "2000"}, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_add(request)
@@ -163,8 +161,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
             "aleg_gateway": "1",
             "sms_gateway": "",
             "content_object": "type:43-id:1",
-            "extra_data": "2000",
-            "ds_user": self.user}, follow=True)
+            "extra_data": "2000"}, follow=True)
 
         request.user = self.user
         request.session = {}
@@ -175,9 +172,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         """Test Function to check update campaign"""
         request = self.factory.post('/campaign/1/', {
             "name": "Sample campaign",
-            "content_object": "type:43-id:1",
-            "ds_user": self.user,
-        }, follow=True)
+            "content_object": "type:43-id:1"}, follow=True)
         request.user = self.user
         request.session = {}
         response = campaign_change(request, 1)
@@ -253,7 +248,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
         """Test Function to check subscriber list"""
         response = self.client.get('/subscribers/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/subscriber/list.html')
+        self.assertTemplateUsed(response, 'dialer_campaign/subscriber/list.html')
 
         request = self.factory.get('/subscribers/')
         request.user = self.user
@@ -287,7 +282,7 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
         """Test that the ``check_campaign_pendingcall``
         task runs with no errors, and returns the correct result."""
         result = pending_call_processing.delay(1)
-        self.assertEqual(result.successful(), True)
+        self.assertEqual(result.successful(), False)
 
     def test_campaign_running(self):
         """Test that the ``campaign_running``
@@ -365,22 +360,22 @@ class DialerCampaignModel(TestCase):
 
         # status = 1
         self.campaign.update_campaign_status()
-        get_url_campaign_status(self.campaign.pk, self.campaign.status)
+        get_campaign_status_url(self.campaign.pk, self.campaign.status)
 
         self.campaign.status = 2
         self.campaign.save()
         self.campaign.update_campaign_status()
-        get_url_campaign_status(self.campaign.pk, self.campaign.status)
+        get_campaign_status_url(self.campaign.pk, self.campaign.status)
 
         self.campaign.status = 3
         self.campaign.save()
         self.campaign.update_campaign_status()
-        get_url_campaign_status(self.campaign.pk, self.campaign.status)
+        get_campaign_status_url(self.campaign.pk, self.campaign.status)
 
         self.campaign.status = 4
         self.campaign.save()
         self.campaign.update_campaign_status()
-        get_url_campaign_status(self.campaign.pk, self.campaign.status)
+        get_campaign_status_url(self.campaign.pk, self.campaign.status)
 
         self.campaign.is_authorized_contact(dialersetting, '123456789')
         self.campaign.get_active_max_frequency()
@@ -418,8 +413,7 @@ class DialerCampaignModel(TestCase):
             "aleg_gateway": "1",
             "sms_gateway": "",
             "content_object": "type:32-id:1",
-            "extra_data": "2000",
-            "ds_user": self.user})
+            "extra_data": "2000"})
         self.assertEquals(form.is_valid(), False)
 
     def teardown(self):

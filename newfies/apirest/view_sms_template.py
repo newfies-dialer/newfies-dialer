@@ -17,7 +17,7 @@ from rest_framework import viewsets
 from apirest.sms_template_serializers import SMSTemplateSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from sms_module.models import SMSTemplate
+from mod_sms.models import SMSTemplate
 from permissions import CustomObjectPermissions
 
 

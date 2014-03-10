@@ -19,9 +19,9 @@ from dnc.models import DNC, DNCContact
 from dnc.views import dnc_add, dnc_change, dnc_list, dnc_del,\
     dnc_contact_list, dnc_contact_add, dnc_contact_change, \
     dnc_contact_del, get_dnc_contact_count, dnc_contact_import
-from dnc.forms import DNCForm, DNCContactForm, DNCContactSearchForm,\
+from dnc.forms import DNCListForm, DNCContactForm, DNCContactSearchForm,\
     DNCContact_fileImport
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 #import os
 
 #csv_file = open(
@@ -83,7 +83,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
     def test_dnc_view_list(self):
         """Test Function to check dnc list"""
         response = self.client.get('/module/dnc_list/')
-        self.assertTemplateUsed(response, 'frontend/dnc_list/list.html')
+        self.assertTemplateUsed(response, 'dnc/dnc_list/list.html')
 
         request = self.factory.get('/module/dnc_list/')
         request.user = self.user
@@ -109,7 +109,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         """Test Function to check update dnc"""
         response = self.client.get('/module/dnc_list/1/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/dnc_list/change.html')
+        self.assertTemplateUsed(response, 'dnc/dnc_list/change.html')
 
         request = self.factory.post('/module/dnc_list/1/',
             data={'name': 'Default_DNC'}, follow=True)
@@ -145,7 +145,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/module/dnc_contact/')
         self.assertTrue(response.context['form'], DNCContactSearchForm(self.user))
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/dnc_contact/list.html')
+        self.assertTemplateUsed(response, 'dnc/dnc_contact/list.html')
 
         request = self.factory.post('/module/dnc_contact/',
                                     data={'phone_number': '123'})
@@ -178,7 +178,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/module/dnc_contact/1/')
         self.assertTrue(response.context['form'], DNCContactForm(self.user))
         self.assertEqual(response.context['action'], 'update')
-        self.assertTemplateUsed(response, 'frontend/dnc_contact/change.html')
+        self.assertTemplateUsed(response, 'dnc/dnc_contact/change.html')
 
         request = self.factory.post('/module/dnc_contact/1/',
             {'dnc': '1', 'phone_number': '154'})
@@ -217,7 +217,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
                         DNCContact_fileImport(self.user))
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response,
-                                'frontend/dnc_contact/import_dnc_contact.html')
+                                'dnc/dnc_contact/import_dnc_contact.html')
 
         response = self.client.post('/module/dnc_contact_import/',
                                     data={'dnc_list': '1',
@@ -269,12 +269,12 @@ class DNCModel(TestCase):
 
     def test_dnc_form(self):
         self.assertEqual(self.dnc.name, 'test_dnc')
-        form = DNCForm({'name': 'sample_dnc'})
+        form = DNCListForm({'name': 'sample_dnc'})
         obj = form.save(commit=False)
         obj.user = self.user
         obj.save()
 
-        form = DNCForm(instance=self.dnc)
+        form = DNCListForm(instance=self.dnc)
         self.assertTrue(isinstance(form.instance, DNC))
 
     def test_dnc_contact_form(self):

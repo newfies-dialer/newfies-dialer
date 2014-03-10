@@ -6,6 +6,8 @@ Sample Configuration
 This is a sample configuration to get you started.
 It should contain all you need to create a basic set-up.
 
+Newfies-Dialer configuration file is by default located at /usr/share/newfies-dialer/newfies_dialer/settings_local.py
+
 ------------------------
 The Configuration Module
 ------------------------

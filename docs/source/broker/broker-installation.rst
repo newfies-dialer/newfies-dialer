@@ -17,7 +17,7 @@ To install Redis-Server
 -----------------------
 
 
-On Ubuntu 12.04 TLS you can easily install Redis as follow::
+On Debian 7.X, you can easily install Redis as follow::
 
     $ apt-get install redis-server
 

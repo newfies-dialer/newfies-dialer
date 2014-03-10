@@ -15,7 +15,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save, post_delete
 #from django.contrib.auth.models import User
-from common.intermediate_model_base_class import Model
+from django_lets_go.intermediate_model_base_class import Model
 from user_profile.models import Manager
 from agent.models import AgentProfile, common_signal
 from dialer_cdr.models import Callrequest
@@ -170,14 +170,11 @@ class Tier(Model):
     **Name of DB table**: tier
 
     """
-    manager = models.ForeignKey(Manager,
-                                verbose_name=_("manager"), blank=True, null=True,
+    manager = models.ForeignKey(Manager, verbose_name=_("manager"), blank=True, null=True,
                                 help_text=_("select manager"), related_name="tier manager")
-    agent = models.ForeignKey(AgentProfile,
-                              verbose_name=_("agent"), blank=True, null=True,
+    agent = models.ForeignKey(AgentProfile, verbose_name=_("agent"), blank=True, null=True,
                               help_text=_("select agent"), related_name="agent")
-    queue = models.ForeignKey(Queue,
-                              verbose_name=_("queue"), blank=True, null=True,
+    queue = models.ForeignKey(Queue, verbose_name=_("queue"), blank=True, null=True,
                               help_text=_("select queue"), related_name="queue")
     level = models.IntegerField(verbose_name=_("level"), default=1)
     position = models.IntegerField(verbose_name=_("position"), default=1)

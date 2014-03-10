@@ -24,7 +24,7 @@
 #
 
 #Set branch to install develop / master
-BRANCH="master"
+BRANCH="develop"
 
 DATETIME=$(date +"%Y%m%d%H%M%S")
 INSTALL_DIR='/usr/share/newfies'
@@ -52,18 +52,18 @@ export LANG="en_US.UTF-8"
 func_identify_os() {
     if [ -f /etc/debian_version ] ; then
         DIST='DEBIAN'
-        if [ "$(lsb_release -cs)" != "precise" ]; then
-            echo "This script is only intended to run on Ubuntu LTS 12.04 or CentOS 6.X"
+        if [ "$(lsb_release -cs)" != "wheezy" ]; then
+            echo "This script is only intended to run on Debian 7.X or CentOS 6.X"
             exit 255
         fi
     elif [ -f /etc/redhat-release ] ; then
         DIST='CENTOS'
         if [ "$(awk '{print $3}' /etc/redhat-release)" != "6.2" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.3" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.4" ] && [ "$(awk '{print $3}' /etc/redhat-release)" != "6.5" ]; then
-            echo "This script is only intended to run on Ubuntu LTS 12.04 or CentOS 6.X"
+            echo "This script is only intended to run on Debian 7.X or CentOS 6.X"
             exit 255
         fi
     else
-        echo "This script is only intended to run on Ubuntu LTS 12.04 or CentOS 6.X"
+        echo "This script is only intended to run on Debian 7.X or CentOS 6.X"
         exit 1
     fi
 }
@@ -82,19 +82,18 @@ func_accept_license() {
     echo ""
     echo "Copyright (C) 2011-2014 Star2Billing S.L."
     echo ""
-    echo ""
-    echo "I agree to be bound by the terms of the license - [YES/NO]"
-    echo ""
-    read ACCEPT
+    # echo "I agree to be bound by the terms of the license - [YES/NO]"
+    # echo ""
+    # read ACCEPT
 
-    while [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]  && [ "$ACCEPT" != "no" ]  && [ "$ACCEPT" != "No" ]  && [ "$ACCEPT" != "NO" ]; do
-        echo "I agree to be bound by the terms of the license - [YES/NO]"
-        read ACCEPT
-    done
-    if [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]; then
-        echo "License rejected !"
-        exit 0
-    fi
+    # while [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]  && [ "$ACCEPT" != "no" ]  && [ "$ACCEPT" != "No" ]  && [ "$ACCEPT" != "NO" ]; do
+    #     echo "I agree to be bound by the terms of the license - [YES/NO]"
+    #     read ACCEPT
+    # done
+    # if [ "$ACCEPT" != "yes" ]  && [ "$ACCEPT" != "Yes" ] && [ "$ACCEPT" != "YES" ]; then
+    #     echo "License rejected !"
+    #     exit 0
+    # fi
 }
 
 
@@ -183,44 +182,61 @@ func_install_dependencies(){
 
     case $DIST in
         'DEBIAN')
+            #Used by Node.js
+            echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
+            apt-get update
+
             export LANGUAGE=en_US.UTF-8
             export LANG=en_US.UTF-8
             export LC_ALL=en_US.UTF-8
             locale-gen en_US.UTF-8
-            dpkg-reconfigure locales
+            locale-gen es_ES.UTF-8
+            locale-gen fr_FR.UTF-8
+            locale-gen pt_BR.UTF-8
+            #dpkg-reconfigure locales
+
+            apt-get -y remove apache2.2-common apache2
+            apt-get -y install sudo
+
+            #Install Postgresql
+            apt-get -y install libpq-dev
+            echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
+            wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+            apt-get update
+            apt-get -y install postgresql-9.3 postgresql-contrib-9.3
+            pg_createcluster 9.3 main --start
+            /etc/init.d/postgresql start
 
             apt-get -y install python-software-properties
-            add-apt-repository -y ppa:chris-lea/node.js
-            apt-get update
-            apt-get -y remove apache2.2-common apache2
-            apt-get -y install --reinstall language-pack-en
-
             apt-get -y install python-setuptools python-dev build-essential
             apt-get -y install nginx supervisor
             apt-get -y install git-core mercurial gawk cmake
-            apt-get -y install python-pip python-dev
+            apt-get -y install python-pip
             # for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
-            # install Node & npm
-            apt-get -y install nodejs
 
-            # postgresql
-            apt-get -y install postgresql-9.1 postgresql-contrib-9.1
-            apt-get -y install libpq-dev
-            # start postgresql
-            /etc/init.d/postgresql start
+            #Install Node.js & NPM
+            apt-get -y install nodejs-legacy
+            curl --insecure https://www.npmjs.org/install.sh | bash
+
+            # cd /usr/src/ ; git clone https://github.com/joyent/node.git
+            # # 'git tag' shows all available versions: select the latest stable.
+            # cd node ; git checkout v0.10.26
+            # # Configure seems not to find libssl by default so we give it an explicit pointer.
+            # # Optionally: you can isolate node by adding --prefix=/opt/node
+            # ./configure --openssl-libpath=/usr/lib/ssl
+            # make ; make install
+            # node -v
 
             #Lua Deps
-            apt-get -y install liblua5.1-sql-postgres-dev
+            apt-get -y install lua5.1 liblua5.1-sql-postgres-dev
             #needed by lua-curl
             apt-get -y install libcurl4-openssl-dev
-
             #Memcached
             apt-get -y install memcached
             #Luarocks
-            apt-get -y install luarocks luasocket
+            apt-get -y install luarocks
             luarocks install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
-
         ;;
         'CENTOS')
             yum -y groupinstall "Development Tools"
@@ -604,9 +620,11 @@ func_nginx_supervisor(){
     case $DIST in
         'DEBIAN')
             cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
+            cp /usr/src/newfies-dialer/install/supervisor/debian/supervisord /etc/init.d/supervisor
+            chmod +x /etc/rc.d/init.d/supervisor
         ;;
         'CENTOS')
-            cp /usr/src/newfies-dialer/install/supervisor/supervisord /etc/init.d/supervisor
+            cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord /etc/init.d/supervisor
             chmod +x /etc/rc.d/init.d/supervisor
             chkconfig --levels 235 supervisor on
             cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord.conf /etc/supervisord.conf
@@ -632,9 +650,11 @@ func_celery_supervisor(){
     case $DIST in
         'DEBIAN')
             cp /usr/src/newfies-dialer/install/supervisor/celery_newfies_dialer.conf /etc/supervisor/conf.d/
+            cp /usr/src/newfies-dialer/install/supervisor/debian/supervisord /etc/init.d/supervisor
+            chmod +x /etc/rc.d/init.d/supervisor
         ;;
         'CENTOS')
-            cp /usr/src/newfies-dialer/install/supervisor/supervisord /etc/init.d/supervisor
+            cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord /etc/init.d/supervisor
             chmod +x /etc/rc.d/init.d/supervisor
             chkconfig --levels 235 supervisor on
             cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord.conf /etc/supervisord.conf

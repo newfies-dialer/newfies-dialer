@@ -15,8 +15,6 @@
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required,\
     permission_required
-from django.contrib.auth.views import password_reset, password_reset_done,\
-    password_reset_confirm, password_reset_complete
 from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.db.models import Sum, Avg, Count
@@ -26,14 +24,13 @@ from django.utils.translation import ugettext as _
 from dialer_contact.models import Contact
 from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_campaign.function_def import date_range, \
-    user_dialer_setting_msg
+from dialer_campaign.function_def import date_range
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
-from common.common_functions import percentage
+from django_lets_go.common_functions import percentage
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
@@ -70,42 +67,34 @@ def login_view(request):
         * If submitted user credentials are valid then system will redirect to
           the dashboard.
     """
-    template = 'frontend/index.html'
     errorlogin = ''
-
-    if request.method == 'POST':
-        loginform = LoginForm(request.POST)
-        if loginform.is_valid():
-            cd = loginform.cleaned_data
-            user = authenticate(username=cd['user'],
-                                password=cd['password'])
-            if user is not None:
-                if user.is_active:
-                    login(request, user)
-                    request.session['has_notified'] = False
-                    # Redirect to a success page (dashboard).
-                    return HttpResponseRedirect('/dashboard/')
-                else:
-                    # Return a 'disabled account' error message
-                    errorlogin = _('disabled account')
+    loginform = LoginForm(request.POST or None)
+    if loginform.is_valid():
+        cd = loginform.cleaned_data
+        user = authenticate(username=cd['user'], password=cd['password'])
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                request.session['has_notified'] = False
+                # Redirect to a success page (dashboard).
+                return HttpResponseRedirect('/dashboard/')
             else:
-                # Return an 'invalid login' error message.
-                errorlogin = _('invalid login.')
+                # Return a 'disabled account' error message
+                errorlogin = _('disabled account')
         else:
-            # Return an 'Valid User Credentials' error message.
-            errorlogin = _('enter valid user credentials.')
+            # Return an 'invalid login' error message.
+            errorlogin = _('invalid login.')
     else:
-        loginform = LoginForm()
+        # Return an 'Valid User Credentials' error message.
+        errorlogin = _('enter valid user credentials.')
 
     data = {
         'loginform': loginform,
         'errorlogin': errorlogin,
         'is_authenticated': request.user.is_authenticated(),
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
 
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('frontend/index.html', data, context_instance=RequestContext(request))
 
 
 def index(request):
@@ -116,28 +105,20 @@ def index(request):
         * ``form`` - LoginForm
         * ``template`` - frontend/index.html
     """
-    template = 'frontend/index.html'
-    errorlogin = ''
     data = {
         'user': request.user,
         'loginform': LoginForm(),
-        'errorlogin': errorlogin,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'errorlogin': '',
     }
-
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('frontend/index.html', data, context_instance=RequestContext(request))
 
 
 def pleaselog(request):
-    template = 'frontend/index.html'
-
     data = {
         'loginform': LoginForm(),
         'notlogged': True,
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('frontend/index.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.view_dashboard', login_url='/')
@@ -157,16 +138,14 @@ def customer_dashboard(request, on_index=None):
     """
     logging.debug('Start Dashboard')
     # All campaign for logged in User
-    campaign_id_list = Campaign.objects.values_list('id', flat=True)\
-        .filter(user=request.user).order_by('id')
+    campaign_id_list = Campaign.objects.values_list('id', flat=True).filter(user=request.user).order_by('id')
 
     # Contacts count which are active and belong to those phonebook(s) which is
     # associated with all campaign
     pb_active_contact_count = Contact.objects\
-        .filter(phonebook__campaign__in=campaign_id_list, status=CONTACT_STATUS.ACTIVE)\
-        .count()
+        .filter(phonebook__campaign__in=campaign_id_list, status=CONTACT_STATUS.ACTIVE).count()
 
-    form = DashboardForm(request.user)
+    form = DashboardForm(request.user, request.POST or None)
     logging.debug('Got Campaign list')
 
     total_record = dict()
@@ -186,8 +165,7 @@ def customer_dashboard(request, on_index=None):
 
     # selected_campaign should not be empty
     if selected_campaign:
-        if request.method == 'POST':
-            form = DashboardForm(request.user, request.POST)
+        if form.is_valid():
             selected_campaign = request.POST['campaign']
             search_type = request.POST['search_type']
 
@@ -463,10 +441,8 @@ def customer_dashboard(request, on_index=None):
                        "color_list": color_list}
         hangup_analytic_chartdata = {'x': xdata, 'y1': ydata, 'extra1': extra_serie}
 
-    template = 'frontend/dashboard.html'
     data = {
         'form': form,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'campaign_phonebook_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
         'total_duration_sum': total_duration_sum,
@@ -506,74 +482,5 @@ def customer_dashboard(request, on_index=None):
     }
     if on_index == 'yes':
         return data
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('frontend/dashboard.html', data, context_instance=RequestContext(request))
 
-
-def cust_password_reset(request):
-    """Use ``django.contrib.auth.views.password_reset`` view method for
-    forgotten password on the Customer UI
-
-    This method sends an e-mail to the user's email-id which is entered in
-    ``password_reset_form``
-    """
-    if not request.user.is_authenticated():
-        data = {'loginform': LoginForm()}
-        return password_reset(
-            request,
-            template_name='frontend/registration/password_reset_form.html',
-            email_template_name='frontend/registration/password_reset_email.html',
-            post_reset_redirect='/password_reset/done/',
-            from_email='newfies_admin@localhost.com',
-            extra_context=data)
-    else:
-        return HttpResponseRedirect("/")
-
-
-def cust_password_reset_done(request):
-    """Use ``django.contrib.auth.views.password_reset_done`` view method for
-    forgotten password on the Customer UI
-
-    This will show a message to the user who is seeking to reset their
-    password.
-    """
-    if not request.user.is_authenticated():
-        data = {'loginform': LoginForm()}
-        return password_reset_done(
-            request, template_name='frontend/registration/password_reset_done.html',
-            extra_context=data)
-    else:
-        return HttpResponseRedirect("/")
-
-
-def cust_password_reset_confirm(request, uidb36=None, token=None):
-    """Use ``django.contrib.auth.views.password_reset_confirm`` view method for
-    forgotten password on the Customer UI
-
-    This will allow a user to reset their password.
-    """
-    if not request.user.is_authenticated():
-        data = {'loginform': LoginForm()}
-        return password_reset_confirm(
-            request, uidb36=uidb36, token=token,
-            template_name='frontend/registration/password_reset_confirm.html',
-            post_reset_redirect='/reset/done/',
-            extra_context=data)
-    else:
-        return HttpResponseRedirect("/")
-
-
-def cust_password_reset_complete(request):
-    """Use ``django.contrib.auth.views.password_reset_complete`` view method
-    for forgotten password on theCustomer UI
-
-    This shows an acknowledgement to the user after successfully resetting
-    their password for the system.
-    """
-    if not request.user.is_authenticated():
-        data = {'loginform': LoginForm()}
-        return password_reset_complete(
-            request, template_name='frontend/registration/password_reset_complete.html',
-            extra_context=data)
-    else:
-        return HttpResponseRedirect("/")

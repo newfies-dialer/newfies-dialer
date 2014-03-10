@@ -14,7 +14,7 @@
 
 #from django.contrib.auth.models import User
 from django.conf import settings
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 #from audiofield.models import AudioFile
 from dialer_audio.views import audio_list  # audio_add, audio_change, audio_del
 #import os
@@ -51,7 +51,7 @@ class AudioFileCustomerView(BaseAuthenticatedClient):
         """Test Function to check audio list"""
         response = self.client.get('/module/audio/')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/audio/audio_list.html')
+        self.assertTemplateUsed(response, 'dialer_audio/audio_list.html')
 
         request = self.factory.get('/module/audio/')
         request.user = self.user

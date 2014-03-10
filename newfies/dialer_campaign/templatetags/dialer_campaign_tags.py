@@ -14,11 +14,11 @@
 
 from django.db.models import get_model
 from django.template.defaultfilters import register
-from dialer_campaign.constants import CAMPAIGN_STATUS
-from dialer_campaign.views import make_duplicate_campaign
-from dialer_campaign.function_def import get_campaign_status_name, get_subscriber_disposition, \
-    get_subscriber_status
-from dialer_campaign.views import get_campaign_survey_view, get_url_campaign_status
+from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR
+from django.utils.translation import ugettext as _
+from dialer_campaign.function_def import get_subscriber_disposition, get_subscriber_status
+from mod_utils.function_def import get_common_campaign_status_url, get_common_campaign_status,\
+    get_status_value
 
 
 @register.filter(name='campaign_status')
@@ -40,20 +40,26 @@ def campaign_status(value):
     >>> campaign_status(0)
     ''
     """
-    if not value:
-        return ''
-    STATUS = dict(CAMPAIGN_STATUS)
-    try:
-        status = STATUS[value].encode('utf-8')
-    except:
-        status = ''
-
-    return str(status)
+    return get_status_value(value, CAMPAIGN_STATUS)
 
 
 @register.filter(name='get_campaign_status')
 def get_campaign_status(id):
-    return get_campaign_status_name(id)
+    """To get status name from CAMPAIGN_STATUS
+
+    >>> get_campaign_status(1)
+    '<font color="green">STARTED</font>'
+
+    >>> get_campaign_status(2)
+    '<font color="blue">PAUSED</font>'
+
+    >>> get_campaign_status(3)
+    '<font color="orange">ABORTED</font>'
+
+    >>> get_campaign_status(4)
+    '<font color="red">STOPPED</font>'
+    """
+    return get_common_campaign_status(id, CAMPAIGN_STATUS, CAMPAIGN_STATUS_COLOR)
 
 
 @register.simple_tag(name='get_app_name')
@@ -69,18 +75,52 @@ def get_app_name(app_label, model_name, object_id):
 
 @register.filter(name='create_duplicate_campaign')
 def create_duplicate_campaign(camp_id):
-    link = make_duplicate_campaign(camp_id)
+    """Create link to make duplicate campaign"""
+    link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
+           % (camp_id, _('duplicate this campaign').capitalize())
+    return link
+
+
+def _return_link(app_name, obj_id):
+    """
+    Return link on campaign listing view
+    """
+    link = ''
+    # Object view links
+    if app_name == 'survey':
+        link = '<a id="id_survey_seal_%s" href="#sealed-survey" url="/module/sealed_survey_view/%s/" title="%s" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>' % \
+            (obj_id, obj_id, _('view sealed survey').title())
+
+    # Object edit links
+    if app_name == 'survey_template':
+        link = '<a href="/module/survey/%s/" target="_blank" title="%s"><i class="fa fa-search"></i></a>' % \
+            (obj_id, _('edit survey').title())
+
     return link
 
 
 @register.simple_tag(name='get_campaign_app_view')
 def get_campaign_app_view(campaign_object):
-    return get_campaign_survey_view(campaign_object)
+    link = ''
+    if campaign_object.status and int(campaign_object.status) == CAMPAIGN_STATUS.START:
+        if campaign_object.content_type.model == 'survey':
+            link = _return_link('survey', campaign_object.object_id)
+
+    if campaign_object.status and int(campaign_object.status) != CAMPAIGN_STATUS.START:
+        if campaign_object.content_type.model == 'survey_template':
+            link = _return_link('survey_template', campaign_object.object_id)
+        if campaign_object.content_type.model == 'survey':
+            link = _return_link('survey', campaign_object.object_id)
+
+    return link
 
 
 @register.simple_tag(name='get_campaign_status_url')
 def get_campaign_status_url(id, status):
-    return get_url_campaign_status(id, status)
+    """
+    Helper to display campaign status button on the grid
+    """
+    return get_common_campaign_status_url(id, status, 'update_campaign_status_cust/', CAMPAIGN_STATUS)
 
 
 @register.filter(name='subscriber_status')
@@ -98,20 +138,3 @@ def subscriber_disposition(campaign_id, val):
     """To get subscriber disposition name from campaign's
     lead_disposition string"""
     return get_subscriber_disposition(campaign_id, val)
-
-
-@register.filter(name='check_url_for_template_width')
-def check_url_for_template_width(current_url):
-    """"""
-    full_width_on_requested_path = [
-        '/dashboard/', '/sms_dashboard/', '/campaign/', '/sms_campaign/',
-        'user_detail_change', '/audio/', '/user_notification/',
-    ]
-    if current_url == '/':
-        return True
-    else:
-        current_url = str(current_url)
-        for path in full_width_on_requested_path:
-            if path in current_url:
-                return True
-        return False

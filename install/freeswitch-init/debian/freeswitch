@@ -1,13 +1,14 @@
-#! /bin/sh
+#!/bin/bash
 ### BEGIN INIT INFO
-# Provides:          skeleton
+# Provides:          freeswitch
 # Required-Start:    $local_fs $remote_fs
 # Required-Stop:     $local_fs $remote_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
 # Description:       Freeswitch debian init script.
-# Author: Matthew Williams
-
+# Author:            Matthew Williams
+#
+### END INIT INFO
 # Do NOT "set -e"
 
 # PATH should only include /usr/* if it runs after the mountnfs.sh script
@@ -16,10 +17,11 @@ DESC="Freeswitch"
 NAME=freeswitch
 DAEMON=/usr/local/freeswitch/bin/$NAME
 DAEMON_ARGS="-nc"
-#From version 1.0.5 PID is stored in run folder
 PIDFILE=/usr/local/freeswitch/run/$NAME.pid
 SCRIPTNAME=/etc/init.d/$NAME
 
+FS_USER=freeswitch
+FS_GROUP=daemon
 
 # Exit if the package is not installed
 [ -x "$DAEMON" ] || exit 0
@@ -29,30 +31,56 @@ SCRIPTNAME=/etc/init.d/$NAME
 
 # Load the VERBOSE setting and other rcS variables
 . /lib/init/vars.sh
-# We force VERBOSE after vars.sh 
-VERBOSE=yes
 
 # Define LSB log_* functions.
 # Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
 . /lib/lsb/init-functions
 
 #
+# Function that sets ulimit values for the daemon
+#
+do_setlimits() {
+        ulimit -c unlimited
+        ulimit -d unlimited
+        ulimit -f unlimited
+        ulimit -i unlimited
+        ulimit -n 999999
+        ulimit -q unlimited
+        ulimit -u unlimited
+        ulimit -v unlimited
+        ulimit -x unlimited
+        ulimit -s 240
+        ulimit -l unlimited
+        return 0
+}
+
+#
 # Function that starts the daemon/service
 #
 do_start()
 {
-	# Return
-    #   0 if daemon has been started
-    #   1 if daemon was already running
-    #   2 if daemon could not be started
-    start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test > /dev/null 2>&1 -- \
-            || return 1
-    start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON > /dev/null 2>&1 -- \
-            $DAEMON_ARGS \
-            || return 2
-    # Add code here, if necessary, that waits for the process to be ready
-    # to handle requests from services started subsequently which depend
-    # on this one.  As a last resort, sleep for some time.
+    # Set user to run as
+        if [ $FS_USER ] ; then
+      DAEMON_ARGS="`echo $DAEMON_ARGS` -u $FS_USER"
+        fi
+    # Set group to run as
+        if [ $FS_GROUP ] ; then
+          DAEMON_ARGS="`echo $DAEMON_ARGS` -g $FS_GROUP"
+        fi
+
+        # Return
+        #   0 if daemon has been started
+        #   1 if daemon was already running
+        #   2 if daemon could not be started
+        start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test > /dev/null \
+                || return 1
+        do_setlimits
+        start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --background \
+                $DAEMON_ARGS \
+                || return 2
+        # Add code here, if necessary, that waits for the process to be ready
+        # to handle requests from services started subsequently which depend
+        # on this one.  As a last resort, sleep for some time.
 }
 
 #
@@ -111,6 +139,9 @@ case "$1" in
                 2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
         esac
         ;;
+  status)
+       status_of_proc -p $PIDFILE $DAEMON $NAME && exit 0 || exit $?
+       ;;
   #reload|force-reload)
         #
         # If do_reload() is not implemented then leave this commented out
@@ -120,17 +151,6 @@ case "$1" in
         #do_reload
         #log_end_msg $?
         #;;
-
-  status)
-        [ -f "$PIDFILE" ] && PROCESS="$(cat $PIDFILE)" || PROCESS=''
-        if [ -n "$PROCESS" ] ; then
-        log_success_msg "freeswitch with pid $PROCESS is running."
-        	exit 0
-      	else
-        log_warning_msg "Could not find freeswitch running."
-        	 exit 1
-      	fi
-      	;;
   restart|force-reload)
         #
         # If the "reload" option is implemented then remove the
@@ -159,3 +179,5 @@ case "$1" in
         exit 3
         ;;
 esac
+
+exit 0

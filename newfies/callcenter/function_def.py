@@ -16,10 +16,5 @@ from callcenter.models import Queue
 
 def queue_list(manager_id):
     """Return all agents of the system"""
-    queue_list = []
-    list = Queue.objects.values_list('id', 'name')\
+    return Queue.objects.values_list('id', 'name')\
         .filter(manager_id=manager_id).order_by('id')
-
-    for l in list:
-        queue_list.append((l[0], l[1]))
-    return queue_list

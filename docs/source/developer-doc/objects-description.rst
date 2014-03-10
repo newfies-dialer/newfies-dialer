@@ -248,7 +248,7 @@ Objects Description
 .. autoclass:: Alarm
     :members:
 
-.. automodule:: sms_module.models
+.. automodule:: mod_sms.models
 
 .. _SMSCampaign-model:
 

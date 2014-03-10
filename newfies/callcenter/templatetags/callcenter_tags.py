@@ -14,17 +14,10 @@
 
 from django.template.defaultfilters import register
 from callcenter.constants import STRATEGY
+from mod_utils.function_def import get_status_value
 
 
 @register.filter(name='strategy_name')
 def strategy_name(value):
     """strategy name"""
-    if not value:
-        return ''
-    STATUS = dict(STRATEGY)
-    try:
-        status = STATUS[value].encode('utf-8')
-    except:
-        status = ''
-
-    return str(status)
+    return get_status_value(value, STRATEGY)

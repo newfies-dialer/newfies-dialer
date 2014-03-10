@@ -13,7 +13,14 @@
 #
 import newfies_dialer
 from django.conf import settings
+from dialer_campaign.function_def import user_dialer_setting_msg
 
 
 def newfies_version(request):
     return {'newfies_version': newfies_dialer.__version__, 'SURVEYDEV': settings.SURVEYDEV}
+
+
+def newfies_common_template_variable(request):
+    """Return common_template_variable"""
+    newfies_page_size = settings.PAGE_SIZE if settings.PAGE_SIZE else 10
+    return {'newfies_page_size': newfies_page_size, 'dialer_setting_msg': user_dialer_setting_msg(request.user), 'AUDIO_DEBUG': settings.AUDIO_DEBUG, 'AMD': settings.AMD}

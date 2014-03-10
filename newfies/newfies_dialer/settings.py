@@ -141,7 +141,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     #'pagination.middleware.PaginationMiddleware',
     'linaro_django_pagination.middleware.PaginationMiddleware',
-    'common.filter_persist_middleware.FilterPersistMiddleware',
+    'django_lets_go.filter_persist_middleware.FilterPersistMiddleware',
     'audiofield.middleware.threadlocals.ThreadLocals',
 )
 
@@ -155,7 +155,11 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.core.context_processors.csrf",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
+    # newfies custom context_processors
     "context_processors.newfies_version",
+    "context_processors.newfies_common_template_variable",
+    # django-notification
+    "notification.context_processors.notification",
     #needed by Sentry
     "django.core.context_processors.request",
 )
@@ -210,23 +214,26 @@ INSTALLED_APPS = (
     'linaro_django_pagination',
     #'memcache_status',
     'country_dialcode',
-    'common',
+    'django_lets_go',
     'sms',
-    'sms_module',
+    'mod_sms',
     'dialer_contact',
     'dialer_audio',
     'dialer_campaign',
     'dialer_cdr',
     'dialer_gateway',
     'dialer_settings',
+    'mod_registration',
     'user_profile',
     'notification',
     'survey',
     'dnc',
+    'frontend',
     #'agent',
     #'callcenter',
     'appointment',
     'mod_mailer',
+    'mod_utils',
     #'raven.contrib.django',
     'frontend_notification',
     'django_nvd3',
@@ -236,7 +243,10 @@ INSTALLED_APPS = (
     'djangobower',
     'activelink',
     'bootstrap3_datetime',
+    'crispy_forms',
 )
+
+CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
 # Django extensions
 try:
@@ -428,7 +438,7 @@ CELERY_DEFAULT_QUEUE = 'default'
 #Define list of Queues and their routing keys
 CELERY_QUEUES = (
     Queue('default', routing_key='task.#'),
-    Queue('sms_tasks', routing_key='sms_module.#'),
+    Queue('sms_tasks', routing_key='mod_sms.#'),
     Queue('appointment', routing_key='appointment.#'),
 )
 CELERY_DEFAULT_EXCHANGE = 'tasks'
@@ -438,9 +448,9 @@ CELERY_DEFAULT_ROUTING_KEY = 'task.default'
 # python manage.py celeryd -EB -l info --purge --queue=sms_tasks
 # Define tasks and which queue they will use with their routing key
 CELERY_ROUTES = {
-    'sms_module.tasks.sms_campaign_running': {
+    'mod_sms.tasks.sms_campaign_running': {
         'queue': 'sms_tasks',
-        'routing_key': 'sms_module.sms_campaign_running',
+        'routing_key': 'mod_sms.sms_campaign_running',
     },
 }
 
@@ -479,10 +489,8 @@ LANGUAGE_COOKIE_NAME = 'newfies_dialer_language'
 #DJANGO-ADMIN-TOOL
 #=================
 ADMIN_TOOLS_MENU = 'custom_admin_tools.menu.CustomMenu'
-ADMIN_TOOLS_INDEX_DASHBOARD = \
-    'custom_admin_tools.dashboard.CustomIndexDashboard'
-ADMIN_TOOLS_APP_INDEX_DASHBOARD = \
-    'custom_admin_tools.dashboard.CustomAppIndexDashboard'
+ADMIN_TOOLS_INDEX_DASHBOARD = 'custom_admin_tools.dashboard.CustomIndexDashboard'
+ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'custom_admin_tools.dashboard.CustomAppIndexDashboard'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 #EMAIL BACKEND
@@ -491,6 +499,9 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 MAILER_EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+
+# EMAIL_ADMIN will be used for forget password email sent
+EMAIL_ADMIN = 'newfies_admin@localhost.com'
 
 # ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'
@@ -507,6 +518,9 @@ API_ALLOWED_IP = ['127.0.0.1', 'localhost']
 #======
 MAX_CALLS_PER_SECOND = 20  # By default configured to 20 calls per second
 
+# Number of time the spooling tasks will be run per minute,
+# value like 10 will allow not waiting too long for 1st calls
+HEARTBEAT_MIN = 10  # accepted value from 1 to 10
 
 # Frontend widget values
 CHANNEL_TYPE_VALUE = 1  # 0-Keep original, 1-Mono, 2-Stereo
@@ -646,4 +660,3 @@ try:
     from settings_local import *
 except ImportError:
     pass
-

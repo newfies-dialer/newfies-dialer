@@ -179,8 +179,10 @@ function FSMCall:playnode(current_node)
         self.debugger:msg("INFO", "Speak : "..mscript)
         if mscript and mscript ~= '' then
             local tts_file = tts(mscript, TTS_DIR)
-            self.debugger:msg("DEBUG", "Speak TTS : "..tts_file)
-            self.session:streamFile(tts_file)
+            if tts_file then
+                self.debugger:msg("DEBUG", "Speak TTS : "..tts_file)
+                self.session:streamFile(tts_file)
+            end
         end
     end
 end

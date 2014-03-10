@@ -20,7 +20,7 @@ from user_profile.forms import UserChangeDetailForm,\
     UserChangeDetailExtendForm, CheckPhoneNumberForm
 from user_profile.views import customer_detail_change
 from dialer_settings.models import DialerSetting
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class UserProfileAdminView(BaseAuthenticatedClient):
@@ -79,7 +79,7 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
         self.assertTrue(response.context['check_phone_no_form'],
                         CheckPhoneNumberForm())
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/registration/user_detail_change.html')
+        self.assertTemplateUsed(response, 'user_profile/user_detail_change.html')
 
         request = self.factory.get('/user_detail_change/')
         request.user = self.user

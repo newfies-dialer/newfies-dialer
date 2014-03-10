@@ -16,7 +16,7 @@ from django.conf import settings
 from celery.decorators import task, periodic_task
 from celery.task import PeriodicTask
 from celery.utils.log import get_task_logger
-from common.only_one_task import only_one
+from django_lets_go.only_one_task import only_one
 from mod_mailer.models import MailSpooler, MailTemplate
 from mod_mailer.constants import MAILSPOOLER_TYPE
 from mailer.engine import send_all

@@ -14,17 +14,13 @@
 
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.forms import PasswordChangeForm
 from django.conf import settings
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import common_contact_authorization
-from dialer_campaign.function_def import user_dialer_setting_msg
-from dialer_settings.models import DialerSetting
 from user_profile.models import UserProfile
-from user_profile.forms import UserChangeDetailForm, \
-    UserChangeDetailExtendForm, UserPasswordChangeForm,\
+from user_profile.forms import UserChangeDetailForm, UserChangeDetailExtendForm, UserPasswordChangeForm,\
     CheckPhoneNumberForm
 
 
@@ -36,7 +32,7 @@ def customer_detail_change(request):
 
         * ``form`` - UserChangeDetailForm, UserChangeDetailExtendForm,
                         UserPasswordChangeForm, CheckPhoneNumberForm
-        * ``template`` - 'frontend/registration/user_detail_change.html'
+        * ``template`` - 'user_profile/user_detail_change.html'
 
     **Logic Description**:
 
@@ -53,12 +49,10 @@ def customer_detail_change(request):
         if not settings.DEMO_MODE:
             user_detail_extened.save()
 
-    user_detail_form = UserChangeDetailForm(request.user,
-                                            instance=user_detail)
-    user_detail_extened_form = UserChangeDetailExtendForm(request.user,
-                                                          instance=user_detail_extened)
+    user_detail_form = UserChangeDetailForm(request.user, instance=user_detail)
+    user_detail_extened_form = UserChangeDetailExtendForm(request.user, instance=user_detail_extened)
 
-    user_password_form = UserPasswordChangeForm(user=request.user)
+    user_password_form = UserPasswordChangeForm(request.user)
     check_phone_no_form = CheckPhoneNumberForm()
 
     msg_detail = ''
@@ -74,11 +68,10 @@ def customer_detail_change(request):
 
     if request.method == 'POST':
         if request.POST['form-type'] == "change-detail":
-            user_detail_form = UserChangeDetailForm(
-                request.user, request.POST, instance=user_detail)
-            user_detail_extened_form = UserChangeDetailExtendForm(
-                request.user, request.POST, instance=user_detail_extened)
             action = 'tabs-1'
+            user_detail_form = UserChangeDetailForm(request.user, request.POST, instance=user_detail)
+            user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST, instance=user_detail_extened)
+
             if (user_detail_form.is_valid()
                and user_detail_extened_form.is_valid()):
                 #DEMO / Disable
@@ -90,7 +83,7 @@ def customer_detail_change(request):
                 error_detail = _('please correct the errors below.')
         elif request.POST['form-type'] == "check-number":  # check phone no
             action = 'tabs-4'
-            check_phone_no_form = CheckPhoneNumberForm(data=request.POST)
+            check_phone_no_form = CheckPhoneNumberForm(request.POST)
             if check_phone_no_form.is_valid():
                 dialersetting = request.user.get_profile().dialersetting
                 if not common_contact_authorization(dialersetting, request.POST['phone_number']):
@@ -100,9 +93,8 @@ def customer_detail_change(request):
             else:
                 error_number = _('please correct the errors below.')
         else:  # "change-password"
-            user_password_form = UserPasswordChangeForm(user=request.user,
-                                                        data=request.POST)
             action = 'tabs-2'
+            user_password_form = UserPasswordChangeForm(request.user, request.POST)
             if user_password_form.is_valid():
                 #DEMO / Disable
                 if not settings.DEMO_MODE:
@@ -116,7 +108,6 @@ def customer_detail_change(request):
     except:
         dialer_set = ''
 
-    template = 'frontend/registration/user_detail_change.html'
     data = {
         'user_detail_form': user_detail_form,
         'user_detail_extened_form': user_detail_extened_form,
@@ -129,7 +120,6 @@ def customer_detail_change(request):
         'error_pass': error_pass,
         'error_number': error_number,
         'dialer_set': dialer_set,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'action': action,
     }
-    return render_to_response(template, data, context_instance=RequestContext(request))
+    return render_to_response('user_profile/user_detail_change.html', data, context_instance=RequestContext(request))

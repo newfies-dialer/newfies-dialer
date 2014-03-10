@@ -13,7 +13,7 @@
 #
 
 from django.conf import settings
-from common.common_functions import variable_value, ceil_strdate
+from django_lets_go.common_functions import variable_value, ceil_strdate
 from country_dialcode.models import Prefix
 from datetime import datetime
 from django.utils.timezone import utc

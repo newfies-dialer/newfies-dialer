@@ -13,7 +13,7 @@
 #
 
 from django.test import TestCase
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 from dialer_gateway.models import Gateway
 from dialer_gateway.utils import prepare_phonenumber
 

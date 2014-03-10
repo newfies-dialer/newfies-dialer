@@ -12,7 +12,7 @@ class Migration(SchemaMigration):
         db.create_table('survey_survey_template', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=90)),
-            ('tts_language', self.gf('common.language_field.LanguageField')(default='en', max_length=2, null=True, blank=True)),
+            ('tts_language', self.gf('django_lets_go.language_field.LanguageField')(default='en', max_length=2, null=True, blank=True)),
             ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('updated_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
@@ -24,7 +24,7 @@ class Migration(SchemaMigration):
         db.create_table('survey_survey', (
             ('id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
             ('name', self.gf('django.db.models.fields.CharField')(max_length=90)),
-            ('tts_language', self.gf('common.language_field.LanguageField')(default='en', max_length=2, null=True, blank=True)),
+            ('tts_language', self.gf('django_lets_go.language_field.LanguageField')(default='en', max_length=2, null=True, blank=True)),
             ('description', self.gf('django.db.models.fields.TextField')(null=True, blank=True)),
             ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
             ('updated_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
@@ -488,7 +488,7 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '90'}),
-            'tts_language': ('common.language_field.LanguageField', [], {'default': "'en'", 'max_length': '2', 'null': 'True', 'blank': 'True'}),
+            'tts_language': ('django_lets_go.language_field.LanguageField', [], {'default': "'en'", 'max_length': '2', 'null': 'True', 'blank': 'True'}),
             'updated_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'survey_user'", 'to': "orm['auth.User']"})
         },
@@ -498,7 +498,7 @@ class Migration(SchemaMigration):
             'description': ('django.db.models.fields.TextField', [], {'null': 'True', 'blank': 'True'}),
             'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
             'name': ('django.db.models.fields.CharField', [], {'max_length': '90'}),
-            'tts_language': ('common.language_field.LanguageField', [], {'default': "'en'", 'max_length': '2', 'null': 'True', 'blank': 'True'}),
+            'tts_language': ('django_lets_go.language_field.LanguageField', [], {'default': "'en'", 'max_length': '2', 'null': 'True', 'blank': 'True'}),
             'updated_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
             'user': ('django.db.models.fields.related.ForeignKey', [], {'related_name': "'survey_template_user'", 'to': "orm['auth.User']"})
         }

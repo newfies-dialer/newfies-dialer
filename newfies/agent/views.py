@@ -28,8 +28,7 @@ from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm, \
     AgentNameChangeForm, AgentCreationForm, AgentPasswordChangeForm
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
-from dialer_campaign.function_def import user_dialer_setting_msg
-from common.common_functions import get_pagination_vars
+from django_lets_go.common_functions import get_pagination_vars
 #import json
 
 redirect_url_to_agent_list = '/module/agent/'
@@ -37,7 +36,7 @@ redirect_url_to_agent_list = '/module/agent/'
 
 def agent_login_form(request):
     """agent login Page"""
-    template = 'frontend/agent/login_form.html'
+    template = 'agent/login_form.html'
     data = {}
     return render_to_response(template, data,
         context_instance=RequestContext(request))
@@ -45,7 +44,7 @@ def agent_login_form(request):
 
 def agent_login(request):
     """agent login Page"""
-    template = 'frontend/agent/login.html'
+    template = 'agent/login.html'
     data = {
         'action': 'tabs-1',
     }
@@ -55,7 +54,7 @@ def agent_login(request):
 
 def agent_logout(request):
     """agent login Page"""
-    template = 'frontend/agent/logout.html'
+    template = 'agent/logout.html'
     data = {
         'action': 'tabs-2',
     }
@@ -91,9 +90,9 @@ def agent_dashboard(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/agent/dashboard.html
+        * ``template`` - agent/dashboard.html
     """
-    template = 'frontend/agent/dashboard.html'
+    template = 'agent/dashboard.html'
 
     data = {
     }
@@ -110,7 +109,7 @@ def agent_change_password(request, object_id):
     **Attributes**:
 
         * ``form`` - AgentPasswordChangeForm
-        * ``template`` - 'frontend/agent/change_password.html',
+        * ``template`` - 'agent/change_password.html',
              'frontend/registration/user_detail_change.html'
 
     **Logic Description**:
@@ -135,7 +134,7 @@ def agent_change_password(request, object_id):
         else:
             error_pass = _('please correct the errors below.')
 
-    template = 'frontend/agent/change_password.html'
+    template = 'agent/change_password.html'
     data = {
         'agent_username': agent_username,
         'user_password_form': user_password_form,
@@ -160,7 +159,7 @@ def agent_detail(request):
                               instance=user_detail_extened)
     user_password_form = PasswordChangeForm(user=request.user)
 
-    template = 'frontend/agent/agent_detail.html'
+    template = 'agent/agent_detail.html'
     data = {
         'user_detail_form': user_detail_form,
         'user_detail_extened_form': user_detail_extened_form,
@@ -232,7 +231,6 @@ def agent_detail_change(request):
             else:
                 error_pass = _('please correct the errors below.')
 
-    template = 'frontend/registration/user_detail_change.html'
     data = {
         'user_detail_form': user_detail_form,
         'user_detail_extened_form': user_detail_extened_form,
@@ -243,8 +241,7 @@ def agent_detail_change(request):
         'error_pass': error_pass,
         'action': action,
     }
-    return render_to_response(template, data,
-           context_instance=RequestContext(request))
+    return render_to_response('frontend/registration/user_detail_change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('agent.view_agent', login_url='/')
@@ -254,37 +251,25 @@ def agent_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/agent/list.html
+        * ``template`` - agent/list.html
 
     **Logic Description**:
 
         * List all agents which belong to the logged in manager.
     """
     sort_col_field_list = ['user', 'status', 'contact', 'updated_date']
-    default_sort_field = 'id'
-    pagination_data = get_pagination_vars(
-        request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
-    sort_order = pagination_data['sort_order']
-
-    agent_list = AgentProfile.objects \
-        .filter(manager=request.user).order_by(sort_order)
-
-    template = 'frontend/agent/list.html'
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
+    agent_list = AgentProfile.objects.filter(manager=request.user).order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'agent_list': agent_list,
         'total_agent': agent_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'AGENT_COLUMN_NAME': AGENT_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('agent/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('agent.add_agentprofile', login_url='/')
@@ -295,7 +280,7 @@ def agent_add(request):
     **Attributes**:
 
         * ``form`` - AgentCreationForm
-        * ``template`` - frontend/agent/change.html
+        * ``template`` - agent/change.html
 
     **Logic Description**:
 
@@ -320,14 +305,11 @@ def agent_add(request):
                 {'name': request.POST['username']}
             return HttpResponseRedirect(redirect_url_to_agent_list + '%s/' % str(new_agent_profile.id))
 
-    template = 'frontend/agent/change.html'
     data = {
         'form': form,
         'action': 'add',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('agent/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('agent.delete_agentprofile', login_url='/')
@@ -347,12 +329,10 @@ def agent_del(request, object_id):
     if int(object_id) != 0:
         # When object_id is not 0
         # 1) delete agent profile & agent
-        agent_profile = get_object_or_404(
-            AgentProfile, pk=object_id, manager_id=request.user.id)
+        agent_profile = get_object_or_404(AgentProfile, pk=object_id, manager_id=request.user.id)
         agent = Agent.objects.get(pk=agent_profile.user_id)
 
-        request.session["msg"] = _('"%(name)s" is deleted.') \
-            % {'name': agent}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': agent}
         agent.delete()
     else:
         # When object_id is 0 (Multiple records delete)
@@ -360,15 +340,12 @@ def agent_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete all agents belonging to a managers
-            agent_list = AgentProfile.objects \
-                .filter(manager_id=request.user.id) \
-                .extra(where=['id IN (%s)' % values])
+            agent_list = AgentProfile.objects.filter(manager_id=request.user.id).extra(where=['id IN (%s)' % values])
 
             if agent_list:
                 user_list = agent_list.values_list('user_id', flat=True)
                 agents = Agent.objects.filter(pk__in=user_list)
-                request.session["msg"] = _('%(count)s agent(s) are deleted.') \
-                    % {'count': agent_list.count()}
+                request.session["msg"] = _('%(count)s agent(s) are deleted.')  % {'count': agent_list.count()}
                 agents.delete()
         except:
             raise Http404
@@ -385,7 +362,7 @@ def agent_change(request, object_id):
 
         * ``object_id`` - Selected agent object
         * ``form`` - AgentChangeDetailExtendForm, AgentNameChangeForm
-        * ``template`` - frontend/agent/change.html
+        * ``template`` - agent/change.html
 
     **Logic Description**:
 
@@ -405,12 +382,10 @@ def agent_change(request, object_id):
             agent_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_agent_list)
         else:
-            form = AgentChangeDetailExtendForm(request.user, request.POST,
-                                               instance=agent_profile)
+            form = AgentChangeDetailExtendForm(request.user, request.POST, instance=agent_profile)
 
             agent_username_form = AgentNameChangeForm(
-                request.POST, initial={'password': agent_userdetail.password},
-                instance=agent_userdetail)
+                request.POST, initial={'password': agent_userdetail.password}, instance=agent_userdetail)
 
             # Save agent username
             if agent_username_form.is_valid():
@@ -418,16 +393,11 @@ def agent_change(request, object_id):
 
                 if form.is_valid():
                     form.save()
-                    request.session["msg"] = _('"%(name)s" is updated.') \
-                        % {'name': agent_profile.user}
+                    request.session["msg"] = _('"%(name)s" is updated.') % {'name': agent_profile.user}
                     return HttpResponseRedirect(redirect_url_to_agent_list)
-
-    template = 'frontend/agent/change.html'
     data = {
         'form': form,
         'agent_username_form': agent_username_form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('agent/change.html', data, context_instance=RequestContext(request))

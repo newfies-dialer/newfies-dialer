@@ -26,10 +26,11 @@ from django.utils.translation import ungettext
 from django.db.models import Sum, Avg, Count
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import AdminVoipSearchForm
-from dialer_cdr.function_def import voipcall_record_common_fun, \
+from dialer_cdr.function_def import voipcall_record_common_fun,\
     voipcall_search_admin_form_fun
-from common.common_functions import getvar
-# from common.app_label_renamer import AppLabelRenamer
+from django_lets_go.common_functions import getvar
+from mod_utils.helper import Export_choice
+#from django_lets_go.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
 from django.utils.timezone import utc
@@ -121,10 +122,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
         urls = super(VoIPCallAdmin, self).get_urls()
         my_urls = patterns('',
             (r'^$', self.admin_site.admin_view(self.changelist_view)),
-            (r'^voip_daily_report/$',
-             self.admin_site.admin_view(self.voip_daily_report)),
-            (r'^export_voip_report/$',
-             self.admin_site.admin_view(self.export_voip_report)),
+            (r'^voip_daily_report/$', self.admin_site.admin_view(self.voip_daily_report)),
+            (r'^export_voip_report/$', self.admin_site.admin_view(self.export_voip_report)),
         )
         return my_urls + urls
 
@@ -150,8 +149,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             request.session['admin_voipcall_record_kwargs'] = voipcall_record_common_fun(request)
 
             query_string = voipcall_search_admin_form_fun(request)
-            return HttpResponseRedirect("/admin/%s/%s/?%s"
-                % (opts.app_label, opts.object_name.lower(), query_string))
+            return HttpResponseRedirect("/admin/%s/%s/?%s" % (opts.app_label, opts.object_name.lower(), query_string))
         else:
             status = ''
             from_date = ''
@@ -180,8 +178,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
                 self)
         except IncorrectLookupParameters:
             if ERROR_FLAG in request.GET.keys():
-                return render_to_response('admin/invalid_setup.html',
-                        {'title': _('Database error')})
+                return render_to_response('admin/invalid_setup.html', {'title': _('Database error')})
             return HttpResponseRedirect('%s?%s=1' % (request.path, ERROR_FLAG))
 
         if request.META['QUERY_STRING'] == '':
@@ -190,13 +187,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
             request.session['admin_voipcall_record_kwargs'] = voipcall_record_common_fun(request)
 
             query_string = voipcall_search_admin_form_fun(request)
-            return HttpResponseRedirect("/admin/%s/%s/?%s"
-                % (opts.app_label, opts.object_name.lower(), query_string))
+            return HttpResponseRedirect("/admin/%s/%s/?%s" % (opts.app_label, opts.object_name.lower(), query_string))
 
         cl.formset = None
 
-        selection_note_all = ungettext('%(total_count)s selected',
-            'All %(total_count)s selected', cl.result_count)
+        selection_note_all = ungettext('%(total_count)s selected', 'All %(total_count)s selected', cl.result_count)
 
         ctx = {
             'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
@@ -227,12 +222,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
         # Get Total Records from VoIPCall Report table for Daily Call Report
-        total_data = VoIPCall.objects.extra(select=select_data) \
-            .values('starting_date') \
-            .filter(**kwargs) \
-            .annotate(Count('starting_date')) \
-            .annotate(Sum('duration')) \
-            .annotate(Avg('duration')) \
+        total_data = VoIPCall.objects.extra(select=select_data).values('starting_date').filter(**kwargs)\
+            .annotate(Count('starting_date'))\
+            .annotate(Sum('duration'))\
+            .annotate(Avg('duration'))\
             .order_by('-starting_date')
 
         # Following code will count total voip calls, duration
@@ -240,8 +233,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             max_duration = max([x['duration__sum'] for x in total_data])
             total_duration = sum([x['duration__sum'] for x in total_data])
             total_calls = sum([x['starting_date__count'] for x in total_data])
-            total_avg_duration = (sum([x['duration__avg']
-                    for x in total_data])) / total_calls
+            total_avg_duration = (sum([x['duration__avg'] for x in total_data])) / total_calls
         else:
             max_duration = 0
             total_duration = 0
@@ -260,9 +252,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             'app_label': APP_LABEL,
             'title': _('call aggregate report'),
         })
-
-        return render_to_response('admin/dialer_cdr/voipcall/voip_report.html',
-               context_instance=ctx)
+        return render_to_response('admin/dialer_cdr/voipcall/voip_report.html', context_instance=ctx)
 
     def export_voip_report(self, request):
         """Export a CSV file of VoIP call records
@@ -289,9 +279,8 @@ class VoIPCallAdmin(admin.ModelAdmin):
         if settings.AMD:
             amd_status = 'amd_status'
 
-        headers = ('user', 'callid', 'callerid', 'phone_number',
-                   'starting_date', 'duration', 'billsec',
-                   'disposition', 'used_gateway', amd_status)
+        headers = ('user', 'callid', 'callerid', 'phone_number', 'starting_date', 'duration',
+                   'billsec', 'disposition', 'used_gateway', amd_status)
 
         list_val = []
         for i in qs:
@@ -315,13 +304,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         data = tablib.Dataset(*list_val, headers=headers)
 
-        if format == 'xls':
+        if format == Export_choice.XLS:
             response.write(data.xls)
-
-        if format == 'csv':
+        elif format == Export_choice.CSV:
             response.write(data.csv)
-
-        if format == 'json':
+        elif format == Export_choice.JSON:
             response.write(data.json)
 
         return response

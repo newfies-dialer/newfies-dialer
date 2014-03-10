@@ -12,9 +12,8 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.test import TestCase
 from django.core.management import call_command
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 from frontend.forms import LoginForm, DashboardForm
 from frontend.views import customer_dashboard, index, \
     login_view, logout_view
@@ -193,45 +192,3 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         request.session = {}
         response = custom_500_view(request)
         self.assertEqual(response.status_code, 500)
-
-
-class FrontendForgotPassword(TestCase):
-    """Test cases for Newfies-Dialer Customer Interface. for forgot password"""
-
-    def test_check_password_reset(self):
-        """Test Function to check password reset"""
-        response = self.client.get('/password_reset/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(
-            response,
-            'frontend/registration/password_reset_form.html')
-        response = self.client.post('/password_reset/',
-                                    {'email': 'admin@localhost.com'},
-                                    follow=True)
-        self.assertEqual(response.status_code, 200)
-
-        response = self.client.get('/password_reset/done/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(
-            response,
-            'frontend/registration/password_reset_done.html')
-
-        """
-        response = self.client.get('/reset/1-2xc-5791af4cc6b67e88ce8e/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(
-            response,
-            'frontend/registration/password_reset_confirm.html')
-        response = self.client.post('/reset/1-2xc-5791af4cc6b67e88ce8e/',
-            {
-                'new_password1': 'admin',
-                'new_password2': 'admin'
-            },
-            follow=True)
-        self.assertEqual(response.status_code, 200)
-        """
-        response = self.client.get('/reset/done/')
-        self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(
-            response,
-            'frontend/registration/password_reset_complete.html')

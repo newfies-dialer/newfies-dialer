@@ -15,9 +15,9 @@
 from django.utils.translation import ugettext_lazy as _
 from dialer_contact.models import Phonebook, Contact
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_campaign.constants import CAMPAIGN_STATUS, \
-    CAMPAIGN_STATUS_COLOR, SUBSCRIBER_STATUS
+from dialer_campaign.constants import SUBSCRIBER_STATUS
 from user_profile.models import UserProfile
+from mod_utils.function_def import get_status_value
 from dateutil.rrule import rrule, DAILY, HOURLY
 from dateutil.parser import parse
 from datetime import timedelta
@@ -153,36 +153,6 @@ def dialer_setting_limit(request, limit_for):
         return False
 
 
-def type_field_chk(base_field, base_field_type, field_name):
-    """Type fields (e.g. equal to, begins with, ends with, contains)
-    are checked.
-
-    >>> type_field_chk('1234', '1', 'contact')
-    {'contact__contains': '1234'}
-
-    >>> type_field_chk('1234', '2', 'contact')
-    {'contact__exact': '1234'}
-
-    >>> type_field_chk('1234', '3', 'contact')
-    {'contact__startswith': '1234'}
-
-    >>> type_field_chk('1234', '4', 'contact')
-    {'contact__endswith': '1234'}
-
-    """
-    kwargs = {}
-    if base_field != '':
-        if base_field_type == '1':
-            kwargs[field_name + '__contains'] = base_field
-        if base_field_type == '2':
-            kwargs[field_name + '__exact'] = base_field
-        if base_field_type == '3':
-            kwargs[field_name + '__startswith'] = base_field
-        if base_field_type == '4':
-            kwargs[field_name + '__endswith'] = base_field
-    return kwargs
-
-
 def date_range(start, end, q):
     """Date  Range
 
@@ -199,47 +169,17 @@ def date_range(start, end, q):
     """
     r = (end + timedelta(days=1) - start).days
     if int(q) <= 2:
-        return list(rrule(DAILY,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
+        return list(rrule(
+            DAILY,
+            dtstart=parse(str(start)),
+            until=parse(str(end))))
     if int(q) >= 3:
-        return list(rrule(HOURLY, interval=1,
-               dtstart=parse(str(start)),
-               until=parse(str(end))))
+        return list(rrule(
+            HOURLY, interval=1,
+            dtstart=parse(str(start)),
+            until=parse(str(end))))
     else:
         return [start + timedelta(days=i) for i in range(r)]
-
-
-def get_campaign_status_name(id):
-    """To get status name from CAMPAIGN_STATUS
-
-    >>> get_campaign_status_name(1)
-    '<font color="green">STARTED</font>'
-
-    >>> get_campaign_status_name(2)
-    '<font color="blue">PAUSED</font>'
-
-    >>> get_campaign_status_name(3)
-    '<font color="orange">ABORTED</font>'
-
-    >>> get_campaign_status_name(4)
-    '<font color="red">STOPPED</font>'
-    """
-    for i in CAMPAIGN_STATUS:
-        if i[0] == id:
-            #return i[1]
-            if i[1] == 'START':
-                return '<font color="%s">STARTED</font>' \
-                       % (CAMPAIGN_STATUS_COLOR[id])
-            if i[1] == 'PAUSE':
-                return '<font color="%s">PAUSED</font>' \
-                       % (CAMPAIGN_STATUS_COLOR[id])
-            if i[1] == 'ABORT':
-                return '<font color="%s">ABORTED</font>' \
-                       % (CAMPAIGN_STATUS_COLOR[id])
-            if i[1] == 'END':
-                return '<font color="%s">STOPPED</font>' \
-                       % (CAMPAIGN_STATUS_COLOR[id])
 
 
 def user_dialer_setting(user):
@@ -260,15 +200,7 @@ def user_dialer_setting_msg(user):
 
 def get_subscriber_status(value):
     """Get subscriber status name"""
-    if not value:
-        return ''
-    STATUS = dict(SUBSCRIBER_STATUS)
-    try:
-        status = STATUS[value].encode('utf-8')
-    except:
-        status = ''
-
-    return str(status)
+    return get_status_value(value, SUBSCRIBER_STATUS)
 
 
 def get_subscriber_disposition(campaign_id, val):

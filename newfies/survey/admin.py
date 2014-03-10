@@ -19,7 +19,7 @@ from survey.models import Survey, Section, Branching, \
     Survey_template, Section_template, Branching_template, \
     Result, ResultAggregate
 from adminsortable.admin import SortableAdmin, SortableTabularInline
-# from common.app_label_renamer import AppLabelRenamer
+# from django_lets_go.app_label_renamer import AppLabelRenamer
 
 # AppLabelRenamer(native_app_label=u'survey', app_label=_('Survey')).main()
 

@@ -17,7 +17,7 @@ from agent.models import AgentProfile, Agent
 from agent.forms import AgentChangeDetailExtendForm
 from agent.views import agent_detail_change, agent_list, agent_add, agent_change, agent_del
 from user_profile.forms import UserChangeDetailForm
-from common.utils import BaseAuthenticatedClient
+from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class AgentProfileAdminView(BaseAuthenticatedClient):
@@ -59,7 +59,7 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
         response = self.client.get('/module/agent/')
         self.assertEqual(response.context['module'], 'agent_list')
         self.assertEqual(response.status_code, 200)
-        self.assertTemplateUsed(response, 'frontend/agent/list.html')
+        self.assertTemplateUsed(response, 'agent/list.html')
 
         request = self.factory.get('/module/agent/')
         request.user = self.user
@@ -70,7 +70,6 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
     def test_agent_view_add(self):
         """Test Function to check add agent"""
         response = self.client.get('/module/agent/add/')
-        self.assertEqual(response.context['action'], 'add')
         self.assertEqual(response.status_code, 200)
         response = self.client.post('/agent/add/',
                                     data={'username': 'xyz',
@@ -91,7 +90,7 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
     def test_agent_view_update(self):
         """Test Function to check update agent"""
         response = self.client.get('/agent/1/')
-        self.assertTemplateUsed(response, 'frontend/agent/change.html')
+        self.assertTemplateUsed(response, 'agent/change.html')
 
         request = self.factory.post('/agent/1/', {'contact': '1234'})
         request.user = self.user
@@ -105,7 +104,6 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = agent_change(request, 1)
-        self.assertEqual(response['Location'], '/module/module/agent/')
         self.assertEqual(response.status_code, 302)
 
     def test_agent_view_delete(self):
@@ -120,5 +118,4 @@ class AgentProfileCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = agent_del(request, 0)
-        self.assertEqual(response['Location'], '/module/agent/')
         self.assertEqual(response.status_code, 302)

@@ -17,7 +17,7 @@ from django.contrib.contenttypes.models import ContentType
 from celery.task import PeriodicTask
 from celery.decorators import task
 from celery.utils.log import get_task_logger
-from common.only_one_task import only_one
+from django_lets_go.only_one_task import only_one
 from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.events import Event
 from appointment.models.users import CalendarUserProfile

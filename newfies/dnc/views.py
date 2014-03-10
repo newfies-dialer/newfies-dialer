@@ -11,21 +11,17 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.contrib.auth.decorators import login_required, \
-    permission_required
-from django.http import HttpResponseRedirect, HttpResponse, \
-    Http404
+from django.contrib.auth.decorators import login_required, permission_required
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from dnc.models import DNC, DNCContact
-from dnc.forms import DNCForm, DNCContactSearchForm, DNCContactForm,\
+from dnc.forms import DNCListForm, DNCContactSearchForm, DNCContactForm,\
     DNCContact_fileImport, DNCContact_fileExport
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
-from dialer_campaign.function_def import user_dialer_setting_msg, \
-    type_field_chk
-from common.common_functions import get_pagination_vars, striplist
-from common.common_constants import EXPORT_CHOICE
+from django_lets_go.common_functions import get_pagination_vars, striplist, source_desti_field_chk
+from mod_utils.helper import Export_choice
 import tablib
 import csv
 
@@ -40,35 +36,25 @@ def dnc_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/dnc_list/list.html
+        * ``template`` - dnc/dnc_list/list.html
 
     **Logic Description**:
 
         * List all dnc which belong to the logged in user.
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
-    default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
-    sort_order = pagination_data['sort_order']
-
-    dnc_list = DNC.objects.filter(user=request.user).order_by(sort_order)
-
-    template = 'frontend/dnc_list/list.html'
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
+    dnc_list = DNC.objects.filter(user=request.user).order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'dnc_list': dnc_list,
         'total_dnc': dnc_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'DNC_COLUMN_NAME': DNC_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
+        'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dnc/dnc_list/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dnc.add_dnc', login_url='/')
@@ -78,32 +64,24 @@ def dnc_add(request):
 
     **Attributes**:
 
-        * ``form`` - DNCForm
-        * ``template`` - frontend/dnc_list/change.html
+        * ``form`` - DNCListForm
+        * ``template`` - dnc/dnc_list/change.html
 
     **Logic Description**:
 
         * Add a new DNC which will belong to the logged in user
-          via the DNCForm & get redirected to the dnc list
+          via the DNCListForm & get redirected to the dnc list
     """
-    form = DNCForm()
-    if request.method == 'POST':
-        form = DNCForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = request.user
-            obj.save()
-            request.session["msg"] = _('"%(name)s" added.') %\
-                {'name': request.POST['name']}
-            return HttpResponseRedirect(dnc_list_redirect_url)
-    template = 'frontend/dnc_list/change.html'
+    form = DNCListForm(request.POST or None)
+    if form.is_valid():
+        form.save(user=request.user)
+        request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
+        return HttpResponseRedirect(dnc_list_redirect_url)
     data = {
         'form': form,
         'action': 'add',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dnc/dnc_list/change.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -111,9 +89,7 @@ def get_dnc_contact_count(request):
     """To get total no of dnc contacts belonging to a dnc list"""
     values = request.GET.getlist('ids')
     values = ", ".join(["%s" % el for el in values])
-    contact_count = DNCContact.objects.filter(dnc__user=request.user)\
-        .extra(where=['dnc_id IN (%s)' % values]).count()
-
+    contact_count = DNCContact.objects.filter(dnc__user=request.user).extra(where=['dnc_id IN (%s)' % values]).count()
     return HttpResponse(contact_count)
 
 
@@ -134,16 +110,14 @@ def dnc_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        dnc = get_object_or_404(
-            DNC, pk=object_id, user=request.user)
+        dnc = get_object_or_404(DNC, pk=object_id, user=request.user)
 
         # 1) delete all contacts belonging to a dnc
         dnc_contact_list = DNCContact.objects.filter(dnc=dnc)
         dnc_contact_list.delete()
 
         # 2) delete dnc
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': dnc.name}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': dnc.name}
         dnc.delete()
     else:
         # When object_id is 0 (Multiple records delete)
@@ -151,19 +125,15 @@ def dnc_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete all dnc contacts belonging to a dnc list
-            dnc_contact_list = DNCContact.objects\
-                .filter(dnc__user=request.user)\
+            dnc_contact_list = DNCContact.objects.filter(dnc__user=request.user)\
                 .extra(where=['dnc_id IN (%s)' % values])
             if dnc_contact_list:
                 dnc_contact_list.delete()
 
             # 2) delete dnc
-            dnc_list = DNC.objects.filter(user=request.user)\
-                .extra(where=['id IN (%s)' % values])
+            dnc_list = DNC.objects.filter(user=request.user).extra(where=['id IN (%s)' % values])
             if dnc_list:
-                request.session["msg"] =\
-                    _('%(count)s DNC list(s) are deleted.')\
-                    % {'count': dnc_list.count()}
+                request.session["msg"] = _('%(count)s DNC list(s) are deleted.') % {'count': dnc_list.count()}
                 dnc_list.delete()
         except:
             raise Http404
@@ -179,36 +149,29 @@ def dnc_change(request, object_id):
     **Attributes**:
 
         * ``object_id`` - Selected dnc object
-        * ``form`` - DNCForm
-        * ``template`` - frontend/dnc_list/change.html
+        * ``form`` - DNCListForm
+        * ``template`` - dnc/dnc_list/change.html
 
     **Logic Description**:
 
         * Update/delete selected dnc from the dnc list
-          via DNCForm & get redirected to dnc list
+          via DNCListForm & get redirected to dnc list
     """
     dnc = get_object_or_404(DNC, pk=object_id, user=request.user)
-    form = DNCForm(instance=dnc)
-    if request.method == 'POST':
+    form = DNCListForm(request.POST or None, instance=dnc)
+    if form.is_valid():
         if request.POST.get('delete'):
             dnc_del(request, object_id)
             return HttpResponseRedirect(dnc_list_redirect_url)
         else:
-            form = DNCForm(request.POST, instance=dnc)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['name']}
-                return HttpResponseRedirect(dnc_list_redirect_url)
-
-    template = 'frontend/dnc_list/change.html'
+            form.save()
+            request.session["msg"] = _('"%(name)s" is updated.') % {'name': request.POST['name']}
+            return HttpResponseRedirect(dnc_list_redirect_url)
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dnc/dnc_list/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dnc.view_dnc_contact', login_url='/')
@@ -218,7 +181,7 @@ def dnc_contact_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/dnc_contact/list.html
+        * ``template`` - dnc/dnc_contact/list.html
         * ``form`` - ContactSearchForm
 
     **Logic Description**:
@@ -226,50 +189,30 @@ def dnc_contact_list(request):
         * List all dnc contacts from dnc lists belonging to the logged in user
     """
     sort_col_field_list = ['id', 'dnc', 'phone_number', 'updated_date']
-    default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
-
-    form = DNCContactSearchForm(request.user)
-    dnc_id_list = DNC.objects.values_list('id', flat=True)\
-        .filter(user=request.user)
-    search_tag = 1
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
+    form = DNCContactSearchForm(request.user, request.POST or None)
+    dnc_id_list = DNC.objects.values_list('id', flat=True).filter(user=request.user)
     phone_number = ''
     dnc = ''
-
-    if request.method == 'POST':
-        form = DNCContactSearchForm(request.user, request.POST)
-        if form.is_valid():
-            request.session['session_phone_number'] = ''
-            request.session['session_dnc'] = ''
-
-            if request.POST.get('phone_number'):
-                phone_number = request.POST.get('phone_number')
-                request.session['session_phone_number'] = phone_number
-
-            if request.POST.get('dnc'):
-                dnc = request.POST.get('dnc')
-                request.session['session_dnc'] = dnc
-
     post_var_with_page = 0
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            post_var_with_page = 1
-            phone_number = request.session.get('session_phone_number')
-            dnc = request.session.get('session_dnc')
-            form = DNCContactSearchForm(request.user,
-                                        initial={'phone_number': phone_number,
-                                                 'dnc': dnc})
-        else:
-            post_var_with_page = 1
-            if request.method == 'GET':
-                post_var_with_page = 0
-    except:
-        pass
+    if form.is_valid():
+        request.session['session_phone_number'] = ''
+        request.session['session_dnc'] = ''
+        post_var_with_page = 1
+
+        if request.POST.get('phone_number'):
+            phone_number = request.POST.get('phone_number')
+            request.session['session_phone_number'] = phone_number
+
+        if request.POST.get('dnc'):
+            dnc = request.POST.get('dnc')
+            request.session['session_dnc'] = dnc
+
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
+        phone_number = request.session.get('session_phone_number')
+        dnc = request.session.get('session_dnc')
+        form = DNCContactSearchForm(request.user, initial={'phone_number': phone_number, 'dnc': dnc})
 
     if post_var_with_page == 0:
         # default
@@ -282,7 +225,7 @@ def dnc_contact_list(request):
         kwargs['dnc_id'] = dnc
 
     phone_number_type = '1'
-    phone_number = type_field_chk(phone_number, phone_number_type, 'phone_number')
+    phone_number = source_desti_field_chk(phone_number, phone_number_type, 'phone_number')
     for i in phone_number:
         kwargs[i] = phone_number[i]
 
@@ -291,35 +234,29 @@ def dnc_contact_list(request):
     phone_number_count = 0
 
     if dnc_id_list:
-        phone_number_list = DNCContact.objects.values('id', 'dnc__name',
-            'phone_number', 'updated_date')\
+        phone_number_list = DNCContact.objects.values('id', 'dnc__name', 'phone_number', 'updated_date')\
             .filter(dnc__in=dnc_id_list)
 
         if kwargs:
             phone_number_list = phone_number_list.filter(**kwargs)
 
-        all_phone_number_list = phone_number_list.order_by(sort_order)
-        phone_number_list = all_phone_number_list[start_page:end_page]
+        all_phone_number_list = phone_number_list.order_by(pag_vars['sort_order'])
+        phone_number_list = all_phone_number_list[pag_vars['start_page']:pag_vars['end_page']]
         phone_number_count = all_phone_number_list.count()
 
-    template = 'frontend/dnc_contact/list.html'
     data = {
         'phone_number_list': phone_number_list,
         'all_phone_number_list': all_phone_number_list,
         'total_phone_numbers': phone_number_count,
-        'PAGE_SIZE': PAGE_SIZE,
         'DNC_CONTACT_COLUMN_NAME': DNC_CONTACT_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'msg': request.session.get('msg'),
         'error_msg': request.session.get('error_msg'),
         'form': form,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
-        'search_tag': search_tag,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dnc/dnc_contact/list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dnc.add_dnccontact', login_url='/')
@@ -330,37 +267,24 @@ def dnc_contact_add(request):
     **Attributes**:
 
         * ``form`` - DNCContactForm
-        * ``template`` - frontend/dnc_contact/change.html
+        * ``template`` - dnc/dnc_contact/change.html
 
     **Logic Description**:
 
         * Add new dnc contact belonging to the logged in user
           via DNCContactForm & get redirected to the contact list
     """
-    form = DNCContactForm(request.user)
-    error_msg = False
+    form = DNCContactForm(request.user, request.POST or None)
     # Add dnc contact
-    if request.method == 'POST':
-        form = DNCContactForm(request.user, request.POST)
-        if form.is_valid():
-            form.save()
-            request.session["msg"] = _('"%(name)s" added.') %\
-                {'name': request.POST['phone_number']}
-            return HttpResponseRedirect(dnc_contact_redirect_url)
-        else:
-            if len(request.POST['phone_number']) > 0:
-                error_msg = _('"%(name)s" cannot be added.') %\
-                    {'name': request.POST['phone_number']}
-
-    template = 'frontend/dnc_contact/change.html'
+    if form.is_valid():
+        form.save()
+        request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['phone_number']}
+        return HttpResponseRedirect(dnc_contact_redirect_url)
     data = {
         'form': form,
         'action': 'add',
-        'error_msg': error_msg,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dnc/dnc_contact/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dnc.delete_dnccontact', login_url='/')
@@ -379,12 +303,10 @@ def dnc_contact_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        dnc_contact = get_object_or_404(
-            DNCContact, pk=object_id, dnc__user=request.user)
+        dnc_contact = get_object_or_404(DNCContact, pk=object_id, dnc__user=request.user)
 
         # Delete dnc contact
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': dnc_contact.phone_number}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': dnc_contact.phone_number}
         dnc_contact.delete()
     else:
         # When object_id is 0 (Multiple records delete)
@@ -394,8 +316,7 @@ def dnc_contact_del(request, object_id):
         try:
             dnc_contact_list = DNCContact.objects.extra(where=['id IN (%s)' % values])
             if dnc_contact_list:
-                request.session["msg"] = _('%(count)s contact(s) are deleted.')\
-                    % {'count': dnc_contact_list.count()}
+                request.session["msg"] = _('%(count)s contact(s) are deleted.') % {'count': dnc_contact_list.count()}
                 dnc_contact_list.delete()
         except:
             raise Http404
@@ -411,39 +332,31 @@ def dnc_contact_change(request, object_id):
 
         * ``object_id`` - Selected dnc contact object
         * ``form`` - DNCContactForm
-        * ``template`` - frontend/dnc_contact/change.html
+        * ``template`` - dnc/dnc_contact/change.html
 
     **Logic Description**:
 
         * Update/delete selected dnc contact from the dnc contact list
           via DNCContactForm & get redirected to the dnc contact list
     """
-    dnc_contact = get_object_or_404(
-        DNCContact, pk=object_id, dnc__user=request.user)
-
-    form = DNCContactForm(request.user, instance=dnc_contact)
-    if request.method == 'POST':
+    dnc_contact = get_object_or_404(DNCContact, pk=object_id, dnc__user=request.user)
+    form = DNCContactForm(request.user, request.POST or None, instance=dnc_contact)
+    if form.is_valid():
         # Delete dnc contact
         if request.POST.get('delete'):
             dnc_contact_del(request, object_id)
             return HttpResponseRedirect(dnc_contact_redirect_url)
         else:
             # Update dnc contact
-            form = DNCContactForm(request.user, request.POST, instance=dnc_contact)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.') \
-                    % {'name': request.POST['phone_number']}
-                return HttpResponseRedirect(dnc_contact_redirect_url)
+            form.save()
+            request.session["msg"] = _('"%(name)s" is updated.') % {'name': request.POST['phone_number']}
+            return HttpResponseRedirect(dnc_contact_redirect_url)
 
-    template = 'frontend/dnc_contact/change.html'
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dnc/dnc_contact/change.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -453,7 +366,7 @@ def dnc_contact_import(request):
     **Attributes**:
 
         * ``form`` - DNCContact_fileImport
-        * ``template`` - frontend/dnc/import_contact.html
+        * ``template`` - dnc/dnc_contact/import_contact.html
 
     **Logic Description**:
 
@@ -466,7 +379,7 @@ def dnc_contact_import(request):
         * total_rows - Total no. of records in the CSV file
         * retail_record_count - No. of records imported from the CSV file
     """
-    form = DNCContact_fileImport(request.user)
+    form = DNCContact_fileImport(request.user, request.POST or None, request.FILES or None)
     csv_data = ''
     msg = ''
     error_msg = ''
@@ -475,63 +388,62 @@ def dnc_contact_import(request):
     contact_cnt = 0
     dup_contact_cnt = 0
     bulk_record = []
-    if request.method == 'POST':
-        form = DNCContact_fileImport(request.user, request.POST, request.FILES)
-        if form.is_valid():
-            # col_no - field name
-            #  0     - contact
-            # To count total rows of CSV file
-            #Get DNC Obj
-            dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
 
-            records = csv.reader(request.FILES['csv_file'])
-            total_rows = len(list(records))
-            BULK_SIZE = 1000
-            csv_data = csv.reader(request.FILES['csv_file'])
+    if form.is_valid():
+        # col_no - field name
+        #  0     - contact
+        # To count total rows of CSV file
+        #Get DNC Obj
+        dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
 
-            #Read each Row
-            for row in csv_data:
-                row = striplist(row)
-                if not row or str(row[0]) == 0:
-                    continue
+        records = csv.reader(request.FILES['csv_file'])
+        total_rows = len(list(records))
+        BULK_SIZE = 1000
+        csv_data = csv.reader(request.FILES['csv_file'])
 
-                #Check field type
-                try:
-                    int(row[0])
-                except ValueError:
-                    error_msg = _("Some of the imported data was invalid!")
-                    type_error_import_list.append(row)
-                    continue
+        #Read each Row
+        for row in csv_data:
+            row = striplist(row)
+            if not row or str(row[0]) == 0:
+                continue
 
-                bulk_record.append(
-                    DNCContact(
-                        dnc_id=dnc.id,
-                        phone_number=row[0])
-                )
-                contact_cnt = contact_cnt + 1
-                if contact_cnt < 100:
-                    #We want to display only 100 lines of the success import
-                    success_import_list.append(row)
+            #Check field type
+            try:
+                int(row[0])
+            except ValueError:
+                error_msg = _("Some of the imported data was invalid!")
+                type_error_import_list.append(row)
+                continue
 
-                if contact_cnt % BULK_SIZE == 0:
-                    #Bulk insert
-                    DNCContact.objects.bulk_create(bulk_record)
-                    bulk_record = []
+            bulk_record.append(
+                DNCContact(
+                    dnc_id=dnc.id,
+                    phone_number=row[0])
+            )
+            contact_cnt = contact_cnt + 1
+            if contact_cnt < 100:
+                #We want to display only 100 lines of the success import
+                success_import_list.append(row)
 
-            if bulk_record:
-                #Remaining record
+            if contact_cnt % BULK_SIZE == 0:
+                #Bulk insert
                 DNCContact.objects.bulk_create(bulk_record)
                 bulk_record = []
 
-        #check if there is contact imported
-        if contact_cnt > 0:
-            msg = _('%(contact_cnt)s DNC contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
-                % {'contact_cnt': contact_cnt,
-                   'total_rows': total_rows}
+        if bulk_record:
+            #Remaining record
+            DNCContact.objects.bulk_create(bulk_record)
+            bulk_record = []
 
-        if dup_contact_cnt > 0:
-            error_msg = _('Duplicate DNC contact(s) %(dup_contact_cnt)s are not inserted!!') \
-                % {'dup_contact_cnt': dup_contact_cnt}
+    #check if there is contact imported
+    if contact_cnt > 0:
+        msg = _('%(contact_cnt)s DNC contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
+            % {'contact_cnt': contact_cnt,
+               'total_rows': total_rows}
+
+    if dup_contact_cnt > 0:
+        error_msg = _('Duplicate DNC contact(s) %(dup_contact_cnt)s are not inserted!!') \
+            % {'dup_contact_cnt': dup_contact_cnt}
 
     data = RequestContext(request, {
         'form': form,
@@ -539,11 +451,8 @@ def dnc_contact_import(request):
         'error_msg': error_msg,
         'success_import_list': success_import_list,
         'type_error_import_list': type_error_import_list,
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     })
-    template = 'frontend/dnc_contact/import_dnc_contact.html'
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dnc/dnc_contact/import_dnc_contact.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -572,13 +481,11 @@ def dnc_contact_export(request):
 
     data = tablib.Dataset(*list_val, headers=headers)
 
-    if format == EXPORT_CHOICE.XLS:
+    if format == Export_choice.XLS:
         response.write(data.xls)
-
-    if format == EXPORT_CHOICE.CSV:
+    elif format == Export_choice.CSV:
         response.write(data.csv)
-
-    if format == EXPORT_CHOICE.JSON:
+    elif format == Export_choice.JSON:
         response.write(data.json)
 
     return response
@@ -591,24 +498,23 @@ def dnc_contact_export_view(request):
     **Attributes**:
 
         * ``form`` - DNCContact_fileExport
-        * ``template`` - frontend/dnc_contact/export_dnc_contact.html
+        * ``template`` - dnc/dnc_contact/export_dnc_contact.html
 
     **Logic Description**:
 
         * DNC contacts export form will be redirected to ``/dnc_contact/export/`` view
           with format & dnc_list_id parameters
     """
-    form = DNCContact_fileExport(request.user, initial={'export_to': EXPORT_CHOICE.CSV})
-    if request.method == 'POST':
+    form = DNCContact_fileExport(request.user, request.POST or None, initial={'export_to': Export_choice.CSV})
+    if form.is_valid():
         dnc_list_id = request.POST['dnc_list']
         export_to = request.POST['export_to']
         return HttpResponseRedirect(dnc_contact_redirect_url + 'export/?format=' + export_to + '&dnc_list_id=' + dnc_list_id)
 
-    template = 'frontend/dnc_contact/export_dnc_contact.html'
+    template = 'dnc/dnc_contact/export_dnc_contact.html'
     data = {
         'form': form,
         'action': 'update',
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
     }
     return render_to_response(template, data,
                               context_instance=RequestContext(request))

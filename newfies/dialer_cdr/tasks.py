@@ -33,7 +33,7 @@ from sms.tasks import SendMessage
 from dialer_gateway.utils import prepare_phonenumber
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
-from common.only_one_task import only_one
+from django_lets_go.only_one_task import only_one
 from common_functions import debug_query
 from uuid import uuid1
 from time import sleep
@@ -276,9 +276,10 @@ def process_callevent(record):
 
     #If the call failed we will check if we want to make a retry call
     #Add condition to retry when it s machine and we want to reach a human
-    if (app_type == 'campaign' and opt_hangup_cause != 'NORMAL_CLEARING' and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
-       (amd_status == 'machine' and callrequest.campaign.voicemail
-       and callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
+    if (app_type == 'campaign' and opt_hangup_cause != 'NORMAL_CLEARING'
+        and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
+       (amd_status == 'machine' and callrequest.campaign.voicemail and
+        callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
         #Update to Retry Done
         callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
         callrequest.save()
@@ -478,7 +479,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     #Survey Call or Alarm Call
     if campaign_id:
         #TODO: use only https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.only
-        obj_callrequest = Callrequest.objects.select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=callrequest_id)
+        obj_callrequest = Callrequest.objects\
+            .select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=callrequest_id)
         subscriber_id = obj_callrequest.subscriber_id
         contact_id = obj_callrequest.subscriber.contact_id
     elif alarm_request_id:
@@ -489,7 +491,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         return False
 
     debug_query(9)
-    logger.info("TASK :: init_callrequest - status:%s;cmpg:%s;alarm:%s" % (obj_callrequest.status, campaign_id, alarm_request_id))
+    logger.info("TASK :: init_callrequest - status:%s;cmpg:%s;alarm:%s" %
+                (obj_callrequest.status, campaign_id, alarm_request_id))
 
     # TODO: move method prepare_phonenumber into the model gateway
     #obj_callrequest.aleg_gatewayprepare_phonenumber()
@@ -527,7 +530,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
     if obj_callrequest.user.userprofile and obj_callrequest.user.userprofile.accountcode:
-        originate_dial_string = originate_dial_string + ',accountcode=' + str(obj_callrequest.user.userprofile.accountcode)
+        originate_dial_string = originate_dial_string + ',accountcode=' + \
+            str(obj_callrequest.user.userprofile.accountcode)
 
     debug_query(12)
 
@@ -557,7 +561,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             args_list.append(originate_dial_string)
 
             #Call Vars
-            callvars = "bridge_early_media=true,originate_timeout=%s,newfiesdialer=true,leg_type=1" % (gateway_timeouts, )
+            callvars = "bridge_early_media=true,originate_timeout=%s,newfiesdialer=true,leg_type=1" % \
+                (gateway_timeouts, )
             args_list.append(callvars)
 
             #Default Test
@@ -570,15 +575,15 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 hangup_on_ring = -1
             exec_on_media = 1
             if hangup_on_ring >= 0:
-                args_list.append("execute_on_media_%d='sched_hangup +%d ORIGINATOR_CANCEL'" % (exec_on_media, hangup_on_ring))
+                args_list.append("execute_on_media_%d='sched_hangup +%d ORIGINATOR_CANCEL'" %
+                                 (exec_on_media, hangup_on_ring))
                 exec_on_media += 1
 
             #TODO: look and test http://wiki.freeswitch.org/wiki/Misc._Dialplan_Tools_queue_dtmf
             # Send digits
             if send_digits:
                 if send_preanswer:
-                    args_list.append("execute_on_media_%d='send_dtmf %s'"
-                        % (exec_on_media, send_digits))
+                    args_list.append("execute_on_media_%d='send_dtmf %s'" % (exec_on_media, send_digits))
                     exec_on_media += 1
                 else:
                     args_list.append("execute_on_answer='send_dtmf %s'" % send_digits)
@@ -605,7 +610,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             if settings.DIALERDEBUG:
                 dial_command = "originate {%s}user/areski '%s'" % (args_str, settings.ESL_SCRIPT)
             else:
-                dial_command = "originate {%s}%s%s '%s'" % (args_str, gateways, dialout_phone_number, settings.ESL_SCRIPT)
+                dial_command = "originate {%s}%s%s '%s'" % \
+                    (args_str, gateways, dialout_phone_number, settings.ESL_SCRIPT)
 
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"

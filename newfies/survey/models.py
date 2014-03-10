@@ -20,7 +20,7 @@ from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
 from survey.constants import SECTION_TYPE
 from audiofield.models import AudioFile, AudioField
-from common.language_field import LanguageField
+from django_lets_go.language_field import LanguageField
 from adminsortable.models import Sortable
 from south.modelsinspector import add_introspection_rules
 
@@ -141,6 +141,42 @@ class Survey(Survey_abstract):
             return u"%s (campaign: %s)" % (self.name, self.campaign)
         else:
             return u"%s" % self.name
+
+    def create_duplicate_survey(self, campaign_obj, new_campaign):
+        """create duplicate survey"""
+        original_survey_id = self.id
+
+        # make clone of survey
+        self.pk = None
+        self.campaign = new_campaign
+        self.save()
+
+        old_new_section_dict = {}
+        section_objs = Section.objects.filter(survey_id=original_survey_id).order_by('order')
+        for section_obj in section_objs:
+            old_section_id = section_obj.id
+
+            # make clone of section
+            section_obj.pk = None
+            section_obj.survey = self
+            section_obj.save()
+
+            old_new_section_dict[old_section_id] = section_obj.id
+
+        for old_section_id, new_section_id in old_new_section_dict.iteritems():
+            branching_objs = Branching.objects.filter(section_id=old_section_id)
+
+            for branching_obj in branching_objs:
+                new_goto_id = None
+                if branching_obj.goto_id is not None:
+                    new_goto_id = old_new_section_dict[branching_obj.goto_id]
+
+                branching_obj.pk = None
+                branching_obj.section_id = new_section_id
+                branching_obj.goto_id = new_goto_id
+                branching_obj.save()
+
+        return self.id
 
 
 class Section_abstract(Sortable):

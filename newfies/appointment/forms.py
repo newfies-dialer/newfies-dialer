@@ -13,11 +13,10 @@
 #
 from django import forms
 from django.forms import ModelForm
+from django.conf import settings
 from django.utils.translation import ugettext as _
-from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm,\
-    UserChangeForm
-from appointment.models.users import CalendarUserProfile, CalendarUser,\
-    CalendarSetting
+from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm, UserChangeForm
+from appointment.models.users import CalendarUserProfile, CalendarUser, CalendarSetting
 from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm
@@ -26,34 +25,82 @@ from appointment.function_def import get_calendar_user_id_list, get_calendar_use
     get_calendar_list, get_all_calendar_user_id_list, manager_list_of_calendar_user
 from survey.models import Survey
 from user_profile.models import UserProfile
+from mod_utils.forms import SaveUserModelForm
 from bootstrap3_datetime.widgets import DateTimePicker
+from mod_utils.forms import common_submit_buttons
+from crispy_forms.helper import FormHelper
+from crispy_forms.bootstrap import TabHolder, Tab
+from crispy_forms.layout import Layout, Div, Fieldset, HTML
 
 
 class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
     def __init__(self, *args, **kwargs):
         super(CalendarUserPasswordChangeForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('', 'password1', 'password2', css_class='col-md-4')
+        )
 
 
 class CalendarUserCreationForm(UserCreationForm):
-    calendar_setting_id = forms.ChoiceField(label=_('calendar setting'),
-                                            required=True,
-                                            choices=[('', '---')])
+    calendar_setting_id = forms.ChoiceField(label=_('calendar setting'), required=True, choices=[('', '---')])
 
     def __init__(self, manager, *args, **kwargs):
         super(CalendarUserCreationForm, self).__init__(*args, **kwargs)
-
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = False
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('', 'username', 'password1', 'password2', 'calendar_setting_id', css_class='col-md-6 col-xs-8')
+        )
         cal_setting_list = []
         setting_list = CalendarSetting.objects.filter(user=manager)
-
         cal_setting_list.append(('', _('select calendar setting').title()))
         for i in setting_list:
             cal_setting_list.append((i.id, i.label))
-
         self.fields['calendar_setting_id'].choices = cal_setting_list
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
+
+class CalendarUserChangeDetailExtendForm(ModelForm):
+    """A form used to change the detail of a CalendarUser in the manager UI."""
+
+    class Meta:
+        model = CalendarUserProfile
+        exclude = ('manager', 'user', )
+
+    def __init__(self, user, *args, **kwargs):
+        super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.disable_csrf = False
+        css_class = 'col-md-6'
+        self.helper.layout = Layout(
+            Div(
+                Div('calendar_setting', css_class=css_class),
+                Div('accountcode', css_class=css_class),
+                Div('address', css_class=css_class),
+                Div('city', css_class=css_class),
+                Div('state', css_class=css_class),
+                Div('country', css_class=css_class),
+                Div('zip_code', css_class=css_class),
+                Div('phone_no', css_class=css_class),
+                Div('fax', css_class=css_class),
+                Div('company_name', css_class=css_class),
+                Div('company_website', css_class=css_class),
+                Div('language', css_class=css_class),
+                Div('note', css_class=css_class),
+                css_class='row'
+            ),
+        )
+        list_calendar_setting = []
+        list_calendar_setting.append((0, _('select calendar setting').title()))
+        calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
+        for l in calendar_setting_list:
+            list_calendar_setting.append((l.id, l.label))
+        self.fields['calendar_setting'].choices = list_calendar_setting
 
 
 class CalendarUserProfileForm(ModelForm):
@@ -67,7 +114,7 @@ class CalendarUserProfileForm(ModelForm):
         self.fields['manager'].choices = manager_list_of_calendar_user()
 
 
-class CalendarSettingForm(ModelForm):
+class CalendarSettingForm(SaveUserModelForm):
     """CalendarSetting ModelForm"""
 
     class Meta:
@@ -76,11 +123,55 @@ class CalendarSettingForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarSettingForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        css_class = 'col-md-6'
+
+        self.helper.layout = Layout(
+            Div(
+                Div('label', css_class=css_class),
+                Div('callerid', css_class=css_class),
+                Div('caller_name', css_class=css_class),
+                Div('call_timeout', css_class=css_class),
+                Div('survey', css_class=css_class),
+                Div('aleg_gateway', css_class=css_class),
+                Div('sms_gateway', css_class=css_class),
+                css_class='row'
+            ),
+        )
+        if settings.AMD:
+            self.helper.layout.append(
+                Div(
+                    Div(
+                        HTML("""
+                            <div class="btn-group" data-toggle="buttons">
+                                <label for="{{ form.voicemail.auto_id }}">{{ form.voicemail.label }}</label><br/>
+                                <div class="make-switch switch-small">
+                                {{ form.voicemail }}
+                                </div>
+                            </div>
+                            """), css_class='col-md-12 col-xs-10'
+                    ),
+                    css_class='row'
+                ),
+            )
+            self.helper.layout.append(
+                Div(
+                    Div('amd_behavior', css_class=css_class),
+                    Div('voicemail_audiofile', css_class=css_class),
+                    css_class='row'
+                )
+            )
+
+        if self.instance.id:
+            form_action = common_submit_buttons(default_action='update')
+        else:
+            form_action = common_submit_buttons(default_action='add')
+
+        self.helper.layout.append(form_action)
 
         list_survey = []
         list_survey.append((0, '---'))
-        survey_list = Survey.objects.values_list(
-            'id', 'name').filter(user=user).order_by('id')
+        survey_list = Survey.objects.values_list('id', 'name').filter(user=user).order_by('id')
         for l in survey_list:
             list_survey.append((l[0], l[1]))
         self.fields['survey'].choices = list_survey
@@ -91,11 +182,6 @@ class CalendarSettingForm(ModelForm):
         for l in gateway_list:
             list_gateway.append((l.id, l.name))
         self.fields['aleg_gateway'].choices = list_gateway
-
-        exclude_list = ['voicemail']
-        for i in self.fields.keyOrder:
-            if i not in exclude_list:
-                self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class CalendarUserNameChangeForm(UserChangeForm):
@@ -109,32 +195,6 @@ class CalendarUserNameChangeForm(UserChangeForm):
         super(CalendarUserNameChangeForm, self).__init__(*args, **kwargs)
 
 
-class CalendarUserChangeDetailExtendForm(ModelForm):
-    """A form used to change the detail of a CalendarUser in the manager UI."""
-
-    class Meta:
-        model = CalendarUserProfile
-        exclude = ('manager', 'user', )
-
-    def __init__(self, user, *args, **kwargs):
-        super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
-
-        self.fields.keyOrder = [
-            'calendar_setting', 'accountcode', 'address',
-            'city', 'state', 'country', 'zip_code', 'phone_no', 'fax', 'company_name',
-            'company_website', 'language', 'note',
-        ]
-        list_calendar_setting = []
-        list_calendar_setting.append((0, _('select calendar setting').title()))
-        calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
-        for l in calendar_setting_list:
-            list_calendar_setting.append((l.id, l.label))
-        self.fields['calendar_setting'].choices = list_calendar_setting
-
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
-
-
 class CalendarForm(ModelForm):
     """CalendarForm"""
 
@@ -143,10 +203,18 @@ class CalendarForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        self.helper.layout = Layout(
+            Fieldset('', 'name', 'user', 'max_concurrent', css_class='col-xs-4')
+        )
+        if self.instance.id:
+            form_action = common_submit_buttons(default_action='update')
+        else:
+            form_action = common_submit_buttons(default_action='add')
+        self.helper.layout.append(form_action)
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['user'].choices = get_calendar_user_list(calendar_user_list)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class AdminCalendarForm(ModelForm):
@@ -188,13 +256,27 @@ class EventForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(EventForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = [
-            'title', 'calendar', 'creator', 'rule', 'start', 'end',
-            'end_recurring_period', 'description', 'data'
-        ]
-
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        css_class = 'col-md-6'
+        self.helper.layout = Layout(
+            Fieldset(_('event settings').capitalize()),
+            Div(
+                Div('title', css_class=css_class),
+                Div('calendar', css_class=css_class),
+                Div('creator', css_class=css_class),
+                Div('rule', css_class=css_class),
+                Div('start', css_class=css_class),
+                Div('end', css_class=css_class),
+                Div('end_recurring_period', css_class=css_class),
+                css_class='row'
+            ),
+            Div(
+                Div('description', css_class=css_class),
+                Div('data', css_class=css_class),
+                css_class='row'
+            ),
+        )
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar'].choices = get_calendar_list(calendar_user_list)
         self.fields['creator'].choices = get_calendar_user_list(calendar_user_list)
@@ -202,20 +284,28 @@ class EventForm(ModelForm):
 
 class EventSearchForm(forms.Form):
     """Event Search Form"""
-    start_date = forms.CharField(label=_('start date'), required=False, max_length=20,
-                                 widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}))
-    calendar_id = forms.ChoiceField(label=_('calendar'), required=False,
-                                    choices=[('0', '---')])
-    calendar_user_id = forms.ChoiceField(label=_('calendar user'), required=False,
-                                         choices=[('0', '---')])
+    start_date = forms.CharField(label=_('start date').capitalize(), required=False, max_length=20,
+        widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}))
+    calendar_id = forms.ChoiceField(label=_('calendar').capitalize(), required=False, choices=[('0', '---')])
+    calendar_user_id = forms.ChoiceField(label=_('calendar user').capitalize(), required=False, choices=[('0', '---')])
 
     def __init__(self, user, *args, **kwargs):
         super(EventSearchForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        css_class = 'col-md-4'
+        self.helper.layout = Layout(
+            Div(
+                Div('start_date', css_class=css_class),
+                Div('calendar_id', css_class=css_class),
+                Div('calendar_user_id', css_class=css_class),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar_id'].choices = get_calendar_list(calendar_user_list)
         self.fields['calendar_user_id'].choices = get_calendar_user_list(calendar_user_list)
-        for i in ['calendar_id', 'calendar_user_id']:
-            self.fields[i].widget.attrs['class'] = "form-control"
 
 
 class AlarmForm(ModelForm):
@@ -230,20 +320,61 @@ class AlarmForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(AlarmForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
 
-        self.fields.keyOrder = [
-            'date_start_notice', 'event', 'alarm_phonenumber', 'alarm_email',
-            'method', 'survey', 'mail_template', 'sms_template',
-            'daily_start', 'daily_stop', 'advance_notice', 'maxretry',
-            'result', 'retry_delay', 'url_cancel', 'phonenumber_sms_failure',
-            'url_confirm', 'phonenumber_transfer']
+        if self.instance.id:
+            form_action = common_submit_buttons(default_action='update')
+        else:
+            form_action = common_submit_buttons(default_action='add')
 
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        css_class = 'col-md-6'
+        self.helper.layout = Layout(
+            TabHolder(
+                Tab(_('general settings').title(),
+                    Div(
+                        Div('date_start_notice', css_class=css_class),
+                        Div('event', css_class=css_class),
+                        Div('alarm_phonenumber', css_class=css_class),
+                        Div('alarm_email', css_class=css_class),
+                        Div('method', css_class=css_class),
+                        Div('survey', css_class=css_class),
+                        Div('mail_template', css_class=css_class),
+                        Div('sms_template', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab(_('alarm settings').title(),
+                    Div(
+                        Div('daily_start', css_class=css_class),
+                        Div('daily_stop', css_class=css_class),
+                        Div('maxretry', css_class=css_class),
+                        Div('retry_delay', css_class=css_class),
+                        Div('advance_notice', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab(_('result settings').title(),
+                    Div(
+                        Div('result', css_class=css_class),
+                        Div('url_cancel', css_class=css_class),
+                        Div('phonenumber_sms_failure', css_class=css_class),
+                        Div('url_confirm', css_class=css_class),
+                        Div('phonenumber_transfer', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+            ),
+        )
+
         list_survey = []
         list_survey.append((0, '---'))
-        survey_list = Survey.objects.values_list(
-            'id', 'name').filter(user=user).order_by('id')
+        survey_list = Survey.objects.values_list('id', 'name').filter(user=user).order_by('id')
         for l in survey_list:
             list_survey.append((l[0], l[1]))
         self.fields['survey'].choices = list_survey
@@ -252,9 +383,9 @@ class AlarmForm(ModelForm):
 
         list_event = []
         list_event.append((0, '---'))
-        event_list = Event.objects.values_list(
-            'id', 'title').filter(calendar__user_id__in=calendar_user_list,
-                                  status=EVENT_STATUS.PENDING).order_by('id')
+        event_list = Event.objects.values_list('id', 'title')\
+            .filter(calendar__user_id__in=calendar_user_list,
+                    status=EVENT_STATUS.PENDING).order_by('id')
         for l in event_list:
             list_event.append((l[0], l[1]))
         self.fields['event'].choices = list_event

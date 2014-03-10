@@ -1,0 +1,18 @@
+{% extends "frontend/master.html" %}
+{% load i18n crispy_forms_tags %}
+
+{% block content_header %}
+    <h1>
+        {% if action == 'update' %}
+            {% trans "update"|title %}
+        {% else %}
+            {% trans "add"|title %}
+        {% endif %}
+        {% trans "queue"|title %}
+        <small>{% trans "it is belong to manager"|capfirst %}</small>
+    </h1>
+{% endblock %}
+
+{% block content %}
+    {% crispy form form.helper %}
+{% endblock %}

@@ -39,7 +39,7 @@ To get started with Newfies-Dialer you must have the following installed:
 - redis >= 2.8 (Redis Python Client)
 - uuid >= 1.30 (UUID object and generation functions )
 - wsgiref >= 0.1.2 (Validation support for WSGI )
-- switch2bill-common >= 2.8.2 (Common library that are reused by Star2Billing)
+- django-lets-go >= 2.8.5 (Common library that are reused by Star2Billing)
 - django-country-dialcode >= 0.4.8 (Provide Prefix and Country information)
 - djangorestframework == 2.3.9 (Creating delicious APIs for Django)
 - BeautifulSoup >= 3.2.1 (HTML parser optimized for screen-scraping)

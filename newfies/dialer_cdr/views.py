@@ -19,12 +19,13 @@ from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.db.models import Sum, Avg, Count
 from django.conf import settings
-from dialer_campaign.function_def import user_dialer_setting_msg
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
-from common.common_functions import ceil_strdate, unset_session_var, \
+from django_lets_go.common_functions import ceil_strdate, unset_session_var, \
     get_pagination_vars
+from mod_utils.helper import Export_choice
+#from dialer_cdr.constants import Export_choice
 from datetime import datetime
 from django.utils.timezone import utc
 import tablib
@@ -35,11 +36,10 @@ def get_voipcall_daily_data(voipcall_list):
     select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
     # Get Total Rrecords from VoIPCall Report table for Daily Call Report
-    total_data = voipcall_list.extra(select=select_data) \
-        .values('starting_date') \
-        .annotate(Count('starting_date')) \
-        .annotate(Sum('duration')) \
-        .annotate(Avg('duration')) \
+    total_data = voipcall_list.extra(select=select_data).values('starting_date')\
+        .annotate(Count('starting_date'))\
+        .annotate(Sum('duration'))\
+        .annotate(Avg('duration'))\
         .order_by('-starting_date')
 
     # Following code will count total voip calls, duration
@@ -72,7 +72,7 @@ def voipcall_report(request):
     **Attributes**:
 
         * ``form`` - VoipSearchForm
-        * ``template`` - frontend/report/voipcall_report.html
+        * ``template`` - dialer_cdr/voipcall_report.html
 
     **Logic Description**:
 
@@ -82,73 +82,54 @@ def voipcall_report(request):
 
         * ``request.session['voipcall_record_kwargs']`` - stores voipcall kwargs
     """
-    sort_col_field_list = ['starting_date', 'leg_type', 'disposition',
-                           'used_gateway', 'callerid', 'callid', 'phone_number',
-                           'duration', 'billsec', 'amd_status']
-    default_sort_field = 'starting_date'
-    pagination_data = \
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
-
-    search_tag = 1
-    action = 'tabs-1'
-
-    if request.method == 'POST':
-        form = VoipSearchForm(request.user, request.POST)
-        if form.is_valid():
-            field_list = ['start_date', 'end_date',
-                          'disposition', 'campaign_id', 'leg_type']
-            unset_session_var(request, field_list)
-
-            if request.POST.get('from_date'):
-                # From
-                from_date = request.POST['from_date']
-                start_date = ceil_strdate(from_date, 'start')
-                request.session['session_start_date'] = start_date
-
-            if request.POST.get('to_date'):
-                # To
-                to_date = request.POST['to_date']
-                end_date = ceil_strdate(to_date, 'end')
-                request.session['session_end_date'] = end_date
-
-            disposition = request.POST.get('status')
-            if disposition != 'all':
-                request.session['session_disposition'] = disposition
-
-            campaign_id = request.POST.get('campaign_id')
-            if campaign_id and int(campaign_id) != 0:
-                request.session['session_campaign_id'] = int(campaign_id)
-
-            leg_type = request.POST.get('leg_type')
-            if leg_type and leg_type != '':
-                request.session['session_leg_type'] = leg_type
-
+    sort_col_field_list = ['starting_date', 'leg_type', 'disposition', 'used_gateway', 'callerid',
+                           'callid', 'phone_number', 'duration', 'billsec', 'amd_status']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='starting_date')
     post_var_with_page = 0
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            post_var_with_page = 1
-            start_date = request.session.get('session_start_date')
-            end_date = request.session.get('session_end_date')
-            disposition = request.session.get('session_disposition')
-            campaign_id = request.session.get('session_campaign_id')
-            leg_type = request.session.get('session_leg_type')
-            form = VoipSearchForm(request.user,
-                initial={'from_date': start_date.strftime('%Y-%m-%d'),
-                       'to_date': end_date.strftime('%Y-%m-%d'),
-                       'status': disposition,
-                       'campaign_id': campaign_id,
-                       'leg_type': leg_type})
-        else:
-            post_var_with_page = 1
-            if request.method == 'GET':
-                post_var_with_page = 0
-    except:
-        pass
+    action = 'tabs-1'
+    form = VoipSearchForm(request.user, request.POST or None)
+    if form.is_valid():
+        field_list = ['start_date', 'end_date',
+                      'disposition', 'campaign_id', 'leg_type']
+        unset_session_var(request, field_list)
+        post_var_with_page = 1
+
+        if request.POST.get('from_date'):
+            # From
+            from_date = request.POST['from_date']
+            start_date = ceil_strdate(from_date, 'start')
+            request.session['session_start_date'] = start_date
+
+        if request.POST.get('to_date'):
+            # To
+            to_date = request.POST['to_date']
+            end_date = ceil_strdate(to_date, 'end')
+            request.session['session_end_date'] = end_date
+
+        disposition = request.POST.get('status')
+        if disposition != 'all':
+            request.session['session_disposition'] = disposition
+
+        campaign_id = request.POST.get('campaign_id')
+        if campaign_id and int(campaign_id) != 0:
+            request.session['session_campaign_id'] = int(campaign_id)
+
+        leg_type = request.POST.get('leg_type')
+        if leg_type and leg_type != '':
+            request.session['session_leg_type'] = leg_type
+
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
+        start_date = request.session.get('session_start_date')
+        end_date = request.session.get('session_end_date')
+        disposition = request.session.get('session_disposition')
+        campaign_id = request.session.get('session_campaign_id')
+        leg_type = request.session.get('session_leg_type')
+        form = VoipSearchForm(request.user, initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                                                     'to_date': end_date.strftime('%Y-%m-%d'),
+                                                     'status': disposition,
+                                                     'campaign_id': campaign_id,
+                                                     'leg_type': leg_type})
 
     if post_var_with_page == 0:
         # default
@@ -160,12 +141,11 @@ def voipcall_report(request):
         disposition = 'all'
         campaign_id = 0
         leg_type = ''
-        form = VoipSearchForm(request.user,
-            initial={'from_date': from_date,
-                    'to_date': to_date,
-                    'status': disposition,
-                    'campaign_id': campaign_id,
-                    'leg_type': leg_type})
+        form = VoipSearchForm(request.user, initial={'from_date': from_date,
+                                                     'to_date': to_date,
+                                                     'status': disposition,
+                                                     'campaign_id': campaign_id,
+                                                     'leg_type': leg_type})
         # unset session var
         request.session['session_start_date'] = start_date
         request.session['session_end_date'] = end_date
@@ -209,9 +189,8 @@ def voipcall_report(request):
         daily_data = get_voipcall_daily_data(voipcall_list)
         request.session['voipcall_daily_data'] = daily_data
 
-    voipcall_list = voipcall_list.order_by(sort_order)[start_page:end_page]
+    voipcall_list = voipcall_list.order_by(pag_vars['sort_order'])[pag_vars['start_page']:pag_vars['end_page']]
 
-    template = 'frontend/report/voipcall_report.html'
     data = {
         'form': form,
         'total_data': daily_data['total_data'],
@@ -219,22 +198,17 @@ def voipcall_report(request):
         'total_calls': daily_data['total_calls'],
         'total_avg_duration': daily_data['total_avg_duration'],
         'max_duration': daily_data['max_duration'],
-        'dialer_setting_msg': user_dialer_setting_msg(request.user),
         'all_voipcall_list': all_voipcall_list,
         'voipcall_list': voipcall_list,
-        'PAGE_SIZE': PAGE_SIZE,
         'CDR_REPORT_COLUMN_NAME': CDR_REPORT_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
-        'search_tag': search_tag,
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'start_date': start_date,
         'end_date': end_date,
         'action': action,
-        'AMD': settings.AMD,
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_cdr/voipcall_report.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -293,13 +267,11 @@ def export_voipcall_report(request):
 
         data = tablib.Dataset(*list_val, headers=headers)
 
-        if format == 'xls':
+        if format == Export_choice.XLS:
             response.write(data.xls)
-
-        if format == 'csv':
+        elif format == Export_choice.CSV:
             response.write(data.csv)
-
-        if format == 'json':
+        elif format == Export_choice.JSON:
             response.write(data.json)
 
     return response

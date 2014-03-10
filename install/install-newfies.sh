@@ -24,10 +24,11 @@
 #
 
 #Set branch to install develop / master
-BRANCH='master'
+BRANCH='develop'
 
 #Get Scripts dependencies
 cd /usr/src/
+rm newfies-dialer-functions.sh
 wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/newfies-dialer-functions.sh -O newfies-dialer-functions.sh
 #Include cdr-stats install functions
 source newfies-dialer-functions.sh
@@ -55,34 +56,46 @@ func_identify_os
 #Request the user to accept the license
 func_accept_license
 
-ExitFinish=0
+# ExitFinish=0
 
-while [ $ExitFinish -eq 0 ]; do
+# while [ $ExitFinish -eq 0 ]; do
 
-    # Show menu with Installation items
-    show_menu_newfies
+#     # Show menu with Installation items
+#     show_menu_newfies
+#     case $OPTION in
+#         1)
+#             func_install_frontend
+#             func_install_landing_page
+#             func_install_backend
+#             echo done
+#         ;;
+#         2)
+#             func_install_frontend
+#             func_install_landing_page
+#         ;;
+#         3)
+#             func_install_backend
+#         ;;
+#         0)
+#         ExitFinish=1
+#         ;;
+#         *)
+#     esac
+# done
 
-    case $OPTION in
-        1)
-            func_install_frontend
-            func_install_landing_page
-            func_install_backend
-            echo done
-        ;;
-        2)
-            func_install_frontend
-            func_install_landing_page
-        ;;
-        3)
-            func_install_backend
-        ;;
-        0)
-        ExitFinish=1
-        ;;
-        *)
-    esac
+#Don't ask and just install it all
+echo "========================================================================="
+echo ""
+echo "Newfies-Dialer installation will start now!"
+echo ""
+echo "Press Enter to continue or CTRL-C to exit"
+echo ""
+read INPUT
 
-done
+func_install_frontend
+func_install_landing_page
+func_install_backend
+
 
 # Clean the system
 #=================

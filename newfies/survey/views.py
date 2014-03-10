@@ -22,12 +22,10 @@ from django.db.models import Sum, Avg, Count
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.db.models.signals import post_save
-from dialer_campaign.models import Campaign
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from survey.models import Survey_template, Survey, Section_template, Section,\
-    Branching_template, Branching,\
-    Result, ResultAggregate
+    Branching_template, Branching, Result, ResultAggregate
 from survey.forms import SurveyForm, PlayMessageSectionForm,\
     MultipleChoiceSectionForm, RatingSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
@@ -37,8 +35,10 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME,\
     SEALED_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
-from common.common_functions import striplist, variable_value, ceil_strdate,\
+from survey.function_def import getaudio_acapela
+from django_lets_go.common_functions import striplist, variable_value, ceil_strdate,\
     get_pagination_vars
+from mod_utils.helper import Export_choice
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
@@ -52,26 +52,6 @@ testdebug = False
 redirect_url_to_survey_list = '/module/survey/'
 
 
-def getaudio_acapela(text, tts_language='en'):
-    """
-    Run Acapela Text2Speech and return audio url
-    """
-    import acapela
-    DIRECTORY = settings.MEDIA_ROOT + '/tts/'
-    if not tts_language:
-        tts_language = 'en'
-    tts_acapela = acapela.Acapela(
-        settings.ACCOUNT_LOGIN, settings.APPLICATION_LOGIN,
-        settings.APPLICATION_PASSWORD, settings.SERVICE_URL,
-        settings.QUALITY, DIRECTORY)
-    tts_acapela.prepare(
-        text, tts_language, settings.ACAPELA_GENDER,
-        settings.ACAPELA_INTONATION)
-    output_filename = tts_acapela.run()
-    audiofile = 'tts/' + output_filename
-    return audiofile
-
-
 @permission_required('survey.view_survey', login_url='/')
 @login_required
 def survey_list(request):
@@ -79,37 +59,26 @@ def survey_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/list.html
+        * ``template`` - survey/list.html
 
     **Logic Description**:
 
         * List all surveys which belong to the logged in user.
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
-    default_sort_field = 'id'
-    pagination_data =\
-        get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
-    sort_order = pagination_data['sort_order']
-
-    survey_list = Survey_template.objects\
-        .values('id', 'name', 'description', 'updated_date')\
-        .filter(user=request.user).order_by(sort_order)
-    template = 'frontend/survey/survey_list.html'
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
+    survey_list = Survey_template.objects.values('id', 'name', 'description', 'updated_date')\
+        .filter(user=request.user).order_by(pag_vars['sort_order'])
     data = {
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'SURVEY_COLUMN_NAME': SURVEY_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'msg': request.session.get('msg'),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('survey/survey_list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('survey.add_survey', login_url='/')
@@ -120,31 +89,23 @@ def survey_add(request):
     **Attributes**:
 
         * ``form`` - SurveyForm
-        * ``template`` - frontend/survey/change.html
+        * ``template`` - survey/change.html
 
     **Logic Description**:
 
         * Add a new survey which will belong to the logged in user
           via the SurveyForm & get redirected to the survey list
     """
-    form = SurveyForm()
-    if request.method == 'POST':
-        form = SurveyForm(request.POST)
-        if form.is_valid():
-            obj = form.save(commit=False)
-            obj.user = User.objects.get(username=request.user)
-            obj.save()
-            request.session["msg"] = _('"%(name)s" added.') %\
-                {'name': request.POST['name']}
-            return HttpResponseRedirect(
-                redirect_url_to_survey_list + '%s/' % (obj.id))
-    template = 'frontend/survey/survey_change.html'
+    form = SurveyForm(request.POST or None)
+    if form.is_valid():
+        obj = form.save(user=User.objects.get(username=request.user))
+        request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
+        return HttpResponseRedirect(redirect_url_to_survey_list + '%s/' % (obj.id))
     data = {
         'form': form,
         'action': 'add',
     }
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('survey/survey_change.html', data, context_instance=RequestContext(request))
 
 
 def delete_section_branching(survey):
@@ -176,11 +137,9 @@ def survey_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        survey = get_object_or_404(
-            Survey_template, pk=object_id, user=request.user)
+        survey = get_object_or_404(Survey_template, pk=object_id, user=request.user)
         # 1) delete survey
-        request.session["msg"] = _('"%(name)s" is deleted.')\
-            % {'name': survey.name}
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': survey.name}
         # delete sections as well as branching which are belong to survey
         delete_section_branching(survey)
         survey.delete()
@@ -190,14 +149,12 @@ def survey_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete survey
-            survey_list = Survey_template.objects.filter(user=request.user)\
-                .extra(where=['id IN (%s)' % values])
+            survey_list = Survey_template.objects.filter(user=request.user).extra(where=['id IN (%s)' % values])
             if survey_list:
                 for survey in survey_list:
                     delete_section_branching(survey)
 
-            request.session["msg"] = _('%(count)s survey(s) are deleted.')\
-                % {'count': survey_list.count()}
+            request.session["msg"] = _('%(count)s survey(s) are deleted.') % {'count': survey_list.count()}
             survey_list.delete()
         except:
             raise Http404
@@ -222,9 +179,10 @@ def section_add_form(request, Form, survey, section_type):
     """
     save_tag = False
     new_obj = ''
-    form = Form(request.user)
+
+    form = Form(request.user, initial={'survey': survey, 'type': section_type})
     if request.POST.get('add'):
-        form = Form(request.user, request.POST)
+        form = Form(request.user, request.POST, initial={'survey': survey, 'type': section_type})
         if form.is_valid():
             new_obj = form.save()
             request.session["msg"] = _('section is added successfully.')
@@ -234,8 +192,6 @@ def section_add_form(request, Form, survey, section_type):
 
     if request.POST.get('add') is None:
         request.session["err_msg"] = True
-        if int(request.POST.get('type')) == section_type:
-            form = Form(request.user, initial={'survey': survey, 'type': section_type})
 
     data = {
         'form': form,
@@ -252,7 +208,7 @@ def section_add(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/section_change.html
+        * ``template`` - survey/section_change.html
 
     **Logic Description**:
 
@@ -264,6 +220,7 @@ def section_add(request):
     form = PlayMessageSectionForm(request.user, initial={'survey': survey})
 
     request.session['err_msg'] = ''
+
     if request.method == 'POST':
         # Play message
         if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
@@ -316,11 +273,10 @@ def section_add(request):
 
         if form_data.get('save_tag'):
             return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
-                % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
+                                        % (form_data['new_obj'].survey_id, form_data['new_obj'].id))
         else:
             form = form_data['form']
 
-    template = 'frontend/survey/section_change.html'
     data = {
         'form': form,
         'survey_id': survey_id,
@@ -330,8 +286,7 @@ def section_add(request):
     }
     request.session["msg"] = ''
     request.session['err_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('survey/section_change.html', data, context_instance=RequestContext(request))
 
 
 def section_update_form(request, Form, section_type, section_instance):
@@ -351,9 +306,9 @@ def section_update_form(request, Form, section_type, section_instance):
 
     """
     save_tag = False
-    form = Form
+    form = Form(request.user, instance=section_instance, initial={'type': section_type})
     if request.POST.get('update'):
-        form = Form(request.user, request.POST, instance=section_instance)
+        form = Form(request.user, request.POST, instance=section_instance, initial={'type': section_type})
         if form.is_valid():
             form.save()
             request.session["msg"] = _('section updated.')
@@ -363,8 +318,6 @@ def section_update_form(request, Form, section_type, section_instance):
 
     if request.POST.get('update') is None:
         request.session["err_msg"] = True
-        form = Form(request.user,
-                    instance=section_instance, initial={'type': section_type})
 
     data = {
         'form': form,
@@ -380,49 +333,48 @@ def section_change(request, id):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/section_change.html
+        * ``template`` - survey/section_change.html
 
     **Logic Description**:
 
         * update section object via section_update_form function
     """
-    section = get_object_or_404(Section_template,
-                                pk=int(id),
-                                survey__user=request.user)
+    section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
+
     if (section.type == SECTION_TYPE.PLAY_MESSAGE
        or section.type == SECTION_TYPE.HANGUP_SECTION
        or section.type == SECTION_TYPE.DNC):
         #PLAY_MESSAGE, HANGUP_SECTION & DNC
-        form = PlayMessageSectionForm(request.user, instance=section)
+        form = PlayMessageSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.MULTI_CHOICE:
         #MULTI_CHOICE
-        form = MultipleChoiceSectionForm(request.user, instance=section)
+        form = MultipleChoiceSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.RATING_SECTION:
         #RATING_SECTION
-        form = RatingSectionForm(request.user, instance=section)
+        form = RatingSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.CAPTURE_DIGITS:
         #CAPTURE_DIGITS
-        form = CaptureDigitsSectionForm(request.user, instance=section)
+        form = CaptureDigitsSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.RECORD_MSG:
         #RECORD_MSG
-        form = RecordMessageSectionForm(request.user, instance=section)
+        form = RecordMessageSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.CONFERENCE:
         #CONFERENCE
-        form = ConferenceSectionForm(request.user, instance=section)
+        form = ConferenceSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.CALL_TRANSFER:
         #CALL_TRANSFER
-        form = CallTransferSectionForm(request.user, instance=section)
+        form = CallTransferSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.SMS:
         #SMS
-        form = SMSSectionForm(request.user, instance=section)
+        form = SMSSectionForm(request.user, request.POST or None, instance=section)
 
     request.session['err_msg'] = ''
 
     if request.method == 'POST' and request.POST.get('type'):
         # Play message or Hangup Section or DNC
         if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE or
-            int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION or
-            int(request.POST.get('type')) == SECTION_TYPE.DNC):
+           int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION or
+           int(request.POST.get('type')) == SECTION_TYPE.DNC):
             form_data = section_update_form(
                 request, PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
 
@@ -463,11 +415,10 @@ def section_change(request, id):
 
         if form_data.get('save_tag'):
             return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
-                % (section.survey_id, section.id))
+                                        % (section.survey_id, section.id))
         else:
             form = form_data['form']
 
-    template = 'frontend/survey/section_change.html'
     data = {
         'form': form,
         'survey_id': section.survey_id,
@@ -478,8 +429,7 @@ def section_change(request, id):
     }
     request.session["msg"] = ''
     request.session['err_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('survey/section_change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('survey.delete_section', login_url='/')
@@ -487,16 +437,13 @@ def section_change(request, id):
 def section_delete(request, id):
     """Delete section and branching records
     """
-    section = get_object_or_404(
-        Section_template, pk=int(id), survey__user=request.user)
+    section = get_object_or_404(Section_template, pk=id, survey__user=request.user)
     if request.GET.get('delete'):
         # perform delete
         survey_id = section.survey_id
 
         # Re-order section while deleting one section
-        section_list_reorder = Section_template.objects\
-            .filter(survey=section.survey)\
-            .exclude(pk=int(id))
+        section_list_reorder = Section_template.objects.filter(survey=section.survey).exclude(pk=id)
         for reordered in section_list_reorder:
             if section.order < reordered.order:
                 reordered.order = reordered.order - 1
@@ -512,13 +459,11 @@ def section_delete(request, id):
         request.session["msg"] = _('section is deleted successfully.')
         return HttpResponseRedirect(redirect_url_to_survey_list + '%s/' % (survey_id))
 
-    template = 'frontend/survey/section_delete_confirmation.html'
     data = {
         'section_type': section.type,
         'section_id': section.id,
     }
-    return render_to_response(template, data,
-        context_instance=RequestContext(request))
+    return render_to_response('survey/section_delete_confirmation.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('survey.change_section', login_url='/')
@@ -529,27 +474,18 @@ def section_script_change(request, id):
     **Attributes**:
 
         * ``form`` - ScriptForm
-        * ``template`` - frontend/survey/section_script_change.html
-
-    **Logic Description**:
-
-        *
+        * ``template`` - survey/section_script_change.html
     """
-    section = get_object_or_404(
-        Section_template, pk=int(id), survey__user=request.user)
-
-    form = ScriptForm(instance=section)
+    section = get_object_or_404(Section_template, pk=id, survey__user=request.user)
+    form = ScriptForm(request.POST or None, instance=section)
     if request.method == 'POST':
-        form = ScriptForm(request.POST, instance=section)
         if form.is_valid():
             obj = form.save()
             request.session["msg"] = _('script updated.')
-            return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
-                % (obj.survey_id, obj.id))
+            return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s' % (obj.survey_id, obj.id))
         else:
             request.session["err_msg"] = True
 
-    template = 'frontend/survey/section_script_change.html'
     data = {
         'form': form,
         'survey_id': section.survey_id,
@@ -559,8 +495,7 @@ def section_script_change(request, id):
     }
     request.session["msg"] = ''
     request.session['err_msg'] = ''
-    return render_to_response(template, data,
-        context_instance=RequestContext(request))
+    return render_to_response('survey/section_script_change.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -575,7 +510,7 @@ def section_script_play(request, id):
         * Create text file from section script
         * Convert text file into wav file
     """
-    section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
+    section = get_object_or_404(Section_template, pk=id, survey__user=request.user)
 
     if section.script:
         script_text = section.script
@@ -586,8 +521,7 @@ def section_script_play(request, id):
         else:
             #Flite
             script_hexdigest = hashlib.md5(script_text).hexdigest()
-            file_path = '%s/tts/flite_%s' % \
-                (settings.MEDIA_ROOT, script_hexdigest)
+            file_path = '%s/tts/flite_%s' % (settings.MEDIA_ROOT, script_hexdigest)
             audio_file_path = file_path + '.wav'
             text_file_path = file_path + '.txt'
 
@@ -599,8 +533,11 @@ def section_script_play(request, id):
 
                 #Convert file
                 conv = 'flite --setf duration_stretch=1.5 -voice awb -f %s -o %s' % (text_file_path, audio_file_path)
-                response = subprocess.Popen(conv.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-                (filetype, error) = response.communicate()
+                try:
+                    response = subprocess.Popen(conv.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+                    (filetype, error) = response.communicate()
+                except OSError:
+                    raise Http404
 
         if os.path.isfile(audio_file_path):
             response = HttpResponse()
@@ -621,7 +558,7 @@ def section_branch_add(request):
     **Attributes**:
 
         * ``form`` - BranchingForm
-        * ``template`` - frontend/survey/section_branch_change.html
+        * ``template`` - survey/section_branch_change.html
 
     **Logic Description**:
 
@@ -637,11 +574,9 @@ def section_branch_add(request):
         section = Section_template.objects.get(pk=int(section_id))
         section_survey_id = section.survey_id
         section_type = section.type
-        form = BranchingForm(
-            section.survey_id, section.id, initial={'section': section_id})
+        form = BranchingForm(section.survey_id, section.id, request.POST or None, initial={'section': section_id})
+
         if request.method == 'POST':
-            form = BranchingForm(
-                section.survey_id, section.id, request.POST)
             if form.is_valid():
                 form.save()
                 request.session["msg"] = _('branching is added successfully.')
@@ -651,7 +586,6 @@ def section_branch_add(request):
                 form._errors["keys"] = _("duplicate keys with goto.")
                 request.session["err_msg"] = True
 
-    template = 'frontend/survey/section_branch_change.html'
     data = {
         'form': form,
         'survey_id': section_survey_id,
@@ -663,8 +597,7 @@ def section_branch_add(request):
     }
     request.session["msg"] = ''
     request.session['err_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('survey/section_branch_change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('survey.change_branching', login_url='/')
@@ -675,7 +608,7 @@ def section_branch_change(request, id):
     **Attributes**:
 
         * ``form`` - BranchingForm
-        * ``template`` - frontend/survey/section_branch_change.html
+        * ``template`` - survey/section_branch_change.html
 
     **Logic Description**:
 
@@ -691,30 +624,24 @@ def section_branch_change(request, id):
         section_id = branching_obj.section_id
         branching_obj.delete()
         request.session["msg"] = _('branching is deleted successfully.')
-        return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
-                                    % (survey_id, section_id))
+        return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s' % (survey_id, section_id))
 
     branching = get_object_or_404(Branching_template, id=int(id),
                                   section__survey__user=request.user)
     form = BranchingForm(branching.section.survey_id,
                          branching.section_id,
+                         request.POST or None,
                          instance=branching)
     if request.method == 'POST':
-        form = BranchingForm(branching.section.survey_id,
-                             branching.section_id,
-                             request.POST,
-                             instance=branching)
         if form.is_valid():
             form.save()
             request.session["msg"] = _('branching updated.')
             return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
-                                        % (branching.section.survey_id,
-                                           branching.section_id))
+                                        % (branching.section.survey_id, branching.section_id))
         else:
             form._errors["keys"] = _("duplicate record keys with goto.")
             request.session["err_msg"] = True
 
-    template = 'frontend/survey/section_branch_change.html'
     data = {
         'form': form,
         'survey_id': branching.section.survey_id,
@@ -727,8 +654,7 @@ def section_branch_change(request, id):
     }
     request.session["msg"] = ''
     request.session['err_msg'] = ''
-    return render_to_response(template, data,
-        context_instance=RequestContext(request))
+    return render_to_response('survey/section_branch_change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('survey.change_survey', login_url='/')
@@ -740,37 +666,29 @@ def survey_change(request, object_id):
 
         * ``object_id`` - Selected survey object
         * ``form`` - SurveyForm
-        * ``template`` - frontend/survey/change.html
+        * ``template`` - survey/change.html
 
     **Logic Description**:
 
         * Update/delete selected survey from the survey list
           via SurveyForm & get redirected to survey list
     """
-    survey = get_object_or_404(
-        Survey_template, pk=object_id, user=request.user)
-
+    survey = get_object_or_404(Survey_template, pk=object_id, user=request.user)
     section_list = Section_template.objects.filter(survey=survey).order_by('order')
-    form = SurveyForm(instance=survey)
-    branching_list = Branching_template.objects\
-        .filter(section__survey=survey).order_by('id')
 
-    branching_section_list = \
-        branching_list.values_list('section_id', flat=True).distinct()
+    form = SurveyForm(request.POST or None, instance=survey)
+    branching_list = Branching_template.objects.filter(section__survey=survey).order_by('id')
 
-    if request.method == 'POST':
+    branching_section_list = branching_list.values_list('section_id', flat=True).distinct()
+
+    if form.is_valid():
         if request.POST.get('delete'):
             survey_del(request, object_id)
             return HttpResponseRedirect(redirect_url_to_survey_list)
         else:
-            form = SurveyForm(request.POST, request.user, instance=survey)
-            if form.is_valid():
-                form.save()
-                request.session["msg"] = _('"%(name)s" is updated.')\
-                    % {'name': request.POST['name']}
-                return HttpResponseRedirect(redirect_url_to_survey_list)
-
-    template = 'frontend/survey/survey_change.html'
+            form.save()
+            request.session["msg"] = _('"%(name)s" is updated.') % {'name': request.POST['name']}
+            return HttpResponseRedirect(redirect_url_to_survey_list)
 
     data = {
         'survey_obj_id': object_id,
@@ -783,32 +701,27 @@ def survey_change(request, object_id):
         'SECTION_TYPE': SECTION_TYPE,
     }
     request.session['msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('survey/survey_change.html', data, context_instance=RequestContext(request))
 
 
 @login_required
 def sealed_survey_view(request, object_id):
     """View sealed survey
 
+    **Attributes**:
+
+        * ``object_id`` - Selected survey object
+        * ``template`` - survey/sealed_survey_view.html
+
     **Logic Description**:
 
         * Update/delete selected survey from the survey list
           via SurveyForm & get redirected to survey list
     """
-    survey = get_object_or_404(
-        Survey, pk=object_id, user=request.user)
-
+    survey = get_object_or_404(Survey, pk=object_id, user=request.user)
     section_list = Section.objects.filter(survey=survey).order_by('order')
-
-    branching_list = Branching.objects\
-        .filter(section__survey=survey).order_by('id')
-
-    branching_section_list =\
-        branching_list.values_list('section_id', flat=True).distinct()
-
-    template = 'frontend/survey/sealed_survey_view.html'
-
+    branching_list = Branching.objects.filter(section__survey=survey).order_by('id')
+    branching_section_list = branching_list.values_list('section_id', flat=True).distinct()
     data = {
         'survey_obj_id': object_id,
         'survey': survey,
@@ -819,8 +732,7 @@ def sealed_survey_view(request, object_id):
         'msg': request.session.get('msg'),
         'SECTION_TYPE': SECTION_TYPE,
     }
-    return render_to_response(template, data,
-        context_instance=RequestContext(request))
+    return render_to_response('survey/sealed_survey_view.html', data, context_instance=RequestContext(request))
 
 
 def survey_cdr_daily_report(all_call_list):
@@ -831,8 +743,7 @@ def survey_cdr_daily_report(all_call_list):
     total_avg_duration = 0
 
     # Daily Survey VoIP call report
-    select_data =\
-        {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
+    select_data = {"starting_date": "SUBSTR(CAST(starting_date as CHAR(30)),1,10)"}
 
     # Get Total from VoIPCall table for Daily Call Report
     total_data = all_call_list.extra(select=select_data)\
@@ -862,11 +773,8 @@ def survey_cdr_daily_report(all_call_list):
 
 def get_survey_result(survey_result_kwargs):
     """Get survey result report from the selected Survey"""
-    survey_result = ResultAggregate.objects\
-        .filter(**survey_result_kwargs)\
-        .values('section__question', 'response', 'count')\
-        .order_by('section')
-
+    survey_result = ResultAggregate.objects.values('section__question', 'response', 'count')\
+        .filter(**survey_result_kwargs).order_by('section')
     return survey_result
 
 
@@ -882,8 +790,7 @@ def survey_audio_recording(audio_file):
             (file_url, os.path.basename(file_url))
         return player_string
     else:
-        return '<br/><span class="label label-important">%s</span>' %\
-               _('no recording')
+        return '<br/><span class="label label-important">%s</span>' % _('no recording')
 
 
 @permission_required('survey.view_survey_report', login_url='/')
@@ -894,7 +801,8 @@ def survey_report(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/survey_report.html
+        * ``template`` - survey/survey_report.html
+        * ``form`` - SurveyDetailReportForm
 
     **Logic Description**:
 
@@ -904,10 +812,9 @@ def survey_report(request):
     from_date = tday.strftime("%Y-%m-%d")
     to_date = tday.strftime("%Y-%m-%d")
 
-    form = SurveyDetailReportForm(request.user,
+    form = SurveyDetailReportForm(request.user, request.POST or None,
                                   initial={'from_date': from_date,
                                            'to_date': to_date})
-    search_tag = 1
     survey_result = ''
 
     survey_cdr_daily_data = {
@@ -918,70 +825,61 @@ def survey_report(request):
         'max_duration': '',
     }
 
-    sort_col_field_list = ['starting_date', 'phone_number', 'duration',
-                           'disposition', 'id']
-    default_sort_field = 'starting_date'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
-    sort_order = pagination_data['sort_order']
-    start_page = pagination_data['start_page']
-    end_page = pagination_data['end_page']
+    sort_col_field_list = ['starting_date', 'phone_number', 'duration', 'disposition', 'id']
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='starting_date')
 
     survey_id = ''
     action = 'tabs-1'
     campaign_obj = ''
-    if request.method == 'POST':
-        #search_tag = 1
-        form = SurveyDetailReportForm(request.user, request.POST)
-        if form.is_valid():
-            # set session var value
-            request.session['session_from_date'] = ''
-            request.session['session_to_date'] = ''
-            request.session['session_survey_id'] = ''
-            request.session['session_surveycalls_kwargs'] = ''
-            request.session['session_survey_cdr_daily_data'] = {}
+    rows = []
+    survey_id = ''
+    post_var_with_page = 0
+    if form.is_valid():
+        # set session var value
+        request.session['session_from_date'] = ''
+        request.session['session_to_date'] = ''
+        request.session['session_survey_id'] = ''
+        request.session['session_surveycalls_kwargs'] = ''
+        request.session['session_survey_cdr_daily_data'] = {}
+        post_var_with_page = 1
 
-            if "from_date" in request.POST:
-                # From
-                from_date = request.POST['from_date']
-                request.session['session_from_date'] = from_date
+        if "from_date" in request.POST:
+            # From
+            from_date = request.POST['from_date']
+            request.session['session_from_date'] = from_date
 
-            if "to_date" in request.POST:
-                # To
-                to_date = request.POST['to_date']
-                request.session['session_to_date'] = to_date
+        if "to_date" in request.POST:
+            # To
+            to_date = request.POST['to_date']
+            request.session['session_to_date'] = to_date
 
-            survey_id = variable_value(request, 'survey_id')
-            if survey_id:
-                request.session['session_survey_id'] = survey_id
-    else:
-        rows = []
-        survey_id = ''
+        survey_id = variable_value(request, 'survey_id')
+        if survey_id:
+            request.session['session_survey_id'] = survey_id
 
-    try:
-        if request.GET.get('page') or request.GET.get('sort_by'):
-            from_date = request.session.get('session_from_date')
-            to_date = request.session.get('session_to_date')
-            survey_id = request.session.get('session_survey_id')
-            search_tag = request.session.get('session_search_tag')
-        else:
-            from_date
-    except NameError:
+    if request.GET.get('page') or request.GET.get('sort_by'):
+        from_date = request.session.get('session_from_date')
+        to_date = request.session.get('session_to_date')
+        survey_id = request.session.get('session_survey_id')
+        post_var_with_page = 1
+        form = SurveyDetailReportForm(request.user, initial={'from_date': from_date,
+                                                             'to_date': to_date,
+                                                             'survey_id': survey_id})
+    if post_var_with_page == 0:
+        # default
+        # unset session var
         tday = datetime.utcnow().replace(tzinfo=utc)
         from_date = tday.strftime('%Y-%m-01')
         last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999).replace(tzinfo=utc) +
                     relativedelta(months=1)) -
                     relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)
-        search_tag = 0
 
         # unset session var value
         request.session['session_from_date'] = from_date
         request.session['session_to_date'] = to_date
         request.session['session_survey_id'] = ''
         request.session['session_surveycalls_kwargs'] = ''
-        request.session['session_search_tag'] = search_tag
 
     start_date = ceil_strdate(from_date, 'start')
     end_date = ceil_strdate(to_date, 'end')
@@ -1024,21 +922,18 @@ def survey_report(request):
             survey_cdr_daily_data = survey_cdr_daily_report(voipcall_list)
             request.session['session_survey_cdr_daily_data'] = survey_cdr_daily_data
 
-        rows = voipcall_list.order_by(sort_order)[start_page:end_page]
+        rows = voipcall_list.order_by(pag_vars['sort_order'])[pag_vars['start_page']:pag_vars['end_page']]
     except:
         rows = []
         if request.method == 'POST':
             request.session["err_msg"] = _('no campaign attached with survey.')
 
-    template = 'frontend/survey/survey_report.html'
-
     data = {
         'rows': rows,
         'all_call_list': all_call_list,
         'call_count': all_call_list.count() if all_call_list else 0,
-        'PAGE_SIZE': PAGE_SIZE,
         'SURVEY_CALL_RESULT_NAME': SURVEY_CALL_RESULT_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'total_data': survey_cdr_daily_data['total_data'],
         'total_duration': survey_cdr_daily_data['total_duration'],
         'total_calls': survey_cdr_daily_data['total_calls'],
@@ -1049,15 +944,13 @@ def survey_report(request):
         'form': form,
         'survey_result': survey_result,
         'action': action,
-        'search_tag': search_tag,
         'start_date': start_date,
         'end_date': end_date,
         'campaign_obj': campaign_obj,
     }
     request.session['msg'] = ''
     request.session['err_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('survey/survey_report.html', data, context_instance=RequestContext(request))
 
 
 @login_required
@@ -1077,12 +970,10 @@ def export_surveycall_report(request):
     response = HttpResponse(mimetype='text/' + format)
     # force download.
     response['Content-Disposition'] = 'attachment;filename=export.' + format
-    #writer = csv.writer(response)
     if request.session.get('session_surveycalls_kwargs'):
         kwargs = request.session.get('session_surveycalls_kwargs')
+        campaign_obj = kwargs['callrequest__campaign']
         qs = VoIPCall.objects.filter(**kwargs)
-        campaign_id = request.session['session_campaign_id']
-        campaign_obj = Campaign.objects.get(pk=campaign_id)
         column_list_base = ['starting_date', 'phone_number', 'duration', 'disposition']
         column_list = list(column_list_base)
 
@@ -1128,13 +1019,11 @@ def export_surveycall_report(request):
             result_row.append(result_row_list)
 
         data = tablib.Dataset(*result_row, headers=tuple(column_list))
-        if format == 'xls':
+        if format == Export_choice.XLS:
             response.write(data.xls)
-
-        if format == 'csv':
+        elif format == Export_choice.CSV:
             response.write(data.csv)
-
-        if format == 'json':
+        elif format == Export_choice.JSON:
             response.write(data.json)
     return response
 
@@ -1145,24 +1034,19 @@ def survey_campaign_result(request, id):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/survey_campaign_result.html
+        * ``template`` - survey/survey_campaign_result.html
 
     **Logic Description**:
 
         * List all survey result which belong to callrequest.
     """
-    result = Result.objects\
-        .filter(callrequest=VoIPCall.objects.get(pk=id).callrequest_id)\
-        .order_by('section')
-    template = 'frontend/survey/survey_campaign_result.html'
+    result = Result.objects.filter(callrequest=VoIPCall.objects.get(pk=id).callrequest_id).order_by('section')
     data = {
         'result': result,
-        'MEDIA_ROOT': settings.MEDIA_ROOT,
     }
     request.session['msg'] = ''
     request.session['err_msg'] = ''
-    return render_to_response(template, data,
-        context_instance=RequestContext(request))
+    return render_to_response('survey/survey_campaign_result.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('survey.export_survey', login_url='/')
@@ -1233,28 +1117,23 @@ def import_survey(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/import_survey.html
+        * ``template`` - survey/import_survey.html
         * ``form`` - SurveyFileImport
     """
-    form = SurveyFileImport()
+    form = SurveyFileImport(request.POST or None, request.FILES or None)
     section_row = []
     branching_row = []
     type_error_import_list = []
     if request.method == 'POST':
-        form = SurveyFileImport(request.POST, request.FILES)
         if form.is_valid():
-
             new_survey = Survey_template.objects.create(name=request.POST['name'],
                                                         user=request.user)
-
             records = csv.reader(request.FILES['survey_file'],
-                delimiter='|', quotechar='"')
-
+                                 delimiter='|', quotechar='"')
             new_old_section = {}
 
             # disconnect post_save_add_script signal from Section_template
             post_save.disconnect(post_save_add_script, sender=Section_template)
-
             # Read each row
             for row in records:
                 row = striplist(row)
@@ -1262,7 +1141,7 @@ def import_survey(request):
                     continue
 
                 #if length of row is 27, it's a section
-                if  len(row) == 27:
+                if len(row) == 27:
                     try:
                         # for section
                         section_template_obj = Section_template.objects.create(
@@ -1301,19 +1180,16 @@ def import_survey(request):
                         type_error_import_list.append(row)
 
                 #if length of row is 3, it's a branching
-                if  len(row) == 3:
+                if len(row) == 3:
                     new_section_id = ''
                     new_goto_section_id = ''
-
                     if row[1]:
                         new_section_id = new_old_section[int(row[1])]
-
                     if row[2]:
                         new_goto_section_id = new_old_section[int(row[2])]
 
-                    duplicate_count = \
-                        Branching_template.objects.filter(keys=row[0],
-                                                          section_id=new_section_id).count()
+                    duplicate_count = Branching_template.objects.filter(
+                        keys=row[0], section_id=new_section_id).count()
                     if duplicate_count == 0:
                         try:
                             Branching_template.objects.create(
@@ -1330,7 +1206,6 @@ def import_survey(request):
         else:
             request.session["err_msg"] = True
 
-    template = 'frontend/survey/import_survey.html'
     data = {
         'form': form,
         'section_row': section_row,
@@ -1339,8 +1214,7 @@ def import_survey(request):
         'err_msg': request.session.get('err_msg'),
     }
     request.session['err_msg'] = ''
-    return render_to_response(template, data,
-        context_instance=RequestContext(request))
+    return render_to_response('survey/import_survey.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('survey.view_sealed_survey', login_url='/')
@@ -1350,37 +1224,26 @@ def sealed_survey_list(request):
 
     **Attributes**:
 
-        * ``template`` - frontend/survey/sealed_survey_list.html
+        * ``template`` - survey/sealed_survey_list.html
 
     **Logic Description**:
 
         * List all sealed surveys which belong to the logged in user.
     """
     sort_col_field_list = ['id', 'name', 'updated_date', 'campaign']
-    default_sort_field = 'id'
-    pagination_data = get_pagination_vars(request, sort_col_field_list, default_sort_field)
-
-    #PAGE_NUMBER = pagination_data['PAGE_NUMBER']
-    PAGE_SIZE = pagination_data['PAGE_SIZE']
-    sort_order = pagination_data['sort_order']
-
-    survey_list = Survey.objects\
-        .values('id', 'name', 'description', 'updated_date', 'campaign__name')\
-        .filter(user=request.user).order_by(sort_order)
-
-    template = 'frontend/survey/sealed_survey_list.html'
+    pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
+    survey_list = Survey.objects.values('id', 'name', 'description', 'updated_date', 'campaign__name')\
+        .filter(user=request.user).order_by(pag_vars['sort_order'])
     data = {
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
-        'PAGE_SIZE': PAGE_SIZE,
         'SEALED_SURVEY_COLUMN_NAME': SEALED_SURVEY_COLUMN_NAME,
-        'col_name_with_order': pagination_data['col_name_with_order'],
+        'col_name_with_order': pag_vars['col_name_with_order'],
         'msg': request.session.get('msg'),
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('survey/sealed_survey_list.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('survey.seal_survey', login_url='/')
@@ -1389,27 +1252,20 @@ def seal_survey(request, object_id):
     """
         seal survey without campaign
     """
-    form = SealSurveyForm()
+    form = SealSurveyForm(request.POST or None)
     if request.method == 'POST':
-        form = SealSurveyForm(request.POST)
         if form.is_valid():
-            survey_template = get_object_or_404(
-                Survey_template, pk=object_id, user=request.user)
+            survey_template = get_object_or_404(Survey_template, pk=object_id, user=request.user)
             survey_template.name = request.POST.get('name', survey_template.name)
             survey_template.copy_survey_template()
-
             request.session['msg'] = '(%s) survey is sealed successfully' % survey_template.name
-
             return HttpResponseRedirect(redirect_url_to_survey_list)
         else:
             request.session['err_msg'] = True
-
-    template = 'frontend/survey/seal_survey.html'
     data = {
         'form': form,
         'err_msg': request.session.get('err_msg'),
         'object_id': object_id,
     }
     request.session['err_msg'] = ''
-    return render_to_response(template, data,
-                              context_instance=RequestContext(request))
+    return render_to_response('survey/seal_survey.html', data, context_instance=RequestContext(request))

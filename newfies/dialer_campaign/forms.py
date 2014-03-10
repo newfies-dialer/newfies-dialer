@@ -15,7 +15,6 @@
 from django import forms
 from django.conf import settings
 from django.forms.util import ErrorList
-from django.contrib.auth.models import User
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
 
@@ -27,9 +26,13 @@ from dialer_contact.forms import SearchForm
 #from agent.function_def import agent_list
 #from agent.models import AgentProfile, Agent
 from user_profile.models import UserProfile
-from common.common_functions import get_unique_code
+from django_lets_go.common_functions import get_unique_code
 from dnc.models import DNC
 from bootstrap3_datetime.widgets import DateTimePicker
+from mod_utils.forms import common_submit_buttons
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Fieldset, Field, HTML
+from crispy_forms.bootstrap import TabHolder, Tab
 
 
 def get_object_choices(available_objects):
@@ -50,20 +53,17 @@ def get_object_choices(available_objects):
 class CampaignForm(ModelForm):
     """Campaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
-    ds_user = forms.CharField(widget=forms.HiddenInput)
-
-    content_object = forms.ChoiceField(label=_("application"), )
-
-    selected_phonebook = forms.CharField(widget=forms.HiddenInput,
-                                         required=False)
-    selected_content_object = forms.CharField(widget=forms.HiddenInput,
-                                              required=False)
+    content_object = forms.ChoiceField(label=_("application").capitalize())
+    selected_phonebook = forms.CharField(widget=forms.HiddenInput, required=False)
+    selected_content_object = forms.CharField(widget=forms.HiddenInput, required=False)
 
     class Meta:
         model = Campaign
+        exclude = ('user', 'status', 'content_type', 'object_id')
+        """
         fields = ['campaign_code', 'name',
                   'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
-                  'content_object', # 'content_type', 'object_id'
+                  'content_object',  # 'content_type', 'object_id'
                   'extra_data', 'dnc', 'description', 'phonebook',
                   'frequency', 'callmaxduration', 'maxretry',
                   'intervalretry', 'calltimeout',
@@ -71,11 +71,12 @@ class CampaignForm(ModelForm):
                   'startingdate', 'expirationdate',
                   'daily_start_time', 'daily_stop_time',
                   'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                  'saturday', 'sunday', 'ds_user',
+                  'saturday', 'sunday',
                   'selected_phonebook', 'selected_content_object',
                   'voicemail', 'amd_behavior', 'voicemail_audiofile',
-                  'agent_script', 'lead_disposition', 'external_link'
+                  #'agent_script', 'lead_disposition', 'external_link'
                   ]
+        """
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
             'agent_script': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -87,35 +88,141 @@ class CampaignForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(CampaignForm, self).__init__(*args, **kwargs)
+        self.user = user
+        self.helper = FormHelper()
+        if self.instance.id:
+            form_action = common_submit_buttons(default_action='update')
+        else:
+            form_action = common_submit_buttons(default_action='add')
+
+        week_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
+        week_days_html = """<div class="row"><div class="col-md-12 col-xs-6">"""
+
+        for i in week_days:
+            week_days_html += """
+                <div class="col-md-3">
+                    <div class="btn-group" data-toggle="buttons">
+                        <label for="{{ form.%s.auto_id }}">{{ form.%s.label }}</label><br/>
+                        <div class="make-switch switch-small">
+                        {{ form.%s }}
+                        </div>
+                    </div>
+                </div>
+                """ % (i, i, i)
+        week_days_html += """</div></div>"""
+        css_class = 'col-md-6'
+
+        self.helper.layout = Layout(
+            Field('campaign_code'),
+            TabHolder(
+                Tab(_('general').title(),
+                    Div(
+                        Div(Fieldset(_('general settings').title()), css_class='col-md-12'),
+                        Div('name', css_class=css_class),
+                        Div('callerid', css_class=css_class),
+                        Div('caller_name', css_class=css_class),
+                        Div('content_object', css_class=css_class),
+                        css_class='row'
+                    ),
+                    Div(
+                        Div('extra_data', css_class=css_class),
+                        Div('dnc', css_class=css_class),
+                        Div('description', css_class=css_class),
+                        Div('phonebook', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab('Dialer',
+                    Div(
+                        Div(Fieldset(_('dialer settings').title()), css_class='col-md-12'),
+                        Div('aleg_gateway', css_class=css_class),
+                        Div('frequency', css_class=css_class),
+                        Div('callmaxduration', css_class=css_class),
+                        Div('maxretry', css_class=css_class),
+                        Div('intervalretry', css_class=css_class),
+                        Div('calltimeout', css_class=css_class),
+                        Div(Fieldset(_('dialer completion settings').title()), css_class='col-md-12'),
+                        Div('completion_maxretry', css_class=css_class),
+                        Div('completion_intervalretry', css_class=css_class),
+                        Div('sms_gateway', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+                Tab('schedule',
+                    Div(
+                        Div(Fieldset(_('schedule settings').title()), css_class='col-md-12'),
+                        Div(HTML("""<label>%s<label>""" % (_('week days').capitalize())), css_class="col-md-3"),
+                        HTML(week_days_html),
+                        HTML("""<div>&nbsp;</div>"""),
+                        Div('startingdate', css_class=css_class),
+                        Div('expirationdate', css_class=css_class),
+                        Div('daily_start_time', css_class=css_class),
+                        Div('daily_stop_time', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
+            ),
+        )
+
+        if settings.AMD:
+            amd_layot = Tab(_('voicemail').capitalize(),
+                            Div(
+                                Div(Fieldset(_('voicemail settings').title()), css_class='col-md-12'),
+                                Div(HTML("""
+                                    <div class="btn-group" data-toggle="buttons">
+                                        <label for="{{ form.voicemail.auto_id }}">{{ form.voicemail.label }}</label>
+                                        <br/>
+                                        <div class="make-switch switch-small">
+                                        {{ form.voicemail }}
+                                        </div>
+                                    </div>
+                                    """), css_class='col-md-12 col-xs-10'),
+                                HTML("""<div>&nbsp;</div>"""),
+                                Div('amd_behavior', css_class=css_class),
+                                Div('voicemail_audiofile', css_class=css_class),
+                                css_class='row'
+                            ),
+                            form_action,
+                            css_class='well'
+                            )
+            self.helper.layout[1].insert(2, amd_layot)
+        # hidden var
+        self.helper.layout.append(Field('selected_phonebook'))
+        self.helper.layout.append(Field('selected_content_object'))
+
         instance = getattr(self, 'instance', None)
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        exclude_list = ['voicemail', 'monday', 'tuesday', 'wednesday',
-                        'thursday', 'friday', 'saturday', 'sunday']
-
-        for i in self.fields.keyOrder:
-            if i not in exclude_list:
-                self.fields[i].widget.attrs['class'] = "form-control"
 
         if user:
-            self.fields['ds_user'].initial = user
             list_gw = []
             dnc_list = []
             phonebook_list = get_phonebook_list(user)
+            if not phonebook_list:
+                phonebook_list = []
+                phonebook_list.append(('', '---'))
+
             self.fields['phonebook'].choices = phonebook_list
             self.fields['phonebook'].initial = str(phonebook_list[0][0])
 
-            list = UserProfile.objects.get(user=user).userprofile_gateway.all()
-            gw_list = ((l.id, l.name) for l in list)
+            gateway_list = UserProfile.objects.get(user=user).userprofile_gateway.all()
+            gw_list = ((l.id, l.name) for l in gateway_list)
 
             dnc_list.append(('', '---'))
-            list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
-            for l in list:
+            dnc_obj_list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
+            for l in dnc_obj_list:
                 dnc_list.append((l[0], l[1]))
             self.fields['dnc'].choices = dnc_list
 
             for i in gw_list:
                 list_gw.append((i[0], i[1]))
-            self.fields['aleg_gateway'].choices = list_gw
+            self.fields['aleg_gateway'].choices = UserProfile.objects.get(user=user)\
+                .userprofile_gateway.all().values_list('id', 'name')
 
             if instance.has_been_duplicated:
                 from survey.models import Survey
@@ -134,29 +241,33 @@ class CampaignForm(ModelForm):
                 from survey.forms import get_audiofile_list
                 self.fields['voicemail_audiofile'].choices = get_audiofile_list(user)
 
-        # if campaign is running
-        if instance.status == CAMPAIGN_STATUS.START:
+        # If campaign is running or has been started
+        if instance.status == CAMPAIGN_STATUS.START or instance.has_been_started:
             self.fields['name'].widget.attrs['readonly'] = True
             self.fields['caller_name'].widget.attrs['readonly'] = True
             self.fields['callerid'].widget.attrs['readonly'] = True
             self.fields['extra_data'].widget.attrs['readonly'] = True
-            self.fields['phonebook'].widget.attrs['disabled'] = 'disabled'
+            self.fields['phonebook'].widget.attrs['readonly'] = True
             self.fields['lead_disposition'].widget.attrs['readonly'] = True
+            self.fields['dnc'].widget.attrs['readonly'] = True
+            self.fields['aleg_gateway'].widget.attrs['readonly'] = True
+            self.fields['sms_gateway'].widget.attrs['readonly'] = True
+            self.fields['voicemail'].widget.attrs['readonly'] = True
+            self.fields['amd_behavior'].widget.attrs['readonly'] = True
+            self.fields['voicemail_audiofile'].widget.attrs['readonly'] = True
 
             selected_phonebook = ''
             if instance.phonebook.all():
-                selected_phonebook = \
-                    ",".join(["%s" % (i.id) for i in instance.phonebook.all()])
+                selected_phonebook = ",".join(["%s" % (i.id) for i in instance.phonebook.all()])
             self.fields['selected_phonebook'].initial = selected_phonebook
 
             self.fields['content_object'].widget.attrs['disabled'] = 'disabled'
             self.fields['content_object'].required = False
-            self.fields['selected_content_object'].initial = "type:%s-id:%s" \
-                % (instance.content_type.id, instance.object_id)
+            self.fields['selected_content_object'].initial = "type:%s-id:%s" % \
+                (instance.content_type.id, instance.object_id)
 
     def clean(self):
         cleaned_data = self.cleaned_data
-        ds_user = cleaned_data.get("ds_user")
         frequency = cleaned_data.get('frequency')
         callmaxduration = cleaned_data.get('callmaxduration')
         maxretry = cleaned_data.get('maxretry')
@@ -168,7 +279,7 @@ class CampaignForm(ModelForm):
             self._errors['phonebook'] = ErrorList([msg])
             del self.cleaned_data['phonebook']
 
-        dialer_set = user_dialer_setting(User.objects.get(username=ds_user))
+        dialer_set = user_dialer_setting(self.user)
         if dialer_set:
             if frequency > dialer_set.max_frequency:
                 msg = _('maximum frequency limit of %d exceeded.' % dialer_set.max_frequency)
@@ -203,9 +314,19 @@ class DuplicateCampaignForm(ModelForm):
 
     def __init__(self, user, *args, **kwargs):
         super(DuplicateCampaignForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        css_class = 'col-md-12'
+        self.helper.layout = Layout(
+            Field('campaign_code'),
+            Div(
+                Div('name', css_class=css_class),
+                Div('phonebook', css_class=css_class),
+                css_class='row'
+            )
+        )
         self.fields['campaign_code'].initial = get_unique_code(length=5)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+
         if user:
             phonebook_list = get_phonebook_list(user)
             self.fields['phonebook'].choices = phonebook_list
@@ -239,15 +360,13 @@ class SubscriberReportForm(SearchForm):
 
     def __init__(self, *args, **kwargs):
         super(SubscriberReportForm, self).__init__(*args, **kwargs)
-        campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
-        self.fields['campaign_id'].choices = campaign_list
-        list = []
-        list.append((0, ''))
+        camp_list = []
+        camp_list.append((0, _('all').upper()))
         campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
         for i in campaign_list:
-            list.append((i[0], i[1]))
+            camp_list.append((i[0], i[1]))
 
-        self.fields['campaign_id'].choices = list
+        self.fields['campaign_id'].choices = camp_list
 
 
 class SubscriberAdminForm(ModelForm):
@@ -268,25 +387,32 @@ for i in SUBSCRIBER_STATUS:
 
 class SubscriberSearchForm(SearchForm):
     """Search Form on Subscriber List"""
-    campaign_id = forms.ChoiceField(label=_('campaign'), required=True)
-    agent_id = forms.ChoiceField(label=_('agent'), required=True)
-    status = forms.ChoiceField(label=_('status'),
-                               choices=subscriber_status_list,
-                               required=False)
+    campaign_id = forms.ChoiceField(label=_('campaign').capitalize(), required=True)
+    #agent_id = forms.ChoiceField(label=_('agent'), required=True)
+    status = forms.ChoiceField(label=_('status').capitalize(), choices=subscriber_status_list, required=False)
 
     def __init__(self, user, *args, **kwargs):
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        css_class = 'col-md-3'
+        self.helper.layout = Layout(
+            Div(
+                Div('from_date', css_class=css_class),
+                Div('to_date', css_class=css_class),
+                Div('campaign_id', css_class=css_class),
+                Div('status', css_class=css_class),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
         super(SubscriberSearchForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
         if user:
             camp_list = []
             camp_list.append((0, _('all').upper()))
             if user.is_superuser:
-                campaign_list = Campaign.objects.values_list('id', 'name') \
-                    .all().order_by('-id')
+                campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
             else:
-                campaign_list = Campaign.objects.values_list('id', 'name') \
-                    .filter(user=user).order_by('-id')
+                campaign_list = Campaign.objects.values_list('id', 'name').filter(user=user).order_by('-id')
 
             for i in campaign_list:
                 camp_list.append((i[0], i[1]))
@@ -294,16 +420,13 @@ class SubscriberSearchForm(SearchForm):
             """
             agent_list = []
             agent_list.append((0, _('all').upper()))
-
             if user.is_superuser:
-                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True) \
-                    .filter(is_agent=True)
+                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True).filter(is_agent=True)
             else:
-                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True) \
+                agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True)\
                     .filter(is_agent=True, manager=user)
 
-            a_list = Agent.objects.values_list('id', 'username') \
-                .filter(id__in=agent_profile_list)
+            a_list = Agent.objects.values_list('id', 'username').filter(id__in=agent_profile_list)
             for i in a_list:
                 agent_list.append((i[0], i[1]))
             self.fields['agent_id'].choices = agent_list
@@ -318,12 +441,24 @@ for i in CAMPAIGN_STATUS:
 
 
 class CampaignSearchForm(forms.Form):
-    phonebook_id = forms.ChoiceField(label=_("phonebook"), )
-    status = forms.ChoiceField(label=_("status"), choices=campaign_status_list, )
+    phonebook_id = forms.ChoiceField(label=_("phonebook").capitalize(), )
+    status = forms.ChoiceField(label=_("status").capitalize(), choices=campaign_status_list)
 
     def __init__(self, user, *args, **kwargs):
         super(CampaignSearchForm, self).__init__(*args, **kwargs)
-        for i in self.fields.keyOrder:
-            self.fields[i].widget.attrs['class'] = "form-control"
+        self.helper = FormHelper()
+        self.helper.form_class = 'well'
+        css_class = 'col-md-3'
+        self.helper.layout = Layout(
+            Div(
+                Div('phonebook_id', css_class=css_class),
+                Div('status', css_class=css_class),
+                css_class='row'
+            ),
+        )
+        common_submit_buttons(self.helper.layout, 'search')
+
         if user:
-            self.fields['phonebook_id'].choices = get_phonebook_list(user)
+            result_list = get_phonebook_list(user)
+            result_list.insert(0, ('0', _('ALL')))
+            self.fields['phonebook_id'].choices = result_list

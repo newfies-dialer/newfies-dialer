@@ -33,9 +33,9 @@ from django.utils.timezone import utc
 #    os.path.abspath('../../newfies-dialer/newfies/') + '/dialer_contact/fixtures/import_contacts.txt', 'r'
 #)
 
-csv_file = open(
-    settings.APPLICATION_DIR + '/dialer_contact/fixtures/import_contacts.txt', 'r'
-)
+#csv_file = open(
+#    settings.APPLICATION_DIR + '/dialer_contact/fixtures/import_contacts.txt', 'r'
+#)
 
 
 class DialerContactView(BaseAuthenticatedClient):
@@ -186,7 +186,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = phonebook_del(request, 0)
-        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.status_code, 302)
 
     def test_contact_view_list(self):
         """Test Function to check Contact list"""
@@ -326,15 +326,13 @@ class DialerContactModel(TestCase):
             last_name='Gun',
         )
         self.contact.save()
-        self.assertEqual(self.contact.__unicode__(), u'123456789 (Gun)')
+        self.assertEqual(self.contact.__unicode__(), u'123456789')
         self.assertEqual(self.contact.contact_name(), 'Tom Gun')
 
     def test_phonebook_form(self):
         self.assertEqual(self.phonebook.name, 'test_phonebook')
         form = PhonebookForm({'name': 'sample_phonebook'})
-        obj = form.save(commit=False)
-        obj.user = self.user
-        obj.save()
+        form.save(user=self.user)
 
         form = PhonebookForm(instance=self.phonebook)
         self.assertTrue(isinstance(form.instance, Phonebook))

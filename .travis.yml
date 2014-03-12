@@ -2,7 +2,7 @@ language: python
 python:
   - "2.7"
 env:
-  - DJANGO=1.6.1
+  - DJANGO=1.6.2
 services:
   - redis
 install:

@@ -26,7 +26,8 @@ from django.utils.timezone import utc
 import random
 import bisect
 
-VOIPCALL_DISPOSITION = [('ANSWER', 80), ('BUSY', 10), ('NOANSWER', 20), ('CANCEL', 5), ('CONGESTION', 4), ('FAILED', 10)]
+VOIPCALL_DISPOSITION = [
+    ('ANSWER', 80), ('BUSY', 10), ('NOANSWER', 20), ('CANCEL', 5), ('CONGESTION', 4), ('FAILED', 10)]
 SURVEY_RESULT_QUE = [
     'Please rank our support from 1 to 9, 1 being low and 9 being high',
     'Were you satisfy by the technical expertise of our agent, '
@@ -136,8 +137,8 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
                             #response=response,
                             count=response_count)
         """
-    print _("Callrequests and CDRs created : %(count)s" %
-        {'count': no_of_record})
+
+    print _("Callrequests and CDRs created : %(count)s" % {'count': no_of_record})
 
 
 class Command(BaseCommand):

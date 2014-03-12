@@ -440,11 +440,13 @@ func_install_pip_deps(){
     echo "Install basic requirements..."
     for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
     do
+        echo "pip install $line"
         pip install $line
     done
     echo "Install Django requirements..."
     for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt | grep -v \#)
     do
+        echo "pip install $line"
         pip install $line --allow-all-external --allow-unverified django-admin-tools
     done
 
@@ -664,7 +666,7 @@ func_celery_supervisor(){
         ;;
     esac
     /etc/init.d/supervisor stop
-    sleep 1
+    sleep 2
     /etc/init.d/supervisor start
 }
 
@@ -781,14 +783,6 @@ func_install_backend() {
     echo "This will install Newfies-Dialer Backend, Celery & Redis on your server"
     echo "Press Enter to continue or CTRL-C to exit"
     read TEMP
-
-    IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
-    IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
-    if [ -z "$IPADDR" ]; then
-        clear
-        echo "we have not detected your IP address automatically, please enter it manually"
-        read IPADDR
-    fi
 
     #Create directory for pid file
     mkdir -p /var/run/celery

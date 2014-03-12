@@ -162,7 +162,7 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = calendar_setting_change(request, 1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_calendar_setting_view_delete(self):
         """Test Function to check delete calendar_setting"""
@@ -302,7 +302,7 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = calendar_change(request, 1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_calendar_view_delete(self):
         """Test Function to check delete calendar"""
@@ -377,7 +377,7 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = event_change(request, 1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_event_view_delete(self):
         """Test Function to check delete event"""
@@ -452,7 +452,7 @@ class AppointmentCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = alarm_change(request, 1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_alarm_view_delete(self):
         """Test Function to check delete alarm"""

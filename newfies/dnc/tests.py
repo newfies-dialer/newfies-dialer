@@ -22,12 +22,16 @@ from dnc.views import dnc_add, dnc_change, dnc_list, dnc_del,\
 from dnc.forms import DNCListForm, DNCContactForm, DNCContactSearchForm,\
     DNCContact_fileImport
 from django_lets_go.utils import BaseAuthenticatedClient
-#import os
+"""
+import os
 
-#csv_file = open(
-#    os.path.abspath('../../newfies-dialer/newfies/') + '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
-#)
-
+csv_file = open(
+    os.path.abspath('../../newfies-dialer/newfies/') + '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
+)
+new_file = open(
+    os.path.abspath('../../newfies-dialer/newfies/') + '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
+)
+"""
 csv_file = open(
     settings.APPLICATION_DIR + '/dnc/fixtures/import_dnc_contact_10.txt', 'r'
 )
@@ -124,7 +128,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = dnc_change(request, 1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_dnc_view_delete(self):
         """Test Function to check delete dnc"""
@@ -193,7 +197,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = dnc_contact_change(request, 1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_dnc_contact_view_delete(self):
         """Test Function to check delete dnc contact"""
@@ -270,9 +274,7 @@ class DNCModel(TestCase):
     def test_dnc_form(self):
         self.assertEqual(self.dnc.name, 'test_dnc')
         form = DNCListForm({'name': 'sample_dnc'})
-        obj = form.save(commit=False)
-        obj.user = self.user
-        obj.save()
+        form.save(user=self.user)
 
         form = DNCListForm(instance=self.dnc)
         self.assertTrue(isinstance(form.instance, DNC))

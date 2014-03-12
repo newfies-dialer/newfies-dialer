@@ -476,13 +476,6 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_branch_change(request, branching_obj.id)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/section/branch/'+str(branching_obj.id)+'/',
-            {}, follow=True)
-        request.user = self.user
-        request.session = {}
-        response = section_branch_change(request, branching_obj.id)
-        self.assertEqual(response.status_code, 200)
-
         request = self.factory.post('/section/branch/'+str(branching_obj.id)+'/?delete=true',
             {'keys': 1, 'section': self.section,
              'goto': self.goto}, follow=True)

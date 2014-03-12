@@ -138,7 +138,7 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         request.user = self.user
         request.session = {}
         response = sms_campaign_change(request, 1)
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 200)
 
     def test_sms_campaign_view_delete(self):
         """Test Function to check delete sms campaign"""

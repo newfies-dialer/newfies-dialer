@@ -25,9 +25,6 @@ do
     pip install $line --use-mirrors --allow-all-external --allow-unverified django-admin-tools
 done
 
-echo "uninstall django-dajaxice==0.5.5"
-pip uninstall django-dajaxice==0.5.5
-
 echo "Install Dev requirements..."
 for line in $(cat install/requirements/dev-requirements.txt | grep -v \#)
 do

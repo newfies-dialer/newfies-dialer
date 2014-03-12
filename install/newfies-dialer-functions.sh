@@ -450,9 +450,6 @@ func_install_pip_deps(){
         pip install $line --allow-all-external --allow-unverified django-admin-tools
     done
 
-    echo "uninstall django-dajaxice==0.5.5"
-    pip uninstall django-dajaxice==0.5.5 -y
-
     #Install Python ESL / this needs to be done within the virtualenv
     cd /usr/src/freeswitch/libs/esl
     make pymod-install

@@ -451,7 +451,7 @@ func_install_pip_deps(){
     done
 
     echo "uninstall django-dajaxice==0.5.5"
-    pip uninstall django-dajaxice==0.5.5
+    pip uninstall django-dajaxice==0.5.5 -y
 
     #Install Python ESL / this needs to be done within the virtualenv
     cd /usr/src/freeswitch/libs/esl
@@ -669,7 +669,7 @@ func_celery_supervisor(){
         ;;
     esac
     /etc/init.d/supervisor stop
-    sleep 1
+    sleep 2
     /etc/init.d/supervisor start
 }
 
@@ -786,14 +786,6 @@ func_install_backend() {
     echo "This will install Newfies-Dialer Backend, Celery & Redis on your server"
     echo "Press Enter to continue or CTRL-C to exit"
     read TEMP
-
-    IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
-    IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
-    if [ -z "$IPADDR" ]; then
-        clear
-        echo "we have not detected your IP address automatically, please enter it manually"
-        read IPADDR
-    fi
 
     #Create directory for pid file
     mkdir -p /var/run/celery

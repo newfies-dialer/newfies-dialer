@@ -440,13 +440,18 @@ func_install_pip_deps(){
     echo "Install basic requirements..."
     for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
     do
+        echo "pip install $line"
         pip install $line
     done
     echo "Install Django requirements..."
     for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt | grep -v \#)
     do
+        echo "pip install $line"
         pip install $line --allow-all-external --allow-unverified django-admin-tools
     done
+
+    echo "uninstall django-dajaxice==0.5.5"
+    pip uninstall django-dajaxice==0.5.5
 
     #Install Python ESL / this needs to be done within the virtualenv
     cd /usr/src/freeswitch/libs/esl

@@ -2,7 +2,7 @@
 {% load i18n crispy_forms_tags %}
 
 {% block content_header %}
-    <h1>{{ action }} {% trans "calendar settings"|title %}<small></small></h1>
+    <h1>{{ action|capfirst }} {% trans "calendar settings"|title %}<small></small></h1>
 {% endblock %}
 
 {% block content %}

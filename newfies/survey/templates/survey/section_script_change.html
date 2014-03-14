@@ -39,11 +39,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <a id="id_close_x" class="close" data-dismiss="modal" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</a>
-                    <h3>{% if action == 'update' %}
-                        {% trans "update"|title %}
-                    {% else %}
-                        {% trans "add"|title %}
-                    {% endif %} {% trans "section script"|title %}
+                    <h3>{{ action|capfirst }} {% trans "section script"|title %}
                         <small></small>
                     </h3>
                 </div>

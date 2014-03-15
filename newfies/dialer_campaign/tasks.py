@@ -154,7 +154,7 @@ class pending_call_processing(Task):
                 logger.error("Error : Contact not authorized")
                 elem_camp_subscriber.status = SUBSCRIBER_STATUS.NOT_AUTHORIZED
                 elem_camp_subscriber.save()
-                return True
+                continue
             #Verify that the contact is not in the DNC list
             if obj_campaign.dnc:
                 res_dnc = DNCContact.objects.filter(dnc_id=obj_campaign.dnc_id, phone_number=phone_number)
@@ -162,7 +162,7 @@ class pending_call_processing(Task):
                     logger.error("Contact (%s) in DNC list" % phone_number)
                     elem_camp_subscriber.status = SUBSCRIBER_STATUS.NOT_AUTHORIZED
                     elem_camp_subscriber.save()
-                    return True
+                    continue
                 else:
                     logger.debug("Contact (%s) not in DNC list" % phone_number)
 

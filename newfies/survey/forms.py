@@ -670,6 +670,7 @@ class SealSurveyForm(SurveyFileImport):
     """General Form : SealSurveyForm"""
     def __init__(self, *args, **kwargs):
         super(SealSurveyForm, self).__init__(*args, **kwargs)
+        self.fields.keyOrder = ['name']
         self.helper = FormHelper()
         self.helper.form_tag = False
         css_class = 'col-md-12'

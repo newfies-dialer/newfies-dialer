@@ -265,10 +265,11 @@ class EventForm(ModelForm):
                 Div('title', css_class=css_class),
                 Div('calendar', css_class=css_class),
                 Div('creator', css_class=css_class),
+                Div('created_on', css_class=css_class),
                 Div('rule', css_class=css_class),
+                Div('end_recurring_period', css_class=css_class),
                 Div('start', css_class=css_class),
                 Div('end', css_class=css_class),
-                Div('end_recurring_period', css_class=css_class),
                 css_class='row'
             ),
             Div(
@@ -277,6 +278,11 @@ class EventForm(ModelForm):
                 css_class='row'
             ),
         )
+        if self.instance.id:
+            common_submit_buttons(self.helper.layout, 'update')
+        else:
+            common_submit_buttons(self.helper.layout)
+
         calendar_user_list = get_calendar_user_id_list(user)
         self.fields['calendar'].choices = get_calendar_list(calendar_user_list)
         self.fields['creator'].choices = get_calendar_user_list(calendar_user_list)

@@ -40,12 +40,7 @@
             <div class="modal-content">
                 <div class="modal-header">
                     <button id="id_close_x" type="button" class="close" data-dismiss="modal" aria-hidden="true" {% if err_msg %}onclick="back_to();"{% endif %}>&times;</button>
-                    <h4>
-                        {% if action == 'update' %}
-                            {% trans "update"|title %}
-                        {% else %}
-                            {% trans "add"|title %}
-                        {% endif %} {% trans "section"|title %}
+                    <h4>{{ action|capfirst }} {% trans "section"|title %}
                     </h4>
                 </div>
 

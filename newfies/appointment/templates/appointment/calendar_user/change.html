@@ -2,13 +2,7 @@
 {% load i18n common_tags utils_tags crispy_forms_tags %}
 
 {% block content_header %}
-    <h1>
-        {% if action == 'update' %}
-            {% trans "update"|title %}
-        {% else %}
-            {% trans "add"|title %}
-        {% endif %}
-        {% trans "calendar user"|title %}
+    <h1>{{ action|capfirst }} {% trans "calendar user"|title %}
         <br/>
         <small>{% trans "users authorized to create calendars, events and alarms"|capfirst %}</small>
     </h1>

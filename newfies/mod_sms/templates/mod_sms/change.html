@@ -6,11 +6,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>{% if action == "update" %}
-            {% trans "update"|title %}
-        {% else %}
-            {% trans "add"|title %}
-        {% endif %} {% trans "SMS" %} {% trans "campaign"|title %}
+    <h1>{{ action|capfirst }} {% trans "SMS" %} {% trans "campaign"|title %}
         <small>{% trans "set SMS campaign parameters"|capfirst %}</small>
     </h1>
 {% endblock %}

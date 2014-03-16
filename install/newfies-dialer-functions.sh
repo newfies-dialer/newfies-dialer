@@ -731,6 +731,7 @@ func_install_frontend(){
     python manage.py migrate dialer_settings
     python manage.py migrate dialer_contact
     python manage.py migrate sms
+    python manage.py migrate dnc
     python manage.py migrate dialer_campaign
     python manage.py migrate
 

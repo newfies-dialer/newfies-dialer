@@ -6,15 +6,7 @@
 {% endblock %}
 
 {% block content_header %}
-    <h1>
-        {% if action == 'update' %}
-            {% trans "update"|title %}
-        {% else %}
-            {% trans "add"|title %}
-        {% endif %}
-        {% trans "event"|title %}
-        <small></small>
-    </h1>
+    <h1>{{ action|capfirst }} {% trans "event"|title %} <small></small></h1>
 {% endblock %}
 
 {% block content %}

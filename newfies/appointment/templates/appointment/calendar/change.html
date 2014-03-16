@@ -2,15 +2,7 @@
 {% load i18n crispy_forms_tags %}
 
 {% block content_header %}
-    <h1>
-        {% if action == 'update' %}
-            {% trans "update"|title %}
-        {% else %}
-            {% trans "add"|title %}
-        {% endif %}
-        {% trans "calendar"|title %}
-        <small></small>
-    </h1>
+    <h1>{{ action|capfirst }} {% trans "calendar"|title %} <small></small></h1>
 {% endblock %}
 
 {% block content %}

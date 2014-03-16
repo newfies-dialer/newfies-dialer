@@ -7,13 +7,7 @@
 
 {% block content_header %}
     <h1>
-        {% if action == 'update' %}
-            {% trans "update"|title %}
-        {% else %}
-            {% trans "add"|title %}
-        {% endif %}
-        {% trans "alarm"|title %}
-        <small></small>
+        {{ action|capfirst }} {% trans "alarm"|title %}<small></small>
     </h1>
 {% endblock %}
 

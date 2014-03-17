@@ -1165,15 +1165,14 @@ def import_survey(request):
                             rating_laps=int(row[17]) if row[17] else None,
                             validate_number=row[18],
                             number_digits=int(row[19]) if row[19] else None,
-                            min_number=row[20],
-                            max_number=row[21],
-                            phonenumber=row[22],
-                            conference=row[23],
+                            min_number=row[20] if row[20] else None,
+                            max_number=row[21] if row[21] else None,
+                            phonenumber=row[22] if row[22] else None,
+                            conference=row[23] if row[23] else None,
                             completed=True if row[24] == 'True' else False,
                             invalid_audiofile_id=int(row[25]) if row[25] else None,
                             survey=new_survey,
                         )
-
                         new_old_section[int(row[26])] = section_template_obj.id
                         section_row.append(row)
                     except:

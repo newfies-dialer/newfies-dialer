@@ -179,8 +179,8 @@ function FSMCall:playnode(current_node)
         self.debugger:msg("INFO", "Speak : "..mscript)
         if mscript and mscript ~= '' then
             local tts_file = tts(mscript, TTS_DIR)
+            self.debugger:msg("DEBUG", "Speak TTS : "..tostring(tts_file))
             if tts_file then
-                self.debugger:msg("DEBUG", "Speak TTS : "..tts_file)
                 self.session:streamFile(tts_file)
             end
         end
@@ -277,6 +277,7 @@ function FSMCall:getdigitnode(current_node)
         i = i + 1
         self.debugger:msg("DEBUG", ">> Retries counter = "..i.." - Max Retries = "..retries)
         invalid = invalid_audiofile
+        digits = ''
 
         if current_node.type == RATING_SECTION or current_node.type == CAPTURE_DIGITS then
             -- for those 2 types we don't need invalid audio as we will handle this manually
@@ -299,10 +300,11 @@ function FSMCall:getdigitnode(current_node)
             mscript = tag_replace(current_node.script, self.db.contact)
 
             tts_file = tts(mscript, TTS_DIR)
-            self.debugger:msg("INFO", "Play TTS : "..tts_file)
-
-            digits = self.session:playAndGetDigits(1, number_digits, retries,
-                timeout*1000, '#', tts_file, invalid, '['..dtmf_filter..']|#')
+            self.debugger:msg("INFO", "Play TTS : "..tostring(tts_file))
+            if tts_file then
+                digits = self.session:playAndGetDigits(1, number_digits, retries,
+                    timeout*1000, '#', tts_file, invalid, '['..dtmf_filter..']|#')
+            end
         end
 
         self.debugger:msg("INFO", "RESULT playAndGetDigits : "..digits)
@@ -584,6 +586,9 @@ function FSMCall:next_node()
         self.record_filename = "recording-"..current_node.id.."-"..id_recordfile..".wav"
         record_filepath = FS_RECORDING_PATH..self.record_filename
         self.debugger:msg("INFO", "STARTING RECORDING : "..record_filepath)
+        -- <action application="set" data="playback_terminators=#"/>
+        --session:setVariable("playback_terminators", "#")
+        session:execute("set", "playback_terminators=#")
         result_rec = self.session:recordFile(record_filepath, max_len_secs, silence_threshold, silence_secs)
         record_dur = audio_lenght(record_filepath)
         self.debugger:msg("DEBUG", "RECORDING DONE DURATION: "..record_dur)

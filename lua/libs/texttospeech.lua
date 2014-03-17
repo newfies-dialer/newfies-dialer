@@ -205,7 +205,7 @@ if false then
     output_file = tts(text, TTS_DIR)
     print("output_file => "..output_file)
 
-    text = "Second attempt!"
+    text = ""
     output_file = tts(text, TTS_DIR)
     print("output_file => "..output_file)
 

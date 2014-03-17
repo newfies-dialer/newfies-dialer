@@ -266,10 +266,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
                               used_gateway]
         """
         # get the response object, this can be used as a stream.
-        format = request.GET['format']
-        response = HttpResponse(mimetype='text/' + format)
+        format_type = request.GET['format']
+        response = HttpResponse(mimetype='text/%s' % format_type)
         # force download.
-        response['Content-Disposition'] = 'attachment;filename=export.' + format
+        response['Content-Disposition'] = 'attachment;filename=export.%s' % format_type
 
         # super(VoIPCall_ReportAdmin, self).queryset(request)
         kwargs = request.session['admin_voipcall_record_kwargs']
@@ -288,7 +288,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             amd_status = i.amd_status if settings.AMD else ''
 
             starting_date = i.starting_date
-            if format == 'json':
+            if format_type == Export_choice.JSON or format_type == Export_choice.XLS:
                 starting_date = str(i.starting_date)
 
             list_val.append((i.user.username,
@@ -304,11 +304,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
         data = tablib.Dataset(*list_val, headers=headers)
 
-        if format == Export_choice.XLS:
+        if format_type == Export_choice.XLS:
             response.write(data.xls)
-        elif format == Export_choice.CSV:
+        elif format_type == Export_choice.CSV:
             response.write(data.csv)
-        elif format == Export_choice.JSON:
+        elif format_type == Export_choice.JSON:
             response.write(data.json)
 
         return response

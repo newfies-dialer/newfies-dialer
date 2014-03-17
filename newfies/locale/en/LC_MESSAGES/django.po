@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-03 13:35+0100\n"
+"POT-Creation-Date: 2014-03-16 23:39+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -30,7 +30,7 @@ msgstr ""
 #: callcenter/models.py:97 dialer_audio/constants.py:20
 #: dialer_campaign/constants.py:52 dialer_campaign/models.py:169
 #: dialer_contact/constants.py:39 dialer_contact/models.py:39
-#: dialer_contact/models.py:166 dialer_gateway/models.py:53
+#: dialer_contact/models.py:167 dialer_gateway/models.py:53
 #: dialer_settings/models.py:38 dnc/constants.py:21 dnc/models.py:33
 #: mod_sms/constants.py:40 mod_sms/models.py:111 survey/constants.py:33
 #: survey/constants.py:47 survey/models.py:55
@@ -40,8 +40,8 @@ msgstr ""
 #: agent/constants.py:21 agent/models.py:51 dialer_campaign/constants.py:67
 #: dialer_campaign/models.py:473 dialer_contact/constants.py:48
 #: dialer_contact/models.py:121
-#: dialer_contact/templates/dialer_contact/contact/change.html:10
-#: dnc/templates/dnc/dnc_contact/change.html:11
+#: dialer_contact/templates/dialer_contact/contact/change.html:5
+#: dnc/templates/dnc/dnc_contact/change.html:5
 #: frontend/templates/frontend/bootstrap_menu.html:43 mod_sms/models.py:230
 #: mod_sms/models.py:422
 #: templates/admin/dialer_contact/contact/import_contact.html:20
@@ -203,9 +203,9 @@ msgstr ""
 
 #: agent/templates/agent/agent_detail.html:10
 #: agent/templates/agent/agent_detail.html:16
-#: frontend/templates/frontend/master.html:133
-#: frontend/templates/frontend/master.html:139
-#: frontend/templates/frontend/master.html:160
+#: frontend/templates/frontend/master.html:134
+#: frontend/templates/frontend/master.html:140
+#: frontend/templates/frontend/master.html:161
 #: user_profile/templates/user_profile/check_user_phone_number.html:5
 #: user_profile/templates/user_profile/check_user_phone_number.html:11
 #: user_profile/templates/user_profile/user_account.html:5
@@ -247,62 +247,28 @@ msgid "logout"
 msgstr ""
 
 #: agent/templates/agent/change.html:7
-#: appointment/templates/appointment/alarm/change.html:11
-#: appointment/templates/appointment/calendar/change.html:7
-#: appointment/templates/appointment/calendar_setting/change.html:7
-#: appointment/templates/appointment/calendar_user/change.html:7
-#: appointment/templates/appointment/event/change.html:11
-#: callcenter/templates/callcenter/queue/change.html:7
-#: callcenter/templates/callcenter/tier/change.html:7
-#: dialer_audio/templates/dialer_audio/audio_change.html:11
-#: dialer_campaign/templates/dialer_campaign/campaign/change.html:10
-#: dialer_contact/templates/dialer_contact/contact/change.html:7
-#: dialer_contact/templates/dialer_contact/phonebook/change.html:7
-#: dnc/templates/dnc/dnc_contact/change.html:7
-#: dnc/templates/dnc/dnc_list/change.html:7
 #: frontend/templates/frontend/common_submit_buttons.html:7
-#: mod_sms/templates/mod_sms/change.html:10 mod_utils/forms.py:68
-#: survey/templates/survey/section_branch_change.html:70
-#: survey/templates/survey/section_change.html:45
-#: survey/templates/survey/section_change.html:63
-#: survey/templates/survey/section_script_change.html:43
-#: survey/templates/survey/section_script_change.html:58
-#: survey/templates/survey/survey_change.html:17
+#: mod_utils/forms.py:68 survey/templates/survey/section_branch_change.html:70
+#: survey/templates/survey/section_change.html:58
+#: survey/templates/survey/section_script_change.html:54
 msgid "update"
 msgstr ""
 
 #: agent/templates/agent/change.html:9 agent/templates/agent/list.html:23
-#: appointment/templates/appointment/alarm/change.html:13
 #: appointment/templates/appointment/alarm/list.html:25
-#: appointment/templates/appointment/calendar/change.html:9
 #: appointment/templates/appointment/calendar/list.html:23
-#: appointment/templates/appointment/calendar_setting/change.html:9
 #: appointment/templates/appointment/calendar_setting/list.html:25
-#: appointment/templates/appointment/calendar_user/change.html:9
 #: appointment/templates/appointment/calendar_user/list.html:24
-#: appointment/templates/appointment/event/change.html:13
 #: appointment/templates/appointment/event/list.html:35
-#: callcenter/templates/callcenter/queue/change.html:9
 #: callcenter/templates/callcenter/queue/list.html:25
-#: callcenter/templates/callcenter/tier/change.html:9
 #: callcenter/templates/callcenter/tier/list.html:25
-#: dialer_audio/templates/dialer_audio/audio_change.html:13
 #: dialer_audio/templates/dialer_audio/audio_list.html:29
-#: dialer_campaign/templates/dialer_campaign/campaign/change.html:12
 #: dialer_campaign/templates/dialer_campaign/campaign/list.html:35
-#: dialer_contact/templates/dialer_contact/contact/change.html:9
 #: dialer_contact/templates/dialer_contact/contact/list.html:28
-#: dialer_contact/templates/dialer_contact/phonebook/change.html:9
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:23
-#: dnc/templates/dnc/dnc_contact/change.html:9
 #: dnc/templates/dnc/dnc_contact/list.html:31
-#: dnc/templates/dnc/dnc_list/change.html:9
 #: dnc/templates/dnc/dnc_list/list.html:24
-#: mod_sms/templates/mod_sms/change.html:12
 #: mod_sms/templates/mod_sms/list.html:32
-#: survey/templates/survey/section_change.html:47
-#: survey/templates/survey/section_script_change.html:45
-#: survey/templates/survey/survey_change.html:19
 #: survey/templates/survey/survey_list.html:27
 #: templates/admin_tools/dashboard/modules/app_list.html:26
 #: templates/admin_tools/dashboard/modules/model_list.html:13
@@ -501,7 +467,7 @@ msgstr ""
 #: appointment/constants.py:42
 #: mod_sms/templates/mod_sms/sms_campaign_duplicate.html:41
 #: survey/templates/survey/sealed_survey_view.html:199
-#: survey/templates/survey/survey_change.html:270
+#: survey/templates/survey/survey_change.html:264
 msgid "sms"
 msgstr ""
 
@@ -534,7 +500,7 @@ msgstr ""
 #: appointment/models/alarms.py:39 dialer_campaign/models.py:332
 #: frontend/templates/frontend/bootstrap_menu.html:57 survey/forms.py:606
 #: survey/models.py:136 survey/models.py:341 survey/models.py:405
-#: survey/templates/survey/survey_change.html:21
+#: survey/templates/survey/survey_change.html:15
 #: survey/templates/survey/survey_list.html:5
 msgid "survey"
 msgstr ""
@@ -552,10 +518,10 @@ msgstr ""
 msgid "Calendar Setting"
 msgstr ""
 
-#: appointment/constants.py:73 appointment/forms.py:290
+#: appointment/constants.py:73 appointment/forms.py:296
 #: appointment/models/calendars.py:23 appointment/models/events.py:32
 #: appointment/models/users.py:105
-#: appointment/templates/appointment/calendar_user/change.html:11
+#: appointment/templates/appointment/calendar_user/change.html:5
 #: appointment/templates/appointment/calendar_user/list.html:5
 msgid "calendar user"
 msgstr ""
@@ -583,9 +549,9 @@ msgstr ""
 msgid "end period"
 msgstr ""
 
-#: appointment/constants.py:83 appointment/forms.py:289
+#: appointment/constants.py:83 appointment/forms.py:295
 #: appointment/models/calendars.py:35
-#: appointment/templates/appointment/calendar/change.html:11
+#: appointment/templates/appointment/calendar/change.html:5
 msgid "calendar"
 msgstr ""
 
@@ -609,7 +575,7 @@ msgstr ""
 
 #: appointment/constants.py:95 appointment/models/events.py:60
 #: appointment/models/events.py:258
-#: appointment/templates/appointment/event/change.html:15
+#: appointment/templates/appointment/event/change.html:9
 msgid "event"
 msgstr ""
 
@@ -629,20 +595,20 @@ msgstr ""
 msgid "event settings"
 msgstr ""
 
-#: appointment/forms.py:287 dialer_campaign/constants.py:53
+#: appointment/forms.py:293 dialer_campaign/constants.py:53
 #: dialer_cdr/constants.py:65 mod_sms/constants.py:41
 msgid "start date"
 msgstr ""
 
-#: appointment/forms.py:333 dialer_campaign/forms.py:120 mod_sms/forms.py:100
+#: appointment/forms.py:339 dialer_campaign/forms.py:120 mod_sms/forms.py:100
 msgid "general settings"
 msgstr ""
 
-#: appointment/forms.py:348
+#: appointment/forms.py:354
 msgid "alarm settings"
 msgstr ""
 
-#: appointment/forms.py:360
+#: appointment/forms.py:366
 msgid "result settings"
 msgstr ""
 
@@ -753,7 +719,7 @@ msgstr ""
 #: frontend/templates/frontend/bootstrap_menu.html:26
 #: frontend/templates/frontend/bootstrap_menu.html:37
 #: frontend/templates/frontend/bootstrap_side_menu.html:70
-#: mod_sms/templates/mod_sms/change.html:13
+#: mod_sms/templates/mod_sms/change.html:9
 #: mod_sms/templates/mod_sms/list.html:5
 #: mod_sms/templates/mod_sms/sms_dashboard.html:5
 #: mod_sms/templates/mod_sms/sms_dashboard.html:17
@@ -808,7 +774,7 @@ msgid "can see Alarm list"
 msgstr ""
 
 #: appointment/models/alarms.py:75 appointment/models/alarms.py:145
-#: appointment/templates/appointment/alarm/change.html:15
+#: appointment/templates/appointment/alarm/change.html:10
 msgid "alarm"
 msgstr ""
 
@@ -1056,7 +1022,7 @@ msgid "Calender setting"
 msgstr ""
 
 #: appointment/models/users.py:94 appointment/models/users.py:137
-#: appointment/templates/appointment/calendar_setting/change.html:11
+#: appointment/templates/appointment/calendar_setting/change.html:5
 #: appointment/templates/appointment/calendar_setting/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:42
 msgid "calendar settings"
@@ -1115,7 +1081,7 @@ msgstr ""
 msgid "delete calendar setting"
 msgstr ""
 
-#: appointment/templates/appointment/calendar_user/change.html:13
+#: appointment/templates/appointment/calendar_user/change.html:7
 msgid "users authorized to create calendars, events and alarms"
 msgstr ""
 
@@ -1157,7 +1123,7 @@ msgstr ""
 
 #: callcenter/constants.py:39 callcenter/models.py:140
 #: callcenter/models.py:177
-#: callcenter/templates/callcenter/queue/change.html:11
+#: callcenter/templates/callcenter/queue/change.html:5
 #: callcenter/templates/callcenter/queue/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:32
 msgid "queue"
@@ -1247,8 +1213,7 @@ msgstr ""
 msgid "can see Tier list"
 msgstr ""
 
-#: callcenter/models.py:191
-#: callcenter/templates/callcenter/tier/change.html:11
+#: callcenter/models.py:191 callcenter/templates/callcenter/tier/change.html:5
 #: callcenter/templates/callcenter/tier/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:35
 msgid "tier"
@@ -1294,7 +1259,7 @@ msgstr ""
 msgid "\"%(id)s\" tier is updated."
 msgstr ""
 
-#: callcenter/templates/callcenter/queue/change.html:12
+#: callcenter/templates/callcenter/queue/change.html:5
 msgid "it is belong to manager"
 msgstr ""
 
@@ -1310,7 +1275,7 @@ msgstr ""
 msgid "delete queue"
 msgstr ""
 
-#: callcenter/templates/callcenter/tier/change.html:12
+#: callcenter/templates/callcenter/tier/change.html:5
 msgid "tier belongs to manager"
 msgstr ""
 
@@ -1485,13 +1450,13 @@ msgstr ""
 msgid "%(count)s audio(s) are deleted."
 msgstr ""
 
-#: dialer_audio/templates/dialer_audio/audio_change.html:15
+#: dialer_audio/templates/dialer_audio/audio_change.html:9
 #: survey/templates/survey/sealed_survey_view.html:67
-#: survey/templates/survey/survey_change.html:128
+#: survey/templates/survey/survey_change.html:122
 msgid "audio file"
 msgstr ""
 
-#: dialer_audio/templates/dialer_audio/audio_change.html:16
+#: dialer_audio/templates/dialer_audio/audio_change.html:9
 msgid "upload audio to be used in voice applications"
 msgstr ""
 
@@ -1595,6 +1560,7 @@ msgstr ""
 #: survey/templates/survey/sealed_survey_view.html:137
 #: survey/templates/survey/sealed_survey_view.html:143
 #: survey/templates/survey/sealed_survey_view.html:149
+#: survey/templates/survey/survey_change.html:159
 #: survey/templates/survey/survey_change.html:165
 #: survey/templates/survey/survey_change.html:171
 #: survey/templates/survey/survey_change.html:177
@@ -1604,7 +1570,6 @@ msgstr ""
 #: survey/templates/survey/survey_change.html:201
 #: survey/templates/survey/survey_change.html:207
 #: survey/templates/survey/survey_change.html:213
-#: survey/templates/survey/survey_change.html:219
 msgid "key"
 msgstr ""
 
@@ -1708,7 +1673,7 @@ msgstr ""
 #: dialer_cdr/forms.py:43 dialer_cdr/forms.py:87 frontend/forms.py:50
 #: frontend/templates/frontend/bootstrap_menu.html:31
 #: frontend/templates/frontend/bootstrap_menu.html:37
-#: mod_sms/templates/mod_sms/change.html:13
+#: mod_sms/templates/mod_sms/change.html:9
 #: mod_sms/templates/mod_sms/list.html:5
 #: mod_sms/templates/mod_sms/sms_campaign_duplicate.html:41
 #: survey/constants.py:49 survey/forms.py:582 survey/models.py:125
@@ -1726,7 +1691,7 @@ msgstr ""
 #: dialer_campaign/forms.py:444 dialer_contact/constants.py:47
 #: dialer_contact/forms.py:65 dialer_contact/forms.py:177
 #: dialer_contact/models.py:52 dialer_contact/models.py:88
-#: dialer_contact/templates/dialer_contact/phonebook/change.html:11
+#: dialer_contact/templates/dialer_contact/phonebook/change.html:5
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:5
 #: mod_sms/forms.py:266
 msgid "phonebook"
@@ -2063,12 +2028,12 @@ msgstr ""
 #: survey/templates/survey/seal_survey.html:54
 #: survey/templates/survey/section_branch_change.html:73
 #: survey/templates/survey/section_branch_change.html:74
-#: survey/templates/survey/section_change.html:66
-#: survey/templates/survey/section_change.html:67
-#: survey/templates/survey/section_script_change.html:61
-#: survey/templates/survey/section_script_change.html:62
-#: survey/templates/survey/survey_change.html:34
-#: survey/templates/survey/survey_change.html:35
+#: survey/templates/survey/section_change.html:61
+#: survey/templates/survey/section_change.html:62
+#: survey/templates/survey/section_script_change.html:57
+#: survey/templates/survey/section_script_change.html:58
+#: survey/templates/survey/survey_change.html:28
+#: survey/templates/survey/survey_change.html:29
 msgid "save"
 msgstr ""
 
@@ -2078,20 +2043,20 @@ msgstr ""
 #: survey/templates/survey/import_survey.html:54
 #: survey/templates/survey/seal_survey.html:56
 #: survey/templates/survey/section_branch_change.html:78
-#: survey/templates/survey/section_change.html:71
+#: survey/templates/survey/section_change.html:66
 #: survey/templates/survey/section_delete_confirmation.html:16
-#: survey/templates/survey/section_script_change.html:65
+#: survey/templates/survey/section_script_change.html:61
 #: survey/templates/survey/survey_campaign_result.html:45
 msgid "close"
 msgstr ""
 
-#: dialer_campaign/templates/dialer_campaign/campaign/change.html:13
+#: dialer_campaign/templates/dialer_campaign/campaign/change.html:9
 #: dialer_campaign/templates/dialer_campaign/campaign/list.html:5
 #: frontend/templates/frontend/bootstrap_menu.html:34
 msgid "voice campaign"
 msgstr ""
 
-#: dialer_campaign/templates/dialer_campaign/campaign/change.html:14
+#: dialer_campaign/templates/dialer_campaign/campaign/change.html:10
 msgid "set voice campaign parameters"
 msgstr ""
 
@@ -2429,12 +2394,12 @@ msgstr ""
 msgid "VoIP calls"
 msgstr ""
 
-#: dialer_cdr/management/commands/create_callrequest_cdr.py:59
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:60
 #, python-format
 msgid "Can't find this Campaign : %(id)s"
 msgstr ""
 
-#: dialer_cdr/management/commands/create_callrequest_cdr.py:139
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:141
 #, python-format
 msgid "Callrequests and CDRs created : %(count)s"
 msgstr ""
@@ -2684,7 +2649,7 @@ msgid ""
 "codes"
 msgstr ""
 
-#: dialer_contact/templates/dialer_contact/contact/change.html:11
+#: dialer_contact/templates/dialer_contact/contact/change.html:6
 msgid "add contact details"
 msgstr ""
 
@@ -2736,7 +2701,7 @@ msgstr ""
 msgid "delete contact"
 msgstr ""
 
-#: dialer_contact/templates/dialer_contact/phonebook/change.html:12
+#: dialer_contact/templates/dialer_contact/phonebook/change.html:6
 msgid "contacts are stored in phonebooks"
 msgstr ""
 
@@ -2975,8 +2940,8 @@ msgstr ""
 msgid "dialer setting"
 msgstr ""
 
-#: dnc/constants.py:28 dnc/templates/dnc/dnc_contact/change.html:11
-#: dnc/templates/dnc/dnc_list/change.html:11
+#: dnc/constants.py:28 dnc/templates/dnc/dnc_contact/change.html:5
+#: dnc/templates/dnc/dnc_list/change.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:19
 #: frontend/templates/frontend/bootstrap_side_menu.html:22
 msgid "dnc"
@@ -3072,7 +3037,7 @@ msgstr ""
 msgid "Duplicate DNC contact(s) %(dup_contact_cnt)s are not inserted!!"
 msgstr ""
 
-#: dnc/templates/dnc/dnc_contact/change.html:12
+#: dnc/templates/dnc/dnc_contact/change.html:6
 msgid "add DNC contact details"
 msgstr ""
 
@@ -3112,7 +3077,7 @@ msgstr ""
 msgid "delete DNC contact"
 msgstr ""
 
-#: dnc/templates/dnc/dnc_list/change.html:12
+#: dnc/templates/dnc/dnc_list/change.html:6
 msgid "DNC contacts are stored in dnc list"
 msgstr ""
 
@@ -3295,7 +3260,7 @@ msgid "open search"
 msgstr ""
 
 #: frontend/templates/frontend/common_submit_buttons.html:10
-#: mod_utils/forms.py:68 survey/templates/survey/survey_change.html:311
+#: mod_utils/forms.py:68 survey/templates/survey/survey_change.html:305
 msgid "delete"
 msgstr ""
 
@@ -3339,7 +3304,7 @@ msgstr ""
 #: frontend/templates/frontend/index.html:20
 msgid ""
 "Star2Billing S.L. offers consultancy including installation, training and "
-"customisation on Newfies-Dialer"
+"customisation on Newfies-Dialer."
 msgstr ""
 
 #: frontend/templates/frontend/index.html:21
@@ -3380,39 +3345,39 @@ msgstr ""
 msgid "side menu"
 msgstr ""
 
-#: frontend/templates/frontend/master.html:115
+#: frontend/templates/frontend/master.html:116
 msgid "display language"
 msgstr ""
 
-#: frontend/templates/frontend/master.html:139
+#: frontend/templates/frontend/master.html:140
 msgid "please login by clicking on login button"
 msgstr ""
 
-#: frontend/templates/frontend/master.html:148
+#: frontend/templates/frontend/master.html:149
 msgid "voice broadcasting solution"
 msgstr ""
 
-#: frontend/templates/frontend/master.html:162
+#: frontend/templates/frontend/master.html:163
 msgid "to send notification to administrator"
 msgstr ""
 
-#: frontend/templates/frontend/master.html:162
+#: frontend/templates/frontend/master.html:163
 msgid "click here"
 msgstr ""
 
-#: frontend/templates/frontend/master.html:164
+#: frontend/templates/frontend/master.html:165
 msgid "(notification sent)"
 msgstr ""
 
-#: frontend/templates/frontend/master.html:173
+#: frontend/templates/frontend/master.html:174
 msgid "Notification"
 msgstr ""
 
-#: frontend/templates/frontend/master.html:180
+#: frontend/templates/frontend/master.html:181
 msgid "error"
 msgstr ""
 
-#: frontend/templates/frontend/master.html:187
+#: frontend/templates/frontend/master.html:188
 msgid "info"
 msgstr ""
 
@@ -3507,15 +3472,29 @@ msgid "change my password"
 msgstr ""
 
 #: mod_registration/templates/mod_registration/password_reset_complete.html:4
-#: mod_registration/templates/mod_registration/password_reset_complete.html:12
+#: mod_registration/templates/mod_registration/password_reset_complete.html:13
 msgid "password reset complete"
 msgstr ""
 
-#: mod_registration/templates/mod_registration/password_reset_complete.html:15
+#: mod_registration/templates/mod_registration/password_reset_complete.html:7
+#: mod_registration/templates/mod_registration/password_reset_confirm.html:7
+#: mod_registration/templates/mod_registration/password_reset_done.html:7
+#: mod_registration/templates/mod_registration/password_reset_form.html:7
+msgid "Forgotten your password?"
+msgstr ""
+
+#: mod_registration/templates/mod_registration/password_reset_complete.html:7
+#: mod_registration/templates/mod_registration/password_reset_confirm.html:7
+#: mod_registration/templates/mod_registration/password_reset_done.html:7
+#: mod_registration/templates/mod_registration/password_reset_form.html:7
+msgid "reset and request a new password"
+msgstr ""
+
+#: mod_registration/templates/mod_registration/password_reset_complete.html:16
 msgid "your password has been set. you may go ahead and log in now."
 msgstr ""
 
-#: mod_registration/templates/mod_registration/password_reset_complete.html:18
+#: mod_registration/templates/mod_registration/password_reset_complete.html:19
 msgid "log in"
 msgstr ""
 
@@ -3532,25 +3511,23 @@ msgstr ""
 msgid "please enter your new password twice for verification."
 msgstr ""
 
-#: mod_registration/templates/mod_registration/password_reset_confirm.html:21
+#: mod_registration/templates/mod_registration/password_reset_confirm.html:19
 msgid "password reset unsuccessful"
 msgstr ""
 
-#: mod_registration/templates/mod_registration/password_reset_confirm.html:25
+#: mod_registration/templates/mod_registration/password_reset_confirm.html:23
 msgid ""
 "the password reset link was invalid, possibly because it has already been "
 "used. please request a new password reset."
 msgstr ""
 
 #: mod_registration/templates/mod_registration/password_reset_done.html:4
-#: mod_registration/templates/mod_registration/password_reset_done.html:8
+#: mod_registration/templates/mod_registration/password_reset_done.html:12
 msgid "password reset successful"
 msgstr ""
 
-#: mod_registration/templates/mod_registration/password_reset_done.html:10
-msgid ""
-"we've e-mailed you instructions for setting your password to the e-mail "
-"address you submitted. you should be receiving it shortly."
+#: mod_registration/templates/mod_registration/password_reset_done.html:14
+msgid "we've e-mailed you instructions for setting a new password."
 msgstr ""
 
 #: mod_registration/templates/mod_registration/password_reset_email.html:5
@@ -3573,11 +3550,7 @@ msgstr ""
 msgid "The %(site_name)s team"
 msgstr ""
 
-#: mod_registration/templates/mod_registration/password_reset_form.html:10
-msgid "forgotten your password?"
-msgstr ""
-
-#: mod_registration/templates/mod_registration/password_reset_form.html:11
+#: mod_registration/templates/mod_registration/password_reset_form.html:12
 msgid ""
 "enter your e-mail address below, and we'll e-mail instructions for setting a "
 "new one."
@@ -3609,7 +3582,7 @@ msgid "fail"
 msgstr ""
 
 #: mod_sms/constants.py:33 survey/templates/survey/sealed_survey_view.html:51
-#: survey/templates/survey/survey_change.html:57
+#: survey/templates/survey/survey_change.html:51
 msgid "complete"
 msgstr ""
 
@@ -3683,7 +3656,7 @@ msgstr ""
 msgid "SMS Campaign"
 msgstr ""
 
-#: mod_sms/forms.py:210 mod_utils/forms.py:90
+#: mod_sms/forms.py:210 mod_utils/forms.py:93
 #: templates/admin/dialer_campaign/subscriber/subscriber_report.html:39
 #: templates/admin/dialer_cdr/voipcall/change_list.html:39
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:39
@@ -3833,7 +3806,7 @@ msgstr ""
 msgid "Create new SMSs for a given sms_campaign_id"
 msgstr ""
 
-#: mod_sms/templates/mod_sms/change.html:14
+#: mod_sms/templates/mod_sms/change.html:10
 msgid "set SMS campaign parameters"
 msgstr ""
 
@@ -4044,7 +4017,7 @@ msgid "hangup"
 msgstr ""
 
 #: survey/constants.py:27 survey/templates/survey/sealed_survey_view.html:190
-#: survey/templates/survey/survey_change.html:261
+#: survey/templates/survey/survey_change.html:255
 msgid "conference"
 msgstr ""
 
@@ -4058,20 +4031,20 @@ msgstr ""
 
 #: survey/forms.py:79 survey/forms.py:103 survey/forms.py:558
 #: survey/templates/survey/sealed_survey_view.html:222
-#: survey/templates/survey/survey_change.html:297
+#: survey/templates/survey/survey_change.html:291
 msgid "any other key"
 msgstr ""
 
 #: survey/forms.py:80 survey/forms.py:104 survey/forms.py:558
 #: survey/templates/survey/sealed_survey_view.html:224
-#: survey/templates/survey/survey_change.html:299
+#: survey/templates/survey/survey_change.html:293
 msgid "invalid"
 msgstr ""
 
 #: survey/forms.py:168 survey/forms.py:366 survey/forms.py:401
 #: survey/forms.py:435 survey/forms.py:471
 #: survey/templates/survey/sealed_survey_view.html:60
-#: survey/templates/survey/survey_change.html:121
+#: survey/templates/survey/survey_change.html:115
 msgid "section title"
 msgstr ""
 
@@ -4147,7 +4120,7 @@ msgstr ""
 
 #: survey/models.py:229 survey/templates/survey/sealed_survey_view.html:58
 #: survey/templates/survey/survey_campaign_result.html:17
-#: survey/templates/survey/survey_change.html:119
+#: survey/templates/survey/survey_change.html:113
 #: survey/templates/survey/survey_report.html:57
 msgid "question"
 msgstr ""
@@ -4175,7 +4148,7 @@ msgid "retries until valid input"
 msgstr ""
 
 #: survey/models.py:240 survey/templates/survey/sealed_survey_view.html:226
-#: survey/templates/survey/survey_change.html:301
+#: survey/templates/survey/survey_change.html:295
 #: user_profile/templates/user_profile/user_dialer_settings.html:18
 msgid "timeout"
 msgstr ""
@@ -4205,7 +4178,7 @@ msgid "maximum"
 msgstr ""
 
 #: survey/models.py:280 survey/templates/survey/sealed_survey_view.html:181
-#: survey/templates/survey/survey_change.html:252
+#: survey/templates/survey/survey_change.html:246
 msgid "Phone Number / SIP URI"
 msgstr ""
 
@@ -4251,7 +4224,7 @@ msgstr ""
 
 #: survey/models.py:484 survey/models.py:485
 #: survey/templates/survey/sealed_survey_view.html:207
-#: survey/templates/survey/survey_change.html:282
+#: survey/templates/survey/survey_change.html:276
 msgid "branching"
 msgstr ""
 
@@ -4336,52 +4309,52 @@ msgid "list sealed surveys"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:77
-#: survey/templates/survey/survey_change.html:137
+#: survey/templates/survey/survey_change.html:131
 msgid "script"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:89
-#: survey/templates/survey/survey_change.html:159
+#: survey/templates/survey/survey_change.html:153
 msgid "key associations"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:164
-#: survey/templates/survey/survey_change.html:235
+#: survey/templates/survey/survey_change.html:229
 msgid "from 1 to"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:172
-#: survey/templates/survey/survey_change.html:243
+#: survey/templates/survey/survey_change.html:237
 msgid "number is between"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:172
-#: survey/templates/survey/survey_change.html:243
+#: survey/templates/survey/survey_change.html:237
 msgid "and"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:199
-#: survey/templates/survey/survey_change.html:270
+#: survey/templates/survey/survey_change.html:264
 msgid "text"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:212
-#: survey/templates/survey/survey_change.html:287
+#: survey/templates/survey/survey_change.html:281
 msgid "keys"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:214
-#: survey/templates/survey/survey_change.html:289
+#: survey/templates/survey/survey_change.html:283
 msgid "goto"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:228
-#: survey/templates/survey/survey_change.html:303
+#: survey/templates/survey/survey_change.html:297
 msgid "Key"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:231
-#: survey/templates/survey/survey_change.html:306
+#: survey/templates/survey/survey_change.html:300
 msgid "none"
 msgstr ""
 
@@ -4390,7 +4363,7 @@ msgid "default"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:249
-#: survey/templates/survey/survey_change.html:324
+#: survey/templates/survey/survey_change.html:318
 #: survey/templatetags/survey_tags.py:85
 msgid "hang up"
 msgstr ""
@@ -4399,7 +4372,7 @@ msgstr ""
 msgid "branch to section"
 msgstr ""
 
-#: survey/templates/survey/section_change.html:48
+#: survey/templates/survey/section_change.html:43
 msgid "section"
 msgstr ""
 
@@ -4423,7 +4396,7 @@ msgstr ""
 msgid "yes"
 msgstr ""
 
-#: survey/templates/survey/section_script_change.html:46
+#: survey/templates/survey/section_script_change.html:42
 msgid "section script"
 msgstr ""
 
@@ -4431,19 +4404,19 @@ msgstr ""
 msgid "record file"
 msgstr ""
 
-#: survey/templates/survey/survey_change.html:22
+#: survey/templates/survey/survey_change.html:16
 msgid "survey configuration"
 msgstr ""
 
-#: survey/templates/survey/survey_change.html:144
+#: survey/templates/survey/survey_change.html:138
 msgid "play"
 msgstr ""
 
-#: survey/templates/survey/survey_change.html:359
+#: survey/templates/survey/survey_change.html:353
 msgid "add section"
 msgstr ""
 
-#: survey/templates/survey/survey_change.html:364
+#: survey/templates/survey/survey_change.html:358
 msgid "close survey"
 msgstr ""
 

@@ -820,12 +820,12 @@ def export_sms_report(request):
     **Exported fields**: ['sender', 'recipient_number', 'send_date', 'uuid',
                'status', 'status_message', 'gateway']
     """
-    format = request.GET['format']
+    format_type = request.GET['format']
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/' + format)
+    response = HttpResponse(mimetype='text/%s' % format_type)
 
     # force download.
-    response['Content-Disposition'] = 'attachment;filename=sms_export.' + format
+    response['Content-Disposition'] = 'attachment;filename=sms_export.%s' % format_type
 
     qs = request.session['sms_record_qs']
 
@@ -834,7 +834,7 @@ def export_sms_report(request):
     list_val = []
     for i in qs:
         send_date = i.send_date
-        if format == 'json' or format == 'xls':
+        if format_type == Export_choice.JSON or format_type == Export_choice.XLS:
             send_date = str(i.send_date)
         gateway = i.gateway.name if i.gateway else ''
         list_val.append([
@@ -849,11 +849,11 @@ def export_sms_report(request):
 
     data = tablib.Dataset(*list_val, headers=headers)
 
-    if format == Export_choice.XLS:
+    if format_type == Export_choice.XLS:
         response.write(data.xls)
-    elif format == Export_choice.CSV:
+    elif format_type == Export_choice.CSV:
         response.write(data.csv)
-    elif format == Export_choice.JSON:
+    elif format_type == Export_choice.JSON:
         response.write(data.json)
 
     return response

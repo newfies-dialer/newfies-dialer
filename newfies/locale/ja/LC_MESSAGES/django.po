@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Newfies-Dialer\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-03-03 13:35+0100\n"
+"POT-Creation-Date: 2014-03-16 23:39+0100\n"
 "PO-Revision-Date: 2012-12-13 19:22+0900\n"
 "Last-Translator: Chiaki Nakata <nakata@cba-japan.com>\n"
 "Language-Team: Japanese <dev@cba-japan.com>\n"
@@ -32,7 +32,7 @@ msgstr "タスクマネージャ"
 #: callcenter/models.py:97 dialer_audio/constants.py:20
 #: dialer_campaign/constants.py:52 dialer_campaign/models.py:169
 #: dialer_contact/constants.py:39 dialer_contact/models.py:39
-#: dialer_contact/models.py:166 dialer_gateway/models.py:53
+#: dialer_contact/models.py:167 dialer_gateway/models.py:53
 #: dialer_settings/models.py:38 dnc/constants.py:21 dnc/models.py:33
 #: mod_sms/constants.py:40 mod_sms/models.py:111 survey/constants.py:33
 #: survey/constants.py:47 survey/models.py:55
@@ -43,8 +43,8 @@ msgstr "姓"
 #: agent/constants.py:21 agent/models.py:51 dialer_campaign/constants.py:67
 #: dialer_campaign/models.py:473 dialer_contact/constants.py:48
 #: dialer_contact/models.py:121
-#: dialer_contact/templates/dialer_contact/contact/change.html:10
-#: dnc/templates/dnc/dnc_contact/change.html:11
+#: dialer_contact/templates/dialer_contact/contact/change.html:5
+#: dnc/templates/dnc/dnc_contact/change.html:5
 #: frontend/templates/frontend/bootstrap_menu.html:43 mod_sms/models.py:230
 #: mod_sms/models.py:422
 #: templates/admin/dialer_contact/contact/import_contact.html:20
@@ -217,9 +217,9 @@ msgstr "\"%(name)s\" はアップデートされました"
 
 #: agent/templates/agent/agent_detail.html:10
 #: agent/templates/agent/agent_detail.html:16
-#: frontend/templates/frontend/master.html:133
-#: frontend/templates/frontend/master.html:139
-#: frontend/templates/frontend/master.html:160
+#: frontend/templates/frontend/master.html:134
+#: frontend/templates/frontend/master.html:140
+#: frontend/templates/frontend/master.html:161
 #: user_profile/templates/user_profile/check_user_phone_number.html:5
 #: user_profile/templates/user_profile/check_user_phone_number.html:11
 #: user_profile/templates/user_profile/user_account.html:5
@@ -265,63 +265,29 @@ msgid "logout"
 msgstr ""
 
 #: agent/templates/agent/change.html:7
-#: appointment/templates/appointment/alarm/change.html:11
-#: appointment/templates/appointment/calendar/change.html:7
-#: appointment/templates/appointment/calendar_setting/change.html:7
-#: appointment/templates/appointment/calendar_user/change.html:7
-#: appointment/templates/appointment/event/change.html:11
-#: callcenter/templates/callcenter/queue/change.html:7
-#: callcenter/templates/callcenter/tier/change.html:7
-#: dialer_audio/templates/dialer_audio/audio_change.html:11
-#: dialer_campaign/templates/dialer_campaign/campaign/change.html:10
-#: dialer_contact/templates/dialer_contact/contact/change.html:7
-#: dialer_contact/templates/dialer_contact/phonebook/change.html:7
-#: dnc/templates/dnc/dnc_contact/change.html:7
-#: dnc/templates/dnc/dnc_list/change.html:7
 #: frontend/templates/frontend/common_submit_buttons.html:7
-#: mod_sms/templates/mod_sms/change.html:10 mod_utils/forms.py:68
-#: survey/templates/survey/section_branch_change.html:70
-#: survey/templates/survey/section_change.html:45
-#: survey/templates/survey/section_change.html:63
-#: survey/templates/survey/section_script_change.html:43
-#: survey/templates/survey/section_script_change.html:58
-#: survey/templates/survey/survey_change.html:17
+#: mod_utils/forms.py:68 survey/templates/survey/section_branch_change.html:70
+#: survey/templates/survey/section_change.html:58
+#: survey/templates/survey/section_script_change.html:54
 #, fuzzy
 msgid "update"
 msgstr "アップデート"
 
 #: agent/templates/agent/change.html:9 agent/templates/agent/list.html:23
-#: appointment/templates/appointment/alarm/change.html:13
 #: appointment/templates/appointment/alarm/list.html:25
-#: appointment/templates/appointment/calendar/change.html:9
 #: appointment/templates/appointment/calendar/list.html:23
-#: appointment/templates/appointment/calendar_setting/change.html:9
 #: appointment/templates/appointment/calendar_setting/list.html:25
-#: appointment/templates/appointment/calendar_user/change.html:9
 #: appointment/templates/appointment/calendar_user/list.html:24
-#: appointment/templates/appointment/event/change.html:13
 #: appointment/templates/appointment/event/list.html:35
-#: callcenter/templates/callcenter/queue/change.html:9
 #: callcenter/templates/callcenter/queue/list.html:25
-#: callcenter/templates/callcenter/tier/change.html:9
 #: callcenter/templates/callcenter/tier/list.html:25
-#: dialer_audio/templates/dialer_audio/audio_change.html:13
 #: dialer_audio/templates/dialer_audio/audio_list.html:29
-#: dialer_campaign/templates/dialer_campaign/campaign/change.html:12
 #: dialer_campaign/templates/dialer_campaign/campaign/list.html:35
-#: dialer_contact/templates/dialer_contact/contact/change.html:9
 #: dialer_contact/templates/dialer_contact/contact/list.html:28
-#: dialer_contact/templates/dialer_contact/phonebook/change.html:9
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:23
-#: dnc/templates/dnc/dnc_contact/change.html:9
 #: dnc/templates/dnc/dnc_contact/list.html:31
-#: dnc/templates/dnc/dnc_list/change.html:9
 #: dnc/templates/dnc/dnc_list/list.html:24
-#: mod_sms/templates/mod_sms/change.html:12
 #: mod_sms/templates/mod_sms/list.html:32
-#: survey/templates/survey/section_change.html:47
-#: survey/templates/survey/section_script_change.html:45
-#: survey/templates/survey/survey_change.html:19
 #: survey/templates/survey/survey_list.html:27
 #: templates/admin_tools/dashboard/modules/app_list.html:26
 #: templates/admin_tools/dashboard/modules/model_list.html:13
@@ -538,7 +504,7 @@ msgstr "コール"
 #: appointment/constants.py:42
 #: mod_sms/templates/mod_sms/sms_campaign_duplicate.html:41
 #: survey/templates/survey/sealed_survey_view.html:199
-#: survey/templates/survey/survey_change.html:270
+#: survey/templates/survey/survey_change.html:264
 msgid "sms"
 msgstr ""
 
@@ -575,7 +541,7 @@ msgstr "タイムアウト"
 #: appointment/models/alarms.py:39 dialer_campaign/models.py:332
 #: frontend/templates/frontend/bootstrap_menu.html:57 survey/forms.py:606
 #: survey/models.py:136 survey/models.py:341 survey/models.py:405
-#: survey/templates/survey/survey_change.html:21
+#: survey/templates/survey/survey_change.html:15
 #: survey/templates/survey/survey_list.html:5
 #, fuzzy
 msgid "survey"
@@ -597,10 +563,10 @@ msgstr "ゲートウェイ"
 msgid "Calendar Setting"
 msgstr "ダイアラー設定"
 
-#: appointment/constants.py:73 appointment/forms.py:290
+#: appointment/constants.py:73 appointment/forms.py:296
 #: appointment/models/calendars.py:23 appointment/models/events.py:32
 #: appointment/models/users.py:105
-#: appointment/templates/appointment/calendar_user/change.html:11
+#: appointment/templates/appointment/calendar_user/change.html:5
 #: appointment/templates/appointment/calendar_user/list.html:5
 msgid "calendar user"
 msgstr ""
@@ -631,9 +597,9 @@ msgstr ""
 msgid "end period"
 msgstr ""
 
-#: appointment/constants.py:83 appointment/forms.py:289
+#: appointment/constants.py:83 appointment/forms.py:295
 #: appointment/models/calendars.py:35
-#: appointment/templates/appointment/calendar/change.html:11
+#: appointment/templates/appointment/calendar/change.html:5
 msgid "calendar"
 msgstr ""
 
@@ -659,7 +625,7 @@ msgstr ""
 
 #: appointment/constants.py:95 appointment/models/events.py:60
 #: appointment/models/events.py:258
-#: appointment/templates/appointment/event/change.html:15
+#: appointment/templates/appointment/event/change.html:9
 msgid "event"
 msgstr ""
 
@@ -683,23 +649,23 @@ msgstr "コンタクトの削除"
 msgid "event settings"
 msgstr "アカウント設定"
 
-#: appointment/forms.py:287 dialer_campaign/constants.py:53
+#: appointment/forms.py:293 dialer_campaign/constants.py:53
 #: dialer_cdr/constants.py:65 mod_sms/constants.py:41
 #, fuzzy
 msgid "start date"
 msgstr "開始日"
 
-#: appointment/forms.py:333 dialer_campaign/forms.py:120 mod_sms/forms.py:100
+#: appointment/forms.py:339 dialer_campaign/forms.py:120 mod_sms/forms.py:100
 #, fuzzy
 msgid "general settings"
 msgstr "一般設定"
 
-#: appointment/forms.py:348
+#: appointment/forms.py:354
 #, fuzzy
 msgid "alarm settings"
 msgstr "ダイアラー設定"
 
-#: appointment/forms.py:360
+#: appointment/forms.py:366
 #, fuzzy
 msgid "result settings"
 msgstr "ダッシュボードの統計設定"
@@ -820,7 +786,7 @@ msgstr "Eメール"
 #: frontend/templates/frontend/bootstrap_menu.html:26
 #: frontend/templates/frontend/bootstrap_menu.html:37
 #: frontend/templates/frontend/bootstrap_side_menu.html:70
-#: mod_sms/templates/mod_sms/change.html:13
+#: mod_sms/templates/mod_sms/change.html:9
 #: mod_sms/templates/mod_sms/list.html:5
 #: mod_sms/templates/mod_sms/sms_dashboard.html:5
 #: mod_sms/templates/mod_sms/sms_dashboard.html:17
@@ -883,7 +849,7 @@ msgid "can see Alarm list"
 msgstr "アンケート調査のアップデート"
 
 #: appointment/models/alarms.py:75 appointment/models/alarms.py:145
-#: appointment/templates/appointment/alarm/change.html:15
+#: appointment/templates/appointment/alarm/change.html:10
 msgid "alarm"
 msgstr ""
 
@@ -1162,7 +1128,7 @@ msgid "Calender setting"
 msgstr "ダイアラー設定"
 
 #: appointment/models/users.py:94 appointment/models/users.py:137
-#: appointment/templates/appointment/calendar_setting/change.html:11
+#: appointment/templates/appointment/calendar_setting/change.html:5
 #: appointment/templates/appointment/calendar_setting/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:42
 #, fuzzy
@@ -1234,7 +1200,7 @@ msgstr "応答の編集"
 msgid "delete calendar setting"
 msgstr "コンタクトの削除"
 
-#: appointment/templates/appointment/calendar_user/change.html:13
+#: appointment/templates/appointment/calendar_user/change.html:7
 msgid "users authorized to create calendars, events and alarms"
 msgstr ""
 
@@ -1282,7 +1248,7 @@ msgstr ""
 
 #: callcenter/constants.py:39 callcenter/models.py:140
 #: callcenter/models.py:177
-#: callcenter/templates/callcenter/queue/change.html:11
+#: callcenter/templates/callcenter/queue/change.html:5
 #: callcenter/templates/callcenter/queue/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:32
 msgid "queue"
@@ -1380,8 +1346,7 @@ msgstr "言語を選択"
 msgid "can see Tier list"
 msgstr "ボイスアプリケーションの設定"
 
-#: callcenter/models.py:191
-#: callcenter/templates/callcenter/tier/change.html:11
+#: callcenter/models.py:191 callcenter/templates/callcenter/tier/change.html:5
 #: callcenter/templates/callcenter/tier/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:35
 msgid "tier"
@@ -1427,7 +1392,7 @@ msgstr "%(count)s音声が削除されました"
 msgid "\"%(id)s\" tier is updated."
 msgstr "\"%(name)s\" はアップデートされました"
 
-#: callcenter/templates/callcenter/queue/change.html:12
+#: callcenter/templates/callcenter/queue/change.html:5
 msgid "it is belong to manager"
 msgstr ""
 
@@ -1446,7 +1411,7 @@ msgstr "アンケート調査のアップデート"
 msgid "delete queue"
 msgstr "アンケート調査を削除"
 
-#: callcenter/templates/callcenter/tier/change.html:12
+#: callcenter/templates/callcenter/tier/change.html:5
 #, fuzzy
 msgid "tier belongs to manager"
 msgstr "キャンペーンの削除"
@@ -1651,13 +1616,13 @@ msgstr "\"%(name)s\" が追加されました"
 msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s音声が削除されました"
 
-#: dialer_audio/templates/dialer_audio/audio_change.html:15
+#: dialer_audio/templates/dialer_audio/audio_change.html:9
 #: survey/templates/survey/sealed_survey_view.html:67
-#: survey/templates/survey/survey_change.html:128
+#: survey/templates/survey/survey_change.html:122
 msgid "audio file"
 msgstr "音声ファイル"
 
-#: dialer_audio/templates/dialer_audio/audio_change.html:16
+#: dialer_audio/templates/dialer_audio/audio_change.html:9
 #, fuzzy
 msgid "upload audio to be used in voice applications"
 msgstr "ボイスアプリケーションで使用するため音声のアップデートをする"
@@ -1770,6 +1735,7 @@ msgstr "終了"
 #: survey/templates/survey/sealed_survey_view.html:137
 #: survey/templates/survey/sealed_survey_view.html:143
 #: survey/templates/survey/sealed_survey_view.html:149
+#: survey/templates/survey/survey_change.html:159
 #: survey/templates/survey/survey_change.html:165
 #: survey/templates/survey/survey_change.html:171
 #: survey/templates/survey/survey_change.html:177
@@ -1779,7 +1745,6 @@ msgstr "終了"
 #: survey/templates/survey/survey_change.html:201
 #: survey/templates/survey/survey_change.html:207
 #: survey/templates/survey/survey_change.html:213
-#: survey/templates/survey/survey_change.html:219
 msgid "key"
 msgstr "キー"
 
@@ -1896,7 +1861,7 @@ msgstr "最大タイムアウト数 %d を超過しました"
 #: dialer_cdr/forms.py:43 dialer_cdr/forms.py:87 frontend/forms.py:50
 #: frontend/templates/frontend/bootstrap_menu.html:31
 #: frontend/templates/frontend/bootstrap_menu.html:37
-#: mod_sms/templates/mod_sms/change.html:13
+#: mod_sms/templates/mod_sms/change.html:9
 #: mod_sms/templates/mod_sms/list.html:5
 #: mod_sms/templates/mod_sms/sms_campaign_duplicate.html:41
 #: survey/constants.py:49 survey/forms.py:582 survey/models.py:125
@@ -1916,7 +1881,7 @@ msgstr "コール"
 #: dialer_campaign/forms.py:444 dialer_contact/constants.py:47
 #: dialer_contact/forms.py:65 dialer_contact/forms.py:177
 #: dialer_contact/models.py:52 dialer_contact/models.py:88
-#: dialer_contact/templates/dialer_contact/phonebook/change.html:11
+#: dialer_contact/templates/dialer_contact/phonebook/change.html:5
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:5
 #: mod_sms/forms.py:266
 #, fuzzy
@@ -2321,12 +2286,12 @@ msgstr "\"%(name)s\" はアップデートされました"
 #: survey/templates/survey/seal_survey.html:54
 #: survey/templates/survey/section_branch_change.html:73
 #: survey/templates/survey/section_branch_change.html:74
-#: survey/templates/survey/section_change.html:66
-#: survey/templates/survey/section_change.html:67
-#: survey/templates/survey/section_script_change.html:61
-#: survey/templates/survey/section_script_change.html:62
-#: survey/templates/survey/survey_change.html:34
-#: survey/templates/survey/survey_change.html:35
+#: survey/templates/survey/section_change.html:61
+#: survey/templates/survey/section_change.html:62
+#: survey/templates/survey/section_script_change.html:57
+#: survey/templates/survey/section_script_change.html:58
+#: survey/templates/survey/survey_change.html:28
+#: survey/templates/survey/survey_change.html:29
 msgid "save"
 msgstr ""
 
@@ -2336,22 +2301,22 @@ msgstr ""
 #: survey/templates/survey/import_survey.html:54
 #: survey/templates/survey/seal_survey.html:56
 #: survey/templates/survey/section_branch_change.html:78
-#: survey/templates/survey/section_change.html:71
+#: survey/templates/survey/section_change.html:66
 #: survey/templates/survey/section_delete_confirmation.html:16
-#: survey/templates/survey/section_script_change.html:65
+#: survey/templates/survey/section_script_change.html:61
 #: survey/templates/survey/survey_campaign_result.html:45
 #, fuzzy
 msgid "close"
 msgstr "閉じる"
 
-#: dialer_campaign/templates/dialer_campaign/campaign/change.html:13
+#: dialer_campaign/templates/dialer_campaign/campaign/change.html:9
 #: dialer_campaign/templates/dialer_campaign/campaign/list.html:5
 #: frontend/templates/frontend/bootstrap_menu.html:34
 #, fuzzy
 msgid "voice campaign"
 msgstr "ボイスキャンペーン"
 
-#: dialer_campaign/templates/dialer_campaign/campaign/change.html:14
+#: dialer_campaign/templates/dialer_campaign/campaign/change.html:10
 #, fuzzy
 msgid "set voice campaign parameters"
 msgstr "キャンペーンのパラメーターの設定"
@@ -2747,12 +2712,12 @@ msgstr "VoIPコール"
 msgid "VoIP calls"
 msgstr "VoIPコール"
 
-#: dialer_cdr/management/commands/create_callrequest_cdr.py:59
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:60
 #, python-format
 msgid "Can't find this Campaign : %(id)s"
 msgstr "このキャンペーンが見つかりません : %(id)s"
 
-#: dialer_cdr/management/commands/create_callrequest_cdr.py:139
+#: dialer_cdr/management/commands/create_callrequest_cdr.py:141
 #, fuzzy, python-format
 msgid "Callrequests and CDRs created : %(count)s"
 msgstr "作成されたコールリクエストとCDR :%(count)s"
@@ -3033,7 +2998,7 @@ msgid ""
 "codes"
 msgstr ""
 
-#: dialer_contact/templates/dialer_contact/contact/change.html:11
+#: dialer_contact/templates/dialer_contact/contact/change.html:6
 #, fuzzy
 msgid "add contact details"
 msgstr "コンタクトの詳細を追加"
@@ -3094,7 +3059,7 @@ msgstr "コンタクトのアップデート"
 msgid "delete contact"
 msgstr "コンタクトの削除"
 
-#: dialer_contact/templates/dialer_contact/phonebook/change.html:12
+#: dialer_contact/templates/dialer_contact/phonebook/change.html:6
 #, fuzzy
 msgid "contacts are stored in phonebooks"
 msgstr "コンタクトは電話帳に保存されました"
@@ -3385,8 +3350,8 @@ msgstr "キャンペーンごとの最大参加者"
 msgid "dialer setting"
 msgstr "ダイアラー設定"
 
-#: dnc/constants.py:28 dnc/templates/dnc/dnc_contact/change.html:11
-#: dnc/templates/dnc/dnc_list/change.html:11
+#: dnc/constants.py:28 dnc/templates/dnc/dnc_contact/change.html:5
+#: dnc/templates/dnc/dnc_list/change.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:19
 #: frontend/templates/frontend/bootstrap_side_menu.html:22
 #, fuzzy
@@ -3496,7 +3461,7 @@ msgstr ""
 msgid "Duplicate DNC contact(s) %(dup_contact_cnt)s are not inserted!!"
 msgstr ""
 
-#: dnc/templates/dnc/dnc_contact/change.html:12
+#: dnc/templates/dnc/dnc_contact/change.html:6
 #, fuzzy
 msgid "add DNC contact details"
 msgstr "コンタクトの詳細を追加"
@@ -3546,7 +3511,7 @@ msgstr "コンタクトのアップデート"
 msgid "delete DNC contact"
 msgstr "コンタクトの削除"
 
-#: dnc/templates/dnc/dnc_list/change.html:12
+#: dnc/templates/dnc/dnc_list/change.html:6
 #, fuzzy
 msgid "DNC contacts are stored in dnc list"
 msgstr "コンタクトは電話帳に保存されました"
@@ -3769,7 +3734,7 @@ msgid "open search"
 msgstr "検索パネルを隠す"
 
 #: frontend/templates/frontend/common_submit_buttons.html:10
-#: mod_utils/forms.py:68 survey/templates/survey/survey_change.html:311
+#: mod_utils/forms.py:68 survey/templates/survey/survey_change.html:305
 #, fuzzy
 msgid "delete"
 msgstr "削除"
@@ -3821,9 +3786,10 @@ msgid "support"
 msgstr "サポート"
 
 #: frontend/templates/frontend/index.html:20
+#, fuzzy
 msgid ""
 "Star2Billing S.L. offers consultancy including installation, training and "
-"customisation on Newfies-Dialer"
+"customisation on Newfies-Dialer."
 msgstr ""
 "Star2Billing S.L.はNewfies-Dialerにおけるインストール、トレーニング、カスタマ"
 "イズを含むコンサルティングを提供しています。"
@@ -3871,47 +3837,47 @@ msgstr "お客様用インターフェース"
 msgid "side menu"
 msgstr ""
 
-#: frontend/templates/frontend/master.html:115
+#: frontend/templates/frontend/master.html:116
 #, fuzzy
 msgid "display language"
 msgstr "言語ディスプレイ"
 
-#: frontend/templates/frontend/master.html:139
+#: frontend/templates/frontend/master.html:140
 #, fuzzy
 msgid "please login by clicking on login button"
 msgstr "ログインボタンをクリックしてログインしてください"
 
-#: frontend/templates/frontend/master.html:148
+#: frontend/templates/frontend/master.html:149
 #, fuzzy
 msgid "voice broadcasting solution"
 msgstr "ボイスブロードキャスティングソリューション"
 
-#: frontend/templates/frontend/master.html:162
+#: frontend/templates/frontend/master.html:163
 #, fuzzy
 msgid "to send notification to administrator"
 msgstr "管理者に通知を送信する"
 
-#: frontend/templates/frontend/master.html:162
+#: frontend/templates/frontend/master.html:163
 #, fuzzy
 msgid "click here"
 msgstr "ここをクリック"
 
-#: frontend/templates/frontend/master.html:164
+#: frontend/templates/frontend/master.html:165
 #, fuzzy
 msgid "(notification sent)"
 msgstr "(通知が送信されました)"
 
-#: frontend/templates/frontend/master.html:173
+#: frontend/templates/frontend/master.html:174
 #, fuzzy
 msgid "Notification"
 msgstr "通知"
 
-#: frontend/templates/frontend/master.html:180
+#: frontend/templates/frontend/master.html:181
 #, fuzzy
 msgid "error"
 msgstr "エラー"
 
-#: frontend/templates/frontend/master.html:187
+#: frontend/templates/frontend/master.html:188
 msgid "info"
 msgstr ""
 
@@ -4017,17 +3983,33 @@ msgid "change my password"
 msgstr "パスワードを変更する"
 
 #: mod_registration/templates/mod_registration/password_reset_complete.html:4
-#: mod_registration/templates/mod_registration/password_reset_complete.html:12
+#: mod_registration/templates/mod_registration/password_reset_complete.html:13
 #, fuzzy
 msgid "password reset complete"
 msgstr "パスワードのリセット完了"
 
-#: mod_registration/templates/mod_registration/password_reset_complete.html:15
+#: mod_registration/templates/mod_registration/password_reset_complete.html:7
+#: mod_registration/templates/mod_registration/password_reset_confirm.html:7
+#: mod_registration/templates/mod_registration/password_reset_done.html:7
+#: mod_registration/templates/mod_registration/password_reset_form.html:7
+#, fuzzy
+msgid "Forgotten your password?"
+msgstr "パスワードを忘れてしまいましたか？"
+
+#: mod_registration/templates/mod_registration/password_reset_complete.html:7
+#: mod_registration/templates/mod_registration/password_reset_confirm.html:7
+#: mod_registration/templates/mod_registration/password_reset_done.html:7
+#: mod_registration/templates/mod_registration/password_reset_form.html:7
+#, fuzzy
+msgid "reset and request a new password"
+msgstr "新しいパスワードの入力"
+
+#: mod_registration/templates/mod_registration/password_reset_complete.html:16
 #, fuzzy
 msgid "your password has been set. you may go ahead and log in now."
 msgstr "パスワードが設定されました。ログインしてください。"
 
-#: mod_registration/templates/mod_registration/password_reset_complete.html:18
+#: mod_registration/templates/mod_registration/password_reset_complete.html:19
 #, fuzzy
 msgid "log in"
 msgstr "ログイン"
@@ -4048,12 +4030,12 @@ msgstr "新しいパスワードの入力"
 msgid "please enter your new password twice for verification."
 msgstr "確認のため新しいパスワードをもう一度入力してください"
 
-#: mod_registration/templates/mod_registration/password_reset_confirm.html:21
+#: mod_registration/templates/mod_registration/password_reset_confirm.html:19
 #, fuzzy
 msgid "password reset unsuccessful"
 msgstr "パスワードのリセットに失敗しました"
 
-#: mod_registration/templates/mod_registration/password_reset_confirm.html:25
+#: mod_registration/templates/mod_registration/password_reset_confirm.html:23
 #, fuzzy
 msgid ""
 "the password reset link was invalid, possibly because it has already been "
@@ -4063,19 +4045,15 @@ msgstr ""
 "しくパスワードのリセットをリクエストしてください。"
 
 #: mod_registration/templates/mod_registration/password_reset_done.html:4
-#: mod_registration/templates/mod_registration/password_reset_done.html:8
+#: mod_registration/templates/mod_registration/password_reset_done.html:12
 #, fuzzy
 msgid "password reset successful"
 msgstr "パスワードのリセットに成功しました"
 
-#: mod_registration/templates/mod_registration/password_reset_done.html:10
+#: mod_registration/templates/mod_registration/password_reset_done.html:14
 #, fuzzy
-msgid ""
-"we've e-mailed you instructions for setting your password to the e-mail "
-"address you submitted. you should be receiving it shortly."
-msgstr ""
-"入力されたメールアドレスにパスワードの設定方法を送信しました。受信を確認して"
-"ください。"
+msgid "we've e-mailed you instructions for setting a new password."
+msgstr "メールアドレスを入力してください。新しく設定する方法を送信します。"
 
 #: mod_registration/templates/mod_registration/password_reset_email.html:5
 #, python-format
@@ -4101,12 +4079,7 @@ msgstr "あなたのユーザーネーム　忘れてしまった場合:"
 msgid "The %(site_name)s team"
 msgstr "%(site_name)sチーム"
 
-#: mod_registration/templates/mod_registration/password_reset_form.html:10
-#, fuzzy
-msgid "forgotten your password?"
-msgstr "パスワードを忘れてしまいましたか？"
-
-#: mod_registration/templates/mod_registration/password_reset_form.html:11
+#: mod_registration/templates/mod_registration/password_reset_form.html:12
 #, fuzzy
 msgid ""
 "enter your e-mail address below, and we'll e-mail instructions for setting a "
@@ -4144,7 +4117,7 @@ msgid "fail"
 msgstr "失敗"
 
 #: mod_sms/constants.py:33 survey/templates/survey/sealed_survey_view.html:51
-#: survey/templates/survey/survey_change.html:57
+#: survey/templates/survey/survey_change.html:51
 msgid "complete"
 msgstr "完了"
 
@@ -4230,7 +4203,7 @@ msgstr "最大再試行数%dを超過しました"
 msgid "SMS Campaign"
 msgstr "キャンペーン"
 
-#: mod_sms/forms.py:210 mod_utils/forms.py:90
+#: mod_sms/forms.py:210 mod_utils/forms.py:93
 #: templates/admin/dialer_campaign/subscriber/subscriber_report.html:39
 #: templates/admin/dialer_cdr/voipcall/change_list.html:39
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:39
@@ -4408,7 +4381,7 @@ msgstr ""
 msgid "Create new SMSs for a given sms_campaign_id"
 msgstr ""
 
-#: mod_sms/templates/mod_sms/change.html:14
+#: mod_sms/templates/mod_sms/change.html:10
 #, fuzzy
 msgid "set SMS campaign parameters"
 msgstr "キャンペーンのパラメーターの設定"
@@ -4650,7 +4623,7 @@ msgid "hangup"
 msgstr "ハングアップ原因"
 
 #: survey/constants.py:27 survey/templates/survey/sealed_survey_view.html:190
-#: survey/templates/survey/survey_change.html:261
+#: survey/templates/survey/survey_change.html:255
 msgid "conference"
 msgstr ""
 
@@ -4666,20 +4639,20 @@ msgstr "アンケート調査結果"
 
 #: survey/forms.py:79 survey/forms.py:103 survey/forms.py:558
 #: survey/templates/survey/sealed_survey_view.html:222
-#: survey/templates/survey/survey_change.html:297
+#: survey/templates/survey/survey_change.html:291
 msgid "any other key"
 msgstr "他キー"
 
 #: survey/forms.py:80 survey/forms.py:104 survey/forms.py:558
 #: survey/templates/survey/sealed_survey_view.html:224
-#: survey/templates/survey/survey_change.html:299
+#: survey/templates/survey/survey_change.html:293
 msgid "invalid"
 msgstr "無効"
 
 #: survey/forms.py:168 survey/forms.py:366 survey/forms.py:401
 #: survey/forms.py:435 survey/forms.py:471
 #: survey/templates/survey/sealed_survey_view.html:60
-#: survey/templates/survey/survey_change.html:121
+#: survey/templates/survey/survey_change.html:115
 msgid "section title"
 msgstr "セクションのタイトル"
 
@@ -4773,7 +4746,7 @@ msgstr "セクションの種類"
 
 #: survey/models.py:229 survey/templates/survey/sealed_survey_view.html:58
 #: survey/templates/survey/survey_campaign_result.html:17
-#: survey/templates/survey/survey_change.html:119
+#: survey/templates/survey/survey_change.html:113
 #: survey/templates/survey/survey_report.html:57
 msgid "question"
 msgstr "質問"
@@ -4804,7 +4777,7 @@ msgid "retries until valid input"
 msgstr "入力が無効の場合の音声"
 
 #: survey/models.py:240 survey/templates/survey/sealed_survey_view.html:226
-#: survey/templates/survey/survey_change.html:301
+#: survey/templates/survey/survey_change.html:295
 #: user_profile/templates/user_profile/user_dialer_settings.html:18
 msgid "timeout"
 msgstr "タイムアウト"
@@ -4840,7 +4813,7 @@ msgid "maximum"
 msgstr "最大値"
 
 #: survey/models.py:280 survey/templates/survey/sealed_survey_view.html:181
-#: survey/templates/survey/survey_change.html:252
+#: survey/templates/survey/survey_change.html:246
 #, fuzzy
 msgid "Phone Number / SIP URI"
 msgstr "電話番号"
@@ -4896,7 +4869,7 @@ msgstr "分岐のテンプレート"
 
 #: survey/models.py:484 survey/models.py:485
 #: survey/templates/survey/sealed_survey_view.html:207
-#: survey/templates/survey/survey_change.html:282
+#: survey/templates/survey/survey_change.html:276
 #, fuzzy
 msgid "branching"
 msgstr "分岐"
@@ -4999,55 +4972,55 @@ msgid "list sealed surveys"
 msgstr "アンケート調査"
 
 #: survey/templates/survey/sealed_survey_view.html:77
-#: survey/templates/survey/survey_change.html:137
+#: survey/templates/survey/survey_change.html:131
 msgid "script"
 msgstr "文章"
 
 #: survey/templates/survey/sealed_survey_view.html:89
-#: survey/templates/survey/survey_change.html:159
+#: survey/templates/survey/survey_change.html:153
 #, fuzzy
 msgid "key associations"
 msgstr "キー関連"
 
 #: survey/templates/survey/sealed_survey_view.html:164
-#: survey/templates/survey/survey_change.html:235
+#: survey/templates/survey/survey_change.html:229
 #, fuzzy
 msgid "from 1 to"
 msgstr "開始"
 
 #: survey/templates/survey/sealed_survey_view.html:172
-#: survey/templates/survey/survey_change.html:243
+#: survey/templates/survey/survey_change.html:237
 #, fuzzy
 msgid "number is between"
 msgstr "番号の範囲"
 
 #: survey/templates/survey/sealed_survey_view.html:172
-#: survey/templates/survey/survey_change.html:243
+#: survey/templates/survey/survey_change.html:237
 msgid "and"
 msgstr "～"
 
 #: survey/templates/survey/sealed_survey_view.html:199
-#: survey/templates/survey/survey_change.html:270
+#: survey/templates/survey/survey_change.html:264
 msgid "text"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:212
-#: survey/templates/survey/survey_change.html:287
+#: survey/templates/survey/survey_change.html:281
 msgid "keys"
 msgstr "キー"
 
 #: survey/templates/survey/sealed_survey_view.html:214
-#: survey/templates/survey/survey_change.html:289
+#: survey/templates/survey/survey_change.html:283
 msgid "goto"
 msgstr "goto"
 
 #: survey/templates/survey/sealed_survey_view.html:228
-#: survey/templates/survey/survey_change.html:303
+#: survey/templates/survey/survey_change.html:297
 msgid "Key"
 msgstr "キー"
 
 #: survey/templates/survey/sealed_survey_view.html:231
-#: survey/templates/survey/survey_change.html:306
+#: survey/templates/survey/survey_change.html:300
 msgid "none"
 msgstr ""
 
@@ -5056,7 +5029,7 @@ msgid "default"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:249
-#: survey/templates/survey/survey_change.html:324
+#: survey/templates/survey/survey_change.html:318
 #: survey/templatetags/survey_tags.py:85
 #, fuzzy
 msgid "hang up"
@@ -5066,7 +5039,7 @@ msgstr "ハングアップ原因"
 msgid "branch to section"
 msgstr "セクションへの分岐"
 
-#: survey/templates/survey/section_change.html:48
+#: survey/templates/survey/section_change.html:43
 #, fuzzy
 msgid "section"
 msgstr "セクション"
@@ -5095,7 +5068,7 @@ msgstr "継続しますか？"
 msgid "yes"
 msgstr "はい"
 
-#: survey/templates/survey/section_script_change.html:46
+#: survey/templates/survey/section_script_change.html:42
 #, fuzzy
 msgid "section script"
 msgstr "セクションスクリプト"
@@ -5105,21 +5078,21 @@ msgstr "セクションスクリプト"
 msgid "record file"
 msgstr "記録ファイル"
 
-#: survey/templates/survey/survey_change.html:22
+#: survey/templates/survey/survey_change.html:16
 #, fuzzy
 msgid "survey configuration"
 msgstr "アンケート調査の設定"
 
-#: survey/templates/survey/survey_change.html:144
+#: survey/templates/survey/survey_change.html:138
 msgid "play"
 msgstr ""
 
-#: survey/templates/survey/survey_change.html:359
+#: survey/templates/survey/survey_change.html:353
 #, fuzzy
 msgid "add section"
 msgstr "質問を追加"
 
-#: survey/templates/survey/survey_change.html:364
+#: survey/templates/survey/survey_change.html:358
 #, fuzzy
 msgid "close survey"
 msgstr "アンケート調査"
@@ -5493,3 +5466,11 @@ msgstr "最大キャンペーン数"
 #, fuzzy
 msgid "maximum subscribers per SMS campaign"
 msgstr "キャンペーンごとの最大参加者"
+
+#, fuzzy
+#~ msgid ""
+#~ "we've e-mailed you instructions for setting your password to the e-mail "
+#~ "address you submitted. you should be receiving it shortly."
+#~ msgstr ""
+#~ "入力されたメールアドレスにパスワードの設定方法を送信しました。受信を確認し"
+#~ "てください。"

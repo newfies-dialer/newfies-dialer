@@ -1092,6 +1092,7 @@ def export_survey(request, id):
                 section.max_number,
                 section.phonenumber,
                 section.conference,
+                section.sms_text,
                 section.completed,
                 section.invalid_audiofile_id,
                 section.id
@@ -1126,10 +1127,8 @@ def import_survey(request):
     type_error_import_list = []
     if request.method == 'POST':
         if form.is_valid():
-            new_survey = Survey_template.objects.create(name=request.POST['name'],
-                                                        user=request.user)
-            records = csv.reader(request.FILES['survey_file'],
-                                 delimiter='|', quotechar='"')
+            new_survey = Survey_template.objects.create(name=request.POST['name'], user=request.user)
+            records = csv.reader(request.FILES['survey_file'], delimiter='|', quotechar='"')
             new_old_section = {}
 
             # disconnect post_save_add_script signal from Section_template
@@ -1140,8 +1139,8 @@ def import_survey(request):
                 if not row or str(row[0]) == 0:
                     continue
 
-                #if length of row is 27, it's a section
-                if len(row) == 27:
+                #if length of row is 28, it's a section
+                if len(row) == 28:
                     try:
                         # for section
                         section_template_obj = Section_template.objects.create(
@@ -1169,11 +1168,12 @@ def import_survey(request):
                             max_number=row[21] if row[21] else None,
                             phonenumber=row[22] if row[22] else None,
                             conference=row[23] if row[23] else None,
-                            completed=True if row[24] == 'True' else False,
-                            invalid_audiofile_id=int(row[25]) if row[25] else None,
+                            sms_text=row[24] if row[24] else None,
+                            completed=True if row[25] == 'True' else False,
+                            invalid_audiofile_id=int(row[26]) if row[26] else None,
                             survey=new_survey,
                         )
-                        new_old_section[int(row[26])] = section_template_obj.id
+                        new_old_section[int(row[27])] = section_template_obj.id
                         section_row.append(row)
                     except:
                         type_error_import_list.append(row)

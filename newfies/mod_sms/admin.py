@@ -275,12 +275,12 @@ class SMSMessageAdmin(admin.ModelAdmin):
         **Exported fields**: ['sender', 'recipient_number', 'send_date',
                               'uuid', 'status', 'status_message', 'gateway']
         """
-        format = request.GET['format']
+        format_type = request.GET['format']
         # get the response object, this can be used as a stream.
-        response = HttpResponse(mimetype='text/' + format)
+        response = HttpResponse(mimetype='text/%s' % format_type)
 
         # force download.
-        response['Content-Disposition'] = 'attachment;filename=sms_export.' + format
+        response['Content-Disposition'] = 'attachment;filename=sms_export.%s' % format_type
 
         # super(SMSMessageAdmin, self).queryset(request)
         qs = request.session['admin_sms_record_qs']
@@ -292,7 +292,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
         for i in qs:
             gateway = i.gateway.name if i.gateway else ''
             send_date = i.send_date
-            if format == 'json':
+            if format_type == Export_choice.JSON:
                 send_date = str(i.send_date)
 
             list_val.append(
@@ -307,11 +307,11 @@ class SMSMessageAdmin(admin.ModelAdmin):
 
         data = tablib.Dataset(*list_val, headers=headers)
 
-        if format == Export_choice.XLS:
+        if format_type == Export_choice.XLS:
             response.write(data.xls)
-        elif format == Export_choice.CSV:
+        elif format_type == Export_choice.CSV:
             response.write(data.csv)
-        elif format == Export_choice.JSON:
+        elif format_type == Export_choice.JSON:
             response.write(data.json)
         return response
 

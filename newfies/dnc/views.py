@@ -458,15 +458,15 @@ def dnc_contact_import(request):
 @login_required
 def dnc_contact_export(request):
     """Export CSV file of DNC contact"""
-    format = request.GET['format']
+    format_type = request.GET['format']
     dnc_list_id = ''
     if request.GET.get('dnc_list_id'):
         dnc_list_id = request.GET.get('dnc_list_id')
 
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/' + format)
+    response = HttpResponse(mimetype='text/%s' % format_type)
     # force download.
-    response['Content-Disposition'] = 'attachment;filename=export.' + format
+    response['Content-Disposition'] = 'attachment;filename=export.%s' % format_type
 
     headers = ('phone_number',)
 
@@ -481,11 +481,11 @@ def dnc_contact_export(request):
 
     data = tablib.Dataset(*list_val, headers=headers)
 
-    if format == Export_choice.XLS:
+    if format_type == Export_choice.XLS:
         response.write(data.xls)
-    elif format == Export_choice.CSV:
+    elif format_type == Export_choice.CSV:
         response.write(data.csv)
-    elif format == Export_choice.JSON:
+    elif format_type == Export_choice.JSON:
         response.write(data.json)
 
     return response

@@ -965,11 +965,11 @@ def export_surveycall_report(request):
     **Exported fields**: ['starting_date', 'phone_number', 'duration',
                           'disposition', 'survey results']
     """
-    format = request.GET['format']
+    format_type = request.GET['format']
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/' + format)
+    response = HttpResponse(mimetype='text/%s' % format_type)
     # force download.
-    response['Content-Disposition'] = 'attachment;filename=export.' + format
+    response['Content-Disposition'] = 'attachment;filename=export.%s' % format_type
     if request.session.get('session_surveycalls_kwargs'):
         kwargs = request.session.get('session_surveycalls_kwargs')
         campaign_obj = kwargs['callrequest__campaign']
@@ -1003,7 +1003,7 @@ def export_surveycall_report(request):
             for ikey in column_list:
                 if ikey in column_list_base:
                     #This is not a Section result
-                    if ikey == 'starting_date' and format == 'json' or format == 'xls':
+                    if ikey == 'starting_date' and format_type == Export_choice.JSON or format_type == Export_choice.XLS:
                         starting_date = str(voipcall.__dict__[ikey])
                         result_row_list.append(starting_date)
                     else:
@@ -1019,11 +1019,11 @@ def export_surveycall_report(request):
             result_row.append(result_row_list)
 
         data = tablib.Dataset(*result_row, headers=tuple(column_list))
-        if format == Export_choice.XLS:
+        if format_type == Export_choice.XLS:
             response.write(data.xls)
-        elif format == Export_choice.CSV:
+        elif format_type == Export_choice.CSV:
             response.write(data.csv)
-        elif format == Export_choice.JSON:
+        elif format_type == Export_choice.JSON:
             response.write(data.json)
     return response
 

@@ -452,33 +452,32 @@ def subscriber_list(request):
     start_date = end_date = None
     post_var_with_page = 0
     if form.is_valid():
-        field_list = ['start_date', 'end_date', 'status',
-                      'campaign_id', 'agent_id']
+        post_var_with_page = 1
+        field_list = ['start_date', 'end_date', 'status', 'campaign_id', 'agent_id']
         unset_session_var(request, field_list)
         campaign_id = getvar(request, 'campaign_id', setsession=True)
         agent_id = getvar(request, 'agent_id', setsession=True)
-        post_var_with_page = 1
 
-        if request.POST.get('from_date'):
-            # From
-            from_date = request.POST['from_date']
-            start_date = ceil_strdate(from_date, 'start')
-            request.session['session_start_date'] = start_date
+        from_date = getvar(request, 'from_date')
+        to_date = getvar(request, 'to_date')
+        start_date = ceil_strdate(str(from_date), 'start')
+        end_date = ceil_strdate(str(to_date), 'end')
 
-        if request.POST.get('to_date'):
-            # To
-            to_date = request.POST['to_date']
-            end_date = ceil_strdate(to_date, 'end')
-            request.session['session_end_date'] = end_date
+        converted_start_date = start_date.strftime('%Y-%m-%d')
+        converted_end_date = end_date.strftime('%Y-%m-%d')
+        request.session['session_start_date'] = converted_start_date
+        request.session['session_end_date'] = converted_end_date
 
-        status = request.POST.get('status')
-        if status != 'all':
-            request.session['session_status'] = status
+        status = getvar(request, 'status', setsession=True)
 
     if request.GET.get('page') or request.GET.get('sort_by'):
         post_var_with_page = 1
         start_date = request.session.get('session_start_date')
         end_date = request.session.get('session_end_date')
+
+        start_date = ceil_strdate(start_date, 'start')
+        end_date = ceil_strdate(end_date, 'end')
+
         campaign_id = request.session.get('session_campaign_id')
         agent_id = request.session.get('session_agent_id')
         status = request.session.get('session_status')

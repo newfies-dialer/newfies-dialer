@@ -843,18 +843,28 @@ def survey_report(request):
         field_list = ['from_date', 'to_date', 'survey_id']
         unset_session_var(request, field_list)
 
-        from_date = getvar(request, 'from_date', setsession=True)
-        to_date = getvar(request, 'to_date', setsession=True)
+        from_date = getvar(request, 'from_date')
+        to_date = getvar(request, 'to_date')
+        start_date = ceil_strdate(str(from_date), 'start')
+        end_date = ceil_strdate(str(to_date), 'end')
+
+        converted_start_date = start_date.strftime('%Y-%m-%d')
+        converted_end_date = end_date.strftime('%Y-%m-%d')
+        request.session['session_start_date'] = converted_start_date
+        request.session['session_end_date'] = converted_end_date
+
         survey_id = getvar(request, 'survey_id', setsession=True)
 
     if request.GET.get('page') or request.GET.get('sort_by'):
         post_var_with_page = 1
-        from_date = request.session.get('session_from_date')
-        to_date = request.session.get('session_to_date')
+        start_date = request.session.get('session_start_date')
+        end_date = request.session.get('session_end_date')
+        start_date = ceil_strdate(start_date, 'start')
+        end_date = ceil_strdate(end_date, 'end')
         survey_id = request.session.get('session_survey_id')
 
-        form = SurveyDetailReportForm(request.user, initial={'from_date': from_date,
-                                                             'to_date': to_date,
+        form = SurveyDetailReportForm(request.user, initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                                                             'to_date': end_date.strftime('%Y-%m-%d'),
                                                              'survey_id': survey_id})
     if post_var_with_page == 0:
         # default
@@ -865,15 +875,14 @@ def survey_report(request):
                     relativedelta(months=1)) -
                     relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)
+        start_date = ceil_strdate(from_date, 'start')
+        end_date = ceil_strdate(to_date, 'end')
 
         # unset session var value
         request.session['session_from_date'] = from_date
         request.session['session_to_date'] = to_date
         request.session['session_survey_id'] = ''
         request.session['session_surveycalls_kwargs'] = ''
-
-    start_date = ceil_strdate(from_date, 'start')
-    end_date = ceil_strdate(to_date, 'end')
 
     kwargs = {}
     if not request.user.is_superuser:

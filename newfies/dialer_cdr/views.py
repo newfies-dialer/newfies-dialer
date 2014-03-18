@@ -94,10 +94,16 @@ def voipcall_report(request):
         unset_session_var(request, field_list)
         post_var_with_page = 1
 
-        from_date = getvar(request, 'from_date', setsession=True)
-        to_date = getvar(request, 'to_date', setsession=True)
+        from_date = getvar(request, 'from_date')
+        to_date = getvar(request, 'to_date')
         start_date = ceil_strdate(str(from_date), 'start')
         end_date = ceil_strdate(str(to_date), 'end')
+
+        converted_start_date = start_date.strftime('%Y-%m-%d')
+        converted_end_date = end_date.strftime('%Y-%m-%d')
+        request.session['session_start_date'] = converted_start_date
+        request.session['session_end_date'] = converted_end_date
+
         disposition = getvar(request, 'disposition', setsession=True)
         campaign_id = getvar(request, 'campaign_id', setsession=True)
         leg_type = getvar(request, 'leg_type', setsession=True)
@@ -106,6 +112,9 @@ def voipcall_report(request):
         post_var_with_page = 1
         start_date = request.session.get('session_start_date')
         end_date = request.session.get('session_end_date')
+        start_date = ceil_strdate(start_date, 'start')
+        end_date = ceil_strdate(end_date, 'end')
+
         disposition = request.session.get('session_disposition')
         campaign_id = request.session.get('session_campaign_id')
         leg_type = request.session.get('session_leg_type')

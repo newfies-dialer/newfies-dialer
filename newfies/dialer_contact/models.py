@@ -143,7 +143,7 @@ class Contact(Model):
 
         as well as, get additional_vars, and replace json tags
         """
-        text = str(text).lower()
+        #text = text.encode('utf-8')
         taglist = {
             'last_name': self.last_name,
             'first_name': self.first_name,

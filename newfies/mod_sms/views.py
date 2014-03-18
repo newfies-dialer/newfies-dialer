@@ -684,7 +684,7 @@ def sms_report(request):
 
     **Important variable**:
 
-        * ``request.session['sms_record_qs']`` - stores sms query set
+        * ``request.session['sms_record_kwargs']`` - stores sms kwargs
     """
     sort_col_field_list = ['send_date', 'recipient_number', 'uuid', 'status', 'status_message', 'gateway']
     pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='send_date')
@@ -699,36 +699,29 @@ def sms_report(request):
     kwargs = {}
     post_var_with_page = 0
     if form.is_valid():
-        request.session['session_start_date'] = ''
-        request.session['session_end_date'] = ''
-        request.session['session_status'] = ''
-        request.session['session_smscampaign'] = ''
         post_var_with_page = 1
+        field_list = ['start_date', 'end_date', 'status', 'smscampaign']
+        unset_session_var(request, field_list)
 
-        if request.POST.get('from_date'):
-            # From
-            from_date = request.POST['from_date']
-            start_date = ceil_strdate(from_date, 'start')
-            request.session['session_start_date'] = start_date
+        from_date = getvar(request, 'from_date')
+        to_date = getvar(request, 'to_date')
+        start_date = ceil_strdate(str(from_date), 'start')
+        end_date = ceil_strdate(str(to_date), 'end')
 
-        if request.POST.get('to_date'):
-            # To
-            to_date = request.POST['to_date']
-            end_date = ceil_strdate(to_date, 'end')
-            request.session['session_end_date'] = end_date
+        converted_start_date = start_date.strftime('%Y-%m-%d')
+        converted_end_date = end_date.strftime('%Y-%m-%d')
+        request.session['session_start_date'] = converted_start_date
+        request.session['session_end_date'] = converted_end_date
 
-        status = request.POST.get('status')
-        if status != 'all':
-            request.session['session_status'] = status
-
-        smscampaign = request.POST.get('smscampaign')
-        if smscampaign != '0':
-            request.session['session_smscampaign'] = smscampaign
+        status = getvar(request, 'status', setsession=True)
+        smscampaign = getvar(request, 'smscampaign', setsession=True)
 
     if request.GET.get('page') or request.GET.get('sort_by'):
         post_var_with_page = 1
         start_date = request.session.get('session_start_date')
         end_date = request.session.get('session_end_date')
+        start_date = ceil_strdate(start_date, 'start')
+        end_date = ceil_strdate(end_date, 'end')
         status = request.session.get('session_status')
         smscampaign = request.session.get('session_smscampaign')
 
@@ -776,7 +769,7 @@ def sms_report(request):
 
     # Session variable is used to get record set with searched option
     # into export file
-    request.session['sms_record_qs'] = smslist
+    request.session['sms_record_kwargs'] = kwargs
 
     select_data = {"send_date": "SUBSTR(CAST(send_date as CHAR(30)),1,10)"}
     # Get Total Rrecords from SMSMessage Report table for Daily SMS Report
@@ -815,7 +808,7 @@ def export_sms_report(request):
 
     **Important variable**:
 
-        * ``request.session['sms_record_qs']`` - stores sms query set
+        * ``request.session['sms_record_kwargs']`` - stores sms query set
 
     **Exported fields**: ['sender', 'recipient_number', 'send_date', 'uuid',
                'status', 'status_message', 'gateway']
@@ -826,8 +819,9 @@ def export_sms_report(request):
 
     # force download.
     response['Content-Disposition'] = 'attachment;filename=sms_export.%s' % format_type
-
-    qs = request.session['sms_record_qs']
+    kwargs = {}
+    kwargs = request.session['sms_record_kwargs']
+    qs = SMSMessage.objects.filter(**kwargs)
 
     headers = ('sender', 'recipient_number', 'send_date', 'uuid',
                'status', 'status_message', 'gateway')

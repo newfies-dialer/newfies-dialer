@@ -22,7 +22,7 @@ from django.conf import settings
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
-from django_lets_go.common_functions import ceil_strdate, unset_session_var, \
+from django_lets_go.common_functions import ceil_strdate, unset_session_var, getvar,\
     get_pagination_vars
 from mod_utils.helper import Export_choice
 #from dialer_cdr.constants import Export_choice
@@ -94,29 +94,13 @@ def voipcall_report(request):
         unset_session_var(request, field_list)
         post_var_with_page = 1
 
-        if request.POST.get('from_date'):
-            # From
-            from_date = request.POST['from_date']
-            start_date = ceil_strdate(from_date, 'start')
-            request.session['session_start_date'] = start_date
-
-        if request.POST.get('to_date'):
-            # To
-            to_date = request.POST['to_date']
-            end_date = ceil_strdate(to_date, 'end')
-            request.session['session_end_date'] = end_date
-
-        disposition = request.POST.get('status')
-        if disposition != 'all':
-            request.session['session_disposition'] = disposition
-
-        campaign_id = request.POST.get('campaign_id')
-        if campaign_id and int(campaign_id) != 0:
-            request.session['session_campaign_id'] = int(campaign_id)
-
-        leg_type = request.POST.get('leg_type')
-        if leg_type and leg_type != '':
-            request.session['session_leg_type'] = leg_type
+        from_date = getvar(request, 'from_date', setsession=True)
+        to_date = getvar(request, 'to_date', setsession=True)
+        start_date = ceil_strdate(str(from_date), 'start')
+        end_date = ceil_strdate(str(to_date), 'end')
+        disposition = getvar(request, 'disposition', setsession=True)
+        campaign_id = getvar(request, 'campaign_id', setsession=True)
+        leg_type = getvar(request, 'leg_type', setsession=True)
 
     if request.GET.get('page') or request.GET.get('sort_by'):
         post_var_with_page = 1
@@ -127,7 +111,7 @@ def voipcall_report(request):
         leg_type = request.session.get('session_leg_type')
         form = VoipSearchForm(request.user, initial={'from_date': start_date.strftime('%Y-%m-%d'),
                                                      'to_date': end_date.strftime('%Y-%m-%d'),
-                                                     'status': disposition,
+                                                     'disposition': disposition,
                                                      'campaign_id': campaign_id,
                                                      'leg_type': leg_type})
 
@@ -143,7 +127,7 @@ def voipcall_report(request):
         leg_type = ''
         form = VoipSearchForm(request.user, initial={'from_date': from_date,
                                                      'to_date': to_date,
-                                                     'status': disposition,
+                                                     'disposition': disposition,
                                                      'campaign_id': campaign_id,
                                                      'leg_type': leg_type})
         # unset session var

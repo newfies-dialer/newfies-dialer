@@ -22,6 +22,7 @@ from django.db.models import Sum, Avg, Count
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.db.models.signals import post_save
+from django.utils.timezone import utc
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from survey.models import Survey_template, Survey, Section_template, Section,\
@@ -36,11 +37,10 @@ from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESUL
     SEALED_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
 from survey.function_def import getaudio_acapela
-from django_lets_go.common_functions import striplist, variable_value, ceil_strdate,\
+from django_lets_go.common_functions import striplist, ceil_strdate, getvar, unset_session_var,\
     get_pagination_vars
 from mod_utils.helper import Export_choice
 from datetime import datetime
-from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
 import subprocess
 import hashlib
@@ -835,33 +835,24 @@ def survey_report(request):
     survey_id = ''
     post_var_with_page = 0
     if form.is_valid():
-        # set session var value
-        request.session['session_from_date'] = ''
-        request.session['session_to_date'] = ''
-        request.session['session_survey_id'] = ''
-        request.session['session_surveycalls_kwargs'] = ''
-        request.session['session_survey_cdr_daily_data'] = {}
         post_var_with_page = 1
+        # set session var value
+        request.session['session_surveycalls_kwargs'] = {}
+        request.session['session_survey_cdr_daily_data'] = {}
+        # set session var value
+        field_list = ['from_date', 'to_date', 'survey_id']
+        unset_session_var(request, field_list)
 
-        if "from_date" in request.POST:
-            # From
-            from_date = request.POST['from_date']
-            request.session['session_from_date'] = from_date
-
-        if "to_date" in request.POST:
-            # To
-            to_date = request.POST['to_date']
-            request.session['session_to_date'] = to_date
-
-        survey_id = variable_value(request, 'survey_id')
-        if survey_id:
-            request.session['session_survey_id'] = survey_id
+        from_date = getvar(request, 'from_date', setsession=True)
+        to_date = getvar(request, 'to_date', setsession=True)
+        survey_id = getvar(request, 'survey_id', setsession=True)
 
     if request.GET.get('page') or request.GET.get('sort_by'):
+        post_var_with_page = 1
         from_date = request.session.get('session_from_date')
         to_date = request.session.get('session_to_date')
         survey_id = request.session.get('session_survey_id')
-        post_var_with_page = 1
+
         form = SurveyDetailReportForm(request.user, initial={'from_date': from_date,
                                                              'to_date': to_date,
                                                              'survey_id': survey_id})
@@ -1060,8 +1051,7 @@ def export_survey(request, id):
     # the txt writer
     writer = csv.writer(response, delimiter='|', lineterminator='\n',)
 
-    survey = get_object_or_404(
-        Survey_template, pk=int(id), user=request.user)
+    survey = get_object_or_404(Survey_template, pk=int(id), user=request.user)
 
     if survey:
         section_list = Section_template.objects.filter(survey=survey).order_by('order')

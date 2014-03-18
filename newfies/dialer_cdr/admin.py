@@ -151,7 +151,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             query_string = voipcall_search_admin_form_fun(request)
             return HttpResponseRedirect("/admin/%s/%s/?%s" % (opts.app_label, opts.object_name.lower(), query_string))
         else:
-            status = ''
+            disposition = ''
             from_date = ''
             to_date = ''
             campaign_id = ''
@@ -159,11 +159,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
             from_date = getvar(request, 'starting_date__gte')
             to_date = getvar(request, 'starting_date__lte')[0:10]
-            status = getvar(request, 'disposition__exact')
+            disposition = getvar(request, 'disposition__exact')
             campaign_id = getvar(request, 'callrequest__campaign_id')
             leg_type = getvar(request, 'leg_type__exact')
 
-            form = AdminVoipSearchForm(initial={'status': status,
+            form = AdminVoipSearchForm(initial={'disposition': disposition,
                                                 'from_date': from_date,
                                                 'to_date': to_date,
                                                 'campaign_id': campaign_id,

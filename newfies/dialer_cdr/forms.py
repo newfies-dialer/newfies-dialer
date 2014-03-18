@@ -83,7 +83,7 @@ class VoipSearchForm(SearchForm):
 
 class AdminVoipSearchForm(AdminSearchForm):
     """VoIP call Report Search Parameters"""
-    status = forms.ChoiceField(label=_('disposition'), required=False, choices=voip_call_disposition_list)
+    disposition = forms.ChoiceField(label=_('disposition'), required=False, choices=voip_call_disposition_list)
     campaign_id = forms.ChoiceField(label=_('campaign'), required=False)
     leg_type = forms.ChoiceField(label=_("leg type"), choices=list(LEG_TYPE), required=False)
 

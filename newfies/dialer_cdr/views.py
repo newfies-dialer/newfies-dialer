@@ -224,7 +224,8 @@ def export_voipcall_report(request):
     # super(VoIPCall_ReportAdmin, self).queryset(request)
     if request.session.get('voipcall_record_kwargs'):
         kwargs = request.session['voipcall_record_kwargs']
-        qs = VoIPCall.objects.filter(**kwargs)
+        qs = VoIPCall.objects.select_related('user__username')\
+                             .filter(**kwargs)
 
         amd_status = ''
         if settings.AMD:

@@ -149,7 +149,7 @@ def create_callrequest(campaign_id, amount, day_delta):
         # print "voipcall: " + str(new_voipcall)
         list_vc.append(new_voipcall)
 
-        if i % 10:
+        if i % 100 == 0:
             VoIPCall.objects.bulk_create(list_vc)
             list_vc = []
 

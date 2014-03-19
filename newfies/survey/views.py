@@ -13,7 +13,6 @@
 #
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,\
     permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -1002,7 +1001,9 @@ def export_surveycall_report(request):
             for ikey in column_list:
                 if ikey in column_list_base:
                     #This is not a Section result
-                    if ikey == 'starting_date' and format_type == Export_choice.JSON or format_type == Export_choice.XLS:
+                    if ikey == 'starting_date' \
+                       and format_type == Export_choice.JSON \
+                       or format_type == Export_choice.XLS:
                         starting_date = str(voipcall.__dict__[ikey])
                         result_row_list.append(starting_date)
                     else:

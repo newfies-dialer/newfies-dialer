@@ -112,6 +112,7 @@ def create_callrequest(campaign_id, amount, day_delta):
     except:
         content_type_id = 1
 
+    list_vc = []
     for i in range(1, int(amount) + 1):
         delta_days = random.randint(0, day_delta)
         delta_minutes = random.randint(-720, 720)
@@ -134,7 +135,7 @@ def create_callrequest(campaign_id, amount, day_delta):
             object_id=1)
         print "new_callrequest: " + str(new_callrequest)
 
-        voipcall = VoIPCall.objects.create(
+        new_voipcall = VoIPCall(
             request_uuid=uuid1(),
             callid=uuid1(),
             user=obj_campaign.user,
@@ -144,9 +145,13 @@ def create_callrequest(campaign_id, amount, day_delta):
             duration=random.randint(50, 1000),
             disposition=weighted_choice(VOIPCALL_DISPOSITION),
             amd_status=choice(VOIPCALL_AMD_STATUS))
-        print "voipcall: " + str(voipcall)
-        voipcall.starting_date = created_date
-        voipcall.save()
+        new_voipcall.starting_date = created_date
+        # print "voipcall: " + str(new_voipcall)
+        list_vc.append(new_voipcall)
+
+        if i % 10:
+            VoIPCall.objects.bulk_create(list_vc)
+            list_vc = []
 
         """
         alpha = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
@@ -180,5 +185,9 @@ def create_callrequest(campaign_id, amount, day_delta):
                             #response=response,
                             count=response_count)
         """
+
+    # create the last one
+    if list_vc:
+        VoIPCall.objects.bulk_create(list_vc)
 
     print _("Callrequests and CDRs created : %(count)s" % {'count': amount})

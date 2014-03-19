@@ -48,34 +48,24 @@ class CalendarSetting(models.Model):
     **Name of DB table**: calendar_setting
 
     """
-    label = models.CharField(max_length=80, blank=False,
-                             verbose_name=_("label"))
-    callerid = models.CharField(max_length=80,
-                                verbose_name=_("Caller ID Number"),
+    label = models.CharField(max_length=80, blank=False, verbose_name=_("label"))
+    callerid = models.CharField(max_length=80, verbose_name=_("Caller ID Number"),
                                 help_text=_("outbound Caller ID"))
-    caller_name = models.CharField(max_length=80, blank=True,
-                                   verbose_name=_("caller name"),
+    caller_name = models.CharField(max_length=80, blank=True, verbose_name=_("caller name"),
                                    help_text=_("outbound caller-Name"))
-    call_timeout = models.IntegerField(default='60', null=False, blank=False,
-                                       verbose_name=_('call timeout'),
+    call_timeout = models.IntegerField(default='60', null=False, blank=False, verbose_name=_('call timeout'),
                                        help_text=_("call timeout"))
     user = models.ForeignKey(User, blank=False, null=False, verbose_name=_("manager"),
-                             help_text=_("select manager"),
-                             related_name="manager_user")
-    survey = models.ForeignKey(Survey, null=False, blank=False,
-                               verbose_name=_('sealed survey'),
+                             help_text=_("select manager"), related_name="manager_user")
+    survey = models.ForeignKey(Survey, null=False, blank=False, verbose_name=_('sealed survey'),
                                related_name="calendar_survey")
-    aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False,
-                                     verbose_name=_("a-leg gateway"),
+    aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False, verbose_name=_("a-leg gateway"),
                                      help_text=_("select gateway to use"))
-    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"),
-                                    null=False, blank=False,
-                                    related_name="sms_gateway",
-                                    help_text=_("select SMS gateway"))
+    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"), null=False, blank=False,
+                                    related_name="sms_gateway", help_text=_("select SMS gateway"))
     #Voicemail Detection
     voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
-    amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR),
-                                       default=AMD_BEHAVIOR.ALWAYS,
+    amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR), default=AMD_BEHAVIOR.ALWAYS,
                                        verbose_name=_("detection behaviour"), blank=True, null=True)
     voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                             verbose_name=_("voicemail audio file"))
@@ -130,11 +120,9 @@ class CalendarUserProfile(Profile_abstract):
 
     **Name of DB table**: calendar_user_profile
     """
-    manager = models.ForeignKey(Manager, verbose_name=_("manager"),
-                                help_text=_("select manager"),
+    manager = models.ForeignKey(Manager, verbose_name=_("manager"), help_text=_("select manager"),
                                 related_name="manager_of_calendar_user")
-    calendar_setting = models.ForeignKey(CalendarSetting,
-                                         verbose_name=_('calendar settings'))
+    calendar_setting = models.ForeignKey(CalendarSetting, verbose_name=_('calendar settings'))
 
     class Meta:
         permissions = (

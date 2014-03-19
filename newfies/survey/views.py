@@ -13,7 +13,6 @@
 #
 
 from django.conf import settings
-from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required,\
     permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -22,6 +21,7 @@ from django.db.models import Sum, Avg, Count
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.db.models.signals import post_save
+from django.utils.timezone import utc
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import VOIPCALL_DISPOSITION
 from survey.models import Survey_template, Survey, Section_template, Section,\
@@ -36,11 +36,10 @@ from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESUL
     SEALED_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
 from survey.function_def import getaudio_acapela
-from django_lets_go.common_functions import striplist, variable_value, ceil_strdate,\
+from django_lets_go.common_functions import striplist, ceil_strdate, getvar, unset_session_var,\
     get_pagination_vars
 from mod_utils.helper import Export_choice
 from datetime import datetime
-from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
 import subprocess
 import hashlib
@@ -67,8 +66,7 @@ def survey_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
-    survey_list = Survey_template.objects.values('id', 'name', 'description', 'updated_date')\
-        .filter(user=request.user).order_by(pag_vars['sort_order'])
+    survey_list = Survey_template.objects.filter(user=request.user).order_by(pag_vars['sort_order'])
     data = {
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
@@ -98,7 +96,7 @@ def survey_add(request):
     """
     form = SurveyForm(request.POST or None)
     if form.is_valid():
-        obj = form.save(user=User.objects.get(username=request.user))
+        obj = form.save(user=request.user)
         request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
         return HttpResponseRedirect(redirect_url_to_survey_list + '%s/' % (obj.id))
     data = {
@@ -835,35 +833,36 @@ def survey_report(request):
     survey_id = ''
     post_var_with_page = 0
     if form.is_valid():
-        # set session var value
-        request.session['session_from_date'] = ''
-        request.session['session_to_date'] = ''
-        request.session['session_survey_id'] = ''
-        request.session['session_surveycalls_kwargs'] = ''
-        request.session['session_survey_cdr_daily_data'] = {}
         post_var_with_page = 1
+        # set session var value
+        request.session['session_surveycalls_kwargs'] = {}
+        request.session['session_survey_cdr_daily_data'] = {}
+        # set session var value
+        field_list = ['from_date', 'to_date', 'survey_id']
+        unset_session_var(request, field_list)
 
-        if "from_date" in request.POST:
-            # From
-            from_date = request.POST['from_date']
-            request.session['session_from_date'] = from_date
+        from_date = getvar(request, 'from_date')
+        to_date = getvar(request, 'to_date')
+        start_date = ceil_strdate(str(from_date), 'start')
+        end_date = ceil_strdate(str(to_date), 'end')
 
-        if "to_date" in request.POST:
-            # To
-            to_date = request.POST['to_date']
-            request.session['session_to_date'] = to_date
+        converted_start_date = start_date.strftime('%Y-%m-%d')
+        converted_end_date = end_date.strftime('%Y-%m-%d')
+        request.session['session_start_date'] = converted_start_date
+        request.session['session_end_date'] = converted_end_date
 
-        survey_id = variable_value(request, 'survey_id')
-        if survey_id:
-            request.session['session_survey_id'] = survey_id
+        survey_id = getvar(request, 'survey_id', setsession=True)
 
     if request.GET.get('page') or request.GET.get('sort_by'):
-        from_date = request.session.get('session_from_date')
-        to_date = request.session.get('session_to_date')
-        survey_id = request.session.get('session_survey_id')
         post_var_with_page = 1
-        form = SurveyDetailReportForm(request.user, initial={'from_date': from_date,
-                                                             'to_date': to_date,
+        start_date = request.session.get('session_start_date')
+        end_date = request.session.get('session_end_date')
+        start_date = ceil_strdate(start_date, 'start')
+        end_date = ceil_strdate(end_date, 'end')
+        survey_id = request.session.get('session_survey_id')
+
+        form = SurveyDetailReportForm(request.user, initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                                                             'to_date': end_date.strftime('%Y-%m-%d'),
                                                              'survey_id': survey_id})
     if post_var_with_page == 0:
         # default
@@ -874,15 +873,14 @@ def survey_report(request):
                     relativedelta(months=1)) -
                     relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)
+        start_date = ceil_strdate(from_date, 'start')
+        end_date = ceil_strdate(to_date, 'end')
 
         # unset session var value
         request.session['session_from_date'] = from_date
         request.session['session_to_date'] = to_date
         request.session['session_survey_id'] = ''
         request.session['session_surveycalls_kwargs'] = ''
-
-    start_date = ceil_strdate(from_date, 'start')
-    end_date = ceil_strdate(to_date, 'end')
 
     kwargs = {}
     if not request.user.is_superuser:
@@ -1003,7 +1001,9 @@ def export_surveycall_report(request):
             for ikey in column_list:
                 if ikey in column_list_base:
                     #This is not a Section result
-                    if ikey == 'starting_date' and format_type == Export_choice.JSON or format_type == Export_choice.XLS:
+                    if ikey == 'starting_date' \
+                       and format_type == Export_choice.JSON \
+                       or format_type == Export_choice.XLS:
                         starting_date = str(voipcall.__dict__[ikey])
                         result_row_list.append(starting_date)
                     else:
@@ -1060,8 +1060,7 @@ def export_survey(request, id):
     # the txt writer
     writer = csv.writer(response, delimiter='|', lineterminator='\n',)
 
-    survey = get_object_or_404(
-        Survey_template, pk=int(id), user=request.user)
+    survey = get_object_or_404(Survey_template, pk=int(id), user=request.user)
 
     if survey:
         section_list = Section_template.objects.filter(survey=survey).order_by('order')
@@ -1092,6 +1091,7 @@ def export_survey(request, id):
                 section.max_number,
                 section.phonenumber,
                 section.conference,
+                section.sms_text,
                 section.completed,
                 section.invalid_audiofile_id,
                 section.id
@@ -1126,10 +1126,8 @@ def import_survey(request):
     type_error_import_list = []
     if request.method == 'POST':
         if form.is_valid():
-            new_survey = Survey_template.objects.create(name=request.POST['name'],
-                                                        user=request.user)
-            records = csv.reader(request.FILES['survey_file'],
-                                 delimiter='|', quotechar='"')
+            new_survey = Survey_template.objects.create(name=request.POST['name'], user=request.user)
+            records = csv.reader(request.FILES['survey_file'], delimiter='|', quotechar='"')
             new_old_section = {}
 
             # disconnect post_save_add_script signal from Section_template
@@ -1140,8 +1138,8 @@ def import_survey(request):
                 if not row or str(row[0]) == 0:
                     continue
 
-                #if length of row is 27, it's a section
-                if len(row) == 27:
+                #if length of row is 28, it's a section
+                if len(row) == 28:
                     try:
                         # for section
                         section_template_obj = Section_template.objects.create(
@@ -1150,7 +1148,7 @@ def import_survey(request):
                             question=row[2],
                             script=row[3],
                             audiofile_id=int(row[4]) if row[4] else None,
-                            retries=int(row[5]) if row[5] else None,
+                            retries=int(row[5]) if row[5] else 0,
                             timeout=int(row[6]) if row[6] else 0,
                             key_0=row[7] if row[7] else '',
                             key_1=row[8] if row[8] else '',
@@ -1163,18 +1161,18 @@ def import_survey(request):
                             key_8=row[15] if row[15] else '',
                             key_9=row[16] if row[16] else '',
                             rating_laps=int(row[17]) if row[17] else None,
-                            validate_number=row[18],
+                            validate_number=row[18] if row[18] == 'True' else False,
                             number_digits=int(row[19]) if row[19] else None,
-                            min_number=row[20],
-                            max_number=row[21],
-                            phonenumber=row[22],
-                            conference=row[23],
-                            completed=True if row[24] == 'True' else False,
-                            invalid_audiofile_id=int(row[25]) if row[25] else None,
+                            min_number=row[20] if row[20] else None,
+                            max_number=row[21] if row[21] else None,
+                            phonenumber=row[22] if row[22] else None,
+                            conference=row[23] if row[23] else None,
+                            sms_text=row[24] if row[24] else None,
+                            completed=True if row[25] == 'True' else False,
+                            invalid_audiofile_id=int(row[26]) if row[26] else None,
                             survey=new_survey,
                         )
-
-                        new_old_section[int(row[26])] = section_template_obj.id
+                        new_old_section[int(row[27])] = section_template_obj.id
                         section_row.append(row)
                     except:
                         type_error_import_list.append(row)

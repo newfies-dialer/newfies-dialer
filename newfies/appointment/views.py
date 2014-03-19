@@ -211,8 +211,7 @@ def calendar_user_change_password(request, object_id):
     calendar_user_userdetail = get_object_or_404(CalendarUser, pk=object_id)
     calendar_user_username = calendar_user_userdetail.username
 
-    user_password_form = CalendarUserPasswordChangeForm(
-        calendar_user_userdetail, request.POST or None)
+    user_password_form = CalendarUserPasswordChangeForm(calendar_user_userdetail, request.POST or None)
     if user_password_form.is_valid():
         user_password_form.save()
         request.session["msg"] = _('%s password has been changed.' % calendar_user_username)
@@ -484,8 +483,7 @@ def calendar_setting_change(request, object_id):
         'form': form,
         'action': 'update',
     }
-    return render_to_response('appointment/calendar_setting/change.html', data,
-                              context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar_setting/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.view_event', login_url='/')
@@ -502,7 +500,7 @@ def event_list(request):
         * List all events which belong to the logged in user.
     """
     today = datetime.utcnow().replace(tzinfo=utc)
-    form = EventSearchForm(request.user, request.POST or None, initial={'start': today.strftime('%Y-%m-%d %H:%M:%S')})
+    form = EventSearchForm(request.user, request.POST or None, initial={'start': today.strftime('%Y-%m-%d %H:%M')})
     sort_col_field_list = ['id', 'start', 'end', 'title', 'calendar', 'status', 'created_on']
     pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
 
@@ -514,10 +512,10 @@ def event_list(request):
         field_list = ['start_date', 'calendar_id', 'calendar_user_id']
         unset_session_var(request, field_list)
 
-        if request.POST.get('start_date'):
-            # start date
-            start_date = ceil_strdate(request.POST['start_date'], 'start')
-            request.session['session_start_date'] = start_date
+        start_date = getvar(request, 'start_date')
+        start_date = ceil_strdate(str(start_date), 'start')
+        converted_start_date = start_date.strftime('%Y-%m-%d')
+        request.session['session_start_date'] = converted_start_date
 
         calendar_id = getvar(request, 'calendar_id', setsession=True)
         calendar_user_id = getvar(request, 'calendar_user_id', setsession=True)
@@ -526,20 +524,22 @@ def event_list(request):
     if request.GET.get('page') or request.GET.get('sort_by'):
         post_var_with_page = 1
         start_date = request.session.get('session_start_date')
+        start_date = ceil_strdate(start_date, 'start')
         calendar_id = request.session.get('session_calendar_id')
         calendar_user_id = request.session.get('session_calendar_user_id')
-        form = EventSearchForm(request.user, initial={'start_date': start_date,
+        form = EventSearchForm(request.user, initial={'start_date': start_date.strftime('%Y-%m-%d %H:%M'),
                                                       'calendar_id': calendar_id,
                                                       'calendar_user_id': calendar_user_id,
                                                       })
 
     if post_var_with_page == 0:
-        # default
-        # unset session var
+        # default unset session var
         field_list = ['start_date', 'calendar_id', 'calendar_user_id']
         unset_session_var(request, field_list)
 
     kwargs = {}
+    calendar_user_id_list = get_calendar_user_id_list(request.user)
+    kwargs['calendar__user_id__in'] = calendar_user_id_list
     if start_date:
         kwargs['start__gte'] = start_date
 
@@ -549,16 +549,14 @@ def event_list(request):
     if calendar_user_id and int(calendar_user_id) != 0:
         kwargs['creator_id'] = calendar_user_id
 
-    calendar_user_id_list = get_calendar_user_id_list(request.user)
-    event_list = Event.objects.filter(calendar__user_id__in=calendar_user_id_list).order_by(pag_vars['sort_order'])
-    if kwargs:
-        event_list = event_list.filter(**kwargs)
-    event_list = event_list[pag_vars['start_page']:pag_vars['end_page']]
+    all_event_list = Event.objects.filter(**kwargs).order_by(pag_vars['sort_order'])
+    event_list = all_event_list[pag_vars['start_page']:pag_vars['end_page']]
     data = {
         'form': form,
         'msg': request.session.get('msg'),
+        'all_event_list': all_event_list,
         'event_list': event_list,
-        'total_event': event_list.count(),
+        'total_event': all_event_list.count(),
         'EVENT_COLUMN_NAME': EVENT_COLUMN_NAME,
         'col_name_with_order': pag_vars['col_name_with_order'],
     }

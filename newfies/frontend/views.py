@@ -47,8 +47,7 @@ def logout_view(request):
     logout(request)
     # set language cookie
     response = HttpResponseRedirect('/')
-    response.set_cookie(settings.LANGUAGE_COOKIE_NAME,
-                        request.LANGUAGE_CODE)
+    response.set_cookie(settings.LANGUAGE_COOKIE_NAME, request.LANGUAGE_CODE)
     return response
 
 
@@ -483,4 +482,3 @@ def customer_dashboard(request, on_index=None):
     if on_index == 'yes':
         return data
     return render_to_response('frontend/dashboard.html', data, context_instance=RequestContext(request))
-

@@ -51,8 +51,7 @@ class ManagerAdmin(UserAdmin):
         #agent_id_list = AgentProfile.objects.values_list('user_id', flat=True)\
         #    .filter(is_agent=True, manager__isnull=False)
         calendar_user_list = get_all_calendar_user_id_list()
-        qs = qs.filter(is_superuser=False).exclude(id__in=calendar_user_list)  # .exclude(id__in=agent_id_list)
-        return qs
+        return qs.filter(is_superuser=False).exclude(id__in=calendar_user_list)  # .exclude(id__in=agent_id_list)
 
 admin.site.unregister(User)
 admin.site.register(Staff, StaffAdmin)

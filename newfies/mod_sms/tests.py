@@ -291,21 +291,21 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         request = self.factory.get('/export_sms_report/?format=csv')
         request.user = self.user
         request.session = {}
-        request.session['sms_record_qs'] = {}
+        request.session['sms_record_kwargs'] = {}
         response = export_sms_report(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/export_sms_report/?format=json')
         request.user = self.user
         request.session = {}
-        request.session['sms_record_qs'] = {}
+        request.session['sms_record_kwargs'] = {}
         response = export_sms_report(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.get('/export_sms_report/?format=xls')
         request.user = self.user
         request.session = {}
-        request.session['sms_record_qs'] = {}
+        request.session['sms_record_kwargs'] = {}
         response = export_sms_report(request)
         self.assertEqual(response.status_code, 200)
 

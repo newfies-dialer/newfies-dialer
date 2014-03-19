@@ -19,14 +19,11 @@ class Calendar(models.Model):
     >>> calendar.save()
     """
     name = models.CharField(verbose_name=_('name'), max_length=200)
-    user = models.ForeignKey(CalendarUser, blank=True, null=True,
-                             verbose_name=_("calendar user"),
-                             help_text=_("select user"),
-                             related_name="calendar user")
+    user = models.ForeignKey(CalendarUser, blank=True, null=True, verbose_name=_("calendar user"),
+                             help_text=_("select user"), related_name="calendar user")
     max_concurrent = models.IntegerField(null=True, blank=True, default=0,
                                          help_text=_("Max concurrent is not implemented"))
-    created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('date'))
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
 
     class Meta:
         permissions = (

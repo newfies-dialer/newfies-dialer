@@ -26,8 +26,7 @@ from django.utils.translation import ungettext
 from django.db.models import Sum, Avg, Count
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_cdr.forms import AdminVoipSearchForm
-from dialer_cdr.function_def import voipcall_record_common_fun,\
-    voipcall_search_admin_form_fun
+from dialer_cdr.function_def import voipcall_record_common_fun, voipcall_search_admin_form_fun
 from django_lets_go.common_functions import getvar
 from mod_utils.helper import Export_choice
 #from django_lets_go.app_label_renamer import AppLabelRenamer
@@ -100,8 +99,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
     def used_gateway_link(self, obj):
         """Used gateway link to edit gateway detail"""
         if obj.used_gateway:
-            url = reverse('admin:dialer_gateway_gateway_change',
-                          args=(obj.used_gateway.id, ))
+            url = reverse('admin:dialer_gateway_gateway_change', args=(obj.used_gateway.id, ))
             return '<a href="%s">%s</a>' % (url, obj.used_gateway)
     used_gateway_link.allow_tags = True
     used_gateway_link.short_description = _('gateway used').capitalize()
@@ -151,7 +149,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             query_string = voipcall_search_admin_form_fun(request)
             return HttpResponseRedirect("/admin/%s/%s/?%s" % (opts.app_label, opts.object_name.lower(), query_string))
         else:
-            status = ''
+            disposition = ''
             from_date = ''
             to_date = ''
             campaign_id = ''
@@ -159,11 +157,11 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
             from_date = getvar(request, 'starting_date__gte')
             to_date = getvar(request, 'starting_date__lte')[0:10]
-            status = getvar(request, 'disposition__exact')
+            disposition = getvar(request, 'disposition__exact')
             campaign_id = getvar(request, 'callrequest__campaign_id')
             leg_type = getvar(request, 'leg_type__exact')
 
-            form = AdminVoipSearchForm(initial={'status': status,
+            form = AdminVoipSearchForm(initial={'disposition': disposition,
                                                 'from_date': from_date,
                                                 'to_date': to_date,
                                                 'campaign_id': campaign_id,

@@ -16,8 +16,7 @@ from django.contrib.auth.models import User
 from django.contrib.contenttypes.models import ContentType
 from django.core.management import call_command
 from django.test import TestCase
-from dialer_campaign.models import Campaign, Subscriber,\
-    common_contact_authorization
+from dialer_campaign.models import Campaign, Subscriber, common_contact_authorization
 from dialer_campaign.forms import CampaignForm
 from dialer_campaign.views import campaign_list, campaign_add,\
     campaign_change, campaign_del, notify_admin,\

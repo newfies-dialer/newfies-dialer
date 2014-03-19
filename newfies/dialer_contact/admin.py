@@ -23,8 +23,7 @@ from django.shortcuts import render_to_response
 
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport
-from dialer_campaign.function_def import check_dialer_setting, \
-    dialer_setting_limit
+from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
 from django_lets_go.common_functions import striplist
@@ -80,8 +79,7 @@ class ContactAdmin(admin.ModelAdmin):
 
                 # campaign limit reached
                 frontend_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
-                return HttpResponseRedirect(reverse(
-                    "admin:dialer_campaign_contact_changelist"))
+                return HttpResponseRedirect(reverse("admin:dialer_campaign_contact_changelist"))
 
         ctx = {}
         return super(ContactAdmin, self).add_view(request, extra_context=ctx)
@@ -119,8 +117,7 @@ class ContactAdmin(admin.ModelAdmin):
 
                 # campaign limit reached
                 frontend_send_notification(request, NOTIFICATION_NAME.campaign_limit_reached)
-                return HttpResponseRedirect(reverse(
-                    "admin:dialer_campaign_contact_changelist"))
+                return HttpResponseRedirect(reverse("admin:dialer_campaign_contact_changelist"))
 
         opts = Contact._meta
         rdr = ''  # will contain CSV data
@@ -146,12 +143,10 @@ class ContactAdmin(admin.ModelAdmin):
             # 10     - unit_number
             # 11     - additional_vars
             # To count total rows of CSV file
-            records = csv.reader(
-                request.FILES['csv_file'], delimiter='|', quotechar='"')
+            records = csv.reader(request.FILES['csv_file'], delimiter='|', quotechar='"')
             total_rows = len(list(records))
             BULK_SIZE = 1000
-            rdr = csv.reader(
-                request.FILES['csv_file'], delimiter='|', quotechar='"')
+            rdr = csv.reader(request.FILES['csv_file'], delimiter='|', quotechar='"')
 
             #Get Phonebook Obj
             phonebook = Phonebook.objects.get(pk=request.POST['phonebook'])
@@ -225,7 +220,5 @@ class ContactAdmin(admin.ModelAdmin):
             'success_import_list': success_import_list,
             'type_error_import_list': type_error_import_list,
         })
-        return render_to_response(
-            'admin/dialer_contact/contact/import_contact.html',
-            context_instance=ctx)
+        return render_to_response('admin/dialer_contact/contact/import_contact.html', context_instance=ctx)
 admin.site.register(Contact, ContactAdmin)

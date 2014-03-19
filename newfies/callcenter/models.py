@@ -42,17 +42,13 @@ class CallAgent(Model):
     **Name of DB table**: callcenter_callagent
 
     """
-    callrequest = models.ForeignKey(Callrequest, blank=True, null=True,
-                                    help_text=_("select callrequest"),
+    callrequest = models.ForeignKey(Callrequest, blank=True, null=True, help_text=_("select callrequest"),
                                     related_name="callrequest_callagent")
-    agent = models.ForeignKey(AgentProfile,
-                              verbose_name=_("agent"), blank=True, null=True,
+    agent = models.ForeignKey(AgentProfile, verbose_name=_("agent"), blank=True, null=True,
                               help_text=_("select agent"), related_name="agent_callagent")
-    callstate = models.CharField(verbose_name=_("call state"),
-                                 choices=list(AGENT_CALLSTATE_TYPE), max_length=250,
+    callstate = models.CharField(verbose_name=_("call state"), choices=list(AGENT_CALLSTATE_TYPE), max_length=250,
                                  default=AGENT_CALLSTATE_TYPE.agent_offering)
-    created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('date'))
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
 
     class Meta:
         db_table = u'callcenter_callagent'
@@ -95,41 +91,28 @@ class Queue(Model):
     manager = models.ForeignKey(Manager, verbose_name=_("manager"), blank=True, null=True,
                                 help_text=_("select manager"), related_name="queue manager")
     name = models.CharField(verbose_name=_("name"), max_length=250)
-    strategy = models.IntegerField(choices=list(STRATEGY),
-                                   default=STRATEGY.agent_with_least_talk_time,
+    strategy = models.IntegerField(choices=list(STRATEGY), default=STRATEGY.agent_with_least_talk_time,
                                    verbose_name=_("status"), blank=True, null=True)
-    moh_sound = models.CharField(verbose_name=_("moh-sound"),
-                                 max_length=250, null=True, blank=True)
-    record_template = models.CharField(verbose_name=_("record-template"),
-                                       max_length=250, null=True, blank=True)
-    time_base_score = models.CharField(verbose_name=_("time-base-score"),
-                                       choices=list(TIME_BASE_SCORE_TYPE), max_length=250,
-                                       default=TIME_BASE_SCORE_TYPE.queue)
+    moh_sound = models.CharField(verbose_name=_("moh-sound"), max_length=250, null=True, blank=True)
+    record_template = models.CharField(verbose_name=_("record-template"), max_length=250, null=True, blank=True)
+    time_base_score = models.CharField(verbose_name=_("time-base-score"), max_length=250,
+                                       choices=list(TIME_BASE_SCORE_TYPE), default=TIME_BASE_SCORE_TYPE.queue)
     tier_rules_apply = models.BooleanField(default=False, verbose_name=_("tier-rules-apply"))
     tier_rule_wait_second = models.IntegerField(verbose_name=_("tier-rule-wait-second"),
-                                                max_length=250, null=True,
-                                                blank=True, default=300)
-    tier_rule_wait_multiply_level = models.BooleanField(default=True,
-                                                        verbose_name=_("tier-rule-wait-multiply-level"))
-    tier_rule_no_agent_no_wait = models.BooleanField(default=False,
-                                                     verbose_name=_("tier-rule-no-agent-no-wait"))
+                                                max_length=250, null=True, blank=True, default=300)
+    tier_rule_wait_multiply_level = models.BooleanField(default=True, verbose_name=_("tier-rule-wait-multiply-level"))
+    tier_rule_no_agent_no_wait = models.BooleanField(default=False, verbose_name=_("tier-rule-no-agent-no-wait"))
     discard_abandoned_after = models.IntegerField(verbose_name=_("discard-abandoned-after"),
-                                                  max_length=250, null=True, blank=True,
-                                                  default=14400)
-    abandoned_resume_allowed = models.BooleanField(default=True,
-                                                   verbose_name=_("abandoned-resume-allowed"))
-    max_wait_time = models.IntegerField(verbose_name=_("max-wait-time"),
-                                        max_length=250, null=True, blank=True,
+                                                  max_length=250, null=True, blank=True, default=14400)
+    abandoned_resume_allowed = models.BooleanField(default=True, verbose_name=_("abandoned-resume-allowed"))
+    max_wait_time = models.IntegerField(verbose_name=_("max-wait-time"), max_length=250, null=True, blank=True,
                                         default=0)
     max_wait_time_with_no_agent = models.IntegerField(verbose_name=_("max-wait-time-with-no-agent"),
-                                                      max_length=250, null=True, blank=True,
-                                                      default=120)
+                                                      max_length=250, null=True, blank=True, default=120)
     max_wait_time_with_no_agent_time_reached = models.IntegerField(verbose_name=_("max-wait-time-with-no-agent-time-reached"),
                                                                    max_length=250, null=True, blank=True,
                                                                    default=5)
-
-    created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('date'))
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -179,8 +162,7 @@ class Tier(Model):
     level = models.IntegerField(verbose_name=_("level"), default=1)
     position = models.IntegerField(verbose_name=_("position"), default=1)
 
-    created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('date'))
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:

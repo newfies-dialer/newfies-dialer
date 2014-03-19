@@ -107,10 +107,9 @@ class PhonebookForm(SaveUserModelForm):
 
 def phonebook_list(user):
     """Return phonebook list of logged in user"""
-    phonebook_list = Phonebook.objects.filter(user=user).order_by('id')
     result_list = []
     result_list.append((0, '---'))
-    for phonebook in phonebook_list:
+    for phonebook in Phonebook.objects.filter(user=user).order_by('id'):
         result_list.append((phonebook.id, phonebook.name))
     return result_list
 

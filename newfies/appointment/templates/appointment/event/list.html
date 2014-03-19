@@ -56,8 +56,8 @@
                         <th>{% trans 'action'|capfirst %}</th>
                     </tr>
                     </thead>
-                    {% if event_list %}
-                        {% autopaginate event_list newfies_page_size %}
+                    {% if all_event_list %}
+                        {% autopaginate all_event_list newfies_page_size %}
                         {% for row in event_list %}
                             <tr>
                                 <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
@@ -88,7 +88,7 @@
             <div class="text-right">
                 {% trans "total"|title %} : {{ total_event }}
             </div>
-            {% if event_list %}
+            {% if all_event_list %}
                 {% paginate %}
             {% endif %}
         </form>

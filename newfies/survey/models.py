@@ -220,13 +220,11 @@ class Section_abstract(Sortable):
     **Name of DB table**: survey_question
     """
     # select section
-    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE),
-                               default=SECTION_TYPE.PLAY_MESSAGE,
+    type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE), default=SECTION_TYPE.PLAY_MESSAGE,
                                #blank=True, null=True,
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting
-    question = models.CharField(max_length=500, blank=False,
-                                verbose_name=_("question"),
+    question = models.CharField(max_length=500, blank=False, verbose_name=_("question"),
                                 help_text=_('Example: hotel service rating'))
     # Script will be used by TTS
     script = models.CharField(max_length=1000, null=True, blank=True,
@@ -261,35 +259,28 @@ class Section_abstract(Sortable):
     key_9 = models.CharField(max_length=100, null=True, blank=True,
                              verbose_name=_("key") + " 9")
     #Rating question
-    rating_laps = models.IntegerField(max_length=1, default=9,
-                                      null=True, blank=True,
+    rating_laps = models.IntegerField(max_length=1, default=9, null=True, blank=True,
                                       verbose_name=_("from 1 to X"))
     #Capture Digits
-    validate_number = models.BooleanField(default=True,
-                                          verbose_name=_('check validity'))
+    validate_number = models.BooleanField(default=True, verbose_name=_('check validity'))
     number_digits = models.IntegerField(max_length=2, null=True, blank=True,
-                                        default="2",
-                                        verbose_name=_("number of digits"))
+                                        default="2", verbose_name=_("number of digits"))
     min_number = models.BigIntegerField(max_length=50, null=True, blank=True,
-                                  default=0, verbose_name=_("minimum"))
+                                        default=0, verbose_name=_("minimum"))
     max_number = models.BigIntegerField(max_length=50, null=True, blank=True,
-                                  default=99, verbose_name=_("maximum"))
+                                        default=99, verbose_name=_("maximum"))
     #Call Transfer
-    phonenumber = models.CharField(max_length=50,
-                                   null=True, blank=True,
+    phonenumber = models.CharField(max_length=50, null=True, blank=True,
                                    verbose_name=_("Phone Number / SIP URI"))
     #Conference Room
-    conference = models.CharField(max_length=50,
-                                  null=True, blank=True,
+    conference = models.CharField(max_length=50, null=True, blank=True,
                                   verbose_name=_("conference number"))
 
-    sms_text = models.CharField(max_length=200,
-                                null=True, blank=True,
+    sms_text = models.CharField(max_length=200, null=True, blank=True,
                                 help_text=_('text that will be send via SMS to the contact'))
 
     # if the current section means that the survey is completed
-    completed = models.BooleanField(default=False,
-                                    verbose_name=_('survey complete'))
+    completed = models.BooleanField(default=False, verbose_name=_('survey complete'))
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 

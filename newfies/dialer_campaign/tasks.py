@@ -18,8 +18,7 @@ from celery.task import PeriodicTask
 from celery.task import Task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign
-from dialer_campaign.constants import SUBSCRIBER_STATUS,\
-    CAMPAIGN_STATUS
+from dialer_campaign.constants import SUBSCRIBER_STATUS, CAMPAIGN_STATUS
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
@@ -58,8 +57,7 @@ class campaign_spool_contact(PeriodicTask):
         logger.info("TASK :: campaign_spool_contact")
 
         for campaign in Campaign.objects.get_running_campaign():
-            logger.debug("=> Spool Contact : Campaign name %s (id:%s)" %
-                        (campaign.name, str(campaign.id)))
+            logger.debug("=> Spool Contact : Campaign name %s (id:%s)" % (campaign.name, str(campaign.id)))
             # Start collecting the contacts for this campaign
             collect_subscriber.delay(campaign.id)
 
@@ -228,8 +226,7 @@ class campaign_running(PeriodicTask):
         logger.debug("TASK :: campaign_running")
 
         for campaign in Campaign.objects.get_running_campaign():
-            logger.info("=> Campaign name %s (id:%s)" %
-                        (campaign.name, campaign.id))
+            logger.info("=> Campaign name %s (id:%s)" % (campaign.name, campaign.id))
             keytask = 'check_campaign_pendingcall-%d' % (campaign.id)
             pending_call_processing().delay(campaign.id, keytask=keytask)
         return True
@@ -250,8 +247,7 @@ class campaign_expire_check(PeriodicTask):
         logger.info("TASK :: campaign_expire_check")
         campaign_id_list = []
         for obj_campaign in Campaign.objects.get_expired_campaign():
-            logger.debug("=> Campaign name %s (id:%s)" %
-                        (obj_campaign.name, obj_campaign.id))
+            logger.debug("=> Campaign name %s (id:%s)" % (obj_campaign.name, obj_campaign.id))
             campaign_id_list.append(obj_campaign.id)
 
         #Update in bulk

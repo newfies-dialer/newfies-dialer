@@ -66,9 +66,8 @@ class DashboardForm(forms.Form):
 
         # To get user's running campaign list
         if user:
-            campaign_list = Campaign.objects.filter(user=user).order_by('-id')
             campaign_choices = [(0, _('Select campaign'))]
-            for cp in campaign_list:
+            for cp in Campaign.objects.filter(user=user).order_by('-id'):
                 campaign_choices.append((cp.id, unicode(cp.name)))
 
             self.fields['campaign'].choices = campaign_choices

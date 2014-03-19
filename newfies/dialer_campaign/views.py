@@ -13,8 +13,7 @@
 #
 
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required, \
-    permission_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
@@ -29,14 +28,12 @@ from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm, \
 from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME, \
     SUBSCRIBER_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
-    user_dialer_setting, get_subscriber_status, \
-    get_subscriber_disposition
+    user_dialer_setting, get_subscriber_status, get_subscriber_disposition
 from dialer_campaign.tasks import collect_subscriber
 from survey.models import Survey_template
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from django_lets_go.common_functions import ceil_strdate, getvar, \
-    get_pagination_vars, unset_session_var
+from django_lets_go.common_functions import ceil_strdate, getvar, get_pagination_vars, unset_session_var
 from mod_utils.helper import Export_choice
 from dateutil.relativedelta import relativedelta
 from datetime import datetime
@@ -54,10 +51,8 @@ def update_campaign_status_admin(request, pk, status):
     obj_campaign = Campaign.objects.get(id=pk)
     obj_campaign.status = status
     obj_campaign.save()
-    recipient = request.user
-    frontend_send_notification(request, status, recipient)
-    return HttpResponseRedirect(
-        reverse("admin:dialer_campaign_campaign_changelist"))
+    frontend_send_notification(request, status, recipient=request.user)
+    return HttpResponseRedirect(reverse("admin:dialer_campaign_campaign_changelist"))
 
 
 @login_required
@@ -423,8 +418,7 @@ def campaign_duplicate(request, id):
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''
-    return render_to_response('dialer_campaign/campaign/campaign_duplicate.html', data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_campaign/campaign/campaign_duplicate.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.view_subscriber', login_url='/')
@@ -452,33 +446,32 @@ def subscriber_list(request):
     start_date = end_date = None
     post_var_with_page = 0
     if form.is_valid():
-        field_list = ['start_date', 'end_date', 'status',
-                      'campaign_id', 'agent_id']
+        post_var_with_page = 1
+        field_list = ['start_date', 'end_date', 'status', 'campaign_id', 'agent_id']
         unset_session_var(request, field_list)
         campaign_id = getvar(request, 'campaign_id', setsession=True)
         agent_id = getvar(request, 'agent_id', setsession=True)
-        post_var_with_page = 1
 
-        if request.POST.get('from_date'):
-            # From
-            from_date = request.POST['from_date']
-            start_date = ceil_strdate(from_date, 'start')
-            request.session['session_start_date'] = start_date
+        from_date = getvar(request, 'from_date')
+        to_date = getvar(request, 'to_date')
+        start_date = ceil_strdate(str(from_date), 'start')
+        end_date = ceil_strdate(str(to_date), 'end')
 
-        if request.POST.get('to_date'):
-            # To
-            to_date = request.POST['to_date']
-            end_date = ceil_strdate(to_date, 'end')
-            request.session['session_end_date'] = end_date
+        converted_start_date = start_date.strftime('%Y-%m-%d')
+        converted_end_date = end_date.strftime('%Y-%m-%d')
+        request.session['session_start_date'] = converted_start_date
+        request.session['session_end_date'] = converted_end_date
 
-        status = request.POST.get('status')
-        if status != 'all':
-            request.session['session_status'] = status
+        status = getvar(request, 'status', setsession=True)
 
     if request.GET.get('page') or request.GET.get('sort_by'):
         post_var_with_page = 1
         start_date = request.session.get('session_start_date')
         end_date = request.session.get('session_end_date')
+
+        start_date = ceil_strdate(start_date, 'start')
+        end_date = ceil_strdate(end_date, 'end')
+
         campaign_id = request.session.get('session_campaign_id')
         agent_id = request.session.get('session_agent_id')
         status = request.session.get('session_status')

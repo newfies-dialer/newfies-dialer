@@ -39,7 +39,7 @@ def get_leg_type_list():
 
 class VoipSearchForm(SearchForm):
     """VoIP call Report Search Parameters"""
-    status = forms.ChoiceField(label=_('disposition').capitalize(), choices=voip_call_disposition_list, required=False)
+    disposition = forms.ChoiceField(label=_('disposition').capitalize(), choices=voip_call_disposition_list, required=False)
     campaign_id = forms.ChoiceField(label=_('campaign').capitalize(), required=False)
     leg_type = forms.ChoiceField(label=_("leg type").capitalize(), choices=list(LEG_TYPE), required=False)
 
@@ -51,7 +51,7 @@ class VoipSearchForm(SearchForm):
             Div(
                 Div('from_date', css_class='col-md-4'),
                 Div('to_date', css_class='col-md-4'),
-                Div('status', css_class='col-md-4'),
+                Div('disposition', css_class='col-md-4'),
                 Div('campaign_id', css_class='col-md-4'),
                 Div('leg_type', css_class='col-md-4'),
                 css_class='row'
@@ -83,7 +83,7 @@ class VoipSearchForm(SearchForm):
 
 class AdminVoipSearchForm(AdminSearchForm):
     """VoIP call Report Search Parameters"""
-    status = forms.ChoiceField(label=_('disposition'), required=False, choices=voip_call_disposition_list)
+    disposition = forms.ChoiceField(label=_('disposition'), required=False, choices=voip_call_disposition_list)
     campaign_id = forms.ChoiceField(label=_('campaign'), required=False)
     leg_type = forms.ChoiceField(label=_("leg type"), choices=list(LEG_TYPE), required=False)
 

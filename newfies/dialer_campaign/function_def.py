@@ -48,9 +48,8 @@ def check_dialer_setting(request, check_for, field_value=''):
         if dialer_set_obj:
             # check running campaign for User
             if check_for == "campaign":
-                campaign_count = Campaign.objects.filter(user=request.user).count()
                 # Total campaign matched with max_cpgs
-                if campaign_count >= dialer_set_obj.max_cpg:
+                if Campaign.objects.filter(user=request.user).count() >= dialer_set_obj.max_cpg:
                     # Limit matched or exceeded
                     return True
                 else:
@@ -59,9 +58,8 @@ def check_dialer_setting(request, check_for, field_value=''):
 
             # check contacts limit
             if check_for == "contact":
-                contact_count = Contact.objects.filter(phonebook__user=request.user).count()
                 # total contacts matched with max_contact
-                if contact_count >= dialer_set_obj.max_contact:
+                if Contact.objects.filter(phonebook__user=request.user).count() >= dialer_set_obj.max_contact:
                     # Limit matched or exceeded
                     return True
                 # limit not matched
@@ -101,8 +99,7 @@ def check_dialer_setting(request, check_for, field_value=''):
 
             # check subscriber limit
             if check_for == "subscriber":
-                subscriber_count = Subscriber.objects.filter(campaign__user=request.user).count()
-                if subscriber_count > dialer_set_obj.max_subr_cpg:
+                if Subscriber.objects.filter(campaign__user=request.user).count() > dialer_set_obj.max_subr_cpg:
                     # Limit matched or exceeded
                     return True
                 # Limit not exceeded
@@ -169,15 +166,9 @@ def date_range(start, end, q):
     """
     r = (end + timedelta(days=1) - start).days
     if int(q) <= 2:
-        return list(rrule(
-            DAILY,
-            dtstart=parse(str(start)),
-            until=parse(str(end))))
+        return list(rrule(DAILY, dtstart=parse(str(start)), until=parse(str(end))))
     if int(q) >= 3:
-        return list(rrule(
-            HOURLY, interval=1,
-            dtstart=parse(str(start)),
-            until=parse(str(end))))
+        return list(rrule(HOURLY, interval=1, dtstart=parse(str(start)), until=parse(str(end))))
     else:
         return [start + timedelta(days=i) for i in range(r)]
 
@@ -185,10 +176,9 @@ def date_range(start, end, q):
 def user_dialer_setting(user):
     """Get Dialer setting for user"""
     try:
-        dialer_set = UserProfile.objects.get(user=user).dialersetting
+        return UserProfile.objects.get(user=user).dialersetting
     except:
-        dialer_set = []
-    return dialer_set
+        return []
 
 
 def user_dialer_setting_msg(user):
@@ -209,8 +199,7 @@ def get_subscriber_disposition(campaign_id, val):
     dsp_dict = {}
     dsp_count = 1
     try:
-        dsp_array = Campaign.objects.get(pk=campaign_id)\
-            .lead_disposition.split(',')
+        dsp_array = Campaign.objects.get(pk=campaign_id).lead_disposition.split(',')
         for i in dsp_array:
             dsp_dict[dsp_count] = i.strip()
             dsp_count += 1

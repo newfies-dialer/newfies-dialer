@@ -26,23 +26,19 @@ class Event(models.Model):
     start = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc)),
                                  verbose_name=_("start"))
     end = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc) + relativedelta(hours=+1)),
-                               verbose_name=_("end"),
-                               help_text=_("Must be later than the start"))
+                               verbose_name=_("end"), help_text=_("Must be later than the start"))
     creator = models.ForeignKey(CalendarUser, null=False, blank=False,
                                 verbose_name=_("calendar user"), related_name='creator')
     created_on = models.DateTimeField(verbose_name=_("created on"), default=timezone.now)
-    end_recurring_period = models.DateTimeField(verbose_name=_("end recurring period"),
-                                                null=True, blank=True,
+    end_recurring_period = models.DateTimeField(verbose_name=_("end recurring period"), null=True, blank=True,
                                                 default=(lambda: datetime.utcnow().replace(tzinfo=utc) + relativedelta(months=+1)),
                                                 help_text=_("Used if the event recurs"))
     rule = models.ForeignKey(Rule, null=True, blank=True,
                              verbose_name=_("rule"), help_text=_("Recuring rules"))
     calendar = models.ForeignKey(Calendar, null=False, blank=False)
 
-    notify_count = models.IntegerField(verbose_name=_("notify count"),
-                                       null=True, blank=True, default=0)
-    status = models.IntegerField(choices=list(EVENT_STATUS),
-                                 default=EVENT_STATUS.PENDING,
+    notify_count = models.IntegerField(verbose_name=_("notify count"), null=True, blank=True, default=0)
+    status = models.IntegerField(choices=list(EVENT_STATUS), default=EVENT_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)
     data = jsonfield.JSONField(null=True, blank=True, verbose_name=_('additional data (JSON)'),
                                help_text=_("data in JSON format, e.g. {\"cost\": \"40 euro\"}"))

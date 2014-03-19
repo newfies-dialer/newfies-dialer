@@ -114,8 +114,7 @@ def queue_del(request, object_id):
     """
     if int(object_id) != 0:
         # When object_id is not 0
-        queue = get_object_or_404(
-            Queue, pk=object_id, manager=request.user)
+        queue = get_object_or_404(Queue, pk=object_id, manager=request.user)
 
         if queue_delete_allow(object_id):
             # Delete queue

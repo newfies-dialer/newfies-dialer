@@ -20,7 +20,8 @@ from dnc.models import DNC, DNCContact
 from dnc.forms import DNCListForm, DNCContactSearchForm, DNCContactForm,\
     DNCContact_fileImport, DNCContact_fileExport
 from dnc.constants import DNC_COLUMN_NAME, DNC_CONTACT_COLUMN_NAME
-from django_lets_go.common_functions import get_pagination_vars, striplist, source_desti_field_chk
+from django_lets_go.common_functions import get_pagination_vars, striplist, source_desti_field_chk,\
+    getvar
 from mod_utils.helper import Export_choice
 import tablib
 import csv
@@ -199,14 +200,8 @@ def dnc_contact_list(request):
         request.session['session_phone_number'] = ''
         request.session['session_dnc'] = ''
         post_var_with_page = 1
-
-        if request.POST.get('phone_number'):
-            phone_number = request.POST.get('phone_number')
-            request.session['session_phone_number'] = phone_number
-
-        if request.POST.get('dnc'):
-            dnc = request.POST.get('dnc')
-            request.session['session_dnc'] = dnc
+        phone_number = getvar(request, 'phone_number', setsession=True)
+        dnc = getvar(request, 'dnc', setsession=True)
 
     if request.GET.get('page') or request.GET.get('sort_by'):
         post_var_with_page = 1
@@ -220,7 +215,7 @@ def dnc_contact_list(request):
         request.session['session_phone_number'] = ''
         request.session['session_dnc'] = ''
 
-    kwargs = {}
+    kwargs = {'dnc__in': dnc_id_list}
     if dnc and dnc != '0':
         kwargs['dnc_id'] = dnc
 
@@ -234,13 +229,9 @@ def dnc_contact_list(request):
     phone_number_count = 0
 
     if dnc_id_list:
-        phone_number_list = DNCContact.objects.values('id', 'dnc__name', 'phone_number', 'updated_date')\
-            .filter(dnc__in=dnc_id_list)
+        all_phone_number_list = DNCContact.objects.values(
+            'id', 'dnc__name', 'phone_number', 'updated_date').filter(**kwargs).order_by(pag_vars['sort_order'])
 
-        if kwargs:
-            phone_number_list = phone_number_list.filter(**kwargs)
-
-        all_phone_number_list = phone_number_list.order_by(pag_vars['sort_order'])
         phone_number_list = all_phone_number_list[pag_vars['start_page']:pag_vars['end_page']]
         phone_number_count = all_phone_number_list.count()
 

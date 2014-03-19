@@ -20,6 +20,9 @@ from random import choice
 from math import pow
 
 
+PHONENUMBER_LENGHT = 15
+
+
 class Command(BaseCommand):
     args = ""
     help = "Create a test phonebook with contacts\n"\
@@ -27,29 +30,21 @@ class Command(BaseCommand):
            "python manage.py create_phonebook_stresstest --prefix=@myip"
 
     option_list = BaseCommand.option_list + (
-        make_option('--user_id',
-                    default=None,
-                    dest='user_id',
+        make_option('--user_id', default=None, dest='user_id',
                     help='User ID under which create phonebooks/contacts'),
-        make_option('--prefix',
-                    default=None,
-                    dest='prefix',
+        make_option('--prefix', default=None, dest='prefix',
                     help='Prefix to be added after the phonenumber, ie. @myip'),
     )
 
     def handle(self, *args, **options):
         """
-        Note that contacts created this way are only for devel purposes
+        We will parse and set default values to parameters
         """
-        length = 15
-        chars = "1234567890"
-
         user_id = 1
-        if options.get('user_id'):
-            try:
-                user_id = int(options.get('user_id'))
-            except ValueError:
-                user_id = 1
+        try:
+            user_id = int(options.get('user_id'))
+        except ValueError:
+            user_id = 1
 
         if options.get('prefix'):
             prefix = options.get('prefix')
@@ -63,22 +58,22 @@ class Command(BaseCommand):
                 pn_name = 'Phonebook-%d' % amount
                 obj_phonebook = Phonebook.objects.create(name=pn_name, user_id=user_id)
             except:
-                print 'Can\'t create Phonebook'
+                print "Can't create Phonebook"
                 return False
 
             for k in range(1, int(amount) + 1):
                 if k % 1000 == 0:
                     print "%d contacts created..." % k
-                phone_no = ''.join([choice(chars) for i in range(length)])
+                phonenumber = '' . join([choice("1234567890") for i in range(PHONENUMBER_LENGHT)])
 
                 #TODO: Use generate_series to speed up the contact creation
                 #INSERT INTO numbers (num) VALUES ( generate_series(1,1000));
 
                 try:
                     Contact.objects.create(
-                        contact=phone_no + prefix,
+                        contact=phonenumber + prefix,
                         phonebook=obj_phonebook)
                 except IntegrityError:
-                    print "Error : Duplicate contact - %s" % phone_no
+                    print "Error : Duplicate contact - %s" % phonenumber
 
             print "\nTotal contacts created : %(count)s" % {'count': amount}

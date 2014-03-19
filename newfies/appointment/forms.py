@@ -97,8 +97,7 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
         )
         list_calendar_setting = []
         list_calendar_setting.append((0, _('select calendar setting').title()))
-        calendar_setting_list = CalendarSetting.objects.filter(user=user).order_by('id')
-        for l in calendar_setting_list:
+        for l in CalendarSetting.objects.filter(user=user).order_by('id'):
             list_calendar_setting.append((l.id, l.label))
         self.fields['calendar_setting'].choices = list_calendar_setting
 
@@ -171,15 +170,13 @@ class CalendarSettingForm(SaveUserModelForm):
 
         list_survey = []
         list_survey.append((0, '---'))
-        survey_list = Survey.objects.values_list('id', 'name').filter(user=user).order_by('id')
-        for l in survey_list:
+        for l in Survey.objects.values_list('id', 'name').filter(user=user).order_by('id'):
             list_survey.append((l[0], l[1]))
         self.fields['survey'].choices = list_survey
 
         list_gateway = []
         list_gateway.append((0, '---'))
-        gateway_list = UserProfile.objects.get(user=user).userprofile_gateway.all()
-        for l in gateway_list:
+        for l in UserProfile.objects.get(user=user).userprofile_gateway.all():
             list_gateway.append((l.id, l.name))
         self.fields['aleg_gateway'].choices = list_gateway
 
@@ -380,8 +377,7 @@ class AlarmForm(ModelForm):
 
         list_survey = []
         list_survey.append((0, '---'))
-        survey_list = Survey.objects.values_list('id', 'name').filter(user=user).order_by('id')
-        for l in survey_list:
+        for l in Survey.objects.values_list('id', 'name').filter(user=user).order_by('id'):
             list_survey.append((l[0], l[1]))
         self.fields['survey'].choices = list_survey
 

@@ -24,10 +24,8 @@ def voipcall_record_common_fun(request):
     Changelist_view"""
     start_date = ''
     end_date = ''
-    from_date = getvar(request, 'from_date')
-    to_date = getvar(request, 'to_date')
-    start_date = ceil_strdate(str(from_date), 'start')
-    end_date = ceil_strdate(str(to_date), 'end')
+    start_date = getvar(request, 'from_date')
+    end_date = getvar(request, 'to_date')
 
     # Assign form field value to local variable
     disposition = getvar(request, 'status')

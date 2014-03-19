@@ -25,7 +25,4 @@ def contact_status(value):
     >>> contact_status(2)
     'INACTIVE'
     """
-    if value == 1:
-        return str('ACTIVE')
-    else:
-        return str('INACTIVE')
+    return str('ACTIVE') if value == 1 else str('INACTIVE')

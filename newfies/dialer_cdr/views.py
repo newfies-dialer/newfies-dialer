@@ -89,8 +89,7 @@ def voipcall_report(request):
     action = 'tabs-1'
     form = VoipSearchForm(request.user, request.POST or None)
     if form.is_valid():
-        field_list = ['start_date', 'end_date',
-                      'disposition', 'campaign_id', 'leg_type']
+        field_list = ['start_date', 'end_date', 'disposition', 'campaign_id', 'leg_type']
         unset_session_var(request, field_list)
         post_var_with_page = 1
 

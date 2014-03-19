@@ -13,8 +13,7 @@
 #
 
 from django.contrib.auth.models import User
-from django.contrib.auth.decorators import login_required, \
-    permission_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.core.urlresolvers import reverse
@@ -29,14 +28,12 @@ from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm, \
 from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME, \
     SUBSCRIBER_COLUMN_NAME
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
-    user_dialer_setting, get_subscriber_status, \
-    get_subscriber_disposition
+    user_dialer_setting, get_subscriber_status, get_subscriber_disposition
 from dialer_campaign.tasks import collect_subscriber
 from survey.models import Survey_template
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from django_lets_go.common_functions import ceil_strdate, getvar, \
-    get_pagination_vars, unset_session_var
+from django_lets_go.common_functions import ceil_strdate, getvar, get_pagination_vars, unset_session_var
 from mod_utils.helper import Export_choice
 from dateutil.relativedelta import relativedelta
 from datetime import datetime

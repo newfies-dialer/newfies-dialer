@@ -15,11 +15,10 @@
 from django.contrib.auth.models import User
 from django.template import Template, Context
 from django.test import TestCase
-from django.conf import settings
+#from django.conf import settings
 from django.core.management import call_command
 from dialer_contact.models import Phonebook, Contact
-from dialer_contact.forms import Contact_fileImport, PhonebookForm, ContactForm,\
-    ContactSearchForm
+from dialer_contact.forms import Contact_fileImport, PhonebookForm, ContactForm, ContactSearchForm
 from dialer_contact.views import phonebook_add, phonebook_change, phonebook_list,\
     phonebook_del, contact_list, contact_add, contact_change, contact_del, contact_import,\
     get_contact_count

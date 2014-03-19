@@ -18,8 +18,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dialer_gateway.models import Gateway
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_cdr.constants import CALLREQUEST_STATUS,\
-    CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION,\
+from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION,\
     VOIPCALL_AMD_STATUS
 from django_lets_go.intermediate_model_base_class import Model
 from country_dialcode.models import Prefix
@@ -36,8 +35,8 @@ class CallRequestManager(models.Manager):
         kwargs = {}
         kwargs['status'] = 1
         tday = datetime.utcnow().replace(tzinfo=utc)
-        kwargs['call_time__lte'] = datetime(tday.year, tday.month,
-            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
+        kwargs['call_time__lte'] = datetime(
+            tday.year, tday.month, tday.day, tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
         #return Callrequest.objects.all()
         return Callrequest.objects.filter(**kwargs)
@@ -92,45 +91,29 @@ class Callrequest(Model):
     **Name of DB table**: dialer_callrequest
     """
     user = models.ForeignKey('auth.User')
-    request_uuid = models.CharField(verbose_name=_("RequestUUID"),
-                                    default=str_uuid1(), db_index=True,
+    request_uuid = models.CharField(verbose_name=_("RequestUUID"), default=str_uuid1(), db_index=True,
                                     max_length=120, null=True, blank=True)
-    aleg_uuid = models.CharField(max_length=120, help_text=_("a-leg call-ID"),
-                                 null=True, blank=True)
+    aleg_uuid = models.CharField(max_length=120, help_text=_("a-leg call-ID"), null=True, blank=True)
     call_time = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc)))
-    created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('date'))
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
-    call_type = models.IntegerField(choices=list(CALLREQUEST_TYPE),
-                                    default=CALLREQUEST_TYPE.ALLOW_RETRY,
+    call_type = models.IntegerField(choices=list(CALLREQUEST_TYPE), default=CALLREQUEST_TYPE.ALLOW_RETRY,
                                     verbose_name=_("call request type"),
                                     blank=True, null=True)
-    status = models.IntegerField(choices=list(CALLREQUEST_STATUS),
-                                 default=CALLREQUEST_STATUS.PENDING,
-                                 blank=True, null=True, db_index=True,
-                                 verbose_name=_('status'))
-    callerid = models.CharField(max_length=80, blank=True,
-                                verbose_name=_("Caller ID Number"),
+    status = models.IntegerField(choices=list(CALLREQUEST_STATUS), default=CALLREQUEST_STATUS.PENDING,
+                                 blank=True, null=True, db_index=True, verbose_name=_('status'))
+    callerid = models.CharField(max_length=80, blank=True, verbose_name=_("Caller ID Number"),
                                 help_text=_("outbound Caller ID"))
-    caller_name = models.CharField(max_length=80, blank=True,
-                                   verbose_name=_("caller name"),
+    caller_name = models.CharField(max_length=80, blank=True, verbose_name=_("caller name"),
                                    help_text=_("outbound caller-Name"))
-    phone_number = models.CharField(max_length=80,
-                                    verbose_name=_('phone number'))
-    timeout = models.IntegerField(blank=True, default=30,
-                                  verbose_name=_('time out'))
-    timelimit = models.IntegerField(blank=True, default=3600,
-                                    verbose_name=_('time limit'))
-    extra_dial_string = models.CharField(max_length=500, blank=True,
-                                         verbose_name=_('extra dial string'))
+    phone_number = models.CharField(max_length=80, verbose_name=_('phone number'))
+    timeout = models.IntegerField(blank=True, default=30, verbose_name=_('time out'))
+    timelimit = models.IntegerField(blank=True, default=3600, verbose_name=_('time limit'))
+    extra_dial_string = models.CharField(max_length=500, blank=True, verbose_name=_('extra dial string'))
+    subscriber = models.ForeignKey(Subscriber, null=True, blank=True, help_text=_("subscriber related to this call request"))
 
-    subscriber = models.ForeignKey(Subscriber, null=True, blank=True,
-                                   help_text=_("subscriber related to this call request"))
-
-    campaign = models.ForeignKey(Campaign, null=True, blank=True,
-                                 help_text=_("select Campaign"))
-    aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True,
-                                     verbose_name=_("a-leg gateway"),
+    campaign = models.ForeignKey(Campaign, null=True, blank=True, help_text=_("select Campaign"))
+    aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True, verbose_name=_("a-leg gateway"),
                                      help_text=_("select gateway"))
     #used to define the Voice App or the Survey
     content_type = models.ForeignKey(ContentType, verbose_name=_("type"))
@@ -139,8 +122,7 @@ class Callrequest(Model):
     #used to flag if the call is completed
     completed = models.BooleanField(default=False, verbose_name=_('call completed'))
 
-    extra_data = models.CharField(max_length=120, blank=True,
-                                  verbose_name=_("extra data"),
+    extra_data = models.CharField(max_length=120, blank=True, verbose_name=_("extra data"),
                                   help_text=_("define the additional data to pass to the application"))
 
     num_attempt = models.IntegerField(default=0)
@@ -152,8 +134,7 @@ class Callrequest(Model):
     parent_callrequest = models.ForeignKey('self', null=True, blank=True)
 
     #AlarmRequest call / if this value is set then this is not a campaign call
-    alarm_request_id = models.IntegerField(default=0, null=True, blank=True,
-                                           verbose_name=_('alarm request id'))
+    alarm_request_id = models.IntegerField(default=0, null=True, blank=True, verbose_name=_('alarm request id'))
 
     objects = CallRequestManager()
 
@@ -197,20 +178,16 @@ class VoIPCall(models.Model):
     user = models.ForeignKey('auth.User', related_name='Call Sender')
     request_uuid = models.CharField(verbose_name=_("RequestUUID"), null=True, blank=True,
                                     default=str_uuid1(), max_length=120)
-    used_gateway = models.ForeignKey(Gateway, null=True, blank=True,
-                                     verbose_name=_("used gateway"))
-    callrequest = models.ForeignKey(Callrequest, null=True, blank=True,
-                                    verbose_name=_("callrequest"))
+    used_gateway = models.ForeignKey(Gateway, null=True, blank=True, verbose_name=_("used gateway"))
+    callrequest = models.ForeignKey(Callrequest, null=True, blank=True, verbose_name=_("callrequest"))
     callid = models.CharField(max_length=120, help_text=_("VoIP call-ID"))
     callerid = models.CharField(max_length=120, verbose_name=_('CallerID'))
-    phone_number = models.CharField(max_length=120, null=True, blank=True,
-                                    verbose_name=_("phone number"),
+    phone_number = models.CharField(max_length=120, null=True, blank=True, verbose_name=_("phone number"),
                                     help_text=_(u'the international number of the recipient, without the leading +'))
 
     dialcode = models.ForeignKey(Prefix, verbose_name=_("destination"),
                                  null=True, blank=True, help_text=_("select prefix"))
-    starting_date = models.DateTimeField(auto_now_add=True,
-                                         verbose_name=_("starting date"),
+    starting_date = models.DateTimeField(auto_now_add=True, verbose_name=_("starting date"),
                                          db_index=True)
     duration = models.IntegerField(null=True, blank=True, verbose_name=_("duration"))
     billsec = models.IntegerField(null=True, blank=True, verbose_name=_("bill sec"))

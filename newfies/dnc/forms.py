@@ -73,8 +73,7 @@ class DNCContactSearchForm(forms.Form):
         if user:
             dnc_list_user = []
             dnc_list_user.append((0, '---'))
-            dnc_list = DNC.objects.values_list('id', 'name').filter(user=user).order_by('-id')
-            for i in dnc_list:
+            for i in DNC.objects.values_list('id', 'name').filter(user=user).order_by('-id'):
                 dnc_list_user.append((i[0], i[1]))
 
             self.fields['dnc'].choices = dnc_list_user
@@ -120,9 +119,8 @@ def get_dnc_list(user):
     """get dnc list for ``dnc_list`` field which is used by DNCContact_fileImport
     & DNCContact_fileExport
     """
-    dnc_list = DNC.objects.filter(user=user).order_by('id')
     result_list = []
-    for dnc in dnc_list:
+    for dnc in DNC.objects.filter(user=user).order_by('id'):
         contacts_in_dnc = dnc.dnc_contacts_count()
         nbcontact = " -> %d contact(s)" % (contacts_in_dnc)
         dnc_string = dnc.name + nbcontact

@@ -29,11 +29,9 @@ class DNC(models.Model):
 
     **Name of DB table**: dnc_list
     """
-    name = models.CharField(max_length=50, blank=False,
-                            null=True, verbose_name=_("name"),
+    name = models.CharField(max_length=50, blank=False, null=True, verbose_name=_("name"),
                             help_text=_("Enter a DNC list name"))
-    description = models.TextField(null=True, blank=True,
-                                   help_text=_("DNC notes"))
+    description = models.TextField(null=True, blank=True, help_text=_("DNC notes"))
     user = models.ForeignKey('auth.User', related_name='DNC owner')
 
     created_date = models.DateTimeField(auto_now_add=True)
@@ -72,8 +70,7 @@ class DNCContact(models.Model):
     **Name of DB table**: dnc_contact
     """
     dnc = models.ForeignKey(DNC, verbose_name=_("Do Not Call List"))
-    phone_number = models.CharField(max_length=120, db_index=True,
-                                    verbose_name=_("phone number"))
+    phone_number = models.CharField(max_length=120, db_index=True, verbose_name=_("phone number"))
 
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True,)

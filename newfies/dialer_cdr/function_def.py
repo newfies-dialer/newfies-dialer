@@ -13,7 +13,7 @@
 #
 
 from django.conf import settings
-from django_lets_go.common_functions import variable_value, ceil_strdate
+from django_lets_go.common_functions import getvar, ceil_strdate
 from country_dialcode.models import Prefix
 from datetime import datetime
 from django.utils.timezone import utc
@@ -24,18 +24,15 @@ def voipcall_record_common_fun(request):
     Changelist_view"""
     start_date = ''
     end_date = ''
-    if request.POST.get('from_date'):
-        from_date = request.POST.get('from_date')
-        start_date = ceil_strdate(from_date, 'start')
-
-    if request.POST.get('to_date'):
-        to_date = request.POST.get('to_date')
-        end_date = ceil_strdate(to_date, 'end')
+    from_date = getvar(request, 'from_date')
+    to_date = getvar(request, 'to_date')
+    start_date = ceil_strdate(str(from_date), 'start')
+    end_date = ceil_strdate(str(to_date), 'end')
 
     # Assign form field value to local variable
-    disposition = variable_value(request, 'status')
-    campaign_id = variable_value(request, 'campaign_id')
-    leg_type = variable_value(request, 'leg_type')
+    disposition = getvar(request, 'status')
+    campaign_id = getvar(request, 'campaign_id')
+    leg_type = getvar(request, 'leg_type')
 
     kwargs = {}
     if start_date and end_date:
@@ -56,10 +53,8 @@ def voipcall_record_common_fun(request):
 
     if len(kwargs) == 0:
         tday = datetime.today()
-        kwargs['starting_date__gte'] = \
-            datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
-        kwargs['starting_date__lte'] = \
-            datetime(tday.year, tday.month, tday.day, 23, 59, 59).replace(tzinfo=utc)
+        kwargs['starting_date__gte'] = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0).replace(tzinfo=utc)
+        kwargs['starting_date__lte'] = datetime(tday.year, tday.month, tday.day, 23, 59, 59).replace(tzinfo=utc)
     return kwargs
 
 
@@ -90,9 +85,9 @@ def voipcall_search_admin_form_fun(request):
         end_date = request.POST.get('to_date')
 
     # Assign form field value to local variable
-    disposition = variable_value(request, 'status')
-    campaign_id = variable_value(request, 'campaign_id')
-    leg_type = variable_value(request, 'leg_type')
+    disposition = getvar(request, 'status')
+    campaign_id = getvar(request, 'campaign_id')
+    leg_type = getvar(request, 'leg_type')
     query_string = ''
 
     if start_date and end_date:
@@ -152,17 +147,14 @@ def prefix_list_string(phone_number):
     except ValueError:
         return False
     phone_number = str(phone_number)
-    prefix_range = range(settings.PREFIX_LIMIT_MIN,
-                         settings.PREFIX_LIMIT_MAX + 1)
+    prefix_range = range(settings.PREFIX_LIMIT_MIN, settings.PREFIX_LIMIT_MAX + 1)
     prefix_range.reverse()
     destination_prefix_list = ''
     for i in prefix_range:
         if i == settings.PREFIX_LIMIT_MIN:
-            destination_prefix_list = destination_prefix_list \
-                + phone_number[0:i]
+            destination_prefix_list = destination_prefix_list + phone_number[0:i]
         else:
-            destination_prefix_list = destination_prefix_list \
-                + phone_number[0:i] + ', '
+            destination_prefix_list = destination_prefix_list + phone_number[0:i] + ', '
     return str(destination_prefix_list)
 
 

@@ -37,11 +37,9 @@ class Phonebook(Model):
     **Name of DB table**: dialer_phonebook
     """
     name = models.CharField(max_length=90, verbose_name=_('name'))
-    description = models.TextField(null=True, blank=True,
-                                   help_text=_("phonebook notes"))
+    description = models.TextField(null=True, blank=True, help_text=_("phonebook notes"))
     user = models.ForeignKey('auth.User', related_name='Phonebook owner')
-    created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('date'))
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:
@@ -87,30 +85,21 @@ class Contact(Model):
     """
     phonebook = models.ForeignKey(Phonebook, verbose_name=_('phonebook'))
     contact = models.CharField(max_length=90, verbose_name=_('contact number'))
-    status = models.IntegerField(choices=list(CONTACT_STATUS),
-                                 default=CONTACT_STATUS.ACTIVE,
+    status = models.IntegerField(choices=list(CONTACT_STATUS), default=CONTACT_STATUS.ACTIVE,
                                  verbose_name=_("status"), blank=True, null=True)
-    last_name = models.CharField(max_length=120, blank=True, null=True,
-                                 verbose_name=_('last name'))
-    first_name = models.CharField(max_length=120, blank=True, null=True,
-                                  verbose_name=_('first name'))
+    last_name = models.CharField(max_length=120, blank=True, null=True, verbose_name=_('last name'))
+    first_name = models.CharField(max_length=120, blank=True, null=True, verbose_name=_('first name'))
     email = models.EmailField(blank=True, null=True, verbose_name=_('email'))
-    address = models.CharField(max_length=250, null=True, blank=True,
-                               verbose_name=_("address"))
-    city = models.CharField(max_length=120, blank=True, null=True,
-                            verbose_name=_('city'))
-    state = models.CharField(max_length=120, blank=True, null=True,
-                             verbose_name=_('state'))
+    address = models.CharField(max_length=250, null=True, blank=True, verbose_name=_("address"))
+    city = models.CharField(max_length=120, blank=True, null=True, verbose_name=_('city'))
+    state = models.CharField(max_length=120, blank=True, null=True, verbose_name=_('state'))
     country = CountryField(blank=True, null=True, verbose_name=_('country'))
-    unit_number = models.CharField(max_length=50, blank=True, null=True,
-                                   verbose_name=_("unit number"))
+    unit_number = models.CharField(max_length=50, blank=True, null=True, verbose_name=_("unit number"))
     additional_vars = jsonfield.JSONField(
         null=True, blank=True, verbose_name=_('additional parameters (JSON)'),
         help_text=_("enter the list of parameters in JSON format, e.g. {\"age\": \"32\"}"))
-    description = models.TextField(null=True, blank=True,
-                                   verbose_name=_("notes"))
-    created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('date'))
+    description = models.TextField(null=True, blank=True, verbose_name=_("notes"))
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     class Meta:

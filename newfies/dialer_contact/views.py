@@ -11,25 +11,22 @@
 # The Initial Developer of the Original Code is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.contrib.auth.decorators import login_required, \
-    permission_required
-from django.http import HttpResponseRedirect, HttpResponse, \
-    Http404
+from django.contrib.auth.decorators import login_required, permission_required
+from django.http import HttpResponseRedirect, HttpResponse, Http404
 from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.db.models import Q
 from django.db.models import Count
 from dialer_contact.models import Phonebook, Contact
-from dialer_contact.forms import ContactSearchForm, Contact_fileImport, \
-    PhonebookForm, ContactForm
+from dialer_contact.forms import ContactSearchForm, Contact_fileImport, PhonebookForm, ContactForm
 from dialer_contact.constants import PHONEBOOK_COLUMN_NAME, CONTACT_COLUMN_NAME
 from dialer_contact.constants import STATUS_CHOICE
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit
 from user_profile.constants import NOTIFICATION_NAME
 from frontend_notification.views import frontend_send_notification
-from django_lets_go.common_functions import striplist, getvar,\
-    get_pagination_vars, unset_session_var, source_desti_field_chk
+from django_lets_go.common_functions import striplist, getvar, get_pagination_vars,\
+    unset_session_var, source_desti_field_chk
 import csv
 import json
 
@@ -325,8 +322,7 @@ def contact_add(request):
         'form': form,
         'action': 'add',
     }
-    return render_to_response('dialer_contact/contact/change.html', data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_contact/contact/change.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_contact.delete_contact', login_url='/')

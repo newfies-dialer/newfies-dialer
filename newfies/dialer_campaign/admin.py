@@ -26,7 +26,7 @@ from dialer_campaign.function_def import check_dialer_setting, dialer_setting_li
 from dialer_campaign.constants import SUBSCRIBER_STATUS, SUBSCRIBER_STATUS_NAME
 from dialer_campaign.forms import SubscriberReportForm, SubscriberAdminForm
 from genericadmin.admin import GenericAdminModelAdmin
-from django_lets_go.common_functions import variable_value, ceil_strdate
+from django_lets_go.common_functions import ceil_strdate, getvar
 # from django_lets_go.app_label_renamer import AppLabelRenamer
 from datetime import datetime
 APP_LABEL = _('Dialer Campaign')
@@ -96,8 +96,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
             msg = _("you have too many campaigns. max allowed %(limit)s") % {'limit': dialer_setting_limit(request, limit_for="campaign")}
             messages.error(request, msg)
 
-            return HttpResponseRedirect(
-                reverse("admin:dialer_campaign_campaign_changelist"))
+            return HttpResponseRedirect(reverse("admin:dialer_campaign_campaign_changelist"))
         ctx = {}
         return super(CampaignAdmin, self).add_view(request, extra_context=ctx)
 admin.site.register(Campaign, CampaignAdmin)
@@ -147,15 +146,11 @@ class SubscriberAdmin(admin.ModelAdmin):
         if form.is_valid():
             start_date = ''
             end_date = ''
-            if request.POST.get('from_date'):
-                from_date = request.POST.get('from_date')
-                start_date = ceil_strdate(from_date, 'start')
-
-            if request.POST.get('to_date'):
-                to_date = request.POST.get('to_date')
-                end_date = ceil_strdate(to_date, 'end')
-
-            campaign_id = variable_value(request, 'campaign_id')
+            from_date = getvar(request, 'from_date')
+            to_date = getvar(request, 'to_date')
+            start_date = ceil_strdate(str(from_date), 'start')
+            end_date = ceil_strdate(str(to_date), 'end')
+            campaign_id = getvar(request, 'campaign_id')
             kwargs = {}
             if start_date and end_date:
                 kwargs['updated_date__range'] = (start_date, end_date)

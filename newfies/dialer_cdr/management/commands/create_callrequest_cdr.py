@@ -38,6 +38,56 @@ VOIPCALL_AMD_STATUS = [1, 2, 3]
 RESPONSE = ['apple', 'orange', 'banana', 'mango', 'greps', 'watermelon']
 
 
+class Command(BaseCommand):
+    args = 'campaign_id, no_of_record, delta_day'
+    help = "Generate random call-requests and CDRs for a given campaign_id\n" \
+           "--------------------------------------------------------------\n" \
+           "python manage.py create_callrequest_cdr --campaign_id=1 --number-call=100 --delta-day=0"
+
+    option_list = BaseCommand.option_list + (
+        make_option('--number-call',
+                    default=None,
+                    dest='number-call',
+                    help=help),
+        make_option('--delta-day',
+                    default=None,
+                    dest='delta-day',
+                    help=help),
+        make_option('--campaign_id',
+                    default=None,
+                    dest='campaign_id',
+                    help=help),
+    )
+
+    def handle(self, *args, **options):
+        """
+        Note that subscriber created this way are only for devel purposes
+        """
+        no_of_record = 1  # default
+        if options.get('number-call'):
+            try:
+                no_of_record = int(options.get('number-call'))
+            except ValueError:
+                no_of_record = 1
+
+        day_delta_int = 30  # default
+        if options.get('delta-day'):
+            try:
+                day_delta_int = int(options.get('delta-day'))
+            except ValueError:
+                day_delta_int = 30
+
+        campaign_id = 1
+        if options.get('campaign_id'):
+            try:
+                campaign_id = options.get('campaign_id')
+                campaign_id = int(campaign_id)
+            except ValueError:
+                campaign_id = 1
+
+        create_callrequest(campaign_id, no_of_record, day_delta_int)
+
+
 def weighted_choice(choices):
     values, weights = zip(*choices)
     total = 0
@@ -139,53 +189,3 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
         """
 
     print _("Callrequests and CDRs created : %(count)s" % {'count': no_of_record})
-
-
-class Command(BaseCommand):
-    args = 'campaign_id, no_of_record, delta_day'
-    help = "Generate random call-requests and CDRs for a given campaign_id\n" \
-           "--------------------------------------------------------------\n" \
-           "python manage.py create_callrequest_cdr --campaign_id=1 --number-call=100 --delta-day=0"
-
-    option_list = BaseCommand.option_list + (
-        make_option('--number-call',
-                    default=None,
-                    dest='number-call',
-                    help=help),
-        make_option('--delta-day',
-                    default=None,
-                    dest='delta-day',
-                    help=help),
-        make_option('--campaign_id',
-                    default=None,
-                    dest='campaign_id',
-                    help=help),
-    )
-
-    def handle(self, *args, **options):
-        """
-        Note that subscriber created this way are only for devel purposes
-        """
-        no_of_record = 1  # default
-        if options.get('number-call'):
-            try:
-                no_of_record = int(options.get('number-call'))
-            except ValueError:
-                no_of_record = 1
-
-        day_delta_int = 30  # default
-        if options.get('delta-day'):
-            try:
-                day_delta_int = int(options.get('delta-day'))
-            except ValueError:
-                day_delta_int = 30
-
-        campaign_id = 1
-        if options.get('campaign_id'):
-            try:
-                campaign_id = options.get('campaign_id')
-                campaign_id = int(campaign_id)
-            except ValueError:
-                campaign_id = 1
-
-        create_callrequest(campaign_id, no_of_record, day_delta_int)

@@ -36,48 +36,40 @@ SURVEY_RESULT_QUE = [
 ]
 VOIPCALL_AMD_STATUS = [1, 2, 3]
 RESPONSE = ['apple', 'orange', 'banana', 'mango', 'greps', 'watermelon']
+PHONENUMBER_LENGHT = 5
 
 
 class Command(BaseCommand):
-    args = 'campaign_id, no_of_record, delta_day'
-    help = "Generate random call-requests and CDRs for a given campaign_id\n" \
-           "--------------------------------------------------------------\n" \
-           "python manage.py create_callrequest_cdr --campaign_id=1 --number-call=100 --delta-day=0"
+    args = 'campaign_id, amount, delta_day'
+    help = "Generate fake Call-requests and CDRs for a given campaign_id\n" \
+           "------------------------------------------------------------\n" \
+           "python manage.py create_callrequest_cdr --campaign_id=1 --amount=100 --delta-day=0"
 
     option_list = BaseCommand.option_list + (
-        make_option('--number-call',
-                    default=None,
-                    dest='number-call',
-                    help=help),
-        make_option('--delta-day',
-                    default=None,
-                    dest='delta-day',
-                    help=help),
-        make_option('--campaign_id',
-                    default=None,
-                    dest='campaign_id',
-                    help=help),
+        make_option('--amount', default=None, dest='amount', help=help),
+        make_option('--delta-day', default=None, dest='delta-day', help=help),
+        make_option('--campaign_id', default=None, dest='campaign_id', help=help),
     )
 
     def handle(self, *args, **options):
         """
-        Note that subscriber created this way are only for devel purposes
+        We will parse and set default values to parameters
         """
-        no_of_record = 1  # default
-        if options.get('number-call'):
+        amount = 1  # default
+        if options.get('amount'):
             try:
-                no_of_record = int(options.get('number-call'))
+                amount = int(options.get('amount'))
             except ValueError:
-                no_of_record = 1
+                amount = 1
 
-        day_delta_int = 30  # default
+        day_delta = 30  # default
         if options.get('delta-day'):
             try:
-                day_delta_int = int(options.get('delta-day'))
+                day_delta = int(options.get('delta-day'))
             except ValueError:
-                day_delta_int = 30
+                day_delta = 30
 
-        campaign_id = 1
+        campaign_id = 1  # default
         if options.get('campaign_id'):
             try:
                 campaign_id = options.get('campaign_id')
@@ -85,7 +77,7 @@ class Command(BaseCommand):
             except ValueError:
                 campaign_id = 1
 
-        create_callrequest(campaign_id, no_of_record, day_delta_int)
+        create_callrequest(campaign_id, amount, day_delta)
 
 
 def weighted_choice(choices):
@@ -100,9 +92,13 @@ def weighted_choice(choices):
     return values[i]
 
 
-def create_callrequest(campaign_id, no_of_record, day_delta_int):
+def create_callrequest(campaign_id, amount, day_delta):
     """
-    Create Callrequest
+    This function create fake Callrequest for a given:
+        * campaign_id
+        * amount
+        * day_delta
+
     """
     try:
         obj_campaign = Campaign.objects.get(id=campaign_id)
@@ -110,23 +106,20 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
         print _('Can\'t find this Campaign : %(id)s' % {'id': campaign_id})
         return False
 
-    length = 5
-    chars = "1234567890"
-
     #content_type_id is survey
     try:
         content_type_id = ContentType.objects.get(model='survey').id
     except:
         content_type_id = 1
 
-    for i in range(1, int(no_of_record) + 1):
-        delta_days = random.randint(0, day_delta_int)
+    for i in range(1, int(amount) + 1):
+        delta_days = random.randint(0, day_delta)
         delta_minutes = random.randint(-720, 720)
         created_date = datetime.utcnow().replace(tzinfo=utc) \
             - timedelta(minutes=delta_minutes) \
             - timedelta(days=delta_days)
 
-        phonenumber = '' . join([choice(chars) for i in range(length)])
+        phonenumber = '' . join([choice("1234567890") for i in range(PHONENUMBER_LENGHT)])
         new_callrequest = Callrequest.objects.create(
             request_uuid=uuid1(),
             user=obj_campaign.user,
@@ -188,4 +181,4 @@ def create_callrequest(campaign_id, no_of_record, day_delta_int):
                             count=response_count)
         """
 
-    print _("Callrequests and CDRs created : %(count)s" % {'count': no_of_record})
+    print _("Callrequests and CDRs created : %(count)s" % {'count': amount})

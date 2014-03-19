@@ -49,23 +49,20 @@ class Alarm(models.Model):
                               related_name="event")
     date_start_notice = models.DateTimeField(verbose_name=_('alarm date'),
                                              default=(lambda: datetime.utcnow().replace(tzinfo=utc)))
-    status = models.IntegerField(choices=list(ALARM_STATUS),
-                                 default=ALARM_STATUS.PENDING,
+    status = models.IntegerField(choices=list(ALARM_STATUS), default=ALARM_STATUS.PENDING,
                                  verbose_name=_("status"))
     result = models.IntegerField(choices=list(ALARM_RESULT), default=ALARM_RESULT.NORESULT,
                                  verbose_name=_("result"), blank=True, null=True)
     # URL Cancel is used if an appointment is cancelled, we will need to do a mapping on IVR result
-    url_cancel = models.CharField(max_length=250, blank=True, null=True,
-                                  verbose_name=_("URL cancel"))
+    url_cancel = models.CharField(max_length=250, blank=True, null=True, verbose_name=_("URL cancel"))
     # URL Confirm is used if an appointment is confirmed
-    url_confirm = models.CharField(max_length=250, blank=True, null=True,
-                                   verbose_name=_("URL confirm"))
+    url_confirm = models.CharField(max_length=250, blank=True, null=True, verbose_name=_("URL confirm"))
     # When transfering for reschedule
     phonenumber_transfer = models.CharField(max_length=50, blank=True, null=True,
                                             verbose_name=_("phone number transfer"))
     #send SMS if all attempts to contact that persons didn't work
     phonenumber_sms_failure = models.CharField(max_length=50, blank=True, null=True,
-                                              verbose_name=_("phone number SMS failure"))
+                                               verbose_name=_("phone number SMS failure"))
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('created date'))
 
     class Meta:
@@ -143,22 +140,16 @@ class AlarmRequest(models.Model):
     AlarmRequest : request for Alarms
     """
     alarm = models.ForeignKey(Alarm, blank=True, null=True, verbose_name=_("alarm"),
-                              help_text=_("select alarm"),
-                              related_name="request_alarm")
-    date = models.DateTimeField(verbose_name=_('date'),
-                                help_text=_("date when the alarm will be scheduled"))
-    status = models.IntegerField(choices=list(ALARMREQUEST_STATUS),
-                                 default=ALARMREQUEST_STATUS.PENDING,
+                              help_text=_("select alarm"), related_name="request_alarm")
+    date = models.DateTimeField(verbose_name=_('date'), help_text=_("date when the alarm will be scheduled"))
+    status = models.IntegerField(choices=list(ALARMREQUEST_STATUS), default=ALARMREQUEST_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)
     callstatus = models.IntegerField(null=True, blank=True, default=0)
     duration = models.IntegerField(null=True, blank=True, default=0)
 
-    callrequest = models.ForeignKey(Callrequest, blank=True, null=True,
-                                    verbose_name=_("Call Request"),
-                                    help_text=_("select call request"),
-                                    related_name="callrequest_alarm")
-    created_date = models.DateTimeField(auto_now_add=True,
-                                        verbose_name=_('date'))
+    callrequest = models.ForeignKey(Callrequest, blank=True, null=True, verbose_name=_("Call Request"),
+                                    help_text=_("select call request"), related_name="callrequest_alarm")
+    created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
 
     class Meta:
         permissions = (

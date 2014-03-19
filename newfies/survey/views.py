@@ -67,8 +67,7 @@ def survey_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
-    survey_list = Survey_template.objects.values('id', 'name', 'description', 'updated_date')\
-        .filter(user=request.user).order_by(pag_vars['sort_order'])
+    survey_list = Survey_template.objects.filter(user=request.user).order_by(pag_vars['sort_order'])
     data = {
         'survey_list': survey_list,
         'total_survey': survey_list.count(),
@@ -98,7 +97,7 @@ def survey_add(request):
     """
     form = SurveyForm(request.POST or None)
     if form.is_valid():
-        obj = form.save(user=User.objects.get(username=request.user))
+        obj = form.save(user=request.user)
         request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
         return HttpResponseRedirect(redirect_url_to_survey_list + '%s/' % (obj.id))
     data = {

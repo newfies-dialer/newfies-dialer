@@ -54,10 +54,8 @@ def update_campaign_status_admin(request, pk, status):
     obj_campaign = Campaign.objects.get(id=pk)
     obj_campaign.status = status
     obj_campaign.save()
-    recipient = request.user
-    frontend_send_notification(request, status, recipient)
-    return HttpResponseRedirect(
-        reverse("admin:dialer_campaign_campaign_changelist"))
+    frontend_send_notification(request, status, recipient=request.user)
+    return HttpResponseRedirect(reverse("admin:dialer_campaign_campaign_changelist"))
 
 
 @login_required
@@ -423,8 +421,7 @@ def campaign_duplicate(request, id):
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''
-    return render_to_response('dialer_campaign/campaign/campaign_duplicate.html', data,
-                              context_instance=RequestContext(request))
+    return render_to_response('dialer_campaign/campaign/campaign_duplicate.html', data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.view_subscriber', login_url='/')

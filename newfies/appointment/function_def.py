@@ -18,38 +18,28 @@ from user_profile.models import Manager
 
 def get_all_calendar_user_id_list():
     """get calendar user id list for logged in user"""
-    calendar_user_list = CalendarUserProfile.objects.values_list(
-        'user_id', flat=True).all().order_by('id')
-    return calendar_user_list
+    return CalendarUserProfile.objects.values_list('user_id', flat=True).all().order_by('id')
 
 
 def get_calendar_user_id_list(user):
     """get calendar user id list for logged in user"""
-    calendar_user_list = CalendarUserProfile.objects.values_list(
-        'user_id', flat=True).filter(manager=user).order_by('id')
-    return calendar_user_list
+    return CalendarUserProfile.objects.values_list('user_id', flat=True).filter(manager=user).order_by('id')
 
 
 def get_calendar_user_list(calendar_user_list):
     """get calendar user list from calendar_user_list"""
-
     list_calendar_user = []
     list_calendar_user.append((0, '---'))
-    calendar_user_list = CalendarUser.objects.values_list(
-        'id', 'username').filter(id__in=calendar_user_list).order_by('id')
-    for l in calendar_user_list:
+    for l in CalendarUser.objects.values_list('id', 'username').filter(id__in=calendar_user_list).order_by('id'):
         list_calendar_user.append((l[0], l[1]))
     return list_calendar_user
 
 
 def get_calendar_list(calendar_user_list):
     """get calendar list from calendar_user_list"""
-
     list_calendar = []
     list_calendar.append((0, '---'))
-    calendar_list = Calendar.objects.values_list(
-        'id', 'name').filter(user_id__in=calendar_user_list).order_by('id')
-    for l in calendar_list:
+    for l in Calendar.objects.values_list('id', 'name').filter(user_id__in=calendar_user_list).order_by('id'):
         list_calendar.append((l[0], l[1]))
 
     return list_calendar

@@ -15,7 +15,6 @@
 from django.contrib.contenttypes.models import ContentType
 from rest_framework import serializers
 from dialer_cdr.models import Callrequest
-from user_profile.models import UserProfile
 
 
 class CallrequestSerializer(serializers.HyperlinkedModelSerializer):
@@ -115,7 +114,7 @@ class CallrequestSerializer(serializers.HyperlinkedModelSerializer):
         request = self.context['request']
 
         if request.method != 'GET':
-            fields['aleg_gateway'].queryset = UserProfile.objects.get(user=request.user).userprofile_gateway.all()
+            fields['aleg_gateway'].queryset = request.user.userprofile.userprofile_gateway.all()
             if self.object and self.object:
                 fields['content_type'].queryset = ContentType.objects.filter(model__in=["survey"])
             else:

@@ -17,7 +17,6 @@ from rest_framework import serializers
 from appointment.models.users import CalendarSetting
 from survey.models import Survey
 from audiofield.models import AudioFile
-from user_profile.models import UserProfile
 
 
 class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
@@ -109,7 +108,7 @@ class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
         if request.method != 'GET':
             fields['survey'].queryset = Survey.objects.filter(user=request.user)
 
-        fields['aleg_gateway'].queryset = UserProfile.objects.get(user=request.user).userprofile_gateway.all()
+        fields['aleg_gateway'].queryset = request.user.userprofile.userprofile_gateway.all()
         if settings.AMD:
             fields['voicemail_audiofile'].queryset = AudioFile.objects.filter(user=request.user)
 

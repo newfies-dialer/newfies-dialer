@@ -12,8 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.contrib.auth.decorators import login_required, \
-    permission_required
+from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponse
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
@@ -22,8 +21,7 @@ from django.conf import settings
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import CDR_REPORT_COLUMN_NAME
 from dialer_cdr.forms import VoipSearchForm
-from django_lets_go.common_functions import ceil_strdate, unset_session_var, getvar,\
-    get_pagination_vars
+from django_lets_go.common_functions import ceil_strdate, unset_session_var, getvar, get_pagination_vars
 from mod_utils.helper import Export_choice
 #from dialer_cdr.constants import Export_choice
 from datetime import datetime
@@ -224,17 +222,14 @@ def export_voipcall_report(request):
     # super(VoIPCall_ReportAdmin, self).queryset(request)
     if request.session.get('voipcall_record_kwargs'):
         kwargs = request.session['voipcall_record_kwargs']
-        qs = VoIPCall.objects.select_related('user__username')\
-                             .filter(**kwargs)
+        qs = VoIPCall.objects.select_related('user__username').filter(**kwargs)
 
         amd_status = ''
         if settings.AMD:
             amd_status = 'amd_status'
 
-        headers = ('user', 'callid', 'callerid', 'phone_number',
-                   'starting_date', 'duration', 'billsec',
-                   'disposition', 'hangup_cause', 'hangup_cause_q850',
-                   'used_gateway', amd_status)
+        headers = ('user', 'callid', 'callerid', 'phone_number', 'starting_date', 'duration', 'billsec',
+                   'disposition', 'hangup_cause', 'hangup_cause_q850', 'used_gateway', amd_status)
 
         list_val = []
         for i in qs:

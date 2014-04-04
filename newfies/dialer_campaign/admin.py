@@ -93,7 +93,8 @@ class CampaignAdmin(GenericAdminModelAdmin):
         # Check dialer setting limit
         # check Max Number of running campaigns
         if check_dialer_setting(request, check_for="campaign"):
-            msg = _("you have too many campaigns. max allowed %(limit)s") % {'limit': dialer_setting_limit(request, limit_for="campaign")}
+            msg = _("you have too many campaigns. max allowed %(limit)s") % \
+                {'limit': dialer_setting_limit(request, limit_for="campaign")}
             messages.error(request, msg)
 
             return HttpResponseRedirect(reverse("admin:dialer_campaign_campaign_changelist"))
@@ -110,6 +111,7 @@ class SubscriberAdmin(admin.ModelAdmin):
                     'get_completion_attempts', 'duplicate_contact', 'disposition',
                     'collected_data', 'status', 'created_date')  # 'agent',
     list_filter = ('campaign', 'status', 'created_date', 'last_attempt', )  # AgentFilter
+    raw_id_fields = ('contact',)
     ordering = ('-id', )
 
     def get_urls(self):

@@ -517,8 +517,13 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     gateway_id = obj_callrequest.aleg_gateway.id
     #gateway_codecs / gateway_retries
     gateway_timeouts = obj_callrequest.aleg_gateway.gateway_timeouts
-    if not gateway_timeouts:
-        gateway_timeouts = '60'
+    # fraud protection on short calls
+    try:
+        gateway_timeouts = int(gateway_timeouts)
+        if gateway_timeouts < 10:
+            gateway_timeouts = 10
+    except ValueError:
+        gateway_timeouts = 45
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
 
     debug_query(11)
@@ -561,7 +566,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             args_list.append(originate_dial_string)
 
             #Call Vars
-            callvars = "bridge_early_media=true,originate_timeout=%s,newfiesdialer=true,leg_type=1" % \
+            callvars = "bridge_early_media=true,originate_timeout=%d,newfiesdialer=true,leg_type=1" % \
                 (gateway_timeouts, )
             args_list.append(callvars)
 
@@ -574,7 +579,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             except ValueError:
                 hangup_on_ring = -1
             exec_on_media = 1
-            if hangup_on_ring >= 0:
+            if hangup_on_ring >= 10:  # 0->10 fraud protection on short calls
                 args_list.append("execute_on_media_%d='sched_hangup +%d ORIGINATOR_CANCEL'" %
                                  (exec_on_media, hangup_on_ring))
                 exec_on_media += 1

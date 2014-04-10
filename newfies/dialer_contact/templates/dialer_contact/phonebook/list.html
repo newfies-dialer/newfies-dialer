@@ -57,7 +57,7 @@
                                         <a href="{{ row.id }}/" title="{% trans 'update phonebook'|title %}"><i class="fa fa-edit"></i></a>
                                     {% endif %}
                                     {% if perms.dialer_contact.delete_phonebook %}
-                                        <a id="id_phonebook_delete_confirm" onclick="return get_alert_msg_for_phonebook({{ row.id }});"  href="del/{{ row.id }}/" title="{% trans 'delete phonebook'|title %}"><i class="fa fa-trash-o"></i></a>
+                                        <a id="id_phonebook_delete_confirm-{{ row.id }}" onclick="return get_alert_msg_for_phonebook({{ row.id }});" href="del/{{ row.id }}/" title="{% trans 'delete phonebook'|title %}"><i class="fa fa-trash-o"></i></a>
                                     {% endif %}
                                 </td>
                             </tr>

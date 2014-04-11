@@ -23,7 +23,7 @@ class ContactSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"contact": "12345678", "status": "1", "last_name": "Belaid", "first_name": "Areski", "phonebook": "/rest-api/phonebook/1/"}' http://localhost:8000/rest-api/contact/
+            curl -u username:password --dump-header - -H "Content-Type:application/json" -X POST --data '{"contact": "12345678", "status": "1", "last_name": "Belaid", "first_name": "Areski", "phonebook": "1"}' http://localhost:8000/rest-api/contact/
 
         Response::
 
@@ -76,7 +76,7 @@ class ContactSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage::
 
-            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"contact": "12345678", "status": "1", "last_name": "Belaid", "first_name": "Areski", "phonebook": "/rest-api/phonebook/1/"}' http://localhost:8000/rest-api/contact/%contact-id%/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"contact": "12345678", "status": "1", "last_name": "Belaid", "first_name": "Areski", "phonebook": "1"}' http://localhost:8000/rest-api/contact/%contact-id%/
 
         Response::
 

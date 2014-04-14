@@ -83,13 +83,12 @@ def voipcall_report(request):
     sort_col_field_list = ['starting_date', 'leg_type', 'disposition', 'used_gateway', 'callerid',
                            'callid', 'phone_number', 'duration', 'billsec', 'amd_status']
     pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='starting_date')
-    post_var_with_page = 0
     action = 'tabs-1'
     form = VoipSearchForm(request.user, request.POST or None)
     if form.is_valid():
+        # Valid form
         field_list = ['start_date', 'end_date', 'disposition', 'campaign_id', 'leg_type']
         unset_session_var(request, field_list)
-        post_var_with_page = 1
 
         from_date = getvar(request, 'from_date')
         to_date = getvar(request, 'to_date')
@@ -104,9 +103,14 @@ def voipcall_report(request):
         disposition = getvar(request, 'disposition', setsession=True)
         campaign_id = getvar(request, 'campaign_id', setsession=True)
         leg_type = getvar(request, 'leg_type', setsession=True)
+        form = VoipSearchForm(request.user, initial={'from_date': start_date.strftime('%Y-%m-%d'),
+                                                     'to_date': end_date.strftime('%Y-%m-%d'),
+                                                     'disposition': disposition,
+                                                     'campaign_id': campaign_id,
+                                                     'leg_type': leg_type})
 
-    if request.GET.get('page') or request.GET.get('sort_by'):
-        post_var_with_page = 1
+    elif request.GET.get('page') or request.GET.get('sort_by'):
+        # Pagination / Sort
         start_date = request.session.get('session_start_date')
         end_date = request.session.get('session_end_date')
         start_date = ceil_strdate(start_date, 'start')
@@ -120,9 +124,8 @@ def voipcall_report(request):
                                                      'disposition': disposition,
                                                      'campaign_id': campaign_id,
                                                      'leg_type': leg_type})
-
-    if post_var_with_page == 0:
-        # default
+    else:
+        # Default
         tday = datetime.utcnow().replace(tzinfo=utc)
         from_date = tday.strftime('%Y-%m-%d')
         to_date = tday.strftime('%Y-%m-%d')
@@ -164,7 +167,6 @@ def voipcall_report(request):
         kwargs['user_id'] = request.user.id
 
     voipcall_list = VoIPCall.objects.filter(**kwargs)
-
     all_voipcall_list = voipcall_list.values_list('id', flat=True)
 
     # Session variable is used to get record set with searched option

@@ -50,7 +50,8 @@ def phonebook_list(request):
     """
     sort_col_field_list = ['id', 'name', 'updated_date']
     pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field="id")
-    phonebook_list = Phonebook.objects.annotate(contact_count=Count('contact')).filter(user=request.user).order_by(pag_vars['sort_order'])
+    phonebook_list = Phonebook.objects\
+        .annotate(contact_count=Count('contact')).filter(user=request.user).order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'phonebook_list': phonebook_list,
@@ -121,28 +122,30 @@ def phonebook_del(request, object_id):
         # When object_id is not 0
         phonebook = get_object_or_404(Phonebook, pk=object_id, user=request.user)
 
-        # 1) delete all contacts belonging to a phonebook
+        # Delete all contacts belonging to a phonebook
         contact_list = Contact.objects.filter(phonebook=phonebook)
         contact_list.delete()
 
-        # 2) delete phonebook
-        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': phonebook.name}
+        # Delete phonebook
         phonebook.delete()
+        request.session["msg"] = _('"%(name)s" is deleted.') % {'name': phonebook.name}
     else:
         # When object_id is 0 (Multiple records delete)
         values = request.POST.getlist('select')
         values = ", ".join(["%s" % el for el in values])
         try:
-            # 1) delete all contacts belonging to a phonebook
-            contact_list = Contact.objects.filter(phonebook__user=request.user).extra(where=['phonebook_id IN (%s)' % values])
+            # Delete all contacts belonging to a phonebook
+            contact_list = Contact.objects\
+                .filter(phonebook__user=request.user)\
+                .extra(where=['phonebook_id IN (%s)' % values])
             if contact_list:
                 contact_list.delete()
 
-            # 2) delete phonebook
+            # Delete phonebook
             phonebook_list = Phonebook.objects.filter(user=request.user).extra(where=['id IN (%s)' % values])
             if phonebook_list:
-                request.session["msg"] = _('%(count)s phonebook(s) are deleted.') % {'count': phonebook_list.count()}
                 phonebook_list.delete()
+                request.session["msg"] = _('%(count)s phonebook(s) are deleted.') % {'count': phonebook_list.count()}
         except:
             raise Http404
 
@@ -251,7 +254,8 @@ def contact_list(request):
     contact_count = 0
 
     if phonebook_id_list:
-        contact_list = Contact.objects.values('id', 'phonebook__name', 'contact', 'last_name', 'first_name', 'email', 'status', 'updated_date')\
+        contact_list = Contact.objects\
+            .values('id', 'phonebook__name', 'contact', 'last_name', 'first_name', 'email', 'status', 'updated_date')\
             .filter(phonebook__in=phonebook_id_list)
 
         if kwargs:
@@ -528,4 +532,5 @@ def contact_import(request):
         'success_import_list': success_import_list,
         'type_error_import_list': type_error_import_list,
     })
-    return render_to_response('dialer_contact/contact/import_contact.html', data, context_instance=RequestContext(request))
+    return render_to_response('dialer_contact/contact/import_contact.html',
+                              data, context_instance=RequestContext(request))

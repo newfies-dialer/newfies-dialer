@@ -407,6 +407,7 @@ end
 
 function FSMCall:marked_node_completed(current_node)
     if (current_node.completed == 't' and not self.marked_completed) then
+        -- !!! Don't remove the connect/disconnect here
         self.db:connect()
         --Mark the subscriber as completed and increment campaign completed field
         self.db:update_subscriber(self.subscriber_id, SUBSCRIBER_COMPLETED)

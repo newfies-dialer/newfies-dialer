@@ -72,13 +72,13 @@ def get_common_campaign_status(id, STATUS_OF_CAMPAIGN, STATUS_COLOR):
               get_common_campaign_status(id, SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR)
     """
     if STATUS_OF_CAMPAIGN.START == id:
-        return '<font color="%s">STARTED</font>' % (STATUS_COLOR[id])
+        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("started").capitalize())
     elif STATUS_OF_CAMPAIGN.PAUSE == id:
-        return '<font color="%s">PAUSED</font>' % (STATUS_COLOR[id])
+        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("paused").capitalize())
     elif STATUS_OF_CAMPAIGN.ABORT == id:
-        return '<font color="%s">ABORTED</font>' % (STATUS_COLOR[id])
+        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("aborted").capitalize())
     else:
-        return '<font color="%s">STOPPED</font>' % (STATUS_COLOR[id])
+        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("stopped").capitalize())
 
 
 def get_status_value(value, STATUS_LIST):

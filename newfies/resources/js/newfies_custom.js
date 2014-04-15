@@ -157,7 +157,7 @@ $(function () {
 function get_alert_msg_for_phonebook(id)
 {
     contact_count = ajax_call("/phonebook/contact_count/", id);
-    var href = $('#id_phonebook_delete_confirm').attr('href');
+    var href = $('#id_phonebook_delete_confirm-' + id).attr('href');
     confirm_string = gettext("Please press OK to delete this phonebook with") + ' ' + contact_count + ' ' + gettext("contact(s)");
     bootbox_call(confirm_string, href);
     return false;
@@ -166,7 +166,8 @@ function get_alert_msg_for_phonebook(id)
 function get_alert_msg_for_dnc(id)
 {
     contact_count = ajax_call("/module/dnc_list/contact_count/", id);
-    var href = $('#id_dnc_delete_confirm').attr('href');
+    var href = $('#id_dnc_delete_confirm-' + id).attr('href');
+    alert(href);
     confirm_string = gettext("Please press OK to delete this DNC with") + ' ' + contact_count + ' ' + gettext("contact(s)");
     bootbox_call(confirm_string, href);
     return false;

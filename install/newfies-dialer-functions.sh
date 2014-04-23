@@ -623,11 +623,11 @@ func_nginx_supervisor(){
         'DEBIAN')
             cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
             cp /usr/src/newfies-dialer/install/supervisor/debian/supervisord /etc/init.d/supervisor
-            chmod +x /etc/rc.d/init.d/supervisor
+            chmod +x /etc/init.d/supervisor
         ;;
         'CENTOS')
             cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord /etc/init.d/supervisor
-            chmod +x /etc/rc.d/init.d/supervisor
+            chmod +x /etc/init.d/supervisor
             chkconfig --levels 235 supervisor on
             cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord.conf /etc/supervisord.conf
             mkdir -p /etc/supervisor/conf.d
@@ -636,7 +636,7 @@ func_nginx_supervisor(){
         ;;
     esac
     /etc/init.d/supervisor stop
-    sleep 1
+    sleep 2
     /etc/init.d/supervisor start
 }
 
@@ -653,11 +653,11 @@ func_celery_supervisor(){
         'DEBIAN')
             cp /usr/src/newfies-dialer/install/supervisor/celery_newfies_dialer.conf /etc/supervisor/conf.d/
             cp /usr/src/newfies-dialer/install/supervisor/debian/supervisord /etc/init.d/supervisor
-            chmod +x /etc/rc.d/init.d/supervisor
+            chmod +x /etc/init.d/supervisor
         ;;
         'CENTOS')
             cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord /etc/init.d/supervisor
-            chmod +x /etc/rc.d/init.d/supervisor
+            chmod +x /etc/init.d/supervisor
             chkconfig --levels 235 supervisor on
             cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord.conf /etc/supervisord.conf
             mkdir -p /etc/supervisor/conf.d

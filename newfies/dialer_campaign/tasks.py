@@ -36,6 +36,9 @@ LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 if settings.HEARTBEAT_MIN < 1 or settings.HEARTBEAT_MIN > 10:
     settings.HEARTBEAT_MIN = 1
 
+if settings.DELAY_OUTBOUND < 0 or settings.DELAY_OUTBOUND > 1000:
+    settings.DELAY_OUTBOUND = 0
+
 logger = get_task_logger(__name__)
 
 
@@ -189,6 +192,8 @@ class pending_call_processing(Task):
             new_callrequest.save()
 
             debug_query(6)
+
+            second_towait = second_towait + settings.DELAY_OUTBOUND
 
             init_callrequest.apply_async(
                 args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait],

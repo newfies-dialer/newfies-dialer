@@ -93,6 +93,7 @@ function FSMCall:init()
     call_id = self.uuid..'_'..self.callrequest_id
     self.debugger:set_call_id(call_id)
 
+    --!!! Dont remove this connect
     self.db:connect()
     --Load All data
     self.survey_id = self.db:load_all(self.campaign_id, self.contact_id, self.alarm_request_id)
@@ -141,6 +142,7 @@ function FSMCall:end_call()
     self.db:connect()
     self.db:commit_result_mem(self.survey_id)
     --We need to keep this disconnect as it's End of Call
+    --!!! Dont remove this disconnect
     self.db:disconnect()
 
     -- NOTE: Don't use this call time for Billing / Use CDRs
@@ -407,7 +409,6 @@ end
 
 function FSMCall:marked_node_completed(current_node)
     if (current_node.completed == 't' and not self.marked_completed) then
-        -- !!! Don't remove the connect/disconnect here
         self.db:connect()
         --Mark the subscriber as completed and increment campaign completed field
         self.db:update_subscriber(self.subscriber_id, SUBSCRIBER_COMPLETED)

@@ -469,8 +469,8 @@ def subscriber_list(request):
         start_date = request.session.get('session_start_date')
         end_date = request.session.get('session_end_date')
 
-        start_date = ceil_strdate(start_date, 'start')
-        end_date = ceil_strdate(end_date, 'end')
+        start_date = ceil_strdate(str(start_date), 'start')
+        end_date = ceil_strdate(str(end_date), 'end')
 
         campaign_id = request.session.get('session_campaign_id')
         agent_id = request.session.get('session_agent_id')

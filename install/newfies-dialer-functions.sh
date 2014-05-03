@@ -127,6 +127,8 @@ func_install_landing_page() {
     sed -i "s/LOCALHOST/$IPADDR:$HTTP_PORT/g" $WELCOME_DIR/index.html
 }
 
+
+# Check dependencies
 func_check_dependencies() {
     echo ""
     echo "Checking Python dependencies..."

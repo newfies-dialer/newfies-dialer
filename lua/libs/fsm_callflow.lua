@@ -94,7 +94,12 @@ function FSMCall:init()
     self.debugger:set_call_id(call_id)
 
     --!!! Dont remove this connect
-    self.db:connect()
+    if not self.db:connect() then
+        self.debugger:msg("ERROR", "Error Connecting to database")
+        self:hangupcall()
+        return false
+    end
+
     --Load All data
     self.survey_id = self.db:load_all(self.campaign_id, self.contact_id, self.alarm_request_id)
     if not self.survey_id then

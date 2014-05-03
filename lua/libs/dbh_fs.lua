@@ -49,17 +49,22 @@ function DBH:connect()
     -- connect to ODBC database
     ODBC_DBNAME = 'newfiesdialer'
     self.dbh = freeswitch.Dbh("odbc://"..ODBC_DBNAME..":"..DBUSER..":"..DBPASS)
-    assert(self.dbh:connected())
+    -- assert(self.dbh:connected())
+    if self.dbh:connected() == false then
+        self.debugger:msg("ERROR", "Cannot connect to database")
+        return false
+    end
 
     if USE_CACHE then
         --self.caching = redis.connect('127.0.0.1', 6379)
         --self.caching = memcached.connect('127.0.0.1', 11211)
         self.caching = LFS_Caching(nil)
     end
+    return true
 end
 
 function DBH:disconnect()
-    self.dbh:release() -- optional
+    -- self.dbh:release() -- optional
 end
 
 function DBH:get_list(sqlquery)
@@ -150,7 +155,7 @@ function DBH:get_cache_object(sqlquery, ttl)
         return cmsgpack.unpack(value)
     else
         --Not in cache
-        local res_get_object
+        local res_get_objectdbh:connected() == false
         self.dbh:query(sqlquery, function(row)
             res_get_object = row
             for k, v in pairs(res_get_object) do
@@ -176,6 +181,7 @@ end
 
 function DBH:execute(sqlquery)
     local res = self.dbh:query(sqlquery)
+    -- local res = assert(self.dbh:query(sql_query))
     --Get affected rows
     --self.dbh:affected_rows()
     return res

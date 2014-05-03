@@ -138,14 +138,22 @@ class pending_call_processing(Task):
         # Set time to wait for balanced dispatching of calls
         time_to_wait = (60.0 / settings.HEARTBEAT_MIN) / no_subscriber
         count = 0
+        loopnow = datetime.now()
+        loopnow + timedelta(seconds=1.55)
 
         for elem_camp_subscriber in list_subscriber:
             # Loop on Subscriber and start the initcall's task
             count = count + 1
             second_towait = floor(count * time_to_wait)
+            # ms_addtowait now used anymore, replaced by async eta
             ms_addtowait = (count * time_to_wait) - second_towait
-            logger.info("Init CallRequest in %d seconds (cmpg:%d,subscr:%d)" %
-                        (second_towait, campaign_id, elem_camp_subscriber.id))
+
+            eta_delta = loopnow + timedelta(seconds=(count * time_to_wait))
+            # as we use eta_delta ms_addtowait is set to 0
+            ms_addtowait = 0
+
+            logger.info("Init CallRequest in %d seconds (cmpg:%d,subscr:%d:eta_delta:%s)" %
+                        (second_towait, campaign_id, elem_camp_subscriber.id, eta_delta))
 
             phone_number = elem_camp_subscriber.duplicate_contact
             debug_query(4)
@@ -197,14 +205,16 @@ class pending_call_processing(Task):
 
             init_callrequest.apply_async(
                 args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait],
-                countdown=second_towait)
+                # countdown=second_towait)
+                eta=eta_delta)
+
             # Shell_plus
             # from dialer_cdr.tasks import init_callrequest
             # from datetime import datetime
             # new_callrequest_id = 112
             # obj_campaign_id = 3
             # countdown = 1
-            # init_callrequest.apply_async(args=[new_callrequest_id, obj_campaign_id], countdown=1)
+            # init_callrequest.apply_async(args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait], countdown=1)
 
         debug_query(7)
         return True

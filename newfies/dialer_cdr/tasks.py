@@ -115,7 +115,7 @@ def check_retrycall_completion(callrequest):
         new_callrequest.save()
         #NOTE : implement a PID algorithm
         second_towait = callrequest.campaign.completion_intervalretry
-        logger.debug("Init Completion Retry CallRequest in  %d seconds" % second_towait)
+        logger.info("Init Completion Retry CallRequest %d in %d seconds" % (new_callrequest.id, second_towait))
         init_callrequest.apply_async(
             args=[new_callrequest.id, callrequest.campaign.id, callrequest.campaign.callmaxduration],
             countdown=second_towait)
@@ -190,7 +190,6 @@ def process_callevent(record):
         logger.error("Cannot find Callrequest job_uuid : %s" % job_uuid)
         return True
 
-    logger.error(callrequest)
     if callrequest.alarm_request_id:
         app_type = 'alarm'
         alarm_req = AlarmRequest.objects.get(pk=callrequest.alarm_request_id)

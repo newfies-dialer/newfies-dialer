@@ -376,31 +376,34 @@ def callevent_processing():
     #TODO (Areski)
     #Replace this for ORM with select_for_update or transaction
 
-    sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, " \
-        "callrequest_id, alarm_request_id, callerid, phonenumber, duration, billsec, hangup_cause, " \
-        "hangup_cause_q850, starting_date, status, created_date, amd_status, leg " \
-        "FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
+    try:
+        sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, " \
+            "callrequest_id, alarm_request_id, callerid, phonenumber, duration, billsec, hangup_cause, " \
+            "hangup_cause_q850, starting_date, status, created_date, amd_status, leg " \
+            "FROM call_event WHERE status=1 LIMIT 1000 OFFSET 0"
 
-    cursor.execute(sql_statement)
-    row = cursor.fetchall()
-
-    debug_query(21)
-    # buff_voipcall = BufferVoIPCall()
-
-    for record in row:
-        call_event_id = record[0]
-        event_name = record[1]
-        #Update Call Event
-        sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
         cursor.execute(sql_statement)
+        row = cursor.fetchall()
+    except:
+        #Error on sql / Lua listener might not be on
+        logger.error("Error Fetching call_event")
+    else:
+        debug_query(21)
+        # buff_voipcall = BufferVoIPCall()
+        for record in row:
+            call_event_id = record[0]
+            event_name = record[1]
+            #Update Call Event
+            sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
+            cursor.execute(sql_statement)
 
-        logger.info("Processing Event : %s" % event_name)
-        process_callevent.delay(record)
+            logger.info("Processing Call_Event : %s" % event_name)
+            process_callevent.delay(record)
 
-    debug_query(30)
-    # buff_voipcall.commit()
-    # debug_query(31)
-    logger.debug('End Loop : callevent_processing')
+        debug_query(30)
+        # buff_voipcall.commit()
+        # debug_query(31)
+        logger.debug('End Loop : callevent_processing')
 
 
 class task_pending_callevent(PeriodicTask):

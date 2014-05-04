@@ -1,8 +1,8 @@
-Sphinx==1.2
-Werkzeug==0.9.4
-django-debug-toolbar==1.0
-ipython==1.1.0
-pip-tools==0.3.4
-pygraphviz==1.2
-django-debug-toolbar-template-timings==0.5.5
-fake-factory==0.2
+Sphinx
+Werkzeug
+django-debug-toolbar
+ipython
+pip-tools
+pygraphviz
+django-debug-toolbar-template-timings
+fake-factory

@@ -20,6 +20,7 @@ from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
+from django.db import transaction
 
 from django_lets_go.intermediate_model_base_class import Model
 from django_lets_go.common_functions import get_unique_code, percentage
@@ -401,6 +402,7 @@ class Campaign(Model):
     subscriber_detail.short_description = _('subscriber')
 
     # OPTIMIZATION - GOOD
+    @transaction.atomic
     def get_pending_subscriber_update(self, limit, status):
         """Get all the pending subscribers from the campaign"""
         #TODO: Improve this part with a PL/SQL

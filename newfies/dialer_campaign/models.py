@@ -252,6 +252,12 @@ class Campaign(Model):
     def __unicode__(self):
         return u"%s" % (self.name)
 
+    # def phonebook_list(self):
+    #     if self.phonebook:
+    #         return u"%s" % (self.name)
+    #     else:
+    #         return u""
+
     class Meta:
         permissions = (
             ("view_campaign", _('can see campaign')),

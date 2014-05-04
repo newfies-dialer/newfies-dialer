@@ -51,7 +51,9 @@ def get_object_choices(available_objects):
 
 
 class CampaignForm(ModelForm):
-    """Campaign ModelForm"""
+    """
+    Campaign ModelForm
+    """
     campaign_code = forms.CharField(widget=forms.HiddenInput)
     content_object = forms.ChoiceField(label=_("application").capitalize())
     selected_phonebook = forms.CharField(widget=forms.HiddenInput, required=False)
@@ -59,7 +61,8 @@ class CampaignForm(ModelForm):
 
     class Meta:
         model = Campaign
-        exclude = ('user', 'status', 'content_type', 'object_id')
+        exclude = ['user', 'status', 'content_type', 'object_id', 'has_been_started', 'has_been_duplicated',
+                   'created_date', 'totalcontact', 'imported_phonebook', 'completed']
         """
         fields = ['campaign_code', 'name',
                   'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
@@ -305,7 +308,9 @@ class CampaignForm(ModelForm):
 
 
 class DuplicateCampaignForm(ModelForm):
-    """DuplicateCampaignForm ModelForm"""
+    """
+    DuplicateCampaignForm ModelForm
+    """
     campaign_code = forms.CharField(widget=forms.HiddenInput)
 
     class Meta:

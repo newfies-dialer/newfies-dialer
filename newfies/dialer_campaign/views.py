@@ -228,7 +228,8 @@ def campaign_add(request):
     if request.user and request.method != 'POST':
         # check Max Number of running campaign
         if check_dialer_setting(request, check_for="campaign"):
-            msg = _("you have too many campaigns. Max allowed %(limit)s") % {'limit': dialer_setting_limit(request, limit_for="campaign")}
+            msg = _("you have too many campaigns. Max allowed %(limit)s") % \
+                {'limit': dialer_setting_limit(request, limit_for="campaign")}
             request.session['msg'] = msg
 
             # campaign limit reached
@@ -289,9 +290,11 @@ def campaign_del(request, object_id):
             if campaign_list:
                 if stop_campaign:
                     campaign_list.update(status=CAMPAIGN_STATUS.END)
-                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') % {'count': campaign_list.count()}
+                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') % \
+                        {'count': campaign_list.count()}
                 else:
-                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') % {'count': campaign_list.count()}
+                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') % \
+                        {'count': campaign_list.count()}
                     campaign_list.delete()
         except:
             raise Http404
@@ -301,7 +304,8 @@ def campaign_del(request, object_id):
 @permission_required('dialer_campaign.change_campaign', login_url='/')
 @login_required
 def campaign_change(request, object_id):
-    """Update/Delete campaign for the logged in user
+    """
+    Update/Delete campaign for the logged in user
 
     **Attributes**:
 
@@ -313,6 +317,7 @@ def campaign_change(request, object_id):
 
         * Update/delete selected campaign from the campaign list
           via CampaignForm & get redirected to the campaign list
+
     """
     # If dialer setting is not attached with user, redirect to campaign list
     if not user_dialer_setting(request.user):
@@ -333,7 +338,6 @@ def campaign_change(request, object_id):
         else:
             # Update campaign
             if form.is_valid():
-                form.save()
                 obj = form.save(commit=False)
 
                 selected_content_object = form.cleaned_data['content_object']
@@ -348,7 +352,12 @@ def campaign_change(request, object_id):
                 contenttype = get_content_type(selected_content_object)
                 obj.content_type = contenttype['object_type']
                 obj.object_id = contenttype['object_id']
+                # print "obj.has_been_started="
+                # print obj.has_been_started
+                # from common_functions import debug_query
+                # debug_query(1)
                 obj.save()
+                # debug_query(2)
 
                 request.session["msg"] = _('the campaign "%(name)s" is updated.') % {'name': request.POST['name']}
                 request.session['error_msg'] = ''
@@ -418,7 +427,8 @@ def campaign_duplicate(request, id):
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''
-    return render_to_response('dialer_campaign/campaign/campaign_duplicate.html', data, context_instance=RequestContext(request))
+    return render_to_response('dialer_campaign/campaign/campaign_duplicate.html',
+                              data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.view_subscriber', login_url='/')

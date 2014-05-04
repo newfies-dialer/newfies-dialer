@@ -48,11 +48,14 @@
           <thead>
           <tr>
             <th><input type="checkbox" onclick="toggleChecked(this.checked)"></th>
-            <th>{% sort_link CAMPAIGN_COLUMN_NAME.key|capfirst col_name_with_order.id %}</th>
+            {# <th>{% sort_link CAMPAIGN_COLUMN_NAME.key|capfirst col_name_with_order.id %}</th> #}
             <th>{% sort_link CAMPAIGN_COLUMN_NAME.name|capfirst col_name_with_order.name %}</th>
             <th>{% sort_link CAMPAIGN_COLUMN_NAME.start_date|capfirst col_name_with_order.startingdate %}</th>
             <th>{{ CAMPAIGN_COLUMN_NAME.type|capfirst }}</th>
             <th>{{ CAMPAIGN_COLUMN_NAME.app|capfirst }}</th>
+            <th>{{ CAMPAIGN_COLUMN_NAME.phonebook|capfirst }}</th>
+            <th>{{ CAMPAIGN_COLUMN_NAME.frequency|capfirst }}</th>
+            <th> has_been_started </th>
             <th>{% sort_link CAMPAIGN_COLUMN_NAME.contacts|capfirst col_name_with_order.totalcontact %}</th>
             <th>{% sort_link CAMPAIGN_COLUMN_NAME.status|capfirst col_name_with_order.status %}</th>
             <th>{% trans 'action'|capfirst %}</th>
@@ -63,11 +66,14 @@
             {% for row in campaign_list %}
               <tr>
                 <td><input type="checkbox" name="select" class="checkbox" value="{{ row.id }}" /></td>
-                <td>{{ row.campaign_code }}</td>
+                {# <td>{{ row.campaign_code }}</td> #}
                 <td>{{ row.name }}</td>
                 <td>{{ row.startingdate }}</td>
                 <td>{{ row.content_type }}</td>
                 <td>{% get_app_name row.content_type.app_label row.content_type.model row.object_id %}</td>
+                <td>{% for phonebook in row.phonebook.all %}{{ phonebook }}<br/>{% endfor %}</td>
+                <td>{{ row.frequency }}</td>
+                <td>{{ row.has_been_started }}</td>
                 <td>{{ row.totalcontact }}</td>
                 <td>
                   {% get_campaign_status_url row.id row.status %} - {{ row.status|get_campaign_status|safe }}

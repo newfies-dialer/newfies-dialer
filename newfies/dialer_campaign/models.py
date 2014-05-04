@@ -20,24 +20,25 @@ from django.core.cache import cache
 from django.db.models.signals import post_save
 from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
-from dialer_campaign.constants import SUBSCRIBER_STATUS, \
-    CAMPAIGN_STATUS, AMD_BEHAVIOR
+
+from django_lets_go.intermediate_model_base_class import Model
+from django_lets_go.common_functions import get_unique_code, percentage
+from audiofield.models import AudioFile
+from datetime import datetime
+from django.utils.timezone import utc
+from dateutil.relativedelta import relativedelta
+import jsonfield
+import logging
+import re
+
+from .constants import SUBSCRIBER_STATUS, CAMPAIGN_STATUS, AMD_BEHAVIOR
 from dialer_contact.constants import CONTACT_STATUS
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
-from audiofield.models import AudioFile
 from user_profile.models import UserProfile
 from sms.models import Gateway as SMS_Gateway
 from dnc.models import DNC
 #from agent.models import Agent
-from datetime import datetime
-from django.utils.timezone import utc
-from dateutil.relativedelta import relativedelta
-from django_lets_go.intermediate_model_base_class import Model
-from django_lets_go.common_functions import get_unique_code, percentage
-import jsonfield
-import logging
-import re
 
 logger = logging.getLogger('newfies.filelog')
 

@@ -12,6 +12,10 @@
 -- Arezqui Belaid <info@star2billing.com>
 --
 
+--
+-- dbh_fs version with no caching and no use of md5
+--
+
 package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
@@ -46,10 +50,11 @@ function DBH:connect()
     ODBC_DBNAME = 'newfiesdialer'
     self.dbh = freeswitch.Dbh("odbc://"..ODBC_DBNAME..":"..DBUSER..":"..DBPASS)
     assert(self.dbh:connected())
+    return true
 end
 
 function DBH:disconnect()
-    self.dbh:release() -- optional
+    -- self.dbh:release() -- optional
 end
 
 function DBH:get_list(sqlquery)

@@ -87,7 +87,7 @@ class UserProfile(Profile_abstract):
     """
     userprofile_gateway = models.ManyToManyField(Gateway, verbose_name=_('gateway'))
     dialersetting = models.ForeignKey(DialerSetting, verbose_name=_('dialer settings'),
-        null=True, blank=True)
+                                      null=True, blank=True)
     #Used for tastypie
     #key = models.CharField(max_length=256, blank=True, default='')
 

@@ -50,16 +50,22 @@ end
 
 function DBH:connect()
     self.env = assert(luasql.postgres())
-    self.con = assert(self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
+    self.con = self.env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT)
+    if not self.con then
+        return false
+    end
     if USE_CACHE then
         --self.caching = redis.connect('127.0.0.1', 6379)
         --self.caching = memcached.connect('127.0.0.1', 11211)
         self.caching = LFS_Caching(nil)
     end
+    return true
 end
 
 function DBH:disconnect()
-    self.con:close()
+    if self.con then
+        self.con:close()
+    end
     self.env:close()
 end
 

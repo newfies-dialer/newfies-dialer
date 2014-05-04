@@ -20,6 +20,7 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 require "constant"
 local oo = require "loop.simple"
 local dbhanlder = require "dbhandler"
+--  Use FS dbh via ODBC
 -- local dbh_fs = require "dbh_fs"
 -- local dbh_fs = require "dbh_light"
 local uuid4= require("uuid4")
@@ -63,7 +64,7 @@ function Database:__init(debug_mode, debugger)
 end
 
 function Database:connect()
-    self.dbh:connect()
+    return self.dbh:connect()
 end
 
 function Database:disconnect()

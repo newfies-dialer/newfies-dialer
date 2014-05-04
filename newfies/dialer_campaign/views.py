@@ -21,25 +21,27 @@ from django.core.mail import mail_admins
 from django.template.context import RequestContext
 from django.utils.translation import ugettext as _
 from django.contrib.contenttypes.models import ContentType
-from dialer_contact.models import Phonebook
-from dialer_campaign.models import Campaign, Subscriber
-from dialer_campaign.forms import CampaignForm, DuplicateCampaignForm, \
-    SubscriberSearchForm, CampaignSearchForm
-from dialer_campaign.constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME, \
-    SUBSCRIBER_COLUMN_NAME
-from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit, \
-    user_dialer_setting, get_subscriber_status, get_subscriber_disposition
-from dialer_campaign.tasks import collect_subscriber
-from survey.models import Survey_template
-from user_profile.constants import NOTIFICATION_NAME
-from frontend_notification.views import frontend_send_notification
-from django_lets_go.common_functions import ceil_strdate, getvar, get_pagination_vars, unset_session_var
-from mod_utils.helper import Export_choice
 from dateutil.relativedelta import relativedelta
-from datetime import datetime
 from django.utils.timezone import utc
+
+from datetime import datetime
 import re
 import tablib
+from frontend_notification.views import frontend_send_notification
+from django_lets_go.common_functions import ceil_strdate, getvar, get_pagination_vars, unset_session_var
+
+from .models import Campaign, Subscriber
+from .forms import CampaignForm, DuplicateCampaignForm, \
+    SubscriberSearchForm, CampaignSearchForm
+from .constants import CAMPAIGN_STATUS, CAMPAIGN_COLUMN_NAME, \
+    SUBSCRIBER_COLUMN_NAME
+from .function_def import check_dialer_setting, dialer_setting_limit, \
+    user_dialer_setting, get_subscriber_status, get_subscriber_disposition
+from .tasks import collect_subscriber
+from dialer_contact.models import Phonebook
+from survey.models import Survey_template
+from user_profile.constants import NOTIFICATION_NAME
+from mod_utils.helper import Export_choice
 
 redirect_url_to_campaign_list = '/campaign/'
 
@@ -228,7 +230,8 @@ def campaign_add(request):
     if request.user and request.method != 'POST':
         # check Max Number of running campaign
         if check_dialer_setting(request, check_for="campaign"):
-            msg = _("you have too many campaigns. Max allowed %(limit)s") % {'limit': dialer_setting_limit(request, limit_for="campaign")}
+            msg = _("you have too many campaigns. Max allowed %(limit)s") % \
+                {'limit': dialer_setting_limit(request, limit_for="campaign")}
             request.session['msg'] = msg
 
             # campaign limit reached
@@ -289,9 +292,11 @@ def campaign_del(request, object_id):
             if campaign_list:
                 if stop_campaign:
                     campaign_list.update(status=CAMPAIGN_STATUS.END)
-                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') % {'count': campaign_list.count()}
+                    request.session["msg"] = _('%(count)s campaign(s) have been stopped.') % \
+                        {'count': campaign_list.count()}
                 else:
-                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') % {'count': campaign_list.count()}
+                    request.session["msg"] = _('%(count)s campaign(s) have been deleted.') % \
+                        {'count': campaign_list.count()}
                     campaign_list.delete()
         except:
             raise Http404
@@ -301,7 +306,8 @@ def campaign_del(request, object_id):
 @permission_required('dialer_campaign.change_campaign', login_url='/')
 @login_required
 def campaign_change(request, object_id):
-    """Update/Delete campaign for the logged in user
+    """
+    Update/Delete campaign for the logged in user
 
     **Attributes**:
 
@@ -313,6 +319,7 @@ def campaign_change(request, object_id):
 
         * Update/delete selected campaign from the campaign list
           via CampaignForm & get redirected to the campaign list
+
     """
     # If dialer setting is not attached with user, redirect to campaign list
     if not user_dialer_setting(request.user):
@@ -333,8 +340,7 @@ def campaign_change(request, object_id):
         else:
             # Update campaign
             if form.is_valid():
-                form.save()
-                obj = form.save(commit=False)
+                newcpg = form.save(commit=False)
 
                 selected_content_object = form.cleaned_data['content_object']
                 if not selected_content_object:
@@ -343,12 +349,21 @@ def campaign_change(request, object_id):
                 if campaign.status == CAMPAIGN_STATUS.START:
                     if request.POST.get('selected_phonebook'):
                         selected_phonebook = str(request.POST.get('selected_phonebook')).split(',')
-                        obj.phonebook = Phonebook.objects.filter(id__in=selected_phonebook)
+                        newcpg.phonebook = Phonebook.objects.filter(id__in=selected_phonebook)
 
                 contenttype = get_content_type(selected_content_object)
-                obj.content_type = contenttype['object_type']
-                obj.object_id = contenttype['object_id']
-                obj.save()
+                newcpg.content_type = contenttype['object_type']
+                newcpg.object_id = contenttype['object_id']
+
+                # Ugly hack: Solve problem when editing campaign
+                newcpg.has_been_started = campaign.has_been_started
+                newcpg.has_been_duplicated = campaign.has_been_duplicated
+                newcpg.created_date = campaign.created_date
+                newcpg.totalcontact = campaign.totalcontact
+                newcpg.imported_phonebook = campaign.imported_phonebook
+                newcpg.completed = campaign.completed
+                # Save the updated Campaign
+                newcpg.save()
 
                 request.session["msg"] = _('the campaign "%(name)s" is updated.') % {'name': request.POST['name']}
                 request.session['error_msg'] = ''
@@ -418,7 +433,8 @@ def campaign_duplicate(request, id):
         'err_msg': request.session.get('error_msg'),
     }
     request.session['error_msg'] = ''
-    return render_to_response('dialer_campaign/campaign/campaign_duplicate.html', data, context_instance=RequestContext(request))
+    return render_to_response('dialer_campaign/campaign/campaign_duplicate.html',
+                              data, context_instance=RequestContext(request))
 
 
 @permission_required('dialer_campaign.view_subscriber', login_url='/')

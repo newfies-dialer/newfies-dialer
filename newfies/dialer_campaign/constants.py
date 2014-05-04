@@ -55,6 +55,8 @@ class CAMPAIGN_COLUMN_NAME(Choice):
     app = _('app')
     contacts = _('contacts')
     status = _('status')
+    frequency = _('frequency')
+    phonebook = _('phonebook')
 
 
 class AMD_BEHAVIOR(Choice):

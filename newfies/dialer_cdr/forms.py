@@ -70,12 +70,14 @@ class VoipSearchForm(SearchForm):
             content_type_list = ['survey']
 
             if user.is_superuser:
+                # // , has_been_started=True
                 campaign_list = Campaign.objects.values_list('id', 'name')\
-                    .filter(content_type__model__in=content_type_list, has_been_started=True)\
+                    .filter(content_type__model__in=content_type_list)\
                     .order_by('-id')
             else:
+                # // , has_been_started=True
                 campaign_list = Campaign.objects.values_list('id', 'name')\
-                    .filter(user=user, content_type__model__in=content_type_list, has_been_started=True)\
+                    .filter(user=user, content_type__model__in=content_type_list)\
                     .order_by('-id')
 
             for i in campaign_list:
@@ -100,8 +102,9 @@ class AdminVoipSearchForm(AdminSearchForm):
         campaign_list.append((0, _('all').upper()))
         content_type_list = ['survey']
 
+        # // , has_been_started=True
         camp_list = Campaign.objects.values_list('id', 'name')\
-            .filter(content_type__model__in=content_type_list, has_been_started=True)\
+            .filter(content_type__model__in=content_type_list)\
             .order_by('-id')
         for i in camp_list:
             campaign_list.append((i[0], i[1]))

@@ -17,22 +17,23 @@ from django.conf import settings
 from django.forms.util import ErrorList
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
-
 from django.contrib.contenttypes.models import ContentType
-from dialer_campaign.models import Campaign, Subscriber
-from dialer_campaign.constants import CAMPAIGN_STATUS, SUBSCRIBER_STATUS
-from dialer_campaign.function_def import user_dialer_setting, get_phonebook_list
+
+from crispy_forms.helper import FormHelper
+from crispy_forms.layout import Layout, Div, Fieldset, Field, HTML
+from crispy_forms.bootstrap import TabHolder, Tab
+from django_lets_go.common_functions import get_unique_code
+from bootstrap3_datetime.widgets import DateTimePicker
+from mod_utils.forms import common_submit_buttons
+
+from .models import Campaign, Subscriber
+from .constants import CAMPAIGN_STATUS, SUBSCRIBER_STATUS
+from .function_def import user_dialer_setting, get_phonebook_list
 from dialer_contact.forms import SearchForm
 #from agent.function_def import agent_list
 #from agent.models import AgentProfile, Agent
 from user_profile.models import UserProfile
-from django_lets_go.common_functions import get_unique_code
 from dnc.models import DNC
-from bootstrap3_datetime.widgets import DateTimePicker
-from mod_utils.forms import common_submit_buttons
-from crispy_forms.helper import FormHelper
-from crispy_forms.layout import Layout, Div, Fieldset, Field, HTML
-from crispy_forms.bootstrap import TabHolder, Tab
 
 
 def get_object_choices(available_objects):
@@ -63,23 +64,21 @@ class CampaignForm(ModelForm):
         model = Campaign
         exclude = ['user', 'status', 'content_type', 'object_id', 'has_been_started', 'has_been_duplicated',
                    'created_date', 'totalcontact', 'imported_phonebook', 'completed']
-        """
-        fields = ['campaign_code', 'name',
-                  'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
-                  'content_object',  # 'content_type', 'object_id'
-                  'extra_data', 'dnc', 'description', 'phonebook',
-                  'frequency', 'callmaxduration', 'maxretry',
-                  'intervalretry', 'calltimeout',
-                  'completion_maxretry', 'completion_intervalretry',
-                  'startingdate', 'expirationdate',
-                  'daily_start_time', 'daily_stop_time',
-                  'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
-                  'saturday', 'sunday',
-                  'selected_phonebook', 'selected_content_object',
-                  'voicemail', 'amd_behavior', 'voicemail_audiofile',
-                  #'agent_script', 'lead_disposition', 'external_link'
-                  ]
-        """
+        # fields = ['campaign_code', 'name',
+        #           'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
+        #           'content_object',  # 'content_type', 'object_id'
+        #           'extra_data', 'dnc', 'description', 'phonebook',
+        #           'frequency', 'callmaxduration', 'maxretry',
+        #           'intervalretry', 'calltimeout',
+        #           'completion_maxretry', 'completion_intervalretry',
+        #           'startingdate', 'expirationdate',
+        #           'daily_start_time', 'daily_stop_time',
+        #           'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
+        #           'saturday', 'sunday',
+        #           'selected_phonebook', 'selected_content_object',
+        #           'voicemail', 'amd_behavior', 'voicemail_audiofile',
+        #           #'agent_script', 'lead_disposition', 'external_link'
+        #           ]
         widgets = {
             'description': Textarea(attrs={'cols': 23, 'rows': 3}),
             'agent_script': Textarea(attrs={'cols': 23, 'rows': 3}),

@@ -138,7 +138,7 @@ class pending_call_processing(Task):
         # Set time to wait for balanced dispatching of calls
         time_to_wait = (60.0 / settings.HEARTBEAT_MIN) / no_subscriber
         count = 0
-        loopnow = datetime.now()
+        loopnow = datetime.utcnow()
         loopnow + timedelta(seconds=1.55)
 
         for elem_camp_subscriber in list_subscriber:

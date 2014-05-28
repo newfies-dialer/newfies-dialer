@@ -50,7 +50,7 @@ To get started with Newfies-Dialer you must have the following installed:
 - django-notification >= 0.2 (User notification management for the Django web framework)
 - identicon (identicon python implementation)
 - django-sentry >= 1.8.6.2 (Real-time logging / error tracing for Django)
-- django-qsstats >= 0.3.1 (A django microframework that eases the generation of aggregate data for querysets)
+- django-qsstats-magic >= 0.7.2 (A django microframework that eases the generation of aggregate data for querysets)
 - django-frontend-notification >= 0.1.8 (Django application to display quickly on frontend the list of notification and run some basic actions such as view all notifications, delete notifications, etc...)
 
 

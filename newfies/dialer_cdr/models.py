@@ -110,7 +110,8 @@ class Callrequest(Model):
     timeout = models.IntegerField(blank=True, default=30, verbose_name=_('time out'))
     timelimit = models.IntegerField(blank=True, default=3600, verbose_name=_('time limit'))
     extra_dial_string = models.CharField(max_length=500, blank=True, verbose_name=_('extra dial string'))
-    subscriber = models.ForeignKey(Subscriber, null=True, blank=True, help_text=_("subscriber related to this call request"))
+    subscriber = models.ForeignKey(Subscriber, null=True, blank=True,
+                                   help_text=_("subscriber related to this call request"))
 
     campaign = models.ForeignKey(Campaign, null=True, blank=True, help_text=_("select Campaign"))
     aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True, verbose_name=_("a-leg gateway"),
@@ -144,7 +145,7 @@ class Callrequest(Model):
         verbose_name_plural = _("call requests")
 
     def __unicode__(self):
-        return u"%s [%s]" % (self.id, self.request_uuid)
+        return u"%s [%s] [cpg:%s]" % (self.id, self.request_uuid, self.campaign)
 
 
 class VoIPCall(models.Model):

@@ -59,6 +59,7 @@ class CallrequestAdmin(GenericAdminModelAdmin):
     list_display = ('id', 'request_uuid', 'aleg_uuid', 'call_time',
                     'status', 'callerid', 'phone_number', 'call_type',
                     'completed', 'num_attempt', 'last_attempt_time', )
+    raw_id_fields = ('subscriber',)
     list_display_links = ('id', 'request_uuid', )
     list_filter = ['callerid', 'call_time', 'status', 'call_type', 'campaign']
     ordering = ('-id', )
@@ -74,8 +75,9 @@ class VoIPCallAdmin(admin.ModelAdmin):
     detail_title = _("call report").title()
     list_display = ('id', 'leg_type', 'callid', 'callerid', 'phone_number',
                     'starting_date', 'min_duration', 'billsec', 'disposition',
-                    'hangup_cause', 'hangup_cause_q850')
+                    'hangup_cause', 'callrequest')
     valid_lookups = ('callrequest__campaign_id', )
+    raw_id_fields = ('callrequest', )
     if settings.AMD:
         list_display += ('amd_status', )
     ordering = ('-id', )
@@ -87,7 +89,6 @@ class VoIPCallAdmin(admin.ModelAdmin):
 
     def user_link(self, obj):
         """User link to user profile"""
-
         if obj.user.is_staff:
             url = reverse('admin:auth_staff_change', args=(obj.user_id, ))
         else:
@@ -170,10 +171,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
         ChangeList = self.get_changelist(request)
         try:
             cl = ChangeList(request, self.model, self.list_display,
-                self.list_display_links, self.list_filter, self.date_hierarchy,
-                self.search_fields, self.list_select_related,
-                self.list_per_page, self.list_max_show_all, self.list_editable,
-                self)
+                            self.list_display_links, self.list_filter, self.date_hierarchy,
+                            self.search_fields, self.list_select_related,
+                            self.list_per_page, self.list_max_show_all, self.list_editable,
+                            self)
         except IncorrectLookupParameters:
             if ERROR_FLAG in request.GET.keys():
                 return render_to_response('admin/invalid_setup.html', {'title': _('Database error')})

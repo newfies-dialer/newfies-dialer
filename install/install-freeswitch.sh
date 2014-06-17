@@ -27,7 +27,8 @@ FS_CONFIG_PATH=/etc/freeswitch
 FS_BASE_PATH=/usr/src/
 CURRENT_PATH=$PWD
 # Valid Freeswitch versions are : v1.2.stable
-FS_VERSION=v1.2.stable
+#FS_VERSION=v1.2.stable
+FS_VERSION=v1.4
 
 
 # Identify Linux Distribution type

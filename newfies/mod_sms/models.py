@@ -41,10 +41,12 @@ class SMSCampaignManager(models.Manager):
         kwargs = {}
         kwargs['status'] = SMS_CAMPAIGN_STATUS.START
         tday = datetime.utcnow().replace(tzinfo=utc)
-        kwargs['startingdate__lte'] = datetime(tday.year, tday.month,
-            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
-        kwargs['expirationdate__gte'] = datetime(tday.year, tday.month,
-            tday.day, tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
+        kwargs['startingdate__lte'] = datetime(
+            tday.year, tday.month, tday.day, tday.hour,
+            tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
+        kwargs['expirationdate__gte'] = datetime(
+            tday.year, tday.month, tday.day, tday.hour,
+            tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
         s_time = str(tday.hour) + ":" + str(tday.minute) + ":" + str(tday.second)
         kwargs['daily_start_time__lte'] = datetime.strptime(s_time, '%H:%M:%S')
@@ -143,8 +145,8 @@ class SMSCampaign(Model):
                                    verbose_name=_('max retries'),
                                    help_text=_("maximum retries per contact"))
     intervalretry = models.IntegerField(default='300', blank=True, null=True,
-        verbose_name=_('time between Retries'),
-        help_text=_("time delay in seconds before retrying contact"))
+                                        verbose_name=_('time between Retries'),
+                                        help_text=_("time delay in seconds before retrying contact"))
 
     sms_gateway = models.ForeignKey(Gateway, verbose_name=_("sms gateway"),
                                     related_name="SMS Gateway",
@@ -496,8 +498,9 @@ class SMSTemplate(Model):
     This table store the SMS Template
     """
     label = models.CharField(max_length=75, help_text=_('SMS template name'))
-    template_key = models.CharField(max_length=30, unique=True,
-                                    help_text=_('Unique name used to pick some template for recurring action, such as activation or warning'))
+    template_key = models.CharField(
+        max_length=30, unique=True,
+        help_text=_('Unique name used to pick some template for recurring action, such as activation or warning'))
     sender_phonenumber = models.CharField(max_length=75)
     sms_text = models.TextField(max_length=500)
     created_date = models.DateTimeField(auto_now_add=True)

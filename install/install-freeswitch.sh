@@ -26,6 +26,7 @@ FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/
 FS_CONFIG_PATH=/etc/freeswitch
 FS_BASE_PATH=/usr/src/
 CURRENT_PATH=$PWD
+KERNELARCH=$(uname -p)
 # Valid Freeswitch versions are : v1.2.stable
 #FS_VERSION=v1.2.stable
 FS_VERSION=v1.4
@@ -162,6 +163,31 @@ install_fs_deb_packages() {
     apt-get -y install freeswitch-mod-esl freeswitch-mod-event-socket freeswitch-mod-curl
 }
 
+func_install_luasql() {
+    #Install Dependencies
+    apt-get install -y lua5.2 liblua5.2-dev
+    apt-get install -y libpq-dev
+
+    #Install LuaSQL
+    cd /usr/src/
+    wget https://github.com/keplerproject/luasql/archive/v2.3.0.zip
+    unzip v2.3.0.zip
+    cd luasql-2.3.0/
+
+    #Copy a config file adapted for 64bit
+    cp config config.orig
+    rm config
+    wget https://gist.githubusercontent.com/areski/4b82058ddf84e9d6f1e5/raw/5fae61dd851960b7063b82581b1b4904ba9413df/luasql_config -O config
+    if [ $KERNELARCH = "x86_64" ]; then
+        #no need to update config
+    else
+        sed -i "s/64//g" config
+    fi
+    #Compile and install
+    make
+    make install
+}
+
 func_configure_fs() {
     echo "Enable FreeSWITCH modules"
     cd $FS_CONFIG_PATH/autoload_configs/
@@ -233,6 +259,8 @@ case $DIST in
 
         #Install FreeSWITCH from sources
         func_install_fs_sources
+        #Install luaSQL
+        func_install_luasql
         #Create alias fs_cli
         func_create_alias_fs_cli
         #Install init.d script
@@ -241,6 +269,8 @@ case $DIST in
     'CENTOS')
         #Install FreeSWITCH from sources
         func_install_fs_sources
+        #Install luaSQL
+        func_install_luasql
         #Create alias fs_cli
         func_create_alias_fs_cli
         #Install init.d script

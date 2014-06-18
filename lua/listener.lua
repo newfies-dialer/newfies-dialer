@@ -91,8 +91,8 @@ function push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, call
     end
 end
 
-if argv[1] then
-    i=1
+if argv and argv[1] then
+    i = 1
     while argv[i] do
         if argv[i] == "stop" then
             --Send Stop message
@@ -102,7 +102,7 @@ if argv[1] then
             logger("Sent stop message to lua script")
             return
         end
-        i=i+1
+        i = i + 1
     end
     return
 end

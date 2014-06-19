@@ -549,6 +549,14 @@ function FSMCall:next_node()
                 destination_number = self.destination_number
             end
 
+            -- Use Event to decide to whom send the SMS
+            if self.db.event_data then
+                dec_eventdata = decodejson(self.db.event_data)
+                if dec_eventdata.sms_phonenumber then
+                    destination_number = dec_eventdata.sms_phonenumber
+                end
+            end
+
             local sms_text = tag_replace(current_node.sms_text, self.db.contact)
             self.debugger:msg("INFO", "Prepare Send SMS : "..sms_text)
             self.db:connect()

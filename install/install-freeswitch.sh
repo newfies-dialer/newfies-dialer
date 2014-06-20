@@ -178,9 +178,8 @@ func_install_luasql() {
     cp config config.orig
     rm config
     wget https://gist.githubusercontent.com/areski/4b82058ddf84e9d6f1e5/raw/5fae61dd851960b7063b82581b1b4904ba9413df/luasql_config -O config
-    if [ $KERNELARCH = "x86_64" ]; then
+    if [ $KERNELARCH != "x86_64" ]; then
         #no need to update config
-    else
         sed -i "s/64//g" config
     fi
     #Compile and install

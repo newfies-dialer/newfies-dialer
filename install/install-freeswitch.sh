@@ -76,7 +76,7 @@ func_install_deps() {
             fi
 
             apt-get -y update
-            apt-get -y install --reinstall language-pack-en
+            apt-get -y install locales-all
 
             export LANGUAGE=en_US.UTF-8
             export LANG=en_US.UTF-8

@@ -16,7 +16,6 @@ package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 -- local oo = require "loop.base"
-local oo = require "loop.simple"
 local logging_file = require "logging.file"
 local logging = require "logging"
 
@@ -39,19 +38,26 @@ local logger = logging_file(LOGDIR .. "newfieslua_logs_%s.log", "%Y-%m-%d", "%da
 logger:setLevel(logging.DEBUG)
 
 
-Debugger = oo.class{
+local Debugger = {
     -- default field values
     fs_env = false,
     call_id = '',
 }
 
-function Debugger:__init(fs_env, call_id)
-    -- self is the class
-    return oo.rawnew(self, {
-        fs_env = fs_env,
-        call_id = call_id,
-    })
+function Debugger:new (o)
+    o = o or {}   -- create object if user does not provide one
+    setmetatable(o, self)
+    self.__index = self
+    return o
 end
+
+-- function Debugger:__init(fs_env, call_id)
+--     -- self is the class
+--     return oo.rawnew(self, {
+--         fs_env = fs_env,
+--         call_id = call_id,
+--     })
+-- end
 
 function Debugger:set_call_id(call_id)
     --Set property call_id
@@ -100,3 +106,5 @@ function Debugger:msg(level, message)
         logger:error(msg)
     end
 end
+
+return Debugger

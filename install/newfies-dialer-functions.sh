@@ -231,7 +231,8 @@ func_install_dependencies(){
             # node -v
 
             #Lua Deps
-            apt-get -y install lua5.1 liblua5.1-sql-postgres-dev
+            apt-get -y install lua5.2 liblua5.2-dev
+
             #needed by lua-curl
             apt-get -y install libcurl4-openssl-dev
             #Memcached
@@ -287,7 +288,7 @@ func_install_dependencies(){
             # Install Lua & luarocks
             cd /usr/src
             yum -y install readline-devel
-            LUAVERSION=lua-5.1.5
+            LUAVERSION=lua-5.2.3
             rm -rf lua
             wget http://www.lua.org/ftp/$LUAVERSION.tar.gz
             tar zxf $LUAVERSION.tar.gz
@@ -311,8 +312,6 @@ func_install_dependencies(){
     ./configure
     make
     make bootstrap
-    make install
-
 
     #Prepare settings for installation
     case $DIST in
@@ -351,8 +350,8 @@ func_install_dependencies(){
     wget https://github.com/msva/lua-curl/archive/master.zip -O lua-curl.zip
     unzip lua-curl.zip
     cd lua-curl-master
-    cmake . && make install
-    ./configure && make install
+    cmake -DUSE_LUA52=ON .
+    make install
     #add cURL.so to lua libs
     cp cURL.so /usr/local/lib/lua/5.2/
 

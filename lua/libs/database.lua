@@ -23,7 +23,7 @@ local dbhanlder = require "dbhandler"
 --  Use FS dbh via ODBC
 -- local dbh_fs = require "dbh_fs"
 -- local dbh_fs = require "dbh_light"
-local uuid4= require("uuid4")
+local uuid4 = require("uuid4")
 
 
 -- redis.commands.expire = redis.command('EXPIRE')

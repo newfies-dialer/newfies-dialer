@@ -57,8 +57,26 @@ func_install_deps() {
     echo "Setting up Prerequisites and Dependencies for FreeSWITCH"
     case $DIST in
         'DEBIAN')
+            #Get Kernel Arch on Debian if reported as unknown.
+            if [ $KERNELARCH = "unknown" ]; then
+                DEBIANARCH=$(dpkg --print-architecture)
+                if [[ $DEBIANARCH = "amd64" ]]; then
+                    KERNELARCH=x86_64
+                fi
+            else
+                clear
+                echo "we cannot confirm your kernel architecture"
+                echo "enter 32 or 64"
+                read INPUTARCH
+                if [[ $INPUTARCH != "32" ]]; then
+                    KERNELARCH=x86_64
+                else
+                    KERNELARCH=i386
+                fi
+            fi
+
             apt-get -y update
-            apt-get -y install --reinstall language-pack-en
+            apt-get -y install locales-all
 
             export LANGUAGE=en_US.UTF-8
             export LANG=en_US.UTF-8
@@ -178,9 +196,7 @@ func_install_luasql() {
     cp config config.orig
     rm config
     wget https://gist.githubusercontent.com/areski/4b82058ddf84e9d6f1e5/raw/5fae61dd851960b7063b82581b1b4904ba9413df/luasql_config -O config
-    if [ $KERNELARCH = "x86_64" ]; then
-        #no need to update config
-    else
+    if [ $KERNELARCH != "x86_64" ]; then
         sed -i "s/64//g" config
     fi
     #Compile and install

@@ -11,6 +11,7 @@
     <param name="module-directory" value="/usr/lib/x86_64-linux-gnu/lua/5.2/?.so"/>
     <param name="module-directory" value="/usr/lib/x86_64-linux-gnu/lua/5.2/luasql/?.so"/>
     <param name="module-directory" value="/usr/lib/i386-linux-gnu/lua/5.2/?.so"/>
+    <param name="module-directory" value="/usr/local/share/lua/5.1/?.so"/>
     <param name="module-directory" value="/usr/local/lib/lua/5.2/?.so"/>
     <param name="module-directory" value="/usr/local/lib/lua/5.2/luasql/?.so"/>
 

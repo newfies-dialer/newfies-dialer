@@ -236,9 +236,6 @@ func_install_dependencies(){
             apt-get -y install libcurl4-openssl-dev
             #Memcached
             apt-get -y install memcached
-            #Luarocks
-            apt-get -y install luarocks
-            luarocks install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
         ;;
         'CENTOS')
             yum -y groupinstall "Development Tools"
@@ -299,47 +296,54 @@ func_install_dependencies(){
             cd lua
             make linux
             make install
-            cd /usr/src
-
-            #Install Luarocks
-            cd /usr/src
-            LUAROCKSVERSION=luarocks-2.0.12
-            rm -rf luarocks
-            wget http://luarocks.org/releases/$LUAROCKSVERSION.tar.gz
-            tar zxf $LUAROCKSVERSION.tar.gz
-            rm -rf $LUAROCKSVERSION.tar.gz
-            mv $LUAROCKSVERSION luarocks
-            cd luarocks
-            ./configure
-            make
-            make install
-            cd /usr/src
-
-            luarocks install luasql-postgres PGSQL_DIR=/usr/pgsql-9.1/
         ;;
     esac
 
-    echo ""
-    echo "easy_install -U setuptools pip distribute"
-    easy_install -U setuptools pip distribute
+    #Install Luarocks from sources
+    cd /usr/src
+    LUAROCKSVERSION=luarocks-2.1.2
+    rm -rf luarocks
+    wget http://luarocks.org/releases/$LUAROCKSVERSION.tar.gz
+    tar zxf $LUAROCKSVERSION.tar.gz
+    rm -rf $LUAROCKSVERSION.tar.gz
+    mv $LUAROCKSVERSION luarocks
+    cd luarocks
+    ./configure
+    make
+    make bootstrap
+    make install
 
-    # install Bower
-    npm install -g bower
+
+    #Prepare settings for installation
+    case $DIST in
+        'DEBIAN')
+            luarocks-5.2 install luasql-postgres PGSQL_INCDIR=/usr/include/postgresql/
+        ;;
+        'CENTOS')
+            luarocks-5.2 install luasql-postgres PGSQL_DIR=/usr/pgsql-9.1/
+        ;;
+    esac
 
     #Install Lua dependencies
-    luarocks install luasocket
-    luarocks install lualogging
-    luarocks install loop
-    luarocks install md5
-    luarocks install luafilesystem
-    luarocks install luajson 1.3.2-1
-    luarocks install inspect
-    luarocks install redis-lua
-    luarocks install lua-cmsgpack
+    luarocks-5.2 install luasocket
+    luarocks-5.2 install lualogging
+    luarocks-5.2 install loop
+    luarocks-5.2 install md5
+    luarocks-5.2 install luafilesystem
+    luarocks-5.2 install luajson 1.3.2-1
+    luarocks-5.2 install inspect
+    luarocks-5.2 install redis-lua
     #Issue with last version of lpeg - lua libs/tag_replace.lua will seg fault
     #Pin the version 0.10.2-1
-    luarocks remove lpeg --force
-    luarocks install http://luarocks.org/repositories/rocks/lpeg-0.10.2-1.rockspec
+    luarocks-5.2 remove lpeg --force
+    luarocks-5.2 install http://luarocks.org/repositories/rocks/lpeg-0.10.2-1.rockspec
+
+    #luarocks-5.2 install lua-cmsgpack
+    cd /usr/src/
+    wget https://github.com/antirez/lua-cmsgpack/archive/master.zip
+    unzip master.zip
+    cd lua-cmsgpack-master
+    luarocks-5.2 make rockspec/lua-cmsgpack-scm-1.rockspec
 
     #Lua curl
     cd /usr/src/
@@ -348,8 +352,16 @@ func_install_dependencies(){
     unzip lua-curl.zip
     cd lua-curl-master
     cmake . && make install
+    ./configure && make install
     #add cURL.so to lua libs
-    cp cURL.so /usr/local/lib/lua/5.1/
+    cp cURL.so /usr/local/lib/lua/5.2/
+
+    echo ""
+    echo "easy_install -U setuptools pip distribute"
+    easy_install -U setuptools pip distribute
+
+    # install Bower
+    npm install -g bower
 
     #Create Newfies User
     echo ""

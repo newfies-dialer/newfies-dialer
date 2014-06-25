@@ -17,10 +17,11 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 -- local oo = require "loop.base"
 local oo = require "loop.simple"
-require "logging.file"
+local logging_file = require "logging.file"
+local logging = require "logging"
 
 local LOGDIR = '/var/log/newfies/'
-local logger = logging.file(LOGDIR .. "newfieslua_logs_%s.log", "%Y-%m-%d", "%date %level %message\n")
+local logger = logging_file(LOGDIR .. "newfieslua_logs_%s.log", "%Y-%m-%d", "%date %level %message\n")
 
 --
 -- Set Logging Level

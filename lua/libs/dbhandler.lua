@@ -33,6 +33,7 @@ require "settings"
 local DBH = {
     env = nil,
     con = nil,
+    debug_mode = nil,
     debugger = nil,
     results = {},
     caching = false,

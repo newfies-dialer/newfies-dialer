@@ -20,30 +20,30 @@ package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 
---It might worth to rename this to model.lua
-
-local oo = require "loop.simple"
---local redis = require 'redis'
---require "memcached"
 require "settings"
 
---redis.commands.expire = redis.command('EXPIRE')
---redis.commands.ttl = redis.command('TTL')
 
-DBH = oo.class{
+local DBH = {
     dbh = nil,
     -- debugger = nil,
     results = {},
     caching = false,
 }
 
-function DBH:__init(debug_mode, debugger)
-    -- self is the class
-    return oo.rawnew(self, {
-        debug_mode = debug_mode,
-        -- debugger = debugger,
-    })
+function DBH:new (o)
+    o = o or {}   -- create object if user does not provide one
+    setmetatable(o, self)
+    self.__index = self
+    return o
 end
+
+-- function DBH:__init(debug_mode, debugger)
+--     -- self is the class
+--     return oo.rawnew(self, {
+--         debug_mode = debug_mode,
+--         -- debugger = debugger,
+--     })
+-- end
 
 function DBH:connect()
     -- connect to ODBC database
@@ -102,3 +102,5 @@ function DBH:execute(sqlquery)
     local res = self.dbh:query(sqlquery)
     return res
 end
+
+return DBH

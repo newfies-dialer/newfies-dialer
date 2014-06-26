@@ -15,14 +15,18 @@
 package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
-local oo = require "loop.simple"
-local database = require "database"
+local Database = require "database"
 require "tag_replace"
 require "texttospeech"
 require "constant"
 
 
-FSMCall = oo.class{
+local FSMCall = {
+    session = nil,
+    debug_mode = nil,
+    debugger = nil,
+    db = nil,
+
     -- default field values
     call_ended = false,
     extension_list = nil,
@@ -33,10 +37,8 @@ FSMCall = oo.class{
     marked_completed = false,
     survey_id = nil,
     call_duration = 0,
-    debugger = nil,
     hangup_trigger = false,
     current_node_id = false,
-    db = nil,
     record_filename = false,
     actionresult = false,
     lastaction_start = false,
@@ -44,17 +46,30 @@ FSMCall = oo.class{
     ended = false,
 }
 
-function FSMCall:__init(session, debug_mode, debugger)
-    -- constructor
-    return oo.rawnew(self, {
-        session = session,
-        debug_mode = debug_mode,
-        debugger = debugger,
-        db = Database(debug_mode, debugger),
-    })
+function FSMCall:new (o)
+    o = o or {}   -- create object if user does not provide one
+    setmetatable(o, self)
+    self.__index = self
+    return o
 end
 
+-- function FSMCall:__init(session, debug_mode, debugger)
+--     -- constructor
+--     return oo.rawnew(self, {
+--         session = session,
+--         debug_mode = debug_mode,
+--         debugger = debugger,
+--         db = Database(debug_mode, debugger),
+--     })
+-- end
+
 function FSMCall:init()
+    -- Set db
+    self.db = Database:new{
+        debug_mode=self.debug_mode,
+        debugger=self.debugger
+    }
+    -- Initialization
     self.debugger:msg("DEBUG", "FSMCall:init")
     self.call_start = os.time()
     self.caller_id_name = self.session:getVariable("caller_id_name")
@@ -773,3 +788,5 @@ function FSMCall:next_node()
 
     return true
 end
+
+return FSMCall

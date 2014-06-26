@@ -18,19 +18,17 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 --TODO: It might worth to rename this to model.lua
 
 require "constant"
-local oo = require "loop.simple"
-local dbhanlder = require "dbhandler"
+local DBH = require "dbhandler"
 --  Use FS dbh via ODBC
 -- local dbh_fs = require "dbh_fs"
 -- local dbh_fs = require "dbh_light"
-local uuid4 = require("uuid4")
+local uuid4 = require "uuid4"
 
 
--- redis.commands.expire = redis.command('EXPIRE')
--- redis.commands.ttl = redis.command('TTL')
-
-Database = oo.class{
+local Database = {
     -- default field values
+    debug_mode = nil,
+    debugger = nil,
     DG_SURVEY_ID = false,
     TABLE_SECTION = 'survey_section',
     TABLE_BRANCHING = 'survey_branching',
@@ -44,7 +42,6 @@ Database = oo.class{
     valid_data = true,
     app_type = 'survey', -- survey or voice_app
     start_node = false,
-    debugger = nil,
     results = {},
     caching = false,
     event_alarm = nil,
@@ -52,18 +49,26 @@ Database = oo.class{
     sms_gateway_id = nil,
 }
 
-function Database:__init(debug_mode, debugger)
-    -- self is the class
-    return oo.rawnew(self, {
-        debug_mode = debug_mode,
-        -- debugger = nil,
-        -- dbh = DBH(debug_mode, nil),
-        debugger = debugger,
-        dbh = DBH(debug_mode, debugger),
-    })
+function Database:new (o)
+    o = o or {}   -- create object if user does not provide one
+    setmetatable(o, self)
+    self.__index = self
+    return o
 end
 
+-- function Database:__init(debug_mode, debugger)
+--     -- self is the class
+--     return oo.rawnew(self, {
+--         debug_mode = debug_mode,
+--         -- debugger = nil,
+--         -- dbh = DBH(debug_mode, nil),
+--         debugger = debugger,
+--         dbh = DBH(debug_mode, debugger),
+--     })
+-- end
+
 function Database:connect()
+    self.dbh = DBH:new{self.debug_mode, self.debugger}
     return self.dbh:connect()
 end
 
@@ -486,3 +491,5 @@ function Database:send_sms(text, survey_id, phonenumber)
         return true
     end
 end
+
+return Database

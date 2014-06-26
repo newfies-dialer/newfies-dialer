@@ -19,11 +19,9 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 --TODO: It might worth to rename this to dbh_luasql
 
 local luasql = require "luasql.postgres"
-local oo = require "loop.simple"
 local cmsgpack = require 'cmsgpack'
 --local redis = require 'redis'
---require "memcached"
-local lfs_cache = require "lfs_cache"
+local LFS_Caching = require "lfs_cache"
 local md5 = require "md5"
 require "constant"
 require "settings"
@@ -32,7 +30,7 @@ require "settings"
 --redis.commands.expire = redis.command('EXPIRE')
 --redis.commands.ttl = redis.command('TTL')
 
-DBH = oo.class{
+local DBH = {
     env = nil,
     con = nil,
     debugger = nil,
@@ -40,13 +38,20 @@ DBH = oo.class{
     caching = false,
 }
 
-function DBH:__init(debug_mode, debugger)
-    -- self is the class
-    return oo.rawnew(self, {
-        debug_mode = debug_mode,
-        debugger = debugger,
-    })
+function DBH:new (o)
+    o = o or {}   -- create object if user does not provide one
+    setmetatable(o, self)
+    self.__index = self
+    return o
 end
+
+-- function DBH:__init(debug_mode, debugger)
+--     -- self is the class
+--     return oo.rawnew(self, {
+--         debug_mode = debug_mode,
+--         debugger = debugger,
+--     })
+-- end
 
 function DBH:connect()
     self.env = assert(luasql.postgres())
@@ -57,7 +62,7 @@ function DBH:connect()
     if USE_CACHE then
         --self.caching = redis.connect('127.0.0.1', 6379)
         --self.caching = memcached.connect('127.0.0.1', 11211)
-        self.caching = LFS_Caching(nil)
+        self.caching = LFS_Caching:new{}
     end
     return true
 end
@@ -160,3 +165,5 @@ function DBH:execute(sqlquery)
     res = self.con:execute(sqlquery)
     return res
 end
+
+return DBH

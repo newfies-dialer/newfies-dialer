@@ -15,20 +15,25 @@
 package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
-local oo = require "loop.simple"
 
-
-Session = oo.class{
+Session = {
     -- default field values
     myvar = nil,
 }
 
-function Session:__init(timecache)
-    -- self is the class
-    return oo.rawnew(self, {
-        timecache   = timecache
-    })
+function Session:new (o)
+    o = o or {}   -- create object if user does not provide one
+    setmetatable(o, self)
+    self.__index = self
+    return o
 end
+
+-- function Session:__init(timecache)
+--     -- self is the class
+--     return oo.rawnew(self, {
+--         timecache   = timecache
+--     })
+-- end
 
 -- we will simulate the freeswitch Session instances
 
@@ -123,3 +128,5 @@ function Session:sayPhrase(data)
     print("Session:sayPhrase -> "..data)
     return true
 end
+
+return Session

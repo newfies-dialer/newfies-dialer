@@ -339,6 +339,7 @@ func_install_dependencies(){
 
     #luarocks-5.2 install lua-cmsgpack
     cd /usr/src/
+    rm -rf lua-cmsgpack-master master.zip
     wget https://github.com/antirez/lua-cmsgpack/archive/master.zip
     unzip master.zip
     cd lua-cmsgpack-master
@@ -346,7 +347,7 @@ func_install_dependencies(){
 
     #Lua curl
     cd /usr/src/
-    rm -rf lua-curl-master
+    rm -rf lua-curl-master lua-curl.zip
     wget https://github.com/msva/lua-curl/archive/master.zip -O lua-curl.zip
     unzip lua-curl.zip
     cd lua-curl-master
@@ -429,6 +430,7 @@ func_install_source(){
     cp -r /usr/src/newfies-dialer/newfies $INSTALL_DIR
     cp -r /usr/src/newfies-dialer/lua $LUA_DIR
     cd $LUA_DIR/libs/
+    rm acapela.lua
     wget --no-check-certificate https://raw.github.com/areski/lua-acapela/$BRANCH/acapela.lua
 
     #Upload audio files

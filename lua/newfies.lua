@@ -15,8 +15,8 @@
 package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
-require "fsm_callflow"
-require "debugger"
+local FSMCall = require "fsm_callflow"
+local Debugger = require "fsdebugger"
 
 
 --Init debug and fs_env
@@ -42,13 +42,17 @@ if options.nofs then
     fs_env = false
 end
 
-local debugger = Debugger(fs_env)
+local debugger = Debugger:new{fs_env=fs_env}
 if not fs_env then
-    require "session"
-    session = Session()
+    local Session = require "session"
+    session = Session:new{}
 end
 
-local callflow = FSMCall(session, debug_mode, debugger)
+local callflow = FSMCall:new{
+    session=session,
+    debug_mode=debug_mode,
+    debugger=debugger
+}
 
 
 -- This function simply tells us what function are available in Session
@@ -81,8 +85,8 @@ function myHangupHook(s, status, arg)
     error()
 end
 
+-- if FS session is ready start the callflow
 if session:ready() then
-
     local res = callflow:init()
     if res then
         --Answer the call

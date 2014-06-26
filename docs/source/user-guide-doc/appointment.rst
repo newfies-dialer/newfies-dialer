@@ -47,6 +47,10 @@ A survey is created with the required messages and actions. Once the Calendar se
 
         {"doctor_name": "Herbert", "apt_date" : "10 January at 5pm"}
 
+    You can use "sms_phonenumber" as one of the "Additional Parameters", in this case it will overwrite the sms destination number when sending SMS during an IVR call::
+
+        {"sms_phonenumber": "6004891138"}
+
     When a survey is created with a node that plays TTS, you can replace the key-values in the text::
 
         "We are calling you on behalf of {doctor_name}, we want to remind you of your appointment at {apt_date}"

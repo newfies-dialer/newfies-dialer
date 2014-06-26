@@ -30,7 +30,7 @@ if false then
     recording_duration = '30'
     dtmf = '5'
     local inspect = require 'inspect'
-    require "debugger"
+    local Debugger = require "fsdebugger"
     local debugger = Debugger(false)
     db = Database(debug_mode, debugger)
     db:connect()
@@ -67,7 +67,7 @@ if false then
     record_file = '/tmp/recording-file.wav'
     recording_duration = '30'
     dtmf = '5'
-    require "debugger"
+    local Debugger = require "fsdebugger"
     local inspect = require 'inspect'
     local debugger = Debugger(false)
 
@@ -92,7 +92,7 @@ if false then
 end
 
 
--- require "debugger"
+-- local Debugger = require "fsdebugger"
 -- local debugger = Debugger(false)
 
 -- db = Database(debug_mode, debugger)
@@ -104,7 +104,7 @@ end
 -- campaign_id = 42
 -- contact_id = 40
 
--- require "debugger"
+-- local Debugger = require "fsdebugger"
 -- local debugger = Debugger(false)
 
 -- db = Database(debug_mode, debugger)

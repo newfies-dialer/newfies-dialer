@@ -24,20 +24,90 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 local luasql = require "luasql.postgres"
 require "settings"
 
--- LOGGING
-LOGLEVEL = "info"
+PROGNAME = "listener.lua" -- Program name (used for logging)
+LOGLEVEL = "info" -- LOGGING LEVEL
 
--- PROGNAME
-PROGNAME = "listener.lua"
+local MAX_RECONNECT = 100 -- 50 minutes
+local SLEEP_RECONNECT = 30 -- 30 seconds sleep between reconnect
+local env = nil
+local dbcon = nil
+
+local results = {}
+local incr = 0
+
 
 function logger(message)
     freeswitch.console_log(LOGLEVEL,"["..PROGNAME.."] "..message.."\n")
+end
+
+function debug(message)
+    -- print(message)
+    freeswitch.console_log("ERROR","["..PROGNAME.."] "..message.."\n")
 end
 
 function sleep(seconds)
     time = os.clock()
     while os.clock()-time < seconds do end
 end
+
+function connect()
+    --connect database function supporting reconnection
+    env = assert(luasql.postgres())
+    dbcon, serr = env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT)
+    if serr then
+        countrecon = 0
+        while serr do
+            debug("serr:"..tostring(serr))
+            countrecon = countrecon + 1
+            debug("countrecon:"..tostring(countrecon))
+            sleep(SLEEP_RECONNECT)
+            if countrecon == MAXRECONNECT then
+                -- max reconnect reached
+                break
+            end
+            -- reconnect
+            dbcon, serr = env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT)
+        end
+    end
+    if not dbcon then
+        return false
+    end
+    return true
+end
+
+function disconnect()
+    if dbcon then
+        dbcon:close()
+    end
+    env:close()
+end
+
+
+function get_list(sqlquery)
+    debug("Load SQL : "..sqlquery)
+    cur, serr = dbcon:execute(sqlquery)
+    if serr then
+        debug("serr:"..tostring(serr))
+    end
+    list = {}
+    row = cur:fetch ({}, "a")
+    while row do
+        list[tonumber(row.id)] = row
+        row = cur:fetch ({}, "a")
+    end
+    cur:close()
+    return list
+end
+
+function exec_sql(sqlquery)
+    debug("Execute SQL : "..sqlquery)
+    cur, serr = dbcon:execute(sqlquery)
+    if serr then
+        debug("serr:"..tostring(serr))
+    end
+    return serr
+end
+
 
 function trim(s)
     --trim text
@@ -46,9 +116,6 @@ function trim(s)
     end
     return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
 end
-
-results = {}
-incr = 0
 
 function commit_event()
     --Commit events with one bulk insert to the DB
@@ -60,23 +127,20 @@ function commit_event()
             sql_result = sql_result..","
         end
         -- VALUES ('%s', '%s', '%s', 4'%s', '%s', now(), 7'%s', '%s', '%s', '%s', '%s', 12'%s', '%s', '%s', 15'%s', %s)]], event_name, body, job_uuid, call_uuid, status, used_gateway_id, callrequest_id, alarm_request_id, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, 0)
-
-        sql_result = sql_result.."('"..v[1].."', '"..v[2].."', '"..v[3].."', '"..v[4].."', "..v[5]..", "..v[6]..", "..v[7]..
-            ", "..v[8]..", "..v[9]..", "..v[10]..", '"..v[11].."', '"..v[12].."', '"..v[13].."', '"..v[14].."', '"..v[15].."', "..
-            ""..v[16]..", "..v[16]..", '"..v[18].."')"
+        sql_result = sql_result.."('"..v[1].."', '"..v[2].."', '"..v[3].."', '"..v[4].."', "..v[5]..", "..v[6]..", "..v[7]..", "..v[8]..", "..v[9]..", "..v[10]..", '"..v[11].."', '"..v[12].."', '"..v[13].."', '"..v[14].."', '"..v[15].."', "..""..v[16]..", "..v[16]..", '"..v[18].."')"
     end
--- (event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status, duration, billsec, 10 callerid, phonenumber, hangup_cause,
--- hangup_cause_q850, amd_status, starting_date)
-    sql = "INSERT INTO call_event "..
-    "(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, created_date, leg) "..
-    "VALUES "..sql_result
+    insertsql = "INSERT INTO call_event (event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, created_date, leg) VALUES "..sql_result
     if count > 0 then
-        --logger(sql)
-        env = assert (luasql.postgres())
-        dbcon = assert(env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
-        res = assert (dbcon:execute(sql))
-        dbcon:close()
-        env:close()
+        --logger(insertsql)
+        connect()
+        serr = exec_sql(insertsql)
+        if serr then
+            -- retry once to execute the sql
+            sleep(SLEEP_RECONNECT)
+            serr = exec_sql(insertsql)
+        end
+        disconnect()
+
         --Reset to zero
         results = {}
         incr = 0
@@ -110,11 +174,8 @@ end
 --Main function starts here
 logger("Starting")
 
--- ensure DB works, create table if it doesnt exist
-env = assert (luasql.postgres())
-dbcon = assert(env:connect(DBNAME, DBUSER, DBPASS, DBHOST, DBPORT))
--- DROP TABLE call_event;
-resex = assert(dbcon:execute([[
+connect()
+serr = exec_sql([[
     DROP TABLE if exists call_event;
     CREATE TABLE if not exists call_event (
         id serial NOT NULL PRIMARY KEY,
@@ -138,21 +199,22 @@ resex = assert(dbcon:execute([[
         created_date timestamp with time zone NOT NULL
         );
     CREATE INDEX call_event_idx_status ON call_event (status);
-    ]]))
--- CREATE INDEX call_event_idx_uuid ON call_event (call_uuid);
--- CREATE INDEX call_event_idx_date ON call_event (created_date);
---UNIQUE (event_name, call_uuid)
-dbcon:close()
-env:close()
+    ]])
+if serr then
+    -- retry once to execute the sql
+    sleep(SLEEP_RECONNECT)
+    serr = exec_sql(insertsql)
+end
+disconnect()
 
-
+-- prepare event capture
 local event_name
 local event_subclass
-local con
+local fscon
 
 -- Listen to FreeSWITCH Events
-con = freeswitch.EventConsumer("ALL")
--- con = freeswitch.EventConsumer("CHANNEL_HANGUP_COMPLETE HEARTBEAT BACKGROUND_JOB CUSTOM lua::stop_event")
+fscon = freeswitch.EventConsumer("ALL")
+-- fscon = freeswitch.EventConsumer("CHANNEL_HANGUP_COMPLETE HEARTBEAT BACKGROUND_JOB CUSTOM lua::stop_event")
 
 api = freeswitch.API()
 
@@ -162,13 +224,10 @@ i = 0
 while true do
     event_name = false
     event_subclass = false
-    -- if i > 200 then
-    --     break
-    -- end
     i = i + 1
     -- pop(1) blocks until there is an event
     -- pop(1,500) blocks for max half a second until there is an event
-    e = con:pop(1)
+    e = fscon:pop(1)
 
     if e then
         --default status
@@ -209,7 +268,6 @@ while true do
 
         -- CHANNEL_ANSWER
         if event_name == 'CHANNEL_HANGUP_COMPLETE' or event_name == 'BACKGROUND_JOB' then
-
             --logger('-----------------------------')
             logger('Listener Event : '..event_name)
             --logger(event_subclass)
@@ -236,8 +294,7 @@ while true do
                 end
 
                 --Insert Event to Database
-                push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status,
-                    duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
+                push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
 
             elseif event_name == 'CHANNEL_HANGUP_COMPLETE' then
 
@@ -251,9 +308,7 @@ while true do
                 end
 
                 --Insert Event to Database
-                push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status,
-                    duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
-
+                push_event(event_name, body, job_uuid, call_uuid, used_gateway_id, callrequest_id, alarm_request_id, status, duration, billsec, callerid, phonenumber, hangup_cause, hangup_cause_q850, amd_status, starting_date, leg)
             end
 
             -- dat = e:serialize()
@@ -267,7 +322,6 @@ while true do
         end
 
         --load = api:execute("status")
-
         if (event_name == "CUSTOM" and event_subclass == "lua::stop_event") then
             action = e:getHeader("Action") or ""
             if (action == "stop") then

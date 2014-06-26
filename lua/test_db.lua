@@ -6,7 +6,7 @@ package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 local inspect = require 'inspect'
-require "debugger"
+local Debugger = require "fsdebugger"
 require "settings"
 
 

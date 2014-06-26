@@ -15,16 +15,18 @@
 package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
-local oo = require "loop.simple"
 local database = require "database"
 
 --
 -- Test Code
 --
 local inspect = require 'inspect'
-require "debugger"
+local Debugger = require "fsdebugger"
 local debugger = Debugger(false)
-db = Database(debug_mode, debugger)
+db = Database:new{
+    debug_mode=debug_mode,
+    debugger=debugger
+}
 db:connect()
 
 -- campaign_id = 152

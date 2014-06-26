@@ -6,7 +6,7 @@
 -- Set the CACHE_DIRECTORY setting to this directory
 --
 --
--- Copyright (C) 2013 Arezqui Belaid <areski@gmail.com>
+-- Copyright (C) 2013-2014 Arezqui Belaid <areski@gmail.com>
 --
 -- Permission is hereby granted, free of charge, to any person
 -- obtaining a copy of this software and associated documentation files
@@ -28,28 +28,33 @@
 -- CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 -- SOFTWARE.
 
-
-local oo = require "loop.simple"
-
-CACHE_DIRECTORY = '/tmp'
+local lfs = require "lfs"
+local md5 = require "md5"
 
 
-LFS_Caching = oo.class{
+local LFS_Caching = {
     -- default field values
     debugger = nil,
+    CACHE_DIRECTORY = '/tmp',
 }
 
-function LFS_Caching:__init(debugger)
-    -- self is the class
-    return oo.rawnew(self, {
-        debugger = debugger,
-    })
+function LFS_Caching:new (o)
+    o = o or {}   -- create object if user does not provide one
+    setmetatable(o, self)
+    self.__index = self
+    return o
 end
+
+-- function LFS_Caching:__init(debugger)
+--     -- self is the class
+--     return oo.rawnew(self, {
+--         debugger = debugger,
+--     })
+-- end
 
 --
 -- Check file exists and readable
 function LFS_Caching:file_exists(path)
-    local lfs = require "lfs"
     local attr = lfs.attributes(path)
     if (attr ~= nil) then
         return true
@@ -61,8 +66,7 @@ end
 --
 -- return a md5 file for the caching
 function LFS_Caching:key_filepath(key)
-    local md5 = require "md5"
-    return CACHE_DIRECTORY..'/'..md5.sumhexa(key)
+    return self.CACHE_DIRECTORY..'/'..md5.sumhexa(key)
 end
 
 
@@ -102,7 +106,6 @@ end
 -- key: value of the cache
 -- ttl: number [optional] max age of file in seconds
 function LFS_Caching:get(key, ttl)
-    local lfs = require "lfs"
     local path = self:key_filepath(key)
     if not self:file_exists(path) then
         return nil
@@ -118,33 +121,4 @@ function LFS_Caching:get(key, ttl)
     return result
 end
 
-
---
--- run test
---
-
--- if false then
-
---     local inspect = require "inspect"
---     caching = LFS_Caching(nil)
-
---     local cmsgpack = require 'cmsgpack'
---     local inspect = require 'inspect'
-
---     value_test = {}
---     value_test["1"] = "Orange"
---     value_test["2"] = "Apple"
---     value_test["3"] = "Carrot"
-
---     msgpack = cmsgpack.pack(value_test)
---     print(msgpack)
-
---     print("Test Get Cache")
---     res = caching:get('hashkeydb', 3)
---     if not(res) then
---         print("Set Cache")
---         caching:set('hashkeydb', msgpack)
---     else
---         print(inspect(cmsgpack.unpack(res)))
---     end
--- end
+return LFS_Caching

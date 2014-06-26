@@ -28,13 +28,6 @@ function Session:new (o)
     return o
 end
 
--- function Session:__init(timecache)
---     -- self is the class
---     return oo.rawnew(self, {
---         timecache   = timecache
---     })
--- end
-
 -- we will simulate the freeswitch Session instances
 
 function Session:ready()

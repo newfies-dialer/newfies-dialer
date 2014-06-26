@@ -51,14 +51,6 @@ function Debugger:new (o)
     return o
 end
 
--- function Debugger:__init(fs_env, call_id)
---     -- self is the class
---     return oo.rawnew(self, {
---         fs_env = fs_env,
---         call_id = call_id,
---     })
--- end
-
 function Debugger:set_call_id(call_id)
     --Set property call_id
     self.call_id = call_id

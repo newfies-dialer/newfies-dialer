@@ -45,13 +45,6 @@ function LFS_Caching:new (o)
     return o
 end
 
--- function LFS_Caching:__init(debugger)
---     -- self is the class
---     return oo.rawnew(self, {
---         debugger = debugger,
---     })
--- end
-
 --
 -- Check file exists and readable
 function LFS_Caching:file_exists(path)

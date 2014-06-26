@@ -55,13 +55,11 @@ if TTS_ENGINE == nil then
 end
 
 
-function skip2(_,_, ...)
-    --
-    return unpack(arg)
-end
+-- function skip2(_,_, ...)
+--     return unpack(arg)
+-- end
 
 function simple_command(command)
-    --
     local file = assert(io.popen(command, 'r'))
     local output = file:read('*all')
     file:close()
@@ -70,9 +68,7 @@ end
 
 -- Excecute Command function
 function excecute_command(cmd, quiet)
-    --
-    quiet = quiet or 0   -- nul mask
-    local rc,sout,serr
+    local rc, sout, serr
     -- We need some output to get the return code:
     cmd = cmd.." ; echo RC=$?"
 
@@ -83,26 +79,28 @@ function excecute_command(cmd, quiet)
     -- By searching at the very end of the string, we avoid clashes
     -- with whatever the command itself spit out.
     --
-    local s1,s2 = skip2( string.find( str, "(.*)RC=(%d+)%s*$" ) )
-    rc = tonumber(s2)
+    -- local s1,s2 = skip2( string.find( str, "(.*)RC=(%d+)%s*$" ) )
+    -- rc = tonumber(s2)
 
-    if quiet==0 then
-        sout = s1
-    else
-        io.write(s1)  -- os.execute() would have shown the output
-    end
+    -- if quiet==0 then
+    --     sout = s1
+    -- else
+    --     print("io.write")
+    --     io.write(s1)  -- os.execute() would have shown the output
+    -- end
 
     -- print( cmd, rc, sout, serr )
     return rc, sout, serr
 end
 
-
-function trim(s)
-    --trim text
-    if s == nil then
+--
+-- Trim text
+--
+function trim(text)
+    if text == nil then
         return ''
     end
-    return (string.gsub(s, "^%s*(.-)%s*$", "%1"))
+    return (string.gsub(text, "^%s*(.-)%s*$", "%1"))
 end
 
 
@@ -193,23 +191,4 @@ function tts(text, tts_dir)
     end
 
     return output_file
-end
-
---
--- Test Code
---
-if false then
-    local ROOT_DIR = '/usr/share/newfies-lua/'
-    local TTS_DIR = ROOT_DIR..'tts/'
-    text = "Let's see if this works for us. Give a try!"
-    output_file = tts(text, TTS_DIR)
-    print("output_file => "..output_file)
-
-    text = ""
-    output_file = tts(text, TTS_DIR)
-    print("output_file => "..output_file)
-
-    -- print("\n\nGet Lenght Audio")
-    -- res = audio_lenght('/usr/share/newfies/usermedia/recording/recording-103-35225576.wav')
-    -- print(res)
 end

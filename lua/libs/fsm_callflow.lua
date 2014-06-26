@@ -179,7 +179,9 @@ function FSMCall:hangupcall()
     -- This will interrupt lua script
     self.debugger:msg("INFO", "FSMCall:hangupcall")
     self.hangup_trigger = true
-    self.session:hangup()
+    if self.session then
+        self.session:hangup()
+    end
 end
 
 function FSMCall:start_call()

@@ -70,7 +70,7 @@ function myHangupHook(s, status, arg)
         -- End call
         callflow:end_call()
     end
-    error()
+    os.exit()
 end
 
 -- if FS session is ready start the callflow
@@ -98,4 +98,4 @@ if session:ready() then
     callflow:end_call()
 end
 
-error(_die)
+os.exit()

@@ -24,6 +24,10 @@ local DBH = require "dbhandler"
 -- local dbh_fs = require "dbh_light"
 local uuid4 = require "uuid4"
 
+-- Define a mode to commit immediatly survey results. Set it to false for better performance,
+-- set it to true if you need realtime results pushed to your database
+MODE_FASTCOMMIT = false
+
 
 local Database = {
     -- default field values
@@ -47,6 +51,8 @@ local Database = {
     event_alarm = nil,
     callerid = nil,
     sms_gateway_id = nil,
+    survey_id = nil,
+    isconnected = false,
 }
 
 function Database:new (o)
@@ -56,27 +62,25 @@ function Database:new (o)
     return o
 end
 
--- function Database:__init(debug_mode, debugger)
---     -- self is the class
---     return oo.rawnew(self, {
---         debug_mode = debug_mode,
---         -- debugger = nil,
---         -- dbh = DBH(debug_mode, nil),
---         debugger = debugger,
---         dbh = DBH(debug_mode, debugger),
---     })
--- end
-
-function Database:connect()
+function Database:init()
     self.dbh = DBH:new{
         debug_mode=self.debug_mode,
         debugger=self.debugger
     }
-    return self.dbh:connect()
+end
+
+function Database:connect()
+    if not self.isconnected then
+        self.isconnected = true
+        return self.dbh:connect()
+    end
 end
 
 function Database:disconnect()
-    self.dbh:disconnect()
+    if self.isconnected then
+        self.isconnected = false
+        self.dbh:disconnect()
+    end
 end
 
 function Database:db_debugger(level, msg)
@@ -281,6 +285,8 @@ function Database:load_all(campaign_id, contact_id, alarm_request_id)
     self:load_survey_section(survey_id)
     self:load_survey_branching(survey_id)
     self:load_audiofile()
+    -- Save to Database survey_id
+    self.survey_id = survey_id
     return survey_id
 end
 
@@ -306,9 +312,12 @@ end
 function Database:save_result_mem(callrequest_id, section_id, record_file, recording_duration, response)
     --We save the result in memory and we will commit later when the call stop
     self.results[tonumber(section_id)] = {callrequest_id, section_id, record_file, recording_duration, response, os.time()}
+    if MODE_FASTCOMMIT then
+        self:commit_result_mem()
+    end
 end
 
-function Database:commit_result_mem(survey_id)
+function Database:commit_result_mem()
     --Commit all results with one bulk insert to the Database
     local sql_result = ''
     local count = 0
@@ -320,17 +329,20 @@ function Database:commit_result_mem(survey_id)
         sql_result = sql_result.."("..v[1]..", "..v[2]..", '"..v[3].."', "..v[4]..", '"..v[5].."', CURRENT_TIMESTAMP("..v[6].."))"
         --Save Aggregate result
         --TODO: For performance replace this by a celery task which will read 1000 survey_result and aggregate them in block
-        self:set_aggregate_result(survey_id, v[2], v[5], v[4])
+        self:set_aggregate_result(self.survey_id, v[2], v[5], v[4])
     end
-    local sqlquery = "INSERT INTO survey_result "..
-        "(callrequest_id, section_id, record_file, recording_duration, response, created_date) VALUES "..sql_result
     if count > 0 then
+        -- if there is results to insert
+        local sqlquery = "INSERT INTO survey_result "..
+            "(callrequest_id, section_id, record_file, recording_duration, response, created_date) VALUES "..sql_result
+
         self:db_debugger("DEBUG", "Insert Bulk Result : "..sqlquery)
         local res = self.dbh:execute(sqlquery)
         if not res then
             self:db_debugger("ERROR", "ERROR to Insert Bulk Result : "..sqlquery)
         end
     end
+    self.results = {}
 end
 
 function Database:save_result_aggregate(survey_id, section_id, response)

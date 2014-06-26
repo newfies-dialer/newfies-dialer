@@ -53,22 +53,13 @@ function FSMCall:new (o)
     return o
 end
 
--- function FSMCall:__init(session, debug_mode, debugger)
---     -- constructor
---     return oo.rawnew(self, {
---         session = session,
---         debug_mode = debug_mode,
---         debugger = debugger,
---         db = Database(debug_mode, debugger),
---     })
--- end
-
 function FSMCall:init()
     -- Set db
     self.db = Database:new{
         debug_mode=self.debug_mode,
         debugger=self.debugger
     }
+    self.db:init()
     -- Initialization
     self.debugger:msg("DEBUG", "FSMCall:init")
     self.call_start = os.time()
@@ -108,7 +99,7 @@ function FSMCall:init()
     call_id = self.uuid..'_'..self.callrequest_id
     self.debugger:set_call_id(call_id)
 
-    --!!! Dont remove this connect
+    -- This is the first connect
     if not self.db:connect() then
         self.debugger:msg("ERROR", "Error Connecting to database")
         self:hangupcall()
@@ -123,7 +114,6 @@ function FSMCall:init()
         return false
     end
     self.db:check_data()
-    self.db:disconnect()
     if not self.db.valid_data then
         self.debugger:msg("ERROR", "Error invalid data")
         self:hangupcall()
@@ -158,11 +148,9 @@ function FSMCall:end_call()
     end
 
     --Save all the result to the Database
-    --TODO: Reuse connection is faster, use the opened con
-    self.db:connect()
     self.db:commit_result_mem(self.survey_id)
-    --We need to keep this disconnect as it's End of Call
-    --!!! Dont remove this disconnect
+
+    -- We need to keep this disconnect as it's End of Call
     self.db:disconnect()
 
     -- NOTE: Don't use this call time for Billing / Use CDRs
@@ -431,12 +419,10 @@ end
 
 function FSMCall:marked_node_completed(current_node)
     if (current_node.completed == 't' and not self.marked_completed) then
-        self.db:connect()
         --Mark the subscriber as completed and increment campaign completed field
         self.db:update_subscriber(self.subscriber_id, SUBSCRIBER_COMPLETED)
         --Flag Callrequest
         self.db:update_callrequest_cpt(self.callrequest_id)
-        self.db:disconnect()
     end
 end
 
@@ -543,9 +529,7 @@ function FSMCall:next_node()
     elseif current_node.type == DNC then
         -- Add this phonenumber to the DNC campaign list
         if self.db.campaign_info.dnc_id then
-            self.db:connect()
             self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
-            self.db:disconnect()
         end
         -- Save result
         self.actionresult = 'DNC: '..self.destination_number
@@ -576,9 +560,7 @@ function FSMCall:next_node()
 
             local sms_text = tag_replace(current_node.sms_text, self.db.contact)
             self.debugger:msg("INFO", "Prepare Send SMS : "..sms_text)
-            self.db:connect()
             self.db:send_sms(sms_text, self.survey_id, destination_number)
-            self.db:disconnect()
 
             -- Save result
             self.actionresult = 'SMS: '..destination_number
@@ -598,9 +580,7 @@ function FSMCall:next_node()
 
         -- Save the result to Alarm model
         if self.db.event_alarm and self.db.event_alarm.alarm_id then
-            self.db:connect()
             self.db:save_alarm_result(self.db.event_alarm.alarm_id, digits)
-            self.db:disconnect()
         end
 
     elseif current_node.type == CAPTURE_DIGITS then

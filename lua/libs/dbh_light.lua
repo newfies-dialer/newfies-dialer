@@ -37,14 +37,6 @@ function DBH:new (o)
     return o
 end
 
--- function DBH:__init(debug_mode, debugger)
---     -- self is the class
---     return oo.rawnew(self, {
---         debug_mode = debug_mode,
---         -- debugger = debugger,
---     })
--- end
-
 function DBH:connect()
     -- connect to ODBC database
     ODBC_DBNAME = 'newfiesdialer'

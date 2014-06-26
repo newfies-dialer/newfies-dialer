@@ -17,28 +17,16 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
 local FSMCall = require "fsm_callflow"
 local Debugger = require "fsdebugger"
+local getopt = require "getopt"
 
+opts = getopt( arg, "")
 
 --Init debug and fs_env
 local debug_mode = false
 local fs_env = true
 
-local OptionParser = require "pythonic.optparse" . OptionParser
-local opt = OptionParser{usage="%prog [options] [gzip-file...]",
-    version="newfies-dialer-lua Version 1.0", add_help_option=false}
-opt.add_option{
-    "-h", "--help", action="store_true", dest="help",
-    help="Newfies-Dialer voice application FSM"}
-opt.add_option{
-    "-n", "--nofs", action="store_true", dest="nofs",
-    help="Select the environement to run the script, as command line, you might want to run this with --nofs"}
-
-local options, args = opt.parse_args()
-
-if options.help then opt.print_help(); os.exit(1) end
-
 -- Set if the environment is FreeSWITCH
-if options.nofs then
+if opts.nofs then
     fs_env = false
 end
 

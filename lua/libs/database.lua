@@ -68,7 +68,10 @@ end
 -- end
 
 function Database:connect()
-    self.dbh = DBH:new{self.debug_mode, self.debugger}
+    self.dbh = DBH:new{
+        debug_mode=self.debug_mode,
+        debugger=self.debugger
+    }
     return self.dbh:connect()
 end
 
@@ -214,10 +217,12 @@ function Database:load_alarm_event(alarm_request_id)
     -- print(inspect(self.event_alarm))
     -- print(self.event_alarm.manager_id)
     -- print(self.event_alarm.alarm_id)
-    self.user_id = self.event_alarm.manager_id
-    self.callerid = self.event_alarm.callerid
-    self.sms_gateway_id = self.event_alarm.sms_gateway_id
-    self.event_data = self.event_alarm.data
+    if self.event_alarm then
+        self.user_id = self.event_alarm.manager_id
+        self.callerid = self.event_alarm.callerid
+        self.sms_gateway_id = self.event_alarm.sms_gateway_id
+        self.event_data = self.event_alarm.data
+    end
 end
 
 function Database:load_all_alarm_request(alarm_request_id)

@@ -48,7 +48,7 @@
                 <form method="POST" role="form" action="{% if action == 'update' %}/section/{{ section_id }}/{% else %}/section/add/?survey_id={{ survey_id }}{% endif %}" enctype="multipart/form-data" id="update_form">
 
                     <div class="modal-body">
-                    <!-- modal content-->
+                    <!-- modal content -->
                         {% crispy form form.helper %}
                     </div>
 

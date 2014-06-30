@@ -299,16 +299,16 @@ function FSMCall:getdigitnode(current_node)
         --play the audiofile or play the audio TTS
         if current_node.audiofile_id then
             --Get audio path
-            self.debugger:msg("DEBUG", "Play Audio to GetDigits")
+            self.debugger:msg("DEBUG", "Play Audio GetDigits")
             current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
             filetoplay = UPLOAD_DIR..current_audio.audio_file
-            self.debugger:msg("INFO", "Play the audiofile : "..filetoplay)
+            self.debugger:msg("INFO", "Play Audiofile : "..filetoplay)
 
             digits = self.session:playAndGetDigits(1, number_digits, retries,
                 timeout*1000, '#', filetoplay, invalid, '['..dtmf_filter..']|#')
         else
             --Use TTS
-            self.debugger:msg("DEBUG", "Play TTS to GetDigits")
+            self.debugger:msg("DEBUG", "Play TTS GetDigits")
             mscript = tag_replace(current_node.script, self.db.contact)
 
             tts_file = tts(mscript, TTS_DIR)

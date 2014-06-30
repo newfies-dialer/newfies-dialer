@@ -149,7 +149,7 @@ class PlayMessageSectionForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Field('survey'),
+            Field('survey', 'script'),
             Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
             Div(
                 Div('question', css_class='col-md-8 col-xs-12'),
@@ -165,6 +165,7 @@ class PlayMessageSectionForm(ModelForm):
             self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
 
         self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['script'].widget = forms.HiddenInput()
         self.fields['question'].label = _('section title').capitalize()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         if user:
@@ -185,7 +186,7 @@ class MultipleChoiceSectionForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Field('survey'),
+            Field('survey', 'script'),
             Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
             Div(
                 Div('question', css_class='col-md-8 col-xs-12'),
@@ -230,6 +231,7 @@ class MultipleChoiceSectionForm(ModelForm):
             self.fields['invalid_audiofile'].choices = self.fields['audiofile'].choices
 
         self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['script'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
 
@@ -246,7 +248,7 @@ class RatingSectionForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Field('survey'),
+            Field('survey', 'script'),
             Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
             Div(
                 Div('question', css_class='col-md-8 col-xs-12'),
@@ -272,6 +274,7 @@ class RatingSectionForm(ModelForm):
             self.fields['invalid_audiofile'].choices = self.fields['audiofile'].choices
 
         self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['script'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['rating_laps'].widget.attrs['maxlength'] = 3
 
@@ -289,7 +292,7 @@ class CaptureDigitsSectionForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Field('survey'),
+            Field('survey', 'script'),
             Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
             Div(
                 Div('question', css_class='col-md-8 col-xs-12'),
@@ -330,6 +333,7 @@ class CaptureDigitsSectionForm(ModelForm):
             self.fields['audiofile'].choices = get_audiofile_list(user)
 
         self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['script'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
 
@@ -345,7 +349,7 @@ class RecordMessageSectionForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Field('survey'),
+            Field('survey', 'script'),
             Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
             Div(
                 Div('question', css_class='col-md-8 col-xs-12'),
@@ -363,6 +367,7 @@ class RecordMessageSectionForm(ModelForm):
             self.fields['audiofile'].choices = get_audiofile_list(user)
 
         self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['script'].widget = forms.HiddenInput()
         self.fields['question'].label = _('section title').capitalize()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
@@ -379,7 +384,7 @@ class ConferenceSectionForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Field('survey'),
+            Field('survey', 'script'),
             Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
             Div(
                 Div('question', css_class='col-md-8 col-xs-12'),
@@ -397,6 +402,7 @@ class ConferenceSectionForm(ModelForm):
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
         self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['script'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].label = _('section title').capitalize()
 
@@ -413,7 +419,7 @@ class CallTransferSectionForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Field('survey'),
+            Field('survey', 'script'),
             Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
             Div(
                 Div('question', css_class='col-md-8 col-xs-12'),
@@ -431,6 +437,7 @@ class CallTransferSectionForm(ModelForm):
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
         self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['script'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].label = _('section title').capitalize()
 
@@ -450,7 +457,7 @@ class SMSSectionForm(ModelForm):
         self.helper = FormHelper()
         self.helper.form_tag = False
         self.helper.layout = Layout(
-            Field('survey'),
+            Field('survey', 'script'),
             Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
             Div(
                 Div('question', css_class='col-md-8 col-xs-12'),
@@ -467,6 +474,7 @@ class SMSSectionForm(ModelForm):
         if self.instance.audiofile:
             self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
         self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['script'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         self.fields['question'].label = _('section title').capitalize()
         if user:

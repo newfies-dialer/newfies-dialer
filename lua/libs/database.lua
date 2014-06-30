@@ -27,8 +27,6 @@ local uuid4 = require "uuid4"
 -- Mode to flush the insert for the survey results. Set it to false for better performance,
 -- set it to true if you need realtime results pushed to your database
 local FAST_FLUSH_INSERT = false
--- Mode to flush the insert for the survey results when node is a Transfer
-local FLUSH_INSERT_TRANSFER = true
 
 
 local Database = {
@@ -311,14 +309,10 @@ function Database:check_data()
     return self.valid_data
 end
 
-function Database:save_result_mem(callrequest_id, section_id, record_file, recording_duration, response, node_type)
+function Database:save_result_mem(callrequest_id, section_id, record_file, recording_duration, response)
     --We save the result in memory and we will commit later when the call stop
     self.results[tonumber(section_id)] = {callrequest_id, section_id, record_file, recording_duration, response, os.time()}
-    if FLUSH_INSERT_TRANSFER and node_type == CALL_TRANSFER then
-        -- Flush Insert queries if node is Transfer
-        self:db_debugger("DEBUG", "FLUSH_INSERT_TRANSFER -> call commit_result_mem")
-        self:commit_result_mem()
-    elseif FAST_FLUSH_INSERT then
+    if FAST_FLUSH_INSERT then
         -- Flush Insert queries all the time
         self:db_debugger("DEBUG", "FAST_FLUSH_INSERT -> call commit_result_mem")
         self:commit_result_mem()
@@ -431,7 +425,7 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
     -- save the result of a section
     if current_node.type == RECORD_MSG then
         --Save result to memory
-        self:save_result_mem(callrequest_id, current_node.id, record_file, recording_dur, DTMF, current_node.type)
+        self:save_result_mem(callrequest_id, current_node.id, record_file, recording_dur, DTMF)
 
     elseif DTMF and string.len(DTMF) > 0 and
         (current_node.type == MULTI_CHOICE or
@@ -463,10 +457,10 @@ function Database:save_section_result(callrequest_id, current_node, DTMF, record
             end
         end
         --Save result to memory
-        self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF, current_node.type)
+        self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
     else
         --Save result to memory
-        self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF, current_node.type)
+        self:save_result_mem(callrequest_id, current_node.id, '', 0, DTMF)
     end
 end
 

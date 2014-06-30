@@ -464,8 +464,10 @@ function FSMCall:next_node()
         if current_node.phonenumber == '' then
             self:end_call()
         else
-            self.lastaction_start = os.time()
+            -- Flush the insert for the survey results when node is a Transfer
+            self.db:commit_result_mem()
 
+            self.lastaction_start = os.time()
             -- Allow to hang up transfer call detecting DMTF ( *0 ) in LEG A
             session:execute("bind_meta_app","0 a o hangup::normal_clearing")
 

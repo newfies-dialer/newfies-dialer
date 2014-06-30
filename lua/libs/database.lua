@@ -24,9 +24,9 @@ local DBH = require "dbhandler"
 -- local dbh_fs = require "dbh_light"
 local uuid4 = require "uuid4"
 
--- Define a mode to commit immediatly survey results. Set it to false for better performance,
+-- Mode to flush the insert for the survey results. Set it to false for better performance,
 -- set it to true if you need realtime results pushed to your database
-local MODE_FASTCOMMIT = false
+local FAST_FLUSH_INSERT = false
 
 
 local Database = {
@@ -312,8 +312,9 @@ end
 function Database:save_result_mem(callrequest_id, section_id, record_file, recording_duration, response)
     --We save the result in memory and we will commit later when the call stop
     self.results[tonumber(section_id)] = {callrequest_id, section_id, record_file, recording_duration, response, os.time()}
-    if MODE_FASTCOMMIT then
-        self:db_debugger("DEBUG", "call commit_result_mem")
+    if FAST_FLUSH_INSERT then
+        -- Flush Insert queries all the time
+        self:db_debugger("DEBUG", "FAST_FLUSH_INSERT -> call commit_result_mem")
         self:commit_result_mem()
     end
 end

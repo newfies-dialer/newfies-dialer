@@ -15,7 +15,7 @@
 from django import forms
 from django.utils.translation import ugettext_lazy as _
 from dialer_campaign.models import Campaign
-from dialer_cdr.constants import VOIPCALL_DISPOSITION, LEG_TYPE
+from dialer_cdr.constants import CALL_DISPOSITION, LEG_TYPE
 from dialer_contact.forms import SearchForm, AdminSearchForm
 
 from mod_utils.forms import common_submit_buttons
@@ -24,7 +24,7 @@ from crispy_forms.layout import Layout, Div
 
 voip_call_disposition_list = []
 voip_call_disposition_list.append(('all', _('all').upper()))
-for i in VOIPCALL_DISPOSITION:
+for i in CALL_DISPOSITION:
     voip_call_disposition_list.append((i[0], i[1]))
 
 

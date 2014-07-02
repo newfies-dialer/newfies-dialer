@@ -26,7 +26,7 @@ from django.utils.timezone import utc
 import random
 import bisect
 
-VOIPCALL_DISPOSITION = [
+CALL_DISPOSITION = [
     ('ANSWER', 80), ('BUSY', 10), ('NOANSWER', 20), ('CANCEL', 5), ('CONGESTION', 4), ('FAILED', 10)]
 SURVEY_RESULT_QUE = [
     'Please rank our support from 1 to 9, 1 being low and 9 being high',
@@ -143,7 +143,7 @@ def create_callrequest(campaign_id, amount, day_delta):
             starting_date=created_date,
             phone_number=phonenumber,
             duration=random.randint(50, 1000),
-            disposition=weighted_choice(VOIPCALL_DISPOSITION),
+            disposition=weighted_choice(CALL_DISPOSITION),
             amd_status=choice(VOIPCALL_AMD_STATUS))
         new_voipcall.starting_date = created_date
         # print "voipcall: " + str(new_voipcall)

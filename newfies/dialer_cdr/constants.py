@@ -46,7 +46,7 @@ class LEG_TYPE(Choice):
     B_LEG = 2, _('B-Leg')
 
 
-class VOIPCALL_DISPOSITION(Choice):
+class CALL_DISPOSITION(Choice):
     """
     Store the Call Disposition
     """

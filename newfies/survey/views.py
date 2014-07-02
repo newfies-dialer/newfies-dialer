@@ -23,7 +23,7 @@ from django.utils.translation import ugettext as _
 from django.db.models.signals import post_save
 from django.utils.timezone import utc
 from dialer_cdr.models import VoIPCall
-from dialer_cdr.constants import VOIPCALL_DISPOSITION
+from dialer_cdr.constants import CALL_DISPOSITION
 from survey.models import Survey_template, Survey, Section_template, Section,\
     Branching_template, Branching, Result, ResultAggregate
 from survey.forms import SurveyForm, PlayMessageSectionForm,\
@@ -885,7 +885,7 @@ def survey_report(request):
     kwargs = {}
     if not request.user.is_superuser:
         kwargs['user'] = request.user
-    kwargs['disposition__exact'] = VOIPCALL_DISPOSITION.ANSWER
+    kwargs['disposition__exact'] = CALL_DISPOSITION.ANSWER
 
     survey_result_kwargs = {}
 

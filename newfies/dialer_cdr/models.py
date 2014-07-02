@@ -18,7 +18,7 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.contenttypes import generic
 from dialer_gateway.models import Gateway
 from dialer_campaign.models import Campaign, Subscriber
-from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, LEG_TYPE, VOIPCALL_DISPOSITION,\
+from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE, LEG_TYPE, CALL_DISPOSITION,\
     VOIPCALL_AMD_STATUS
 from django_lets_go.intermediate_model_base_class import Model
 from country_dialcode.models import Prefix
@@ -195,7 +195,7 @@ class VoIPCall(models.Model):
     progresssec = models.IntegerField(null=True, blank=True, verbose_name=_("progress sec"))
     answersec = models.IntegerField(null=True, blank=True, verbose_name=_("answer sec"))
     waitsec = models.IntegerField(null=True, blank=True, verbose_name=_("wait sec"))
-    disposition = models.CharField(choices=VOIPCALL_DISPOSITION, null=True, blank=True,
+    disposition = models.CharField(choices=CALL_DISPOSITION, null=True, blank=True,
                                    max_length=40, verbose_name=_("disposition"))
     hangup_cause = models.CharField(max_length=40, null=True, blank=True,
                                     verbose_name=_("hangup cause"))

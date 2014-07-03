@@ -237,27 +237,27 @@ def customer_dashboard(request, on_index=None):
         calls_dict = {}
         calls_dict_with_min = {}
 
-        for data in calls:
+        for call in calls:
             if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
-                ctime = datetime(int(data['starting_date'][0:4]),
-                                 int(data['starting_date'][5:7]),
-                                 int(data['starting_date'][8:10]),
-                                 int(data['starting_date'][11:13]),
+                ctime = datetime(int(call['starting_date'][0:4]),
+                                 int(call['starting_date'][5:7]),
+                                 int(call['starting_date'][8:10]),
+                                 int(call['starting_date'][11:13]),
                                  0,
                                  0,
                                  0).replace(tzinfo=utc)
                 if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
-                    ctime = datetime(int(data['starting_date'][0:4]),
-                                     int(data['starting_date'][5:7]),
-                                     int(data['starting_date'][8:10]),
-                                     int(data['starting_date'][11:13]),
-                                     int(data['starting_date'][14:16]),
+                    ctime = datetime(int(call['starting_date'][0:4]),
+                                     int(call['starting_date'][5:7]),
+                                     int(call['starting_date'][8:10]),
+                                     int(call['starting_date'][11:13]),
+                                     int(call['starting_date'][14:16]),
                                      0,
                                      0).replace(tzinfo=utc)
             else:
-                ctime = datetime(int(data['starting_date'][0:4]),
-                                 int(data['starting_date'][5:7]),
-                                 int(data['starting_date'][8:10]),
+                ctime = datetime(int(call['starting_date'][0:4]),
+                                 int(call['starting_date'][5:7]),
+                                 int(call['starting_date'][8:10]),
                                  0,
                                  0,
                                  0,
@@ -271,24 +271,24 @@ def customer_dashboard(request, on_index=None):
             if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
                 calls_dict[int(ctime.strftime("%Y%m%d%H"))] =\
                     {
-                        'call_count': data['starting_date__count'],
-                        'duration_sum': data['duration__sum'],
-                        'duration_avg': float(data['duration__avg']),
+                        'call_count': call['starting_date__count'],
+                        'duration_sum': call['duration__sum'],
+                        'duration_avg': float(call['duration__avg']),
                     }
 
                 calls_dict_with_min[int(ctime.strftime("%Y%m%d%H%M"))] =\
                     {
-                        'call_count': data['starting_date__count'],
-                        'duration_sum': data['duration__sum'],
-                        'duration_avg': float(data['duration__avg']),
+                        'call_count': call['starting_date__count'],
+                        'duration_sum': call['duration__sum'],
+                        'duration_avg': float(call['duration__avg']),
                     }
             else:
                 # Last 30 days option
                 calls_dict[int(ctime.strftime("%Y%m%d"))] =\
                     {
-                        'call_count': data['starting_date__count'],
-                        'duration_sum': data['duration__sum'],
-                        'duration_avg': float(data['duration__avg']),
+                        'call_count': call['starting_date__count'],
+                        'duration_sum': call['duration__sum'],
+                        'duration_avg': float(call['duration__avg']),
                     }
 
         logging.debug('After Call Loops')

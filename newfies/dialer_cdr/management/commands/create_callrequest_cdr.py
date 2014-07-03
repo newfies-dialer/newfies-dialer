@@ -133,7 +133,7 @@ def create_callrequest(campaign_id, amount, day_delta):
             call_time=created_date,
             created_date=created_date,
             object_id=1)
-        print "new_callrequest: " + str(new_callrequest)
+        print "new_callrequest: %s - %s" % (str(new_callrequest), str(created_date))
 
         new_voipcall = VoIPCall(
             request_uuid=uuid1(),

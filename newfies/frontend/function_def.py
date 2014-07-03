@@ -20,7 +20,7 @@ from datetime import datetime
 
 def calculate_date(search_type):
     """calculate date"""
-    end_date = datetime.today().replace(tzinfo=utc)
+    end_date = datetime.utcnow().replace(tzinfo=utc)
     search_type = int(search_type)
 
     if search_type == SEARCH_TYPE.A_Last_30_days:

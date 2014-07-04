@@ -19,7 +19,7 @@ local FSMCall = require "fsm_callflow"
 local Debugger = require "fsdebugger"
 local getopt = require "getopt"
 
-opts = getopt( arg, "")
+opts = getopt(arg, "")
 
 --Init debug and fs_env
 local debug_mode = false

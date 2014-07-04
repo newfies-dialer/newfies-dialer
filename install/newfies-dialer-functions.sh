@@ -302,12 +302,11 @@ func_install_dependencies(){
 
     #Install Luarocks from sources
     cd /usr/src
-    LUAROCKSVERSION=luarocks-2.1.2
     rm -rf luarocks
-    wget http://luarocks.org/releases/$LUAROCKSVERSION.tar.gz
-    tar zxf $LUAROCKSVERSION.tar.gz
-    rm -rf $LUAROCKSVERSION.tar.gz
-    mv $LUAROCKSVERSION luarocks
+    wget http://luarocks.org/releases/luarocks-2.1.2.tar.gz
+    tar zxf luarocks-*.tar.gz
+    rm -rf luarocks-*.tar.gz
+    mv luarocks-* luarocks
     cd luarocks
     ./configure
     make

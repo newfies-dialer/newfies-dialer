@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -46,7 +46,8 @@ class GatewayAdmin(admin.ModelAdmin):
     # )
     fieldsets = (
         (_('standard options').capitalize(), {
-            'fields': ('name', 'description', 'gateways',
+            'fields': (
+                'name', 'description', 'gateways',
                 'gateway_timeouts', 'originate_dial_string', 'status',
                 'addprefix', 'removeprefix', 'addparameter'),
         }),

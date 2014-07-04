@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -243,7 +243,8 @@ class Campaign(Model):
     #Callcenter
     agent_script = models.TextField(verbose_name=_('agent script'), blank=True, null=True)
     lead_disposition = models.TextField(verbose_name=_('lead disposition'), blank=True, null=True)
-    external_link = jsonfield.JSONField(null=True, blank=True, verbose_name=_('additional parameters (JSON)'),
+    external_link = jsonfield.JSONField(
+        null=True, blank=True, verbose_name=_('additional parameters (JSON)'),
         help_text=_("enter the list of parameters in Json format, e.g. {\"title\": [\"tab-1\", \"tab-2\"], \"url\": [\"https://duckduckgo.com/\", \"http://www.newfies-dialer.org/\"]}"))
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))

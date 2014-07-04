@@ -8,17 +8,17 @@
 //
 // Copyright (C) 2011-2012 Star2Billing S.L.
 //
-// The Initial Developer of the Original Code is
+// The primary maintainer of this project is
 // Arezqui Belaid <info@star2billing.com>
 //
 
 // Add <load module="mod_spidermonkey_curl"/> in spidermonkey.conf.xml
 // jsrun /path/callback.js
-// 
-//     
+//
+//
 //    <extension name="callback">
 //      <condition field="destination_number" expression="^1111$">
-//        <action application="javascript" data="/path/callback.js" /> 
+//        <action application="javascript" data="/path/callback.js" />
 //      </condition>
 //    </extension>
 //
@@ -41,7 +41,7 @@ country_prefix = '44'
 if (session.ready()) {
     session.preAnswer();
     var curl = new CURL();
-    cidnum = session.caller_id_number; 
+    cidnum = session.caller_id_number;
     logger("caller id is " + session.caller_id_number, "info");
     cidnum = country_prefix + cidnum.substring(1);
     curl.run("POST", "http://serverIP:8008/api/v1/campaignsubscriber/", "contact=" + cidnum + "&last_name=callback&phonebook_id=1", my_callback, "my arg\n", "test:test");

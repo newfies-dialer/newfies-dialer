@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -57,11 +57,13 @@ class DialerSetting(models.Model):
     max_subr_cpg = models.IntegerField(default=100000, verbose_name=_('maximum subscribers per campaign'),
                                        help_text=_("maximum subscribers per campaign. Unlimited if the value equal 0"))
 
-    max_contact = models.IntegerField(default=1000000, verbose_name=_('maximum number of contacts'),
-                                      help_text=_("maximum number of contacts per user. Unlimited if the value equal 0"))
+    max_contact = models.IntegerField(
+        default=1000000, verbose_name=_('maximum number of contacts'),
+        help_text=_("maximum number of contacts per user. Unlimited if the value equal 0"))
 
-    blacklist = models.TextField(blank=True, null=True, default='', verbose_name=_("blacklist"),
-                                 help_text=_("use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
+    blacklist = models.TextField(
+        blank=True, null=True, default='', verbose_name=_("blacklist"),
+        help_text=_("use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called."))
 
     whitelist = models.TextField(blank=True, null=True, default='', verbose_name=_("whitelist"),
                                  help_text=_("use regular expressions to whitelist phone numbers"))

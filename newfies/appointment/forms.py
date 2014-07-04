@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 from django import forms
@@ -287,7 +287,8 @@ class EventForm(ModelForm):
 
 class EventSearchForm(forms.Form):
     """Event Search Form"""
-    start_date = forms.CharField(label=_('start date').capitalize(), required=False, max_length=20,
+    start_date = forms.CharField(
+        label=_('start date').capitalize(), required=False, max_length=20,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}))
     calendar_id = forms.ChoiceField(label=_('calendar').capitalize(), required=False, choices=[('0', '---')])
     calendar_user_id = forms.ChoiceField(label=_('calendar user').capitalize(), required=False, choices=[('0', '---')])

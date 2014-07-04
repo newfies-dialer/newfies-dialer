@@ -12,7 +12,7 @@
 --
 -- The Original Code is FreeSWITCH[tm] LUA event scheduler
 --
--- The Initial Developer of the Original Code is
+-- The primary maintainer of this project is
 -- Bret McDanel <bret AT 0xdecafbad dot com>
 --
 -- Portions created by the Initial Developer are Copyright (C) 2007

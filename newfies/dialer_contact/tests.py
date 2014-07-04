@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -194,7 +194,8 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'dialer_contact/contact/list.html')
 
-        request = self.factory.post('/contact/',
+        request = self.factory.post(
+            '/contact/',
             data={'from_date': datetime.utcnow().replace(tzinfo=utc),
                   'to_date': datetime.utcnow().replace(tzinfo=utc),
                   'contact_name': '123'})

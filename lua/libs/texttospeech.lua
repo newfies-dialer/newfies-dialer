@@ -182,12 +182,17 @@ function tts(text, tts_dir)
 
     elseif TTS_ENGINE == 'acapela' then
         --Acapela
-        require "acapela"
-        local tts_acapela = Acapela(ACCOUNT_LOGIN, APPLICATION_LOGIN, APPLICATION_PASSWORD, SERVICE_URL, QUALITY, tts_dir)
+        Acapela = require "acapela"
+        tts_acapela = Acapela:new{
+            ACCOUNT_LOGIN=ACCOUNT_LOGIN,
+            APPLICATION_LOGIN=APPLICATION_LOGIN,
+            APPLICATION_PASSWORD=APPLICATION_PASSWORD,
+            SERVICE_URL=SERVICE_URL,
+            QUALITY=QUALITY,
+            DIRECTORY=tts_dir}
         tts_acapela:set_cache(true)
         tts_acapela:prepare(text, ACAPELA_LANG, ACAPELA_GENDER, ACAPELA_INTONATION)
         output_file = tts_acapela:run()
-
     end
 
     return output_file

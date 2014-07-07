@@ -334,7 +334,7 @@ func_install_dependencies(){
     #Issue with last version of lpeg - lua libs/tag_replace.lua will seg fault
     #Pin the version 0.10.2-1
     luarocks-5.2 remove lpeg --force
-    luarocks-5.2 install http://luarocks.org/repositories/rocks/lpeg-0.10.2-1.rockspec
+    luarocks-5.2 install http://rocks.moonscript.org/manifests/luarocks/lpeg-0.12-1.rockspec
 
     #luarocks-5.2 install lua-cmsgpack
     cd /usr/src/

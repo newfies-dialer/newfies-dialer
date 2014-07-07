@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -46,7 +46,7 @@ class LEG_TYPE(Choice):
     B_LEG = 2, _('B-Leg')
 
 
-class VOIPCALL_DISPOSITION(Choice):
+class CALL_DISPOSITION(Choice):
     """
     Store the Call Disposition
     """

@@ -9,7 +9,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import viewsets
@@ -79,8 +79,10 @@ class AlarmRequestViewSet(viewsets.ModelViewSet):
 
             alarm_requests = AlarmRequest.objects.filter(alarm=alarm).order_by('id')
             for alarm_request in alarm_requests:
-                alarm_request_url = 'http://%s/rest-api/alarm-request/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.id))
-                callrequest_url = 'http://%s/rest-api/callrequest/%s/' % (self.request.META['HTTP_HOST'], str(alarm_request.callrequest_id))
+                alarm_request_url = 'http://%s/rest-api/alarm-request/%s/' % \
+                    (self.request.META['HTTP_HOST'], str(alarm_request.id))
+                callrequest_url = 'http://%s/rest-api/callrequest/%s/' % \
+                    (self.request.META['HTTP_HOST'], str(alarm_request.callrequest_id))
                 final_data["event-%s" % str(event.id)]["alarm-%s" % str(alarm.id)]['alarm-request-%s' % str(alarm_request.id)] = {
                     "url": alarm_request_url,
                     "alarm-callrequest": callrequest_url,

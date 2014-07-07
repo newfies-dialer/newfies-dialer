@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -35,9 +35,11 @@ class AdminSearchForm(forms.Form):
 
 class SearchForm(AdminSearchForm):
     """General Search Form with From & To date para."""
-    from_date = forms.CharField(label=_('from').capitalize(), required=False, max_length=10,
+    from_date = forms.CharField(
+        label=_('from').capitalize(), required=False, max_length=10,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
-    to_date = forms.CharField(label=_('to').capitalize(), required=False, max_length=10,
+    to_date = forms.CharField(
+        label=_('to').capitalize(), required=False, max_length=10,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
 
 
@@ -172,7 +174,9 @@ class ContactForm(ModelForm):
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
     contact_no = forms.CharField(label=_('contact number').capitalize(), required=False, widget=NumberInput())
-    contact_name = forms.CharField(label=_('contact name').capitalize(), required=False, widget=forms.TextInput(attrs={'size': 15}))
+    contact_name = forms.CharField(
+        label=_('contact name').capitalize(), required=False,
+        widget=forms.TextInput(attrs={'size': 15}))
     phonebook = forms.ChoiceField(label=_('phonebook').capitalize(), required=False)
     contact_status = forms.TypedChoiceField(label=_('status').capitalize(), required=False, choices=list(STATUS_CHOICE),
                                             initial=STATUS_CHOICE.ALL)

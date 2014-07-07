@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -59,7 +59,7 @@ class BufferVoIPCall:
             amd_status_id = VOIPCALL_AMD_STATUS.PERSON
 
         logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
-            (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
+                     (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
         #Get the first word only
         hangup_cause = hangup_cause.split()[0]
@@ -134,7 +134,7 @@ def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
         amd_status_id = VOIPCALL_AMD_STATUS.PERSON
 
     logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
-        (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
+                 (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
     #Get the first word only
     hangup_cause = hangup_cause.split()[0]

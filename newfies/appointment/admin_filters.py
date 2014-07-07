@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.contrib.admin import SimpleListFilter
@@ -38,7 +38,8 @@ class ManagerFilter(SimpleListFilter):
         `self.value()`.
         """
         if self.value() is not None:
-            calendar_user_id_list = CalendarUserProfile.objects.values_list('user_id', flat=True).filter(manager_id=self.value())
+            calendar_user_id_list = CalendarUserProfile.objects\
+                .values_list('user_id', flat=True).filter(manager_id=self.value())
             return queryset.filter(id__in=calendar_user_id_list)
         else:
             return queryset

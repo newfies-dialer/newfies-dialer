@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -214,7 +214,8 @@ class alarmrequest_dispatcher(PeriodicTask):
             count = count + 1
             second_towait = floor(count * time_to_wait)
             ms_addtowait = (count * time_to_wait) - second_towait
-            logger.info("Init CallRequest for AlarmRequest in %d seconds (alarmreq:%d)" % (second_towait, obj_alarmreq.id))
+            logger.info("Init CallRequest for AlarmRequest in %d seconds (alarmreq:%d)" %
+                        (second_towait, obj_alarmreq.id))
 
             if obj_alarmreq.alarm.maxretry == 0:
                 call_type = CALLREQUEST_TYPE.CANNOT_RETRY

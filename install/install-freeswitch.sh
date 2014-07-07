@@ -9,7 +9,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -140,6 +140,7 @@ func_install_fs_sources() {
     [ -f modules.conf ] && cp modules.conf modules.conf.bak
     sed -i -e \
     "s/#applications\/mod_curl/applications\/mod_curl/g" \
+    -e "s/#applications\/mod_avmd/applications\/mod_avmd/g" \
     -e "s/#asr_tts\/mod_flite/asr_tts\/mod_flite/g" \
     -e "s/#asr_tts\/mod_tts_commandline/asr_tts\/mod_tts_commandline/g" \
     -e "s/#formats\/mod_shout/formats\/mod_shout/g" \

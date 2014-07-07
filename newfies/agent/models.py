@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -36,9 +36,11 @@ class AgentProfile(Profile_abstract):
 
     **Name of DB table**: agent_profile
     """
-    is_agent = models.BooleanField(default=True,
+    is_agent = models.BooleanField(
+        default=True,
         verbose_name=_('Designates whether the user is an agent.'))
-    manager = models.ForeignKey(Manager, verbose_name=_("manager"), blank=True, null=True,
+    manager = models.ForeignKey(
+        Manager, verbose_name=_("manager"), blank=True, null=True,
         help_text=_("select manager"), related_name="manager")
 
     type = models.IntegerField(choices=list(AGENT_TYPE),
@@ -52,14 +54,16 @@ class AgentProfile(Profile_abstract):
     status = models.IntegerField(choices=list(AGENT_STATUS),
                                  default=AGENT_STATUS.LOGGED_OUT,
                                  verbose_name=_("status"), blank=True, null=True)
-    no_answer_delay_time = models.IntegerField(blank=True, null=True,
-                                        verbose_name=_('no answer delay time'))
+    no_answer_delay_time = models.IntegerField(
+        blank=True, null=True,
+        verbose_name=_('no answer delay time'))
     max_no_answer = models.IntegerField(blank=True, null=True,
                                         verbose_name=_('max. no of answer'))
     wrap_up_time = models.IntegerField(blank=True, null=True,
                                        verbose_name=_('wrap up time'))
-    reject_delay_time = models.IntegerField(blank=True, null=True,
-                                        verbose_name=_('reject delay time'))
+    reject_delay_time = models.IntegerField(
+        blank=True, null=True,
+        verbose_name=_('reject delay time'))
     busy_delay_time = models.IntegerField(blank=True, null=True,
                                           verbose_name=_('busy delay time'))
     #key = models.CharField(max_length=256, blank=True, default='')

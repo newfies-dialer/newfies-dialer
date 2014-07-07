@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -115,7 +115,8 @@ class DNCCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
         self.assertTemplateUsed(response, 'dnc/dnc_list/change.html')
 
-        request = self.factory.post('/module/dnc_list/1/',
+        request = self.factory.post(
+            '/module/dnc_list/1/',
             data={'name': 'Default_DNC'}, follow=True)
         request.user = self.user
         request.session = {}
@@ -184,7 +185,8 @@ class DNCCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.context['action'], 'update')
         self.assertTemplateUsed(response, 'dnc/dnc_contact/change.html')
 
-        request = self.factory.post('/module/dnc_contact/1/',
+        request = self.factory.post(
+            '/module/dnc_contact/1/',
             {'dnc': '1', 'phone_number': '154'})
         request.user = self.user
         request.session = {}

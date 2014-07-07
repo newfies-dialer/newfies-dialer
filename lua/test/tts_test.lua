@@ -15,29 +15,15 @@
 package.path = package.path .. ";/usr/share/newfies-lua/?.lua";
 package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 
-local database = require "database"
+
 
 --
--- Test Code
+-- Test TTS
 --
-local inspect = require 'inspect'
-local Debugger = require "fsdebugger"
-local debugger = Debugger(false)
-db = Database:new{
-    debug_mode=debug_mode,
-    debugger=debugger
-}
-db:connect()
+require "texttospeech"
 
--- campaign_id = 152
--- db:load_campaign_info(campaign_id)
--- print(inspect(db.campaign_info))
-sms_text = 'hello there'
-survey_id = 121
-phonenumber = '845648998'
-
--- db:send_sms(sms_text, survey_id, phonenumber)
-
-contact_id = 19143
-db:load_contact(contact_id)
-print(inspect(db.contact))
+TTS_DIR = '/tmp/'
+mscript = 'Hello world!'
+print(mscript)
+local tts_file = tts(mscript, TTS_DIR)
+print(tts_file)

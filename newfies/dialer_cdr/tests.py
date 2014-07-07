@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -61,7 +61,8 @@ class DialerCdrView(BaseAuthenticatedClient):
         response = self.client.get('/admin/dialer_cdr/voipcall/voip_daily_report/')
         self.failUnlessEqual(response.status_code, 200)
 
-        response = self.client.post('/admin/dialer_cdr/voipcall/voip_daily_report/',
+        response = self.client.post(
+            '/admin/dialer_cdr/voipcall/voip_daily_report/',
             data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
                   'to_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d")})
         self.assertEqual(response.status_code, 200)

@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -26,7 +26,7 @@ from dialer_contact.constants import CONTACT_STATUS
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_campaign.function_def import date_range
 from dialer_cdr.models import VoIPCall
-from dialer_cdr.constants import VOIPCALL_DISPOSITION
+from dialer_cdr.constants import CALL_DISPOSITION
 from frontend.forms import LoginForm, DashboardForm
 from frontend.function_def import calculate_date
 from frontend.constants import COLOR_DISPOSITION, SEARCH_TYPE
@@ -176,10 +176,10 @@ def customer_dashboard(request, on_index=None):
             date_length = 13
             if int(search_type) == SEARCH_TYPE.C_Yesterday:  # yesterday
                 tday = datetime.utcnow().replace(tzinfo=utc)
-                start_date = datetime(tday.year, tday.month, tday.day,
-                    0, 0, 0, 0).replace(tzinfo=utc) - relativedelta(days=1)
-                end_date = datetime(tday.year, tday.month, tday.day,
-                    23, 59, 59, 999999).replace(tzinfo=utc) - relativedelta(days=1)
+                start_date = datetime(tday.year, tday.month, tday.day, 0, 0, 0, 0)\
+                    .replace(tzinfo=utc) - relativedelta(days=1)
+                end_date = datetime(tday.year, tday.month, tday.day, 23, 59, 59, 999999)\
+                    .replace(tzinfo=utc) - relativedelta(days=1)
             if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
                 date_length = 16
         else:
@@ -204,20 +204,15 @@ def customer_dashboard(request, on_index=None):
 
         for i in calls:
             total_call_count += i['starting_date__count']
-            if (i['disposition'] == VOIPCALL_DISPOSITION.ANSWER
-               or i['disposition'] == 'NORMAL_CLEARING'):
+            if i['disposition'] == CALL_DISPOSITION.ANSWER or i['disposition'] == 'NORMAL_CLEARING':
                 total_answered += i['starting_date__count']
-            elif (i['disposition'] == VOIPCALL_DISPOSITION.BUSY
-               or i['disposition'] == 'USER_BUSY'):
+            elif i['disposition'] == CALL_DISPOSITION.BUSY or i['disposition'] == 'USER_BUSY':
                 total_busy += i['starting_date__count']
-            elif (i['disposition'] == VOIPCALL_DISPOSITION.NOANSWER
-               or i['disposition'] == 'NO_ANSWER'):
+            elif i['disposition'] == CALL_DISPOSITION.NOANSWER or i['disposition'] == 'NO_ANSWER':
                 total_not_answered += i['starting_date__count']
-            elif (i['disposition'] == VOIPCALL_DISPOSITION.CANCEL
-               or i['disposition'] == 'ORIGINATOR_CANCEL'):
+            elif i['disposition'] == CALL_DISPOSITION.CANCEL or i['disposition'] == 'ORIGINATOR_CANCEL':
                 total_cancel += i['starting_date__count']
-            elif (i['disposition'] == VOIPCALL_DISPOSITION.CONGESTION
-               or i['disposition'] == 'NORMAL_CIRCUIT_CONGESTION'):
+            elif i['disposition'] == CALL_DISPOSITION.CONGESTION or i['disposition'] == 'NORMAL_CIRCUIT_CONGESTION':
                 total_congestion += i['starting_date__count']
             else:
                 #VOIP CALL FAILED
@@ -242,27 +237,27 @@ def customer_dashboard(request, on_index=None):
         calls_dict = {}
         calls_dict_with_min = {}
 
-        for data in calls:
+        for call in calls:
             if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
-                ctime = datetime(int(data['starting_date'][0:4]),
-                                 int(data['starting_date'][5:7]),
-                                 int(data['starting_date'][8:10]),
-                                 int(data['starting_date'][11:13]),
+                ctime = datetime(int(call['starting_date'][0:4]),
+                                 int(call['starting_date'][5:7]),
+                                 int(call['starting_date'][8:10]),
+                                 int(call['starting_date'][11:13]),
                                  0,
                                  0,
                                  0).replace(tzinfo=utc)
                 if int(search_type) >= SEARCH_TYPE.E_Last_12_hours:
-                    ctime = datetime(int(data['starting_date'][0:4]),
-                                     int(data['starting_date'][5:7]),
-                                     int(data['starting_date'][8:10]),
-                                     int(data['starting_date'][11:13]),
-                                     int(data['starting_date'][14:16]),
+                    ctime = datetime(int(call['starting_date'][0:4]),
+                                     int(call['starting_date'][5:7]),
+                                     int(call['starting_date'][8:10]),
+                                     int(call['starting_date'][11:13]),
+                                     int(call['starting_date'][14:16]),
                                      0,
                                      0).replace(tzinfo=utc)
             else:
-                ctime = datetime(int(data['starting_date'][0:4]),
-                                 int(data['starting_date'][5:7]),
-                                 int(data['starting_date'][8:10]),
+                ctime = datetime(int(call['starting_date'][0:4]),
+                                 int(call['starting_date'][5:7]),
+                                 int(call['starting_date'][8:10]),
                                  0,
                                  0,
                                  0,
@@ -276,24 +271,24 @@ def customer_dashboard(request, on_index=None):
             if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
                 calls_dict[int(ctime.strftime("%Y%m%d%H"))] =\
                     {
-                        'call_count': data['starting_date__count'],
-                        'duration_sum': data['duration__sum'],
-                        'duration_avg': float(data['duration__avg']),
+                        'call_count': call['starting_date__count'],
+                        'duration_sum': call['duration__sum'],
+                        'duration_avg': float(call['duration__avg']),
                     }
 
                 calls_dict_with_min[int(ctime.strftime("%Y%m%d%H%M"))] =\
                     {
-                        'call_count': data['starting_date__count'],
-                        'duration_sum': data['duration__sum'],
-                        'duration_avg': float(data['duration__avg']),
+                        'call_count': call['starting_date__count'],
+                        'duration_sum': call['duration__sum'],
+                        'duration_avg': float(call['duration__avg']),
                     }
             else:
                 # Last 30 days option
                 calls_dict[int(ctime.strftime("%Y%m%d"))] =\
                     {
-                        'call_count': data['starting_date__count'],
-                        'duration_sum': data['duration__sum'],
-                        'duration_avg': float(data['duration__avg']),
+                        'call_count': call['starting_date__count'],
+                        'duration_sum': call['duration__sum'],
+                        'duration_avg': float(call['duration__avg']),
                     }
 
         logging.debug('After Call Loops')
@@ -328,10 +323,10 @@ def customer_dashboard(request, on_index=None):
                         total_record[dt]['duration_sum'] += calls_dict[day_time]['duration_sum']
                         total_record[dt]['duration_avg'] += float(calls_dict[day_time]['duration_avg'])
 
-            # last 12 hrs | last 6 hrs | last 1 hrs
+            # last 12 hrs | last 6 hrs | last 1 hr
             elif (int(search_type) == SEARCH_TYPE.E_Last_12_hours
-                 or int(search_type) == SEARCH_TYPE.F_Last_6_hours
-                 or int(search_type) == SEARCH_TYPE.G_Last_hour):
+                  or int(search_type) == SEARCH_TYPE.F_Last_6_hours
+                  or int(search_type) == SEARCH_TYPE.G_Last_hour):
 
                 for hour in range(0, 24):
                     for minute in range(0, 60):
@@ -355,7 +350,7 @@ def customer_dashboard(request, on_index=None):
                             total_record[dt]['duration_sum'] += calls_dict_with_min[hr_time]['duration_sum']
                             total_record[dt]['duration_avg'] += float(calls_dict_with_min[hr_time]['duration_avg'])
             else:
-                # Last 30 days option
+                # Default: Last 30 days option
                 graph_day = datetime(int(date.strftime("%Y")),
                                      int(date.strftime("%m")),
                                      int(date.strftime("%d"))).replace(tzinfo=utc)
@@ -415,10 +410,10 @@ def customer_dashboard(request, on_index=None):
     ydata = []
     hangup_analytic_chartdata = {'x': xdata, 'y1': ydata}
     if total_call_count != 0:
-        for i in VOIPCALL_DISPOSITION:
+        for i in CALL_DISPOSITION:
             xdata.append(i[0])
 
-        # Y-axis order depend upon VOIPCALL_DISPOSITION
+        # Y-axis order depend upon CALL_DISPOSITION
         # 'ANSWER', 'BUSY', 'CANCEL', 'CONGESTION', 'FAILED', 'NOANSWER'
         ydata = [percentage(total_answered, total_call_count),
                  percentage(total_busy, total_call_count),
@@ -458,7 +453,7 @@ def customer_dashboard(request, on_index=None):
         'cancel_color': COLOR_DISPOSITION['CANCEL'],
         'congestion_color': COLOR_DISPOSITION['CONGESTION'],
         'failed_color': COLOR_DISPOSITION['FAILED'],
-        'VOIPCALL_DISPOSITION': VOIPCALL_DISPOSITION,
+        'CALL_DISPOSITION': CALL_DISPOSITION,
         'hangup_analytic_chartdata': hangup_analytic_chartdata,
         'hangup_analytic_charttype': hangup_analytic_charttype,
         'hangup_chartcontainer': 'piechart_container',

@@ -9,7 +9,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -50,8 +50,10 @@ class CalendarUserProfileViewSet(viewsets.ModelViewSet):
         profiles = CalendarUserProfile.objects.filter(user_id__in=calendar_user_list).order_by('id')
         list_data = []
         for c_user_profile in profiles:
-            user_url = 'http://%s/rest-api/calendar-user-profile/%s/' % (self.request.META['HTTP_HOST'], str(c_user_profile.id))
-            calendar_setting_url = 'http://%s/rest-api/calendar-setting/%s/' % (self.request.META['HTTP_HOST'], str(c_user_profile.calendar_setting_id))
+            user_url = 'http://%s/rest-api/calendar-user-profile/%s/' % \
+                (self.request.META['HTTP_HOST'], str(c_user_profile.id))
+            calendar_setting_url = 'http://%s/rest-api/calendar-setting/%s/' % \
+                (self.request.META['HTTP_HOST'], str(c_user_profile.calendar_setting_id))
 
             data = {
                 'url': user_url,

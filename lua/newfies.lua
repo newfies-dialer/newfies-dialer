@@ -8,7 +8,7 @@
 --
 -- Copyright (C) 2011-2014 Star2Billing S.L.
 --
--- The Initial Developer of the Original Code is
+-- The primary maintainer of this project is
 -- Arezqui Belaid <info@star2billing.com>
 --
 
@@ -19,7 +19,7 @@ local FSMCall = require "fsm_callflow"
 local Debugger = require "fsdebugger"
 local getopt = require "getopt"
 
-opts = getopt( arg, "")
+opts = getopt(arg, "")
 
 --Init debug and fs_env
 local debug_mode = false
@@ -70,7 +70,7 @@ function myHangupHook(s, status, arg)
         -- End call
         callflow:end_call()
     end
-    os.exit()
+    -- os.exit()
 end
 
 -- if FS session is ready start the callflow
@@ -98,4 +98,4 @@ if session:ready() then
     callflow:end_call()
 end
 
-os.exit()
+-- os.exit()

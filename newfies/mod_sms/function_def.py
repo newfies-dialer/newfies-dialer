@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2012 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 from dialer_cdr.function_def import return_query_string

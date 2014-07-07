@@ -9,7 +9,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
@@ -302,12 +302,11 @@ func_install_dependencies(){
 
     #Install Luarocks from sources
     cd /usr/src
-    LUAROCKSVERSION=luarocks-2.1.2
     rm -rf luarocks
-    wget http://luarocks.org/releases/$LUAROCKSVERSION.tar.gz
-    tar zxf $LUAROCKSVERSION.tar.gz
-    rm -rf $LUAROCKSVERSION.tar.gz
-    mv $LUAROCKSVERSION luarocks
+    wget http://luarocks.org/releases/luarocks-2.1.2.tar.gz
+    tar zxf luarocks-*.tar.gz
+    rm -rf luarocks-*.tar.gz
+    mv luarocks-* luarocks
     cd luarocks
     ./configure
     make
@@ -335,7 +334,7 @@ func_install_dependencies(){
     #Issue with last version of lpeg - lua libs/tag_replace.lua will seg fault
     #Pin the version 0.10.2-1
     luarocks-5.2 remove lpeg --force
-    luarocks-5.2 install http://luarocks.org/repositories/rocks/lpeg-0.10.2-1.rockspec
+    luarocks-5.2 install http://rocks.moonscript.org/manifests/luarocks/lpeg-0.12-1.rockspec
 
     #luarocks-5.2 install lua-cmsgpack
     cd /usr/src/

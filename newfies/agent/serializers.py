@@ -8,7 +8,7 @@
 #
 # Copyright (C) 2011-2014 Star2Billing S.L.
 #
-# The Initial Developer of the Original Code is
+# The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import serializers
@@ -48,8 +48,7 @@ class AgentProfileSerializer(serializers.ModelSerializer):
     def get_fields(self, *args, **kwargs):
         """filter content_type field"""
         fields = super(AgentProfileSerializer, self).get_fields(*args, **kwargs)
-        fields['user'].queryset = Agent.objects.filter(is_staff=False,
-            is_superuser=False)
+        fields['user'].queryset = Agent.objects.filter(is_staff=False, is_superuser=False)
         return fields
 
 # # Serializers

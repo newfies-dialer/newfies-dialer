@@ -5482,11 +5482,3 @@ msgstr "最大キャンペーン数"
 #, fuzzy
 msgid "maximum subscribers per SMS campaign"
 msgstr "キャンペーンごとの最大参加者"
-
-#, fuzzy
-#~ msgid ""
-#~ "we've e-mailed you instructions for setting your password to the e-mail "
-#~ "address you submitted. you should be receiving it shortly."
-#~ msgstr ""
-#~ "入力されたメールアドレスにパスワードの設定方法を送信しました。受信を確認し"
-#~ "てください。"

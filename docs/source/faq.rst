@@ -240,18 +240,17 @@ Then to start it back:
 How to translate the frontend application
 -----------------------------------------
 
-You will first need to check if there is an existing translated file.
-Each language is represented by a 2 languages ISO code (http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
-Check if a translation exists via this directory:
+First check if there is an existing translation directory in:
 https://github.com/Star2Billing/newfies-dialer/tree/develop/newfies/locale
+Each language is represented by a 2 character ISO code (http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
 
-If there is none existing directory for your language code, then you can download the English PO file and starts with it: https://raw.githubusercontent.com/Star2Billing/newfies-dialer/develop/newfies/locale/en/LC_MESSAGES/django.po
+If there is no existing directory for your language code, then you can download the English PO file and use it as a base: https://raw.githubusercontent.com/Star2Billing/newfies-dialer/develop/newfies/locale/en/LC_MESSAGES/django.po
 
-If there is one for the language you want to translate, you will need to download that PO file and completed the missing translation. For instance, there is a PO file for Japanese:
+If there is a file for the language you want to translate, you will need to download that PO file and completed the missing translations. For instance, there is a PO file for Japanese:
 https://raw.githubusercontent.com/Star2Billing/newfies-dialer/develop/newfies/locale/ja/LC_MESSAGES/django.po
 
-Working with an existing PO File: it's likely you see missing translations and/or translations that need to be reviewed, they are usually marked by `fuzzy`.
-The translation have to be corrected before removing the `fuzzy` file.
+Working with an existing PO File: it's likely that you will see missing translations and/or translations that need to be reviewed, they are usually marked by `fuzzy`.
+The translation has to be corrected before removing the `fuzzy` line.
 
 Here an example:
 #: appointment/models/events.py:32

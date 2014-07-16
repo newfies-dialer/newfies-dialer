@@ -235,7 +235,7 @@ Then to start it back:
     /etc/init.d/supervisor start
 
 
-.. _how_to_translate:
+.. _faq-how-to-translate:
 
 How to translate the frontend application
 -----------------------------------------

@@ -233,3 +233,33 @@ After changes in settings_local.py you will need to restart supervisord:
 Then to start it back:
 
     /etc/init.d/supervisor start
+
+
+.. _how_to_translate:
+
+How to translate the frontend application
+-----------------------------------------
+
+You will first need to check if there is an existing translated file.
+Each language is represented by a 2 languages ISO code (http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+Check if a translation exists via this directory:
+https://github.com/Star2Billing/newfies-dialer/tree/develop/newfies/locale
+
+If there is none existing directory for your language code, then you can download the English PO file and starts with it: https://raw.githubusercontent.com/Star2Billing/newfies-dialer/develop/newfies/locale/en/LC_MESSAGES/django.po
+
+If there is one for the language you want to translate, you will need to download that PO file and completed the missing translation. For instance, there is a PO file for Japanese:
+https://raw.githubusercontent.com/Star2Billing/newfies-dialer/develop/newfies/locale/ja/LC_MESSAGES/django.po
+
+Working with an existing PO File: it's likely you see missing translations and/or translations that need to be reviewed, they are usually marked by `fuzzy`.
+The translation have to be corrected before removing the `fuzzy` file.
+
+Here an example:
+#: appointment/models/events.py:32
+#, fuzzy
+msgid "created on"
+msgstr "キャンペーンのアップデート"
+
+If the translation is good, then just remove the line with "#, fuzzy"
+If there is an error, correct it and remove the line with "#, fuzzy"
+
+Once the PO is completed, please send it over to our team at newfies-dialer@star2billing.com, so that it can be included in the next release.

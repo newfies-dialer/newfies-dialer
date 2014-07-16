@@ -77,6 +77,53 @@ Newfies-Dialer is a bulk dialer application which was commissioned by a charity 
 In less economically developed countries, Internet is often limited, but there is usually comprehensive mobile phone coverage. Freedomfone uses Newfies-Dialer to dial up people’s phones and offer health information on Cholera, Malaria and so many other avoidable health issues in the third world, which may be alleviated by education. Newfies-Dialer was so named after the Newfoundland Dog nicknamed Newfies and used by sea rescue services around the world.
 
 
+.. _faq-change-ip-address:
+
+How to change your IP address
+-----------------------------
+
+During the installation Newfies-Dialer Web interface are bind to the detected IP, if you change the IP or want to change the interface to which is bind you then need change the settings ALLOWED_HOSTS. Please find some documentation about this settings at https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
+
+The configuration file on your server is located at /usr/share/newfies-dialer/newfies_dialer/settings_local.py
+
+After changes in settings_local.py you will need to restart supervisord:
+
+    /etc/init.d/supervisor stop
+
+Then to start it back:
+
+    /etc/init.d/supervisor start
+
+
+.. _faq-how-to-translate:
+
+How to translate the frontend application
+-----------------------------------------
+
+First check if there is an existing translation directory in:
+https://github.com/Star2Billing/newfies-dialer/tree/develop/newfies/locale
+Each language is represented by a 2 character ISO code (http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
+
+If there is no existing directory for your language code, then you can download the English PO file and use it as a base: https://raw.githubusercontent.com/Star2Billing/newfies-dialer/develop/newfies/locale/en/LC_MESSAGES/django.po
+
+If there is a file for the language you want to translate, you will need to download that PO file and completed the missing translations. For instance, there is a PO file for Japanese:
+https://raw.githubusercontent.com/Star2Billing/newfies-dialer/develop/newfies/locale/ja/LC_MESSAGES/django.po
+
+Working with an existing PO File: it's likely that you will see missing translations and/or translations that need to be reviewed, they are usually marked by `fuzzy`.
+The translation has to be corrected before removing the `fuzzy` line.
+
+Here an example:
+#: appointment/models/events.py:32
+#, fuzzy
+msgid "created on"
+msgstr "キャンペーンのアップデート"
+
+If the translation is good, then just remove the line with "#, fuzzy"
+If there is an error, correct it and remove the line with "#, fuzzy"
+
+Once the PO is completed, please send it over to our team at newfies-dialer@star2billing.com, so that it can be included in the next release.
+
+
 .. _faq-text2speech:
 
 Text2Speech
@@ -215,50 +262,3 @@ Completion Retry:
 
     The Completion Retry interval and number of times to retry is set in the
     campaign under the "Dialer Completion Settings" section.
-
-
-.. _faq-change-ip-address:
-
-How to change your IP address
------------------------------
-
-During the installation Newfies-Dialer Web interface are bind to the detected IP, if you change the IP or want to change the interface to which is bind you then need change the settings ALLOWED_HOSTS. Please find some documentation about this settings at https://docs.djangoproject.com/en/dev/ref/settings/#allowed-hosts
-
-The configuration file on your server is located at /usr/share/newfies-dialer/newfies_dialer/settings_local.py
-
-After changes in settings_local.py you will need to restart supervisord:
-
-    /etc/init.d/supervisor stop
-
-Then to start it back:
-
-    /etc/init.d/supervisor start
-
-
-.. _faq-how-to-translate:
-
-How to translate the frontend application
------------------------------------------
-
-First check if there is an existing translation directory in:
-https://github.com/Star2Billing/newfies-dialer/tree/develop/newfies/locale
-Each language is represented by a 2 character ISO code (http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
-
-If there is no existing directory for your language code, then you can download the English PO file and use it as a base: https://raw.githubusercontent.com/Star2Billing/newfies-dialer/develop/newfies/locale/en/LC_MESSAGES/django.po
-
-If there is a file for the language you want to translate, you will need to download that PO file and completed the missing translations. For instance, there is a PO file for Japanese:
-https://raw.githubusercontent.com/Star2Billing/newfies-dialer/develop/newfies/locale/ja/LC_MESSAGES/django.po
-
-Working with an existing PO File: it's likely that you will see missing translations and/or translations that need to be reviewed, they are usually marked by `fuzzy`.
-The translation has to be corrected before removing the `fuzzy` line.
-
-Here an example:
-#: appointment/models/events.py:32
-#, fuzzy
-msgid "created on"
-msgstr "キャンペーンのアップデート"
-
-If the translation is good, then just remove the line with "#, fuzzy"
-If there is an error, correct it and remove the line with "#, fuzzy"
-
-Once the PO is completed, please send it over to our team at newfies-dialer@star2billing.com, so that it can be included in the next release.

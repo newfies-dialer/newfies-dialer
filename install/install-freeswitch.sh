@@ -123,7 +123,7 @@ func_install_fs_sources() {
     cd $FS_BASE_PATH
     rm -rf freeswitch
     # dont use depth :  --depth=1 as we wont be able to checkout
-    git clone git://git.freeswitch.org/freeswitch.git
+    git clone https://stash.freeswitch.org/scm/fs/freeswitch.git
     cd $FS_BASE_PATH/freeswitch
     git checkout $FS_VERSION
 

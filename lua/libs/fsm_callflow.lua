@@ -201,47 +201,47 @@ end
 
 --local digits = session:playAndGetDigits(1, 1, 2,4000, "#", "phrase:voicemail_record_file_check:1:2:3", invalid,"\\d{1}")
 
-function FSMCall:build_dtmf_filter(current_node)
+function FSMCall:build_dtmf_mask(current_node)
     -- Build the dtmf filter to capture digits
-    local dtmffilter = ''
+    local mask = ''
     if current_node.key_0 and string.len(current_node.key_0) > 0 then
-        dtmffilter = dtmffilter..'0'
+        mask = mask..'0'
     end
     if current_node.key_1 and string.len(current_node.key_1) > 0 then
-        dtmffilter = dtmffilter..'1'
+        mask = mask..'1'
     end
     if current_node.key_2 and string.len(current_node.key_2) > 0 then
-        dtmffilter = dtmffilter..'2'
+        mask = mask..'2'
     end
     if current_node.key_3 and string.len(current_node.key_3) > 0 then
-        dtmffilter = dtmffilter..'3'
+        mask = mask..'3'
     end
     if current_node.key_4 and string.len(current_node.key_4) > 0 then
-        dtmffilter = dtmffilter..'4'
+        mask = mask..'4'
     end
     if current_node.key_5 and string.len(current_node.key_5) > 0 then
-        dtmffilter = dtmffilter..'5'
+        mask = mask..'5'
     end
     if current_node.key_6 and string.len(current_node.key_6) > 0 then
-        dtmffilter = dtmffilter..'6'
+        mask = mask..'6'
     end
     if current_node.key_7 and string.len(current_node.key_7) > 0 then
-        dtmffilter = dtmffilter..'7'
+        mask = mask..'7'
     end
     if current_node.key_8 and string.len(current_node.key_8) > 0 then
-        dtmffilter = dtmffilter..'8'
+        mask = mask..'8'
     end
     if current_node.key_9 and string.len(current_node.key_9) > 0 then
-        dtmffilter = dtmffilter..'9'
+        mask = mask..'9'
     end
-    return dtmffilter
+    return mask
 end
 
 function FSMCall:getdigitnode(current_node)
     -- Get the node type and start playing it
     self.debugger:msg("DEBUG", "*** getdigitnode ***")
     local number_digits = 1
-    local dtmf_filter = '0123456789'
+    local dtmf_mask = '0123456789'
     local invalid_audiofile = ''
     local timeout = tonumber(current_node.timeout)
     local retries = tonumber(current_node.retries)
@@ -265,7 +265,7 @@ function FSMCall:getdigitnode(current_node)
     end
     --Get DTMF Filter
     if current_node.type == MULTI_CHOICE then
-        dtmf_filter = self:build_dtmf_filter(current_node)
+        dtmf_mask = self:build_dtmf_mask(current_node)
     end
     --Retrieve number_digits
     if current_node.type == RATING_SECTION then
@@ -282,7 +282,7 @@ function FSMCall:getdigitnode(current_node)
     self.debugger:msg("DEBUG", "Play TTS (timeout="..tostring(timeout)..
         ",number_digits="..number_digits..", retries="..retries..
         ",invalid_audiofile="..tostring(invalid_audiofile)..
-        ", dtmf_filter="..tostring(dtmf_filter)..")")
+        ", dtmf_mask="..tostring(dtmf_mask)..")")
 
     local i = 0
     while i < retries do
@@ -305,7 +305,7 @@ function FSMCall:getdigitnode(current_node)
             self.debugger:msg("INFO", "Play Audiofile : "..filetoplay)
 
             digits = self.session:playAndGetDigits(1, number_digits, retries,
-                timeout*1000, '#', filetoplay, invalid, '['..dtmf_filter..']|#')
+                timeout*1000, '#', filetoplay, invalid, '['..dtmf_mask..']|#')
         else
             --Use TTS
             self.debugger:msg("DEBUG", "Play TTS GetDigits")
@@ -315,7 +315,7 @@ function FSMCall:getdigitnode(current_node)
             self.debugger:msg("INFO", "Play TTS : "..tostring(tts_file))
             if tts_file then
                 digits = self.session:playAndGetDigits(1, number_digits, retries,
-                    timeout*1000, '#', tts_file, invalid, '['..dtmf_filter..']|#')
+                    timeout*1000, '#', tts_file, invalid, '['..dtmf_mask..']|#')
             end
         end
 
@@ -489,6 +489,11 @@ function FSMCall:next_node()
                 dialstr = self.db.campaign_info.gateways..current_node.phonenumber
             end
 
+            -- Set SIP HEADER P-CallRequest-ID & P-Contact-ID
+            -- http://wiki.freeswitch.org/wiki/Sofia-SIP#Adding_Request_Headers
+            session:execute("set", "sip_h_P-CallRequest-ID="..self.callrequest_id..
+                            ";sip_h_P-Contact-ID="..self.contact_id)
+
             self.actionresult = 'phonenumber: '..current_node.phonenumber
             dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..
                 ",origination_caller_id_name="..caller_id_name..",originate_timeout="..originate_timeout..
@@ -512,6 +517,19 @@ function FSMCall:next_node()
             self.actionresult = false
         end
 
+    elseif current_node.type == DNC then
+        -- Add this phonenumber to the DNC campaign list
+        if self.db.campaign_info.dnc_id then
+            self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
+        end
+        -- Save result
+        self.actionresult = 'DNC: '..self.destination_number
+        self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
+        self.actionresult = false
+        -- Play Node
+        self:playnode(current_node)
+        self:end_call()
+
     elseif current_node.type == CONFERENCE then
         self:playnode(current_node)
         conference = current_node.conference
@@ -527,19 +545,6 @@ function FSMCall:next_node()
         self.actionresult = 'conf: '..conference
         self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
         self.actionresult = false
-
-    elseif current_node.type == DNC then
-        -- Add this phonenumber to the DNC campaign list
-        if self.db.campaign_info.dnc_id then
-            self.db:add_dnc(self.db.campaign_info.dnc_id, self.destination_number)
-        end
-        -- Save result
-        self.actionresult = 'DNC: '..self.destination_number
-        self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
-        self.actionresult = false
-        -- Play Node
-        self:playnode(current_node)
-        self:end_call()
 
     elseif current_node.type == SMS then
         --Send an SMS
@@ -576,6 +581,10 @@ function FSMCall:next_node()
         digits = self:getdigitnode(current_node)
         self.debugger:msg("INFO", "result digit => "..digits)
 
+    elseif current_node.type == CAPTURE_DIGITS then
+        digits = self:getdigitnode(current_node)
+        self.debugger:msg("INFO", "result digit => "..digits)
+
     elseif current_node.type == RATING_SECTION then
         digits = self:getdigitnode(current_node)
         self.debugger:msg("INFO", "result digit => "..digits)
@@ -584,10 +593,6 @@ function FSMCall:next_node()
         if self.db.event_alarm and self.db.event_alarm.alarm_id then
             self.db:save_alarm_result(self.db.event_alarm.alarm_id, digits)
         end
-
-    elseif current_node.type == CAPTURE_DIGITS then
-        digits = self:getdigitnode(current_node)
-        self.debugger:msg("INFO", "result digit => "..digits)
 
     elseif current_node.type == RECORD_MSG then
         self:playnode(current_node)

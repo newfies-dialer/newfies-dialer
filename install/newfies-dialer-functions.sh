@@ -303,7 +303,9 @@ func_install_dependencies(){
     #Install Luarocks from sources
     cd /usr/src
     rm -rf luarocks
-    wget http://luarocks.org/releases/luarocks-2.1.2.tar.gz
+    # wget http://luarocks.org/releases/luarocks-2.1.2.tar.gz
+    #Use Github for sources
+    wget https://github.com/keplerproject/luarocks/archive/v2.1.2.tar.gz -O luarocks-2.1.2.tar.gz
     tar zxf luarocks-*.tar.gz
     rm -rf luarocks-*.tar.gz
     mv luarocks-* luarocks
@@ -311,6 +313,20 @@ func_install_dependencies(){
     ./configure
     make
     make bootstrap
+
+    #Check if Luarocks
+    LUAROCKS_UP=$(ping -c 2 luarocks.org 2>&1 | grep -c "100%")
+    case $LUAROCKS_UP in
+        1)
+            echo "Luarocks is DOWN!"
+            echo ""
+            echo "We will set a mirror"
+            mkdir ~/.luarocks
+            rm ~/.luarocks/config.lua
+            # echo '   rocks_servers={ "http://luarocks.giga.puc-rio.br/" }' >> ~/.luarocks/config.lua
+            echo '   rocks_servers={ "http://rocks.moonscript.org/manifests/luarocks/" }' >> ~/.luarocks/config.lua
+        ;;
+    esac
 
     #Prepare settings for installation
     case $DIST in

@@ -342,7 +342,7 @@ func_install_dependencies(){
     luarocks-5.2 install luasocket
     luarocks-5.2 install lualogging
     luarocks-5.2 install loop
-    luarocks-5.2 install md5
+    luarocks-5.2 install md5 1.2-1
     luarocks-5.2 install luafilesystem
     luarocks-5.2 install luajson 1.3.2-1
     luarocks-5.2 install inspect

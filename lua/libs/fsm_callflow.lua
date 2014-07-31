@@ -491,8 +491,8 @@ function FSMCall:next_node()
 
             -- Set SIP HEADER P-CallRequest-ID & P-Contact-ID
             -- http://wiki.freeswitch.org/wiki/Sofia-SIP#Adding_Request_Headers
-            session:execute("set", "sip_h_P-CallRequest-ID="..self.callrequest_id..
-                            ";sip_h_P-Contact-ID="..self.contact_id)
+            session:execute("set", "sip_h_P-CallRequest-ID="..self.callrequest_id)
+            session:execute("set", "sip_h_P-Contact-ID="..self.contact_id)
 
             self.actionresult = 'phonenumber: '..current_node.phonenumber
             dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..

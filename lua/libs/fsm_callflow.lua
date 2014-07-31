@@ -489,10 +489,16 @@ function FSMCall:next_node()
                 dialstr = self.db.campaign_info.gateways..current_node.phonenumber
             end
 
+            mcontact = mtable_jsoncontact(self.db.contact)
+
             -- Set SIP HEADER P-CallRequest-ID & P-Contact-ID
             -- http://wiki.freeswitch.org/wiki/Sofia-SIP#Adding_Request_Headers
             session:execute("set", "sip_h_P-CallRequest-ID="..self.callrequest_id)
             session:execute("set", "sip_h_P-Contact-ID="..self.contact_id)
+            -- Set SIP HEADER P-Contact-Transfer-Ref provisioned by Contact.additional_vars.transfer_ref Json setting
+            if mcontact.transfer_ref then
+                session:execute("set", "sip_h_P-Contact-Transfer-Ref="..mcontact.transfer_ref)
+            end
 
             self.actionresult = 'phonenumber: '..current_node.phonenumber
             dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..
@@ -549,7 +555,6 @@ function FSMCall:next_node()
     elseif current_node.type == SMS then
         --Send an SMS
         if current_node.sms_text and current_node.sms_text ~= '' then
-            -- TODO: Not yet tested
             mcontact = mtable_jsoncontact(self.db.contact)
             if mcontact.sms_phonenumber then
                 destination_number = mcontact.sms_phonenumber

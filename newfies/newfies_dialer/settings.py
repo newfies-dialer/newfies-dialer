@@ -249,7 +249,7 @@ INSTALLED_APPS = (
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-# Django extensions
+# gunicorn
 try:
     import gunicorn
 except ImportError:

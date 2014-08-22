@@ -123,11 +123,11 @@ func_install_fs_sources() {
     cd $FS_BASE_PATH
     rm -rf freeswitch
     # dont use depth :  --depth=1 as we wont be able to checkout
-    git clone https://stash.freeswitch.org/scm/fs/freeswitch.git
+    git clone --branch=$FS_VERSION https://stash.freeswitch.org/scm/fs/freeswitch.git --depth=1
     cd $FS_BASE_PATH/freeswitch
-    git checkout $FS_VERSION
+    # git checkout $FS_VERSION
 
-    ./bootstrap.sh
+    ./bootstrap.sh -j
 
     # !!! virtual memory exhausted: Cannot allocate memory !!!
     # we need to make more temporary swap space

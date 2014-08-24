@@ -32,6 +32,28 @@ The field can have a telephone number or something like sofia/gateway/my.gateway
 
 .. image:: ../_static/images/customer/node_call_transfer.png
 
+In order to support screen-pops and deliver other data, there has been some data included in the SIP message
+
+By default the following data is included in the SIP header on call transfer:
+    P-CallRequest-ID is the Call request ID
+    P-Contact-ID is is the Contact ID.
+
+It is envisaged that these ID numbers can be used to do database look-ups on the Newfies-Dialer database.
+
+Furthermore, there is a optional SIP header that can be added.
+
+    P-Contact-Transfer-Ref: 
+
+This can be added against the Contact in the "Additional Parmeters (JSON)" field. 
+Simply add the "transfer_ref" keyword and string to send in the SIP message as follows:
+
+    {"transfer_ref": "My-Unique-Ref-Number"}
+
+In the SIP headers, you will see:
+
+    P-CallRequest-ID: 3
+    P-Contact-ID: 1
+    P-Contact-Transfer-Ref: My-Unique-Ref-Number
 
 .. _capture-digits:
 

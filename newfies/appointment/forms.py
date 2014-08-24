@@ -107,6 +107,7 @@ class CalendarUserProfileForm(ModelForm):
 
     class Meta:
         model = CalendarUserProfile
+        fields = ['manager', 'calendar_setting', ]
 
     def __init__(self, *args, **kwargs):
         super(CalendarUserProfileForm, self).__init__(*args, **kwargs)
@@ -197,6 +198,7 @@ class CalendarForm(ModelForm):
 
     class Meta:
         model = Calendar
+        fields = ['name', 'user', 'max_concurrent', ]
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarForm, self).__init__(*args, **kwargs)
@@ -217,6 +219,7 @@ class CalendarForm(ModelForm):
 class AdminCalendarForm(ModelForm):
     class Meta:
         model = Calendar
+        fields = ['name', 'user', 'max_concurrent', ]
 
     def __init__(self, *args, **kwargs):
         super(AdminCalendarForm, self).__init__(*args, **kwargs)

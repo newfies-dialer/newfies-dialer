@@ -11,7 +11,7 @@ django-countries==2.1.2
 django-redis-cache==0.13.0
 django-redisboard==0.2.7
 django-admin-sortable==1.7.0
-django-tagging==0.3.2
+# django-tagging==0.3.2
 django-dajaxice-ng==0.6.0.0
 django-dajax-ng==0.9.4
 #django-dajaxice doesn't support Django 1.6

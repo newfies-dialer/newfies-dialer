@@ -9,7 +9,7 @@ Configuration
 
 SMS braodcasting is supported as standard by Newfies-Dialer, allowing Newfies-Dialer to send out thousands or millions of SMS messages to  contacts.
 
-The SMS gateway supports the following gateways, Clickatell (http://www.clickatell.com/) and SMS Global (http://www.smsglobal.com). Additionally, Khomp hardware is suuported to allow the use of SIM cards in house. See http://www.khomp.com.br/ for more details.
+The SMS gateway supports the following gateways, Clickatell (http://www.clickatell.com/) and SMS Global (http://www.smsglobal.com). Additionally, Khomp hardware is supported to allow the use of SIM cards in house. See http://www.khomp.com.br/ for more details.
 
 
 Go to the Admin interface and identify the SMS Gateway section, and click on Gateways. Listed by default are three gateways, Clickatell, SMS Global and Khomp. Those that you don't want to be configured can be deleted.

@@ -205,7 +205,8 @@ INSTALLED_APPS = (
     'south',
     'djcelery',
     'audiofield',
-    'tagging',
+    # Tagging broken with Django 1.7
+    # 'tagging',
     'adminsortable',
     'dajaxice',
     'dajax',
@@ -248,7 +249,7 @@ INSTALLED_APPS = (
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
 
-# Django extensions
+# gunicorn
 try:
     import gunicorn
 except ImportError:
@@ -307,13 +308,14 @@ else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
 
 # Nose
-try:
-    import nose
-except ImportError:
-    pass
-else:
-    INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
-    TEST_RUNNER = 'utils.test_runner.MyRunner'
+# TODO: Re-Enable Nose as it s actually broken
+# try:
+#     import nose
+# except ImportError:
+#     pass
+# else:
+#     INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
+#     TEST_RUNNER = 'utils.test_runner.MyRunner'
 
 # Dilla
 try:
@@ -651,6 +653,12 @@ BOWER_INSTALLED_APPS = (
     'nvd3#1.1.12-beta',
     'components-font-awesome#4.0.3',
 )
+
+# South
+# -----
+SOUTH_MIGRATION_MODULES = {
+    'authtoken': 'rest_framework.authtoken.south_migrations',
+}
 
 #Need to build documentation with Django 1.6
 LOGGING_CONFIG = None

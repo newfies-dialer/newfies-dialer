@@ -378,6 +378,7 @@ class SubscriberAdminForm(ModelForm):
 
     class Meta:
         model = Subscriber
+        exclude = ['updated_date', ]
 
     def __init__(self, *args, **kwargs):
         super(SubscriberAdminForm, self).__init__(*args, **kwargs)

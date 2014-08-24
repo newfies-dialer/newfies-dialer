@@ -58,6 +58,12 @@ ESL_PORT = '8021'
 ESL_SECRET = 'ClueCon'
 ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 
+#AMD
+#===
+AMD = False
+if AMD:
+    ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies_amd.luac)'
+
 #CUSTOM
 #======
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'

@@ -48,7 +48,7 @@ class SMSCampaignManager(models.Manager):
             tday.year, tday.month, tday.day, tday.hour,
             tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
-        s_time = str(tday.hour) + ":" + str(tday.minute) + ":" + str(tday.second)
+        s_time = "%s:%s:%s" % (str(tday.hour), str(tday.minute), str(tday.second))
         kwargs['daily_start_time__lte'] = datetime.strptime(s_time, '%H:%M:%S')
         kwargs['daily_stop_time__gte'] = datetime.strptime(s_time, '%H:%M:%S')
 

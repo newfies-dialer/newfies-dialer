@@ -6,7 +6,7 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
-# Copyright (C) 2011-2012 Star2Billing S.L.
+# Copyright (C) 2011-2014 Star2Billing S.L.
 #
 # The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
@@ -53,7 +53,7 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
         * ``obj_subscriber`` - SMSCampaignSubscriber object
         * ``user`` - User object
     """
-    logger.warning("init_smsrequest contact:%s" % obj_subscriber.contact.contact)
+    logger.info("[SMS_TASK] init_smsrequest contact:%s" % obj_subscriber.contact.contact)
 
     maxretry = get_sms_maxretry(obj_sms_campaign)
 
@@ -73,7 +73,7 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
             sender=obj_subscriber.sms_campaign.user,
             sender_number=obj_subscriber.sms_campaign.callerid,
             status='Unsent',
-            content_type=ContentType.objects.get(model='smscampaignsubscriber'),
+            content_type=ContentType.objects.get(model='smscampaignsubscriber', app_label='sms_module'),
             object_id=obj_subscriber.id,
             sms_campaign=obj_sms_campaign,
         )
@@ -83,17 +83,17 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
         obj_subscriber.save()
 
         # Send sms
-        logger.warning("Call msg_obj id:%d - gateway_id:%d" % (msg_obj.id, obj_sms_campaign.sms_gateway_id))
+        logger.warning("[SMS_TASK] Call msg_obj id:%d - gateway_id:%d" % (msg_obj.id, obj_sms_campaign.sms_gateway_id))
         SendMessage.delay(msg_obj.id, obj_sms_campaign.sms_gateway_id)
     else:
-        logger.error("Max retry exceeded, sub_id:%s" % obj_subscriber.id)
+        logger.error("[SMS_TASK] Max retry exceeded, sub_id:%s" % obj_subscriber.id)
 
     return True
 
 
 #TODO: Put a priority on this task
 class check_sms_campaign_pendingcall(Task):
-    @only_one(ikey="check_pendingsms", timeout=LOCK_EXPIRE)
+    @only_one(ikey="check_sms_campaign_pendingcall", timeout=LOCK_EXPIRE)
     def run(self, sms_campaign_id):
         """This will execute the outbound calls in the sms_campaign
 
@@ -105,13 +105,13 @@ class check_sms_campaign_pendingcall(Task):
 
             check_sms_campaign_pendingcall.delay(sms_campaign_id)
         """
-        logger = self.get_logger()
+        #logger = self.get_logger()
 
-        logger.info("TASK :: check_sms_campaign_pendingcall = %s" % str(sms_campaign_id))
+        logger.info("[SMS_TASK] TASK :: check_sms_campaign_pendingcall = %s" % str(sms_campaign_id))
         try:
             obj_sms_campaign = SMSCampaign.objects.get(id=sms_campaign_id)
         except:
-            logger.error('Cannot find this SMS Campaign')
+            logger.error("[SMS_TASK] Cannot find this SMS Campaign")
             return False
 
         #TODO: Control the Speed
@@ -126,7 +126,7 @@ class check_sms_campaign_pendingcall(Task):
         list_subscriber = obj_sms_campaign.get_pending_subscriber_update(
             frequency, SMS_SUBSCRIBER_STATUS.IN_PROCESS)
         if list_subscriber:
-            logger.debug("Number of subscriber found : %d" % len(list_subscriber))
+            logger.debug("[SMS_TASK] Number of subscriber found : %d" % len(list_subscriber))
 
         try:
             no_subscriber = list_subscriber.count()
@@ -134,7 +134,7 @@ class check_sms_campaign_pendingcall(Task):
             no_subscriber = 0
 
         if no_subscriber == 0:
-            logger.info("No Subscriber to proceed on this sms_campaign")
+            logger.info("[SMS_TASK] No Subscriber to proceed on this sms_campaign")
             return False
 
         #find how to dispatch them in the current minutes
@@ -144,12 +144,12 @@ class check_sms_campaign_pendingcall(Task):
         for elem_camp_subscriber in list_subscriber:
             """Loop on Subscriber and start the initcall task"""
             count = count + 1
-            logger.info("Add SMS Message for Subscriber (%s) & wait (%s) " %
+            logger.info("[SMS_TASK] Add SMS Message for Subscriber (%s) & wait (%s) " %
                         (str(elem_camp_subscriber.id), str(time_to_wait)))
 
             #Check if the contact is authorized
             if not obj_sms_campaign.is_authorized_contact(elem_camp_subscriber.contact.contact):
-                logger.error("Error : Contact not authorized")
+                logger.error("[SMS_TASK] Error : Contact not authorized")
                 elem_camp_subscriber.status = SMS_SUBSCRIBER_STATUS.NOT_AUTHORIZED  # Update to Not Authorized
                 elem_camp_subscriber.save()
                 return True
@@ -158,7 +158,8 @@ class check_sms_campaign_pendingcall(Task):
             second_towait = ceil(count * time_to_wait)
             launch_date = datetime.utcnow().replace(tzinfo=utc) + timedelta(seconds=second_towait)
 
-            logger.warning("Init SMS in %s at %s" % (str(second_towait), launch_date.strftime("%b %d %Y %I:%M:%S")))
+            logger.warning("[SMS_TASK] Init SMS in %s at %s" %
+                           (str(second_towait), launch_date.strftime("%b %d %Y %I:%M:%S")))
 
             # Send sms through init_smsrequest
             init_smsrequest.apply_async(
@@ -185,16 +186,15 @@ class spool_sms_nocampaign(PeriodicTask):
 
     @only_one(ikey="spool_sms_nocampaign", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger = self.get_logger(**kwargs)
-        logger.warning("TASK :: Check spool_sms_nocampaign")
+        #logger = self.get_logger(**kwargs)
 
         #start_from = datetime.utcnow().replace(tzinfo=utc)
         #list_sms = SMSMessage.objects.filter(delivery_date__lte=start_from, status='Unsent', sms_campaign__isnull=True)
         list_sms = SMSMessage.objects.filter(status='Unsent', sms_campaign__isnull=True)
-        logger.warning("TASK :: Check spool_sms_nocampaign -> COUNT SMS (%d)" % list_sms.count())
+        logger.warning("[SMS_TASK] TASK :: Check spool_sms_nocampaign -> COUNT SMS (%d)" % list_sms.count())
 
         for sms in list_sms:
-            logger.debug("=> SMS Message (id:%d - phonenumber:%s)" % (sms.id, sms.sender_number))
+            logger.debug("[SMS_TASK] => SMS Message (id:%d - phonenumber:%s)" % (sms.id, sms.sender_number))
             # Send SMS
             SendMessage.delay(sms.id, sms.sms_gateway_id)
 
@@ -215,13 +215,13 @@ class sms_campaign_running(PeriodicTask):
     #run_every = timedelta(seconds=60)
 
     def run(self, **kwargs):
-        logger = self.get_logger(**kwargs)
-        logger.warning("TASK :: Check if there is sms_campaign_running")
+        #logger = self.get_logger(**kwargs)
+        logger.warning("[SMS_TASK] TASK :: Check if there is sms_campaign_running")
 
         for sms_campaign in SMSCampaign.objects.get_running_sms_campaign():
-            logger.debug("=> SMS Campaign name %s (id:%s)" % (sms_campaign.name,
+            logger.info("[SMS_TASK] => Found SMS Campaign name %s (id:%s)" % (sms_campaign.name,
                                                               sms_campaign.id))
-            keytask = 'check_smscampaign_pendingsms-%d' % (sms_campaign.id)
+            keytask = 'check_sms_campaign_pendingcall-%d' % (sms_campaign.id)
             check_sms_campaign_pendingcall.delay(sms_campaign.id, keytask=keytask)
 
 
@@ -239,8 +239,8 @@ class SMSImportPhonebook(Task):
         """
         Read all the contact from phonebook_id and insert into subscriber
         """
-        logger = self.get_logger()
-        logger.info("TASK :: import_phonebook")
+        #logger = self.get_logger()
+        logger.info("[SMS_TASK] TASK :: import_phonebook")
         obj_campaign = SMSCampaign.objects.get(id=campaign_id)
 
         #Faster method, ask the Database to do the job
@@ -277,10 +277,10 @@ class sms_campaign_spool_contact(PeriodicTask):
     run_every = timedelta(seconds=60)
 
     def run(self, **kwargs):
-        logger.info("TASK :: sms_campaign_spool_contact")
+        logger.info("[SMS_TASK] TASK :: sms_campaign_spool_contact")
 
         for campaign in SMSCampaign.objects.get_running_sms_campaign():
-            logger.debug("=> Spool Contact : SMSCampaign name %s (id:%s)" %
+            logger.info("[SMS_TASK] => Spool Contact : SMSCampaign name %s (id:%s)" %
                         (campaign.name, str(campaign.id)))
             # Start collecting the contacts for this campaign
             sms_collect_subscriber.delay(campaign.id)
@@ -301,7 +301,7 @@ def sms_collect_subscriber(campaign_id):
 
         sms_collect_subscriber.delay(campaign_id)
     """
-    logger.debug("Collect subscribers for the campaign = %s" % str(campaign_id))
+    logger.debug("[SMS_TASK] Collect subscribers for the campaign = %s" % str(campaign_id))
 
     #Retrieve the list of active contact
     obj_campaign = SMSCampaign.objects.get(id=campaign_id)
@@ -313,7 +313,7 @@ def sms_collect_subscriber(campaign_id):
         # check if phonebook_id is missing in imported_phonebook list
         if not str(phonebook_id) in obj_campaign.imported_phonebook.split(','):
             #Run import
-            logger.info("SMS ImportPhonebook %d for campaign = %d" % (phonebook_id, campaign_id))
+            logger.info("[SMS_TASK] SMS ImportPhonebook %d for campaign = %d" % (phonebook_id, campaign_id))
             keytask = 'sms_import_phonebook-%d-%d' % (campaign_id, phonebook_id)
             SMSImportPhonebook().delay(obj_campaign.id, phonebook_id, keytask=keytask)
 
@@ -350,7 +350,7 @@ def importcontact_custom_sql(sms_campaign_id, phonebook_id):
             (sms_campaign_id, phonebook_id, sms_campaign_id)
     else:
         # Other DB
-        logger.error("Database not supported (%s)" %
+        logger.error("[SMS_TASK] Database not supported (%s)" %
                      settings.DATABASES['default']['ENGINE'])
         return False
 
@@ -374,10 +374,10 @@ class sms_campaign_expire_check(PeriodicTask):
 
     @only_one(ikey="sms_campaign_expire_check", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger = self.get_logger(**kwargs)
-        logger.info("TASK :: sms_campaign_expire_check")
+        #logger = self.get_logger(**kwargs)
+        logger.info("[SMS_TASK] TASK :: sms_campaign_expire_check")
         for sms_campaign in SMSCampaign.objects.get_expired_sms_campaign():
-            logger.debug("=> SMS Campaign name %s (id:%s)" % (sms_campaign.name,
+            logger.debug("[SMS_TASK] => SMS Campaign name %s (id:%s)" % (sms_campaign.name,
                                                               sms_campaign.id))
             sms_campaign.common_sms_campaign_status(SMS_CAMPAIGN_STATUS.END)
 
@@ -393,11 +393,11 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
 
     @only_one(ikey="resend_sms_update_smscampaignsubscriber", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger = self.get_logger(**kwargs)
-        logger.warning("TASK :: RESEND sms")
+        #logger = self.get_logger(**kwargs)
+        logger.warning("[SMS_TASK] TASK :: RESEND sms")
 
         for sms_campaign in SMSCampaign.objects.get_running_sms_campaign():
-            logger.info("=> SMS Campaign name %s (id:%s)" % (sms_campaign.name, sms_campaign.id))
+            logger.info("[SMS_TASK] => SMS Campaign name %s (id:%s)" % (sms_campaign.name, sms_campaign.id))
             sms_maxretry = get_sms_maxretry(sms_campaign)
             limit = 1000
             list_subscriber = SMSCampaignSubscriber.objects.filter(
@@ -406,17 +406,17 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
 
             if not list_subscriber:
                 #Go to the next campaign
-                logger.info("No subscribers in this campaign (id:%s)" % (sms_campaign.id))
+                logger.info("[SMS_TASK] No subscribers in this campaign (id:%s)" % (sms_campaign.id))
                 continue
 
             for subscriber in list_subscriber:
                 if not subscriber.message:
-                    logger.error("=> SMS with No Message")
+                    logger.error("[SMS_TASK] => SMS with No Message")
                     subscriber.status = SMS_SUBSCRIBER_STATUS.FAIL  # 'FAIL'
                     subscriber.save()
                     continue
 
-                logger.warning("=> SMS Message Status = %s" % subscriber.message.status)
+                logger.warning("[SMS_TASK] => SMS Message Status = %s" % subscriber.message.status)
                 if subscriber.message.status == 'Failed':
                     # check sms_maxretry
                     if subscriber.count_attempt >= sms_maxretry:
@@ -425,7 +425,7 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
                     else:
 
                         text_message = subscriber.contact.replace_tag(subscriber.sms_campaign.text_message)
-                        logger.info("SendMessage text_message:%s" % text_message)
+                        logger.info("[SMS_TASK] SendMessage text_message:%s" % text_message)
 
                         # Create Message object
                         msg_obj = SMSMessage.objects.create(
@@ -434,7 +434,7 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
                             sender=subscriber.sms_campaign.user,
                             sender_number=subscriber.sms_campaign.callerid,
                             status='Unsent',
-                            content_type=ContentType.objects.get(model='smscampaignsubscriber'),
+                            content_type=ContentType.objects.get(model='smscampaignsubscriber', app_label='sms_module'),
                             object_id=subscriber.id,
                             sms_campaign=sms_campaign,
                         )

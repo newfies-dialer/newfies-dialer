@@ -184,8 +184,15 @@ func_install_dependencies(){
 
     case $DIST in
         'DEBIAN')
-            #Used by Node.js
-            echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
+            chk=`grep "backports" /etc/apt/sources.list|wc -l`
+            if [ $chk -lt 1 ] ; then
+                echo "Setup new sources.list entries"
+                #Used by Node.js
+                echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
+                #Used by PostgreSQL
+                echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
+                wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+            fi
             apt-get update
 
             export LANGUAGE=en_US.UTF-8
@@ -197,14 +204,11 @@ func_install_dependencies(){
             locale-gen pt_BR.UTF-8
             #dpkg-reconfigure locales
 
-            apt-get -y remove apache2.2-common apache2
+            apt-get -y remove apache2.2-common apache2 curl
             apt-get -y install sudo
 
             #Install Postgresql
             apt-get -y install libpq-dev
-            echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
-            wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
-            apt-get update
             apt-get -y install postgresql-9.3 postgresql-contrib-9.3
             pg_createcluster 9.3 main --start
             /etc/init.d/postgresql start
@@ -362,10 +366,10 @@ func_install_dependencies(){
 
     #Lua curl
     cd /usr/src/
-    rm -rf lua-curl-master lua-curl.zip
-    wget https://github.com/msva/lua-curl/archive/master.zip -O lua-curl.zip
+    rm -rf Lua-cURLv2-master lua-curl.zip
+    wget https://github.com/Lua-cURL/Lua-cURLv2/archive/master.zip -O lua-curl.zip
     unzip lua-curl.zip
-    cd lua-curl-master
+    cd Lua-cURLv2-master
     cmake -DUSE_LUA52=ON .
     make install
     #add cURL.so to lua libs

@@ -149,6 +149,7 @@ def customer_dashboard(request, on_index=None):
 
     total_record = dict()
     total_duration_sum = 0
+    total_billsec_sum = 0
     total_call_count = 0
     total_answered = 0
     total_not_answered = 0
@@ -225,7 +226,9 @@ def customer_dashboard(request, on_index=None):
                     user=request.user,
                     starting_date__range=(start_date, end_date))\
             .extra(select=select_data)\
-            .values('starting_date').annotate(Sum('duration'))\
+            .values('starting_date')\
+            .annotate(Sum('duration'))\
+            .annotate(Sum('billsec'))\
             .annotate(Avg('duration'))\
             .annotate(Count('starting_date'))\
             .order_by('starting_date')
@@ -238,6 +241,8 @@ def customer_dashboard(request, on_index=None):
         calls_dict_with_min = {}
 
         for call in calls:
+            total_duration_sum += call['duration__sum']
+            total_billsec_sum += call['billsec__sum']
             if int(search_type) >= SEARCH_TYPE.B_Last_7_days:
                 ctime = datetime(int(call['starting_date'][0:4]),
                                  int(call['starting_date'][5:7]),
@@ -440,6 +445,7 @@ def customer_dashboard(request, on_index=None):
         'campaign_phonebook_active_contact_count': pb_active_contact_count,
         'reached_contact': reached_contact,
         'total_duration_sum': total_duration_sum,
+        'total_billsec_sum': total_billsec_sum,
         'total_call_count': total_call_count,
         'total_answered': total_answered,
         'total_not_answered': total_not_answered,

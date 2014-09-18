@@ -135,6 +135,8 @@ def create_callrequest(campaign_id, amount, day_delta):
             object_id=1)
         print "new_callrequest: %s - %s" % (str(new_callrequest), str(created_date))
 
+        duration = random.randint(50, 1000)
+        billsec = duration - random.randint(0, 20)
         new_voipcall = VoIPCall(
             request_uuid=uuid1(),
             callid=uuid1(),
@@ -142,7 +144,8 @@ def create_callrequest(campaign_id, amount, day_delta):
             callrequest=new_callrequest,
             starting_date=created_date,
             phone_number=phonenumber,
-            duration=random.randint(50, 1000),
+            duration=duration,
+            billsec=billsec,
             disposition=weighted_choice(CALL_DISPOSITION),
             amd_status=choice(VOIPCALL_AMD_STATUS))
         new_voipcall.starting_date = created_date

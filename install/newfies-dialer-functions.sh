@@ -204,8 +204,8 @@ func_install_dependencies(){
             locale-gen pt_BR.UTF-8
             #dpkg-reconfigure locales
 
-            apt-get -y remove apache2.2-common apache2 curl
-            apt-get -y install sudo
+            apt-get -y remove apache2.2-common apache2
+            apt-get -y install sudo curl
 
             #Install Postgresql
             apt-get -y install libpq-dev

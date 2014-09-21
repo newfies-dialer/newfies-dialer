@@ -20,8 +20,8 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 require "constant"
 local DBH = require "dbhandler"
 --  Use FS dbh via ODBC
--- local dbh_fs = require "dbh_fs"
--- local dbh_fs = require "dbh_light"
+-- local DBH = require "dbh_fs"
+-- local DBH = require "dbh_light"
 local uuid4 = require "uuid4"
 
 -- Mode to flush the insert for the survey results. Set it to false for better performance,

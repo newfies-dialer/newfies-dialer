@@ -148,7 +148,7 @@ function DBH:get_cache_object(sqlquery, ttl)
         return cmsgpack.unpack(value)
     else
         --Not in cache
-        local res_get_objectdbh:connected() == false
+        local res_get_object
         self.dbh:query(sqlquery, function(row)
             res_get_object = row
             for k, v in pairs(res_get_object) do

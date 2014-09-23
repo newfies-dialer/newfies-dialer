@@ -4,6 +4,7 @@ from django.core.urlresolvers import reverse
 from django.template.defaultfilters import date
 from django.utils.translation import ugettext, ugettext_lazy as _
 from django.utils import timezone
+from django.utils.timezone import now
 from appointment.models.rules import Rule
 from appointment.models.calendars import Calendar
 from appointment.models.users import CalendarUser
@@ -17,21 +18,29 @@ import jsonfield
 import pytz
 
 
+def set_end_recurring_period():
+    return datetime.utcnow().replace(tzinfo=utc) + relativedelta(months=+1)
+
+
+def set_end():
+    return datetime.utcnow().replace(tzinfo=utc) + relativedelta(hours=+1)
+
+
 class Event(models.Model):
     """
     This model stores meta data for a event
     """
     title = models.CharField(verbose_name=_("label"), max_length=255)
     description = models.TextField(verbose_name=_("description"), null=True, blank=True)
-    start = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc)),
+    start = models.DateTimeField(default=now,
                                  verbose_name=_("start"))
-    end = models.DateTimeField(default=(lambda: datetime.utcnow().replace(tzinfo=utc) + relativedelta(hours=+1)),
+    end = models.DateTimeField(default=set_end,
                                verbose_name=_("end"), help_text=_("Must be later than the start"))
     creator = models.ForeignKey(CalendarUser, null=False, blank=False,
                                 verbose_name=_("calendar user"), related_name='creator')
     created_on = models.DateTimeField(verbose_name=_("created on"), default=timezone.now)
     end_recurring_period = models.DateTimeField(verbose_name=_("end recurring period"), null=True, blank=True,
-                                                default=(lambda: datetime.utcnow().replace(tzinfo=utc) + relativedelta(months=+1)),
+                                                default=set_end_recurring_period,
                                                 help_text=_("Used if the event recurs"))
     rule = models.ForeignKey(Rule, null=True, blank=True,
                              verbose_name=_("rule"), help_text=_("Recuring rules"))

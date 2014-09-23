@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
+from django.utils.timezone import now
 from appointment.constants import ALARM_METHOD, ALARM_STATUS, ALARM_RESULT, \
     ALARMREQUEST_STATUS
 from appointment.models.events import Event
@@ -47,8 +48,7 @@ class Alarm(models.Model):
                                      related_name="sms template")
     event = models.ForeignKey(Event, verbose_name=_("related to event"),
                               related_name="event")
-    date_start_notice = models.DateTimeField(verbose_name=_('alarm date'),
-                                             default=(lambda: datetime.utcnow().replace(tzinfo=utc)))
+    date_start_notice = models.DateTimeField(verbose_name=_('alarm date'), default=now)
     status = models.IntegerField(choices=list(ALARM_STATUS), default=ALARM_STATUS.PENDING,
                                  verbose_name=_("status"))
     result = models.IntegerField(choices=list(ALARM_RESULT), default=ALARM_RESULT.NORESULT,

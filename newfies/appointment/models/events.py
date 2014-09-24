@@ -126,7 +126,8 @@ class Event(models.Model):
         """
         start = datetime.utcnow().replace(tzinfo=utc)
         for occ in self.get_rrule_object():
-            if occ.replace(tzinfo=None) > start:
+            # if occ.replace(tzinfo=None) > start:
+            if occ > start:
                 return occ  # return the next occurent
 
     def copy_event(self, next_occurrence):

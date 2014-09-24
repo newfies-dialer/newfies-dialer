@@ -12,37 +12,38 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django_lets_go.utils import Choice
 
 
 class SMS_CAMPAIGN_STATUS(Choice):
-    START = 1, 'START'
-    PAUSE = 2, 'PAUSE'
-    ABORT = 3, 'ABORT'
-    END = 4, 'END'
+    START = 1, _('START')
+    PAUSE = 2, _('PAUSE')
+    ABORT = 3, _('ABORT')
+    END = 4, _('END')
 
 SMS_CAMPAIGN_STATUS_COLOR = {1: "green", 2: "blue", 3: "orange", 4: "red"}
 
 
 class SMS_SUBSCRIBER_STATUS(Choice):
-    PENDING = 1, _('pending').upper()
-    PAUSE = 2, _('pause').upper()
-    ABORT = 3, _('abort').upper()
-    FAIL = 4, _('fail').upper()
-    COMPLETE = 5, _('complete').upper()
-    IN_PROCESS = 6, _('in process').upper()
-    NOT_AUTHORIZED = 7, _('not authorized').upper()
+    PENDING = 1, _('PENDING')
+    PAUSE = 2, _('PAUSE')
+    ABORT = 3, _('ABORT')
+    FAIL = 4, _('FAIL')
+    COMPLETE = 5, _('COMPLETE')
+    IN_PROCESS = 6, _('IN process')
+    NOT_AUTHORIZED = 7, _('NOT authorized')
 
 
-class SMS_CAMPAIGN_COLUMN_NAME(Choice):
-    key = _('key').title()
-    name = _('name').title()
-    start_date = _('start date').title()
-    sms_gateway = _('SMS Gateway')
-    totalcontact = _('total contact').title()
-    status = _('status').title()
-    action = _('action').title()
+SMS_CAMPAIGN_COLUMN_NAME = {
+    'key': _('key'),
+    'name': _('name'),
+    'start_date': _('start date'),
+    'sms_gateway': _('SMS Gateway'),
+    'totalcontact': _('total contact'),
+    'status': _('status'),
+    'action': _('action'),
+}
 
 
 class SMS_NOTIFICATION_NAME(Choice):
@@ -55,13 +56,14 @@ class SMS_NOTIFICATION_NAME(Choice):
     sms_dialer_setting_configuration = 15, _('SMS dialer setting configuration')
 
 
-class SMS_REPORT_COLUMN_NAME(Choice):
-    send_date = _('send date').title()
-    recipient_number = _('recipient').title()
-    uuid = _('UUID')
-    status = _('status').title()
-    status_msg = _('status msg').title()
-    gateway = _('gateway').title()
+SMS_REPORT_COLUMN_NAME = {
+    'send_date': _('send date'),
+    'recipient_number': _('recipient'),
+    'uuid': _('UUID'),
+    'status': _('status'),
+    'status_msg': _('status msg'),
+    'gateway': _('gateway'),
+}
 
 
 class SMS_MESSAGE_STATUS(Choice):

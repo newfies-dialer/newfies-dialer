@@ -17,37 +17,38 @@ from django_lets_go.utils import Choice
 
 
 class CONTACT_STATUS(Choice):
-    ACTIVE = 1, _('active').upper()
-    INACTIVE = 0, _('inactive').upper()
+    ACTIVE = 1, _('active')
+    INACTIVE = 0, _('inactive')
 
 
 class CHOICE_TYPE(Choice):
-    CONTAINS = 1, _('contains').capitalize()
-    EQUALS = 2, _('equals').capitalize()
-    BEGINS_WITH = 3, _('begins with').capitalize()
-    ENDS_WITH = 4, _('ends with').capitalize()
+    CONTAINS = 1, _('contains')
+    EQUALS = 2, _('equals')
+    BEGINS_WITH = 3, _('begins with')
+    ENDS_WITH = 4, _('ends with')
 
 
 class STATUS_CHOICE(Choice):
-    INACTIVE = 0, _('inactive').upper()
-    ACTIVE = 1, _('active').upper()
-    ALL = 2, _('all').upper()
+    INACTIVE = 0, _('inactive')
+    ACTIVE = 1, _('active')
+    ALL = 2, _('all')
 
 
-class PHONEBOOK_COLUMN_NAME(Choice):
-    id = _('ID')
-    name = _('name')
-    description = _('description')
-    date = _('date')
-    contacts = _('contacts')
+PHONEBOOK_COLUMN_NAME = {
+    'id': _('ID'),
+    'name': _('name'),
+    'description': _('description'),
+    'date': _('date'),
+    'contacts': _('contacts')
+}
 
-
-class CONTACT_COLUMN_NAME(Choice):
-    id = _('ID')
-    phonebook = _('phonebook')
-    contact = _('contact')
-    last_name = _('last name')
-    first_name = _('first name')
-    email = _('email')
-    status = _('status')
-    date = _('date')
+CONTACT_COLUMN_NAME = {
+    'id': _('ID'),
+    'phonebook': _('phonebook'),
+    'contact': _('contact'),
+    'last_name': _('last name'),
+    'first_name': _('first name'),
+    'email': _('email'),
+    'status': _('status'),
+    'date': _('date')
+}

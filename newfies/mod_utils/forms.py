@@ -35,7 +35,7 @@ class Exportfile(forms.Form):
     """
     Abstract Form : export file in various format e.g. XLS, CSV, JSON
     """
-    export_to = forms.TypedChoiceField(label=_('export to').capitalize(), required=True,
+    export_to = forms.TypedChoiceField(label=_('Export to'), required=True,
                                        choices=list(Export_choice),
                                        widget=forms.RadioSelect(renderer=HorizRadioRenderer))
 

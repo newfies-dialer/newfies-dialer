@@ -12,8 +12,34 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.utils.translation import ugettext_lazy as _
 from django_lets_go.utils import Choice
+from django.utils.translation import ugettext_lazy as _
+
+
+CAMPAIGN_STATUS_COLOR = {1: "green", 2: "blue", 3: "orange", 4: "red"}
+
+CAMPAIGN_COLUMN_NAME = {
+    'key': _('key'),
+    'name': _('name'),
+    'start_date': _('start date'),
+    'type': _('type'),
+    'app': _('app'),
+    'contacts': _('contacts'),
+    'status': _('status'),
+    'frequency': _('frequency'),
+    'phonebook': _('phonebook')
+}
+
+SUBSCRIBER_COLUMN_NAME = {
+    'contact': _('contact'),
+    'updated_date': _('date'),
+    'count_attempt': _('attempts'),
+    'completion_count_attempt': _('completion attempts'),
+    'status': _('status'),
+    'disposition': _('disposition'),
+    'collected_data': _('response'),
+    'agent': _('agent')
+}
 
 
 class SUBSCRIBER_STATUS(Choice):
@@ -44,33 +70,8 @@ class CAMPAIGN_STATUS(Choice):
     ABORT = 3, _('ABORT')
     END = 4, _('END')
 
-CAMPAIGN_STATUS_COLOR = {1: "green", 2: "blue", 3: "orange", 4: "red"}
-
-
-class CAMPAIGN_COLUMN_NAME(Choice):
-    key = _('key')
-    name = _('name')
-    start_date = _('start date')
-    type = _('type')
-    app = _('app')
-    contacts = _('contacts')
-    status = _('status')
-    frequency = _('frequency')
-    phonebook = _('phonebook')
-
 
 class AMD_BEHAVIOR(Choice):
     ALWAYS = 1, _('ALWAYS PLAY MESSAGE')
     HUMAN_ONLY = 2, _('PLAY MESSAGE TO HUMAN ONLY')
     VOICEMAIL_ONLY = 3, _('LEAVE MESSAGE TO VOICEMAIL ONLY')
-
-
-class SUBSCRIBER_COLUMN_NAME(Choice):
-    contact = _('contact')
-    updated_date = _('date')
-    count_attempt = _('attempts')
-    completion_count_attempt = _('completion attempts')
-    status = _('status')
-    disposition = _('disposition')
-    collected_data = _('response')
-    agent = _('agent')

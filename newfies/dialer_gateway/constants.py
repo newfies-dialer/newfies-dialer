@@ -17,8 +17,8 @@ from django_lets_go.utils import Choice
 
 
 class GATEWAY_STATUS(Choice):
-    ACTIVE = 1, _('active').upper()
-    INACTIVE = 0, _('inactive').upper()
+    ACTIVE = 1, _('active')
+    INACTIVE = 0, _('inactive')
 
 
 class GATEWAY_PROTOCOL(Choice):

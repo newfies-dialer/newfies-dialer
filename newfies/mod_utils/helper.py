@@ -17,6 +17,6 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class Export_choice(Choice):
-    CSV = 'csv', _('csv').upper()
-    XLS = 'xls', _('xls').upper()
-    JSON = 'json', _('json').upper()
+    CSV = 'csv', _('CSV')
+    XLS = 'xls', _('XLS')
+    JSON = 'json', _('JSON')

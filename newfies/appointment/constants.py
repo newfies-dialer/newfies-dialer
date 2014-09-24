@@ -17,81 +17,82 @@ from django_lets_go.utils import Choice
 
 
 class EVENT_STATUS(Choice):
-    PENDING = 1, _('pending').upper()
-    COMPLETED = 2, _('completed').upper()
-    PAUSED = 3, _('paused').upper()
+    PENDING = 1, _('PENDING')
+    COMPLETED = 2, _('COMPLETED')
+    PAUSED = 3, _('PAUSED')
 
 
 class ALARM_STATUS(Choice):
-    PENDING = 1, _('pending').upper()
-    IN_PROCESS = 2, _('in_process').upper()
-    FAILURE = 3, _("failure").upper()
-    RETRY = 4, _('retry').upper()
-    SUCCESS = 5, _('success').upper()
+    PENDING = 1, _('PENDING')
+    IN_PROCESS = 2, _('IN_PROCESS')
+    FAILURE = 3, _("FAILURE")
+    RETRY = 4, _('RETRY')
+    SUCCESS = 5, _('SUCCESS')
 
 
 class ALARM_RESULT(Choice):
-    NORESULT = 0, _('no result').upper()
-    CONFIRMED = 1, _('confirmed').upper()
-    CANCELLED = 2, _('cancelled').upper()
-    RESCHEDULED = 3, _('rescheduled').upper()
+    NORESULT = 0, _('NO RESULT')
+    CONFIRMED = 1, _('CONFIRMED')
+    CANCELLED = 2, _('CANCELLED')
+    RESCHEDULED = 3, _('RESCHEDULED')
 
 
 class ALARM_METHOD(Choice):
-    CALL = 1, _('call').upper()
-    SMS = 2, _('sms').upper()
-    EMAIL = 3, _('email').upper()
+    CALL = 1, _('CALL')
+    SMS = 2, _('SMS')
+    EMAIL = 3, _('EMAIL')
 
 
 class ALARMREQUEST_STATUS(Choice):
-    PENDING = 1, _("pending").upper()
-    IN_PROCESS = 2, _("in_process").upper()
-    FAILURE = 3, _("failure").upper()
-    RETRY = 4, _("retry").upper()
-    SUCCESS = 5, _("success").upper()
+    PENDING = 1, _("PENDING")
+    IN_PROCESS = 2, _("IN PROCESS")
+    FAILURE = 3, _("FAILURE")
+    RETRY = 4, _("RETRY")
+    SUCCESS = 5, _("SUCCESS")
 
 
-class CALENDAR_SETTING_COLUMN_NAME(Choice):
-    label = _('label')
-    callerid = _('caller ID Number')
-    caller_name = _('caller ID Name')
-    call_timeout = _('call Timeout')
-    survey = _('survey')
-    aleg_gateway = _('A-leg Gateway')
-    sms_gateway = _('SMS Gateway')
+CALENDAR_SETTING_COLUMN_NAME = {
+    'label': _('label'),
+    'callerid': _('caller ID Number'),
+    'caller_name': _('caller ID Name'),
+    'call_timeout': _('call Timeout'),
+    'survey': _('survey'),
+    'aleg_gateway': _('A-leg Gateway'),
+    'sms_gateway': _('SMS Gateway')
+}
 
+CALENDAR_USER_COLUMN_NAME = {
+    'name': _('name'),
+    'email': _('email'),
+    'calendar_setting': _('Calendar Setting'),
+    'date': _('date')
+}
 
-class CALENDAR_USER_COLUMN_NAME(Choice):
-    name = _('name')
-    email = _('email')
-    calendar_setting = _('Calendar Setting')
-    date = _('date')
+CALENDAR_COLUMN_NAME = {
+    'name': _('name'),
+    'user': _('calendar user'),
+    'max_concurrent': _('max concurrent'),
+    'created_date': _('date')
+}
 
+EVENT_COLUMN_NAME = {
+    'start': _('start'),
+    'end': _('end'),
+    'title': _('title'),
+    'end_recurring_period': _('end period'),
+    'calendar': _('calendar'),
+    'status': _('status'),
+    'created_on': _('date')
+}
 
-class CALENDAR_COLUMN_NAME(Choice):
-    name = _('name')
-    user = _('calendar user')
-    max_concurrent = _('max concurrent')
-    created_date = _('date')
-
-
-class EVENT_COLUMN_NAME(Choice):
-    start = _('start')
-    end = _('end')
-    title = _('title')
-    end_recurring_period = _('end period')
-    calendar = _('calendar')
-    status = _('status')
-    created_on = _('date')
-
-
-class ALARM_COLUMN_NAME(Choice):
-    alarm_phonenumber = _('phone number')
-    alarm_email = _('email')
-    daily_start = _('daily start')
-    daily_stop = _('daily stop')
-    method = _('method')
-    survey = _('survey')
-    event = _('event')
-    date_start_notice = _('start notice')
-    status = _('status')
+ALARM_COLUMN_NAME = {
+    'alarm_phonenumber': _('phone number'),
+    'alarm_email': _('email'),
+    'daily_start': _('daily start'),
+    'daily_stop': _('daily stop'),
+    'method': _('method'),
+    'survey': _('survey'),
+    'event': _('event'),
+    'date_start_notice': _('start notice'),
+    'status': _('status')
+}

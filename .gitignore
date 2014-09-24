@@ -5,6 +5,7 @@
 *devserver*
 *.idea*
 *.egg
+*.egg-info
 test.db
 newfies/settings_local.py
 newfies/newfies_dialer/settings_local.py

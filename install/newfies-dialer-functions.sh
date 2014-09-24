@@ -343,6 +343,7 @@ func_install_dependencies(){
     esac
 
     #Install Lua dependencies
+    luarocks-5.2 install luasec  # install luasec to install inspect via https
     luarocks-5.2 install luasocket
     luarocks-5.2 install lualogging
     luarocks-5.2 install loop

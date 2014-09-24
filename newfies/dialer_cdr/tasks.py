@@ -622,8 +622,16 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
-            logger.warn('dial_command : %s' % dial_command)
 
+            # Load balance on testing
+            # from random import randint, seed
+            # seed()
+            # randval = randint(1, 2)
+            # if randval == 1:
+            #     dial_command = dial_command.replace('88.208.208.244', '88.208.208.209')
+            # logger.warn('dial_command (%d): %s' % (randval, dial_command))
+
+            logger.warn('dial_command : %s' % dial_command)
             request_uuid = dial_out(dial_command)
 
             debug_query(14)

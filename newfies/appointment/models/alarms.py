@@ -22,20 +22,20 @@ class Alarm(models.Model):
                                     verbose_name=_('notify to email'))
     daily_start = models.TimeField(verbose_name=_('daily start'), default='00:00:00')
     daily_stop = models.TimeField(verbose_name=_('daily stop'), default='23:59:59')
-    advance_notice = models.IntegerField(null=True, blank=True, default=0,
+    advance_notice = models.IntegerField(null=False, blank=False, default=0,
                                          verbose_name=_('advance notice'),
                                          help_text=_("Seconds to start processing an alarm before the alarm date/time"))
-    maxretry = models.IntegerField(null=True, blank=True, default=0,
+    maxretry = models.IntegerField(null=False, blank=False, default=0,
                                    verbose_name=_('max retry'),
                                    help_text=_("number of retries"))
-    retry_delay = models.IntegerField(null=True, blank=True, default=0,
+    retry_delay = models.IntegerField(null=False, blank=False, default=0,
                                       verbose_name=_('retry delay'),
                                       help_text=_("Seconds to wait between retries"))
-    num_attempt = models.IntegerField(null=True, blank=True, default=0,
+    num_attempt = models.IntegerField(null=False, blank=False, default=0,
                                      verbose_name=_('number of attempts'))
     method = models.IntegerField(choices=list(ALARM_METHOD),
                                  default=ALARM_METHOD.CALL,
-                                 verbose_name=_("method"), blank=True, null=True)
+                                 verbose_name=_("method"), blank=False, null=False)
     survey = models.ForeignKey(Survey, verbose_name=_("survey"),
                                blank=True, null=True,
                                related_name="survey")

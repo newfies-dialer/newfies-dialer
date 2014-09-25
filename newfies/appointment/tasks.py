@@ -268,5 +268,7 @@ class alarmrequest_dispatcher(PeriodicTask):
             obj_alarmreq.status = ALARMREQUEST_STATUS.IN_PROCESS
             obj_alarmreq.save()
             # Increment num_attempt
+            if not obj_alarmreq.alarm.num_attempt:
+                obj_alarmreq.alarm.num_attempt = 0
             obj_alarmreq.alarm.num_attempt = obj_alarmreq.alarm.num_attempt + 1
             obj_alarmreq.alarm.save()

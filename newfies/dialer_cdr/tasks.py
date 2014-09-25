@@ -676,13 +676,15 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 def check_retry_alarm(alarm_request_id):
     obj_alarmreq = AlarmRequest.objects.get(id=alarm_request_id)
     if obj_alarmreq.alarm.maxretry >= obj_alarmreq.alarm.num_attempt:
+        logger.info('Alarm maxretry >= num_attempt')
         obj_alarmreq.update_status(ALARMREQUEST_STATUS.RETRY)
         obj_alarmreq.alarm.retry_alarm()
     else:
+        logger.info('Alarm maxretry Not >= num_attempt')
         obj_alarmreq.update_status(ALARMREQUEST_STATUS.FAILURE)
+
         #Check phonenumber_sms_failure
         if obj_alarmreq.alarm.phonenumber_sms_failure:
-
             # TODO: Use template SMS key (failure_reach) with this text as default
             failure_sms = "we haven't been able to reach '" \
                 + str(obj_alarmreq.alarm.alarm_phonenumber) \

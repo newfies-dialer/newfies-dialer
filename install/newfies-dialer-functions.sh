@@ -134,15 +134,6 @@ func_check_dependencies() {
     echo "Checking Python dependencies..."
     echo ""
 
-    #Check South
-    grep_pip=`pip freeze| grep South`
-    if echo $grep_pip | grep -i "South" > /dev/null ; then
-        echo "OK : South installed..."
-    else
-        echo "Error : South not installed..."
-        exit 1
-    fi
-
     #Check Django
     grep_pip=`pip freeze| grep Django`
     if echo $grep_pip | grep -i "Django" > /dev/null ; then

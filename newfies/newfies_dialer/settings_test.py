@@ -17,10 +17,7 @@
 from settings import *
 
 
-# make tests faster
-# False : test will make the test database be created using syncdb
-SOUTH_TESTS_MIGRATE = False
-
+# Build faster tests
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',

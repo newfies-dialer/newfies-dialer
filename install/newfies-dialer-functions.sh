@@ -472,7 +472,7 @@ func_install_pip_deps(){
     #For python 2.6 only
     pip install importlib
 
-    echo "Install basic requirements..."
+    echo "Install Basic requirements..."
     for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
     do
         echo "pip install $line"
@@ -483,6 +483,12 @@ func_install_pip_deps(){
     do
         echo "pip install $line"
         pip install $line --allow-all-external --allow-unverified django-admin-tools
+    done
+    echo "Install Test requirements..."
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/test-requirements.txt | grep -v \#)
+    do
+        echo "pip install $line"
+        pip install $line
     done
 
     #Install Python ESL / this needs to be done within the virtualenv

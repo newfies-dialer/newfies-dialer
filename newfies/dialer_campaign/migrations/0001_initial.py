@@ -11,10 +11,10 @@ from django.conf import settings
 class Migration(migrations.Migration):
 
     dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('sms', '__first__'),
+        ('sms', '0001_initial'),
         ('dnc', '0001_initial'),
         ('audiofield', '__first__'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('dialer_contact', '0001_initial'),
         ('dialer_gateway', '__first__'),
         ('contenttypes', '0001_initial'),

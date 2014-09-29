@@ -9,8 +9,8 @@ import django_lets_go.language_field
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('dialer_campaign', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('dialer_campaign', '0001_initial'),
         ('audiofield', '__first__'),
         ('dialer_cdr', '0001_initial'),
     ]
@@ -75,7 +75,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('order', models.PositiveIntegerField(default=1, editable=False, db_index=True)),
-                ('type', models.IntegerField(default=1, max_length=20, verbose_name='section type', choices=[(6, 'Call transfer'), (4, 'Capture digits'), (8, 'Conference'), (9, 'DNC'), (7, 'Hangup'), (2, 'Multi-choice'), (1, 'Play message'), (3, 'Rating question'), (5, 'Record message'), (10, 'SMS')])),
+                ('type', models.IntegerField(default=1, max_length=20, verbose_name='section type', choices=[(6, 'CALL TRANSFER'), (4, 'CAPTURE DIGITS'), (8, 'CONFERENCE'), (9, 'DNC'), (7, 'HANGUP'), (2, 'MULTI-CHOICE'), (1, 'PLAY MESSAGE'), (3, 'RATING QUESTION'), (5, 'RECORD MESSAGE'), (10, 'SMS')])),
                 ('question', models.CharField(help_text='Example: hotel service rating', max_length=500, verbose_name='question')),
                 ('script', models.CharField(help_text='Example: Press a key between 1 to 5, press pound key when done or Hello {first_name} {last_name}, please press a key between 1 to 5', max_length=1000, null=True, blank=True)),
                 ('retries', models.IntegerField(default=0, max_length=1, blank=True, help_text='retries until valid input', null=True, verbose_name='retries')),
@@ -116,7 +116,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
                 ('order', models.PositiveIntegerField(default=1, editable=False, db_index=True)),
-                ('type', models.IntegerField(default=1, max_length=20, verbose_name='section type', choices=[(6, 'Call transfer'), (4, 'Capture digits'), (8, 'Conference'), (9, 'DNC'), (7, 'Hangup'), (2, 'Multi-choice'), (1, 'Play message'), (3, 'Rating question'), (5, 'Record message'), (10, 'SMS')])),
+                ('type', models.IntegerField(default=1, max_length=20, verbose_name='section type', choices=[(6, 'CALL TRANSFER'), (4, 'CAPTURE DIGITS'), (8, 'CONFERENCE'), (9, 'DNC'), (7, 'HANGUP'), (2, 'MULTI-CHOICE'), (1, 'PLAY MESSAGE'), (3, 'RATING QUESTION'), (5, 'RECORD MESSAGE'), (10, 'SMS')])),
                 ('question', models.CharField(help_text='Example: hotel service rating', max_length=500, verbose_name='question')),
                 ('script', models.CharField(help_text='Example: Press a key between 1 to 5, press pound key when done or Hello {first_name} {last_name}, please press a key between 1 to 5', max_length=1000, null=True, blank=True)),
                 ('retries', models.IntegerField(default=0, max_length=1, blank=True, help_text='retries until valid input', null=True, verbose_name='retries')),

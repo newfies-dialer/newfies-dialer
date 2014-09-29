@@ -92,7 +92,7 @@ class Callrequest(Model):
     **Name of DB table**: dialer_callrequest
     """
     user = models.ForeignKey('auth.User')
-    request_uuid = models.CharField(verbose_name=_("RequestUUID"), default=str_uuid1(), db_index=True,
+    request_uuid = models.CharField(verbose_name=_("RequestUUID"), default=str_uuid1, db_index=True,
                                     max_length=120, null=True, blank=True)
     aleg_uuid = models.CharField(max_length=120, help_text=_("a-leg call-ID"), null=True, blank=True)
     call_time = models.DateTimeField(default=now)
@@ -179,7 +179,7 @@ class VoIPCall(models.Model):
     """
     user = models.ForeignKey('auth.User', related_name='Call Sender')
     request_uuid = models.CharField(verbose_name=_("RequestUUID"), null=True, blank=True,
-                                    default=str_uuid1(), max_length=120)
+                                    default=str_uuid1, max_length=120)
     used_gateway = models.ForeignKey(Gateway, null=True, blank=True, verbose_name=_("used gateway"))
     callrequest = models.ForeignKey(Callrequest, null=True, blank=True, verbose_name=_("callrequest"))
     callid = models.CharField(max_length=120, help_text=_("VoIP call-ID"))

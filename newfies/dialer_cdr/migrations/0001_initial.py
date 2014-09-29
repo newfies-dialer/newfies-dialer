@@ -2,6 +2,7 @@
 from __future__ import unicode_literals
 
 from django.db import models, migrations
+import dialer_cdr.models
 import django.utils.timezone
 from django.conf import settings
 
@@ -21,13 +22,13 @@ class Migration(migrations.Migration):
             name='Callrequest',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('request_uuid', models.CharField(default=b'6f3107fe-4303-11e4-9422-5c514f6a0f72', max_length=120, blank=True, null=True, verbose_name='RequestUUID', db_index=True)),
+                ('request_uuid', models.CharField(default=dialer_cdr.models.str_uuid1, max_length=120, blank=True, null=True, verbose_name='RequestUUID', db_index=True)),
                 ('aleg_uuid', models.CharField(help_text='a-leg call-ID', max_length=120, null=True, blank=True)),
                 ('call_time', models.DateTimeField(default=django.utils.timezone.now)),
                 ('created_date', models.DateTimeField(auto_now_add=True, verbose_name='date')),
                 ('updated_date', models.DateTimeField(auto_now=True)),
                 ('call_type', models.IntegerField(default=1, null=True, verbose_name='call request type', blank=True, choices=[(1, 'ALLOW RETRY'), (2, 'CANNOT RETRY'), (3, 'RETRY DONE')])),
-                ('status', models.IntegerField(default=1, choices=[(5, 'Abort'), (7, 'Calling'), (2, 'Failure'), (6, 'Pause'), (1, 'Pending'), (3, 'Retry'), (4, 'Success')], blank=True, null=True, verbose_name='status', db_index=True)),
+                ('status', models.IntegerField(default=1, choices=[(5, 'abort'), (7, 'calling'), (2, 'failure'), (6, 'pause'), (1, 'pending'), (3, 'retry'), (4, 'success')], blank=True, null=True, verbose_name='status', db_index=True)),
                 ('callerid', models.CharField(help_text='outbound Caller ID', max_length=80, verbose_name='Caller ID Number', blank=True)),
                 ('caller_name', models.CharField(help_text='outbound caller-Name', max_length=80, verbose_name='caller name', blank=True)),
                 ('phone_number', models.CharField(max_length=80, verbose_name='phone number')),
@@ -60,7 +61,7 @@ class Migration(migrations.Migration):
             name='VoIPCall',
             fields=[
                 ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
-                ('request_uuid', models.CharField(default=b'6f31932c-4303-11e4-9422-5c514f6a0f72', max_length=120, null=True, verbose_name='RequestUUID', blank=True)),
+                ('request_uuid', models.CharField(default=dialer_cdr.models.str_uuid1, max_length=120, null=True, verbose_name='RequestUUID', blank=True)),
                 ('callid', models.CharField(help_text='VoIP call-ID', max_length=120)),
                 ('callerid', models.CharField(max_length=120, verbose_name='CallerID')),
                 ('phone_number', models.CharField(help_text='the international number of the recipient, without the leading +', max_length=120, null=True, verbose_name='phone number', blank=True)),
@@ -74,7 +75,7 @@ class Migration(migrations.Migration):
                 ('hangup_cause', models.CharField(max_length=40, null=True, verbose_name='hangup cause', blank=True)),
                 ('hangup_cause_q850', models.CharField(max_length=10, null=True, blank=True)),
                 ('leg_type', models.SmallIntegerField(default=1, null=True, verbose_name='leg', blank=True, choices=[(1, 'A-Leg'), (2, 'B-Leg')])),
-                ('amd_status', models.SmallIntegerField(default=1, null=True, verbose_name='AMD Status', blank=True, choices=[(2, 'Machine'), (1, 'Person'), (3, 'Unsure')])),
+                ('amd_status', models.SmallIntegerField(default=1, null=True, verbose_name='AMD Status', blank=True, choices=[(2, 'MACHINE'), (1, 'PERSON'), (3, 'UNSURE')])),
                 ('callrequest', models.ForeignKey(verbose_name='callrequest', blank=True, to='dialer_cdr.Callrequest', null=True)),
                 ('dialcode', models.ForeignKey(blank=True, to='country_dialcode.Prefix', help_text='select prefix', null=True, verbose_name='destination')),
                 ('used_gateway', models.ForeignKey(verbose_name='used gateway', blank=True, to='dialer_gateway.Gateway', null=True)),

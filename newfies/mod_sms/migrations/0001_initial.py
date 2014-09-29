@@ -10,8 +10,8 @@ import mod_sms.models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sms', '0001_initial'),
         ('dialer_contact', '0001_initial'),
+        ('sms', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
     ]
 

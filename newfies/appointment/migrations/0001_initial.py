@@ -13,14 +13,9 @@ import django_lets_go.language_field
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('sms', '0001_initial'),
-        ('survey', '0001_initial'),
-        ('mod_mailer', '__first__'),
-        ('dialer_cdr', '0001_initial'),
-        ('mod_sms', '0001_initial'),
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('audiofield', '__first__'),
         ('dialer_gateway', '__first__'),
+        ('sms', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('auth', '0002_calendaruser_manager_staff'),
     ]
 
@@ -63,8 +58,6 @@ class Migration(migrations.Migration):
                 ('callstatus', models.IntegerField(default=0, null=True, blank=True)),
                 ('duration', models.IntegerField(default=0, null=True, blank=True)),
                 ('created_date', models.DateTimeField(auto_now_add=True, verbose_name='date')),
-                ('alarm', models.ForeignKey(related_name=b'request_alarm', blank=True, to='appointment.Alarm', help_text='select alarm', null=True, verbose_name='alarm')),
-                ('callrequest', models.ForeignKey(related_name=b'callrequest_alarm', blank=True, to='dialer_cdr.Callrequest', help_text='select call request', null=True, verbose_name='Call Request')),
             ],
             options={
                 'verbose_name': 'alarm request',
@@ -80,7 +73,6 @@ class Migration(migrations.Migration):
                 ('name', models.CharField(max_length=200, verbose_name='name')),
                 ('max_concurrent', models.IntegerField(default=0, help_text='Max concurrent is not implemented', null=True, blank=True)),
                 ('created_date', models.DateTimeField(auto_now_add=True, verbose_name='date')),
-                ('user', models.ForeignKey(related_name=b'calendar user', blank=True, to='auth.CalendarUser', help_text='select user', null=True, verbose_name='calendar user')),
             ],
             options={
                 'verbose_name': 'calendar',
@@ -103,9 +95,6 @@ class Migration(migrations.Migration):
                 ('updated_date', models.DateTimeField(auto_now=True)),
                 ('aleg_gateway', models.ForeignKey(verbose_name='a-leg gateway', to='dialer_gateway.Gateway', help_text='select gateway to use')),
                 ('sms_gateway', models.ForeignKey(related_name=b'sms_gateway', verbose_name='SMS gateway', to='sms.Gateway', help_text='select SMS gateway')),
-                ('survey', models.ForeignKey(related_name=b'calendar_survey', verbose_name='sealed survey', to='survey.Survey')),
-                ('user', models.ForeignKey(related_name=b'manager_user', verbose_name='manager', to=settings.AUTH_USER_MODEL, help_text='select manager')),
-                ('voicemail_audiofile', models.ForeignKey(verbose_name='voicemail audio file', blank=True, to='audiofield.AudioFile', null=True)),
             ],
             options={
                 'db_table': 'calendar_setting',
@@ -208,30 +197,6 @@ class Migration(migrations.Migration):
             model_name='event',
             name='rule',
             field=models.ForeignKey(blank=True, to='appointment.Rule', help_text='Recuring rules', null=True, verbose_name='rule'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='alarm',
-            name='event',
-            field=models.ForeignKey(related_name=b'event', verbose_name='related to event', to='appointment.Event'),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='alarm',
-            name='mail_template',
-            field=models.ForeignKey(related_name=b'mail template', verbose_name='mail', blank=True, to='mod_mailer.MailTemplate', null=True),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='alarm',
-            name='sms_template',
-            field=models.ForeignKey(related_name=b'sms template', verbose_name='SMS', blank=True, to='mod_sms.SMSTemplate', null=True),
-            preserve_default=True,
-        ),
-        migrations.AddField(
-            model_name='alarm',
-            name='survey',
-            field=models.ForeignKey(related_name=b'survey', verbose_name='survey', blank=True, to='survey.Survey', null=True),
             preserve_default=True,
         ),
     ]

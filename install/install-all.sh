@@ -22,7 +22,7 @@
 #
 
 #Set branch to install develop / master
-BRANCH='master'
+BRANCH='develop'
 
 # Identify Linux Distribution type
 func_identify_os() {

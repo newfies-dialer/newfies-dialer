@@ -197,12 +197,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
-    # 'django.contrib.markup',
     'django_countries',
     'admin_tools_stats',
     'genericadmin',
     'mailer',
-    #'south',
     'djcelery',
     'audiofield',
     # Tagging broken with Django 1.7
@@ -235,7 +233,6 @@ INSTALLED_APPS = (
     'appointment',
     'mod_mailer',
     'mod_utils',
-    #'raven.contrib.django',
     'frontend_notification',
     'django_nvd3',
     'rest_framework',
@@ -508,10 +505,6 @@ EMAIL_ADMIN = 'newfies_admin@localhost.com'
 
 # ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'
-
-#TASTYPIE API
-#============
-API_ALLOWED_IP = ['127.0.0.1', 'localhost']
 
 #SENTRY SETTINGS
 #===============

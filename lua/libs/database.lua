@@ -107,7 +107,7 @@ function Database:load_survey_section(survey_id)
     local list = {}
     local low_order = -1
     for i,row in pairs(qresult) do
-        self:db_debugger("DEBUG", string.format("id:%15d  question:%-15s type:%-15s order:%-15s", row.id, row.question, row.type, row.order))
+        self:db_debugger("DEBUG", string.format("id:%15d question:%-15s type:%-15s order:%-15s", row.id, row.question, row.type, row.order))
         if tonumber(row.order) < low_order or low_order < 0 then
             low_order = tonumber(row.order)
             self.start_node = row.id

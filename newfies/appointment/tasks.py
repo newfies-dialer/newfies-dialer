@@ -82,7 +82,7 @@ class event_dispatcher(PeriodicTask):
                 # Copy the alarm link to the event
                 alarm_list = Alarm.objects.filter(event=obj_event)
                 for obj_alarm in alarm_list:
-                    obj_alarm.copy_alarm(new_event)
+                    obj_alarm.copy_alarm(new_event, next_occurrence)
 
             # Mark the event as COMPLETED
             obj_event.status = EVENT_STATUS.COMPLETED

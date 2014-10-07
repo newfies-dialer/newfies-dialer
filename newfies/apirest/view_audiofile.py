@@ -77,3 +77,6 @@ class AudioFileViewSet(viewsets.ModelViewSet):
 
         serializer = AudioFileSerializer(queryset, many=True)
         return Response(serializer.data)
+
+    # def pre_save(self, obj):
+    #     obj.user = self.request.user

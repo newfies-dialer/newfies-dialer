@@ -86,7 +86,7 @@ class Alarm(models.Model):
             timediff = self.date_start_notice - tday
             return timediff.total_seconds()
 
-    def copy_alarm(self, new_event):
+    def copy_alarm(self, new_event, next_occurrence):
         """
         Create a copy of the Alarm
         """
@@ -104,7 +104,7 @@ class Alarm(models.Model):
             survey=self.survey,
             mail_template=self.mail_template,
             sms_template=self.sms_template,
-            date_start_notice=self.date_start_notice,
+            date_start_notice=next_occurrence,
             #result=self.result,
             url_cancel=self.url_cancel,
             phonenumber_sms_failure=self.phonenumber_sms_failure,

@@ -320,7 +320,7 @@ class AlarmForm(ModelForm):
 
     class Meta:
         model = Alarm
-        exclude = ('status', )
+        exclude = ('status', 'num_attempt', )
         widgets = {
             'date_start_notice': DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}),
         }

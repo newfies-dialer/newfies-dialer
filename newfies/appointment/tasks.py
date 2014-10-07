@@ -58,24 +58,22 @@ class event_dispatcher(PeriodicTask):
 
     @only_one(ikey="event_dispatcher", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger.info("TASK :: event_dispatcher")
-
         # List all the events where event.start > NOW() - 12 hours and status = EVENT_STATUS.PENDING
         start_from = datetime.utcnow().replace(tzinfo=utc) - timedelta(hours=12)
         start_to = datetime.utcnow().replace(tzinfo=utc)
         event_list = Event.objects.filter(start__gte=start_from, start__lte=start_to, status=EVENT_STATUS.PENDING)
+
+        logger.info("TASK :: event_dispatcher - #events:%d" % len(event_list))
         for obj_event in event_list:
-            try:
-                # Get and perform alarm
-                obj_alarm = Alarm.objects.get(event=obj_event)
-                perform_alarm.delay(obj_event, obj_alarm)
-            except ObjectDoesNotExist:
-                pass
+            # try:
+            #     # Get and perform alarm
+            #     obj_alarm = Alarm.objects.get(event=obj_event)
+            #     perform_alarm.delay(obj_event, obj_alarm)
+            # except ObjectDoesNotExist:
+            #     pass
 
             # Check if need to create a sub event in the future
             next_occurrence = obj_event.get_next_occurrence()
-            print "next_occurrence"
-            print next_occurrence
 
             if next_occurrence:
                 # The result of get_next_occurrences help to create the next event
@@ -84,7 +82,7 @@ class event_dispatcher(PeriodicTask):
                 # Copy the alarm link to the event
                 alarm_list = Alarm.objects.filter(event=obj_event)
                 for obj_alarm in alarm_list:
-                    obj_alarm.copy_alarm(new_event)
+                    obj_alarm.copy_alarm(new_event, next_occurrence)
 
             # Mark the event as COMPLETED
             obj_event.status = EVENT_STATUS.COMPLETED
@@ -111,13 +109,13 @@ class alarm_dispatcher(PeriodicTask):
 
     @only_one(ikey="alarm_dispatcher", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger.info("TASK :: alarm_dispatcher")
-
         # Select Alarm where date_start_notice >= now() - 60 minutes and <= now() + 5 minutes
         start_time = datetime.utcnow().replace(tzinfo=utc) + relativedelta(minutes=-60)
         end_time = datetime.utcnow().replace(tzinfo=utc) + relativedelta(minutes=+5)
         alarm_list = Alarm.objects.filter(date_start_notice__range=(start_time, end_time),
                                           status=ALARM_STATUS.PENDING).order_by('date_start_notice')
+
+        logger.info("TASK :: alarm_dispatcher - #alarms:%d" % len(alarm_list))
         # Browse all the Alarm found
         for obj_alarm in alarm_list:
             # Check if there is an existing Event
@@ -146,11 +144,10 @@ def perform_alarm(obj_event, obj_alarm):
     Task to perform the alarm, this will send the alarms via several mean such
     as Call, SMS and Email
     """
-    logger.info("TASK :: perform_alarm -> %s" % obj_alarm.method)
+    logger.info("TASK :: perform_alarm -> %d-%s" % (obj_alarm.id, obj_alarm.method))
 
     if obj_alarm.method == ALARM_METHOD.CALL:
         # send alarm via CALL
-        print "perform_alarm ALARM_METHOD.CALL"
         AlarmRequest.objects.create(
             alarm=obj_alarm,
             date=datetime.utcnow().replace(tzinfo=utc)
@@ -158,15 +155,12 @@ def perform_alarm(obj_event, obj_alarm):
 
     elif obj_alarm.method == ALARM_METHOD.SMS:
         # send alarm via SMS
-        print "perform_alarm ALARM_METHOD.SMS"
         # Mark the Alarm as SUCCESS
         obj_alarm.status = ALARM_STATUS.SUCCESS
         obj_alarm.save()
 
     elif obj_alarm.method == ALARM_METHOD.EMAIL:
         # send alarm via EMAIL
-        print "perform_alarm ALARM_METHOD.EMAIL"
-
         if obj_alarm.alarm_email and obj_alarm.mail_template:
             # create MailSpooler object
             MailSpooler.objects.create(

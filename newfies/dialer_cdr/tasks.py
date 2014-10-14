@@ -559,8 +559,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 send_digits = check_senddigit[1] + check_senddigit[2]
                 dialout_phone_number = check_senddigit[0]
 
-            args_list.append("origination_caller_id_number=%s" % obj_callrequest.callerid)
-            args_list.append("origination_caller_id_name='%s'" % obj_callrequest.caller_name)
+            if obj_callrequest.callerid and len(obj_callrequest.callerid) > 0:
+                args_list.append("origination_caller_id_number=%s" % obj_callrequest.callerid)
+            if obj_callrequest.caller_name and len(obj_callrequest.caller_name) > 0:
+                args_list.append("origination_caller_id_name='%s'" % obj_callrequest.caller_name)
 
             #Add App Vars
             args_list.append("campaign_id=%s,subscriber_id=%s,alarm_request_id=%s,used_gateway_id=%s,callrequest_id=%s,contact_id=%s" %

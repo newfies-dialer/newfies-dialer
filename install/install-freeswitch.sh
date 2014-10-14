@@ -30,7 +30,7 @@ KERNELARCH=$(uname -p)
 # Valid Freeswitch versions are : v1.2.stable
 #FS_VERSION=v1.2.stable
 FS_VERSION=v1.4
-
+SCRIPT_NOTICE="This script is only intended to run on Debian 7.X"
 
 # Identify Linux Distribution type
 if [ -f /etc/debian_version ] ; then
@@ -38,7 +38,7 @@ if [ -f /etc/debian_version ] ; then
 elif [ -f /etc/redhat-release ] ; then
     DIST='CENTOS'
 else
-    echo "\n\nThis Installer should be run on a Debian 7.X or CentOS 6.X"
+    echo $SCRIPT_NOTICE
     exit 1
 fi
 

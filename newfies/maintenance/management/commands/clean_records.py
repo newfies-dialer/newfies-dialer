@@ -17,6 +17,7 @@ from optparse import make_option
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_cdr.models import Callrequest, VoIPCall
 from dialer_contact.models import Phonebook, Contact
+from survey.models import Survey, Section, Branching, Result, ResultAggregate
 #from survey.models import Section
 from datetime import datetime
 from django.utils.timezone import utc
@@ -120,4 +121,50 @@ def clean_records(older_than_day):
         print "Deleting Contact => : %s" % obj
         obj.delete()
 
+    #Delete old ResultAggregates
+    print "Deleting old ResultAggregates => number to delete: %(count)s" % \
+        {'count': ResultAggregate.objects.filter(created_date__lt=old_date).count()}
+
+    list_obj = ResultAggregate.objects.filter(created_date__lt=old_date)
+    for obj in list_obj:
+        print "Deleting ResultAggregate => : %s" % obj
+        obj.delete()
+
+    #Delete old Result
+    print "Deleting old Result => number to delete: %(count)s" % \
+        {'count': Result.objects.filter(created_date__lt=old_date).count()}
+
+    list_obj = Result.objects.filter(created_date__lt=old_date)
+    for obj in list_obj:
+        print "Deleting Result => : %s" % obj
+        obj.delete()
+
+    #Delete old Branchings
+    print "Deleting old Branchings => number to delete: %(count)s" % \
+        {'count': Branching.objects.filter(created_date__lt=old_date).count()}
+
+    list_obj = Branching.objects.filter(created_date__lt=old_date)
+    for obj in list_obj:
+        print "Deleting Branching => : %s" % obj
+        obj.delete()
+
+    #Delete old Sections
+    print "Deleting old Sections => number to delete: %(count)s" % \
+        {'count': Section.objects.filter(created_date__lt=old_date).count()}
+
+    list_obj = Section.objects.filter(created_date__lt=old_date)
+    for obj in list_obj:
+        print "Deleting Section => : %s" % obj
+        obj.delete()
+
+    #Delete old Surveys
+    print "Deleting old Surveys => number to delete: %(count)s" % \
+        {'count': Survey.objects.filter(created_date__lt=old_date).count()}
+
+    list_obj = Survey.objects.filter(created_date__lt=old_date)
+    for obj in list_obj:
+        print "Deleting Survey => : %s" % obj
+        obj.delete()
+
+    # -------------------------------
     print "The cleaning is finished!"

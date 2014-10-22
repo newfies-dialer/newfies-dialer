@@ -230,6 +230,7 @@ INSTALLED_APPS = (
     'survey',
     'dnc',
     'frontend',
+    'maintenance',
     #'agent',
     #'callcenter',
     'appointment',

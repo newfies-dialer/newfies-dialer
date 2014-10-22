@@ -27,7 +27,7 @@ class Command(BaseCommand):
     args = 'older-than-day'
     help = "Clean records older than the giving older-than-day setting (default=365)\n" \
            "------------------------------------------------------------------------\n" \
-           "python manage.py clen_records --older-than-day=365"
+           "python manage.py clean_records --older-than-day=365"
 
     option_list = BaseCommand.option_list + (
         make_option('--older-than-day', default=None, dest='older-than-day', help=help),

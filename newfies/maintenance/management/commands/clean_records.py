@@ -16,8 +16,9 @@ from django.core.management.base import BaseCommand
 from optparse import make_option
 from dialer_campaign.models import Campaign, Subscriber
 from dialer_cdr.models import Callrequest, VoIPCall
-from dialer_contact.models import Phonebook, Contact
+# from dialer_contact.models import Phonebook, Contact
 from survey.models import Survey, Section, Branching, Result, ResultAggregate
+# from django.db import connection
 #from survey.models import Section
 from datetime import datetime
 from django.utils.timezone import utc
@@ -65,7 +66,6 @@ def clean_records(older_than_day):
     # print "  - Phonebook"
     # print "  - Contact"
     print ""
-    raw_input('Press a key to continue or [CTRL-C] to exit!')
 
     #Delete old Campaigns
     print "Deleting old Campaigns => number to delete: %(count)s" % \
@@ -168,3 +168,18 @@ def clean_records(older_than_day):
 
     # -------------------------------
     print "The cleaning is finished!"
+
+
+"""
+    DELETE FROM "dialer_campaign_phonebook" WHERE campaign_id IN
+        (SELECT id FROM "dialer_campaign" WHERE "dialer_campaign"."created_date" < '2014-07-31 18:57:57');
+    DELETE FROM "dialer_campaign" WHERE "dialer_campaign"."created_date" < '2014-07-31 18:57:57';
+    DELETE FROM "dialer_subscriber" WHERE "dialer_subscriber"."created_date" < '2014-07-31 18:57:57';
+    DELETE FROM "dialer_callrequest" WHERE "dialer_callrequest"."created_date" < '2014-07-31 18:57:57';
+    DELETE FROM "dialer_cdr" WHERE "dialer_cdr"."starting_date" < '2014-07-31 18:57:57';
+    DELETE FROM "survey_resultaggregate" WHERE "survey_resultaggregate"."created_date" < '2014-07-31 18:57:57';
+    DELETE FROM "survey_result" WHERE "survey_result"."created_date" < '2014-07-31 18:57:57';
+    DELETE FROM "survey_branching" WHERE "survey_branching"."created_date" < '2014-07-31 18:57:57';
+    DELETE FROM "survey_section" WHERE "survey_section"."created_date" < '2014-07-31 18:57:57';
+    DELETE FROM "survey_survey" WHERE "survey_survey"."created_date" < '2014-07-31 18:57:57';
+"""

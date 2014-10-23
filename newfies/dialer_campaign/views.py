@@ -72,23 +72,24 @@ def update_campaign_status_cust(request, pk, status):
     #Check if no phonebook attached
     if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
         request.session['error_msg'] = _('you must assign a phonebook to your campaign before starting it')
-    else:
-        recipient = request.user
-        frontend_send_notification(request, status, recipient)
+        return HttpResponseRedirect(pagination_path)
+    elif int(status) == CAMPAIGN_STATUS.START:
+        request.session['info_msg'] = _('campaign global settings cannot be edited when the campaign is started')
 
-        # Notify user while campaign Start
-        if int(status) == CAMPAIGN_STATUS.START and not obj_campaign.has_been_started:
-            request.session['info_msg'] = _('campaign global settings cannot be edited when the campaign is started')
-            # change has_been_started flag
-            obj_campaign.has_been_started = True
-            obj_campaign.save()
+    # Ensure the content_type become "survey" when campagin starts
+    if int(status) == CAMPAIGN_STATUS.START and not obj_campaign.has_been_started:
+        # change has_been_started flag
+        obj_campaign.has_been_started = True
+        obj_campaign.save()
 
-            if obj_campaign.content_type.model == 'survey_template':
-                # Copy survey
-                survey_template = Survey_template.objects.get(user=request.user, pk=obj_campaign.object_id)
-                survey_template.copy_survey_template(obj_campaign.id)
-            collect_subscriber.delay(obj_campaign.id)
+        if obj_campaign.content_type.model == 'survey_template':
+            # Copy survey
+            survey_template = Survey_template.objects.get(user=request.user, pk=obj_campaign.object_id)
+            survey_template.copy_survey_template(obj_campaign.id)
+        collect_subscriber.delay(obj_campaign.id)
 
+    # Notify user while campaign Start
+    frontend_send_notification(request, status, request.user)
     return HttpResponseRedirect(pagination_path)
 
 

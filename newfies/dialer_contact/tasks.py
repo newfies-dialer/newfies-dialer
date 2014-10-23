@@ -110,6 +110,5 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
         return False
 
     cursor.execute(sqlimport)
-    transaction.commit_unless_managed()
 
     return True

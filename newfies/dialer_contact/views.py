@@ -524,13 +524,13 @@ def contact_import(request):
         msg = _('%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
             % {'contact_cnt': contact_cnt, 'total_rows': total_rows}
 
-    data = RequestContext(request, {
+    data = {
         'form': form,
         'csv_data': csv_data,
         'msg': msg,
         'error_msg': error_msg,
         'success_import_list': success_import_list,
         'type_error_import_list': type_error_import_list,
-    })
+    }
     return render_to_response('dialer_contact/contact/import_contact.html',
                               data, context_instance=RequestContext(request))

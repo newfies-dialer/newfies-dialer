@@ -62,8 +62,8 @@ def clean_records(older_than_day):
     print "  - Subscriber"
     print "  - Callrequest"
     print "  - VoIPCall"
-    print "  - Phonebook"
-    print "  - Contact"
+    # print "  - Phonebook"
+    # print "  - Contact"
     print ""
     raw_input('Press a key to continue or [CTRL-C] to exit!')
 
@@ -104,22 +104,22 @@ def clean_records(older_than_day):
         obj.delete()
 
     #Delete old Phonebooks
-    print "Deleting old Phonebooks => number to delete: %(count)s" % \
-        {'count': Phonebook.objects.filter(created_date__lt=old_date).count()}
+    # print "Deleting old Phonebooks => number to delete: %(count)s" % \
+    #     {'count': Phonebook.objects.filter(created_date__lt=old_date).count()}
 
-    list_obj = Phonebook.objects.filter(created_date__lt=old_date)
-    for obj in list_obj:
-        print "Deleting Phonebook => : %s" % obj
-        obj.delete()
+    # list_obj = Phonebook.objects.filter(created_date__lt=old_date)
+    # for obj in list_obj:
+    #     print "Deleting Phonebook => : %s" % obj
+    #     obj.delete()
 
-    #Delete old Contacts
-    print "Deleting old Contacts => number to delete: %(count)s" % \
-        {'count': Contact.objects.filter(created_date__lt=old_date).count()}
+    # #Delete old Contacts
+    # print "Deleting old Contacts => number to delete: %(count)s" % \
+    #     {'count': Contact.objects.filter(created_date__lt=old_date).count()}
 
-    list_obj = Contact.objects.filter(created_date__lt=old_date)
-    for obj in list_obj:
-        print "Deleting Contact => : %s" % obj
-        obj.delete()
+    # list_obj = Contact.objects.filter(created_date__lt=old_date)
+    # for obj in list_obj:
+    #     print "Deleting Contact => : %s" % obj
+    #     obj.delete()
 
     #Delete old ResultAggregates
     print "Deleting old ResultAggregates => number to delete: %(count)s" % \

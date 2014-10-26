@@ -182,4 +182,8 @@ def clean_records(older_than_day):
     DELETE FROM "survey_branching" WHERE "survey_branching"."created_date" < '2014-07-31 18:57:57';
     DELETE FROM "survey_section" WHERE "survey_section"."created_date" < '2014-07-31 18:57:57';
     DELETE FROM "survey_survey" WHERE "survey_survey"."created_date" < '2014-07-31 18:57:57';
+
+    DELETE FROM "dialer_contact" WHERE "created_date" < '2014-07-31 18:57:57';
+    DELETE FROM "dialer_phonebook" WHERE "created_date" < '2014-07-31 18:57:57';
+
 """

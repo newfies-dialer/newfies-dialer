@@ -9,3 +9,8 @@ clonedigger==1.1.0
 autopep8==1.0.4
 pep8ify==0.0.12
 pep8==1.5.7
+
+#pytest==2.6.4
+#pytest-django==2.7.0
+#pytest-pythonpath==0.3
+#pytest-xdist

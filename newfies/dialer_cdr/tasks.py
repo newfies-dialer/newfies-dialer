@@ -220,12 +220,28 @@ def process_callevent(record):
         callrequest.subscriber.save()
         debug_query(24)
     elif leg == 'aleg' and app_type == 'alarm':
-        if opt_hangup_cause == 'NORMAL_CLEARING':
+        try:
+            caluser_profile = CalendarUserProfile.objects.get(user=alarm_req.alarm.event.creator)
+        except CalendarUserProfile.DoesNotExist:
+            logger.error("Error retrieving CalendarUserProfile")
+            return False
+
+        if opt_hangup_cause == 'NORMAL_CLEARING' and \
+           amd_status == 'machine' and \
+           caluser_profile.calendar_setting.voicemail and \
+           caluser_profile.calendar_setting.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY:
+            #Call reached AMD
+            callrequest.status = CALLREQUEST_STATUS.FAILURE
+            alarm_req.status = ALARMREQUEST_STATUS.FAILURE
+            alarm_req.alarm.status = ALARM_STATUS.FAILURE
+        elif opt_hangup_cause == 'NORMAL_CLEARING':
+            #Call is successful
             callrequest.status = CALLREQUEST_STATUS.SUCCESS
             alarm_req.status = ALARMREQUEST_STATUS.SUCCESS
             alarm_req.duration = duration
             alarm_req.alarm.status = ALARM_STATUS.SUCCESS
         else:
+            #Call failed
             callrequest.status = CALLREQUEST_STATUS.FAILURE
             alarm_req.status = ALARMREQUEST_STATUS.FAILURE
             alarm_req.alarm.status = ALARM_STATUS.FAILURE
@@ -332,8 +348,12 @@ def process_callevent(record):
         #Check if we should relaunch a new call to achieve completion
         check_retrycall_completion(callrequest)
 
-    elif opt_hangup_cause != 'NORMAL_CLEARING' and app_type == 'alarm':
-        #
+    elif (opt_hangup_cause != 'NORMAL_CLEARING' and app_type == 'alarm') or \
+         (amd_status == 'machine' and app_type == 'alarm' and
+          caluser_profile.calendar_setting.voicemail and
+          caluser_profile.calendar_setting.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
+        # Alarm callrequest failed or Alarm callrequest reached voicemail
+        logger.debug("Check to retry alarm")
         check_retry_alarm(alarm_request_id)
 
 
@@ -559,8 +579,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 send_digits = check_senddigit[1] + check_senddigit[2]
                 dialout_phone_number = check_senddigit[0]
 
-            args_list.append("origination_caller_id_number=%s" % obj_callrequest.callerid)
-            args_list.append("origination_caller_id_name='%s'" % obj_callrequest.caller_name)
+            if obj_callrequest.callerid and len(obj_callrequest.callerid) > 0:
+                args_list.append("origination_caller_id_number=%s" % obj_callrequest.callerid)
+            if obj_callrequest.caller_name and len(obj_callrequest.caller_name) > 0:
+                args_list.append("origination_caller_id_name='%s'" % obj_callrequest.caller_name)
 
             #Add App Vars
             args_list.append("campaign_id=%s,subscriber_id=%s,alarm_request_id=%s,used_gateway_id=%s,callrequest_id=%s,contact_id=%s" %
@@ -622,8 +644,16 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 
             # originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=10}user/areski &playback(/tmp/myfile.wav)
             # dial = "originate {bridge_early_media=true,hangup_after_bridge=true,originate_timeout=,newfiesdialer=true,used_gateway_id=1,callrequest_id=38,leg_type=1,origination_caller_id_number=234234234,origination_caller_id_name=234234,effective_caller_id_number=234234234,effective_caller_id_name=234234,}user//1000 '&lua(/usr/share/newfies-lua/newfies.lua)'"
-            logger.warn('dial_command : %s' % dial_command)
 
+            # Load balance on testing
+            # from random import randint, seed
+            # seed()
+            # randval = randint(1, 2)
+            # if randval == 1:
+            #     dial_command = dial_command.replace('88.208.208.244', '88.208.208.209')
+            # logger.warn('dial_command (%d): %s' % (randval, dial_command))
+
+            logger.warn('dial_command : %s' % dial_command)
             request_uuid = dial_out(dial_command)
 
             debug_query(14)

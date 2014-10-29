@@ -220,12 +220,28 @@ def process_callevent(record):
         callrequest.subscriber.save()
         debug_query(24)
     elif leg == 'aleg' and app_type == 'alarm':
-        if opt_hangup_cause == 'NORMAL_CLEARING':
+        try:
+            caluser_profile = CalendarUserProfile.objects.get(user=alarm_req.alarm.event.creator)
+        except CalendarUserProfile.DoesNotExist:
+            logger.error("Error retrieving CalendarUserProfile")
+            return False
+
+        if opt_hangup_cause == 'NORMAL_CLEARING' and \
+           amd_status == 'machine' and \
+           caluser_profile.calendar_setting.voicemail and \
+           caluser_profile.calendar_setting.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY:
+            #Call reached AMD
+            callrequest.status = CALLREQUEST_STATUS.FAILURE
+            alarm_req.status = ALARMREQUEST_STATUS.FAILURE
+            alarm_req.alarm.status = ALARM_STATUS.FAILURE
+        elif opt_hangup_cause == 'NORMAL_CLEARING':
+            #Call is successful
             callrequest.status = CALLREQUEST_STATUS.SUCCESS
             alarm_req.status = ALARMREQUEST_STATUS.SUCCESS
             alarm_req.duration = duration
             alarm_req.alarm.status = ALARM_STATUS.SUCCESS
         else:
+            #Call failed
             callrequest.status = CALLREQUEST_STATUS.FAILURE
             alarm_req.status = ALARMREQUEST_STATUS.FAILURE
             alarm_req.alarm.status = ALARM_STATUS.FAILURE
@@ -332,8 +348,12 @@ def process_callevent(record):
         #Check if we should relaunch a new call to achieve completion
         check_retrycall_completion(callrequest)
 
-    elif opt_hangup_cause != 'NORMAL_CLEARING' and app_type == 'alarm':
-        #
+    elif (opt_hangup_cause != 'NORMAL_CLEARING' and app_type == 'alarm') or \
+         (amd_status == 'machine' and app_type == 'alarm' and
+          caluser_profile.calendar_setting.voicemail and
+          caluser_profile.calendar_setting.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
+        # Alarm callrequest failed or Alarm callrequest reached voicemail
+        logger.debug("Check to retry alarm")
         check_retry_alarm(alarm_request_id)
 
 

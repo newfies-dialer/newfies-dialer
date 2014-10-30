@@ -37,6 +37,7 @@ from django_lets_go.only_one_task import only_one
 from common_functions import debug_query
 from uuid import uuid1
 from time import sleep
+import re
 try:
     import ESL as ESL
 except ImportError:
@@ -705,6 +706,26 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     return True
 
 
+# def event_replace_tag(text, phone_number, additional_vars):
+#     """
+#     Replace tag by contact values
+#     as well as, get additional_vars, and replace json tags
+#     """
+#     #text = text.encode('utf-8')
+#     taglist = {
+#         'phone_number': phone_number,
+#     }
+#     if additional_vars:
+#         for index in additional_vars:
+#             taglist[index] = additional_vars[index]
+#     for ind in taglist:
+#         text = text.replace('{' + ind + '}', str(taglist[ind]))
+
+#     # replace the tags not found
+#     text = re.sub('{(\w+)}', '', text)
+#     return text
+
+
 def check_retry_alarm(alarm_request_id):
     obj_alarmreq = AlarmRequest.objects.get(id=alarm_request_id)
     if obj_alarmreq.alarm.maxretry >= obj_alarmreq.alarm.num_attempt:
@@ -717,11 +738,17 @@ def check_retry_alarm(alarm_request_id):
 
         #Check phonenumber_sms_failure
         if obj_alarmreq.alarm.phonenumber_sms_failure:
-            # TODO: Use template SMS key (failure_reach) with this text as default
-            failure_sms = "we haven't been able to reach '" \
-                + str(obj_alarmreq.alarm.alarm_phonenumber) \
-                + "' after trying " + str(obj_alarmreq.alarm.num_attempt) \
-                + " times"
+            if obj_alarmreq.alarm.event.data and 'sms_failure' in obj_alarmreq.alarm.event.data:
+                #Custom SMS Failure
+                failure_sms = obj_alarmreq.alarm.event.data['sms_failure']
+                failure_sms = failure_sms.replace('#alarm_phonenumber#', str(obj_alarmreq.alarm.alarm_phonenumber))
+                failure_sms = failure_sms.replace('#num_attempt#', str(obj_alarmreq.alarm.num_attempt))
+            else:
+                #Default SMS Failure
+                failure_sms = "we haven't been able to reach '" \
+                    + str(obj_alarmreq.alarm.alarm_phonenumber) \
+                    + "' after trying " + str(obj_alarmreq.alarm.num_attempt) \
+                    + " times"
 
             sms_obj = Message.objects.create(
                 content=failure_sms,

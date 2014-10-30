@@ -293,7 +293,7 @@ def process_callevent(record):
     #Add condition to retry when it s machine and we want to reach a human
     if (app_type == 'campaign' and opt_hangup_cause != 'NORMAL_CLEARING'
         and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
-       (amd_status == 'machine' and callrequest.campaign.voicemail and
+       (app_type == 'campaign' and amd_status == 'machine' and callrequest.campaign.voicemail and
         callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
         #Update to Retry Done
         callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
@@ -343,7 +343,7 @@ def process_callevent(record):
 
     elif app_type == 'campaign':
         #The Call is Answered and it's a campaign call
-        logger.debug("Check for completion call")
+        logger.info("Check for completion call")
 
         #Check if we should relaunch a new call to achieve completion
         check_retrycall_completion(callrequest)
@@ -353,8 +353,10 @@ def process_callevent(record):
           caluser_profile.calendar_setting.voicemail and
           caluser_profile.calendar_setting.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
         # Alarm callrequest failed or Alarm callrequest reached voicemail
-        logger.debug("Check to retry alarm")
+        logger.info("Check to retry alarm")
         check_retry_alarm(alarm_request_id)
+    else:
+        logger.info("Retry: No matching conditions")
 
 
 # OPTIMIZATION - TO REVIEW

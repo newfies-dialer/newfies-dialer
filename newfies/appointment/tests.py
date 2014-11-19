@@ -31,10 +31,7 @@ import pytest
 from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from pytest import raises
-
-
-def test_the_obvious():
-    assert True == True
+from django.core.management import call_command
 
 
 def test_an_exception():
@@ -42,10 +39,15 @@ def test_an_exception():
         # Indexing the 30th item in a 3 item list
         [5, 10, 15][30]
 
+
+#This is created to try pytest
 @pytest.mark.django_db
-def test_my_user():
-    me = User.objects.get(username='areski')
-    assert me.is_superuser
+def test_my_user(admin_client):
+    call_command('loaddata', 'user_profile/fixtures/auth_user.json')
+    user = User.objects.get(username='admin')
+    assert user.is_superuser
+    response = admin_client.get('/admin/')
+    assert response.status_code == 200
 
 
 # class BaseAuthenticatedClient(TestCase):
@@ -65,6 +67,17 @@ def test_my_user():
 #         login = self.client.login(username='admin', password='admin')
 #         self.assertTrue(login)
 #         self.factory = RequestFactory()
+
+
+@pytest.mark.django_db
+def test_calendar_setting_view_list(admin_user, rf):
+    # call_command('loaddata', 'user_profile/fixtures/auth_user.json')
+    # url = reverse("thing_detail")
+    request = rf.get('/module/calendar_setting/')
+    request.user = admin_user
+    request.session = {}
+    response = calendar_setting_list(request)
+    assert response.status_code == 200
 
 
 # class AppointmentCustomerView(BaseAuthenticatedClient):

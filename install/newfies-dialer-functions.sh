@@ -768,6 +768,11 @@ func_install_frontend(){
     python manage.py migrate dialer_campaign
     python manage.py migrate
 
+    #load default data
+    python manage.py loaddata appointment/fixtures/default_appointment.json
+    python manage.py loaddata dialer_gateway/fixtures/default_dialer_gateway.json
+    python manage.py loaddata dialer_settings/fixtures/default_dialer_settings.json
+
     #Load Countries Dialcode
     #python manage.py load_country_dialcode
     wget https://raw.github.com/areski/django-sms-gateway/master/sms/fixtures/example_gateways.json

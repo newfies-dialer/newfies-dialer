@@ -15,13 +15,16 @@
 #IMPORT SETTINGS
 #===============
 from settings import *
+import os
 
+APPLICATION_DIR = os.path.dirname(globals()['__file__']) + '/../'
 
 # Build faster tests
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': ':memory:',
+        # 'NAME': ':memory:',
+        'TEST': {'NAME': APPLICATION_DIR + '/database/test-newfies.db'},
     }
 }
 

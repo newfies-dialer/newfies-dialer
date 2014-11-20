@@ -71,12 +71,10 @@ class Gateway(Model):
         verbose_name=_("gateway timeouts"),
         help_text=_('timeout in seconds, ie "10"'))
 
-    gateway_retries = models.CharField(max_length=500, blank=True,
-        verbose_name=_("gateway retries"),
+    gateway_retries = models.CharField(max_length=500, blank=True, verbose_name=_("gateway retries"),
         help_text=_('"2,1", # retry String for Gateways separated by comma, on how many times each gateway should be retried'))
 
-    originate_dial_string = models.CharField(max_length=500, blank=True,
-        verbose_name=_("originate dial string"),
+    originate_dial_string = models.CharField(max_length=500, blank=True, verbose_name=_("originate dial string"),
         help_text=_('add channels variables : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: bridge_early_media=true,hangup_after_bridge=true'))
 
     secondused = models.IntegerField(null=True, blank=True,

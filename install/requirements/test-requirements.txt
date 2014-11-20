@@ -14,3 +14,4 @@ pep8==1.5.7
 #pytest-django==2.7.0
 #pytest-pythonpath==0.3
 #pytest-xdist
+#git+git://github.com/mverteuil/pytest-ipdb.git

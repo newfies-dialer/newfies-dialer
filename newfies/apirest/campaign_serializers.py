@@ -127,7 +127,7 @@ class CampaignSerializer(serializers.HyperlinkedModelSerializer):
 
         CURL Usage (Update Campaign Status==Started)::
 
-            curl -u areski:areski --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"status": 1}' http://localhost:8000/rest-api/campaigns/38/
+            curl -u username:password --dump-header - -H "Content-Type: application/json" -X PATCH --data '{"status": 1}' http://localhost:8000/rest-api/campaigns/%campaign-id%/
 
 
     **Delete**:

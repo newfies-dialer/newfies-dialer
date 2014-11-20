@@ -61,7 +61,7 @@ class CalendarSetting(models.Model):
                                related_name="calendar_survey")
     aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False, verbose_name=_("a-leg gateway"),
                                      help_text=_("select gateway to use"))
-    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"), null=False, blank=False,
+    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"), null=True,
                                     related_name="sms_gateway", help_text=_("select SMS gateway"))
     #Voicemail Detection
     voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))

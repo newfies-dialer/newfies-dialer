@@ -134,12 +134,14 @@ def calendar_user_del(request, object_id):
         values = ", ".join(["%s" % el for el in values])
         try:
             # 1) delete all calendar users belonging to a managers
-            calendar_user_list = CalendarUserProfile.objects.filter(manager_id=request.user.id).extra(where=['id IN (%s)' % values])
+            calendar_user_list = CalendarUserProfile.objects\
+                .filter(manager_id=request.user.id).extra(where=['id IN (%s)' % values])
 
             if calendar_user_list:
                 user_list = calendar_user_list.values_list('user_id', flat=True)
                 calendar_users = CalendarUser.objects.filter(pk__in=user_list)
-                request.session["msg"] = _('%(count)s calendar user(s) are deleted.') % {'count': calendar_user_list.count()}
+                request.session["msg"] = _('%(count)s calendar user(s) are deleted.') % \
+                    {'count': calendar_user_list.count()}
                 calendar_users.delete()
         except:
             raise Http404
@@ -166,7 +168,8 @@ def calendar_user_change(request, object_id):
     calendar_user_profile = get_object_or_404(CalendarUserProfile, pk=object_id, manager_id=request.user.id)
     calendar_user_userdetail = get_object_or_404(CalendarUser, pk=calendar_user_profile.user_id)
 
-    calendar_user_profile_form = CalendarUserChangeDetailExtendForm(request.user, request.POST or None, instance=calendar_user_profile)
+    calendar_user_profile_form = CalendarUserChangeDetailExtendForm(
+        request.user, request.POST or None, instance=calendar_user_profile)
     calendar_user_username_form = CalendarUserNameChangeForm(
         request.POST or None,
         initial={'username': calendar_user_userdetail.username,
@@ -223,7 +226,8 @@ def calendar_user_change_password(request, object_id):
     }
     request.session['msg'] = ''
     request.session['error_msg'] = ''
-    return render_to_response('appointment/calendar_user/change_password.html', data, context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar_user/change_password.html',
+                              data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.view_calendar', login_url='/')
@@ -411,7 +415,8 @@ def calendar_setting_add(request):
         'form': form,
         'action': 'add',
     }
-    return render_to_response('appointment/calendar_setting/change.html', data, context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar_setting/change.html',
+                              data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.delete_calendarsetting', login_url='/')
@@ -483,7 +488,8 @@ def calendar_setting_change(request, object_id):
         'form': form,
         'action': 'update',
     }
-    return render_to_response('appointment/calendar_setting/change.html', data, context_instance=RequestContext(request))
+    return render_to_response('appointment/calendar_setting/change.html',
+                              data, context_instance=RequestContext(request))
 
 
 @permission_required('appointment.view_event', login_url='/')
@@ -683,7 +689,9 @@ def alarm_list(request):
                            'date_start_notice', 'status']
     pag_vars = get_pagination_vars(request, sort_col_field_list, default_sort_field='id')
     calendar_user_id_list = get_calendar_user_id_list(request.user)
-    alarm_list = Alarm.objects.filter(event__calendar__user_id__in=calendar_user_id_list).order_by(pag_vars['sort_order'])
+    alarm_list = Alarm.objects\
+        .filter(event__calendar__user_id__in=calendar_user_id_list)\
+        .order_by(pag_vars['sort_order'])
     data = {
         'msg': request.session.get('msg'),
         'alarm_list': alarm_list,

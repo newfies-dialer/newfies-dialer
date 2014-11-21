@@ -119,10 +119,9 @@ class CalendarSettingFactory(factory.Factory):
     class Meta:
         model = CalendarSetting
 
-    # label = factory.Sequence(lambda n: 'Label-{0}'.format(n))
-    label = "testlabel"
+    label = factory.Sequence(lambda n: 'Label-{0}'.format(n))
     callerid = "12315456"
-    caller_name = "callername"
+    caller_name = factory.Sequence(lambda n: 'callername-{0}'.format(n))
     call_timeout = 60
     user = factory.SubFactory(UserFactory)
     survey = factory.SubFactory(SurveyFactory)

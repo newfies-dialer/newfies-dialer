@@ -12,6 +12,10 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
+
+# Usage: py.test appointment/tests.py --ipdb
+#
+
 #from django.contrib.auth.models import User
 #from django.conf import settings
 # from django_lets_go.utils import BaseAuthenticatedClient
@@ -33,7 +37,7 @@ from django.test import TestCase, Client
 from pytest import raises
 from django.core.management import call_command
 from newfies_factory.factories import UserFactory, SurveyTemplateFactory, \
-    SurveyFactory, GatewayFactory, SMSGatewayFactory
+    SurveyFactory, GatewayFactory, SMSGatewayFactory, CalendarSettingFactory
 from dialer_campaign.constants import AMD_BEHAVIOR
 
 
@@ -80,11 +84,22 @@ def nf_user(db):
 @pytest.fixture
 def appointment_fixtures(db, nf_user):
     survey_tmpl = SurveyTemplateFactory.create(user=nf_user)
+    survey_tmpl.save()
     survey = SurveyFactory.create(user=nf_user)
     gateway = GatewayFactory.create()
     smsgateway = SMSGatewayFactory.create()
+    calendarsetting = CalendarSettingFactory.create(user=nf_user)
+    calendarsetting.save()
+    result = {
+        "client_user": nf_user,
+        "survey_tmpl": survey_tmpl,
+        "survey": SurveyFactory.create(user=nf_user),
+        "gateway": GatewayFactory.create(),
+        "smsgateway": SMSGatewayFactory.create(),
+        "calendarsetting": calendarsetting,
+    }
 
-    return (nf_user, survey_tmpl, survey, gateway, smsgateway)
+    return result
 
 @pytest.mark.django_db
 def test_calendar_setting_view_list(admin_user, rf):
@@ -112,8 +127,11 @@ def test_calendar_setting_view_add(admin_user, rf, nf_user):
 
 @pytest.mark.django_db
 def test_calendar_setting_add_post(admin_client, client, admin_user, rf, appointment_fixtures):
-    (client_user, survey_tmpl, survey, gateway) = appointment_fixtures
-    print (client_user, survey_tmpl, survey, gateway)
+    # (client_user, survey_tmpl, survey, gateway, smsgateway) = appointment_fixtures
+    client_user = appointment_fixtures['client_user']
+    survey = appointment_fixtures['survey']
+    gateway = appointment_fixtures['gateway']
+
     data = {
         "label": "test calendar setting",
         "caller_name": "test",
@@ -138,26 +156,33 @@ def test_calendar_setting_add_post(admin_client, client, admin_user, rf, appoint
     # pytest.set_trace()
     assert response.status_code == 200
 
+
 @pytest.mark.django_db
 def test_calendar_setting_view_update(admin_client, client, admin_user, rf, appointment_fixtures):
     """Test Function to check update calendar_setting"""
-    (client_user, survey_tmpl, survey, gateway) = appointment_fixtures
-    print (client_user, survey_tmpl, survey, gateway)
+    client_user = appointment_fixtures['client_user']
+    calendarsetting = appointment_fixtures['calendarsetting']
+    list_calset = CalendarSetting.objects.all()
+    assert len(list_calset) == 1
 
-    request = rf.post('/module/calendar_setting/1/', {
-        "caller_name": "test",
-        "survey": "1",
-    }, follow=True)
-    request.user = client_user
-    request.session = {}
-    response = calendar_setting_change(request, 1)
-    assert response.status_code == 200
+    pytest.set_trace()
 
-    request = rf.post('/module/calendar_setting/1/', {'delete': True}, follow=True)
-    request.user = client_user
-    request.session = {}
-    response = calendar_setting_change(request, 1)
-    assert response.status_code == 200
+    # client.post('/module/calendar_setting/1/', {"label": "newlabel", "caller_name": "newname", "survey": "1", }, follow=True)
+    # request = rf.post('/module/calendar_setting/1/',
+    #                   {"label": "newlabel", "caller_name": "newname", "survey": "1", }, follow=True)
+    # request.user = client_user
+    # request.session = {}
+    # response = calendar_setting_change(request, 1)
+    # assert response.status_code == 200
+
+    # request = rf.post('/module/calendar_setting/1/', {'delete': True}, follow=True)
+    # request.user = client_user
+    # request.session = {}
+    # response = calendar_setting_change(request, 1)
+    # assert response.status_code == 200
+
+    # list_calset = CalendarSetting.objects.all()
+    # assert len(list_calset) == 1
 
 # class AppointmentCustomerView(BaseAuthenticatedClient):
 #     """Test cases for Appointment Customer Interface."""

@@ -39,6 +39,7 @@ from django.core.management import call_command
 from newfies_factory.factories import UserFactory, SurveyTemplateFactory, \
     SurveyFactory, GatewayFactory, SMSGatewayFactory, CalendarSettingFactory
 from dialer_campaign.constants import AMD_BEHAVIOR
+from django.core.urlresolvers import reverse
 
 
 def test_an_exception():
@@ -168,21 +169,40 @@ def test_calendar_setting_view_update(admin_client, client, admin_user, rf, appo
     pytest.set_trace()
 
     # client.post('/module/calendar_setting/1/', {"label": "newlabel", "caller_name": "newname", "survey": "1", }, follow=True)
-    # request = rf.post('/module/calendar_setting/1/',
-    #                   {"label": "newlabel", "caller_name": "newname", "survey": "1", }, follow=True)
+    # request = rf.post('/module/calendar_setting/1/', {"label": "newlabel", "caller_name": "newname", "survey": "1", }, follow=True)
     # request.user = client_user
     # request.session = {}
     # response = calendar_setting_change(request, 1)
     # assert response.status_code == 200
 
-    # request = rf.post('/module/calendar_setting/1/', {'delete': True}, follow=True)
-    # request.user = client_user
-    # request.session = {}
-    # response = calendar_setting_change(request, 1)
-    # assert response.status_code == 200
+    request = rf.post('/module/calendar_setting/1/', {'delete': True}, follow=True)
+    request.user = client_user
+    request.session = {}
+    response = calendar_setting_change(request, 1)
+    assert response.status_code == 200
 
-    # list_calset = CalendarSetting.objects.all()
-    # assert len(list_calset) == 1
+    list_calset = CalendarSetting.objects.all()
+    assert len(list_calset) == 1
+
+
+@pytest.mark.django_db
+def test_delete_calendarsetting(admin_client, client, admin_user, rf, appointment_fixtures):
+    client_user = appointment_fixtures['client_user']
+
+    # create new calendarsetting
+    calendarsetting = CalendarSettingFactory.create(user=client_user)
+    calendarsetting.save()
+
+    list_calset = CalendarSetting.objects.all()
+    assert len(list_calset) == 2
+
+    resp = client.delete(reverse('calendar_user_del', args=[calendarsetting.id]), follow=True)
+    assert resp.status_code == 200
+
+    list_calset = CalendarSetting.objects.all()
+    assert len(list_calset) == 1
+
+    pytest.set_trace()
 
 # class AppointmentCustomerView(BaseAuthenticatedClient):
 #     """Test cases for Appointment Customer Interface."""

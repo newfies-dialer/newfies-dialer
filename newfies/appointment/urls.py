@@ -11,13 +11,13 @@
 # The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.conf.urls import patterns
+from django.conf.urls import patterns, url
 
 urlpatterns = patterns('appointment.views',
 
     (r'^module/calendar_user/$', 'calendar_user_list'),
     (r'^module/calendar_user/add/$', 'calendar_user_add'),
-    (r'^module/calendar_user/del/(.+)/$', 'calendar_user_del'),
+    url(r'^module/calendar_user/del/(.+)/$', 'calendar_user_del', name='calendar_user_del'),
     (r'^module/calendar_user/password/(.+)/$', 'calendar_user_change_password'),
     (r'^module/calendar_user/(.+)/$', 'calendar_user_change'),
 

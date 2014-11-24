@@ -30,7 +30,7 @@ urlpatterns = patterns('appointment.views',
     # Calendar settings urls
     (r'^module/calendar_setting/$', 'calendar_setting_list'),
     (r'^module/calendar_setting/add/$', 'calendar_setting_add'),
-    (r'^module/calendar_setting/del/(.+)/$', 'calendar_setting_del'),
+    url(r'^module/calendar_setting/del/(.+)/$', 'calendar_setting_del', name='calendar_setting_del'),
     (r'^module/calendar_setting/(.+)/$', 'calendar_setting_change'),
 
     # Events urls

@@ -196,8 +196,10 @@ def test_delete_calendarsetting(admin_client, client, admin_user, rf, appointmen
     list_calset = CalendarSetting.objects.all()
     assert len(list_calset) == 2
 
-    resp = client.delete(reverse('calendar_user_del', args=[calendarsetting.id]), follow=True)
+    resp = client.delete(reverse('calendar_setting_del', args=[calendarsetting.id]), follow=True)
     assert resp.status_code == 200
+
+    # request = client.post('/module/calendar_setting/1/', {'delete': True}, follow=True)
 
     list_calset = CalendarSetting.objects.all()
     assert len(list_calset) == 1

@@ -2,8 +2,8 @@ from __future__ import absolute_import
 
 import factory
 from django.contrib.auth.models import Group, Permission, User
-from appointment.models.users import CalendarSetting
-from user_profile.models import UserProfile
+from appointment.models.users import CalendarSetting, CalendarUserProfile
+from user_profile.models import UserProfile, Manager
 from dialer_gateway.models import Gateway
 from dialer_settings.models import DialerSetting
 from survey.models import Survey_template, Survey
@@ -100,6 +100,25 @@ class UserFactory(factory.django.DjangoModelFactory):
     userprofile = factory.RelatedFactory(UserProfileFactory, 'user')
 
 
+class ManagerFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = Manager
+
+    username = factory.Sequence(lambda n: 'user{0}'.format(n))
+    first_name = factory.Sequence(lambda n: 'John {0}'.format(n))
+    last_name = factory.Sequence(lambda n: 'Doe {0}'.format(n))
+    email = factory.Sequence(lambda n: 'user{0}@example.com'.format(n))
+    password = '1234'
+    # Use a SuperUser for test to not have to deal with permissions
+    is_active = True
+    is_staff = True
+    is_superuser = True
+
+    # Using RelatedFactory http://factoryboy.readthedocs.org/en/latest/reference.html#relatedfactory
+    # helps to create the userprofile when we create the User
+    userprofile = factory.RelatedFactory(UserProfileFactory, 'user')
+
+
 class SurveyTemplateFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = Survey_template
@@ -132,6 +151,16 @@ class CalendarSettingFactory(factory.Factory):
     amd_behavior = AMD_BEHAVIOR.ALWAYS
     # voicemail_audiofile = None
 
+
+class CalendarUserProfileFactory(factory.django.DjangoModelFactory):
+    class Meta:
+        model = CalendarUserProfile
+
+    manager = factory.SubFactory(UserFactory)
+    calendar_setting = factory.SubFactory(CalendarSettingFactory)
+
+
+Manager
 
 # class UserFactory(factory.django.DjangoModelFactory):
 #     FACTORY_FOR = User

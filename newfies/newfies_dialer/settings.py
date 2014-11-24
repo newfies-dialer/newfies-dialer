@@ -309,13 +309,12 @@ else:
 
 # Nose
 # TODO: Re-Enable Nose as it s actually broken
-try:
-    import nose
-except ImportError:
-    pass
-else:
-    INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
-    TEST_RUNNER = 'utils.test_runner.MyRunner'
+# try:
+#     import nose
+#     INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
+#     TEST_RUNNER = 'utils.test_runner.MyRunner'
+# except ImportError:
+#     pass
 
 # Dilla
 try:

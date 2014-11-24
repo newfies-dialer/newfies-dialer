@@ -197,7 +197,7 @@ def calendar_user_change(request, object_id):
 
 
 @login_required
-def calendar_user_change_password(request, object_id):
+def calendar_user_change_pw(request, object_id):
     """
     CalendarUser Detail change
 

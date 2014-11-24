@@ -36,8 +36,8 @@ from django.contrib.auth.models import User
 from django.test import TestCase, Client
 from pytest import raises
 from django.core.management import call_command
-from newfies_factory.factories import UserFactory, SurveyTemplateFactory, \
-    SurveyFactory, GatewayFactory, SMSGatewayFactory, CalendarSettingFactory
+from newfies_factory.factories import UserFactory, SurveyTemplateFactory, SurveyFactory, \
+    GatewayFactory, SMSGatewayFactory, CalendarSettingFactory, UserProfileFactory
 from dialer_campaign.constants import AMD_BEHAVIOR
 from django.core.urlresolvers import reverse
 
@@ -77,9 +77,21 @@ def test_my_user(admin_client):
 #         self.factory = RequestFactory()
 
 @pytest.fixture
-def nf_user(db):
-    user = UserFactory.create(first_name="Areski")
+def nf_user(transactional_db, client, admin_client, admin_user):
+    user = UserFactory.create(first_name="Foo", username="myuser", password="password")
+    user.save()
+    # !!! doesn't work for some reason
+    # login = client.login(user="myuser", password="password2")
+    # assert login == True
     return user
+
+
+@pytest.fixture
+def admin_user_profile(transactional_db, admin_client, admin_user):
+    #Create user profile for Admin user
+    prof = UserProfileFactory.create(user=admin_user)
+    prof.save()
+    return admin_user
 
 
 @pytest.fixture
@@ -99,10 +111,9 @@ def appointment_fixtures(db, nf_user):
         "smsgateway": SMSGatewayFactory.create(),
         "calendarsetting": calendarsetting,
     }
-
     return result
 
-@pytest.mark.django_db
+
 def test_calendar_setting_view_list(admin_user, rf):
     # call_command('loaddata', 'user_profile/fixtures/auth_user.json')
     # url = reverse("thing_detail")
@@ -113,20 +124,6 @@ def test_calendar_setting_view_list(admin_user, rf):
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
-def test_calendar_setting_view_add(admin_user, rf, nf_user):
-    """Test Function to check add calendar_setting"""
-    request = rf.get('/module/calendar_setting/add/')
-    request.user = nf_user
-    request.session = {}
-    response = calendar_setting_add(request)
-    assert response.status_code == 200
-
-
-# pytest.set_trace()
-
-
-@pytest.mark.django_db
 def test_calendar_setting_add_post(admin_client, client, admin_user, rf, appointment_fixtures):
     # (client_user, survey_tmpl, survey, gateway, smsgateway) = appointment_fixtures
     client_user = appointment_fixtures['client_user']
@@ -158,35 +155,65 @@ def test_calendar_setting_add_post(admin_client, client, admin_user, rf, appoint
     assert response.status_code == 200
 
 
-@pytest.mark.django_db
-def test_calendar_setting_view_update(admin_client, client, admin_user, rf, appointment_fixtures):
-    """Test Function to check update calendar_setting"""
+def test_calendar_setting_view_add(admin_client, client, nf_user, appointment_fixtures, admin_user_profile):
+    """Test Function to check add calendar_setting"""
     client_user = appointment_fixtures['client_user']
-    calendarsetting = appointment_fixtures['calendarsetting']
+    survey = appointment_fixtures['survey']
+    gateway = appointment_fixtures['gateway']
+    assert CalendarSetting.objects.count() == 1
+
+    response = admin_client.post(reverse('calendar_setting_add'), data={
+        "callerid": "242534",
+        "voicemail": "False",
+        "call_timeout": "60",
+        "voicemail_audiofile": "",
+        "label": "test calendar setting",
+        "caller_name": "test",
+        "survey": survey.id,
+        "user": client_user.id,
+        "created_date": "2013-12-17T13:41:24.195",
+        "aleg_gateway": gateway.id,
+        "amd_behavior": ""}, follow=True)
+    assert response.status_code == 200
+    #check that we have an extra CalendarSetting
+    assert CalendarSetting.objects.count() == 2
+
+
+def test_calendar_setting_view_update(admin_client, client, admin_user, rf, appointment_fixtures, admin_user_profile):
+    """Test Function to check update calendar_setting"""
+    survey = appointment_fixtures['survey']
+    gateway = appointment_fixtures['gateway']
     list_calset = CalendarSetting.objects.all()
     assert len(list_calset) == 1
+    resp = admin_client.post(reverse('calendar_setting_change', args=[list_calset[0].id]),
+                             {"label": "newlabel", "caller_name": "newname", "survey": survey.id,
+                              "aleg_gateway": gateway.id, "call_timeout": "60", }, follow=True)
+    assert resp.status_code == 200
+    calsetting = CalendarSetting.objects.get(pk=list_calset[0].id)
+    assert calsetting.label == "newlabel"
 
-    pytest.set_trace()
 
-    # client.post('/module/calendar_setting/1/', {"label": "newlabel", "caller_name": "newname", "survey": "1", }, follow=True)
     # request = rf.post('/module/calendar_setting/1/', {"label": "newlabel", "caller_name": "newname", "survey": "1", }, follow=True)
     # request.user = client_user
     # request.session = {}
     # response = calendar_setting_change(request, 1)
     # assert response.status_code == 200
 
-    request = rf.post('/module/calendar_setting/1/', {'delete': True}, follow=True)
-    request.user = client_user
-    request.session = {}
-    response = calendar_setting_change(request, 1)
-    assert response.status_code == 200
+    # request = rf.post('/module/calendar_setting/1/', {'delete': True}, follow=True)
+    # request.user = client_user
+    # request.session = {}
+    # response = calendar_setting_change(request, 1)
+    # assert response.status_code == 200
 
-    list_calset = CalendarSetting.objects.all()
-    assert len(list_calset) == 1
+    # list_calset = CalendarSetting.objects.all()
+    # assert len(list_calset) == 1
 
 
-@pytest.mark.django_db
-def test_delete_calendarsetting(admin_client, client, admin_user, rf, appointment_fixtures):
+# @pytest.mark.django_db
+@pytest.mark.django_db()
+def test_calendar_setting_view_del(admin_client, client, admin_user, rf, appointment_fixtures):
+    # call_command('loaddata', 'user_profile/fixtures/auth_user.json')
+
     client_user = appointment_fixtures['client_user']
 
     # create new calendarsetting
@@ -196,15 +223,18 @@ def test_delete_calendarsetting(admin_client, client, admin_user, rf, appointmen
     list_calset = CalendarSetting.objects.all()
     assert len(list_calset) == 2
 
-    resp = client.delete(reverse('calendar_setting_del', args=[calendarsetting.id]), follow=True)
+    # pytest.set_trace()
+    # login = client.login(username='admin', password='password')
+    # assert login == True
+
+    resp = admin_client.delete(reverse('calendar_setting_del', args=[calendarsetting.id]), {'delete': True}, follow=True)
     assert resp.status_code == 200
 
-    # request = client.post('/module/calendar_setting/1/', {'delete': True}, follow=True)
+    # request = client.post(reverse('calendar_setting_del', args=[calendarsetting.id]), {'delete': True}, follow=True)
 
     list_calset = CalendarSetting.objects.all()
     assert len(list_calset) == 1
 
-    pytest.set_trace()
 
 # class AppointmentCustomerView(BaseAuthenticatedClient):
 #     """Test cases for Appointment Customer Interface."""
@@ -231,6 +261,7 @@ def test_delete_calendarsetting(admin_client, client, admin_user, rf, appointmen
 #         response = calendar_setting_list(request)
 #         self.assertEqual(response.status_code, 200)
 
+    # !!! DONE
     # def test_calendar_setting_view_add(self):
     #     """Test Function to check add calendar_setting"""
     #     request = self.factory.get('/module/calendar_setting/add/')
@@ -272,6 +303,7 @@ def test_delete_calendarsetting(admin_client, client, admin_user, rf, appointmen
     #     response = calendar_setting_add(request)
     #     self.assertEqual(response.status_code, 302)
 
+    # !!! DONE
     # def test_calendar_setting_view_update(self):
     #     """Test Function to check update calendar_setting"""
     #     request = self.factory.post('/module/calendar_setting/1/', {

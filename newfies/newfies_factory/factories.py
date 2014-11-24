@@ -91,6 +91,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     email = factory.Sequence(lambda n: 'user{0}@example.com'.format(n))
     password = '1234'
     # Use a SuperUser for test to not have to deal with permissions
+    is_active = True
     is_staff = True
     is_superuser = True
 

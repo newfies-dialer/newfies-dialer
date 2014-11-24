@@ -249,12 +249,12 @@ Newfies-Dialer Views
 
   .. autofunction:: calendar_user_del
 
-.. _calendar_user_change_password:
+.. _calendar_user_change_pw:
 
-:class:`calendar_user_change_password`
+:class:`calendar_user_change_pw`
 --------------------------------------
 
-  .. autofunction:: calendar_user_change_password
+  .. autofunction:: calendar_user_change_pw
 
 
 .. _calendar_list:

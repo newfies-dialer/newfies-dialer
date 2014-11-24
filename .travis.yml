@@ -18,7 +18,8 @@ before_script:
   # - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
   # - pyflakes -x W newfies
 script:
-  - python newfies/manage.py test -s -x --with-xtraceback --with-color
+  - py.test appointment/tests.py
+  # - python newfies/manage.py test -s -x --with-xtraceback --with-color
   #- python newfies/manage.py test --settings=settings_travis -s --with-progressive --ignore-files=api_tests.py
 # whitelist
 branches:

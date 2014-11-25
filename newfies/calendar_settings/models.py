@@ -48,7 +48,7 @@ class CalendarSetting(models.Model):
 
     """
     label = models.CharField(max_length=80, blank=False, verbose_name=_("label"))
-    callerid = models.CharField(max_length=80, verbose_name=_("Caller ID Number"),
+    callerid = models.CharField(max_length=80, verbose_name=_("Caller ID Number"), null=True, blank=True,
                                 help_text=_("outbound Caller ID"))
     caller_name = models.CharField(max_length=80, blank=True, verbose_name=_("caller name"),
                                    help_text=_("outbound caller-Name"))
@@ -72,8 +72,11 @@ class CalendarSetting(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
-    # def __unicode__(self):
-    #     return '(%d) %s' % (self.id, self.label)
+    def __unicode__(self):
+        if self.id:
+            return '(%d) %s' % (self.id, self.label)
+        else:
+            return '%s' % (self.label)
 
     class Meta:
         permissions = (

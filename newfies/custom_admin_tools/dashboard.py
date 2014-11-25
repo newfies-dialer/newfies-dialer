@@ -134,6 +134,11 @@ class CustomIndexDashboard(Dashboard):
             models=('mod_mailer.*', ),
         ))
 
+        self.children.append(modules.AppList(
+            _('calendar_settings').title(),
+            models=('calendar_settings.*', ),
+        ))
+
         self.children.append(modules.LinkList(
             _('Reporting'),
             draggable=True,

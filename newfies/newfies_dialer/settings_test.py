@@ -25,8 +25,18 @@ DATABASES = {
     }
 }
 
+#Celery test
 BROKER_BACKEND = "memory"
 CELERY_ALWAYS_EAGER = True
 
-INSTALLED_APPS += ('django_nose', )
-TEST_RUNNER = 'django_nose.run_tests'
+SOUTH_TESTS_MIGRATE = False
+
+#LOGGING
+#=======
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': True,
+}
+
+# INSTALLED_APPS += ('django_nose', )
+# TEST_RUNNER = 'django_nose.run_tests'

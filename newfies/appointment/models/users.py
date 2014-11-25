@@ -49,7 +49,7 @@ class CalendarSetting(models.Model):
 
     """
     label = models.CharField(max_length=80, blank=False, verbose_name=_("label"))
-    callerid = models.CharField(max_length=80, verbose_name=_("Caller ID Number"), null=True, blank=True,
+    callerid = models.CharField(max_length=80, verbose_name=_("Caller ID Number"),
                                 help_text=_("outbound Caller ID"))
     caller_name = models.CharField(max_length=80, blank=True, verbose_name=_("caller name"),
                                    help_text=_("outbound caller-Name"))
@@ -61,7 +61,7 @@ class CalendarSetting(models.Model):
                                related_name="calendar_survey")
     aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False, verbose_name=_("a-leg gateway"),
                                      help_text=_("select gateway to use"))
-    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"), null=True, blank=True,
+    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"), null=False, blank=False,
                                     related_name="sms_gateway", help_text=_("select SMS gateway"))
     #Voicemail Detection
     voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
@@ -74,10 +74,7 @@ class CalendarSetting(models.Model):
     updated_date = models.DateTimeField(auto_now=True)
 
     def __unicode__(self):
-        if self.id:
-            return '(%d) %s' % (self.id, self.label)
-        else:
-            return '%s' % (self.label)
+        return '(%d) %s' % (self.id, self.label)
 
     class Meta:
         permissions = (

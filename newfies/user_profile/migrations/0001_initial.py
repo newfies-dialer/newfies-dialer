@@ -12,7 +12,7 @@ class Migration(migrations.Migration):
     dependencies = [
         ('dialer_settings', '0001_initial'),
         migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-        ('dialer_gateway', '__first__'),
+        ('dialer_gateway', '0001_initial'),
     ]
 
     operations = [

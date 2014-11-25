@@ -13,14 +13,14 @@ import django_lets_go.language_field
 class Migration(migrations.Migration):
 
     dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+        ('sms', '0001_initial'),
+        ('dialer_gateway', '0001_initial'),
         ('survey', '0001_initial'),
         ('mod_sms', '0001_initial'),
         ('dialer_cdr', '0001_initial'),
         ('mod_mailer', '0001_initial'),
-        ('sms', '0001_initial'),
+        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
         ('audiofield', '__first__'),
-        ('dialer_gateway', '__first__'),
         ('auth', '0002_calendaruser_manager_staff'),
     ]
 

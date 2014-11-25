@@ -37,7 +37,6 @@ from .constants import SUBSCRIBER_STATUS, CAMPAIGN_STATUS, AMD_BEHAVIOR
 from dialer_contact.constants import CONTACT_STATUS
 from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
-from user_profile.models import UserProfile
 from sms.models import Gateway as SMS_Gateway
 from dnc.models import DNC
 #from agent.models import Agent
@@ -329,6 +328,7 @@ class Campaign(Model):
 
     def get_active_max_frequency(self):
         """Get the active max frequency"""
+        from user_profile.models import UserProfile
         try:
             obj_userprofile = UserProfile.objects.get(user=self.user)
         except UserProfile.DoesNotExist:
@@ -342,6 +342,7 @@ class Campaign(Model):
 
     def get_active_callmaxduration(self):
         """Get the active call max duration"""
+        from user_profile.models import UserProfile
         try:
             obj_userprofile = UserProfile.objects.get(user=self.user)
         except UserProfile.DoesNotExist:

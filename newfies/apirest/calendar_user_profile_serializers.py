@@ -14,7 +14,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import serializers
-from appointment.models.users import CalendarUser, CalendarUserProfile
+from user_profile.models import CalendarUser, CalendarUserProfile
 # from appointment.function_def import get_calendar_user_id_list
 from agent.models import AgentProfile
 

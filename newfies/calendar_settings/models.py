@@ -15,7 +15,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.translation import ugettext_lazy as _
 # from django.db.models.signals import post_save
-from user_profile.models import Manager, Profile_abstract
 from survey.models import Survey
 from dialer_gateway.models import Gateway
 from sms.models import Gateway as SMS_Gateway
@@ -61,7 +60,7 @@ class CalendarSetting(models.Model):
                                related_name="calendar_survey")
     aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False, verbose_name=_("a-leg gateway"),
                                      help_text=_("select gateway to use"))
-    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"), null=False, blank=False,
+    sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"), null=True, blank=True,
                                     related_name="sms_gateway", help_text=_("select SMS gateway"))
     #Voicemail Detection
     voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
@@ -73,8 +72,8 @@ class CalendarSetting(models.Model):
     created_date = models.DateTimeField(auto_now_add=True)
     updated_date = models.DateTimeField(auto_now=True)
 
-    def __unicode__(self):
-        return '(%d) %s' % (self.id, self.label)
+    # def __unicode__(self):
+    #     return '(%d) %s' % (self.id, self.label)
 
     class Meta:
         permissions = (
@@ -83,58 +82,3 @@ class CalendarSetting(models.Model):
         verbose_name = _("Calender setting")
         verbose_name_plural = _("calendar settings")
         db_table = "calendar_setting"
-        app_label = "appointment"
-
-
-class CalendarUser(User):
-    """Calendar User Model"""
-
-    class Meta:
-        proxy = True
-        app_label = 'auth'
-        verbose_name = _('calendar user')
-        verbose_name_plural = _('calendar users')
-
-    def save(self, **kwargs):
-        if not self.pk:
-            self.is_staff = 0
-            self.is_superuser = 0
-        super(CalendarUser, self).save(**kwargs)
-
-    def is_calendar_user(self):
-        try:
-            CalendarUserProfile.objects.get(user=self)
-            return True
-        except:
-            return False
-    User.add_to_class('is_calendar_user', is_calendar_user)
-
-
-class CalendarUserProfile(Profile_abstract):
-    """This defines extra features for the AR_user
-
-    **Attributes**:
-
-        * ``calendar_setting`` - appointment reminder settings
-
-
-    **Name of DB table**: calendar_user_profile
-    """
-    manager = models.ForeignKey(Manager, verbose_name=_("manager"), help_text=_("select manager"),
-                                related_name="manager_of_calendar_user")
-    calendar_setting = models.ForeignKey(CalendarSetting, verbose_name=_('calendar settings'))
-
-    class Meta:
-        permissions = (
-            ("view_calendar_user", _('can see Calendar User list')),
-        )
-        db_table = 'calendar_user_profile'
-        verbose_name = _("calendar user profile")
-        verbose_name_plural = _("calendar user profiles")
-        app_label = "appointment"
-
-    def __unicode__(self):
-        return u"%s" % str(self.user)
-
-# Create calendar user profile object
-CalendarUser.profile = property(lambda u: CalendarUserProfile.objects.get_or_create(user=u)[0])

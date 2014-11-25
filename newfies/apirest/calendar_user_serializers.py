@@ -13,7 +13,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import serializers
-from appointment.models.users import CalendarUser
+from user_profile.models import CalendarUser
 
 
 class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):

@@ -27,8 +27,8 @@ from appointment.forms import CalendarUserChangeDetailExtendForm, \
     CalendarUserNameChangeForm, CalendarForm, EventForm, AlarmForm, \
     CalendarSettingForm, EventSearchForm, CalendarUserPasswordChangeForm, \
     CalendarUserCreationForm
-from appointment.models.users import CalendarUserProfile, CalendarUser, \
-    CalendarSetting
+from user_profile.models import CalendarUserProfile, CalendarUser
+from calendar_settings.models import CalendarSetting
 from appointment.function_def import get_calendar_user_id_list
 from user_profile.models import Manager
 from django_lets_go.common_functions import ceil_strdate, getvar, \

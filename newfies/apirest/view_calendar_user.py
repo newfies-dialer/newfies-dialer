@@ -16,8 +16,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from appointment.models.users import CalendarUser, CalendarUserProfile,\
-    CalendarSetting
+from user_profile.models import CalendarUser
+from calendar_settings.models import CalendarSetting
 from appointment.models.calendars import Calendar
 from appointment.function_def import get_calendar_user_id_list, \
     get_all_calendar_user_id_list

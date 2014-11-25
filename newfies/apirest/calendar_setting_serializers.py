@@ -14,7 +14,7 @@
 #
 from django.conf import settings
 from rest_framework import serializers
-from appointment.models.users import CalendarSetting
+from calendar_settings.models import CalendarSetting
 from survey.models import Survey
 from audiofield.models import AudioFile
 

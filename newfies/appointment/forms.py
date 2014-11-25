@@ -16,7 +16,8 @@ from django.forms import ModelForm
 from django.conf import settings
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm, UserChangeForm
-from appointment.models.users import CalendarUserProfile, CalendarUser, CalendarSetting
+from user_profile.models import CalendarUser, CalendarUserProfile
+from calendar_settings.models import CalendarSetting
 from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm

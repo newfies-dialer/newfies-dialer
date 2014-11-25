@@ -2,7 +2,8 @@ from __future__ import absolute_import
 
 import factory
 from django.contrib.auth.models import Group, Permission, User
-from appointment.models.users import CalendarSetting, CalendarUserProfile
+from user_profile.models import CalendarUserProfile
+from calendar_settings.models import CalendarSetting
 from user_profile.models import UserProfile, Manager
 from dialer_gateway.models import Gateway
 from dialer_settings.models import DialerSetting

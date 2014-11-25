@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.utils.timezone import now
 from appointment.models.rules import Rule
 from appointment.models.calendars import Calendar
-from appointment.models.users import CalendarUser
+from user_profile.models import CalendarUser
 from appointment.utils import OccurrenceReplacer
 from appointment.constants import EVENT_STATUS
 from dateutil import rrule

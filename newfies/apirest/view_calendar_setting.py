@@ -17,7 +17,7 @@ from rest_framework import viewsets
 from apirest.calendar_setting_serializers import CalendarSettingSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from appointment.models.users import CalendarSetting
+from calendar_settings.models import CalendarSetting
 from permissions import CustomObjectPermissions
 
 

@@ -20,7 +20,7 @@ from celery.utils.log import get_task_logger
 from django_lets_go.only_one_task import only_one
 from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.events import Event
-from appointment.models.users import CalendarUserProfile
+from user_profile.models import CalendarUserProfile
 from appointment.constants import EVENT_STATUS, ALARM_STATUS, \
     ALARM_METHOD, ALARMREQUEST_STATUS
 from mod_mailer.models import MailSpooler

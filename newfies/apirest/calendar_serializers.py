@@ -14,7 +14,7 @@
 #
 from rest_framework import serializers
 from appointment.models.calendars import Calendar
-from appointment.models.users import CalendarUser
+from user_profile.models import CalendarUser
 from appointment.function_def import get_calendar_user_id_list
 
 

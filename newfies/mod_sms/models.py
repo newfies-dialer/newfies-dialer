@@ -22,8 +22,6 @@ from django.utils.encoding import force_unicode
 from dateutil.relativedelta import relativedelta
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.constants import CONTACT_STATUS
-from dialer_campaign.models import common_contact_authorization
-from user_profile.models import UserProfile
 from sms.models import Message
 from sms.models import Gateway
 from constants import SMS_CAMPAIGN_STATUS, SMS_SUBSCRIBER_STATUS
@@ -241,14 +239,17 @@ class SMSCampaign(Model):
 
     def is_authorized_contact(self, str_contact):
         """Check if a contact is authorized"""
+        from user_profile.models import UserProfile
         try:
             dialersetting = UserProfile.objects.get(user=self.user).dialersetting
+            from dialer_campaign.models import common_contact_authorization
             return common_contact_authorization(dialersetting, str_contact)
         except UserProfile.DoesNotExist:
             return False
 
     def get_active_max_frequency(self):
         """Get the active max frequency"""
+        from user_profile.models import UserProfile
         try:
             sms_dialersetting = UserProfile.objects.get(user=self.user).dialersetting
         except UserProfile.DoesNotExist:

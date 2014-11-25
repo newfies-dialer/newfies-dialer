@@ -233,6 +233,7 @@ INSTALLED_APPS = (
     'maintenance',
     #'agent',
     #'callcenter',
+    'calendar_settings',
     'appointment',
     'mod_mailer',
     'mod_utils',

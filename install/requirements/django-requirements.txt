@@ -7,11 +7,11 @@ django-uuidfield==0.5.0
 django-cache-utils==0.7.2
 django-picklefield==0.3.1
 django-jsonfield==0.9.13
-django-countries==2.1.2
+django-countries==3.0.1
 django-redis-cache==0.13.0
 django-redisboard==0.2.7
-django-admin-sortable==1.7.4
-# django-tagging==0.3.2
+django-admin-sortable==1.7.8
+# django-tagging==0.3.4
 django-dajaxice-ng==0.6.0.0
 django-dajax-ng==0.9.4
 #django-dajaxice doesn't support Django 1.6
@@ -23,7 +23,7 @@ django-country-dialcode==0.5.1
 django-audiofield==0.6.3
 django-admin-tools-stats==0.5.5
 django-lets-go==2.9.3
-django-extensions==1.4.4
+django-extensions==1.4.6
 django-nvd3==0.7.6
 git+git://github.com/Star2Billing/django-notification
 django-frontend-notification==0.2.0
@@ -35,5 +35,6 @@ git+git://github.com/pinax/django-mailer
 django-activelink==0.4
 git+git://github.com/areski/django-sms-gateway.git
 django-bootstrap3-datetimepicker==2.2.3
-djangorestframework==2.4.3
+djangorestframework==2.4.4
 django-crispy-forms==1.4.0
+South==1.0.1

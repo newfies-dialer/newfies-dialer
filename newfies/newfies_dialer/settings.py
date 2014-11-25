@@ -58,7 +58,7 @@ CACHES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'UTC'
 
 # set use of timezone true or false
 USE_TZ = True
@@ -75,7 +75,7 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
-USE_L10N = False
+USE_L10N = True
 
 DATETIME_FORMAT = 'Y-m-d H:i:s'
 
@@ -129,6 +129,7 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.eggs.Loader',
 )
 
+
 MIDDLEWARE_CLASSES = (
     #'raven.contrib.django.middleware.SentryResponseErrorIdMiddleware',
     #'raven.contrib.django.middleware.Sentry404CatchMiddleware',
@@ -137,8 +138,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'pagination.middleware.PaginationMiddleware',
     'linaro_django_pagination.middleware.PaginationMiddleware',
     'django_lets_go.filter_persist_middleware.FilterPersistMiddleware',
@@ -163,6 +166,8 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     #needed by Sentry
     "django.core.context_processors.request",
 )
+
+WSGI_APPLICATION = 'newfies_dialer.wsgi.application'
 
 SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
@@ -307,6 +312,9 @@ except ImportError:
     pass
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
+
+#Default Test Runner
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Nose
 # TODO: Re-Enable Nose as it s actually broken

@@ -526,7 +526,8 @@ NEWFIES_DIALER_ENGINE = 'esl'
 
 #DIALER
 #======
-MAX_CALLS_PER_SECOND = 20  # By default configured to 20 calls per second
+# NOTE: MAX_CALLS_PER_SECOND is no longer implemented
+# MAX_CALLS_PER_SECOND = 20  # By default configured to 20 calls per second
 
 # Number of time the spooling tasks will be run per minute,
 # value like 10 will allow not waiting too long for 1st calls

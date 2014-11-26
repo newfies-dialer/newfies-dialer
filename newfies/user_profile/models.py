@@ -97,6 +97,7 @@ class UserProfile(Profile_abstract):
             ("view_api_explorer", _('can see API-Explorer')),
         )
         db_table = 'user_profile'
+        app_label = 'user_profile'
         verbose_name = _("user profile")
         verbose_name_plural = _("user profiles")
 
@@ -121,7 +122,7 @@ class Manager(User):
 
     class Meta:
         proxy = True
-        app_label = 'auth'
+        app_label = 'user_profile'
         verbose_name = _('manager')
         verbose_name_plural = _('managers')
 
@@ -143,7 +144,7 @@ class Staff(User):
 
     class Meta:
         proxy = True
-        app_label = 'auth'
+        app_label = 'user_profile'
         verbose_name = _('admin')
         verbose_name_plural = _('admins')
 
@@ -159,7 +160,7 @@ class CalendarUser(User):
 
     class Meta:
         proxy = True
-        app_label = 'auth'
+        app_label = 'user_profile'
         verbose_name = _('calendar user')
         verbose_name_plural = _('calendar users')
 
@@ -197,6 +198,7 @@ class CalendarUserProfile(Profile_abstract):
             ("view_calendar_user", _('can see Calendar User list')),
         )
         db_table = 'calendar_user_profile'
+        app_label = 'user_profile'
         verbose_name = _("calendar user profile")
         verbose_name_plural = _("calendar user profiles")
 

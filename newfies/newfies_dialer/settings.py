@@ -208,6 +208,7 @@ INSTALLED_APPS = (
     'admin_tools_stats',
     'genericadmin',
     'mailer',
+    # 'south',
     'djcelery',
     'audiofield',
     # Tagging broken with Django 1.7
@@ -662,9 +663,9 @@ BOWER_INSTALLED_APPS = (
 
 # South
 # -----
-# SOUTH_MIGRATION_MODULES = {
-#     'authtoken': 'rest_framework.authtoken.south_migrations',
-# }
+SOUTH_MIGRATION_MODULES = {
+    'authtoken': 'rest_framework.authtoken.south_migrations',
+}
 
 #Need to build documentation with Django 1.6
 LOGGING_CONFIG = None

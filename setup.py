@@ -45,7 +45,6 @@ def parse_dependency_links(file_name):
     for line in open(file_name, 'r').read().split('\n'):
         if re.match(r'\s*-[ef]\s+', line):
             dependency_links.append(re.sub(r'\s*-[ef]\s+', '', line))
-
     return dependency_links
 
 

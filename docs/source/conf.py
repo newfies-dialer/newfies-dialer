@@ -60,7 +60,7 @@ copyright = u'2011-2014, Arezqui Belaid <info@star2billing.com>'
 # built documents.
 #
 # The short X.Y version.
-version = ".".join(map(str, newfies_dialer.VERSION[0:2]))
+version = ".".join(newfies_dialer.__version__.split('.')[0:2])
 # The full version, including alpha/beta/rc tags.
 release = newfies_dialer.__version__
 

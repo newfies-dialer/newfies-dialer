@@ -144,7 +144,7 @@ func_check_dependencies() {
         exit 1
     fi
 
-    #Check celery
+    #Check Celery
     grep_pip=`pip freeze| grep celery`
     if echo $grep_pip | grep -i "celery" > /dev/null ; then
         echo "OK : celery installed..."
@@ -741,8 +741,11 @@ func_install_frontend(){
     #Install Depedencies
     func_install_dependencies
 
-    #Install Celery & redis-server
-    func_install_redis_server
+    #Install Redis
+    func_install_redis
+
+    #Install RabbitMQ
+    func_install_rabbitmq
 
     #Create and enable virtualenv
     func_setup_virtualenv
@@ -827,7 +830,10 @@ func_install_backend() {
     mkdir -p /var/run/celery
 
     #Install Celery & redis-server
-    func_install_redis_server
+    func_install_redis
+
+    #Install RabbitMQ
+    func_install_rabbitmq
 
     #Memcache installation
     #pip install python-memcached
@@ -875,9 +881,49 @@ func_install_backend() {
     echo ""
 }
 
+#Install & Configure RabbitMQ
+func_install_rabbitmq() {
+    echo "Install RabbitMQ ..."
+    case $DIST in
+        'DEBIAN')
+            chk=`grep "rabbitmq" /etc/apt/sources.list.d/rabbitmq.list|wc -l`
+            if [ $chk -lt 1 ] ; then
+                echo "Setup new sources.list entries for RabbitMQ"
+                echo "deb http://www.rabbitmq.com/debian/ testing main" > /etc/apt/sources.list.d/rabbitmq.list
+                wget --quiet -O - http://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add -
+            fi
+            apt-get update
+            apt-get -y install rabbitmq-server
+            /usr/sbin/rabbitmq-plugins enable rabbitmq_management
+            # echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config
+
+            #Set RabbitMQ to start on boot and start it up immediately:
+            update-rc.d rabbitmq-server defaults
+            /etc/init.d/rabbitmq-server start
+        ;;
+        'CENTOS')
+            #TODO: Not supported
+            echo ""
+            echo "RabbitMQ is not supported on CentOS, fork and patch away please"
+            echo ""
+            exit 1
+        ;;
+    esac
+
+    #Create RabbitMQ vhost and user for Newfies-Dialer
+    rabbitmqctl add_vhost /newfiesdialer
+    rabbitmqctl add_user newfiesdialer mypassword
+    rabbitmqctl set_permissions -p /newfiesdialer newfiesdialer ".*" ".*" ".*"
+
+    #Check Cluster Status
+    rabbitmqctl cluster_status
+    #List the running queues
+    rabbitmqctl list_queues -p /newfiesdialer
+}
+
 
 #Install recent version of redis-server
-func_install_redis_server() {
+func_install_redis() {
     echo "Install Redis-server ..."
     case $DIST in
         'DEBIAN')

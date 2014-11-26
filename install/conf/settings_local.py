@@ -1,3 +1,6 @@
+#!/usr/bin/python
+# -*- coding: utf-8 -*-
+
 #
 # Newfies-Dialer License
 # http://www.newfies-dialer.org

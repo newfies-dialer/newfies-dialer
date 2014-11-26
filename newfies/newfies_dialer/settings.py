@@ -413,16 +413,18 @@ CACHES = {
 
 #CELERY SETTINGS
 #===============
-## Broker settings
-BROKER_URL = "redis://localhost:6379/0"
-#BROKER_URL = 'amqp://guest:guest@localhost:5672//'
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 0
-#REDIS_CONNECT_RETRY = True
+# # Broker settings Redis
+# BROKER_URL = "redis://localhost:6379/0"
+# REDIS_HOST = 'localhost'
+# REDIS_PORT = 6379
+# REDIS_DB = 0
+# #REDIS_CONNECT_RETRY = True
+# CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
+BROKER_URL = 'amqp://newfiesdialer:mypassword@localhost:5672//newfiesdialer'
+CELERY_RESULT_BACKEND = "amqp://newfiesdialer:mypassword@localhost:5672//newfiesdialer"
 
 ## Using the database to store task state and results.
-CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 
 #CELERY_REDIS_CONNECT_RETRY = True

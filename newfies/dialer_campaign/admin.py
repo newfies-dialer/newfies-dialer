@@ -27,10 +27,7 @@ from dialer_campaign.constants import SUBSCRIBER_STATUS, SUBSCRIBER_STATUS_NAME
 from dialer_campaign.forms import SubscriberReportForm, SubscriberAdminForm
 from genericadmin.admin import GenericAdminModelAdmin
 from django_lets_go.common_functions import ceil_strdate, getvar
-# from django_lets_go.app_label_renamer import AppLabelRenamer
 from datetime import datetime
-APP_LABEL = _('Dialer Campaign')
-# AppLabelRenamer(native_app_label=u'dialer_campaign', app_label=APP_LABEL).main()
 
 
 class CampaignAdmin(GenericAdminModelAdmin):
@@ -203,7 +200,7 @@ class SubscriberAdmin(admin.ModelAdmin):
             'total_completed': total_completed,
             'SUBSCRIBER_STATUS_NAME': SUBSCRIBER_STATUS_NAME,
             'model_name': opts.object_name.lower(),
-            'app_label': APP_LABEL,
+            'app_label': _('Dialer Campaign'),
             'title': _('subscriber report'),
         })
 

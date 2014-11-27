@@ -29,13 +29,12 @@ from dialer_cdr.forms import AdminVoipSearchForm
 from dialer_cdr.function_def import voipcall_record_common_fun, voipcall_search_admin_form_fun
 from django_lets_go.common_functions import getvar
 from mod_utils.helper import Export_choice
-#from django_lets_go.app_label_renamer import AppLabelRenamer
 from genericadmin.admin import GenericAdminModelAdmin
 from datetime import datetime
 from django.utils.timezone import utc
 import tablib
 
-# AppLabelRenamer(native_app_label=u'dialer_cdr', app_label=_('Dialer CDR')).main()
+
 APP_LABEL = _('VoIP report')
 
 

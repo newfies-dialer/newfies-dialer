@@ -14,21 +14,13 @@
 #
 
 from django.contrib import admin
-# from django.utils.translation import ugettext as _
-from survey.models import Survey, Section, Branching, \
-    Survey_template, Section_template, Branching_template, \
-    Result, ResultAggregate
+from survey.models import Survey, Section, Branching, Survey_template, Section_template, \
+    Branching_template, Result, ResultAggregate
 from adminsortable.admin import SortableAdmin, SortableTabularInline
-# from django_lets_go.app_label_renamer import AppLabelRenamer
-
-# AppLabelRenamer(native_app_label=u'survey', app_label=_('Survey')).main()
 
 
-#Templates Section, Survey and Branching for Admin
 class SectionTemplateInline(SortableTabularInline):
-    """
-    Inline Section Template
-    """
+    """Inline Section Template"""
     model = Section_template
 
 
@@ -56,14 +48,11 @@ admin.site.register(Branching_template, BranchingTemplateAdmin)
 
 #Section, Survey and Branching for Admin
 class SectionInline(SortableTabularInline):
-    """
-    Inline Section
-    """
+    """Inline Section"""
     model = Section
 
 
 class SurveyAdmin(admin.ModelAdmin):
-
     """Allows the administrator to view and modify survey."""
 
     inlines = [SectionInline]
@@ -74,7 +63,6 @@ admin.site.register(Survey, SurveyAdmin)
 
 
 class SectionTemplateAdmin(SortableAdmin):
-
     """Allows the administrator to view and modify survey question."""
 
     list_display = ('id', 'survey', 'created_date')
@@ -85,7 +73,6 @@ admin.site.register(Section_template, SectionTemplateAdmin)
 
 
 class SectionAdmin(SortableAdmin):
-
     """Allows the administrator to view and modify survey question."""
 
     list_display = ('id', 'survey', 'created_date')
@@ -96,7 +83,6 @@ admin.site.register(Section, SectionAdmin)
 
 
 class BranchingAdmin(admin.ModelAdmin):
-
     """Allows the administrator to view and modify branching."""
 
     list_display = ('id', 'keys', 'section', 'goto', 'created_date')
@@ -106,9 +92,7 @@ class BranchingAdmin(admin.ModelAdmin):
 admin.site.register(Branching, BranchingAdmin)
 
 
-#Result
 class ResultAdmin(admin.ModelAdmin):
-
     """Allows the administrator to view and modify survey results."""
 
     list_display = ('id', 'callrequest', 'section', 'response',
@@ -122,7 +106,6 @@ admin.site.register(Result, ResultAdmin)
 
 
 class ResultAggregateAdmin(admin.ModelAdmin):
-
     """Allows the administrator to view and modify survey aggregated result."""
 
     list_display = ('id', 'survey', 'section', 'response',

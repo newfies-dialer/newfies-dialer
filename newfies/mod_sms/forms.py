@@ -97,7 +97,7 @@ class SMSCampaignForm(ModelForm):
         self.helper.layout = Layout(
             Field('campaign_code'),
             TabHolder(
-                Tab(_('general settings').title(),
+                Tab(_('General Settings'),
                     Div(
                         Div('name', css_class=css_class),
                         Div('callerid', css_class=css_class),
@@ -110,7 +110,7 @@ class SMSCampaignForm(ModelForm):
                     form_action,
                     css_class='well'
                     ),
-                Tab(_('completion settings').title(),
+                Tab(_('Completion Settings'),
                     Div(
                         Div('frequency', css_class=css_class),
                         Div('maxretry', css_class=css_class),
@@ -122,7 +122,7 @@ class SMSCampaignForm(ModelForm):
                     ),
                 Tab('schedule',
                     Div(
-                        Div(HTML("""<label>%s<label>""" % (_('week days').capitalize())), css_class="col-md-3"),
+                        Div(HTML("""<label>%s<label>""" % (_('Week days'))), css_class="col-md-3"),
                         HTML(week_days_html),
                         HTML("""<div>&nbsp;</div>"""),
                         Div('startingdate', css_class=css_class),
@@ -207,7 +207,7 @@ class SMSDashboardForm(forms.Form):
             Div(
                 Div('smscampaign', css_class='form-group'),
                 Div('search_type', css_class='form-group'),
-                Div(Submit('submit', _('search').title()), css_class='form-group'),
+                Div(Submit('submit', _('Search')), css_class='form-group'),
             ),
         )
 
@@ -263,8 +263,8 @@ class AdminSMSSearchForm(AdminSearchForm):
 
 
 class SMSCampaignSearchForm(forms.Form):
-    phonebook_id = forms.ChoiceField(label=_("phonebook").capitalize())
-    status = forms.ChoiceField(label=_("status").capitalize(), choices=sms_campaign_status_list)
+    phonebook_id = forms.ChoiceField(label=_("Phonebook"))
+    status = forms.ChoiceField(label=_("Status"), choices=sms_campaign_status_list)
 
     def __init__(self, user, *args, **kwargs):
         super(SMSCampaignSearchForm, self).__init__(*args, **kwargs)

@@ -41,10 +41,10 @@ class VoipSearchForm(SearchForm):
     """
     VoIP call Report Search Parameters
     """
-    disposition = forms.ChoiceField(label=_('disposition').capitalize(),
+    disposition = forms.ChoiceField(label=_('Disposition'),
                                     choices=voip_call_disposition_list, required=False)
-    campaign_id = forms.ChoiceField(label=_('campaign').capitalize(), required=False)
-    leg_type = forms.ChoiceField(label=_("leg type").capitalize(), choices=list(LEG_TYPE), required=False)
+    campaign_id = forms.ChoiceField(label=_('Campaign'), required=False)
+    leg_type = forms.ChoiceField(label=_("Leg type"), choices=list(LEG_TYPE), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(VoipSearchForm, self).__init__(*args, **kwargs)

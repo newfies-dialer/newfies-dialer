@@ -27,19 +27,20 @@ class STRATEGY(Choice):
     random = 8, 'random'
 
 
-class QUEUE_COLUMN_NAME(Choice):
-    name = _('name')
-    strategy = _('strategy')
-    time_base_score = _('time base score')
-    date = _('date')
+QUEUE_COLUMN_NAME = {
+    'name': _('name'),
+    'strategy': _('strategy'),
+    'time_base_score': _('time base score'),
+    'date': _('date'),
+}
 
-
-class TIER_COLUMN_NAME(Choice):
-    agent = _('agent')
-    queue = _('queue')
-    level = _('level')
-    position = _('position')
-    date = _('date')
+TIER_COLUMN_NAME = {
+    'agent': _('agent'),
+    'queue': _('queue'),
+    'level': _('level'),
+    'position': _('position'),
+    'date': _('date'),
+}
 
 
 class TIME_BASE_SCORE_TYPE(Choice):

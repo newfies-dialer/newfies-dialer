@@ -106,7 +106,7 @@ def notify_admin(request):
             frontend_send_notification(
                 request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
             # Send mail to ADMINS
-            subject = _('dialer setting configuration').title()
+            subject = _('Dialer Setting Configuration')
             message = _('Notification - User Dialer Setting. The user "%(user)s" - "%(user_id)s" is not properly '
                         'configured to use the system, please configure their dialer settings.') % \
                 {'user': request.user, 'user_id': request.user.id}

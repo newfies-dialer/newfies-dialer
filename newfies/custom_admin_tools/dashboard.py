@@ -60,45 +60,45 @@ class CustomIndexDashboard(Dashboard):
         self.columns = 3
 
         self.children.append(modules.Group(
-            title=_("general").capitalize(),
+            title=_("General"),
             display="tabs",
             children=[
                 modules.AppList(
-                    title=_('user').capitalize(),
+                    title=_('User'),
                     models=('django.contrib.*', 'user_profile.*', 'agent.*', ),
                 ),
                 modules.AppList(
-                    _('task manager').title(),
+                    _('Task Manager'),
                     models=('djcelery.*', ),
                 ),
                 modules.AppList(
-                    _('dashboard stats').capitalize(),
+                    _('Dashboard stats'),
                     models=('admin_tools_stats.*', ),
                 ),
-                modules.RecentActions(_('recent actions').capitalize(), 5),
+                modules.RecentActions(_('Recent Actions'), 5),
             ]
         ))
 
         self.children.append(modules.AppList(
-            _('callcenter').title(),
+            _('Callcenter'),
             models=('callcenter.*', ),
         ))
 
         self.children.append(modules.AppList(
-            _('settings').capitalize(),
+            _('Settings'),
             models=('dialer_settings.*', ),
         ))
 
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
-            _('VoIP dialer').title(),
+            _('VoIP dialer'),
             models=('dialer_cdr.*', 'dialer_gateway.*',
                     'dialer_contact.*', 'dialer_campaign.*', ),
         ))
 
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
-            _('surveys').capitalize(),
+            _('Surveys'),
             models=('survey.*', ),
         ))
 
@@ -115,27 +115,27 @@ class CustomIndexDashboard(Dashboard):
 
         # append an app list module for "Dialer"
         self.children.append(modules.AppList(
-            _('audio files').title(),
+            _('Audio Files'),
             models=('audiofield.*', ),
         ))
 
         self.children.append(modules.AppList(
-            _('do not call').title(),
+            _('Do Not Call'),
             models=('dnc.*', ),
         ))
 
         self.children.append(modules.AppList(
-            _('appointment').title(),
+            _('Appointment'),
             models=('appointment.*', ),
         ))
 
         self.children.append(modules.AppList(
-            _('mod_mailer').title(),
+            _('Mod Mailer'),
             models=('mod_mailer.*', ),
         ))
 
         self.children.append(modules.AppList(
-            _('calendar_settings').title(),
+            _('Calendar Settings'),
             models=('calendar_settings.*', ),
         ))
 
@@ -181,7 +181,7 @@ class CustomIndexDashboard(Dashboard):
 
         # append an app list module for "Country_prefix"
         self.children.append(modules.AppList(
-            _('dashboard stats settings').title(),
+            _('Dashboard Stats Settings'),
             models=('admin_dashboard_stats.*', ),
         ))
 
@@ -208,25 +208,25 @@ class CustomAppIndexDashboard(AppIndexDashboard):
 
         #TODO: Find out better way
         if str(self.app_title) == 'Dialer_Settings':
-            app_title = _('dialer settings').title()
+            app_title = _('Dialer Settings')
             models = ['dialer_settings.*']
         elif str(self.app_title) == 'Dialer_Campaign':
-            app_title = _('dialer campaign').title()
+            app_title = _('Dialer Campaign')
             models = ['dialer_campaign.*']
         elif str(self.app_title) == 'Dialer_Contact':
-            app_title = _('dialer contact').title()
+            app_title = _('Dialer Contact')
             models = ['dialer_contact.*']
         elif str(self.app_title) == 'Dialer_Cdr':
             app_title = _('Dialer CDR')
             models = ['dialer_cdr.*']
         elif str(self.app_title) == 'Dialer_Gateway':
-            app_title = _('dialer gateway').title()
+            app_title = _('Dialer Gateway')
             models = ['dialer_gateway.*']
         elif str(self.app_title) == 'Country_Dialcode':
-            app_title = _('country dialcode').title()
+            app_title = _('Country Dialcode')
             models = ['country_dialcode.*']
         elif str(self.app_title) == 'Dnc':
-            app_title = _('do not call').title()
+            app_title = _('Do Not Call')
             models = ['dnc.*']
         else:
             app_title = self.app_title
@@ -237,7 +237,7 @@ class CustomAppIndexDashboard(AppIndexDashboard):
             #modules.ModelList(self.app_title, self.models),
             modules.ModelList(app_title, models),
             modules.RecentActions(
-                _('recent actions').title(),
+                _('Recent Actions'),
                 include_list=self.get_app_content_types(),
                 limit=5,
             ),

@@ -16,13 +16,6 @@ from django.utils.translation import ugettext_lazy as _
 from django_lets_go.utils import Choice
 
 
-class AGENT_COLUMN_NAME(Choice):
-    name = _('name')
-    contact = _('contact')
-    status = _('status')
-    date = _('date')
-
-
 class AGENT_STATUS(Choice):
     LOGGED_OUT = 1, 'logged out'
     AVAILABLE = 2, 'available'

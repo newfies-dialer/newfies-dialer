@@ -121,5 +121,5 @@ def link_of_survey_view(survey_id):
     create survey view link
     """
     link = '<a href="/module/sealed_survey_view/%s/" target="_blank" title="%s"><i class="fa fa-search"></i></a>' % \
-        (survey_id, _('view sealed survey').capitalize())
+        (survey_id, _('view sealed survey'))
     return link

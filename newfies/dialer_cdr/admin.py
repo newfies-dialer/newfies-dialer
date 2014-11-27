@@ -44,13 +44,13 @@ class CallrequestAdmin(GenericAdminModelAdmin):
     of a Callrequest."""
     content_type_whitelist = ('survey/survey', )
     fieldsets = (
-        (_('standard options').capitalize(), {
+        (_('Standard options'), {
             'fields': ('user', 'request_uuid', 'call_time', 'campaign',
                        'status', 'hangup_cause', 'callerid', 'phone_number',
                        'timeout', 'timelimit', 'call_type', 'aleg_gateway',
                        'content_type', 'object_id', ),
         }),
-        (_('advanced options').capitalize(), {
+        (_('Advanced options'), {
             'classes': ('collapse', ),
             'fields': ('extra_data', 'extra_dial_string', 'subscriber', 'completed'),
         }),
@@ -72,7 +72,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
     """Allows the administrator to view and modify certain attributes
     of a VoIPCall."""
     can_add = False
-    detail_title = _("call report").title()
+    detail_title = _("Call Report")
     list_display = ('id', 'leg_type', 'callid', 'callerid', 'phone_number',
                     'starting_date', 'min_duration', 'billsec', 'disposition',
                     'hangup_cause', 'callrequest')
@@ -95,7 +95,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             url = reverse('admin:auth_customer_change', args=(obj.user_id, ))
         return '<a href="%s"><b>%s</b></a>' % (url, obj.user)
     user_link.allow_tags = True
-    user_link.short_description = _('user').capitalize()
+    user_link.short_description = _('User')
 
     def used_gateway_link(self, obj):
         """Used gateway link to edit gateway detail"""
@@ -103,7 +103,7 @@ class VoIPCallAdmin(admin.ModelAdmin):
             url = reverse('admin:dialer_gateway_gateway_change', args=(obj.used_gateway.id, ))
             return '<a href="%s">%s</a>' % (url, obj.used_gateway)
     used_gateway_link.allow_tags = True
-    used_gateway_link.short_description = _('gateway used').capitalize()
+    used_gateway_link.short_description = _('Gateway used')
 
     def has_add_permission(self, request):
         """Remove add permission on VoIP Call Report model

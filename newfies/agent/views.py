@@ -264,7 +264,6 @@ def agent_list(request):
         'msg': request.session.get('msg'),
         'agent_list': agent_list,
         'total_agent': agent_list.count(),
-        'AGENT_COLUMN_NAME': AGENT_COLUMN_NAME,
         'col_name_with_order': pag_vars['col_name_with_order'],
     }
     request.session['msg'] = ''

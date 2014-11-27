@@ -92,7 +92,7 @@ class UserChangeDetailExtendForm(ModelForm):
 
 class CheckPhoneNumberForm(forms.Form):
     """A form used to check the phone number in the Customer UI."""
-    phone_number = forms.CharField(label=_('verify phone number').capitalize(), required=True,
+    phone_number = forms.CharField(label=_('Verify phone number'), required=True,
         help_text=_("verify if a phone number is authorized to call"))
 
     def __init__(self, *args, **kwargs):

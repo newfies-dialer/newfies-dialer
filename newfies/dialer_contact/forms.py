@@ -36,10 +36,10 @@ class AdminSearchForm(forms.Form):
 class SearchForm(AdminSearchForm):
     """General Search Form with From & To date para."""
     from_date = forms.CharField(
-        label=_('from').capitalize(), required=False, max_length=10,
+        label=_('From'), required=False, max_length=10,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
     to_date = forms.CharField(
-        label=_('to').capitalize(), required=False, max_length=10,
+        label=_('To'), required=False, max_length=10,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD", "pickTime": False}))
 
 
@@ -64,7 +64,7 @@ class FileImport(forms.Form):
 
 class Contact_fileImport(FileImport):
     """Admin Form : Import CSV file with phonebook"""
-    phonebook = forms.ChoiceField(label=_("phonebook").capitalize(), required=False, help_text=_("select phonebook"))
+    phonebook = forms.ChoiceField(label=_("Phonebook"), required=False, help_text=_("select phonebook"))
 
     def __init__(self, user, *args, **kwargs):
         super(Contact_fileImport, self).__init__(*args, **kwargs)
@@ -138,7 +138,7 @@ class ContactForm(ModelForm):
         css_class = 'col-md-6'
         self.helper.layout = Layout(
             TabHolder(
-                Tab(_('general').capitalize(),
+                Tab(_('General'),
                     Div(
                         Div('phonebook', css_class=css_class),
                         Div('contact', css_class=css_class),
@@ -151,7 +151,7 @@ class ContactForm(ModelForm):
                     form_action,
                     css_class='well'
                     ),
-                Tab(_('advanced data').capitalize(),
+                Tab(_('Advanced Data'),
                     Div(
                         Div('unit_number', css_class=css_class),
                         Div('address', css_class=css_class),
@@ -175,12 +175,12 @@ class ContactForm(ModelForm):
 
 class ContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-    contact_no = forms.CharField(label=_('contact number').capitalize(), required=False, widget=NumberInput())
+    contact_no = forms.CharField(label=_('Contact number'), required=False, widget=NumberInput())
     contact_name = forms.CharField(
-        label=_('contact name').capitalize(), required=False,
+        label=_('Contact Name'), required=False,
         widget=forms.TextInput(attrs={'size': 15}))
-    phonebook = forms.ChoiceField(label=_('phonebook').capitalize(), required=False)
-    contact_status = forms.TypedChoiceField(label=_('status').capitalize(), required=False, choices=list(STATUS_CHOICE),
+    phonebook = forms.ChoiceField(label=_('Phonebook'), required=False)
+    contact_status = forms.TypedChoiceField(label=_('Status'), required=False, choices=list(STATUS_CHOICE),
                                             initial=STATUS_CHOICE.ALL)
 
     def __init__(self, user, *args, **kwargs):

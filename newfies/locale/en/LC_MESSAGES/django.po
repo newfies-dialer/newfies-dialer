@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-09-30 15:30+0200\n"
+"POT-Creation-Date: 2014-11-28 00:29+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,96 +18,60 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 
 #: agent/admin_filters.py:21 agent/models.py:43 agent/models.py:120
-#: appointment/admin_filters.py:21 appointment/models/users.py:58
-#: appointment/models/users.py:123 callcenter/admin_filters.py:46
-#: callcenter/models.py:91 callcenter/models.py:156 user_profile/models.py:124
+#: appointment/admin_filters.py:21 calendar_settings/models.py:57
+#: callcenter/admin_filters.py:46 callcenter/models.py:91
+#: callcenter/models.py:156 user_profile/models.py:126
+#: user_profile/models.py:192
 msgid "manager"
-msgstr ""
-
-#: agent/constants.py:20 appointment/constants.py:65
-#: appointment/constants.py:72 appointment/models/calendars.py:21
-#: appointment/models/rules.py:45 callcenter/constants.py:31
-#: callcenter/models.py:93 dialer_audio/constants.py:20
-#: dialer_campaign/constants.py:23 dialer_campaign/models.py:180
-#: dialer_contact/constants.py:39 dialer_contact/models.py:39
-#: dialer_contact/models.py:156 dialer_gateway/models.py:53
-#: dialer_settings/models.py:38 dnc/constants.py:21 dnc/models.py:32
-#: mod_sms/constants.py:40 mod_sms/models.py:122 survey/constants.py:33
-#: survey/constants.py:47 survey/models.py:42
-msgid "name"
-msgstr ""
-
-#: agent/constants.py:21 agent/models.py:53 dialer_campaign/constants.py:34
-#: dialer_campaign/models.py:460 dialer_contact/constants.py:48
-#: dialer_contact/models.py:110
-#: dialer_contact/templates/dialer_contact/contact/change.html:5
-#: dnc/templates/dnc/dnc_contact/change.html:5
-#: frontend/templates/frontend/bootstrap_menu.html:43 mod_sms/models.py:238
-#: mod_sms/models.py:430
-#: templates/admin/dialer_contact/contact/import_contact.html:20
-msgid "contact"
-msgstr ""
-
-#: agent/constants.py:22 agent/models.py:56 appointment/constants.py:84
-#: appointment/constants.py:97 appointment/models/alarms.py:53
-#: appointment/models/alarms.py:146 appointment/models/events.py:51
-#: callcenter/models.py:95 dialer_campaign/constants.py:28
-#: dialer_campaign/constants.py:38 dialer_campaign/forms.py:397
-#: dialer_campaign/forms.py:450 dialer_campaign/models.py:185
-#: dialer_campaign/models.py:462 dialer_cdr/models.py:105
-#: dialer_contact/constants.py:52 dialer_contact/forms.py:183
-#: dialer_contact/models.py:89
-#: dialer_contact/templates/dialer_contact/contact/import_contact.html:29
-#: mod_sms/constants.py:44 mod_sms/constants.py:63 mod_sms/forms.py:227
-#: mod_sms/forms.py:251 mod_sms/forms.py:267 mod_sms/models.py:127
-#: mod_sms/models.py:433
-#: templates/admin/dialer_contact/contact/import_contact.html:25
-msgid "status"
-msgstr ""
-
-#: agent/constants.py:23 appointment/constants.py:68
-#: appointment/constants.py:75 appointment/constants.py:85
-#: appointment/models/alarms.py:144 appointment/models/alarms.py:152
-#: appointment/models/calendars.py:26 callcenter/constants.py:34
-#: callcenter/constants.py:42 callcenter/models.py:51 callcenter/models.py:115
-#: callcenter/models.py:165 dialer_audio/constants.py:23
-#: dialer_campaign/constants.py:35 dialer_campaign/models.py:257
-#: dialer_campaign/models.py:470 dialer_cdr/models.py:99
-#: dialer_cdr/templates/dialer_cdr/voipcall_report.html:116
-#: dialer_contact/constants.py:41 dialer_contact/constants.py:53
-#: dialer_contact/models.py:42 dialer_contact/models.py:102
-#: dialer_gateway/models.py:86 dnc/constants.py:22 dnc/constants.py:30
-#: mod_sms/templates/mod_sms/sms_report.html:121 survey/constants.py:35
-#: survey/constants.py:50 survey/models.py:48
-#: survey/templates/survey/survey_report.html:194
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:54
-#: templates/admin/mod_sms/smsmessage/sms_report.html:54
-msgid "date"
 msgstr ""
 
 #: agent/models.py:41
 msgid "Designates whether the user is an agent."
 msgstr ""
 
-#: agent/models.py:44 appointment/models/users.py:59
-#: appointment/models/users.py:123 callcenter/models.py:92
-#: callcenter/models.py:157
+#: agent/models.py:44 calendar_settings/models.py:58 callcenter/models.py:92
+#: callcenter/models.py:157 user_profile/models.py:192
 msgid "select manager"
 msgstr ""
 
 #: agent/models.py:48 dialer_campaign/constants.py:25
-#: dialer_campaign/models.py:227 dialer_cdr/models.py:121 frontend/forms.py:51
+#: dialer_campaign/models.py:228 dialer_cdr/models.py:121 frontend/forms.py:51
 #: mod_mailer/models.py:60 mod_sms/forms.py:198
 msgid "type"
 msgstr ""
 
-#: agent/models.py:50 dialer_campaign/models.py:221
+#: agent/models.py:50 dialer_campaign/models.py:222
 #: dialer_settings/models.py:52
 msgid "timeout on call"
 msgstr ""
 
-#: agent/models.py:51 dialer_campaign/models.py:222
+#: agent/models.py:51 dialer_campaign/models.py:223
 msgid "connection timeout in seconds"
+msgstr ""
+
+#: agent/models.py:53 dialer_campaign/constants.py:34
+#: dialer_campaign/models.py:463 dialer_contact/constants.py:48
+#: dialer_contact/models.py:110
+#: dialer_contact/templates/dialer_contact/contact/change.html:5
+#: dnc/templates/dnc/dnc_contact/change.html:5
+#: frontend/templates/frontend/bootstrap_menu.html:43 mod_sms/models.py:238
+#: mod_sms/models.py:433
+#: templates/admin/dialer_contact/contact/import_contact.html:20
+msgid "contact"
+msgstr ""
+
+#: agent/models.py:56 appointment/constants.py:84 appointment/constants.py:97
+#: appointment/models/alarms.py:53 appointment/models/alarms.py:146
+#: appointment/models/events.py:51 callcenter/models.py:95
+#: dialer_campaign/constants.py:28 dialer_campaign/constants.py:38
+#: dialer_campaign/models.py:186 dialer_campaign/models.py:465
+#: dialer_cdr/models.py:105 dialer_contact/constants.py:52
+#: dialer_contact/models.py:89
+#: dialer_contact/templates/dialer_contact/contact/import_contact.html:29
+#: mod_sms/constants.py:44 mod_sms/constants.py:63 mod_sms/forms.py:227
+#: mod_sms/forms.py:251 mod_sms/models.py:127 mod_sms/models.py:436
+#: templates/admin/dialer_contact/contact/import_contact.html:25
+msgid "status"
 msgstr ""
 
 #: agent/models.py:59
@@ -194,7 +158,7 @@ msgstr ""
 msgid "dashboard"
 msgstr ""
 
-#: agent/templates/agent/agent_menu.html:17 custom_admin_tools/dashboard.py:88
+#: agent/templates/agent/agent_menu.html:17
 #: user_profile/templates/user_profile/user_detail_change.html:5
 msgid "settings"
 msgstr ""
@@ -205,7 +169,7 @@ msgstr ""
 
 #: agent/templates/agent/change.html:7
 #: frontend/templates/frontend/common_submit_buttons.html:7
-#: mod_utils/forms.py:68 survey/templates/survey/section_branch_change.html:70
+#: survey/templates/survey/section_branch_change.html:70
 #: survey/templates/survey/section_change.html:58
 #: survey/templates/survey/section_script_change.html:54
 msgid "update"
@@ -262,7 +226,7 @@ msgstr ""
 #: callcenter/templates/callcenter/tier/list.html:46
 #: dialer_audio/templates/dialer_audio/audio_list.html:18
 #: dialer_audio/templates/dialer_audio/audio_list.html:49
-#: dialer_campaign/models.py:316
+#: dialer_campaign/models.py:317
 #: dialer_campaign/templates/dialer_campaign/campaign/list.html:20
 #: dialer_campaign/templates/dialer_campaign/campaign/list.html:60
 #: dialer_campaign/templates/dialer_campaign/subscriber/list.html:26
@@ -366,43 +330,43 @@ msgstr ""
 msgid "total"
 msgstr ""
 
-#: agent/views.py:132 appointment/views.py:217
+#: agent/views.py:132 appointment/views.py:220
 #, python-format
 msgid "%s password has been changed."
 msgstr ""
 
 #: agent/views.py:135 agent/views.py:221 agent/views.py:232
-#: user_profile/views.py:83 user_profile/views.py:94 user_profile/views.py:104
+#: user_profile/views.py:82 user_profile/views.py:93 user_profile/views.py:103
 msgid "please correct the errors below."
 msgstr ""
 
-#: agent/views.py:219 user_profile/views.py:81
+#: agent/views.py:219 user_profile/views.py:80
 msgid "detail has been changed."
 msgstr ""
 
-#: agent/views.py:230 user_profile/views.py:102
+#: agent/views.py:230 user_profile/views.py:101
 msgid "your password has been changed."
 msgstr ""
 
-#: agent/views.py:304
+#: agent/views.py:303
 #, python-format
 msgid "\"%(name)s\" added as agent."
 msgstr ""
 
-#: agent/views.py:335 appointment/views.py:129 callcenter/views.py:121
-#: callcenter/views.py:265 dialer_audio/views.py:112
+#: agent/views.py:334 appointment/views.py:129 callcenter/views.py:121
+#: callcenter/views.py:265 dialer_audio/views.py:110
 #: dialer_contact/views.py:131 dnc/views.py:121 dnc/views.py:300
 #: mod_sms/views.py:221 survey/views.py:140
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr ""
 
-#: agent/views.py:348
+#: agent/views.py:347
 #, python-format
 msgid "%(count)s agent(s) are deleted."
 msgstr ""
 
-#: agent/views.py:396 appointment/views.py:186 callcenter/views.py:177
+#: agent/views.py:395 appointment/views.py:189 callcenter/views.py:177
 #: dialer_contact/views.py:178 dnc/views.py:169 dnc/views.py:343
 #: mod_sms/views.py:269 survey/views.py:688
 #, python-format
@@ -492,7 +456,7 @@ msgid "IN PROCESS"
 msgstr ""
 
 #: appointment/constants.py:55 appointment/models/events.py:33
-#: appointment/models/users.py:51 mod_mailer/models.py:26
+#: calendar_settings/models.py:50 mod_mailer/models.py:26
 msgid "label"
 msgstr ""
 
@@ -509,9 +473,9 @@ msgid "call Timeout"
 msgstr ""
 
 #: appointment/constants.py:59 appointment/constants.py:94
-#: appointment/models/alarms.py:40 dialer_campaign/models.py:325
-#: frontend/templates/frontend/bootstrap_menu.html:57 survey/forms.py:614
-#: survey/models.py:123 survey/models.py:319 survey/models.py:383
+#: appointment/models/alarms.py:40 dialer_campaign/models.py:326
+#: frontend/templates/frontend/bootstrap_menu.html:57 survey/models.py:123
+#: survey/models.py:319 survey/models.py:383
 #: survey/templates/survey/survey_change.html:15
 #: survey/templates/survey/survey_list.html:5
 msgid "survey"
@@ -521,15 +485,26 @@ msgstr ""
 msgid "A-leg Gateway"
 msgstr ""
 
-#: appointment/constants.py:61 custom_admin_tools/dashboard.py:106
+#: appointment/constants.py:61 custom_admin_tools/dashboard.py:105
 #: mod_sms/constants.py:42
 msgid "SMS Gateway"
+msgstr ""
+
+#: appointment/constants.py:65 appointment/constants.py:72
+#: appointment/models/calendars.py:21 appointment/models/rules.py:45
+#: callcenter/constants.py:31 callcenter/models.py:93
+#: dialer_campaign/constants.py:23 dialer_campaign/models.py:181
+#: dialer_contact/constants.py:39 dialer_contact/models.py:39
+#: dialer_contact/models.py:156 dialer_gateway/models.py:53
+#: dialer_settings/models.py:38 dnc/constants.py:21 dnc/models.py:32
+#: mod_sms/constants.py:40 mod_sms/models.py:122 survey/constants.py:33
+#: survey/constants.py:47 survey/models.py:42
+msgid "name"
 msgstr ""
 
 #: appointment/constants.py:66 appointment/constants.py:90
 #: dialer_contact/constants.py:51 dialer_contact/models.py:92
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:27
-#: mod_registration/forms.py:24
 msgid "email"
 msgstr ""
 
@@ -537,10 +512,30 @@ msgstr ""
 msgid "Calendar Setting"
 msgstr ""
 
+#: appointment/constants.py:68 appointment/constants.py:75
+#: appointment/constants.py:85 appointment/models/alarms.py:144
+#: appointment/models/alarms.py:152 appointment/models/calendars.py:26
+#: callcenter/constants.py:34 callcenter/constants.py:42
+#: callcenter/models.py:51 callcenter/models.py:115 callcenter/models.py:165
+#: dialer_campaign/constants.py:35 dialer_campaign/models.py:258
+#: dialer_campaign/models.py:473 dialer_cdr/models.py:99
+#: dialer_cdr/templates/dialer_cdr/voipcall_report.html:116
+#: dialer_contact/constants.py:41 dialer_contact/constants.py:53
+#: dialer_contact/models.py:42 dialer_contact/models.py:102
+#: dialer_gateway/models.py:84 dnc/constants.py:22 dnc/constants.py:30
+#: mod_sms/templates/mod_sms/sms_report.html:121 survey/constants.py:35
+#: survey/constants.py:50 survey/models.py:48
+#: survey/templates/survey/survey_report.html:194
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:54
+#: templates/admin/mod_sms/smsmessage/sms_report.html:54
+msgid "date"
+msgstr ""
+
 #: appointment/constants.py:73 appointment/models/calendars.py:22
-#: appointment/models/events.py:40 appointment/models/users.py:95
+#: appointment/models/events.py:40
 #: appointment/templates/appointment/calendar_user/change.html:5
 #: appointment/templates/appointment/calendar_user/list.html:5
+#: user_profile/models.py:164
 msgid "calendar user"
 msgstr ""
 
@@ -549,8 +544,8 @@ msgid "max concurrent"
 msgstr ""
 
 #: appointment/constants.py:79 appointment/models/events.py:36
-#: appointment/models/events.py:267 dialer_campaign/models.py:192
-#: mod_sms/models.py:132 mod_utils/function_def.py:62
+#: appointment/models/events.py:267 dialer_campaign/models.py:193
+#: mod_sms/models.py:132
 msgid "start"
 msgstr ""
 
@@ -573,8 +568,8 @@ msgid "calendar"
 msgstr ""
 
 #: appointment/constants.py:89 dialer_cdr/models.py:110
-#: dialer_cdr/models.py:187 dnc/constants.py:29 dnc/forms.py:57
-#: dnc/models.py:73 user_profile/models.py:63
+#: dialer_cdr/models.py:187 dnc/constants.py:29 dnc/models.py:73
+#: user_profile/models.py:64
 msgid "phone number"
 msgstr ""
 
@@ -600,39 +595,39 @@ msgstr ""
 msgid "start notice"
 msgstr ""
 
-#: appointment/forms.py:48
+#: appointment/forms.py:49
 msgid "calendar setting"
 msgstr ""
 
-#: appointment/forms.py:61 appointment/forms.py:99
+#: appointment/forms.py:62 appointment/forms.py:100
 msgid "Select Calendar Setting"
 msgstr ""
 
-#: appointment/forms.py:263
+#: appointment/forms.py:264
 msgid "Event Settings"
 msgstr ""
 
-#: appointment/forms.py:294
+#: appointment/forms.py:295
 msgid "Start Date"
 msgstr ""
 
-#: appointment/forms.py:296
+#: appointment/forms.py:297
 msgid "Calendar"
 msgstr ""
 
-#: appointment/forms.py:297
+#: appointment/forms.py:298
 msgid "Calendar User"
 msgstr ""
 
-#: appointment/forms.py:340
+#: appointment/forms.py:341 dialer_campaign/forms.py:122 mod_sms/forms.py:100
 msgid "General Settings"
 msgstr ""
 
-#: appointment/forms.py:355
+#: appointment/forms.py:356
 msgid "Alarm Settings"
 msgstr ""
 
-#: appointment/forms.py:367
+#: appointment/forms.py:368
 msgid "Result Settings"
 msgstr ""
 
@@ -772,7 +767,7 @@ msgid "calendars"
 msgstr ""
 
 #: appointment/models/events.py:34 appointment/models/events.py:266
-#: appointment/models/rules.py:46 dialer_campaign/models.py:181
+#: appointment/models/rules.py:46 dialer_campaign/models.py:182
 #: dialer_contact/constants.py:40
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:28
 #: dialer_gateway/models.py:57 mod_sms/models.py:123 survey/constants.py:34
@@ -891,7 +886,7 @@ msgid "Secondly"
 msgstr ""
 
 #: appointment/models/rules.py:47 dialer_campaign/constants.py:29
-#: dialer_campaign/models.py:205 mod_sms/models.py:147
+#: dialer_campaign/models.py:206 mod_sms/models.py:147
 msgid "frequency"
 msgstr ""
 
@@ -905,94 +900,6 @@ msgstr ""
 
 #: appointment/models/rules.py:53
 msgid "rules"
-msgstr ""
-
-#: appointment/models/users.py:52 dialer_campaign/models.py:186
-#: dialer_cdr/models.py:106 mod_sms/models.py:129
-msgid "Caller ID Number"
-msgstr ""
-
-#: appointment/models/users.py:53 dialer_campaign/models.py:187
-#: dialer_cdr/models.py:107 mod_sms/models.py:130
-msgid "outbound Caller ID"
-msgstr ""
-
-#: appointment/models/users.py:54 dialer_cdr/models.py:108
-msgid "caller name"
-msgstr ""
-
-#: appointment/models/users.py:55 dialer_cdr/models.py:109
-msgid "outbound caller-Name"
-msgstr ""
-
-#: appointment/models/users.py:56 appointment/models/users.py:57
-msgid "call timeout"
-msgstr ""
-
-#: appointment/models/users.py:60
-#: survey/templates/survey/sealed_survey_list.html:5
-msgid "sealed survey"
-msgstr ""
-
-#: appointment/models/users.py:62 dialer_cdr/models.py:118
-msgid "a-leg gateway"
-msgstr ""
-
-#: appointment/models/users.py:63
-msgid "select gateway to use"
-msgstr ""
-
-#: appointment/models/users.py:64
-msgid "SMS gateway"
-msgstr ""
-
-#: appointment/models/users.py:65 dialer_campaign/models.py:226
-#: mod_sms/models.py:159 mod_sms/models.py:491
-msgid "select SMS gateway"
-msgstr ""
-
-#: appointment/models/users.py:67 dialer_campaign/models.py:245
-msgid "voicemail detection"
-msgstr ""
-
-#: appointment/models/users.py:69 dialer_campaign/models.py:247
-msgid "detection behaviour"
-msgstr ""
-
-#: appointment/models/users.py:71 dialer_campaign/models.py:249
-msgid "voicemail audio file"
-msgstr ""
-
-#: appointment/models/users.py:81
-msgid "can see Calendar Setting list"
-msgstr ""
-
-#: appointment/models/users.py:83
-msgid "Calender setting"
-msgstr ""
-
-#: appointment/models/users.py:84 appointment/models/users.py:125
-#: appointment/templates/appointment/calendar_setting/change.html:5
-#: appointment/templates/appointment/calendar_setting/list.html:5
-#: frontend/templates/frontend/bootstrap_side_menu.html:42
-msgid "calendar settings"
-msgstr ""
-
-#: appointment/models/users.py:96
-#: frontend/templates/frontend/bootstrap_side_menu.html:45
-msgid "calendar users"
-msgstr ""
-
-#: appointment/models/users.py:129
-msgid "can see Calendar User list"
-msgstr ""
-
-#: appointment/models/users.py:132
-msgid "calendar user profile"
-msgstr ""
-
-#: appointment/models/users.py:133
-msgid "calendar user profiles"
 msgstr ""
 
 #: appointment/periods.py:282
@@ -1027,6 +934,14 @@ msgstr ""
 
 #: appointment/templates/appointment/calendar/list.html:60
 msgid "delete calendar"
+msgstr ""
+
+#: appointment/templates/appointment/calendar_setting/change.html:5
+#: appointment/templates/appointment/calendar_setting/list.html:5
+#: calendar_settings/models.py:86
+#: frontend/templates/frontend/bootstrap_side_menu.html:42
+#: user_profile/models.py:194
+msgid "calendar settings"
 msgstr ""
 
 #: appointment/templates/appointment/calendar_setting/list.html:5
@@ -1078,47 +993,111 @@ msgstr ""
 msgid "\"%(name)s\" added as calendar user."
 msgstr ""
 
-#: appointment/views.py:142
+#: appointment/views.py:143
 #, python-format
 msgid "%(count)s calendar user(s) are deleted."
 msgstr ""
 
-#: appointment/views.py:278 appointment/views.py:408 appointment/views.py:587
-#: appointment/views.py:718
+#: appointment/views.py:282 appointment/views.py:412 appointment/views.py:593
+#: appointment/views.py:726
 #, python-format
 msgid "\"%s\" is added"
 msgstr ""
 
-#: appointment/views.py:307 appointment/views.py:436 appointment/views.py:615
-#: appointment/views.py:747 dialer_contact/views.py:351
+#: appointment/views.py:311 appointment/views.py:441 appointment/views.py:621
+#: appointment/views.py:755 dialer_contact/views.py:351
 #, python-format
 msgid "\"%s\" is deleted."
 msgstr ""
 
-#: appointment/views.py:317
+#: appointment/views.py:321
 #, python-format
 msgid "%s calendar(s) are deleted."
 msgstr ""
 
-#: appointment/views.py:350 appointment/views.py:479 appointment/views.py:658
-#: appointment/views.py:791 dialer_contact/views.py:394
+#: appointment/views.py:354 appointment/views.py:484 appointment/views.py:664
+#: appointment/views.py:799 dialer_contact/views.py:394
 #, python-format
 msgid "\"%s\" is updated."
 msgstr ""
 
-#: appointment/views.py:446
+#: appointment/views.py:451
 #, python-format
 msgid "%s calendar setting(s) are deleted."
 msgstr ""
 
-#: appointment/views.py:625
+#: appointment/views.py:631
 #, python-format
 msgid "%s event(s) are deleted."
 msgstr ""
 
-#: appointment/views.py:757
+#: appointment/views.py:765
 #, python-format
 msgid "%s alarm(s) are deleted."
+msgstr ""
+
+#: calendar_settings/models.py:51 dialer_campaign/models.py:187
+#: dialer_cdr/models.py:106 mod_sms/models.py:129
+msgid "Caller ID Number"
+msgstr ""
+
+#: calendar_settings/models.py:52 dialer_campaign/models.py:188
+#: dialer_cdr/models.py:107 mod_sms/models.py:130
+msgid "outbound Caller ID"
+msgstr ""
+
+#: calendar_settings/models.py:53 dialer_cdr/models.py:108
+msgid "caller name"
+msgstr ""
+
+#: calendar_settings/models.py:54 dialer_cdr/models.py:109
+msgid "outbound caller-Name"
+msgstr ""
+
+#: calendar_settings/models.py:55 calendar_settings/models.py:56
+msgid "call timeout"
+msgstr ""
+
+#: calendar_settings/models.py:59
+#: survey/templates/survey/sealed_survey_list.html:5
+msgid "sealed survey"
+msgstr ""
+
+#: calendar_settings/models.py:61 dialer_cdr/models.py:118
+msgid "a-leg gateway"
+msgstr ""
+
+#: calendar_settings/models.py:62
+msgid "select gateway to use"
+msgstr ""
+
+#: calendar_settings/models.py:63
+msgid "SMS gateway"
+msgstr ""
+
+#: calendar_settings/models.py:64 dialer_campaign/models.py:227
+#: mod_sms/models.py:159 mod_sms/models.py:494
+msgid "select SMS gateway"
+msgstr ""
+
+#: calendar_settings/models.py:66 dialer_campaign/models.py:246
+msgid "voicemail detection"
+msgstr ""
+
+#: calendar_settings/models.py:68 dialer_campaign/models.py:248
+msgid "detection behaviour"
+msgstr ""
+
+#: calendar_settings/models.py:70 dialer_campaign/models.py:250
+msgid "voicemail audio file"
+msgstr ""
+
+#: calendar_settings/models.py:83
+msgid "can see Calendar Setting list"
+msgstr ""
+
+#: calendar_settings/models.py:85
+msgid "Calender setting"
 msgstr ""
 
 #: callcenter/constants.py:32
@@ -1301,119 +1280,120 @@ msgstr ""
 
 #: custom_admin_tools/dashboard.py:63 dialer_campaign/forms.py:120
 #: dialer_contact/forms.py:141
-msgid "general"
+msgid "General"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:67 dialer_cdr/admin.py:98
-msgid "user"
+#: custom_admin_tools/dashboard.py:67 dialer_cdr/admin.py:97
+msgid "User"
 msgstr ""
 
 #: custom_admin_tools/dashboard.py:71
-msgid "task manager"
+msgid "Task Manager"
 msgstr ""
 
 #: custom_admin_tools/dashboard.py:75
-msgid "dashboard stats"
+msgid "Dashboard stats"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:78 custom_admin_tools/dashboard.py:235
-msgid "recent actions"
+#: custom_admin_tools/dashboard.py:78 custom_admin_tools/dashboard.py:239
+msgid "Recent Actions"
 msgstr ""
 
 #: custom_admin_tools/dashboard.py:83
-#: frontend/templates/frontend/bootstrap_menu.html:72
-msgid "callcenter"
+msgid "Callcenter"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:88
+msgid "Settings"
 msgstr ""
 
 #: custom_admin_tools/dashboard.py:94
 msgid "VoIP dialer"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:101
-#: frontend/templates/frontend/bootstrap_side_menu.html:76
-#: survey/models.py:124
-msgid "surveys"
+#: custom_admin_tools/dashboard.py:100
+msgid "Surveys"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:112 mod_sms/admin.py:220
+#: custom_admin_tools/dashboard.py:111 mod_sms/admin.py:220
 #: mod_sms/admin.py:262
 msgid "SMS module"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:118
-#: dialer_audio/templates/dialer_audio/audio_list.html:9
-#: frontend/templates/frontend/bootstrap_menu.html:61
-msgid "audio files"
+#: custom_admin_tools/dashboard.py:117
+msgid "Audio Files"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:123 custom_admin_tools/dashboard.py:224
-#: dnc/admin.py:19
-msgid "do not call"
+#: custom_admin_tools/dashboard.py:122 custom_admin_tools/dashboard.py:228
+msgid "Do Not Call"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:128
-msgid "appointment"
+#: custom_admin_tools/dashboard.py:127
+msgid "Appointment"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:133
-msgid "mod_mailer"
+#: custom_admin_tools/dashboard.py:132
+msgid "Mod Mailer"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:138
+#: custom_admin_tools/dashboard.py:137
+msgid "Calendar Settings"
+msgstr ""
+
+#: custom_admin_tools/dashboard.py:142
 msgid "Reporting"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:143
+#: custom_admin_tools/dashboard.py:147
 msgid "Call Daily Report"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:154
+#: custom_admin_tools/dashboard.py:158
 msgid "Quick links"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:160
+#: custom_admin_tools/dashboard.py:164
 msgid "Newfies-Dialer Website"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:161
+#: custom_admin_tools/dashboard.py:165
 msgid "Support"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:162
+#: custom_admin_tools/dashboard.py:166
 msgid "Add-ons"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:172
+#: custom_admin_tools/dashboard.py:176
 msgid "Latest Newfies-Dialer News"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:179
-msgid "dashboard stats settings"
+#: custom_admin_tools/dashboard.py:183
+msgid "Dashboard Stats Settings"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:206 dialer_campaign/forms.py:141
-#: dialer_settings/models.py:93 user_profile/models.py:89
-msgid "dialer settings"
+#: custom_admin_tools/dashboard.py:210 dialer_campaign/forms.py:141
+msgid "Dialer Settings"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:209
-msgid "dialer campaign"
+#: custom_admin_tools/dashboard.py:213 dialer_campaign/admin.py:203
+msgid "Dialer Campaign"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:212 dialer_contact/admin.py:215
-msgid "dialer contact"
+#: custom_admin_tools/dashboard.py:216
+msgid "Dialer Contact"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:215
+#: custom_admin_tools/dashboard.py:219
 msgid "Dialer CDR"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:218 dialer_gateway/models.py:103
-msgid "dialer gateway"
+#: custom_admin_tools/dashboard.py:222
+msgid "Dialer Gateway"
 msgstr ""
 
-#: custom_admin_tools/dashboard.py:221
-msgid "country dialcode"
+#: custom_admin_tools/dashboard.py:225
+msgid "Country Dialcode"
 msgstr ""
 
 #: custom_admin_tools/menu.py:32
@@ -1421,12 +1401,11 @@ msgid "Newfies-Dialer V"
 msgstr ""
 
 #: custom_admin_tools/menu.py:35
-msgid "applications"
+msgid "Applications"
 msgstr ""
 
 #: custom_admin_tools/menu.py:39
-#: frontend/templates/frontend/bootstrap_menu.html:110
-msgid "administration"
+msgid "Administration"
 msgstr ""
 
 #: custom_admin_tools/menu.py:42
@@ -1435,15 +1414,7 @@ msgid "API Explorer"
 msgstr ""
 
 #: custom_admin_tools/menu.py:43
-msgid "customer panel"
-msgstr ""
-
-#: dialer_audio/constants.py:21
-msgid "audio"
-msgstr ""
-
-#: dialer_audio/constants.py:22
-msgid "audio URL"
+msgid "Customer Panel"
 msgstr ""
 
 #: dialer_audio/templates/dialer_audio/audio_change.html:9
@@ -1457,7 +1428,20 @@ msgid "upload audio to be used in voice applications"
 msgstr ""
 
 #: dialer_audio/templates/dialer_audio/audio_list.html:9
+#: frontend/templates/frontend/bootstrap_menu.html:61
+msgid "audio files"
+msgstr ""
+
+#: dialer_audio/templates/dialer_audio/audio_list.html:9
 msgid "list, upload and edit audio files"
+msgstr ""
+
+#: dialer_audio/templates/dialer_audio/audio_list.html:46
+msgid "audio"
+msgstr ""
+
+#: dialer_audio/templates/dialer_audio/audio_list.html:47
+msgid "audio URL"
 msgstr ""
 
 #: dialer_audio/templates/dialer_audio/audio_list.html:69
@@ -1468,37 +1452,33 @@ msgstr ""
 msgid "delete audio"
 msgstr ""
 
-#: dialer_audio/views.py:79 dialer_campaign/views.py:251
+#: dialer_audio/views.py:77 dialer_campaign/views.py:252
 #: dialer_contact/views.py:85 dnc/views.py:79 dnc/views.py:272
 #: survey/views.py:100
 #, python-format
 msgid "\"%(name)s\" added."
 msgstr ""
 
-#: dialer_audio/views.py:126
+#: dialer_audio/views.py:124
 #, python-format
 msgid "%(count)s audio(s) are deleted."
 msgstr ""
 
-#: dialer_campaign/admin.py:32
-msgid "Dialer Campaign"
+#: dialer_campaign/admin.py:40 dialer_cdr/admin.py:46
+#: dialer_gateway/admin.py:47 mod_sms/admin.py:46
+msgid "Standard options"
 msgstr ""
 
-#: dialer_campaign/admin.py:43 dialer_cdr/admin.py:47
-#: dialer_gateway/admin.py:48
-msgid "standard options"
+#: dialer_campaign/admin.py:48 dialer_cdr/admin.py:52 mod_sms/admin.py:53
+msgid "Advanced options"
 msgstr ""
 
-#: dialer_campaign/admin.py:51 dialer_cdr/admin.py:53
-msgid "advanced options"
-msgstr ""
-
-#: dialer_campaign/admin.py:96
+#: dialer_campaign/admin.py:93
 #, python-format
 msgid "you have too many campaigns. max allowed %(limit)s"
 msgstr ""
 
-#: dialer_campaign/admin.py:207
+#: dialer_campaign/admin.py:204
 #: frontend/templates/frontend/bootstrap_side_menu.html:67
 #: templates/admin/dialer_campaign/subscriber/change_list.html:36
 msgid "subscriber report"
@@ -1547,27 +1527,24 @@ msgstr ""
 msgid "contacts"
 msgstr ""
 
-#: dialer_campaign/constants.py:30 dialer_campaign/forms.py:449
-#: dialer_contact/constants.py:47 dialer_contact/forms.py:67
-#: dialer_contact/forms.py:182 dialer_contact/models.py:50
-#: dialer_contact/models.py:86
+#: dialer_campaign/constants.py:30 dialer_contact/constants.py:47
+#: dialer_contact/models.py:50 dialer_contact/models.py:86
 #: dialer_contact/templates/dialer_contact/phonebook/change.html:5
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:5
-#: mod_sms/forms.py:266
 msgid "phonebook"
 msgstr ""
 
-#: dialer_campaign/constants.py:36 dialer_campaign/models.py:501
+#: dialer_campaign/constants.py:36 dialer_campaign/models.py:504
 msgid "attempts"
 msgstr ""
 
-#: dialer_campaign/constants.py:37 dialer_campaign/models.py:496
+#: dialer_campaign/constants.py:37 dialer_campaign/models.py:499
 msgid "completion attempts"
 msgstr ""
 
-#: dialer_campaign/constants.py:39 dialer_campaign/models.py:463
-#: dialer_cdr/constants.py:71 dialer_cdr/forms.py:44 dialer_cdr/forms.py:93
-#: dialer_cdr/models.py:200 survey/constants.py:42
+#: dialer_campaign/constants.py:39 dialer_campaign/models.py:466
+#: dialer_cdr/constants.py:71 dialer_cdr/forms.py:93 dialer_cdr/models.py:200
+#: survey/constants.py:42
 msgid "disposition"
 msgstr ""
 
@@ -1626,33 +1603,28 @@ msgstr ""
 msgid "LEAVE MESSAGE TO VOICEMAIL ONLY"
 msgstr ""
 
-#: dialer_campaign/forms.py:59 dialer_campaign/models.py:229
-#: dialer_cdr/models.py:122
-msgid "application"
-msgstr ""
-
-#: dialer_campaign/forms.py:122 mod_sms/forms.py:100
-msgid "general settings"
+#: dialer_campaign/forms.py:59
+msgid "Application"
 msgstr ""
 
 #: dialer_campaign/forms.py:148
-msgid "dialer completion settings"
+msgid "Dialer Completion Settings"
 msgstr ""
 
 #: dialer_campaign/forms.py:159
-msgid "schedule settings"
+msgid "Schedule Settings"
 msgstr ""
 
-#: dialer_campaign/forms.py:160 mod_sms/forms.py:125
-msgid "week days"
+#: dialer_campaign/forms.py:160
+msgid "Week Days"
 msgstr ""
 
 #: dialer_campaign/forms.py:176
-msgid "voicemail"
+msgid "Voicemail"
 msgstr ""
 
 #: dialer_campaign/forms.py:178
-msgid "voicemail settings"
+msgid "Voicemail Settings"
 msgstr ""
 
 #: dialer_campaign/forms.py:280 mod_sms/forms.py:153
@@ -1679,10 +1651,9 @@ msgstr ""
 msgid "maximum timeout limit of %d exceeded."
 msgstr ""
 
-#: dialer_campaign/forms.py:363 dialer_campaign/forms.py:395
-#: dialer_campaign/models.py:271
+#: dialer_campaign/forms.py:363 dialer_campaign/models.py:272
 #: dialer_campaign/templates/dialer_campaign/campaign/campaign_duplicate.html:41
-#: dialer_cdr/forms.py:46 dialer_cdr/forms.py:94 frontend/forms.py:50
+#: dialer_cdr/forms.py:94 frontend/forms.py:50
 #: frontend/templates/frontend/bootstrap_menu.html:31
 #: frontend/templates/frontend/bootstrap_menu.html:37
 #: mod_sms/templates/mod_sms/change.html:9
@@ -1694,14 +1665,24 @@ msgstr ""
 
 #: dialer_campaign/forms.py:368 dialer_campaign/forms.py:388
 #: dialer_campaign/forms.py:416 dialer_campaign/forms.py:443
-#: dialer_cdr/forms.py:26 dialer_cdr/forms.py:33 dialer_cdr/forms.py:69
-#: dialer_cdr/forms.py:102 dialer_contact/constants.py:34 mod_sms/forms.py:38
+#: dialer_campaign/forms.py:468 dialer_cdr/forms.py:26 dialer_cdr/forms.py:33
+#: dialer_cdr/forms.py:69 dialer_cdr/forms.py:102 mod_sms/forms.py:38
 #: mod_sms/forms.py:190
-msgid "all"
+msgid "ALL"
 msgstr ""
 
-#: dialer_campaign/forms.py:468
-msgid "ALL"
+#: dialer_campaign/forms.py:395 dialer_cdr/forms.py:46
+msgid "Campaign"
+msgstr ""
+
+#: dialer_campaign/forms.py:397 dialer_campaign/forms.py:450
+#: dialer_contact/forms.py:183 mod_sms/forms.py:267
+msgid "Status"
+msgstr ""
+
+#: dialer_campaign/forms.py:449 dialer_contact/forms.py:67
+#: dialer_contact/forms.py:182 mod_sms/forms.py:266
+msgid "Phonebook"
 msgstr ""
 
 #: dialer_campaign/function_def.py:187
@@ -1709,163 +1690,168 @@ msgid ""
 "your settings are not configured properly, please contact the administrator."
 msgstr ""
 
-#: dialer_campaign/models.py:177
+#: dialer_campaign/models.py:178
 msgid "campaign code"
 msgstr ""
 
-#: dialer_campaign/models.py:178
+#: dialer_campaign/models.py:179
 msgid ""
 "this code is auto-generated by the platform, this is used to identify the "
 "campaign"
 msgstr ""
 
-#: dialer_campaign/models.py:182 mod_sms/models.py:124
+#: dialer_campaign/models.py:183 mod_sms/models.py:124
 msgid "campaign description"
 msgstr ""
 
-#: dialer_campaign/models.py:188
+#: dialer_campaign/models.py:189
 msgid "Caller Name"
 msgstr ""
 
-#: dialer_campaign/models.py:189
+#: dialer_campaign/models.py:190
 msgid "outbound Caller Name"
 msgstr ""
 
-#: dialer_campaign/models.py:193 mod_sms/models.py:133
+#: dialer_campaign/models.py:194 mod_sms/models.py:133
 msgid "finish"
 msgstr ""
 
-#: dialer_campaign/models.py:195
+#: dialer_campaign/models.py:196
 msgid "daily start time"
 msgstr ""
 
-#: dialer_campaign/models.py:196
+#: dialer_campaign/models.py:197
 msgid "daily stop time"
 msgstr ""
 
-#: dialer_campaign/models.py:197 mod_sms/models.py:138
+#: dialer_campaign/models.py:198 mod_sms/models.py:138
 msgid "monday"
 msgstr ""
 
-#: dialer_campaign/models.py:198 mod_sms/models.py:139
+#: dialer_campaign/models.py:199 mod_sms/models.py:139
 msgid "tuesday"
 msgstr ""
 
-#: dialer_campaign/models.py:199 mod_sms/models.py:140
+#: dialer_campaign/models.py:200 mod_sms/models.py:140
 msgid "wednesday"
 msgstr ""
 
-#: dialer_campaign/models.py:200 mod_sms/models.py:141
+#: dialer_campaign/models.py:201 mod_sms/models.py:141
 msgid "thursday"
 msgstr ""
 
-#: dialer_campaign/models.py:201 mod_sms/models.py:142
+#: dialer_campaign/models.py:202 mod_sms/models.py:142
 msgid "friday"
 msgstr ""
 
-#: dialer_campaign/models.py:202 mod_sms/models.py:143
+#: dialer_campaign/models.py:203 mod_sms/models.py:143
 msgid "saturday"
 msgstr ""
 
-#: dialer_campaign/models.py:203 mod_sms/models.py:144
+#: dialer_campaign/models.py:204 mod_sms/models.py:144
 msgid "sunday"
 msgstr ""
 
-#: dialer_campaign/models.py:206
+#: dialer_campaign/models.py:207
 msgid "calls per minute"
 msgstr ""
 
-#: dialer_campaign/models.py:207
+#: dialer_campaign/models.py:208
 msgid "max call duration"
 msgstr ""
 
-#: dialer_campaign/models.py:208
+#: dialer_campaign/models.py:209
 msgid "maximum call duration in seconds"
 msgstr ""
 
-#: dialer_campaign/models.py:210 dialer_settings/models.py:49
+#: dialer_campaign/models.py:211 dialer_settings/models.py:49
 #: mod_sms/models.py:151
 msgid "max retries"
 msgstr ""
 
-#: dialer_campaign/models.py:211 mod_sms/models.py:152
+#: dialer_campaign/models.py:212 mod_sms/models.py:152
 msgid "maximum retries per contact"
 msgstr ""
 
-#: dialer_campaign/models.py:212
+#: dialer_campaign/models.py:213
 msgid "time between retries"
 msgstr ""
 
-#: dialer_campaign/models.py:213 mod_sms/models.py:155
+#: dialer_campaign/models.py:214 mod_sms/models.py:155
 msgid "time delay in seconds before retrying contact"
 msgstr ""
 
-#: dialer_campaign/models.py:215
+#: dialer_campaign/models.py:216
 msgid "completion max retries"
 msgstr ""
 
-#: dialer_campaign/models.py:216
+#: dialer_campaign/models.py:217
 msgid "number of retries until a contact completes survey"
 msgstr ""
 
-#: dialer_campaign/models.py:219
+#: dialer_campaign/models.py:220
 msgid "completion time between retries"
 msgstr ""
 
-#: dialer_campaign/models.py:220
+#: dialer_campaign/models.py:221
 msgid "time delay in seconds before retrying contact to complete survey"
 msgstr ""
 
-#: dialer_campaign/models.py:223
+#: dialer_campaign/models.py:224
 msgid "A-Leg gateway"
 msgstr ""
 
-#: dialer_campaign/models.py:224
+#: dialer_campaign/models.py:225
 msgid "select outbound gateway"
 msgstr ""
 
-#: dialer_campaign/models.py:225 mod_sms/models.py:157 mod_sms/models.py:489
+#: dialer_campaign/models.py:226 mod_sms/models.py:157 mod_sms/models.py:492
 msgid "sms gateway"
 msgstr ""
 
-#: dialer_campaign/models.py:231 mod_sms/models.py:163
+#: dialer_campaign/models.py:230 dialer_cdr/models.py:122
+msgid "application"
+msgstr ""
+
+#: dialer_campaign/models.py:232 mod_sms/models.py:163
 msgid "extra parameters"
 msgstr ""
 
-#: dialer_campaign/models.py:232 mod_sms/models.py:164
+#: dialer_campaign/models.py:233 mod_sms/models.py:164
 msgid "additional application parameters."
 msgstr ""
 
-#: dialer_campaign/models.py:234
+#: dialer_campaign/models.py:235
 msgid "imported phonebook"
 msgstr ""
 
-#: dialer_campaign/models.py:235 mod_sms/constants.py:43 mod_sms/models.py:174
+#: dialer_campaign/models.py:236 mod_sms/constants.py:43 mod_sms/models.py:174
 #: survey/templates/survey/survey_report.html:33
 msgid "total contact"
 msgstr ""
 
-#: dialer_campaign/models.py:236 mod_sms/models.py:175
+#: dialer_campaign/models.py:237 mod_sms/models.py:175
 msgid "total contact for this campaign"
 msgstr ""
 
-#: dialer_campaign/models.py:237 survey/forms.py:135
+#: dialer_campaign/models.py:238
 msgid "completed"
 msgstr ""
 
-#: dialer_campaign/models.py:238
+#: dialer_campaign/models.py:239
 msgid "total contact that completed call / survey"
 msgstr ""
 
-#: dialer_campaign/models.py:240
+#: dialer_campaign/models.py:241
 msgid "has been started"
 msgstr ""
 
-#: dialer_campaign/models.py:241
+#: dialer_campaign/models.py:242
 msgid "has been duplicated"
 msgstr ""
 
-#: dialer_campaign/models.py:242 dnc/templates/dnc/dnc_contact/list.html:5
+#: dialer_campaign/models.py:243 dnc/constants.py:28
+#: dnc/templates/dnc/dnc_contact/list.html:5
 #: dnc/templates/dnc/dnc_contact/list.html:25
 #: dnc/templates/dnc/dnc_list/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:23
@@ -1873,96 +1859,96 @@ msgstr ""
 msgid "DNC"
 msgstr ""
 
-#: dialer_campaign/models.py:243
+#: dialer_campaign/models.py:244
 msgid "do not call list"
 msgstr ""
 
-#: dialer_campaign/models.py:251
+#: dialer_campaign/models.py:252
 msgid "agent script"
 msgstr ""
 
-#: dialer_campaign/models.py:252
+#: dialer_campaign/models.py:253
 msgid "lead disposition"
 msgstr ""
 
-#: dialer_campaign/models.py:254 dialer_contact/models.py:99
+#: dialer_campaign/models.py:255 dialer_contact/models.py:99
 msgid "additional parameters (JSON)"
 msgstr ""
 
-#: dialer_campaign/models.py:255
+#: dialer_campaign/models.py:256
 msgid ""
 "enter the list of parameters in Json format, e.g. {\"title\": [\"tab-1\", "
 "\"tab-2\"], \"url\": [\"https://duckduckgo.com/\", \"http://www.newfies-"
 "dialer.org/\"]}"
 msgstr ""
 
-#: dialer_campaign/models.py:267
+#: dialer_campaign/models.py:268
 msgid "can see campaign"
 msgstr ""
 
-#: dialer_campaign/models.py:268
+#: dialer_campaign/models.py:269
 msgid "can see campaign dashboard"
 msgstr ""
 
-#: dialer_campaign/models.py:272
+#: dialer_campaign/models.py:273
 msgid "campaigns"
 msgstr ""
 
-#: dialer_campaign/models.py:326
+#: dialer_campaign/models.py:327
 msgid "voice app"
 msgstr ""
 
-#: dialer_campaign/models.py:398 mod_sms/models.py:336
+#: dialer_campaign/models.py:401 mod_sms/models.py:339
 msgid "progress"
 msgstr ""
 
-#: dialer_campaign/models.py:407 mod_sms/models.py:345
+#: dialer_campaign/models.py:410 mod_sms/models.py:348
 #, python-format
 msgid "<a href='%(link)s'>%(name)s</a>"
 msgstr ""
 
-#: dialer_campaign/models.py:407 mod_sms/models.py:346
+#: dialer_campaign/models.py:410 mod_sms/models.py:349
 msgid "details"
 msgstr ""
 
-#: dialer_campaign/models.py:410 dialer_campaign/models.py:478
+#: dialer_campaign/models.py:413 dialer_campaign/models.py:481
 #: templates/admin/dialer_campaign/subscriber/subscriber_report.html:14
 msgid "subscriber"
 msgstr ""
 
-#: dialer_campaign/models.py:452 mod_sms/models.py:421
+#: dialer_campaign/models.py:455 mod_sms/models.py:424
 msgid "select contact"
 msgstr ""
 
-#: dialer_campaign/models.py:453 survey/forms.py:598
+#: dialer_campaign/models.py:456
 msgid "select campaign"
 msgstr ""
 
-#: dialer_campaign/models.py:454 mod_sms/models.py:425
+#: dialer_campaign/models.py:457 mod_sms/models.py:428
 msgid "last attempt"
 msgstr ""
 
-#: dialer_campaign/models.py:455 mod_sms/models.py:427
+#: dialer_campaign/models.py:458 mod_sms/models.py:430
 msgid "count attempts"
 msgstr ""
 
-#: dialer_campaign/models.py:458
+#: dialer_campaign/models.py:461
 msgid "completion count attempts"
 msgstr ""
 
-#: dialer_campaign/models.py:464
+#: dialer_campaign/models.py:467
 msgid "subscriber response"
 msgstr ""
 
-#: dialer_campaign/models.py:465
+#: dialer_campaign/models.py:468
 msgid "collect user call data"
 msgstr ""
 
-#: dialer_campaign/models.py:475
+#: dialer_campaign/models.py:478
 msgid "can see subscriber"
 msgstr ""
 
-#: dialer_campaign/models.py:479
+#: dialer_campaign/models.py:482
 #: dialer_campaign/templates/dialer_campaign/subscriber/list.html:9
 msgid "subscribers"
 msgstr ""
@@ -1972,7 +1958,7 @@ msgstr ""
 #: frontend/templates/frontend/common_submit_buttons.html:14
 #: mod_sms/templates/mod_sms/sms_campaign_duplicate.html:51
 #: mod_sms/templates/mod_sms/sms_campaign_duplicate.html:52
-#: mod_utils/forms.py:76 survey/templates/survey/seal_survey.html:53
+#: survey/templates/survey/seal_survey.html:53
 #: survey/templates/survey/seal_survey.html:54
 #: survey/templates/survey/section_branch_change.html:73
 #: survey/templates/survey/section_branch_change.html:74
@@ -2057,33 +2043,30 @@ msgid "export to JSON"
 msgstr ""
 
 #: dialer_campaign/templatetags/dialer_campaign_tags.py:80
-msgid "duplicate this campaign"
+msgid "Duplicate this campaign"
 msgstr ""
 
 #: dialer_campaign/templatetags/dialer_campaign_tags.py:92
-#: survey/templates/survey/sealed_survey_list.html:34
-#: survey/templatetags/survey_tags.py:124
-msgid "view sealed survey"
+msgid "View Sealed Survey"
 msgstr ""
 
 #: dialer_campaign/templatetags/dialer_campaign_tags.py:97
-msgid "edit survey"
+msgid "Edit Survey"
 msgstr ""
 
 #: dialer_campaign/views.py:74
 msgid "you must assign a phonebook to your campaign before starting it"
 msgstr ""
 
-#: dialer_campaign/views.py:81
+#: dialer_campaign/views.py:77
 msgid "campaign global settings cannot be edited when the campaign is started"
 msgstr ""
 
-#: dialer_campaign/views.py:108 mod_utils/management.py:56
-#: user_profile/constants.py:26
-msgid "dialer setting configuration"
+#: dialer_campaign/views.py:109
+msgid "Dialer Setting Configuration"
 msgstr ""
 
-#: dialer_campaign/views.py:109
+#: dialer_campaign/views.py:110
 #, python-format
 msgid ""
 "Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
@@ -2091,78 +2074,86 @@ msgid ""
 "settings."
 msgstr ""
 
-#: dialer_campaign/views.py:226
+#: dialer_campaign/views.py:227
 msgid "your settings aren't configured properly, please contact the admin."
 msgstr ""
 
-#: dialer_campaign/views.py:233
+#: dialer_campaign/views.py:234
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
 msgstr ""
 
-#: dialer_campaign/views.py:282
+#: dialer_campaign/views.py:283
 #, python-format
 msgid "the campaign \"%(name)s\" has been stopped."
 msgstr ""
 
-#: dialer_campaign/views.py:284
+#: dialer_campaign/views.py:285
 #, python-format
 msgid "the campaign \"%(name)s\" has been deleted."
 msgstr ""
 
-#: dialer_campaign/views.py:295
+#: dialer_campaign/views.py:296
 #, python-format
 msgid "%(count)s campaign(s) have been stopped."
 msgstr ""
 
-#: dialer_campaign/views.py:298
+#: dialer_campaign/views.py:299
 #, python-format
 msgid "%(count)s campaign(s) have been deleted."
 msgstr ""
 
-#: dialer_campaign/views.py:334
+#: dialer_campaign/views.py:335
 msgid "Started campaign can only edit the dialer settings and the scheduler"
 msgstr ""
 
-#: dialer_campaign/views.py:368
+#: dialer_campaign/views.py:369
 #, python-format
 msgid "the campaign \"%(name)s\" is updated."
 msgstr ""
 
-#: dialer_cdr/admin.py:39
+#: dialer_cdr/admin.py:38
 msgid "VoIP report"
 msgstr ""
 
-#: dialer_cdr/admin.py:75 dialer_cdr/admin.py:203
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:14
-#: templates/admin_tools/dashboard/modules/app_list.html:13
-msgid "call report"
+#: dialer_cdr/admin.py:74
+msgid "Call Report"
 msgstr ""
 
-#: dialer_cdr/admin.py:106
-msgid "gateway used"
+#: dialer_cdr/admin.py:105
+msgid "Gateway used"
 msgstr ""
 
-#: dialer_cdr/admin.py:180 mod_sms/admin.py:196
+#: dialer_cdr/admin.py:179 mod_sms/admin.py:196
 msgid "Database error"
 msgstr ""
 
-#: dialer_cdr/admin.py:193 mod_sms/admin.py:210
+#: dialer_cdr/admin.py:192 mod_sms/admin.py:210
 #, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] ""
 msgstr[1] ""
 
-#: dialer_cdr/admin.py:196 mod_sms/admin.py:214
+#: dialer_cdr/admin.py:195 mod_sms/admin.py:214
 #, python-format
 msgid "0 of %(cnt)s selected"
 msgstr ""
 
-#: dialer_cdr/admin.py:252
+#: dialer_cdr/admin.py:202
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:14
+#: templates/admin_tools/dashboard/modules/app_list.html:13
+msgid "call report"
+msgstr ""
+
+#: dialer_cdr/admin.py:251
 #: templates/admin_tools/dashboard/modules/app_list.html:45
 #: templates/admin_tools/dashboard/modules/model_list.html:26
 msgid "call aggregate report"
+msgstr ""
+
+#: dialer_cdr/apps.py:21
+msgid "VoIP Report"
 msgstr ""
 
 #: dialer_cdr/constants.py:23
@@ -2181,11 +2172,11 @@ msgstr ""
 msgid "success"
 msgstr ""
 
-#: dialer_cdr/constants.py:27 mod_utils/function_def.py:64
+#: dialer_cdr/constants.py:27
 msgid "abort"
 msgstr ""
 
-#: dialer_cdr/constants.py:28 mod_utils/function_def.py:63
+#: dialer_cdr/constants.py:28
 msgid "pause"
 msgstr ""
 
@@ -2254,7 +2245,7 @@ msgid "phone no"
 msgstr ""
 
 #: dialer_cdr/constants.py:68 mod_sms/constants.py:65
-#: user_profile/models.py:88
+#: user_profile/models.py:89
 msgid "gateway"
 msgstr ""
 
@@ -2287,7 +2278,15 @@ msgstr ""
 msgid "UNSURE"
 msgstr ""
 
-#: dialer_cdr/forms.py:47 dialer_cdr/forms.py:95
+#: dialer_cdr/forms.py:44
+msgid "Disposition"
+msgstr ""
+
+#: dialer_cdr/forms.py:47
+msgid "Leg type"
+msgstr ""
+
+#: dialer_cdr/forms.py:95
 msgid "leg type"
 msgstr ""
 
@@ -2333,7 +2332,7 @@ msgstr ""
 msgid "select Campaign"
 msgstr ""
 
-#: dialer_cdr/models.py:119 dialer_gateway/models.py:90
+#: dialer_cdr/models.py:119 dialer_gateway/models.py:88
 msgid "select gateway"
 msgstr ""
 
@@ -2452,8 +2451,7 @@ msgid "call detail records"
 msgstr ""
 
 #: dialer_cdr/templates/dialer_cdr/voipcall_report.html:35
-#: dialer_contact/forms.py:33 dialer_contact/forms.py:42
-#: mod_sms/templates/mod_sms/sms_report.html:37
+#: dialer_contact/forms.py:33 mod_sms/templates/mod_sms/sms_report.html:37
 #: mod_sms/templates/mod_sms/sms_report.html:111
 #: survey/templates/survey/survey_report.html:106
 msgid "to"
@@ -2482,36 +2480,36 @@ msgstr ""
 msgid "ACT"
 msgstr ""
 
-#: dialer_contact/admin.py:33
-msgid "Dialer Contact"
-msgstr ""
-
-#: dialer_contact/admin.py:76 dialer_contact/admin.py:114
+#: dialer_contact/admin.py:74 dialer_contact/admin.py:112
 #: dialer_contact/views.py:311 dialer_contact/views.py:429
 #, python-format
 msgid "you have too many contacts. you are allowed a maximum of %(limit)s"
 msgstr ""
 
-#: dialer_contact/admin.py:163 dialer_contact/views.py:474
+#: dialer_contact/admin.py:161 dialer_contact/views.py:474
 msgid ""
 "invalid value for import! please check the import samples or phonebook is "
 "not valid"
 msgstr ""
 
-#: dialer_contact/admin.py:168
+#: dialer_contact/admin.py:166
 msgid ""
 "invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 "
 "codes (http://en.wikipedia.org/wiki/ISO_3166-1)"
 msgstr ""
 
-#: dialer_contact/admin.py:208 dialer_contact/views.py:524
+#: dialer_contact/admin.py:206 dialer_contact/views.py:524
 #, python-format
 msgid ""
 "%(contact_cnt)s contact(s) have been uploaded successfully out of "
 "%(total_rows)s row(s)!"
 msgstr ""
 
-#: dialer_contact/admin.py:216
+#: dialer_contact/admin.py:213
+msgid "dialer contact"
+msgstr ""
+
+#: dialer_contact/admin.py:214
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:13
 msgid "import contact"
 msgstr ""
@@ -2542,6 +2540,10 @@ msgstr ""
 msgid "ends with"
 msgstr ""
 
+#: dialer_contact/constants.py:34
+msgid "all"
+msgstr ""
+
 #: dialer_contact/constants.py:38 dialer_contact/constants.py:46
 #: dnc/constants.py:20 dnc/constants.py:27
 msgid "ID"
@@ -2559,8 +2561,16 @@ msgstr ""
 msgid "first name"
 msgstr ""
 
-#: dialer_contact/forms.py:32 dialer_contact/forms.py:39
+#: dialer_contact/forms.py:32
 msgid "from"
+msgstr ""
+
+#: dialer_contact/forms.py:39
+msgid "From"
+msgstr ""
+
+#: dialer_contact/forms.py:42
+msgid "To"
 msgstr ""
 
 #: dialer_contact/forms.py:49
@@ -2570,7 +2580,7 @@ msgid ""
 "unit|{\"age\":\"32\",\"title\":\"doctor\"}|"
 msgstr ""
 
-#: dialer_contact/forms.py:62 survey/forms.py:674
+#: dialer_contact/forms.py:62 survey/forms.py:675
 #, python-format
 msgid "document types accepted: %s"
 msgstr ""
@@ -2580,17 +2590,15 @@ msgid "select phonebook"
 msgstr ""
 
 #: dialer_contact/forms.py:154
-msgid "advanced data"
+msgid "Advanced Data"
 msgstr ""
 
-#: dialer_contact/forms.py:178 dialer_contact/models.py:87
-#: dialer_contact/templates/dialer_contact/contact/import_contact.html:24
-#: dnc/templates/dnc/dnc_contact/import_dnc_contact.html:14
-msgid "contact number"
+#: dialer_contact/forms.py:178
+msgid "Contact number"
 msgstr ""
 
 #: dialer_contact/forms.py:180
-msgid "contact name"
+msgid "Contact Name"
 msgstr ""
 
 #: dialer_contact/models.py:40
@@ -2606,31 +2614,37 @@ msgstr ""
 msgid "phonebooks"
 msgstr ""
 
+#: dialer_contact/models.py:87
+#: dialer_contact/templates/dialer_contact/contact/import_contact.html:24
+#: dnc/templates/dnc/dnc_contact/import_dnc_contact.html:14
+msgid "contact number"
+msgstr ""
+
 #: dialer_contact/models.py:93
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:30
 #: templates/admin/dialer_contact/contact/import_contact.html:26
-#: user_profile/models.py:58
+#: user_profile/models.py:59
 msgid "address"
 msgstr ""
 
 #: dialer_contact/models.py:94
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:31
 #: templates/admin/dialer_contact/contact/import_contact.html:27
-#: user_profile/models.py:59
+#: user_profile/models.py:60
 msgid "city"
 msgstr ""
 
 #: dialer_contact/models.py:95
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:32
 #: templates/admin/dialer_contact/contact/import_contact.html:28
-#: user_profile/models.py:60
+#: user_profile/models.py:61
 msgid "state"
 msgstr ""
 
 #: dialer_contact/models.py:96
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:33
 #: templates/admin/dialer_contact/contact/import_contact.html:29
-#: user_profile/models.py:61
+#: user_profile/models.py:62
 msgid "country"
 msgstr ""
 
@@ -2741,10 +2755,6 @@ msgid ""
 "codes"
 msgstr ""
 
-#: dialer_gateway/admin.py:19
-msgid "Dialer Gateway"
-msgstr ""
-
 #: dialer_gateway/constants.py:25
 msgid "SIP"
 msgstr ""
@@ -2809,52 +2819,52 @@ msgstr ""
 msgid "timeout in seconds, ie \"10\""
 msgstr ""
 
-#: dialer_gateway/models.py:75
+#: dialer_gateway/models.py:74
 msgid "gateway retries"
 msgstr ""
 
-#: dialer_gateway/models.py:76
+#: dialer_gateway/models.py:75
 msgid ""
 "\"2,1\", # retry String for Gateways separated by comma, on how many times "
 "each gateway should be retried"
 msgstr ""
 
-#: dialer_gateway/models.py:79
+#: dialer_gateway/models.py:77
 msgid "originate dial string"
 msgstr ""
 
-#: dialer_gateway/models.py:80
+#: dialer_gateway/models.py:78
 msgid ""
 "add channels variables : http://wiki.freeswitch.org/wiki/Channel_Variables, "
 "ie: bridge_early_media=true,hangup_after_bridge=true"
 msgstr ""
 
-#: dialer_gateway/models.py:83
+#: dialer_gateway/models.py:81
 msgid "second used"
 msgstr ""
 
-#: dialer_gateway/models.py:91
+#: dialer_gateway/models.py:89
 msgid "add parameter"
 msgstr ""
 
-#: dialer_gateway/models.py:94
+#: dialer_gateway/models.py:92
 msgid "call count"
 msgstr ""
 
-#: dialer_gateway/models.py:96
+#: dialer_gateway/models.py:94
 msgid "count in use"
 msgstr ""
 
-#: dialer_gateway/models.py:97
+#: dialer_gateway/models.py:95
 msgid "max concurrent calls"
 msgstr ""
 
-#: dialer_gateway/models.py:104
-msgid "dialer gateways"
+#: dialer_gateway/models.py:101
+msgid "dialer gateway"
 msgstr ""
 
-#: dialer_settings/admin.py:19
-msgid "Dialer Settings"
+#: dialer_gateway/models.py:102
+msgid "dialer gateways"
 msgstr ""
 
 #: dialer_settings/models.py:39
@@ -2964,11 +2974,12 @@ msgstr ""
 msgid "dialer setting"
 msgstr ""
 
-#: dnc/constants.py:28 dnc/templates/dnc/dnc_contact/change.html:5
-#: dnc/templates/dnc/dnc_list/change.html:5
-#: frontend/templates/frontend/bootstrap_side_menu.html:19
-#: frontend/templates/frontend/bootstrap_side_menu.html:22
-msgid "dnc"
+#: dialer_settings/models.py:93 user_profile/models.py:90
+msgid "dialer settings"
+msgstr ""
+
+#: dnc/forms.py:57
+msgid "Phone Number"
 msgstr ""
 
 #: dnc/forms.py:58 dnc/models.py:48
@@ -2995,8 +3006,8 @@ msgstr ""
 msgid "DNC list"
 msgstr ""
 
-#: dnc/forms.py:178
-msgid "export to"
+#: dnc/forms.py:178 mod_utils/forms.py:38
+msgid "Export to"
 msgstr ""
 
 #: dnc/models.py:33
@@ -3033,6 +3044,13 @@ msgstr ""
 
 #: dnc/models.py:87
 msgid "Do Not Call contacts"
+msgstr ""
+
+#: dnc/templates/dnc/dnc_contact/change.html:5
+#: dnc/templates/dnc/dnc_list/change.html:5
+#: frontend/templates/frontend/bootstrap_side_menu.html:19
+#: frontend/templates/frontend/bootstrap_side_menu.html:22
+msgid "dnc"
 msgstr ""
 
 #: dnc/templates/dnc/dnc_contact/change.html:6
@@ -3118,31 +3136,31 @@ msgid "Duplicate DNC contact(s) %(dup_contact_cnt)s are not inserted!!"
 msgstr ""
 
 #: frontend/constants.py:20
-msgid "last 30 days"
+msgid "Last 30 days"
 msgstr ""
 
 #: frontend/constants.py:21
-msgid "last 7 days"
+msgid "Last 7 days"
 msgstr ""
 
 #: frontend/constants.py:22
-msgid "yesterday"
+msgid "Yesterday"
 msgstr ""
 
 #: frontend/constants.py:23
-msgid "last 24 hours"
+msgid "Last 24 hours"
 msgstr ""
 
 #: frontend/constants.py:24
-msgid "last 12 hours"
+msgid "Last 12 hours"
 msgstr ""
 
 #: frontend/constants.py:25
-msgid "last 6 hours"
+msgid "Last 6 hours"
 msgstr ""
 
 #: frontend/constants.py:26
-msgid "last hour"
+msgid "Last hour"
 msgstr ""
 
 #: frontend/forms.py:25
@@ -3163,10 +3181,10 @@ msgid "Password"
 msgstr ""
 
 #: frontend/forms.py:43
-msgid "forgot password"
+msgid "Forgot password"
 msgstr ""
 
-#: frontend/forms.py:63
+#: frontend/forms.py:63 mod_sms/forms.py:210 mod_utils/forms.py:93
 msgid "Search"
 msgstr ""
 
@@ -3196,6 +3214,10 @@ msgstr ""
 msgid "appointments"
 msgstr ""
 
+#: frontend/templates/frontend/bootstrap_menu.html:72
+msgid "callcenter"
+msgstr ""
+
 #: frontend/templates/frontend/bootstrap_menu.html:76
 msgid "add-ons list"
 msgstr ""
@@ -3222,13 +3244,17 @@ msgid "account limits"
 msgstr ""
 
 #: frontend/templates/frontend/bootstrap_menu.html:97
-#: user_profile/models.py:67
+#: user_profile/models.py:68
 #: user_profile/templates/user_profile/user_detail_change.html:15
 msgid "language"
 msgstr ""
 
 #: frontend/templates/frontend/bootstrap_menu.html:101
 msgid "notifications"
+msgstr ""
+
+#: frontend/templates/frontend/bootstrap_menu.html:110
+msgid "administration"
 msgstr ""
 
 #: frontend/templates/frontend/bootstrap_menu.html:113
@@ -3245,9 +3271,13 @@ msgid "list"
 msgstr ""
 
 #: frontend/templates/frontend/bootstrap_side_menu.html:23
-#: mod_utils/forms.py:85
 #: templates/admin/dialer_contact/contact/import_contact.html:9
 msgid "import"
+msgstr ""
+
+#: frontend/templates/frontend/bootstrap_side_menu.html:45
+#: user_profile/models.py:165
+msgid "calendar users"
 msgstr ""
 
 #: frontend/templates/frontend/bootstrap_side_menu.html:61
@@ -3263,6 +3293,11 @@ msgstr ""
 msgid "reports"
 msgstr ""
 
+#: frontend/templates/frontend/bootstrap_side_menu.html:76
+#: survey/models.py:124
+msgid "surveys"
+msgstr ""
+
 #: frontend/templates/frontend/bootstrap_side_menu.html:79
 msgid "sealed surveys"
 msgstr ""
@@ -3272,7 +3307,7 @@ msgid "open search"
 msgstr ""
 
 #: frontend/templates/frontend/common_submit_buttons.html:10
-#: mod_utils/forms.py:68 survey/templates/survey/survey_change.html:305
+#: survey/templates/survey/survey_change.html:305
 msgid "delete"
 msgstr ""
 
@@ -3491,12 +3526,16 @@ msgstr ""
 msgid "mail spooler"
 msgstr ""
 
+#: mod_registration/forms.py:24
+msgid "Email"
+msgstr ""
+
 #: mod_registration/forms.py:36
-msgid "reset my password"
+msgid "Reset my password"
 msgstr ""
 
 #: mod_registration/forms.py:50
-msgid "change my password"
+msgid "Change my password"
 msgstr ""
 
 #: mod_registration/templates/mod_registration/password_reset_complete.html:4
@@ -3584,14 +3623,6 @@ msgid ""
 "new one."
 msgstr ""
 
-#: mod_sms/admin.py:46
-msgid "Standard options"
-msgstr ""
-
-#: mod_sms/admin.py:53
-msgid "Advanced options"
-msgstr ""
-
 #: mod_sms/admin.py:93 mod_sms/views.py:171
 #, python-format
 msgid "you have too many sms campaigns. Max allowed %(limit)s"
@@ -3662,7 +3693,11 @@ msgid "status msg"
 msgstr ""
 
 #: mod_sms/forms.py:113
-msgid "completion settings"
+msgid "Completion Settings"
+msgstr ""
+
+#: mod_sms/forms.py:125
+msgid "Week days"
 msgstr ""
 
 #: mod_sms/forms.py:160
@@ -3677,15 +3712,6 @@ msgstr ""
 
 #: mod_sms/forms.py:197 mod_sms/forms.py:228 mod_sms/forms.py:253
 msgid "SMS Campaign"
-msgstr ""
-
-#: mod_sms/forms.py:210 mod_utils/forms.py:93
-#: templates/admin/dialer_campaign/subscriber/subscriber_report.html:39
-#: templates/admin/dialer_cdr/voipcall/change_list.html:39
-#: templates/admin/dialer_cdr/voipcall/voip_report.html:39
-#: templates/admin/mod_sms/smsmessage/change_list.html:40
-#: templates/admin/mod_sms/smsmessage/sms_report.html:38
-msgid "search"
 msgstr ""
 
 #: mod_sms/management/commands/create_sms.py:39
@@ -3753,53 +3779,53 @@ msgstr ""
 msgid "Phonebook Empty"
 msgstr ""
 
-#: mod_sms/models.py:349
+#: mod_sms/models.py:352
 msgid "SMSCampaign Subscriber"
 msgstr ""
 
-#: mod_sms/models.py:419
+#: mod_sms/models.py:422
 msgid "select message"
 msgstr ""
 
-#: mod_sms/models.py:423 mod_sms/models.py:487
+#: mod_sms/models.py:426 mod_sms/models.py:490
 msgid "select SMS campaign"
 msgstr ""
 
-#: mod_sms/models.py:441
+#: mod_sms/models.py:444
 msgid "SMS campaign subscriber"
 msgstr ""
 
-#: mod_sms/models.py:442
+#: mod_sms/models.py:445
 msgid "SMS campaign subscribers"
 msgstr ""
 
-#: mod_sms/models.py:495
+#: mod_sms/models.py:498
 msgid "can see SMS report"
 msgstr ""
 
-#: mod_sms/models.py:498
+#: mod_sms/models.py:501
 msgid "SMS message"
 msgstr ""
 
-#: mod_sms/models.py:499
+#: mod_sms/models.py:502
 msgid "SMS messages"
 msgstr ""
 
-#: mod_sms/models.py:506
+#: mod_sms/models.py:509
 msgid "SMS template name"
 msgstr ""
 
-#: mod_sms/models.py:509
+#: mod_sms/models.py:512
 msgid ""
 "Unique name used to pick some template for recurring action, such as "
 "activation or warning"
 msgstr ""
 
-#: mod_sms/models.py:516
+#: mod_sms/models.py:519
 msgid "SMS template"
 msgstr ""
 
-#: mod_sms/models.py:517
+#: mod_sms/models.py:520
 msgid "SMS templates"
 msgstr ""
 
@@ -3878,11 +3904,11 @@ msgid "daily summary"
 msgstr ""
 
 #: mod_sms/templatetags/mod_sms_tags.py:59
-msgid "duplicate this sms campaign"
+msgid "Duplicate this sms campaign"
 msgstr ""
 
 #: mod_sms/templatetags/mod_sms_tags.py:67
-msgid "get text-message of this sms campaign"
+msgid "Get text-message of this sms campaign"
 msgstr ""
 
 #: mod_sms/views.py:163
@@ -3911,28 +3937,52 @@ msgstr ""
 msgid "%(count)s sms campaign(s) are deleted."
 msgstr ""
 
-#: mod_utils/forms.py:38
-msgid "Export to"
+#: mod_utils/forms.py:68
+msgid "Update"
+msgstr ""
+
+#: mod_utils/forms.py:68
+msgid "Delete"
+msgstr ""
+
+#: mod_utils/forms.py:76
+msgid "Save"
+msgstr ""
+
+#: mod_utils/forms.py:85
+msgid "Import"
+msgstr ""
+
+#: mod_utils/function_def.py:62
+msgid "Start"
+msgstr ""
+
+#: mod_utils/function_def.py:63
+msgid "Pause"
+msgstr ""
+
+#: mod_utils/function_def.py:64
+msgid "Abort"
 msgstr ""
 
 #: mod_utils/function_def.py:65
-msgid "stop"
+msgid "Stop"
 msgstr ""
 
 #: mod_utils/function_def.py:75
-msgid "started"
+msgid "Started"
 msgstr ""
 
 #: mod_utils/function_def.py:77
-msgid "paused"
+msgid "Paused"
 msgstr ""
 
 #: mod_utils/function_def.py:79
-msgid "aborted"
+msgid "Aborted"
 msgstr ""
 
 #: mod_utils/function_def.py:81
-msgid "stopped"
+msgid "Stopped"
 msgstr ""
 
 #: mod_utils/helper.py:20
@@ -3969,6 +4019,10 @@ msgstr ""
 
 #: mod_utils/management.py:52 user_profile/constants.py:25
 msgid "contact limit reached"
+msgstr ""
+
+#: mod_utils/management.py:56 user_profile/constants.py:26
+msgid "dialer setting configuration"
 msgstr ""
 
 #: mod_utils/management.py:57
@@ -4013,31 +4067,31 @@ msgid ""
 "administrator"
 msgstr ""
 
-#: newfies_dialer/settings.py:477
+#: newfies_dialer/settings.py:488
 msgid "English"
 msgstr ""
 
-#: newfies_dialer/settings.py:478
+#: newfies_dialer/settings.py:489
 msgid "French"
 msgstr ""
 
-#: newfies_dialer/settings.py:479
+#: newfies_dialer/settings.py:490
 msgid "Spanish"
 msgstr ""
 
-#: newfies_dialer/settings.py:480
+#: newfies_dialer/settings.py:491
 msgid "Portuguese"
 msgstr ""
 
-#: newfies_dialer/settings.py:481
+#: newfies_dialer/settings.py:492
 msgid "Chinese"
 msgstr ""
 
-#: newfies_dialer/settings.py:482
+#: newfies_dialer/settings.py:493
 msgid "Turkish"
 msgstr ""
 
-#: newfies_dialer/settings.py:483
+#: newfies_dialer/settings.py:494
 msgid "Japanese"
 msgstr ""
 
@@ -4085,23 +4139,21 @@ msgstr ""
 msgid "hangup"
 msgstr ""
 
-#: survey/forms.py:79 survey/forms.py:103 survey/forms.py:566
-#: survey/templates/survey/sealed_survey_view.html:222
-#: survey/templates/survey/survey_change.html:291
-msgid "any other key"
+#: survey/forms.py:79 survey/forms.py:103
+msgid "Any other key"
 msgstr ""
 
 #: survey/forms.py:80 survey/forms.py:104 survey/forms.py:566
-#: survey/templates/survey/sealed_survey_view.html:224
-#: survey/templates/survey/survey_change.html:293
-msgid "invalid"
+msgid "Invalid"
+msgstr ""
+
+#: survey/forms.py:135
+msgid "Completed"
 msgstr ""
 
 #: survey/forms.py:169 survey/forms.py:371 survey/forms.py:407
 #: survey/forms.py:442 survey/forms.py:479
-#: survey/templates/survey/sealed_survey_view.html:60
-#: survey/templates/survey/survey_change.html:115
-msgid "section title"
+msgid "Section title"
 msgstr ""
 
 #: survey/forms.py:203
@@ -4110,23 +4162,35 @@ msgid ""
 "in the survey report"
 msgstr ""
 
+#: survey/forms.py:566
+msgid "Any Other Key"
+msgstr ""
+
 #: survey/forms.py:580
 msgid "no branching, this will terminate the call"
 msgstr ""
 
+#: survey/forms.py:598
+msgid "Select Campaign"
+msgstr ""
+
+#: survey/forms.py:614
+msgid "Survey"
+msgstr ""
+
 #: survey/forms.py:633
-msgid "select survey"
-msgstr ""
-
-#: survey/forms.py:650
-msgid "survey name"
+msgid "Select Survey"
 msgstr ""
 
 #: survey/forms.py:651
-msgid "upload file"
+msgid "Survey Name"
 msgstr ""
 
-#: survey/forms.py:651
+#: survey/forms.py:652
+msgid "Upload file"
+msgstr ""
+
+#: survey/forms.py:652
 msgid "browse text file"
 msgstr ""
 
@@ -4356,9 +4420,19 @@ msgstr ""
 msgid "list sealed surveys"
 msgstr ""
 
+#: survey/templates/survey/sealed_survey_list.html:34
+#: survey/templatetags/survey_tags.py:124
+msgid "view sealed survey"
+msgstr ""
+
 #: survey/templates/survey/sealed_survey_view.html:51
 #: survey/templates/survey/survey_change.html:51
 msgid "complete"
+msgstr ""
+
+#: survey/templates/survey/sealed_survey_view.html:60
+#: survey/templates/survey/survey_change.html:115
+msgid "section title"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:77
@@ -4404,6 +4478,16 @@ msgstr ""
 #: survey/templates/survey/sealed_survey_view.html:214
 #: survey/templates/survey/survey_change.html:283
 msgid "goto"
+msgstr ""
+
+#: survey/templates/survey/sealed_survey_view.html:222
+#: survey/templates/survey/survey_change.html:291
+msgid "any other key"
+msgstr ""
+
+#: survey/templates/survey/sealed_survey_view.html:224
+#: survey/templates/survey/survey_change.html:293
+msgid "invalid"
 msgstr ""
 
 #: survey/templates/survey/sealed_survey_view.html:228
@@ -4647,6 +4731,14 @@ msgstr ""
 msgid "search option"
 msgstr ""
 
+#: templates/admin/dialer_campaign/subscriber/subscriber_report.html:39
+#: templates/admin/dialer_cdr/voipcall/change_list.html:39
+#: templates/admin/dialer_cdr/voipcall/voip_report.html:39
+#: templates/admin/mod_sms/smsmessage/change_list.html:40
+#: templates/admin/mod_sms/smsmessage/sms_report.html:38
+msgid "search"
+msgstr ""
+
 #: templates/admin/dialer_campaign/subscriber/subscriber_report.html:45
 msgid "TOTAL SUBSCRIBERS"
 msgstr ""
@@ -4729,55 +4821,67 @@ msgid "Email address"
 msgstr ""
 
 #: user_profile/forms.py:95
-msgid "verify phone number"
+msgid "Verify phone number"
 msgstr ""
 
 #: user_profile/forms.py:96
 msgid "verify if a phone number is authorized to call"
 msgstr ""
 
-#: user_profile/models.py:62
+#: user_profile/models.py:63
 msgid "zip code"
 msgstr ""
 
-#: user_profile/models.py:64
+#: user_profile/models.py:65
 msgid "fax Number"
 msgstr ""
 
-#: user_profile/models.py:65
+#: user_profile/models.py:66
 msgid "company name"
 msgstr ""
 
-#: user_profile/models.py:66
+#: user_profile/models.py:67
 msgid "company website"
 msgstr ""
 
-#: user_profile/models.py:68
+#: user_profile/models.py:69
 msgid "note"
 msgstr ""
 
-#: user_profile/models.py:96
+#: user_profile/models.py:97
 msgid "can see API-Explorer"
 msgstr ""
 
-#: user_profile/models.py:99
+#: user_profile/models.py:101
 msgid "user profile"
 msgstr ""
 
-#: user_profile/models.py:100
+#: user_profile/models.py:102
 msgid "user profiles"
 msgstr ""
 
-#: user_profile/models.py:125
+#: user_profile/models.py:127
 msgid "managers"
 msgstr ""
 
-#: user_profile/models.py:146
+#: user_profile/models.py:148
 msgid "admin"
 msgstr ""
 
-#: user_profile/models.py:147
+#: user_profile/models.py:149
 msgid "admins"
+msgstr ""
+
+#: user_profile/models.py:198
+msgid "can see Calendar User list"
+msgstr ""
+
+#: user_profile/models.py:202
+msgid "calendar user profile"
+msgstr ""
+
+#: user_profile/models.py:203
+msgid "calendar user profiles"
 msgstr ""
 
 #: user_profile/templates/user_profile/check_user_phone_number.html:23
@@ -4836,10 +4940,10 @@ msgstr ""
 msgid "maximum subscribers per SMS campaign"
 msgstr ""
 
-#: user_profile/views.py:90
+#: user_profile/views.py:89
 msgid "this phone number is not authorized."
 msgstr ""
 
-#: user_profile/views.py:92
+#: user_profile/views.py:91
 msgid "this phone number is authorized."
 msgstr ""

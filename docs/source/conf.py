@@ -20,6 +20,8 @@ sys.path.insert(1, os.path.abspath('../../newfies'))
 
 from newfies import newfies_dialer
 os.environ['DJANGO_SETTINGS_MODULE'] = 'newfies_dialer.settings'
+import django
+django.setup()
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the

@@ -30,6 +30,8 @@ from django_lets_go.common_functions import striplist
 from django_lets_go.app_label_renamer import AppLabelRenamer
 import csv
 import json
+
+
 AppLabelRenamer(native_app_label=u'dialer_contact', app_label=_('Dialer Contact')).main()
 
 

@@ -23,14 +23,14 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div
 
 voip_call_disposition_list = []
-voip_call_disposition_list.append(('all', _('all').upper()))
+voip_call_disposition_list.append(('all', _('ALL')))
 for i in CALL_DISPOSITION:
     voip_call_disposition_list.append((i[0], i[1]))
 
 
 def get_leg_type_list():
     leg_type_list = []
-    leg_type_list.append(('', _('all').upper()))
+    leg_type_list.append(('', _('ALL')))
     LEG = dict(LEG_TYPE)
     for i in LEG:
         leg_type_list.append((i, LEG[i].encode('utf-8')))
@@ -66,7 +66,7 @@ class VoipSearchForm(SearchForm):
         if user:
             self.fields['leg_type'].choices = get_leg_type_list()
             camp_list = []
-            camp_list.append((0, _('all').upper()))
+            camp_list.append((0, _('ALL')))
             content_type_list = ['survey']
 
             if user.is_superuser:
@@ -99,7 +99,7 @@ class AdminVoipSearchForm(AdminSearchForm):
         self.fields['leg_type'].choices = get_leg_type_list()
 
         campaign_list = []
-        campaign_list.append((0, _('all').upper()))
+        campaign_list.append((0, _('ALL')))
         content_type_list = ['survey']
 
         # // , has_been_started=True

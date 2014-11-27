@@ -365,7 +365,7 @@ class SubscriberReportForm(SearchForm):
     def __init__(self, *args, **kwargs):
         super(SubscriberReportForm, self).__init__(*args, **kwargs)
         camp_list = []
-        camp_list.append((0, _('all').upper()))
+        camp_list.append((0, _('ALL')))
         campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
         for i in campaign_list:
             camp_list.append((i[0], i[1]))
@@ -385,7 +385,7 @@ class SubscriberAdminForm(ModelForm):
         #self.fields['agent'].choices = agent_list()
 
 subscriber_status_list = []
-subscriber_status_list.append(('all', _('all').upper()))
+subscriber_status_list.append(('all', _('ALL')))
 for i in SUBSCRIBER_STATUS:
     subscriber_status_list.append((i[0], i[1]))
 
@@ -413,7 +413,7 @@ class SubscriberSearchForm(SearchForm):
         super(SubscriberSearchForm, self).__init__(*args, **kwargs)
         if user:
             camp_list = []
-            camp_list.append((0, _('all').upper()))
+            camp_list.append((0, _('ALL')))
             if user.is_superuser:
                 campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
             else:
@@ -424,7 +424,7 @@ class SubscriberSearchForm(SearchForm):
 
             """
             agent_list = []
-            agent_list.append((0, _('all').upper()))
+            agent_list.append((0, _('ALL')))
             if user.is_superuser:
                 agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True).filter(is_agent=True)
             else:
@@ -440,7 +440,7 @@ class SubscriberSearchForm(SearchForm):
 
 
 campaign_status_list = []
-campaign_status_list.append(('all', _('all').upper()))
+campaign_status_list.append(('all', _('ALL')))
 for i in CAMPAIGN_STATUS:
     campaign_status_list.append((i[0], i[1]))
 

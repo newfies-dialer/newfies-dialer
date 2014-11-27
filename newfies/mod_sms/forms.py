@@ -35,7 +35,7 @@ from crispy_forms.bootstrap import TabHolder, Tab
 def get_smscampaign_list(user=None):
     """get list of smscampaign"""
     camp_list = []
-    camp_list.append((0, _('all').upper()))
+    camp_list.append((0, _('ALL')))
     if user is None:
         pb_list = SMSCampaign.objects.all()
     else:
@@ -187,7 +187,7 @@ class SMSCampaignAdminForm(ModelForm):
 
 
 message_list = []
-message_list.append(('all', _('all').upper()))
+message_list.append(('all', _('ALL')))
 for i in MESSAGE_STATUSES:
     message_list.append((i[0], i[1]))
 

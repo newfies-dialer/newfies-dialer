@@ -1,7 +1,9 @@
-.. _views:
+
+.. _newfies-dialer-views:
 
 Newfies-Dialer Views
 ====================
+
 .. automodule:: frontend.views
 
 .. _index-view:
@@ -25,7 +27,7 @@ Newfies-Dialer Views
 
   .. autofunction:: login_view
 
-.. _cust_password_reset:
+.. _cust-password-reset:
 
 :class:`cust_password_reset`
 ----------------------------
@@ -33,7 +35,7 @@ Newfies-Dialer Views
   .. autofunction:: cust_password_reset
 
 
-.. _cust_password_reset_done:
+.. _cust-password-reset-done:
 
 :class:`cust_password_reset_done`
 ---------------------------------
@@ -41,7 +43,7 @@ Newfies-Dialer Views
   .. autofunction:: cust_password_reset_done
 
 
-.. _cust_password_reset_confirm:
+.. _cust-password-reset-confirm:
 
 :class:`cust_password_reset_confirm`
 ------------------------------------
@@ -49,10 +51,11 @@ Newfies-Dialer Views
   .. autofunction:: cust_password_reset_confirm
 
 
+
 .. automodule:: dialer_contact.views
 
 
-.. _phonebook_list:
+.. _phonebook-list:
 
 :class:`phonebook_list`
 -----------------------
@@ -60,7 +63,7 @@ Newfies-Dialer Views
   .. autofunction:: phonebook_list
 
 
-.. _phonebook_add:
+.. _phonebook-add:
 
 :class:`phonebook_add`
 ----------------------
@@ -68,7 +71,7 @@ Newfies-Dialer Views
   .. autofunction:: phonebook_add
 
 
- .. _phonebook_change:
+.. _phonebook-change:
 
 :class:`phonebook_change`
 -------------------------
@@ -76,7 +79,7 @@ Newfies-Dialer Views
   .. autofunction:: phonebook_change
 
 
-.. _contact_list:
+.. _contact-list:
 
 :class:`contact_list`
 ---------------------
@@ -84,7 +87,7 @@ Newfies-Dialer Views
   .. autofunction:: contact_list
 
 
-.. _contact_add:
+.. _contact-add:
 
 :class:`contact_add`
 --------------------
@@ -92,7 +95,7 @@ Newfies-Dialer Views
   .. autofunction:: contact_add
 
 
- .. _contact_change:
+.. _contact-change:
 
 :class:`contact_change`
 -----------------------
@@ -100,7 +103,7 @@ Newfies-Dialer Views
   .. autofunction:: contact_change
 
 
-.. _contact_import:
+.. _contact-import:
 
 :class:`contact_import`
 -----------------------
@@ -108,10 +111,11 @@ Newfies-Dialer Views
   .. autofunction:: contact_import
 
 
+
 .. automodule:: dialer_campaign.views
 
 
-.. _campaign_list:
+.. _campaign-list:
 
 :class:`campaign_list`
 ----------------------
@@ -119,7 +123,7 @@ Newfies-Dialer Views
   .. autofunction:: campaign_list
 
 
-.. _campaign_add:
+.. _campaign-add:
 
 :class:`campaign_add`
 ---------------------
@@ -127,7 +131,7 @@ Newfies-Dialer Views
   .. autofunction:: campaign_add
 
 
-.. _campaign_change:
+.. _campaign-change:
 
 :class:`campaign_change`
 ------------------------
@@ -138,14 +142,14 @@ Newfies-Dialer Views
 
 .. automodule:: survey.views
 
-.. _survey_list:
+.. _survey-list:
 
 :class:`survey_list`
 --------------------
 
   .. autofunction:: survey_list
 
-.. _survey_add:
+.. _survey-add:
 
 :class:`survey_add`
 -------------------
@@ -153,14 +157,14 @@ Newfies-Dialer Views
   .. autofunction:: survey_add
 
 
-.. _survey_change:
+.. _survey-change:
 
 :class:`survey_change`
 ----------------------
 
   .. autofunction:: survey_change
 
-.. _survey_report:
+.. _survey-report:
 
 :class:`survey_report`
 ----------------------
@@ -170,14 +174,15 @@ Newfies-Dialer Views
 
 .. automodule:: dialer_audio.views
 
-.. _audio_list:
+.. _audio-list:
 
 :class:`audio_list`
 -------------------
 
   .. autofunction:: audio_list
 
-.. _audio_add:
+
+.. _audio-add:
 
 :class:`audio_add`
 ------------------
@@ -185,7 +190,9 @@ Newfies-Dialer Views
   .. autofunction:: audio_add
 
 
-.. _audio_change:
+.. automodule:: dialer_audio.views
+
+.. _audio-change:
 
 :class:`audio_change`
 ---------------------
@@ -193,17 +200,16 @@ Newfies-Dialer Views
   .. autofunction:: audio_change
 
 
-
 .. automodule:: appointment.views
 
-.. _calendar_setting_list:
+.. _calendar-setting-list:
 
 :class:`calendar_setting_list`
 ------------------------------
 
   .. autofunction:: calendar_setting_list
 
-.. _calendar_setting_add:
+.. _calendar-setting-add:
 
 :class:`calendar_setting_add`
 -----------------------------
@@ -211,7 +217,7 @@ Newfies-Dialer Views
   .. autofunction:: calendar_setting_add
 
 
-.. _calendar_setting_del:
+.. _calendar-setting-del:
 
 :class:`calendar_setting_del`
 -----------------------------
@@ -219,7 +225,7 @@ Newfies-Dialer Views
   .. autofunction:: calendar_setting_del
 
 
-.. _calendar_setting_change:
+.. _calendar-setting-change:
 
 :class:`calendar_setting_change`
 --------------------------------
@@ -227,7 +233,7 @@ Newfies-Dialer Views
   .. autofunction:: calendar_setting_change
 
 
-.. _calendar_user_add:
+.. _calendar-user-add:
 
 :class:`calendar_user_add`
 --------------------------
@@ -235,21 +241,21 @@ Newfies-Dialer Views
   .. autofunction:: calendar_user_add
 
 
-.. _calendar_user_change:
+.. _calendar-user-change:
 
 :class:`calendar_user_change`
 -----------------------------
 
   .. autofunction:: calendar_user_change
 
-.. _calendar_user_del:
+.. _calendar-user-del:
 
 :class:`calendar_user_del`
 --------------------------
 
   .. autofunction:: calendar_user_del
 
-.. _calendar_user_change_pw:
+.. _calendar-user-change-pw:
 
 :class:`calendar_user_change_pw`
 --------------------------------------
@@ -257,7 +263,7 @@ Newfies-Dialer Views
   .. autofunction:: calendar_user_change_pw
 
 
-.. _calendar_list:
+.. _calendar-list:
 
 :class:`calendar_list`
 ----------------------
@@ -265,7 +271,7 @@ Newfies-Dialer Views
   .. autofunction:: calendar_list
 
 
-.. _calendar_add:
+.. _calendar-add:
 
 :class:`calendar_add`
 ---------------------
@@ -273,14 +279,14 @@ Newfies-Dialer Views
   .. autofunction:: calendar_add
 
 
-.. _calendar_del:
+.. _calendar-del:
 
 :class:`calendar_del`
 ---------------------
 
   .. autofunction:: calendar_del
 
-.. _calendar_change:
+.. _calendar-change:
 
 :class:`calendar_change`
 ------------------------
@@ -288,21 +294,21 @@ Newfies-Dialer Views
   .. autofunction:: calendar_change
 
 
-.. _event_list:
+.. _event-list:
 
 :class:`event_list`
 -------------------
 
   .. autofunction:: event_list
 
-.. _event_add:
+.. _event-add:
 
 :class:`event_add`
 ------------------
 
   .. autofunction:: event_add
 
-.. _event_del:
+.. _event-del:
 
 :class:`event_del`
 ------------------
@@ -310,28 +316,28 @@ Newfies-Dialer Views
   .. autofunction:: event_del
 
 
-.. _event_change:
+.. _event-change:
 
 :class:`event_change`
 ---------------------
 
   .. autofunction:: event_change
 
-.. _alarm_list:
+.. _alarm-list:
 
 :class:`alarm_list`
 -------------------
 
   .. autofunction:: alarm_list
 
-.. _alarm_add:
+.. _alarm-add:
 
 :class:`alarm_add`
 ------------------
 
   .. autofunction:: alarm_add
 
-.. _alarm_del:
+.. _alarm-del:
 
 :class:`alarm_del`
 ------------------
@@ -339,7 +345,7 @@ Newfies-Dialer Views
   .. autofunction:: alarm_del
 
 
-.. _alarm_change:
+.. _alarm-change:
 
 :class:`alarm_change`
 ---------------------
@@ -349,14 +355,14 @@ Newfies-Dialer Views
 
 .. automodule:: mod_sms.views
 
-.. _sms_campaign_list:
+.. _sms-campaign-list:
 
 :class:`sms_campaign_list`
 --------------------------
 
   .. autofunction:: sms_campaign_list
 
-.. _sms_campaign_add:
+.. _sms-campaign-add:
 
 :class:`sms_campaign_add`
 -------------------------
@@ -364,7 +370,7 @@ Newfies-Dialer Views
   .. autofunction:: sms_campaign_add
 
 
-.. _sms_campaign_del:
+.. _sms-campaign-del:
 
 :class:`sms_campaign_del`
 -------------------------
@@ -372,21 +378,21 @@ Newfies-Dialer Views
   .. autofunction:: sms_campaign_del
 
 
-.. _sms_campaign_duplicate:
+.. _sms-campaign-duplicate:
 
 :class:`sms_campaign_duplicate`
 -------------------------------
 
   .. autofunction:: sms_campaign_duplicate
 
-.. _sms_campaign_text_message:
+.. _sms-campaign-text-message:
 
 :class:`sms_campaign_text_message`
 ----------------------------------
 
   .. autofunction:: sms_campaign_text_message
 
-.. _update_sms_campaign_status_cust:
+.. _update-sms-campaign-status-cust:
 
 :class:`update_sms_campaign_status_cust`
 ----------------------------------------
@@ -394,28 +400,28 @@ Newfies-Dialer Views
   .. autofunction:: update_sms_campaign_status_cust
 
 
-.. _sms_campaign_change:
+.. _sms-campaign-change:
 
 :class:`sms_campaign_change`
 ----------------------------
 
   .. autofunction:: sms_campaign_change
 
-.. _sms_dashboard:
+.. _sms-dashboard:
 
 :class:`sms_dashboard`
 ----------------------
 
   .. autofunction:: sms_dashboard
 
-.. _sms_report:
+.. _sms-report:
 
 :class:`sms_report`
 -------------------
 
   .. autofunction:: sms_report
 
-.. _export_sms_report:
+.. _export-sms-report:
 
 :class:`export_sms_report`
 --------------------------

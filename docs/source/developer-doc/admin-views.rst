@@ -130,6 +130,17 @@ Newfies-Dialer Admin Views
     :members:
 
 
+.. automodule:: calendar_settings.admin
+
+.. _CalendarSettingAdmin:
+
+:class:`CalendarSettingAdmin`
+-----------------------------
+
+.. autoclass:: CalendarSettingAdmin
+    :members:
+
+
 .. automodule:: appointment.admin
 
 .. _CalendarUserAdmin:
@@ -140,13 +151,6 @@ Newfies-Dialer Admin Views
 .. autoclass:: CalendarUserAdmin
     :members:
 
-.. _CalendarSettingAdmin:
-
-:class:`CalendarSettingAdmin`
------------------------------
-
-.. autoclass:: CalendarSettingAdmin
-    :members:
 
 .. _CalendarAdmin:
 

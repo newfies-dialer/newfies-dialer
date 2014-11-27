@@ -27,6 +27,9 @@ Newfies-Dialer Views
 
   .. autofunction:: login_view
 
+
+.. automodule:: mod_registration.views
+
 .. _cust-password-reset:
 
 :class:`cust_password_reset`

@@ -242,7 +242,7 @@ call report into a csv file.
 .. image:: ../_static/images/customer/callreport.png
 
 
-.. _survey-report:
+.. _howtouse-survey-report:
 
 Survey Report
 -------------

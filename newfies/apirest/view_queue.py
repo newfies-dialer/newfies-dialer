@@ -19,7 +19,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from callcenter.models import Queue
 from apirest.queue_serializers import QueueSerializer
 from user_profile.models import Manager
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class QueueViewSet(viewsets.ModelViewSet):

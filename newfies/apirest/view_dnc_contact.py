@@ -17,7 +17,7 @@ from apirest.dnc_contact_serializers import DNCContactSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dnc.models import DNCContact
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class DNCContactViewSet(viewsets.ModelViewSet):

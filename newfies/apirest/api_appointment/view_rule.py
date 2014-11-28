@@ -14,11 +14,11 @@
 #
 
 from rest_framework import viewsets
-from apirest.rule_serializers import RuleSerializer
+from apirest.api_appointment.rule_serializers import RuleSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.rules import Rule
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class RuleViewSet(viewsets.ReadOnlyModelViewSet):

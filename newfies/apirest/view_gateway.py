@@ -18,7 +18,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_gateway.models import Gateway
 from user_profile.models import UserProfile
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class GatewayViewSet(viewsets.ReadOnlyModelViewSet):

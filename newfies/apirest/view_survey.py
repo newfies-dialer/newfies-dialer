@@ -18,7 +18,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from apirest.survey_serializers import SurveySerializer
 from survey.models import Survey
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class SurveyViewSet(viewsets.ReadOnlyModelViewSet):

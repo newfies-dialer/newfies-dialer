@@ -19,7 +19,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from callcenter.models import Tier
 from apirest.tier_serializers import TierSerializer
 from user_profile.models import Manager
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class TierViewSet(viewsets.ModelViewSet):

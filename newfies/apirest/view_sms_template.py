@@ -18,7 +18,7 @@ from apirest.sms_template_serializers import SMSTemplateSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from mod_sms.models import SMSTemplate
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class SMSTemplateViewSet(viewsets.ReadOnlyModelViewSet):

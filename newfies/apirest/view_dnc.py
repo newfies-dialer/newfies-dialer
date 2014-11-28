@@ -17,7 +17,7 @@ from apirest.dnc_serializers import DNCSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dnc.models import DNC
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class DNCViewSet(viewsets.ModelViewSet):

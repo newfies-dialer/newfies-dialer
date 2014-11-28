@@ -13,12 +13,12 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import viewsets
-from apirest.alarm_serializers import AlarmSerializer
+from apirest.api_appointment.alarm_serializers import AlarmSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.alarms import Alarm
 from appointment.function_def import get_calendar_user_id_list
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class AlarmViewSet(viewsets.ModelViewSet):

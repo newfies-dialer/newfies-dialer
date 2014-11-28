@@ -13,12 +13,12 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import viewsets
-from apirest.calendar_serializers import CalendarSerializer
+from apirest.api_appointment.calendar_serializers import CalendarSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.calendars import Calendar
 from appointment.function_def import get_calendar_user_id_list
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class CalendarViewSet(viewsets.ModelViewSet):

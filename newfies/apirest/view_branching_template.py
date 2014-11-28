@@ -17,7 +17,7 @@ from apirest.branching_template_serializers import BranchingTemplateSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from survey.models import Branching_template
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class BranchingTemplateViewSet(viewsets.ModelViewSet):

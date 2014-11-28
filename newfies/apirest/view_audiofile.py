@@ -21,7 +21,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_audio.forms import DialerAudioFileForm
 from audiofield.models import AudioFile
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class AudioFileViewSet(viewsets.ModelViewSet):

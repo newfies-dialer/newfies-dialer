@@ -38,17 +38,19 @@ from apirest.view_survey_aggregate_result import SurveyAggregateResultViewSet
 from apirest.view_subscriber_per_campaign import SubscriberPerCampaignList
 #from apirest.view_queue import QueueViewSet
 #from apirest.view_tier import TierViewSet
-from apirest.view_calendar import CalendarViewSet
-from apirest.view_calendar_setting import CalendarSettingViewSet
-from apirest.view_calendar_user import CalendarUserViewSet
-from apirest.view_calendar_user_profile import CalendarUserProfileViewSet
-from apirest.view_rule import RuleViewSet
-from apirest.view_event import EventViewSet
-from apirest.view_alarm import AlarmViewSet
-from apirest.view_alarm_request import AlarmRequestViewSet
-from apirest.view_sms_campaign import SMSCampaignViewSet
 from apirest.view_mail_template import MailTemplateViewSet
 from apirest.view_sms_template import SMSTemplateViewSet
+from apirest.view_sms_campaign import SMSCampaignViewSet
+#Appointement module
+from apirest.api_appointment.view_calendar import CalendarViewSet
+from apirest.api_appointment.view_calendar_setting import CalendarSettingViewSet
+from apirest.api_appointment.view_calendar_user import CalendarUserViewSet
+from apirest.api_appointment.view_calendar_user_profile import CalendarUserProfileViewSet
+from apirest.api_appointment.view_rule import RuleViewSet
+from apirest.api_appointment.view_event import EventViewSet
+from apirest.api_appointment.view_alarm import AlarmViewSet
+from apirest.api_appointment.view_alarm_request import AlarmRequestViewSet
+
 
 #from agent.api_views import AgentViewSet
 #from apirest.view_agent_profile import AgentProfileViewSet

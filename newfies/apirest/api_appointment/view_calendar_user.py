@@ -21,9 +21,9 @@ from calendar_settings.models import CalendarSetting
 from appointment.models.calendars import Calendar
 from appointment.function_def import get_calendar_user_id_list, \
     get_all_calendar_user_id_list
-from apirest.calendar_user_serializers import CalendarUserSerializer
+from apirest.api_appointment.calendar_user_serializers import CalendarUserSerializer
 from user_profile.models import Manager
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 import ast
 
 

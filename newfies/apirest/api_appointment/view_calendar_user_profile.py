@@ -18,11 +18,11 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from user_profile.models import CalendarUserProfile
-from apirest.calendar_user_profile_serializers import CalendarUserProfileSerializer
+from apirest.api_appointment.calendar_user_profile_serializers import CalendarUserProfileSerializer
 from appointment.function_def import get_calendar_user_id_list, \
     get_all_calendar_user_id_list
 from user_profile.models import Manager
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 import ast
 
 

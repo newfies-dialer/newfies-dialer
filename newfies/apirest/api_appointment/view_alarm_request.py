@@ -17,11 +17,11 @@ from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from apirest.alarm_request_serializers import AlarmRequestSerializer
+from apirest.api_appointment.alarm_request_serializers import AlarmRequestSerializer
 from appointment.models.alarms import Alarm, AlarmRequest
 from appointment.models.events import Event
 from appointment.function_def import get_calendar_user_id_list
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class AlarmRequestViewSet(viewsets.ModelViewSet):

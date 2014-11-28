@@ -14,11 +14,11 @@
 #
 
 from rest_framework import viewsets
-from apirest.calendar_setting_serializers import CalendarSettingSerializer
+from apirest.api_appointment.calendar_setting_serializers import CalendarSettingSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from calendar_settings.models import CalendarSetting
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class CalendarSettingViewSet(viewsets.ModelViewSet):

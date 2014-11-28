@@ -18,7 +18,7 @@ from apirest.callrequest_serializers import CallrequestSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_cdr.models import Callrequest
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class CallrequestViewSet(viewsets.ModelViewSet):

@@ -13,14 +13,14 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from rest_framework import viewsets
-from apirest.event_serializers import EventSerializer
+from apirest.api_appointment.event_serializers import EventSerializer
 from rest_framework.decorators import action
 from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from appointment.models.events import Event
 from appointment.function_def import get_calendar_user_id_list
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 import ast
 
 

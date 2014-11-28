@@ -58,7 +58,8 @@ def get_common_campaign_status_url(id, status, status_link, STATUS_OF_CAMPAIGN):
         control_stop_style = tpl_control_icon('fa-stop')
 
     #return all the html button for campaign status management
-    return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
+    return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> " \
+        "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
         (url_cpg_start, _("Start"), control_play_style,
          url_cpg_pause, _("Pause"), control_pause_style,
          url_cpg_abort, _("Abort"), control_abort_style,

@@ -105,13 +105,11 @@ def get_campaign_app_view(campaign_object):
     if campaign_object.status and int(campaign_object.status) == CAMPAIGN_STATUS.START:
         if campaign_object.content_type.model == 'survey':
             link = _return_link('survey', campaign_object.object_id)
-
     if campaign_object.status and int(campaign_object.status) != CAMPAIGN_STATUS.START:
         if campaign_object.content_type.model == 'survey_template':
             link = _return_link('survey_template', campaign_object.object_id)
         if campaign_object.content_type.model == 'survey':
             link = _return_link('survey', campaign_object.object_id)
-
     return link
 
 

@@ -227,7 +227,9 @@ class pending_call_processing(Task):
             # new_callrequest_id = 112
             # obj_campaign_id = 3
             # countdown = 1
-            # init_callrequest.apply_async(args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait], countdown=1)
+            # init_callrequest.apply_async(
+            #     args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait],
+            #     countdown=1)
 
         debug_query(7)
         return True

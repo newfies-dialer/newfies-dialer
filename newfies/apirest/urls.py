@@ -73,6 +73,9 @@ router.register(r'section-template', SectionTemplateViewSet)
 router.register(r'branching-template', BranchingTemplateViewSet)
 #router.register(r'queue', QueueViewSet)
 #router.register(r'tier', TierViewSet)
+router.register(r'mail-template', MailTemplateViewSet)
+router.register(r'sms-template', SMSTemplateViewSet)
+
 router.register(r'calendar', CalendarViewSet)
 router.register(r'calendar-setting', CalendarSettingViewSet)
 router.register(r'calendar-user', CalendarUserViewSet)
@@ -81,8 +84,6 @@ router.register(r'rule', RuleViewSet)
 router.register(r'event', EventViewSet)
 router.register(r'alarm', AlarmViewSet)
 router.register(r'alarm-request', AlarmRequestViewSet)
-router.register(r'mail-template', MailTemplateViewSet)
-router.register(r'sms-template', SMSTemplateViewSet)
 
 #router.register(r'agents', AgentViewSet)
 #router.register(r'agent-profile', AgentProfileViewSet)
@@ -91,11 +92,14 @@ router.register(r'sms-template', SMSTemplateViewSet)
 # Additionally, we include login URLs for the browseable API.
 urlpatterns = patterns('',
     url(r'^rest-api/subcampaign/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
-    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
-    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/(?P<contact_id>[0-9]+)/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
+    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/$',
+        SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
+    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/(?P<contact_id>[0-9]+)/$',
+        SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
 
     url(r'^rest-api/surveyaggregate/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
-    url(r'^rest-api/surveyaggregate/(?P<survey_id>[0-9]+)/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
+    url(r'^rest-api/surveyaggregate/(?P<survey_id>[0-9]+)/$',
+        SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
 
     url(r'^rest-api/bulkcontact/$', BulkContactViewSet.as_view(), name="bulk_contact"),
 

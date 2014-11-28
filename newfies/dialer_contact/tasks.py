@@ -91,7 +91,7 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     else:
         limit_import = ''
 
-    from django.db import connection, transaction
+    from django.db import connection
     cursor = connection.cursor()
     if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
         # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror

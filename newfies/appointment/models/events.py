@@ -32,8 +32,7 @@ class Event(models.Model):
     """
     title = models.CharField(verbose_name=_("label"), max_length=255)
     description = models.TextField(verbose_name=_("description"), null=True, blank=True)
-    start = models.DateTimeField(default=now,
-                                 verbose_name=_("start"))
+    start = models.DateTimeField(default=now, verbose_name=_("start"))
     end = models.DateTimeField(default=set_end,
                                verbose_name=_("end"), help_text=_("Must be later than the start"))
     creator = models.ForeignKey(CalendarUser, null=False, blank=False,
@@ -85,7 +84,8 @@ class Event(models.Model):
         <Rule: Monthly>
         >>> occurrences = event.get_occurrences(datetime.datetime(2008,1,24), datetime.datetime(2008,3,2))
         >>> ["%s to %s" %(o.start, o.end) for o in occurrences]
-        ['2008-02-01 00:00:00+00:00 to 2008-02-02 00:00:00+00:00', '2008-03-01 00:00:00+00:00 to 2008-03-02 00:00:00+00:00']
+        ['2008-02-01 00:00:00+00:00 to 2008-02-02 00:00:00+00:00',
+         '2008-03-01 00:00:00+00:00 to 2008-03-02 00:00:00+00:00']
 
         Ensure that if an event has no rule, that it appears only once.
 
@@ -176,6 +176,12 @@ class Event(models.Model):
         obj_events = Event.objects.filter(parent_event=self).order_by('created_on')
         return obj_events
 
+    def get_list_alarm(self):
+        """we will list alarm of an event"""
+        from appointment.models.alarms import Alarm
+        obj_alarms = Alarm.objects.filter(event=self).order_by('created_date')
+        return obj_alarms
+
     def get_rrule_object(self):
         if self.rule is not None:
             params = self.rule.get_params()
@@ -202,6 +208,17 @@ class Event(models.Model):
                 return Occurrence.objects.get(event=self, original_start=date)
             except Occurrence.DoesNotExist:
                 return self._create_occurrence(next_occurrence)
+
+    def occurrences_after(self, after=None):
+        """
+        returns a generator that produces occurrences after the datetime
+        ``after``.  Includes all of the persisted Occurrences.
+        """
+        occ_replacer = OccurrenceReplacer(self.occurrence_set.all())
+        generator = self._occurrences_after_generator(after)
+        while True:
+            next = generator.next()
+            yield occ_replacer.get_occurrence(next)
 
     def _get_occurrence_list(self, start, end):
         """
@@ -248,19 +265,13 @@ class Event(models.Model):
             if o_end > after:
                 yield self._create_occurrence(o_start, o_end)
 
-    def occurrences_after(self, after=None):
-        """
-        returns a generator that produces occurrences after the datetime
-        ``after``.  Includes all of the persisted Occurrences.
-        """
-        occ_replacer = OccurrenceReplacer(self.occurrence_set.all())
-        generator = self._occurrences_after_generator(after)
-        while True:
-            next = generator.next()
-            yield occ_replacer.get_occurrence(next)
-
 
 class Occurrence(models.Model):
+    """
+    Occurence models
+
+    This model help to keep track of all the occurence of an event.
+    """
     event = models.ForeignKey(Event, verbose_name=_("event"))
     title = models.CharField(_("title"), max_length=255, blank=True, null=True)
     description = models.TextField(_("description"), blank=True, null=True)

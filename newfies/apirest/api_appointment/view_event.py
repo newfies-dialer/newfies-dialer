@@ -73,3 +73,36 @@ class EventViewSet(viewsets.ModelViewSet):
         else:
             final_data = {"note": "no child event found"}
         return Response(final_data)
+
+    @action(methods=['GET'])
+    def get_list_alarm(self, request, pk=None):
+        """it will get all alarm for a given event"""
+        event = self.get_object()
+        queryset = event.get_list_alarm()
+
+        list_data = []
+        for alarm in queryset:
+            alarm_url = 'http://%s/rest-api/alarm/%s/' % (self.request.META['HTTP_HOST'], str(alarm.id))
+            data = {
+                'url': alarm_url,
+                'title': str(alarm),
+                'phonenumber': alarm.alarm_phonenumber,
+                'daily_start': str(alarm.daily_start),
+                'daily_stop': str(alarm.daily_stop),
+                'advance_notice': str(alarm.advance_notice),
+                'maxretry': str(alarm.maxretry),
+                'retry_delay': str(alarm.retry_delay),
+                'num_attempt': str(alarm.num_attempt),
+                'method': str(alarm.method),
+                'status': str(alarm.status),
+                'result': str(alarm.result),
+                'created_date': str(alarm.created_date),
+            }
+            list_data.append(data)
+
+        if list_data:
+            temp_data = ", ".join(str(e) for e in list_data)
+            final_data = ast.literal_eval(temp_data)
+        else:
+            final_data = {"note": "no child alarm found"}
+        return Response(final_data)

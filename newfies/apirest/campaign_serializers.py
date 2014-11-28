@@ -219,7 +219,7 @@ class CampaignSerializer(serializers.HyperlinkedModelSerializer):
                 raise serializers.ValidationError("The Campaign name duplicated!")
 
         if not user_dialer_setting(request.user):
-            raise serializers.ValidationError("Your settings are not configured properly, Please contact the administrator.")
+            raise serializers.ValidationError("Your system settings are not configured properly.")
 
         if check_dialer_setting(request, check_for="campaign"):
             raise serializers.ValidationError("Too many campaigns. Max allowed %s"

@@ -12,7 +12,6 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.core.exceptions import ObjectDoesNotExist
 from django.contrib.contenttypes.models import ContentType
 from celery.task import PeriodicTask
 from celery.decorators import task
@@ -65,13 +64,6 @@ class event_dispatcher(PeriodicTask):
 
         logger.info("TASK :: event_dispatcher - #events:%d" % len(event_list))
         for obj_event in event_list:
-            # try:
-            #     # Get and perform alarm
-            #     obj_alarm = Alarm.objects.get(event=obj_event)
-            #     perform_alarm.delay(obj_event, obj_alarm)
-            # except ObjectDoesNotExist:
-            #     pass
-
             # Check if need to create a sub event in the future
             next_occurrence = obj_event.get_next_occurrence()
 

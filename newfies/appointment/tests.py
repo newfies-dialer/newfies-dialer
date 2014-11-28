@@ -39,7 +39,7 @@ from pytest import raises
 from django.core.management import call_command
 from newfies_factory.factories import UserFactory, SurveyTemplateFactory, SurveyFactory, \
     GatewayFactory, SMSGatewayFactory, CalendarSettingFactory, UserProfileFactory, CalendarUserProfileFactory, \
-    ManagerFactory
+    ManagerFactory, CalendarUserFactory
 from dialer_campaign.constants import AMD_BEHAVIOR
 from django.core.urlresolvers import reverse
 
@@ -243,6 +243,36 @@ def test_calendar_user_view_add(transactional_db, admin_client, client, admin_us
     resp = calendar_user_add(request)
     assert resp.status_code == 200
 
+
+# def test_calendar_user_view_update(transactional_db, admin_client, client, admin_user, rf, appointment_fixtures,
+#                                 admin_user_profile, nf_manager):
+#     """Test Function to check update calendar user"""
+
+#     calendaruser = CalendarUserFactory.create(username="myusername", password="mypassword")
+#     calendaruser.save()
+#     login = client.login(user="myusername", password="mypassword")
+#     assert login == True
+
+#     # pytest.set_trace()
+#     # calendarsetting = CalendarSettingFactory.create(user=nf_manager)
+#     # calendarsetting.save()
+#     # cs_profile = CalendarUserProfileFactory.create(manager=nf_manager, calendar_setting=calendarsetting)
+
+#     calendarsetting = CalendarSettingFactory.create(user=admin_user)
+#     calendarsetting.save()
+
+#     request = rf.post(reverse('calendar_user_change', args=[4]), {
+#         "caller_name": "test",
+#         "survey": "1",
+#     }, follow=True)
+#     request.user = admin_user
+#     request.session = {}
+#     resp = calendar_user_change(request, 3)
+#     assert resp.status_code == 200
+
+#     resp = admin_client.post(reverse('calendar_user_change', args=[3]), {'delete': True}, follow=True)
+#     assert resp.status_code == 200
+
 # class AppointmentCustomerView(BaseAuthenticatedClient):
 #     """Test cases for Appointment Customer Interface."""
 
@@ -385,6 +415,7 @@ def test_calendar_user_view_add(transactional_db, admin_client, client, admin_us
     #     resp = calendar_user_add(request)
     #     self.assertEqual(resp.status_code, 200)
 
+    # !!! In progress
     # def test_calendar_user_view_update(self):
     #     """Test Function to check update calendar user"""
     #     request = self.factory.post('/module/calendar_user/4/', {

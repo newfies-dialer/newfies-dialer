@@ -580,7 +580,7 @@ def subscriber_export(request):
     """
     format_type = request.GET['format']
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/%s' % format_type)
+    response = HttpResponse(content_type='text/%s' % format_type)
 
     # force download.
     response['Content-Disposition'] = 'attachment;filename=export.%s' % format_type

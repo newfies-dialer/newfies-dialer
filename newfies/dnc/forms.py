@@ -95,7 +95,6 @@ class DNCContactForm(ModelForm):
                 Div(Fieldset('', 'dnc', 'phone_number', css_class='col-md-6')),
             ),
         )
-        common_submit_buttons(self.helper.layout, 'search')
         if user:
             self.fields['dnc'].choices = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
 

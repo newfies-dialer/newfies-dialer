@@ -131,13 +131,23 @@ class EventSerializer(serializers.HyperlinkedModelSerializer):
 
         Response::
 
-            {
-                "url": "http://localhost:8000/rest-api/event/2/",
-                "start": "2013-12-24 08:55:13+00:00",
-                "end": "2013-12-31 09:55:13+00:00",
-                "description": "",
-                "title": "test-child-event"
-            }
+            [
+                {
+                    "advance_notice": "0",
+                    "created_date": "2014-11-28 15:54:23.594613+00:00",
+                    "daily_start": "00:00:00",
+                    "daily_stop": "23:59:59",
+                    "maxretry": "0",
+                    "method": "1",
+                    "num_attempt": "0",
+                    "phonenumber": "34650784435464",
+                    "result": "0",
+                    "retry_delay": "0",
+                    "status": "1",
+                    "title": "3 - method:CALL - myevent: Nov. 28, 2014",
+                    "url": "http://localhost:8000/rest-api/alarm/3/"
+                },
+            ]
     """
 
     class Meta:

@@ -63,6 +63,8 @@ def update_campaign_status_cust(request, pk, status):
     customer interface (via dialer_campaign/campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
     obj_campaign.status = status
+    if int(status) != CAMPAIGN_STATUS.START:
+        obj_campaign.stoppeddate = datetime.utcnow().replace(tzinfo=utc)
     obj_campaign.save()
 
     pagination_path = redirect_url_to_campaign_list

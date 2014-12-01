@@ -392,6 +392,8 @@ class SMSCampaign(Model):
         """
         previous_status = self.status
         self.status = status
+        if status != SMS_CAMPAIGN_STATUS.START:
+            self.stoppeddate = datetime.utcnow().replace(tzinfo=utc)
         self.save()
 
         # Start tasks to import subscriber

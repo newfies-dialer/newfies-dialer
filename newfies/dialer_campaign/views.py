@@ -247,6 +247,7 @@ def campaign_add(request):
         obj.content_type = contenttype['object_type']
         obj.object_id = contenttype['object_id']
         obj.user = request.user
+        obj.stoppeddate = obj.expirationdate
         obj.save()
         form.save_m2m()
         request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
@@ -408,6 +409,7 @@ def campaign_duplicate(request, id):
             campaign_obj.completed = 0
             campaign_obj.startingdate = datetime.utcnow().replace(tzinfo=utc)
             campaign_obj.expirationdate = datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)
+            campaign_obj.stoppeddate = datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)
             campaign_obj.imported_phonebook = ''
             campaign_obj.has_been_started = False
             campaign_obj.has_been_duplicated = True

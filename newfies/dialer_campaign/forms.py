@@ -63,7 +63,7 @@ class CampaignForm(ModelForm):
     class Meta:
         model = Campaign
         exclude = ['user', 'status', 'content_type', 'object_id', 'has_been_started', 'has_been_duplicated',
-                   'created_date', 'totalcontact', 'imported_phonebook', 'completed']
+                   'created_date', 'totalcontact', 'imported_phonebook', 'completed', 'stoppeddate']
         # fields = ['campaign_code', 'name',
         #           'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
         #           'content_object',  # 'content_type', 'object_id'

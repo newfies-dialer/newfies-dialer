@@ -1,41 +1,46 @@
 {% extends "frontend/master.html" %}
 {% load i18n pagination_tags common_tags icons dialer_campaign_tags crispy_forms_tags %}
 
+{% block extra_header %}
+    <link href="{{ STATIC_URL }}/vis/dist/vis.css" rel="stylesheet" type="text/css" />
+    <script src="{{ STATIC_URL }}/vis/dist/vis.js"></script>
+{% endblock %}
+
 {% block content_header %}
-  <h1>{% trans "voice campaign"|title %} <small>{% trans "list, add and edit voice campaigns"|capfirst %}</small></h1>
+    <h1>{% trans "voice campaign"|title %} <small>{% trans "list, add and edit voice campaigns"|capfirst %}</small></h1>
 {% endblock %}
 
 {% block content %}
 <div id="form_collapse" class="collapse">
-  {# search form #}
-  {% crispy form form.helper %}
+    {# search form #}
+    {% crispy form form.helper %}
 </div>
 
 {% include "frontend/common_search_toggle_button.html" %}
 <div>&nbsp;</div>
 <div class="row">
-  <div class="col-md-12">
-    <div class="btn-group">
-      <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
-      {% trans "action"|capfirst %} <span class="caret"></span>
-      </button>
-      <ul class="dropdown-menu" role="menu">
-        {% if perms.dialer_campaign.delete_campaign %}
-          <li>
-            <a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a>
-          </li>
+    <div class="col-md-12">
+        <div class="btn-group">
+            <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+            {% trans "action"|capfirst %} <span class="caret"></span>
+            </button>
+            <ul class="dropdown-menu" role="menu">
+                {% if perms.dialer_campaign.delete_campaign %}
+                    <li>
+                        <a href="#" onclick="delete_button()">{% trans "delete selected"|title %}</a>
+                    </li>
+                {% endif %}
+                <li>
+                    <a href="#" onclick="campaign_stop_button()">{% trans "stop selected"|title %}</a>
+                </li>
+            </ul>
+        </div>
+        {% if perms.dialer_campaign.add_campaign %}
+            <button type="button" class="btn btn-info" onclick="add_button()">
+                <i class="fa fa-plus"></i> {% trans "add"|title %}
+            </button>
         {% endif %}
-        <li>
-          <a href="#" onclick="campaign_stop_button()">{% trans "stop selected"|title %}</a>
-        </li>
-      </ul>
     </div>
-    {% if perms.dialer_campaign.add_campaign %}
-      <button type="button" class="btn btn-info" onclick="add_button()">
-        <i class="fa fa-plus"></i> {% trans "add"|title %}
-      </button>
-    {% endif %}
-  </div>
 </div>
 
 <br/>
@@ -130,4 +135,29 @@
 </script>
 <!-- modal content-->
 <div id="campaign-duplicate" class="modal fade" role="dialog" aria-labelledby="add_duplicate_campaign"></div>
+
+<hr/>
+
+<!-- Timeline-->
+<div id="mytimeline"></div>
+
+  <script type="text/javascript">
+    // DOM element where the Timeline will be attached
+    var container = document.getElementById('mytimeline');
+
+    // Create a DataSet with data (enables two way data binding)
+    var data = new vis.DataSet([
+    {% for row in all_campaign_list %}
+      {id: {{ row.id }}, content: '{{ row.name }}', start: '{{ row.startingdate|date:"Y-m-d H:i:s" }}', end: '{{ row.stoppeddate|date:"Y-m-d H:i:s" }}'},
+    {% endfor %}
+    ]);
+
+    // Configuration for the Timeline
+    var options = {};
+
+    // Create a Timeline
+    var timeline = new vis.Timeline(container, data, options);
+  </script>
+
+
 {% endblock %}

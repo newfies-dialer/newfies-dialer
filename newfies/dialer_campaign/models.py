@@ -189,8 +189,8 @@ class Campaign(Model):
     caller_name = models.CharField(max_length=80, blank=True, verbose_name=_("Caller Name"),
                                    help_text=_("outbound Caller Name"))
     #General Starting & Stopping date
-    startingdate = models.DateTimeField(default=now,
-                                        verbose_name=_('start'))
+    startingdate = models.DateTimeField(default=now, verbose_name=_('start'))
+    stoppeddate = models.DateTimeField(default=set_expirationdate, verbose_name=_('stopped'))
     expirationdate = models.DateTimeField(default=set_expirationdate, verbose_name=_('finish'))
     #Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00', verbose_name=_('daily start time'))

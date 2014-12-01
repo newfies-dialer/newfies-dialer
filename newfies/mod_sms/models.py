@@ -130,6 +130,7 @@ class SMSCampaign(Model):
                                 help_text=_("outbound Caller ID"))
     #General Starting & Stopping date
     startingdate = models.DateTimeField(default=now, verbose_name=_('start'))
+    stoppeddate = models.DateTimeField(default=set_expirationdate, verbose_name=_('stopped'))
     expirationdate = models.DateTimeField(default=set_expirationdate, verbose_name=_('finish'))
 
     #Per Day Starting & Stopping Time

@@ -59,7 +59,7 @@ class SMSCampaignForm(ModelForm):
         #          'daily_start_time', 'daily_stop_time',
         #          'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
         #          'saturday', 'sunday']
-        exclude = ('user', 'status', 'imported_phonebook')
+        exclude = ('user', 'status', 'imported_phonebook', 'stoppeddate')
         widgets = {
             'extra_data': Textarea(attrs={'cols': 23, 'rows': 3}),
             'text_message': Textarea(attrs={'cols': 23, 'rows': 3}),

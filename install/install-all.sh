@@ -22,7 +22,7 @@
 #
 
 #Set branch to install develop / master
-BRANCH='develop'
+BRANCH='master'
 
 SCRIPT_NOTICE="This script is only intended to run on Debian 7.X"
 

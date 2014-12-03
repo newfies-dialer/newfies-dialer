@@ -18,7 +18,7 @@ from apirest.section_template_serializers import SectionTemplateSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from survey.models import Section_template
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class SectionTemplateViewSet(viewsets.ModelViewSet):

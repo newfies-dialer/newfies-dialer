@@ -55,7 +55,7 @@ How to run test
 .. toctree::
     :maxdepth: 2
 
-    ./testcases/api-testcases
-    ./testcases/admin-testcases
-    ./testcases/customer-testcases
+    .. ./testcases/api-testcases
+    .. ./testcases/admin-testcases
+    .. ./testcases/customer-testcases
     ./testcases/model-testcases

@@ -17,7 +17,7 @@ from apirest.contact_serializers import ContactSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from dialer_contact.models import Contact
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class ContactViewSet(viewsets.ModelViewSet):

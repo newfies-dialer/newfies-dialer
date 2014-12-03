@@ -63,6 +63,8 @@ def update_campaign_status_cust(request, pk, status):
     customer interface (via dialer_campaign/campaign list)"""
     obj_campaign = Campaign.objects.get(id=pk)
     obj_campaign.status = status
+    if int(status) != CAMPAIGN_STATUS.START:
+        obj_campaign.stoppeddate = datetime.utcnow().replace(tzinfo=utc)
     obj_campaign.save()
 
     pagination_path = redirect_url_to_campaign_list
@@ -72,23 +74,24 @@ def update_campaign_status_cust(request, pk, status):
     #Check if no phonebook attached
     if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
         request.session['error_msg'] = _('you must assign a phonebook to your campaign before starting it')
-    else:
-        recipient = request.user
-        frontend_send_notification(request, status, recipient)
+        return HttpResponseRedirect(pagination_path)
+    elif int(status) == CAMPAIGN_STATUS.START:
+        request.session['info_msg'] = _('campaign global settings cannot be edited when the campaign is started')
 
-        # Notify user while campaign Start
-        if int(status) == CAMPAIGN_STATUS.START and not obj_campaign.has_been_started:
-            request.session['info_msg'] = _('campaign global settings cannot be edited when the campaign is started')
-            # change has_been_started flag
-            obj_campaign.has_been_started = True
-            obj_campaign.save()
+    # Ensure the content_type become "survey" when campagin starts
+    if int(status) == CAMPAIGN_STATUS.START and not obj_campaign.has_been_started:
+        # change has_been_started flag
+        obj_campaign.has_been_started = True
+        obj_campaign.save()
 
-            if obj_campaign.content_type.model == 'survey_template':
-                # Copy survey
-                survey_template = Survey_template.objects.get(user=request.user, pk=obj_campaign.object_id)
-                survey_template.copy_survey_template(obj_campaign.id)
-            collect_subscriber.delay(obj_campaign.id)
+        if obj_campaign.content_type.model == 'survey_template':
+            # Copy survey
+            survey_template = Survey_template.objects.get(user=request.user, pk=obj_campaign.object_id)
+            survey_template.copy_survey_template(obj_campaign.id)
+        collect_subscriber.delay(obj_campaign.id)
 
+    # Notify user while campaign Start
+    frontend_send_notification(request, status, request.user)
     return HttpResponseRedirect(pagination_path)
 
 
@@ -105,7 +108,7 @@ def notify_admin(request):
             frontend_send_notification(
                 request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
             # Send mail to ADMINS
-            subject = _('dialer setting configuration').title()
+            subject = _('Dialer Setting Configuration')
             message = _('Notification - User Dialer Setting. The user "%(user)s" - "%(user_id)s" is not properly '
                         'configured to use the system, please configure their dialer settings.') % \
                 {'user': request.user, 'user_id': request.user.id}
@@ -246,6 +249,7 @@ def campaign_add(request):
         obj.content_type = contenttype['object_type']
         obj.object_id = contenttype['object_id']
         obj.user = request.user
+        obj.stoppeddate = obj.expirationdate
         obj.save()
         form.save_m2m()
         request.session["msg"] = _('"%(name)s" added.') % {'name': request.POST['name']}
@@ -407,6 +411,7 @@ def campaign_duplicate(request, id):
             campaign_obj.completed = 0
             campaign_obj.startingdate = datetime.utcnow().replace(tzinfo=utc)
             campaign_obj.expirationdate = datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)
+            campaign_obj.stoppeddate = datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)
             campaign_obj.imported_phonebook = ''
             campaign_obj.has_been_started = False
             campaign_obj.has_been_duplicated = True
@@ -579,7 +584,7 @@ def subscriber_export(request):
     """
     format_type = request.GET['format']
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/%s' % format_type)
+    response = HttpResponse(content_type='text/%s' % format_type)
 
     # force download.
     response['Content-Disposition'] = 'attachment;filename=export.%s' % format_type

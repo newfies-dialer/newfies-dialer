@@ -193,7 +193,7 @@ To Add/Update a Campaign for a logged in user
 Dashboard
 ---------
 
-Dashboard gives the information anbout campaign & its related call records
+Dashboard provides a contact and call reporting for the running campaign.
 
 .. image:: ../_static/images/customer/customer_dashboard.png
     :width: 800

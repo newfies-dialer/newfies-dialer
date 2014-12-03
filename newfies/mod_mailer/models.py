@@ -12,12 +12,11 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.db import models
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from mailer import send_html_mail
 #from user_profile.models import User
 from mod_mailer.constants import MAILSPOOLER_TYPE
-from dialer_contact.models import Contact
 
 
 class MailTemplate(models.Model):
@@ -27,7 +26,7 @@ class MailTemplate(models.Model):
     label = models.CharField(max_length=75, verbose_name=_('label'),
                              help_text=_('mail template name'))
     template_key = models.CharField(max_length=30, unique=True, verbose_name=_('template key'),
-                                    help_text=_('unique name used to pick some template for recurring action, such as activation or warning'))
+        help_text=_('unique name used to pick some template for recurring action, such as activation or warning'))
     from_email = models.EmailField(max_length=75, verbose_name=_('from_email'),
                                    help_text=_('sender email'))
     from_name = models.CharField(max_length=75, verbose_name=_('from_name'),

@@ -2,7 +2,7 @@ language: python
 python:
   - "2.7"
 env:
-  - DJANGO=1.6.2
+  - DJANGO=1.7
 services:
   - redis
 install:
@@ -18,7 +18,8 @@ before_script:
   # - "pep8 --exclude=migrations --ignore=E501,E225 newfies"
   # - pyflakes -x W newfies
 script:
-  - python newfies/manage.py test -s -x --with-xtraceback --with-color
+  - py.test newfies/appointment/tests.py --ds=newfies.newfies_dialer.settings_test
+  # - python newfies/manage.py test -s -x --with-xtraceback --with-color
   #- python newfies/manage.py test --settings=settings_travis -s --with-progressive --ignore-files=api_tests.py
 # whitelist
 branches:

@@ -18,7 +18,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from apirest.subscriber_list_serializers import SubscriberListSerializer
 from dialer_campaign.models import Subscriber
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class SubscriberListViewSet(viewsets.ReadOnlyModelViewSet):

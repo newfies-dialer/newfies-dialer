@@ -14,9 +14,10 @@
 from django import forms
 from django.forms import ModelForm
 from django.conf import settings
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.forms import UserCreationForm, AdminPasswordChangeForm, UserChangeForm
-from appointment.models.users import CalendarUserProfile, CalendarUser, CalendarSetting
+from user_profile.models import CalendarUser, CalendarUserProfile
+from calendar_settings.models import CalendarSetting
 from appointment.models.events import Event
 from appointment.models.calendars import Calendar
 from appointment.models.alarms import Alarm
@@ -58,7 +59,7 @@ class CalendarUserCreationForm(UserCreationForm):
         )
         cal_setting_list = []
         setting_list = CalendarSetting.objects.filter(user=manager)
-        cal_setting_list.append(('', _('select calendar setting').title()))
+        cal_setting_list.append(('', _('Select Calendar Setting')))
         for i in setting_list:
             cal_setting_list.append((i.id, i.label))
         self.fields['calendar_setting_id'].choices = cal_setting_list
@@ -69,7 +70,7 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
 
     class Meta:
         model = CalendarUserProfile
-        exclude = ('manager', 'user', )
+        exclude = ('manager', 'user',)
 
     def __init__(self, user, *args, **kwargs):
         super(CalendarUserChangeDetailExtendForm, self).__init__(*args, **kwargs)
@@ -96,7 +97,7 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
             ),
         )
         list_calendar_setting = []
-        list_calendar_setting.append((0, _('select calendar setting').title()))
+        list_calendar_setting.append((0, _('Select Calendar Setting')))
         for l in CalendarSetting.objects.filter(user=user).order_by('id'):
             list_calendar_setting.append((l.id, l.label))
         self.fields['calendar_setting'].choices = list_calendar_setting
@@ -260,7 +261,7 @@ class EventForm(ModelForm):
         self.helper.form_class = 'well'
         css_class = 'col-md-6'
         self.helper.layout = Layout(
-            Fieldset(_('event settings').capitalize()),
+            Fieldset(_('Event Settings')),
             Div(
                 Div('title', css_class=css_class),
                 Div('calendar', css_class=css_class),
@@ -291,10 +292,10 @@ class EventForm(ModelForm):
 class EventSearchForm(forms.Form):
     """Event Search Form"""
     start_date = forms.CharField(
-        label=_('start date').capitalize(), required=False, max_length=20,
+        label=_('Start Date'), required=False, max_length=20,
         widget=DateTimePicker(options={"format": "YYYY-MM-DD HH:mm:ss"}))
-    calendar_id = forms.ChoiceField(label=_('calendar').capitalize(), required=False, choices=[('0', '---')])
-    calendar_user_id = forms.ChoiceField(label=_('calendar user').capitalize(), required=False, choices=[('0', '---')])
+    calendar_id = forms.ChoiceField(label=_('Calendar'), required=False, choices=[('0', '---')])
+    calendar_user_id = forms.ChoiceField(label=_('Calendar User'), required=False, choices=[('0', '---')])
 
     def __init__(self, user, *args, **kwargs):
         super(EventSearchForm, self).__init__(*args, **kwargs)
@@ -337,7 +338,7 @@ class AlarmForm(ModelForm):
         css_class = 'col-md-6'
         self.helper.layout = Layout(
             TabHolder(
-                Tab(_('general settings').title(),
+                Tab(_('General Settings'),
                     Div(
                         Div('date_start_notice', css_class=css_class),
                         Div('event', css_class=css_class),
@@ -352,7 +353,7 @@ class AlarmForm(ModelForm):
                     form_action,
                     css_class='well'
                     ),
-                Tab(_('alarm settings').title(),
+                Tab(_('Alarm Settings'),
                     Div(
                         Div('daily_start', css_class=css_class),
                         Div('daily_stop', css_class=css_class),
@@ -364,7 +365,7 @@ class AlarmForm(ModelForm):
                     form_action,
                     css_class='well'
                     ),
-                Tab(_('result settings').title(),
+                Tab(_('Result Settings'),
                     Div(
                         Div('result', css_class=css_class),
                         Div('url_cancel', css_class=css_class),

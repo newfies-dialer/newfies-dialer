@@ -56,14 +56,14 @@ class CampaignForm(ModelForm):
     Campaign ModelForm
     """
     campaign_code = forms.CharField(widget=forms.HiddenInput)
-    content_object = forms.ChoiceField(label=_("application").capitalize())
+    content_object = forms.ChoiceField(label=_("Application"))
     selected_phonebook = forms.CharField(widget=forms.HiddenInput, required=False)
     selected_content_object = forms.CharField(widget=forms.HiddenInput, required=False)
 
     class Meta:
         model = Campaign
         exclude = ['user', 'status', 'content_type', 'object_id', 'has_been_started', 'has_been_duplicated',
-                   'created_date', 'totalcontact', 'imported_phonebook', 'completed']
+                   'created_date', 'totalcontact', 'imported_phonebook', 'completed', 'stoppeddate']
         # fields = ['campaign_code', 'name',
         #           'callerid', 'caller_name', 'aleg_gateway', 'sms_gateway',
         #           'content_object',  # 'content_type', 'object_id'
@@ -117,9 +117,9 @@ class CampaignForm(ModelForm):
         self.helper.layout = Layout(
             Field('campaign_code'),
             TabHolder(
-                Tab(_('general').title(),
+                Tab(_('General'),
                     Div(
-                        Div(Fieldset(_('general settings').title()), css_class='col-md-12'),
+                        Div(Fieldset(_('General Settings')), css_class='col-md-12'),
                         Div('name', css_class=css_class),
                         Div('callerid', css_class=css_class),
                         Div('caller_name', css_class=css_class),
@@ -138,14 +138,14 @@ class CampaignForm(ModelForm):
                     ),
                 Tab('Dialer',
                     Div(
-                        Div(Fieldset(_('dialer settings').title()), css_class='col-md-12'),
+                        Div(Fieldset(_('Dialer Settings')), css_class='col-md-12'),
                         Div('aleg_gateway', css_class=css_class),
                         Div('frequency', css_class=css_class),
                         Div('callmaxduration', css_class=css_class),
                         Div('maxretry', css_class=css_class),
                         Div('intervalretry', css_class=css_class),
                         Div('calltimeout', css_class=css_class),
-                        Div(Fieldset(_('dialer completion settings').title()), css_class='col-md-12'),
+                        Div(Fieldset(_('Dialer Completion Settings')), css_class='col-md-12'),
                         Div('completion_maxretry', css_class=css_class),
                         Div('completion_intervalretry', css_class=css_class),
                         Div('sms_gateway', css_class=css_class),
@@ -156,8 +156,8 @@ class CampaignForm(ModelForm):
                     ),
                 Tab('schedule',
                     Div(
-                        Div(Fieldset(_('schedule settings').title()), css_class='col-md-12'),
-                        Div(HTML("""<label>%s<label>""" % (_('week days').capitalize())), css_class="col-md-3"),
+                        Div(Fieldset(_('Schedule Settings')), css_class='col-md-12'),
+                        Div(HTML("""<label>%s<label>""" % (_('Week Days'))), css_class="col-md-3"),
                         HTML(week_days_html),
                         HTML("""<div>&nbsp;</div>"""),
                         Div('startingdate', css_class=css_class),
@@ -173,9 +173,9 @@ class CampaignForm(ModelForm):
         )
 
         if settings.AMD:
-            amd_layot = Tab(_('voicemail').capitalize(),
+            amd_layot = Tab(_('Voicemail'),
                             Div(
-                                Div(Fieldset(_('voicemail settings').title()), css_class='col-md-12'),
+                                Div(Fieldset(_('Voicemail Settings')), css_class='col-md-12'),
                                 Div(HTML("""
                                     <div class="btn-group" data-toggle="buttons">
                                         <label for="{{ form.voicemail.auto_id }}">{{ form.voicemail.label }}</label>
@@ -365,7 +365,7 @@ class SubscriberReportForm(SearchForm):
     def __init__(self, *args, **kwargs):
         super(SubscriberReportForm, self).__init__(*args, **kwargs)
         camp_list = []
-        camp_list.append((0, _('all').upper()))
+        camp_list.append((0, _('ALL')))
         campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
         for i in campaign_list:
             camp_list.append((i[0], i[1]))
@@ -385,16 +385,16 @@ class SubscriberAdminForm(ModelForm):
         #self.fields['agent'].choices = agent_list()
 
 subscriber_status_list = []
-subscriber_status_list.append(('all', _('all').upper()))
+subscriber_status_list.append(('all', _('ALL')))
 for i in SUBSCRIBER_STATUS:
     subscriber_status_list.append((i[0], i[1]))
 
 
 class SubscriberSearchForm(SearchForm):
     """Search Form on Subscriber List"""
-    campaign_id = forms.ChoiceField(label=_('campaign').capitalize(), required=True)
+    campaign_id = forms.ChoiceField(label=_('Campaign'), required=True)
     #agent_id = forms.ChoiceField(label=_('agent'), required=True)
-    status = forms.ChoiceField(label=_('status').capitalize(), choices=subscriber_status_list, required=False)
+    status = forms.ChoiceField(label=_('Status'), choices=subscriber_status_list, required=False)
 
     def __init__(self, user, *args, **kwargs):
         self.helper = FormHelper()
@@ -413,7 +413,7 @@ class SubscriberSearchForm(SearchForm):
         super(SubscriberSearchForm, self).__init__(*args, **kwargs)
         if user:
             camp_list = []
-            camp_list.append((0, _('all').upper()))
+            camp_list.append((0, _('ALL')))
             if user.is_superuser:
                 campaign_list = Campaign.objects.values_list('id', 'name').all().order_by('-id')
             else:
@@ -424,7 +424,7 @@ class SubscriberSearchForm(SearchForm):
 
             """
             agent_list = []
-            agent_list.append((0, _('all').upper()))
+            agent_list.append((0, _('ALL')))
             if user.is_superuser:
                 agent_profile_list = AgentProfile.objects.values_list('user_id', flat=True).filter(is_agent=True)
             else:
@@ -440,14 +440,14 @@ class SubscriberSearchForm(SearchForm):
 
 
 campaign_status_list = []
-campaign_status_list.append(('all', _('all').upper()))
+campaign_status_list.append(('all', _('ALL')))
 for i in CAMPAIGN_STATUS:
     campaign_status_list.append((i[0], i[1]))
 
 
 class CampaignSearchForm(forms.Form):
-    phonebook_id = forms.ChoiceField(label=_("phonebook").capitalize(), )
-    status = forms.ChoiceField(label=_("status").capitalize(), choices=campaign_status_list)
+    phonebook_id = forms.ChoiceField(label=_("Phonebook"), )
+    status = forms.ChoiceField(label=_("Status"), choices=campaign_status_list)
 
     def __init__(self, user, *args, **kwargs):
         super(CampaignSearchForm, self).__init__(*args, **kwargs)

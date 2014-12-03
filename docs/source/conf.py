@@ -20,6 +20,8 @@ sys.path.insert(1, os.path.abspath('../../newfies'))
 
 from newfies import newfies_dialer
 os.environ['DJANGO_SETTINGS_MODULE'] = 'newfies_dialer.settings'
+import django
+django.setup()
 
 # If extensions (or modules to document with autodoc) are in another directory,
 # add these directories to sys.path here. If the directory is relative to the
@@ -60,7 +62,7 @@ copyright = u'2011-2014, Arezqui Belaid <info@star2billing.com>'
 # built documents.
 #
 # The short X.Y version.
-version = ".".join(map(str, newfies_dialer.VERSION[0:2]))
+version = ".".join(newfies_dialer.__version__.split('.')[0:2])
 # The full version, including alpha/beta/rc tags.
 release = newfies_dialer.__version__
 

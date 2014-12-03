@@ -56,7 +56,7 @@ def get_sms_campaign_status_url(id, status):
 def create_duplicate_sms_campaign(sms_campaign_id):
     """Create link to make duplicate campaign"""
     link = '<a href="#sms-campaign-duplicate"  url="/sms_campaign/duplicate/%s/" class="sms-campaign-duplicate" data-toggle="modal" data-controls-modal="sms-campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
-           % (sms_campaign_id, _('duplicate this sms campaign').capitalize())
+           % (sms_campaign_id, _('Duplicate this sms campaign'))
     return link
 
 
@@ -64,5 +64,5 @@ def create_duplicate_sms_campaign(sms_campaign_id):
 def get_sms_campaign_textmessage(sms_campaign_id):
     """Create link to get sms campaign's text-message"""
     link = '<a href="#sms-campaign-textmessage"  url="/sms_campaign/text_message/%s/" class="sms-campaign-textmessage" data-toggle="modal" data-controls-modal="sms-campaign-textmessage" title="%s"><i class="fa fa-search"></i></a>' \
-           % (sms_campaign_id, _('get text-message of this sms campaign').capitalize())
+           % (sms_campaign_id, _('Get text-message of this sms campaign'))
     return link

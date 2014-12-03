@@ -18,7 +18,7 @@ from apirest.sms_gateway_serializers import SMSGatewaySerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from sms.models import Gateway as SMSGateway
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class SMSGatewayViewSet(viewsets.ReadOnlyModelViewSet):

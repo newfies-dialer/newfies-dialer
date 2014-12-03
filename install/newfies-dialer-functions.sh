@@ -135,15 +135,6 @@ func_check_dependencies() {
     echo "Checking Python dependencies..."
     echo ""
 
-    #Check South
-    grep_pip=`pip freeze| grep South`
-    if echo $grep_pip | grep -i "South" > /dev/null ; then
-        echo "OK : South installed..."
-    else
-        echo "Error : South not installed..."
-        exit 1
-    fi
-
     #Check Django
     grep_pip=`pip freeze| grep Django`
     if echo $grep_pip | grep -i "Django" > /dev/null ; then
@@ -153,7 +144,7 @@ func_check_dependencies() {
         exit 1
     fi
 
-    #Check celery
+    #Check Celery
     grep_pip=`pip freeze| grep celery`
     if echo $grep_pip | grep -i "celery" > /dev/null ; then
         echo "OK : celery installed..."
@@ -473,7 +464,7 @@ func_install_pip_deps(){
     #For python 2.6 only
     pip install importlib
 
-    echo "Install basic requirements..."
+    echo "Install Basic requirements..."
     for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
     do
         echo "pip install $line"
@@ -484,6 +475,12 @@ func_install_pip_deps(){
     do
         echo "pip install $line"
         pip install $line --allow-all-external --allow-unverified django-admin-tools
+    done
+    echo "Install Test requirements..."
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/test-requirements.txt | grep -v \#)
+    do
+        echo "pip install $line"
+        pip install $line
     done
 
     #Install Python ESL / this needs to be done within the virtualenv
@@ -744,8 +741,11 @@ func_install_frontend(){
     #Install Depedencies
     func_install_dependencies
 
-    #Install Celery & redis-server
-    func_install_redis_server
+    #Install Redis
+    func_install_redis
+
+    #Install RabbitMQ
+    func_install_rabbitmq
 
     #Create and enable virtualenv
     func_setup_virtualenv
@@ -770,6 +770,11 @@ func_install_frontend(){
     python manage.py migrate dnc
     python manage.py migrate dialer_campaign
     python manage.py migrate
+
+    #load default data
+    python manage.py loaddata appointment/fixtures/default_appointment.json
+    python manage.py loaddata dialer_gateway/fixtures/default_dialer_gateway.json
+    python manage.py loaddata dialer_settings/fixtures/default_dialer_settings.json
 
     #Load Countries Dialcode
     #python manage.py load_country_dialcode
@@ -825,7 +830,10 @@ func_install_backend() {
     mkdir -p /var/run/celery
 
     #Install Celery & redis-server
-    func_install_redis_server
+    func_install_redis
+
+    #Install RabbitMQ
+    func_install_rabbitmq
 
     #Memcache installation
     #pip install python-memcached
@@ -873,9 +881,49 @@ func_install_backend() {
     echo ""
 }
 
+#Install & Configure RabbitMQ
+func_install_rabbitmq() {
+    echo "Install RabbitMQ ..."
+    case $DIST in
+        'DEBIAN')
+            chk=`grep "rabbitmq" /etc/apt/sources.list.d/rabbitmq.list|wc -l`
+            if [ $chk -lt 1 ] ; then
+                echo "Setup new sources.list entries for RabbitMQ"
+                echo "deb http://www.rabbitmq.com/debian/ testing main" > /etc/apt/sources.list.d/rabbitmq.list
+                wget --quiet -O - http://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add -
+            fi
+            apt-get update
+            apt-get -y install rabbitmq-server
+            /usr/sbin/rabbitmq-plugins enable rabbitmq_management
+            # echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config
+
+            #Set RabbitMQ to start on boot and start it up immediately:
+            update-rc.d rabbitmq-server defaults
+            /etc/init.d/rabbitmq-server start
+        ;;
+        'CENTOS')
+            #TODO: Not supported
+            echo ""
+            echo "RabbitMQ is not supported on CentOS, fork and patch away please"
+            echo ""
+            exit 1
+        ;;
+    esac
+
+    #Create RabbitMQ vhost and user for Newfies-Dialer
+    rabbitmqctl add_vhost /newfiesdialer
+    rabbitmqctl add_user newfiesdialer mypassword
+    rabbitmqctl set_permissions -p /newfiesdialer newfiesdialer ".*" ".*" ".*"
+
+    #Check Cluster Status
+    rabbitmqctl cluster_status
+    #List the running queues
+    rabbitmqctl list_queues -p /newfiesdialer
+}
+
 
 #Install recent version of redis-server
-func_install_redis_server() {
+func_install_redis() {
     echo "Install Redis-server ..."
     case $DIST in
         'DEBIAN')

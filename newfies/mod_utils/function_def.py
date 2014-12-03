@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as _
 
 
 def tpl_control_icon(icon):
@@ -58,11 +58,12 @@ def get_common_campaign_status_url(id, status, status_link, STATUS_OF_CAMPAIGN):
         control_stop_style = tpl_control_icon('fa-stop')
 
     #return all the html button for campaign status management
-    return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
-        (url_cpg_start, _("start").capitalize(), control_play_style,
-         url_cpg_pause, _("pause").capitalize(), control_pause_style,
-         url_cpg_abort, _("abort").capitalize(), control_abort_style,
-         url_cpg_stop, _("stop").capitalize(), control_stop_style)
+    return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> " \
+        "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
+        (url_cpg_start, _("Start"), control_play_style,
+         url_cpg_pause, _("Pause"), control_pause_style,
+         url_cpg_abort, _("Abort"), control_abort_style,
+         url_cpg_stop, _("Stop"), control_stop_style)
 
 
 def get_common_campaign_status(id, STATUS_OF_CAMPAIGN, STATUS_COLOR):
@@ -72,13 +73,13 @@ def get_common_campaign_status(id, STATUS_OF_CAMPAIGN, STATUS_COLOR):
               get_common_campaign_status(id, SMS_CAMPAIGN_STATUS, SMS_CAMPAIGN_STATUS_COLOR)
     """
     if STATUS_OF_CAMPAIGN.START == id:
-        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("started").capitalize())
+        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("Started"))
     elif STATUS_OF_CAMPAIGN.PAUSE == id:
-        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("paused").capitalize())
+        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("Paused"))
     elif STATUS_OF_CAMPAIGN.ABORT == id:
-        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("aborted").capitalize())
+        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("Aborted"))
     else:
-        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("stopped").capitalize())
+        return '<font color="%s">%s</font>' % (STATUS_COLOR[id], _("Stopped"))
 
 
 def get_status_value(value, STATUS_LIST):

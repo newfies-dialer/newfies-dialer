@@ -58,7 +58,7 @@ CACHES = {
 # timezone as the operating system.
 # If running in a Windows environment this must be set to the same as your
 # system time zone.
-TIME_ZONE = 'America/Chicago'
+TIME_ZONE = 'UTC'
 
 # set use of timezone true or false
 USE_TZ = True
@@ -75,7 +75,7 @@ USE_I18N = True
 
 # If you set this to False, Django will not format dates, numbers and
 # calendars according to the current locale
-USE_L10N = False
+USE_L10N = True
 
 DATETIME_FORMAT = 'Y-m-d H:i:s'
 
@@ -129,6 +129,7 @@ TEMPLATE_LOADERS = (
     'django.template.loaders.eggs.Loader',
 )
 
+
 MIDDLEWARE_CLASSES = (
     #'raven.contrib.django.middleware.SentryResponseErrorIdMiddleware',
     #'raven.contrib.django.middleware.Sentry404CatchMiddleware',
@@ -137,8 +138,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
+    'django.middleware.clickjacking.XFrameOptionsMiddleware',
     #'pagination.middleware.PaginationMiddleware',
     'linaro_django_pagination.middleware.PaginationMiddleware',
     'django_lets_go.filter_persist_middleware.FilterPersistMiddleware',
@@ -163,6 +166,10 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     #needed by Sentry
     "django.core.context_processors.request",
 )
+
+WSGI_APPLICATION = 'newfies_dialer.wsgi.application'
+
+SESSION_ENGINE = 'django.contrib.sessions.backends.cache'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 
@@ -197,12 +204,11 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.sites',
     'django.contrib.staticfiles',
-    # 'django.contrib.markup',
     'django_countries',
     'admin_tools_stats',
     'genericadmin',
     'mailer',
-    'south',
+    # 'south',
     'djcelery',
     'audiofield',
     # Tagging broken with Django 1.7
@@ -230,12 +236,13 @@ INSTALLED_APPS = (
     'survey',
     'dnc',
     'frontend',
+    'maintenance',
     #'agent',
     #'callcenter',
+    'calendar_settings',
     'appointment',
     'mod_mailer',
     'mod_utils',
-    #'raven.contrib.django',
     'frontend_notification',
     'django_nvd3',
     'rest_framework',
@@ -307,15 +314,17 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
 
+#Default Test Runner
+TEST_RUNNER = 'django.test.runner.DiscoverRunner'
+
 # Nose
 # TODO: Re-Enable Nose as it s actually broken
 # try:
 #     import nose
-# except ImportError:
-#     pass
-# else:
 #     INSTALLED_APPS = INSTALLED_APPS + ('django_nose',)
 #     TEST_RUNNER = 'utils.test_runner.MyRunner'
+# except ImportError:
+#     pass
 
 # Dilla
 try:
@@ -405,16 +414,18 @@ CACHES = {
 
 #CELERY SETTINGS
 #===============
-## Broker settings
-BROKER_URL = "redis://localhost:6379/0"
-#BROKER_URL = 'amqp://guest:guest@localhost:5672//'
-REDIS_HOST = 'localhost'
-REDIS_PORT = 6379
-REDIS_DB = 0
-#REDIS_CONNECT_RETRY = True
+# # Broker settings Redis
+# BROKER_URL = "redis://localhost:6379/0"
+# REDIS_HOST = 'localhost'
+# REDIS_PORT = 6379
+# REDIS_DB = 0
+# #REDIS_CONNECT_RETRY = True
+# CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
+BROKER_URL = 'amqp://newfiesdialer:mypassword@localhost:5672//newfiesdialer'
+CELERY_RESULT_BACKEND = "amqp://newfiesdialer:mypassword@localhost:5672//newfiesdialer"
 
 ## Using the database to store task state and results.
-CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 
 #CELERY_REDIS_CONNECT_RETRY = True
@@ -509,17 +520,14 @@ EMAIL_ADMIN = 'newfies_admin@localhost.com'
 # ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'
 
-#TASTYPIE API
-#============
-API_ALLOWED_IP = ['127.0.0.1', 'localhost']
-
 #SENTRY SETTINGS
 #===============
 #SENTRY_DSN = 'http://asdada:asdasd@localhost:9000/1'
 
 #DIALER
 #======
-MAX_CALLS_PER_SECOND = 20  # By default configured to 20 calls per second
+# NOTE: MAX_CALLS_PER_SECOND is no longer implemented
+# MAX_CALLS_PER_SECOND = 20  # By default configured to 20 calls per second
 
 # Number of time the spooling tasks will be run per minute,
 # value like 10 will allow not waiting too long for 1st calls
@@ -652,6 +660,7 @@ BOWER_INSTALLED_APPS = (
     'd3#3.3.6',
     'nvd3#1.1.12-beta',
     'components-font-awesome#4.0.3',
+    'vis#3.7.1',
 )
 
 # South

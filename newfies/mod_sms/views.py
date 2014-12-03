@@ -181,6 +181,7 @@ def sms_campaign_add(request):
     if form.is_valid():
         obj = form.save(commit=False)
         obj.user = User.objects.get(username=request.user)
+        obj.stoppeddate = obj.expirationdate
         obj.save()
         form.save_m2m()
         request.session["msg"] = _('"%(name)s" is added.') % {'name': request.POST['name']}
@@ -302,6 +303,7 @@ def sms_campaign_duplicate(request, id):
             sms_campaign_obj.status = SMS_CAMPAIGN_STATUS.PAUSE
             sms_campaign_obj.startingdate = datetime.utcnow().replace(tzinfo=utc)
             sms_campaign_obj.expirationdate = datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)
+            sms_campaign_obj.stoppeddate = datetime.utcnow().replace(tzinfo=utc) + relativedelta(days=+1)
             sms_campaign_obj.imported_phonebook = ''
             sms_campaign_obj.totalcontact = 0
             sms_campaign_obj.save()
@@ -815,7 +817,7 @@ def export_sms_report(request):
     """
     format_type = request.GET['format']
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/%s' % format_type)
+    response = HttpResponse(content_type='text/%s' % format_type)
 
     # force download.
     response['Content-Disposition'] = 'attachment;filename=sms_export.%s' % format_type

@@ -14,8 +14,7 @@
 
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from appointment.models.users import CalendarSetting, CalendarUser, \
-    CalendarUserProfile
+from user_profile.models import CalendarUser, CalendarUserProfile
 from appointment.models.rules import Rule
 from appointment.models.events import Event, Occurrence
 from appointment.models.alarms import Alarm, AlarmRequest
@@ -43,12 +42,6 @@ class CalendarUserAdmin(UserAdmin):
         calendar_user_list = CalendarUserProfile.objects.values_list('user_id', flat=True).all()
         qs = qs.filter(id__in=calendar_user_list)
         return qs
-
-
-class CalendarSettingAdmin(admin.ModelAdmin):
-    list_display = ('label', 'callerid', 'caller_name', 'call_timeout', 'user', 'survey',
-                    'aleg_gateway', 'sms_gateway', 'voicemail', 'amd_behavior', 'updated_date')
-    ordering = ('-callerid', )
 
 
 class CalendarAdmin(admin.ModelAdmin):
@@ -91,7 +84,6 @@ class AlarmRequestAdmin(admin.ModelAdmin):
 
 admin.site.register(Calendar, CalendarAdmin)
 admin.site.register(CalendarUser, CalendarUserAdmin)
-admin.site.register(CalendarSetting, CalendarSettingAdmin)
 admin.site.register(Rule, RuleAdmin)
 admin.site.register(Event, EventAdmin)
 admin.site.register(Occurrence, OccurrenceAdmin)

@@ -55,7 +55,9 @@ def cust_password_reset_done(request):
             'loginform': LoginForm(),
             'forgotform': ForgotForm(),
         }
-        return password_reset_done(request, template_name='mod_registration/password_reset_done.html', extra_context=data)
+        return password_reset_done(request,
+                                   template_name='mod_registration/password_reset_done.html',
+                                   extra_context=data)
     else:
         return HttpResponseRedirect("/")
 

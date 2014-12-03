@@ -20,13 +20,13 @@ class CALLREQUEST_STATUS(Choice):
     """
     Store the Call Request Status
     """
-    PENDING = 1, _("pending").capitalize()
-    FAILURE = 2, _("failure").capitalize()
-    RETRY = 3, _("retry").capitalize()
-    SUCCESS = 4, _("success").capitalize()
-    ABORT = 5, _("abort").capitalize()
-    PAUSE = 6, _("pause").capitalize()
-    CALLING = 7, _("calling").capitalize()
+    PENDING = 1, _("pending")
+    FAILURE = 2, _("failure")
+    RETRY = 3, _("retry")
+    SUCCESS = 4, _("success")
+    ABORT = 5, _("abort")
+    PAUSE = 6, _("pause")
+    CALLING = 7, _("calling")
 
 
 class CALLREQUEST_TYPE(Choice):
@@ -58,26 +58,25 @@ class CALL_DISPOSITION(Choice):
     FAILED = 'FAILED', _('FAILED')  # Added to catch all
 
 
-class CDR_REPORT_COLUMN_NAME(Choice):
-    """
-    Column Name for the CDR Report
-    """
-    date = _('start date')
-    call_id = _('call ID')
-    leg = _('leg')
-    caller_id = _('caller ID')
-    phone_no = _('phone no')
-    gateway = _('gateway')
-    duration = _('duration')
-    bill_sec = _('bill sec')
-    disposition = _('disposition')
-    amd_status = _('amd status')
+#Column Name for the CDR Report
+CDR_REPORT_COLUMN_NAME = {
+    'date': _('start date'),
+    'call_id': _('call ID'),
+    'leg': _('leg'),
+    'caller_id': _('caller ID'),
+    'phone_no': _('phone no'),
+    'gateway': _('gateway'),
+    'duration': _('duration'),
+    'bill_sec': _('bill sec'),
+    'disposition': _('disposition'),
+    'amd_status': _('amd status')
+}
 
 
 class VOIPCALL_AMD_STATUS(Choice):
     """
     Store the AMD Status
     """
-    PERSON = 1, _("person").capitalize()
-    MACHINE = 2, _("machine").capitalize()
-    UNSURE = 3, _("unsure").capitalize()
+    PERSON = 1, _("PERSON")
+    MACHINE = 2, _("MACHINE")
+    UNSURE = 3, _("UNSURE")

@@ -14,7 +14,7 @@
 from django.contrib import admin
 from django.contrib import messages
 from django.conf.urls import patterns
-from django.utils.translation import ugettext as _
+from django.utils.translation import ugettext_lazy as _
 from django.db.models import Count
 from django.core.urlresolvers import reverse
 from django.http import HttpResponseRedirect
@@ -27,10 +27,7 @@ from dialer_campaign.constants import SUBSCRIBER_STATUS, SUBSCRIBER_STATUS_NAME
 from dialer_campaign.forms import SubscriberReportForm, SubscriberAdminForm
 from genericadmin.admin import GenericAdminModelAdmin
 from django_lets_go.common_functions import ceil_strdate, getvar
-# from django_lets_go.app_label_renamer import AppLabelRenamer
 from datetime import datetime
-APP_LABEL = _('Dialer Campaign')
-# AppLabelRenamer(native_app_label=u'dialer_campaign', app_label=APP_LABEL).main()
 
 
 class CampaignAdmin(GenericAdminModelAdmin):
@@ -40,7 +37,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
     """
     content_type_whitelist = ('survey/survey_template', 'survey/survey',)
     fieldsets = (
-        (_('standard options').capitalize(), {
+        (_('Standard options'), {
             'fields': ('campaign_code', 'name', 'description', 'callerid',
                        'user', 'status', 'startingdate', 'expirationdate',
                        'aleg_gateway', 'sms_gateway', 'content_type',
@@ -48,7 +45,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
                        'amd_behavior', 'voicemail_audiofile'
                        ),
         }),
-        (_('advanced options').capitalize(), {
+        (_('Advanced options'), {
             'classes': ('collapse', ),
             'fields': ('frequency', 'callmaxduration', 'maxretry',
                        'intervalretry', 'calltimeout', 'imported_phonebook',
@@ -203,7 +200,7 @@ class SubscriberAdmin(admin.ModelAdmin):
             'total_completed': total_completed,
             'SUBSCRIBER_STATUS_NAME': SUBSCRIBER_STATUS_NAME,
             'model_name': opts.object_name.lower(),
-            'app_label': APP_LABEL,
+            'app_label': _('Dialer Campaign'),
             'title': _('subscriber report'),
         })
 

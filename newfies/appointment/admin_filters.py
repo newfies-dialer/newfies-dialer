@@ -14,7 +14,7 @@
 from django.contrib.admin import SimpleListFilter
 from django.utils.translation import ugettext as _
 from appointment.function_def import manager_list_of_calendar_user
-from appointment.models.users import CalendarUserProfile
+from user_profile.models import CalendarUserProfile
 
 
 class ManagerFilter(SimpleListFilter):

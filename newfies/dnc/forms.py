@@ -54,8 +54,8 @@ class DNCListForm(SaveUserModelForm):
 
 class DNCContactSearchForm(forms.Form):
     """Search Form on Contact List"""
-    phone_number = forms.IntegerField(label=_('phone number').title(), required=False)
-    dnc = forms.ChoiceField(label=_('Do Not Call list').title(), required=False)
+    phone_number = forms.IntegerField(label=_('Phone Number'), required=False)
+    dnc = forms.ChoiceField(label=_('Do Not Call list'), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(DNCContactSearchForm, self).__init__(*args, **kwargs)
@@ -95,7 +95,6 @@ class DNCContactForm(ModelForm):
                 Div(Fieldset('', 'dnc', 'phone_number', css_class='col-md-6')),
             ),
         )
-        common_submit_buttons(self.helper.layout, 'search')
         if user:
             self.fields['dnc'].choices = DNC.objects.values_list('id', 'name').filter(user=user).order_by('id')
 
@@ -175,7 +174,7 @@ class DNCContact_fileExport(Exportfile):
                         </label>
                         {% endfor %}
                     </div>
-                   """ % _('export to').capitalize()), css_class='col-md-6'),
+                   """ % _('Export to')), css_class='col-md-6'),
                 css_class='row'
             ),
         )

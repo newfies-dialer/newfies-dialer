@@ -11,7 +11,7 @@
 # The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
-from appointment.models.users import CalendarUserProfile, CalendarUser
+from user_profile.models import CalendarUserProfile, CalendarUser
 from appointment.models.calendars import Calendar
 from user_profile.models import Manager
 

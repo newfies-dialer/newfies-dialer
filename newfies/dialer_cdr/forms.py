@@ -23,14 +23,14 @@ from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div
 
 voip_call_disposition_list = []
-voip_call_disposition_list.append(('all', _('all').upper()))
+voip_call_disposition_list.append(('all', _('ALL')))
 for i in CALL_DISPOSITION:
     voip_call_disposition_list.append((i[0], i[1]))
 
 
 def get_leg_type_list():
     leg_type_list = []
-    leg_type_list.append(('', _('all').upper()))
+    leg_type_list.append(('', _('ALL')))
     LEG = dict(LEG_TYPE)
     for i in LEG:
         leg_type_list.append((i, LEG[i].encode('utf-8')))
@@ -41,10 +41,10 @@ class VoipSearchForm(SearchForm):
     """
     VoIP call Report Search Parameters
     """
-    disposition = forms.ChoiceField(label=_('disposition').capitalize(),
+    disposition = forms.ChoiceField(label=_('Disposition'),
                                     choices=voip_call_disposition_list, required=False)
-    campaign_id = forms.ChoiceField(label=_('campaign').capitalize(), required=False)
-    leg_type = forms.ChoiceField(label=_("leg type").capitalize(), choices=list(LEG_TYPE), required=False)
+    campaign_id = forms.ChoiceField(label=_('Campaign'), required=False)
+    leg_type = forms.ChoiceField(label=_("Leg type"), choices=list(LEG_TYPE), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(VoipSearchForm, self).__init__(*args, **kwargs)
@@ -66,7 +66,7 @@ class VoipSearchForm(SearchForm):
         if user:
             self.fields['leg_type'].choices = get_leg_type_list()
             camp_list = []
-            camp_list.append((0, _('all').upper()))
+            camp_list.append((0, _('ALL')))
             content_type_list = ['survey']
 
             if user.is_superuser:
@@ -99,7 +99,7 @@ class AdminVoipSearchForm(AdminSearchForm):
         self.fields['leg_type'].choices = get_leg_type_list()
 
         campaign_list = []
-        campaign_list.append((0, _('all').upper()))
+        campaign_list.append((0, _('ALL')))
         content_type_list = ['survey']
 
         # // , has_been_started=True

@@ -19,6 +19,7 @@ from django_lets_go.language_field import LanguageField
 from django_countries.fields import CountryField
 from dialer_gateway.models import Gateway
 from dialer_settings.models import DialerSetting
+from calendar_settings.models import CalendarSetting
 import uuid
 import hmac
 import hashlib
@@ -96,6 +97,7 @@ class UserProfile(Profile_abstract):
             ("view_api_explorer", _('can see API-Explorer')),
         )
         db_table = 'user_profile'
+        app_label = 'user_profile'
         verbose_name = _("user profile")
         verbose_name_plural = _("user profiles")
 
@@ -120,7 +122,7 @@ class Manager(User):
 
     class Meta:
         proxy = True
-        app_label = 'auth'
+        app_label = 'user_profile'
         verbose_name = _('manager')
         verbose_name_plural = _('managers')
 
@@ -142,7 +144,7 @@ class Staff(User):
 
     class Meta:
         proxy = True
-        app_label = 'auth'
+        app_label = 'user_profile'
         verbose_name = _('admin')
         verbose_name_plural = _('admins')
 
@@ -151,3 +153,57 @@ class Staff(User):
             self.is_staff = 1
             self.is_superuser = 1
         super(Staff, self).save(**kwargs)
+
+
+class CalendarUser(User):
+    """Calendar User Model"""
+
+    class Meta:
+        proxy = True
+        app_label = 'user_profile'
+        verbose_name = _('calendar user')
+        verbose_name_plural = _('calendar users')
+
+    def save(self, **kwargs):
+        if not self.pk:
+            self.is_staff = 0
+            self.is_superuser = 0
+        super(CalendarUser, self).save(**kwargs)
+
+    def is_calendar_user(self):
+        try:
+            CalendarUserProfile.objects.get(user=self)
+            return True
+        except:
+            return False
+    User.add_to_class('is_calendar_user', is_calendar_user)
+
+
+class CalendarUserProfile(Profile_abstract):
+    """This defines extra features for the AR_user
+
+    **Attributes**:
+
+        * ``calendar_setting`` - appointment reminder settings
+
+
+    **Name of DB table**: calendar_user_profile
+    """
+    manager = models.ForeignKey(Manager, verbose_name=_("manager"), help_text=_("select manager"),
+                                related_name="manager_of_calendar_user")
+    calendar_setting = models.ForeignKey(CalendarSetting, verbose_name=_('calendar settings'))
+
+    class Meta:
+        permissions = (
+            ("view_calendar_user", _('can see Calendar User list')),
+        )
+        db_table = 'calendar_user_profile'
+        app_label = 'user_profile'
+        verbose_name = _("calendar user profile")
+        verbose_name_plural = _("calendar user profiles")
+
+    def __unicode__(self):
+        return u"%s" % str(self.user)
+
+# Create calendar user profile object
+CalendarUser.profile = property(lambda u: CalendarUserProfile.objects.get_or_create(user=u)[0])

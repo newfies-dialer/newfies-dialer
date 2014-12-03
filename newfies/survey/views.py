@@ -965,7 +965,7 @@ def export_surveycall_report(request):
     """
     format_type = request.GET['format']
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/%s' % format_type)
+    response = HttpResponse(content_type='text/%s' % format_type)
     # force download.
     response['Content-Disposition'] = 'attachment;filename=export.%s' % format_type
     if request.session.get('session_surveycalls_kwargs'):
@@ -1054,7 +1054,7 @@ def survey_campaign_result(request, id):
 def export_survey(request, id):
     """Export sections and branching of survey into text file"""
     # get the response object, this can be used as a stream.
-    response = HttpResponse(mimetype='text/txt')
+    response = HttpResponse(content_type='text/txt')
     # force download.
     response['Content-Disposition'] = 'attachment;filename=survey.txt'
     # the txt writer

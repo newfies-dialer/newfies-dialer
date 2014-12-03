@@ -18,7 +18,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 from apirest.agent_profile_serializers import AgentProfileSerializer
 from agent.models import AgentProfile
 from user_profile.models import Manager
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class AgentProfileViewSet(viewsets.ModelViewSet):

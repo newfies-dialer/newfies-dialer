@@ -77,7 +77,7 @@ def get_app_name(app_label, model_name, object_id):
 def create_duplicate_campaign(camp_id):
     """Create link to make duplicate campaign"""
     link = '<a href="#campaign-duplicate"  url="/campaign_duplicate/%s/" class="campaign-duplicate" data-toggle="modal" data-controls-modal="campaign-duplicate" title="%s"><i class="fa fa-copy"></i></a>' \
-           % (camp_id, _('duplicate this campaign').capitalize())
+           % (camp_id, _('Duplicate this campaign'))
     return link
 
 
@@ -89,12 +89,12 @@ def _return_link(app_name, obj_id):
     # Object view links
     if app_name == 'survey':
         link = '<a id="id_survey_seal_%s" href="#sealed-survey" url="/module/sealed_survey_view/%s/" title="%s" data-toggle="modal" data-controls-modal="sealed-survey"><i class="fa fa-search"></i></a>' % \
-            (obj_id, obj_id, _('view sealed survey').title())
+            (obj_id, obj_id, _('View Sealed Survey'))
 
     # Object edit links
     if app_name == 'survey_template':
         link = '<a href="/module/survey/%s/" target="_blank" title="%s"><i class="fa fa-search"></i></a>' % \
-            (obj_id, _('edit survey').title())
+            (obj_id, _('Edit Survey'))
 
     return link
 
@@ -105,13 +105,11 @@ def get_campaign_app_view(campaign_object):
     if campaign_object.status and int(campaign_object.status) == CAMPAIGN_STATUS.START:
         if campaign_object.content_type.model == 'survey':
             link = _return_link('survey', campaign_object.object_id)
-
     if campaign_object.status and int(campaign_object.status) != CAMPAIGN_STATUS.START:
         if campaign_object.content_type.model == 'survey_template':
             link = _return_link('survey_template', campaign_object.object_id)
         if campaign_object.content_type.model == 'survey':
             link = _return_link('survey', campaign_object.object_id)
-
     return link
 
 

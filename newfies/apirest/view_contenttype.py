@@ -17,7 +17,7 @@ from apirest.content_type_serializers import ContentTypeSerializer
 from django.contrib.contenttypes.models import ContentType
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class ContentTypeViewSet(viewsets.ReadOnlyModelViewSet):

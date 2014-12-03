@@ -18,7 +18,7 @@ from apirest.mail_template_serializers import MailTemplateSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
 from mod_mailer.models import MailTemplate
-from permissions import CustomObjectPermissions
+from apirest.permissions import CustomObjectPermissions
 
 
 class MailTemplateViewSet(viewsets.ReadOnlyModelViewSet):

@@ -1,52 +1,41 @@
 # -*- coding: utf-8 -*-
-import datetime
-from south.db import db
-from south.v2 import SchemaMigration
-from django.db import models
+from __future__ import unicode_literals
+
+from django.db import models, migrations
 
 
-class Migration(SchemaMigration):
+class Migration(migrations.Migration):
 
-    def forwards(self, orm):
-        # Adding model 'DialerSetting'
-        db.create_table('dialer_setting', (
-            (u'id', self.gf('django.db.models.fields.AutoField')(primary_key=True)),
-            ('name', self.gf('django.db.models.fields.CharField')(max_length=50, null=True)),
-            ('max_frequency', self.gf('django.db.models.fields.IntegerField')(default='100', null=True, blank=True)),
-            ('callmaxduration', self.gf('django.db.models.fields.IntegerField')(default='1800', null=True, blank=True)),
-            ('maxretry', self.gf('django.db.models.fields.IntegerField')(default='3', null=True, blank=True)),
-            ('max_calltimeout', self.gf('django.db.models.fields.IntegerField')(default='45', null=True, blank=True)),
-            ('max_number_campaign', self.gf('django.db.models.fields.IntegerField')(default=100)),
-            ('max_number_subscriber_campaign', self.gf('django.db.models.fields.IntegerField')(default=100000)),
-            ('blacklist', self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True)),
-            ('whitelist', self.gf('django.db.models.fields.TextField')(default='', null=True, blank=True)),
-            ('created_date', self.gf('django.db.models.fields.DateTimeField')(auto_now_add=True, blank=True)),
-            ('updated_date', self.gf('django.db.models.fields.DateTimeField')(auto_now=True, blank=True)),
-        ))
-        db.send_create_signal(u'dialer_settings', ['DialerSetting'])
+    dependencies = [
+    ]
 
-
-    def backwards(self, orm):
-        # Deleting model 'DialerSetting'
-        db.delete_table('dialer_setting')
-
-
-    models = {
-        u'dialer_settings.dialersetting': {
-            'Meta': {'object_name': 'DialerSetting', 'db_table': "'dialer_setting'"},
-            'blacklist': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'}),
-            'callmaxduration': ('django.db.models.fields.IntegerField', [], {'default': "'1800'", 'null': 'True', 'blank': 'True'}),
-            'created_date': ('django.db.models.fields.DateTimeField', [], {'auto_now_add': 'True', 'blank': 'True'}),
-            u'id': ('django.db.models.fields.AutoField', [], {'primary_key': 'True'}),
-            'max_calltimeout': ('django.db.models.fields.IntegerField', [], {'default': "'45'", 'null': 'True', 'blank': 'True'}),
-            'max_frequency': ('django.db.models.fields.IntegerField', [], {'default': "'100'", 'null': 'True', 'blank': 'True'}),
-            'max_number_campaign': ('django.db.models.fields.IntegerField', [], {'default': '100'}),
-            'max_number_subscriber_campaign': ('django.db.models.fields.IntegerField', [], {'default': '100000'}),
-            'maxretry': ('django.db.models.fields.IntegerField', [], {'default': "'3'", 'null': 'True', 'blank': 'True'}),
-            'name': ('django.db.models.fields.CharField', [], {'max_length': '50', 'null': 'True'}),
-            'updated_date': ('django.db.models.fields.DateTimeField', [], {'auto_now': 'True', 'blank': 'True'}),
-            'whitelist': ('django.db.models.fields.TextField', [], {'default': "''", 'null': 'True', 'blank': 'True'})
-        }
-    }
-
-    complete_apps = ['dialer_settings']
+    operations = [
+        migrations.CreateModel(
+            name='DialerSetting',
+            fields=[
+                ('id', models.AutoField(verbose_name='ID', serialize=False, auto_created=True, primary_key=True)),
+                ('name', models.CharField(help_text='settings name', max_length=50, null=True, verbose_name='name')),
+                ('max_frequency', models.IntegerField(default=b'100', help_text='maximum calls per minute', null=True, verbose_name='max frequency', blank=True)),
+                ('callmaxduration', models.IntegerField(default=b'1800', help_text='maximum call duration in seconds (1800 = 30 Minutes)', null=True, verbose_name='max Call Duration', blank=True)),
+                ('maxretry', models.IntegerField(default=b'3', help_text='maximum retries per user.', null=True, verbose_name='max retries', blank=True)),
+                ('max_calltimeout', models.IntegerField(default=b'45', help_text='maximum call timeout in seconds', null=True, verbose_name='timeout on call', blank=True)),
+                ('max_cpg', models.IntegerField(default=100, help_text='maximum number of campaigns', verbose_name='maximum number of campaigns')),
+                ('max_subr_cpg', models.IntegerField(default=100000, help_text='maximum subscribers per campaign. Unlimited if the value equal 0', verbose_name='maximum subscribers per campaign')),
+                ('max_contact', models.IntegerField(default=1000000, help_text='maximum number of contacts per user. Unlimited if the value equal 0', verbose_name='maximum number of contacts')),
+                ('blacklist', models.TextField(default=b'', help_text="use regular expressions to blacklist phone numbers. For example, '^[2-4][1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by 1 being called.", null=True, verbose_name='blacklist', blank=True)),
+                ('whitelist', models.TextField(default=b'', help_text='use regular expressions to whitelist phone numbers', null=True, verbose_name='whitelist', blank=True)),
+                ('sms_max_frequency', models.IntegerField(default=b'100', help_text='Maximum SMS per minute', null=True, verbose_name='Max frequency', blank=True)),
+                ('sms_maxretry', models.IntegerField(default=b'3', help_text='Maximum SMS retries per user.', null=True, verbose_name='Max Retries', blank=True)),
+                ('sms_max_number_campaign', models.IntegerField(default=10, help_text='Maximum number of SMS campaigns', verbose_name='Max SMS campaigns')),
+                ('sms_max_number_subscriber_campaign', models.IntegerField(default=10000, help_text='Maximum subscribers per SMS campaign', verbose_name='Max subscribers of SMS campaigns')),
+                ('created_date', models.DateTimeField(auto_now_add=True)),
+                ('updated_date', models.DateTimeField(auto_now=True)),
+            ],
+            options={
+                'db_table': 'dialer_setting',
+                'verbose_name': 'dialer setting',
+                'verbose_name_plural': 'dialer settings',
+            },
+            bases=(models.Model,),
+        ),
+    ]

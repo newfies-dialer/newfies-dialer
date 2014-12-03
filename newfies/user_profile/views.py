@@ -70,10 +70,9 @@ def customer_detail_change(request):
         if request.POST['form-type'] == "change-detail":
             action = 'tabs-1'
             user_detail_form = UserChangeDetailForm(request.user, request.POST, instance=user_detail)
-            user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST, instance=user_detail_extened)
-
-            if (user_detail_form.is_valid()
-               and user_detail_extened_form.is_valid()):
+            user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST,
+                                                                  instance=user_detail_extened)
+            if user_detail_form.is_valid() and user_detail_extened_form.is_valid():
                 #DEMO / Disable
                 if not settings.DEMO_MODE:
                     user_detail_form.save()
@@ -85,7 +84,7 @@ def customer_detail_change(request):
             action = 'tabs-4'
             check_phone_no_form = CheckPhoneNumberForm(request.POST)
             if check_phone_no_form.is_valid():
-                dialersetting = request.user.get_profile().dialersetting
+                dialersetting = request.user.userprofile.dialersetting
                 if not common_contact_authorization(dialersetting, request.POST['phone_number']):
                     error_number = _('this phone number is not authorized.')
                 else:
@@ -122,4 +121,5 @@ def customer_detail_change(request):
         'dialer_set': dialer_set,
         'action': action,
     }
-    return render_to_response('user_profile/user_detail_change.html', data, context_instance=RequestContext(request))
+    return render_to_response('user_profile/user_detail_change.html',
+                              data, context_instance=RequestContext(request))

@@ -52,7 +52,6 @@ def configure(nose_args):
                 #'raven.contrib.django',
                 'admin_tools_stats',
                 'chart_tools',
-                'south',
                 'tastypie',
                 'audiofield',
                 'tagging',

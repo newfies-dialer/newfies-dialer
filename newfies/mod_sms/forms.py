@@ -26,7 +26,7 @@ from bootstrap3_datetime.widgets import DateTimePicker
 from dialer_campaign.forms import get_phonebook_list,\
     campaign_status_list as sms_campaign_status_list
 
-from mod_utils.forms import SaveUserModelForm, common_submit_buttons
+from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, Field, HTML
 from crispy_forms.bootstrap import TabHolder, Tab
@@ -35,7 +35,7 @@ from crispy_forms.bootstrap import TabHolder, Tab
 def get_smscampaign_list(user=None):
     """get list of smscampaign"""
     camp_list = []
-    camp_list.append((0, _('all').upper()))
+    camp_list.append((0, _('ALL')))
     if user is None:
         pb_list = SMSCampaign.objects.all()
     else:
@@ -59,7 +59,7 @@ class SMSCampaignForm(ModelForm):
         #          'daily_start_time', 'daily_stop_time',
         #          'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
         #          'saturday', 'sunday']
-        exclude = ('user', 'status', 'imported_phonebook')
+        exclude = ('user', 'status', 'imported_phonebook', 'stoppeddate')
         widgets = {
             'extra_data': Textarea(attrs={'cols': 23, 'rows': 3}),
             'text_message': Textarea(attrs={'cols': 23, 'rows': 3}),
@@ -97,7 +97,7 @@ class SMSCampaignForm(ModelForm):
         self.helper.layout = Layout(
             Field('campaign_code'),
             TabHolder(
-                Tab(_('general settings').title(),
+                Tab(_('General Settings'),
                     Div(
                         Div('name', css_class=css_class),
                         Div('callerid', css_class=css_class),
@@ -110,7 +110,7 @@ class SMSCampaignForm(ModelForm):
                     form_action,
                     css_class='well'
                     ),
-                Tab(_('completion settings').title(),
+                Tab(_('Completion Settings'),
                     Div(
                         Div('frequency', css_class=css_class),
                         Div('maxretry', css_class=css_class),
@@ -122,7 +122,7 @@ class SMSCampaignForm(ModelForm):
                     ),
                 Tab('schedule',
                     Div(
-                        Div(HTML("""<label>%s<label>""" % (_('week days').capitalize())), css_class="col-md-3"),
+                        Div(HTML("""<label>%s<label>""" % (_('Week days'))), css_class="col-md-3"),
                         HTML(week_days_html),
                         HTML("""<div>&nbsp;</div>"""),
                         Div('startingdate', css_class=css_class),
@@ -187,7 +187,7 @@ class SMSCampaignAdminForm(ModelForm):
 
 
 message_list = []
-message_list.append(('all', _('all').upper()))
+message_list.append(('all', _('ALL')))
 for i in MESSAGE_STATUSES:
     message_list.append((i[0], i[1]))
 
@@ -207,7 +207,7 @@ class SMSDashboardForm(forms.Form):
             Div(
                 Div('smscampaign', css_class='form-group'),
                 Div('search_type', css_class='form-group'),
-                Div(Submit('submit', _('search').title()), css_class='form-group'),
+                Div(Submit('submit', _('Search')), css_class='form-group'),
             ),
         )
 
@@ -263,8 +263,8 @@ class AdminSMSSearchForm(AdminSearchForm):
 
 
 class SMSCampaignSearchForm(forms.Form):
-    phonebook_id = forms.ChoiceField(label=_("phonebook").capitalize())
-    status = forms.ChoiceField(label=_("status").capitalize(), choices=sms_campaign_status_list)
+    phonebook_id = forms.ChoiceField(label=_("Phonebook"))
+    status = forms.ChoiceField(label=_("Status"), choices=sms_campaign_status_list)
 
     def __init__(self, user, *args, **kwargs):
         super(SMSCampaignSearchForm, self).__init__(*args, **kwargs)

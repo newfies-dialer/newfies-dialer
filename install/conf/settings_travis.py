@@ -17,8 +17,6 @@
 #===============
 from settings import *
 
-SOUTH_TESTS_MIGRATE = False
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -30,6 +28,7 @@ DATABASES = {
 BROKER_BACKEND = "memory"
 CELERY_ALWAYS_EAGER = True
 
+SOUTH_TESTS_MIGRATE = False
 
 #LOGGING
 #=======
@@ -38,5 +37,5 @@ LOGGING = {
     'disable_existing_loggers': True,
 }
 
-INSTALLED_APPS += ('django_nose', )
-TEST_RUNNER = 'django_nose.run_tests'
+# INSTALLED_APPS += ('django_nose', )
+# TEST_RUNNER = 'django_nose.run_tests'

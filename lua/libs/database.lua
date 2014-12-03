@@ -107,7 +107,7 @@ function Database:load_survey_section(survey_id)
     local list = {}
     local low_order = -1
     for i,row in pairs(qresult) do
-        self:db_debugger("DEBUG", string.format("id:%15d  question:%-15s type:%-15s order:%-15s", row.id, row.question, row.type, row.order))
+        self:db_debugger("DEBUG", string.format("id:%15d question:%-15s type:%-15s order:%-15s", row.id, row.question, row.type, row.order))
         if tonumber(row.order) < low_order or low_order < 0 then
             low_order = tonumber(row.order)
             self.start_node = row.id
@@ -253,6 +253,7 @@ function Database:load_all(campaign_id, contact_id, alarm_request_id)
         self:load_survey_branching(self.event_alarm.survey_id)
         self:load_audiofile()
         self:createcontact(self.event_alarm.alarm_phonenumber, self.event_alarm.data)
+        self.survey_id = self.event_alarm.survey_id
         return self.event_alarm.survey_id
     end
 
@@ -278,16 +279,14 @@ function Database:load_all(campaign_id, contact_id, alarm_request_id)
             " != "..content_type_id..") is not supported")
         return false
     end
-    local survey_id = self.campaign_info.object_id
+    self.survey_id = self.campaign_info.object_id
     if self.DG_SURVEY_ID and self.DG_SURVEY_ID > 0 then
-        survey_id = self.DG_SURVEY_ID
+        self.survey_id = self.DG_SURVEY_ID
     end
-    self:load_survey_section(survey_id)
-    self:load_survey_branching(survey_id)
+    self:load_survey_section(self.survey_id)
+    self:load_survey_branching(self.survey_id)
     self:load_audiofile()
-    -- Save to Database survey_id
-    self.survey_id = survey_id
-    return survey_id
+    return self.survey_id
 end
 
 function Database:check_data()

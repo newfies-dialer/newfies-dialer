@@ -24,7 +24,7 @@ from dialer_cdr.models import Callrequest
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
 from dialer_cdr.utils import voipcall_save  # BufferVoIPCall
 
-from appointment.models.users import CalendarUserProfile
+from user_profile.models import CalendarUserProfile
 from appointment.models.alarms import AlarmRequest
 from appointment.constants import ALARMREQUEST_STATUS, ALARM_STATUS
 from sms.models import Message

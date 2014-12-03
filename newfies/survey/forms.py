@@ -45,7 +45,7 @@ def get_section_question_list(survey_id, section_id):
         .objects.values_list('section_id', flat=True)\
         .filter(section_id=section_id)
     list_sq = []
-    list_sq.append(('', _('hangup').capitalize()))
+    list_sq.append(('', _('hangup')))
 
     section_list = Section_template.objects.filter(survey_id=survey_id)\
         .exclude(pk=section_id).exclude(id__in=section_branch_list)
@@ -76,8 +76,8 @@ def get_multi_question_choice_list(section_id):
            and i not in keys_list):
             list_sq.append((i, '%s' % (obj_section.__dict__['key_' + str(i)])))
 
-    list_sq.append(('any', _('any other key').capitalize()))
-    list_sq.append(('invalid', _('invalid').capitalize()))
+    list_sq.append(('any', _('Any other key')))
+    list_sq.append(('invalid', _('Invalid')))
     return list_sq
 
 
@@ -100,8 +100,8 @@ def get_rating_choice_list(section_id):
             if i not in keys_list:
                 list_sq.append((i, '%s' % (str(i))))
 
-    list_sq.append(('any', _('any other key').capitalize()))
-    list_sq.append(('invalid', _('invalid').capitalize()))
+    list_sq.append(('any', _('Any other key')))
+    list_sq.append(('invalid', _('Invalid')))
     return list_sq
 
 
@@ -132,7 +132,7 @@ html_code_of_completed_field = """
                     <div class="make-switch switch-small">
                     {{ form.completed }}
                     </div>
-                    """ % (_('completed').title())
+                    """ % (_('Completed'))
 
 append_html_code_to_audio_field = """<a href="#" id="helpover" rel="popover" data-placement="top" data-content="If an audio file is not selected, the script will be played using Text-To-Speech" data-original-title="information"><i class="fa-info"></i></a>"""
 
@@ -166,7 +166,7 @@ class PlayMessageSectionForm(ModelForm):
 
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['script'].widget = forms.HiddenInput()
-        self.fields['question'].label = _('section title').capitalize()
+        self.fields['question'].label = _('Section title')
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
@@ -368,7 +368,7 @@ class RecordMessageSectionForm(ModelForm):
 
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['script'].widget = forms.HiddenInput()
-        self.fields['question'].label = _('section title').capitalize()
+        self.fields['question'].label = _('Section title')
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
 
 
@@ -404,7 +404,7 @@ class ConferenceSectionForm(ModelForm):
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['script'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].label = _('section title').capitalize()
+        self.fields['question'].label = _('Section title')
 
 
 class CallTransferSectionForm(ModelForm):
@@ -439,7 +439,7 @@ class CallTransferSectionForm(ModelForm):
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['script'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].label = _('section title').capitalize()
+        self.fields['question'].label = _('Section title')
 
 
 class SMSSectionForm(ModelForm):
@@ -476,7 +476,7 @@ class SMSSectionForm(ModelForm):
         self.fields['survey'].widget = forms.HiddenInput()
         self.fields['script'].widget = forms.HiddenInput()
         self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
-        self.fields['question'].label = _('section title').capitalize()
+        self.fields['question'].label = _('Section title')
         if user:
             self.fields['audiofile'].choices = get_audiofile_list(user)
 
@@ -563,7 +563,7 @@ class BranchingForm(ModelForm):
                                     <input type="radio" name="keys_button" id="button-invalid"> %s
                                 </label>
                             </div>
-                            """ % (_('any other key').title(), _('invalid').title())
+                            """ % (_('Any Other Key'), _('Invalid'))
                             ), css_class=css_class),
                         css_class='row'
                     )
@@ -595,7 +595,7 @@ class SurveyReportForm(forms.Form):
         # To get user's campaign list which are attached with survey
         if user:
             camp_list = []
-            camp_list.append((0, _('select campaign').title()))
+            camp_list.append((0, _('Select Campaign')))
 
             if user.is_superuser:
                 campaign_list = Campaign.objects.values_list('id', 'name')\
@@ -611,7 +611,7 @@ class SurveyReportForm(forms.Form):
 
 class SurveyDetailReportForm(SearchForm):
     """Survey Report Form"""
-    survey_id = forms.ChoiceField(label=_('survey').capitalize(), required=False)
+    survey_id = forms.ChoiceField(label=_('Survey'), required=False)
 
     def __init__(self, user, *args, **kwargs):
         super(SurveyDetailReportForm, self).__init__(*args, **kwargs)
@@ -630,11 +630,12 @@ class SurveyDetailReportForm(SearchForm):
 
         if user:
             survey_list = []
-            survey_list.append((0, _('select survey').title()))
+            survey_list.append((0, _('Select Survey')))
             if user.is_superuser:
                 survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name').all().order_by('-id')
             else:
-                survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name').filter(user=user).order_by('-id')
+                survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name')\
+                    .filter(user=user).order_by('-id')
 
             for i in survey_objs:
                 if i[2]:
@@ -647,8 +648,8 @@ class SurveyDetailReportForm(SearchForm):
 
 class SurveyFileImport(forms.Form):
     """General Form : file upload"""
-    name = forms.CharField(label=_('survey name').title(), required=True)
-    survey_file = forms.FileField(label=_("upload file").title(), required=True, help_text=_("browse text file"),
+    name = forms.CharField(label=_('Survey Name'), required=True)
+    survey_file = forms.FileField(label=_("Upload file"), required=True, help_text=_("browse text file"),
                                   error_messages={'required': 'please upload File'})
 
     def __init__(self, *args, **kwargs):

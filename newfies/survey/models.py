@@ -19,22 +19,9 @@ from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest
 from survey.constants import SECTION_TYPE
-from audiofield.models import AudioFile, AudioField
+from audiofield.models import AudioFile
 from django_lets_go.language_field import LanguageField
 from adminsortable.models import Sortable
-from south.modelsinspector import add_introspection_rules
-
-add_introspection_rules([], ["^common\.language_field\.LanguageField"])
-add_introspection_rules([], ["^audiofield\.fields\.AudioField"])
-add_introspection_rules([
-    (
-        [AudioField],  # Class(es) these apply to
-        [],  # Positional arguments (not used)
-        {
-            "ext_whitelist": ["ext_whitelist", {"default": ""}],
-        },  # Keyword argument
-    ),
-], ["^audiofield\.fields\.AudioField"])
 
 
 class Survey_abstract(models.Model):
@@ -239,25 +226,25 @@ class Section_abstract(Sortable):
                                   help_text=_('timeout in seconds'))
     # Multi-choice
     key_0 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("key") + " 0")
+                             verbose_name=_("key 0"))
     key_1 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("key") + " 1")
+                             verbose_name=_("key 1"))
     key_2 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("key") + " 2")
+                             verbose_name=_("key 2"))
     key_3 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("key") + " 3")
+                             verbose_name=_("key 3"))
     key_4 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("key") + " 4")
+                             verbose_name=_("key 4"))
     key_5 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("key") + " 5")
+                             verbose_name=_("key 5"))
     key_6 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("key") + " 6")
+                             verbose_name=_("key 6"))
     key_7 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("key") + " 7")
+                             verbose_name=_("key 7"))
     key_8 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("key") + " 8")
+                             verbose_name=_("key 8"))
     key_9 = models.CharField(max_length=100, null=True, blank=True,
-                             verbose_name=_("key") + " 9")
+                             verbose_name=_("key 9"))
     #Rating question
     rating_laps = models.IntegerField(max_length=1, default=9, null=True, blank=True,
                                       verbose_name=_("from 1 to X"))

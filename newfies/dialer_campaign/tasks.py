@@ -24,6 +24,7 @@ from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from dialer_contact.tasks import collect_subscriber
 from dnc.models import DNCContact
+from survey.models import Survey_template
 from django_lets_go.only_one_task import only_one
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
@@ -90,6 +91,18 @@ class pending_call_processing(Task):
         except:
             logger.error("Can't find this campaign")
             return False
+
+        # Ensure the content_type become "survey" when campagin starts
+        if not obj_campaign.has_been_started:
+            # change has_been_started flag
+            obj_campaign.has_been_started = True
+            obj_campaign.save()
+
+            if obj_campaign.content_type.model == 'survey_template':
+                # Copy survey
+                survey_template = Survey_template.objects.get(user=obj_campaign.user, pk=obj_campaign.object_id)
+                survey_template.copy_survey_template(obj_campaign.id)
+            collect_subscriber.delay(obj_campaign.id)
 
         # TODO : Control the Speed
         # if there is many task pending we should slow down
@@ -214,7 +227,9 @@ class pending_call_processing(Task):
             # new_callrequest_id = 112
             # obj_campaign_id = 3
             # countdown = 1
-            # init_callrequest.apply_async(args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait], countdown=1)
+            # init_callrequest.apply_async(
+            #     args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait],
+            #     countdown=1)
 
         debug_query(7)
         return True

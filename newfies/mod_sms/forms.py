@@ -26,7 +26,7 @@ from bootstrap3_datetime.widgets import DateTimePicker
 from dialer_campaign.forms import get_phonebook_list,\
     campaign_status_list as sms_campaign_status_list
 
-from mod_utils.forms import SaveUserModelForm, common_submit_buttons
+from mod_utils.forms import common_submit_buttons
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Div, Submit, Field, HTML
 from crispy_forms.bootstrap import TabHolder, Tab

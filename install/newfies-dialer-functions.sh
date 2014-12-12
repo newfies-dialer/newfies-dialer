@@ -215,7 +215,8 @@ func_install_dependencies(){
 
             #Install Node.js & NPM
             apt-get -y install nodejs-legacy
-            curl --insecure https://www.npmjs.org/install.sh | bash
+            curl -sL https://deb.nodesource.com/setup | bash -
+            apt-get install -y nodejs
 
             # cd /usr/src/ ; git clone https://github.com/joyent/node.git
             # # 'git tag' shows all available versions: select the latest stable.

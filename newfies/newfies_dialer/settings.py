@@ -531,7 +531,7 @@ NEWFIES_DIALER_ENGINE = 'esl'
 
 # Number of time the spooling tasks will be run per minute,
 # value like 10 will allow not waiting too long for 1st calls
-HEARTBEAT_MIN = 10  # accepted value from 1 to 10
+HEARTBEAT_MIN = 1  # accepted value from 1 to 10
 
 # Delay outbound call of X seconds
 DELAY_OUTBOUND = 0

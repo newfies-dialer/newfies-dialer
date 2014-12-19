@@ -73,7 +73,7 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
             sender=obj_subscriber.sms_campaign.user,
             sender_number=obj_subscriber.sms_campaign.callerid,
             status='Unsent',
-            content_type=ContentType.objects.get(model='smscampaignsubscriber', app_label='sms_module'),
+            content_type=ContentType.objects.get(model='smscampaignsubscriber', app_label='mod_sms'),
             object_id=obj_subscriber.id,
             sms_campaign=obj_sms_campaign,
         )
@@ -433,7 +433,7 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
                             sender=subscriber.sms_campaign.user,
                             sender_number=subscriber.sms_campaign.callerid,
                             status='Unsent',
-                            content_type=ContentType.objects.get(model='smscampaignsubscriber', app_label='sms_module'),
+                            content_type=ContentType.objects.get(model='smscampaignsubscriber', app_label='mod_sms'),
                             object_id=subscriber.id,
                             sms_campaign=sms_campaign,
                         )

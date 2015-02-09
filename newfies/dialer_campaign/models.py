@@ -44,32 +44,40 @@ from dnc.models import DNC
 logger = logging.getLogger('newfies.filelog')
 
 
+def build_kwargs_runnning_campaign():
+    """Return kwargs configured to filter running Campaign"""
+    kwargs = {}
+    kwargs['status'] = CAMPAIGN_STATUS.START
+    tday = datetime.utcnow().replace(tzinfo=utc)
+    kwargs['startingdate__lte'] = datetime(
+        tday.year, tday.month, tday.day, tday.hour,
+        tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
+    kwargs['expirationdate__gte'] = datetime(
+        tday.year, tday.month, tday.day, tday.hour,
+        tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
+
+    # s_time = "%s:%s:%s" % (str(tday.hour), str(tday.minute), str(tday.second))
+    #Fix for timezone
+    today = datetime.now()
+    #or Fix for timezone
+    # today = datetime.utcnow().replace(tzinfo=utc)
+    kwargs['daily_start_time__lte'] = today.strftime('%H:%M:%S')
+    kwargs['daily_stop_time__gte'] = today.strftime('%H:%M:%S')
+
+    # weekday status 1 - YES
+    # self.model._meta.get_field(tday.strftime("%A").lower()).value()
+    kwargs[tday.strftime("%A").lower()] = 1
+    return kwargs
+
+
 class CampaignManager(models.Manager):
     """Campaign Manager"""
 
     def get_running_campaign(self):
         """Return all the active campaigns which will be running based on
         the expiry date, the daily start/stop time and days of the week"""
-        kwargs = {}
-        kwargs['status'] = CAMPAIGN_STATUS.START
-        tday = datetime.utcnow().replace(tzinfo=utc)
-        kwargs['startingdate__lte'] = datetime(
-            tday.year, tday.month, tday.day, tday.hour,
-            tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
-        kwargs['expirationdate__gte'] = datetime(
-            tday.year, tday.month, tday.day, tday.hour,
-            tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
-        # s_time = "%s:%s:%s" % (str(tday.hour), str(tday.minute), str(tday.second))
-        #Fix for timezone
-        today = datetime.now()
-        kwargs['daily_start_time__lte'] = today.strftime('%H:%M:%S')
-        kwargs['daily_stop_time__gte'] = today.strftime('%H:%M:%S')
-
-        # weekday status 1 - YES
-        # self.model._meta.get_field(tday.strftime("%A").lower()).value()
-        kwargs[tday.strftime("%A").lower()] = 1
-
+        kwargs = build_kwargs_runnning_campaign()
         return Campaign.objects.filter(**kwargs)
 
     def get_expired_campaign(self):

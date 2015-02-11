@@ -189,14 +189,14 @@ func_install_luasql() {
 
     #Install LuaSQL
     cd /usr/src/
-    wget https://github.com/keplerproject/luasql/archive/v2.3.0.zip
+    wget --no-check-certificate https://github.com/keplerproject/luasql/archive/v2.3.0.zip
     unzip v2.3.0.zip
     cd luasql-2.3.0/
 
     #Copy a config file adapted for 64bit
     cp config config.orig
     rm config
-    wget https://gist.githubusercontent.com/areski/4b82058ddf84e9d6f1e5/raw/5fae61dd851960b7063b82581b1b4904ba9413df/luasql_config -O config
+    wget --no-check-certificate https://gist.githubusercontent.com/areski/4b82058ddf84e9d6f1e5/raw/5fae61dd851960b7063b82581b1b4904ba9413df/luasql_config -O config
     if [ $KERNELARCH != "x86_64" ]; then
         sed -i "s/64//g" config
     fi

@@ -183,7 +183,7 @@ func_install_dependencies(){
                 echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
                 #Used by PostgreSQL
                 echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
-                wget --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
+                wget --no-check-certificate --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
             fi
             apt-get update
 
@@ -252,7 +252,7 @@ func_install_dependencies(){
             #Install SOX for MP3 support
             SOXVERSION=14.4.1
             rm -rf sox
-            wget http://switch.dl.sourceforge.net/project/sox/sox/$SOXVERSION/sox-$SOXVERSION.tar.gz
+            wget --no-check-certificate http://switch.dl.sourceforge.net/project/sox/sox/$SOXVERSION/sox-$SOXVERSION.tar.gz
             tar zxf sox-$SOXVERSION.tar.gz
             rm -rf sox-$SOXVERSION.tar.gz
             mv sox-$SOXVERSION sox
@@ -287,7 +287,7 @@ func_install_dependencies(){
             yum -y install readline-devel
             LUAVERSION=lua-5.2.3
             rm -rf lua
-            wget http://www.lua.org/ftp/$LUAVERSION.tar.gz
+            wget --no-check-certificate http://www.lua.org/ftp/$LUAVERSION.tar.gz
             tar zxf $LUAVERSION.tar.gz
             rm -rf $LUAVERSION.tar.gz
             mv $LUAVERSION lua
@@ -300,9 +300,9 @@ func_install_dependencies(){
     #Install Luarocks from sources
     cd /usr/src
     rm -rf luarocks
-    # wget http://luarocks.org/releases/luarocks-2.1.2.tar.gz
+    # wget --no-check-certificate http://luarocks.org/releases/luarocks-2.1.2.tar.gz
     #Use Github for sources
-    wget https://github.com/keplerproject/luarocks/archive/v2.1.2.tar.gz -O luarocks-2.1.2.tar.gz
+    wget --no-check-certificate https://github.com/keplerproject/luarocks/archive/v2.1.2.tar.gz -O luarocks-2.1.2.tar.gz
     tar zxf luarocks-*.tar.gz
     rm -rf luarocks-*.tar.gz
     mv luarocks-* luarocks
@@ -353,7 +353,7 @@ func_install_dependencies(){
     #luarocks-5.2 install lua-cmsgpack
     cd /usr/src/
     rm -rf lua-cmsgpack-master master.zip
-    wget https://github.com/antirez/lua-cmsgpack/archive/master.zip
+    wget --no-check-certificate https://github.com/antirez/lua-cmsgpack/archive/master.zip
     unzip master.zip
     cd lua-cmsgpack-master
     luarocks-5.2 make rockspec/lua-cmsgpack-scm-1.rockspec
@@ -361,7 +361,7 @@ func_install_dependencies(){
     #Lua curl
     cd /usr/src/
     rm -rf Lua-cURLv2-master lua-curl.zip
-    wget https://github.com/Lua-cURL/Lua-cURLv2/archive/master.zip -O lua-curl.zip
+    wget --no-check-certificate https://github.com/Lua-cURL/Lua-cURLv2/archive/master.zip -O lua-curl.zip
     unzip lua-curl.zip
     cd Lua-cURLv2-master
     cmake -DUSE_LUA52=ON .
@@ -779,7 +779,7 @@ func_install_frontend(){
 
     #Load Countries Dialcode
     #python manage.py load_country_dialcode
-    wget https://raw.github.com/areski/django-sms-gateway/master/sms/fixtures/example_gateways.json
+    wget --no-check-certificate https://raw.github.com/areski/django-sms-gateway/master/sms/fixtures/example_gateways.json
     python manage.py loaddata example_gateways.json
     rm example_gateways.json
 
@@ -891,7 +891,7 @@ func_install_rabbitmq() {
             if [ $chk -lt 1 ] ; then
                 echo "Setup new sources.list entries for RabbitMQ"
                 echo "deb http://www.rabbitmq.com/debian/ testing main" > /etc/apt/sources.list.d/rabbitmq.list
-                wget --quiet -O - http://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add -
+                wget --no-check-certificate --quiet -O - http://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add -
             fi
             apt-get update
             apt-get -y install rabbitmq-server

@@ -29,7 +29,6 @@ from appointment.models.alarms import AlarmRequest
 from appointment.constants import ALARMREQUEST_STATUS, ALARM_STATUS
 from sms.models import Message
 from sms.tasks import SendMessage
-#from dialer_cdr.function_def import get_prefix_obj
 from dialer_gateway.utils import prepare_phonenumber
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
@@ -78,22 +77,22 @@ def check_retrycall_completion(callrequest):
     in order to achieve completion
     """
 
-    #Check if subscriber is not completed and check if
-    #subscriber.completion_count_attempt < campaign.completion_maxretry
+    # Check if subscriber is not completed and check if
+    # subscriber.completion_count_attempt < campaign.completion_maxretry
     if (callrequest.subscriber.status == SUBSCRIBER_STATUS.COMPLETED
        or callrequest.subscriber.completion_count_attempt >= callrequest.campaign.completion_maxretry
        or not callrequest.campaign.completion_maxretry
        or callrequest.campaign.completion_maxretry == 0):
         logger.debug("Subscriber completed or limit reached!")
     else:
-        #Increment subscriber.completion_count_attempt
+        # Increment subscriber.completion_count_attempt
         if callrequest.subscriber.completion_count_attempt:
             callrequest.subscriber.completion_count_attempt = callrequest.subscriber.completion_count_attempt + 1
         else:
             callrequest.subscriber.completion_count_attempt = 1
         callrequest.subscriber.save()
 
-        #TODO: Add method in models.Callrequest to create copy
+        # TODO: Add method in models.Callrequest to create copy
         # Init new callrequest -> delay at completion_intervalretry
         new_callrequest = Callrequest(
             request_uuid=uuid1(),
@@ -114,7 +113,7 @@ def check_retrycall_completion(callrequest):
             subscriber=callrequest.subscriber
         )
         new_callrequest.save()
-        #NOTE : implement a PID algorithm
+        # NOTE : implement a PID algorithm
         second_towait = callrequest.campaign.completion_intervalretry
         logger.info("Init Completion Retry CallRequest %d in %d seconds" % (new_callrequest.id, second_towait))
         init_callrequest.apply_async(
@@ -124,8 +123,8 @@ def check_retrycall_completion(callrequest):
 
 @task(ignore_result=True)
 def update_callrequest(callrequest, opt_hangup_cause):
-    #Only the aleg will update the subscriber status / Bleg is only recorded
-    #Update Callrequest Status
+    # Only the aleg will update the subscriber status / Bleg is only recorded
+    # Update Callrequest Status
     if opt_hangup_cause == 'NORMAL_CLEARING':
         callrequest.status = CALLREQUEST_STATUS.SUCCESS
         if callrequest.subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
@@ -147,13 +146,13 @@ def process_callevent(record):
         - Retrieve the callrequest using either callrequest_id or request_uuid
         - create the voipcall, and save different data
     """
-    #TODO: add method in utils parse_callevent
+    # TODO: add method in utils parse_callevent
     app_type = 'campaign'
     event_name = record[1]
     body = record[2]
     job_uuid = record[3]
     call_uuid = record[4]
-    #used_gateway_id = record[5]
+    # used_gateway_id = record[5]
     callrequest_id = record[6]
     alarm_request_id = record[7]
     callerid = record[8]
@@ -167,7 +166,7 @@ def process_callevent(record):
     leg = record[18]
 
     if event_name == 'BACKGROUND_JOB':
-        #hangup cause come from body
+        # hangup cause come from body
         hangup_cause = body[5:]
 
     if hangup_cause == '':
@@ -183,7 +182,7 @@ def process_callevent(record):
                 .select_related('aleg_gateway', 'subscriber', 'campaign') \
                 .get(request_uuid=request_uuid.strip(' \t\n\r'))
         else:
-            #mainly coming here
+            # mainly coming here
             callrequest = Callrequest.objects \
                 .select_related('aleg_gateway', 'subscriber', 'campaign') \
                 .get(id=callrequest_id)
@@ -194,19 +193,19 @@ def process_callevent(record):
     if callrequest.alarm_request_id:
         app_type = 'alarm'
         alarm_req = AlarmRequest.objects.get(pk=callrequest.alarm_request_id)
-        #Overwrite alarm_request_id as this is equal to 0 when call fails
+        # Overwrite alarm_request_id as this is equal to 0 when call fails
         alarm_request_id = callrequest.alarm_request_id
 
     logger.debug("Find Callrequest id : %d" % callrequest.id)
     debug_query(23)
 
     if leg == 'aleg' and app_type == 'campaign':
-        #Update callrequest
-        #update_callrequest.delay(callrequest, opt_hangup_cause)
-        #Disabled above tasks to reduce amount of tasks
+        # Update callrequest
+        # update_callrequest.delay(callrequest, opt_hangup_cause)
+        # Disabled above tasks to reduce amount of tasks
 
-        #Only the aleg will update the subscriber status / Bleg is only recorded
-        #Update Callrequest Status
+        # Only the aleg will update the subscriber status / Bleg is only recorded
+        # Update Callrequest Status
         if opt_hangup_cause == 'NORMAL_CLEARING':
             callrequest.status = CALLREQUEST_STATUS.SUCCESS
             if callrequest.subscriber.status != SUBSCRIBER_STATUS.COMPLETED:
@@ -231,18 +230,18 @@ def process_callevent(record):
            amd_status == 'machine' and \
            caluser_profile.calendar_setting.voicemail and \
            caluser_profile.calendar_setting.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY:
-            #Call reached AMD
+            # Call reached AMD
             callrequest.status = CALLREQUEST_STATUS.FAILURE
             alarm_req.status = ALARMREQUEST_STATUS.FAILURE
             alarm_req.alarm.status = ALARM_STATUS.FAILURE
         elif opt_hangup_cause == 'NORMAL_CLEARING':
-            #Call is successful
+            # Call is successful
             callrequest.status = CALLREQUEST_STATUS.SUCCESS
             alarm_req.status = ALARMREQUEST_STATUS.SUCCESS
             alarm_req.duration = duration
             alarm_req.alarm.status = ALARM_STATUS.SUCCESS
         else:
-            #Call failed
+            # Call failed
             callrequest.status = CALLREQUEST_STATUS.FAILURE
             alarm_req.status = ALARMREQUEST_STATUS.FAILURE
             alarm_req.alarm.status = ALARM_STATUS.FAILURE
@@ -259,7 +258,7 @@ def process_callevent(record):
         callerid = callrequest.callerid
     if phonenumber == '':
         phonenumber = callrequest.phone_number
-    #Create those in Bulk - add in a buffer until reach certain number
+    # Create those in Bulk - add in a buffer until reach certain number
     # buff_voipcall.save(
     #     obj_callrequest=callrequest,
     #     request_uuid=request_uuid,
@@ -290,28 +289,28 @@ def process_callevent(record):
         billsec=billsec,
         amd_status=amd_status)
 
-    #If the call failed we will check if we want to make a retry call
-    #Add condition to retry when it s machine and we want to reach a human
+    # If the call failed we will check if we want to make a retry call
+    # Add condition to retry when it s machine and we want to reach a human
     if (app_type == 'campaign' and opt_hangup_cause != 'NORMAL_CLEARING'
         and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
        (app_type == 'campaign' and amd_status == 'machine' and callrequest.campaign.voicemail and
         callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
-        #Update to Retry Done
+        # Update to Retry Done
         callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
         callrequest.save()
 
         debug_query(26)
 
-        #check if we are allowed to retry on failure
+        # check if we are allowed to retry on failure
         if ((callrequest.subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
            or not callrequest.campaign.maxretry):
             logger.error("Not allowed retry - Maxretry (%d)" %
                          callrequest.campaign.maxretry)
-            #Check here if we should try for completion
+            # Check here if we should try for completion
             check_retrycall_completion(callrequest)
             debug_query(28)
         else:
-            #Allowed Retry
+            # Allowed Retry
             logger.error("Allowed Retry - Maxretry (%d)" % callrequest.campaign.maxretry)
 
             # Create new callrequest, Assign parent_callrequest,
@@ -395,8 +394,8 @@ def callevent_processing():
     debug_query(20)
 
     cursor = connection.cursor()
-    #TODO (Areski)
-    #Replace this for ORM with select_for_update or transaction
+    # TODO (Areski)
+    # Replace this for ORM with select_for_update or transaction
 
     try:
         sql_statement = "SELECT id, event_name, body, job_uuid, call_uuid, used_gateway_id, " \
@@ -407,7 +406,7 @@ def callevent_processing():
         cursor.execute(sql_statement)
         row = cursor.fetchall()
     except:
-        #Error on sql / Lua listener might not be on
+        # Error on sql / Lua listener might not be on
         logger.error("Error Fetching call_event")
     else:
         debug_query(21)
@@ -415,7 +414,7 @@ def callevent_processing():
         for record in row:
             call_event_id = record[0]
             event_name = record[1]
-            #Update Call Event
+            # Update Call Event
             sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
             cursor.execute(sql_statement)
 
@@ -436,13 +435,13 @@ class task_pending_callevent(PeriodicTask):
 
         callevent_processing.delay()
     """
-    #The campaign have to run every minutes in order to control the number
+    # The campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
     run_every = timedelta(seconds=15)
 
-    #run_every = timedelta(seconds=15)
+    # run_every = timedelta(seconds=15)
 
-    #TODO: problem of the lock if it's a cloud, it won't be shared
+    # TODO: problem of the lock if it's a cloud, it won't be shared
     @only_one(ikey="task_pending_callevent", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
         logger.debug("ASK :: task_pending_callevent")
@@ -501,9 +500,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     if ms_addtowait > 0:
         sleep(ms_addtowait)
 
-    #Survey Call or Alarm Call
+    # Survey Call or Alarm Call
     if campaign_id:
-        #TODO: use only https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.only
+        # TODO: use only
+        # https://docs.djangoproject.com/en/dev/ref/models/querysets/#django.db.models.query.QuerySet.only
         obj_callrequest = Callrequest.objects\
             .select_related('aleg_gateway', 'user__userprofile', 'subscriber', 'campaign').get(id=callrequest_id)
         subscriber_id = obj_callrequest.subscriber_id
@@ -520,7 +520,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 (obj_callrequest.status, campaign_id, alarm_request_id))
 
     # TODO: move method prepare_phonenumber into the model gateway
-    #obj_callrequest.aleg_gatewayprepare_phonenumber()
+    # Obj_callrequest.aleg_gatewayprepare_phonenumber()
     dialout_phone_number = prepare_phonenumber(
         obj_callrequest.phone_number,
         obj_callrequest.aleg_gateway.addprefix,
@@ -537,10 +537,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     if settings.DIALERDEBUG:
         dialout_phone_number = settings.DIALERDEBUG_PHONENUMBER
 
-    #Retrieve the Gateway for the A-Leg
+    # Retrieve the Gateway for the A-Leg
     gateways = obj_callrequest.aleg_gateway.gateways
     gateway_id = obj_callrequest.aleg_gateway.id
-    #gateway_codecs / gateway_retries
+    # Gateway_codecs / gateway_retries
     gateway_timeouts = obj_callrequest.aleg_gateway.gateway_timeouts
     # fraud protection on short calls
     try:
@@ -553,7 +553,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 
     debug_query(11)
 
-    #Sanitize gateways
+    # Sanitize gateways
     gateways = gateways.strip()
     if gateways[-1] != '/':
         gateways = gateways + '/'
@@ -587,17 +587,17 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             if obj_callrequest.caller_name and len(obj_callrequest.caller_name) > 0:
                 args_list.append("origination_caller_id_name='%s'" % obj_callrequest.caller_name)
 
-            #Add App Vars
+            # Add App Vars
             args_list.append("campaign_id=%s,subscriber_id=%s,alarm_request_id=%s,used_gateway_id=%s,callrequest_id=%s,contact_id=%s" %
                 (campaign_id, subscriber_id, alarm_request_id, gateway_id, obj_callrequest.id, contact_id))
             args_list.append(originate_dial_string)
 
-            #Call Vars
+            # Call Vars
             callvars = "bridge_early_media=true,originate_timeout=%d,newfiesdialer=true,leg_type=1" % \
                 (gateway_timeouts, )
             args_list.append(callvars)
 
-            #Default Test
+            # Default Test
             hangup_on_ring = ''
             send_preanswer = False
             # set hangup_on_ring
@@ -611,7 +611,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                                  (exec_on_media, hangup_on_ring))
                 exec_on_media += 1
 
-            #TODO: look and test http://wiki.freeswitch.org/wiki/Misc._Dialplan_Tools_queue_dtmf
+            # TODO: look and test http://wiki.freeswitch.org/wiki/Misc._Dialplan_Tools_queue_dtmf
             # Send digits
             if send_digits:
                 if send_preanswer:
@@ -625,7 +625,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 time_limit = int(time_limit)
             except ValueError:
                 time_limit = -1
-            #TODO : Fix time_limit - maybe implement this into Lua
+            # TODO : Fix time_limit - maybe implement this into Lua
             # if time_limit > 0:
             #     # create sched_hangup_id
             #     sched_hangup_id = str(uuid1())
@@ -637,8 +637,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             # build originate string
             args_str = ','.join(args_list)
 
-            #DEBUG
-            #settings.ESL_SCRIPT = '&playback(/usr/local/freeswitch/sounds/en/us/callie/voicemail/8000/vm-record_greeting.wav)'
+            # DEBUG
+            # settings.ESL_SCRIPT = '&playback(/usr/local/freeswitch/sounds/en/us/callie/voicemail/8000/vm-record_greeting.wav)'
             if settings.DIALERDEBUG:
                 dial_command = "originate {%s}user/areski '%s'" % (args_str, settings.ESL_SCRIPT)
             else:
@@ -673,18 +673,18 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         logger.error('No other method supported!')
         obj_callrequest.status = CALLREQUEST_STATUS.FAILURE
         obj_callrequest.save()
-        #ADD if alarm_request_id update AlarmRequest
+        # ADD if alarm_request_id update AlarmRequest
         return False
 
-    #Survey Call or Alarm Call
+    # Survey Call or Alarm Call
     if campaign_id:
-        #Update Subscriber
+        # Update Subscriber
         if not obj_callrequest.subscriber.count_attempt:
             obj_callrequest.subscriber.count_attempt = 1
         else:
             obj_callrequest.subscriber.count_attempt = obj_callrequest.subscriber.count_attempt + 1
         obj_callrequest.subscriber.last_attempt = datetime.utcnow().replace(tzinfo=utc)
-        #check if the outbound call failed then update Subscriber
+        # check if the outbound call failed then update Subscriber
         if outbound_failure:
             obj_callrequest.subscriber.status = SUBSCRIBER_STATUS.FAIL
         obj_callrequest.subscriber.save()
@@ -692,9 +692,9 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
         if outbound_failure:
             check_retry_alarm(alarm_request_id)
 
-    #Update CallRequest Object
+    # Update CallRequest Object
     obj_callrequest.request_uuid = request_uuid
-    #check if the outbound call failed
+    # check if the outbound call failed
     if outbound_failure:
         obj_callrequest.status = CALLREQUEST_STATUS.FAILURE
     else:
@@ -736,15 +736,15 @@ def check_retry_alarm(alarm_request_id):
         logger.info('Alarm maxretry Not >= num_attempt')
         obj_alarmreq.update_status(ALARMREQUEST_STATUS.FAILURE)
 
-        #Check phonenumber_sms_failure
+        # Check phonenumber_sms_failure
         if obj_alarmreq.alarm.phonenumber_sms_failure:
             if obj_alarmreq.alarm.event.data and 'sms_failure' in obj_alarmreq.alarm.event.data:
-                #Custom SMS Failure
+                # Custom SMS Failure
                 failure_sms = obj_alarmreq.alarm.event.data['sms_failure']
                 failure_sms = failure_sms.replace('#alarm_phonenumber#', str(obj_alarmreq.alarm.alarm_phonenumber))
                 failure_sms = failure_sms.replace('#num_attempt#', str(obj_alarmreq.alarm.num_attempt))
             else:
-                #Default SMS Failure
+                # Default SMS Failure
                 failure_sms = "we haven't been able to reach '" \
                     + str(obj_alarmreq.alarm.alarm_phonenumber) \
                     + "' after trying " + str(obj_alarmreq.alarm.num_attempt) \

@@ -27,6 +27,7 @@ def set_end():
 
 
 class Event(models.Model):
+
     """
     This model stores meta data for a event
     """
@@ -138,7 +139,7 @@ class Event(models.Model):
         else:
             parent_event = self
 
-        #find the new event end
+        # find the new event end
         event_end = next_occurrence + (self.end - self.start)
 
         new_event = Event.objects.create(
@@ -267,6 +268,7 @@ class Event(models.Model):
 
 
 class Occurrence(models.Model):
+
     """
     Occurence models
 
@@ -288,9 +290,9 @@ class Occurrence(models.Model):
 
     def __init__(self, *args, **kwargs):
         super(Occurrence, self).__init__(*args, **kwargs)
-        #if self.title is None:
+        # if self.title is None:
         #    self.title = self.event.title
-        #if self.description is None:
+        # if self.description is None:
         #    self.description = self.event.description
 
     def moved(self):
@@ -313,7 +315,7 @@ class Occurrence(models.Model):
     def get_absolute_url(self):
         if self.pk is not None:
             return reverse('occurrence', kwargs={'occurrence_id': self.pk,
-                'event_id': self.event.id})
+                                                 'event_id': self.event.id})
         return reverse('occurrence_by_date', kwargs={
             'event_id': self.event.id,
             'year': self.start.year,
@@ -327,7 +329,7 @@ class Occurrence(models.Model):
     def get_cancel_url(self):
         if self.pk is not None:
             return reverse('cancel_occurrence', kwargs={'occurrence_id': self.pk,
-                'event_id': self.event.id})
+                                                        'event_id': self.event.id})
         return reverse('cancel_occurrence_by_date', kwargs={
             'event_id': self.event.id,
             'year': self.start.year,
@@ -341,7 +343,7 @@ class Occurrence(models.Model):
     def get_edit_url(self):
         if self.pk is not None:
             return reverse('edit_occurrence', kwargs={'occurrence_id': self.pk,
-                'event_id': self.event.id})
+                                                      'event_id': self.event.id})
         return reverse('edit_occurrence_by_date', kwargs={
             'event_id': self.event.id,
             'year': self.start.year,

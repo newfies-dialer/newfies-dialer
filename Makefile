@@ -74,4 +74,4 @@ doc_pdf:
 	cd docs && rm -rf build/latex && rm -rf build/doctrees && make latexpdf
 
 autopep8:
-	autopep8 --ignore E501 -r -i *.py
+	autopep8 --ignore E501 -i -r *

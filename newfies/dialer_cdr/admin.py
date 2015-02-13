@@ -39,6 +39,7 @@ APP_LABEL = _('VoIP report')
 
 
 class CallrequestAdmin(GenericAdminModelAdmin):
+
     """
     Allows the administrator to view and modify certain attributes
     of a Callrequest.
@@ -70,6 +71,7 @@ admin.site.register(Callrequest, CallrequestAdmin)
 
 
 class VoIPCallAdmin(admin.ModelAdmin):
+
     """
     Allows the administrator to view and modify certain attributes
     of a VoIPCall.

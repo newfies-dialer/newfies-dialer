@@ -22,6 +22,7 @@ from newfies_dialer.urls import custom_404_view, custom_500_view
 
 
 class FrontendView(BaseAuthenticatedClient):
+
     """Test cases for Newfies-Dialer Admin Interface."""
 
     def test_admin(self):
@@ -35,6 +36,7 @@ class FrontendView(BaseAuthenticatedClient):
 
 
 class FrontendCustomerView(BaseAuthenticatedClient):
+
     """Test cases for Newfies-Dialer Customer Interface."""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
@@ -50,27 +52,27 @@ class FrontendCustomerView(BaseAuthenticatedClient):
     def test_login_view(self):
         """Test Function to check login view"""
         response = self.client.post('/login/',
-                {'user': 'admin',
-                 'password': 'admin'}, follow=True)
+                                    {'user': 'admin',
+                                     'password': 'admin'}, follow=True)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/login/',
-                {'user': 'admin',
-                 'password': 'admin'}, follow=True)
+                                    {'user': 'admin',
+                                     'password': 'admin'}, follow=True)
         request.user = self.user
         request.session = self.client.session
         response = login_view(request)
         self.assertEqual(response.status_code, 302)
 
         request = self.factory.post('/login/',
-                {'user': '', 'password': ''}, follow=True)
+                                    {'user': '', 'password': ''}, follow=True)
         request.user = self.user
         request.session = self.client.session
         response = login_view(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/login/',
-                {'user': 'admin', 'password': 'admin123'}, follow=True)
+                                    {'user': 'admin', 'password': 'admin123'}, follow=True)
         request.user = self.user
         request.session = self.client.session
         response = login_view(request)
@@ -103,8 +105,8 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response, 'frontend/dashboard.html')
 
         request = self.factory.post('/dashboard/',
-                {'campaign': '1',
-                 'search_type': SEARCH_TYPE.A_Last_30_days})
+                                    {'campaign': '1',
+                                     'search_type': SEARCH_TYPE.A_Last_30_days})
 
         request.user = self.user
         request.session = {}
@@ -112,8 +114,8 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/dashboard/',
-                {'campaign': '1',
-                 'search_type': SEARCH_TYPE.B_Last_7_days})
+                                    {'campaign': '1',
+                                     'search_type': SEARCH_TYPE.B_Last_7_days})
 
         request.user = self.user
         request.session = {}
@@ -121,8 +123,8 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/dashboard/',
-                {'campaign': '1',
-                 'search_type': SEARCH_TYPE.C_Yesterday})
+                                    {'campaign': '1',
+                                     'search_type': SEARCH_TYPE.C_Yesterday})
 
         request.user = self.user
         request.session = {}
@@ -130,8 +132,8 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/dashboard/',
-                {'campaign': '1',
-                 'search_type': SEARCH_TYPE.D_Last_24_hours})
+                                    {'campaign': '1',
+                                     'search_type': SEARCH_TYPE.D_Last_24_hours})
 
         request.user = self.user
         request.session = {}
@@ -139,8 +141,8 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/dashboard/',
-                {'campaign': '1',
-                 'search_type': SEARCH_TYPE.E_Last_12_hours})
+                                    {'campaign': '1',
+                                     'search_type': SEARCH_TYPE.E_Last_12_hours})
 
         request.user = self.user
         request.session = {}
@@ -148,8 +150,8 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/dashboard/',
-                {'campaign': '1',
-                 'search_type': SEARCH_TYPE.F_Last_6_hours})
+                                    {'campaign': '1',
+                                     'search_type': SEARCH_TYPE.F_Last_6_hours})
 
         request.user = self.user
         request.session = {}
@@ -157,8 +159,8 @@ class FrontendCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/dashboard/',
-                {'campaign': '1',
-                 'search_type': SEARCH_TYPE.G_Last_hour})
+                                    {'campaign': '1',
+                                     'search_type': SEARCH_TYPE.G_Last_hour})
 
         request.user = self.user
         request.session = {}

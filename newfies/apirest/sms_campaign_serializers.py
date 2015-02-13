@@ -22,6 +22,7 @@ from sms.models import Gateway as SMSGateway
 
 
 class SMSCampaignSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 
@@ -161,7 +162,7 @@ class SMSCampaignSerializer(serializers.HyperlinkedModelSerializer):
 
         if request.method == 'POST':
             name_count = SMSCampaign.objects.filter(name=attrs.get('name'),
-                user=request.user).count()
+                                                    user=request.user).count()
             if name_count != 0:
                 raise serializers.ValidationError("The SMS Campaign name duplicated!")
 
@@ -170,18 +171,18 @@ class SMSCampaignSerializer(serializers.HyperlinkedModelSerializer):
 
         if check_sms_dialer_setting(request, check_for="smscampaign"):
             raise serializers.ValidationError("Too many sms campaigns. Max allowed %s"
-                    % dialer_setting_limit(request, limit_for="smscampaign"))
+                                              % dialer_setting_limit(request, limit_for="smscampaign"))
 
         frequency = attrs.get('frequency')
         if frequency:
             if check_sms_dialer_setting(request, check_for="smsfrequency", field_value=int(frequency)):
                 raise serializers.ValidationError("Frequency limit of %s exceeded."
-                    % dialer_setting_limit(request, limit_for="smsfrequency"))
+                                                  % dialer_setting_limit(request, limit_for="smsfrequency"))
 
         maxretry = attrs.get('maxretry')
         if maxretry:
             if check_sms_dialer_setting(request, check_for="smsretry", field_value=int(maxretry)):
                 raise serializers.ValidationError("Retries limit of %s exceeded."
-                    % dialer_setting_limit(request, limit_for="smsretry"))
+                                                  % dialer_setting_limit(request, limit_for="smsretry"))
 
         return attrs

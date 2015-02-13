@@ -17,6 +17,7 @@ from dialer_settings.models import DialerSetting
 
 
 class DialerSettingModel(TestCase):
+
     """Test DialerSetting model"""
 
     fixtures = ['auth_user.json']

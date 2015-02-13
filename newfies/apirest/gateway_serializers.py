@@ -17,6 +17,7 @@ from dialer_gateway.models import Gateway
 
 
 class GatewaySerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Read**:
 

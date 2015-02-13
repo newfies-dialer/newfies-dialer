@@ -160,7 +160,6 @@ class Migration(SchemaMigration):
         # Adding unique constraint on 'ResultAggregate', fields ['campaign', 'survey', 'section', 'response']
         db.create_unique('survey_resultaggregate', ['campaign_id', 'survey_id', 'section_id', 'response'])
 
-
     def backwards(self, orm):
         # Removing unique constraint on 'ResultAggregate', fields ['campaign', 'survey', 'section', 'response']
         db.delete_unique('survey_resultaggregate', ['campaign_id', 'survey_id', 'section_id', 'response'])
@@ -197,7 +196,6 @@ class Migration(SchemaMigration):
 
         # Deleting model 'ResultAggregate'
         db.delete_table('survey_resultaggregate')
-
 
     models = {
         'audiofield.audiofile': {

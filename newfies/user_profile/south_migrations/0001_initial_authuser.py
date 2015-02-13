@@ -38,14 +38,12 @@ class Migration(SchemaMigration):
         ))
         db.create_unique('user_profile_userprofile_gateway', ['userprofile_id', 'gateway_id'])
 
-
     def backwards(self, orm):
         # Deleting model 'UserProfile'
         db.delete_table('user_profile')
 
         # Removing M2M table for field userprofile_gateway on 'UserProfile'
         db.delete_table('user_profile_userprofile_gateway')
-
 
     models = {
         u'auth.group': {

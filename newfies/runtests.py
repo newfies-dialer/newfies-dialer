@@ -23,9 +23,10 @@ from django.utils.importlib import import_module
 
 PINAX_ROOT = os.path.abspath(os.path.dirname(newfies.__file__))
 
+
 def setup_environ(dunder_file=None, project_path=None, relative_project_path=None, settings_path=None):
     assert not (dunder_file and project_path), ("You must not specify both "
-        "__file__ and project_path")
+                                                "__file__ and project_path")
 
     if dunder_file is not None:
         file_path = os.path.abspath(os.path.dirname(dunder_file))
@@ -81,8 +82,7 @@ if __name__ == '__main__':
     # used down to a minimum.  Otherwise, use the spec plugin
     nose_args = ['-s', '-x',
                  '--with-progressive' if not args else '--with-spec']
-    #configure(nose_args)
-
+    # configure(nose_args)
 
     project_path = os.path.join(PINAX_ROOT, "projects", name)
     setup_environ()

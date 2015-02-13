@@ -67,7 +67,7 @@ def clean_records(older_than_day):
     # print "  - Contact"
     print ""
 
-    #Delete old Campaigns
+    # Delete old Campaigns
     print "Deleting old Campaigns => number to delete: %(count)s" % \
         {'count': Campaign.objects.filter(created_date__lt=old_date).count()}
 
@@ -76,7 +76,7 @@ def clean_records(older_than_day):
         print "Deleting Campaign => : %s" % obj
         obj.delete()
 
-    #Delete old Subscribers
+    # Delete old Subscribers
     print "Deleting old Subscribers => number to delete: %(count)s" % \
         {'count': Subscriber.objects.filter(created_date__lt=old_date).count()}
 
@@ -85,7 +85,7 @@ def clean_records(older_than_day):
         print "Deleting Subscriber => : %s" % obj
         obj.delete()
 
-    #Delete old Callrequests
+    # Delete old Callrequests
     print "Deleting old Callrequests => number to delete: %(count)s" % \
         {'count': Callrequest.objects.filter(created_date__lt=old_date).count()}
 
@@ -94,7 +94,7 @@ def clean_records(older_than_day):
         print "Deleting Callrequest => : %s" % obj
         obj.delete()
 
-    #Delete old VoIPCalls
+    # Delete old VoIPCalls
     print "Deleting old VoIPCalls => number to delete: %(count)s" % \
         {'count': VoIPCall.objects.filter(starting_date__lt=old_date).count()}
 
@@ -103,7 +103,7 @@ def clean_records(older_than_day):
         print "Deleting VoIPCall => : %s" % obj
         obj.delete()
 
-    #Delete old Phonebooks
+    # Delete old Phonebooks
     # print "Deleting old Phonebooks => number to delete: %(count)s" % \
     #     {'count': Phonebook.objects.filter(created_date__lt=old_date).count()}
 
@@ -121,7 +121,7 @@ def clean_records(older_than_day):
     #     print "Deleting Contact => : %s" % obj
     #     obj.delete()
 
-    #Delete old ResultAggregates
+    # Delete old ResultAggregates
     print "Deleting old ResultAggregates => number to delete: %(count)s" % \
         {'count': ResultAggregate.objects.filter(created_date__lt=old_date).count()}
 
@@ -130,7 +130,7 @@ def clean_records(older_than_day):
         print "Deleting ResultAggregate => : %s" % obj
         obj.delete()
 
-    #Delete old Result
+    # Delete old Result
     print "Deleting old Result => number to delete: %(count)s" % \
         {'count': Result.objects.filter(created_date__lt=old_date).count()}
 
@@ -139,7 +139,7 @@ def clean_records(older_than_day):
         print "Deleting Result => : %s" % obj
         obj.delete()
 
-    #Delete old Branchings
+    # Delete old Branchings
     print "Deleting old Branchings => number to delete: %(count)s" % \
         {'count': Branching.objects.filter(created_date__lt=old_date).count()}
 
@@ -148,7 +148,7 @@ def clean_records(older_than_day):
         print "Deleting Branching => : %s" % obj
         obj.delete()
 
-    #Delete old Sections
+    # Delete old Sections
     print "Deleting old Sections => number to delete: %(count)s" % \
         {'count': Section.objects.filter(created_date__lt=old_date).count()}
 
@@ -157,7 +157,7 @@ def clean_records(older_than_day):
         print "Deleting Section => : %s" % obj
         obj.delete()
 
-    #Delete old Surveys
+    # Delete old Surveys
     print "Deleting old Surveys => number to delete: %(count)s" % \
         {'count': Survey.objects.filter(created_date__lt=old_date).count()}
 

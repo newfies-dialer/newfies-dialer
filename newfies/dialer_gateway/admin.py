@@ -28,6 +28,7 @@ admin.site.register(GatewayGroup, GatewayGroupAdmin)
 
 
 class GatewayAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify certain attributes
     of a Gateway."""
 

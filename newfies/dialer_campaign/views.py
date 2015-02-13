@@ -71,7 +71,7 @@ def update_campaign_status_cust(request, pk, status):
     if request.session.get('pagination_path'):
         pagination_path = request.session.get('pagination_path')
 
-    #Check if no phonebook attached
+    # Check if no phonebook attached
     if int(status) == CAMPAIGN_STATUS.START and obj_campaign.phonebook.all().count() == 0:
         request.session['error_msg'] = _('you must assign a phonebook to your campaign before starting it')
         return HttpResponseRedirect(pagination_path)
@@ -163,7 +163,7 @@ def campaign_list(request):
         field_list = ['status', 'phonebook_id']
         unset_session_var(request, field_list)
 
-    #Set search on user as default
+    # Set search on user as default
     kwargs = {'user': request.user}
     if phonebook_id and phonebook_id != '0':
         kwargs['phonebook__id__in'] = [int(phonebook_id)]
@@ -400,7 +400,7 @@ def campaign_duplicate(request, id):
     if request.method == 'POST':
         if form.is_valid():
             original_camp = campaign_obj = Campaign.objects.get(pk=id)
-            #Make duplicate campaign/survey
+            # Make duplicate campaign/survey
             new_survey_id = campaign_obj.object_id
 
             campaign_obj.pk = None
@@ -532,7 +532,7 @@ def subscriber_list(request):
     if campaign_id and campaign_id != '0':
         kwargs['campaign_id'] = campaign_id
 
-    #if agent_id and agent_id != '0':
+    # if agent_id and agent_id != '0':
     #    kwargs['agent_id'] = agent_id
 
     if status and status != 'all':

@@ -26,6 +26,7 @@ from sms.models import Gateway as SMS_Gateway
 
 
 class CampaignSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 
@@ -214,7 +215,7 @@ class CampaignSerializer(serializers.HyperlinkedModelSerializer):
 
         if request.method == 'POST':
             name_count = Campaign.objects.filter(name=attrs.get('name'),
-                user=request.user).count()
+                                                 user=request.user).count()
             if name_count != 0:
                 raise serializers.ValidationError("The Campaign name duplicated!")
 
@@ -223,30 +224,30 @@ class CampaignSerializer(serializers.HyperlinkedModelSerializer):
 
         if check_dialer_setting(request, check_for="campaign"):
             raise serializers.ValidationError("Too many campaigns. Max allowed %s"
-                    % dialer_setting_limit(request, limit_for="campaign"))
+                                              % dialer_setting_limit(request, limit_for="campaign"))
 
         frequency = attrs.get('frequency')
         if frequency:
             if check_dialer_setting(request, check_for="frequency", field_value=int(frequency)):
                 raise serializers.ValidationError("Frequency limit of %s exceeded."
-                    % dialer_setting_limit(request, limit_for="frequency"))
+                                                  % dialer_setting_limit(request, limit_for="frequency"))
 
         callmaxduration = attrs.get('callmaxduration')
         if callmaxduration:
             if check_dialer_setting(request, check_for="duration", field_value=int(callmaxduration)):
                 raise serializers.ValidationError("Duration limit of %s exceeded."
-                    % dialer_setting_limit(request, limit_for="duration"))
+                                                  % dialer_setting_limit(request, limit_for="duration"))
 
         maxretry = attrs.get('maxretry')
         if maxretry:
             if check_dialer_setting(request, check_for="retry", field_value=int(maxretry)):
                 raise serializers.ValidationError("Retries limit of %s exceeded."
-                    % dialer_setting_limit(request, limit_for="retry"))
+                                                  % dialer_setting_limit(request, limit_for="retry"))
 
         calltimeout = attrs.get('calltimeout')
         if calltimeout:
             if check_dialer_setting(request, check_for="timeout", field_value=int(calltimeout)):
                 raise serializers.ValidationError("Timeout limit of %s exceeded."
-                    % dialer_setting_limit(request, limit_for="timeout"))
+                                                  % dialer_setting_limit(request, limit_for="timeout"))
 
         return attrs

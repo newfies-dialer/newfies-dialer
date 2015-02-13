@@ -21,6 +21,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class DNCContactViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows dnc contact to be viewed or edited.
     """

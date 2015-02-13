@@ -340,30 +340,30 @@ def section_change(request, id):
     section = get_object_or_404(Section_template, pk=int(id), survey__user=request.user)
 
     if (section.type == SECTION_TYPE.PLAY_MESSAGE
-       or section.type == SECTION_TYPE.HANGUP_SECTION
-       or section.type == SECTION_TYPE.DNC):
+            or section.type == SECTION_TYPE.HANGUP_SECTION
+            or section.type == SECTION_TYPE.DNC):
         #PLAY_MESSAGE, HANGUP_SECTION & DNC
         form = PlayMessageSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.MULTI_CHOICE:
-        #MULTI_CHOICE
+        # MULTI_CHOICE
         form = MultipleChoiceSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.RATING_SECTION:
-        #RATING_SECTION
+        # RATING_SECTION
         form = RatingSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.CAPTURE_DIGITS:
-        #CAPTURE_DIGITS
+        # CAPTURE_DIGITS
         form = CaptureDigitsSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.RECORD_MSG:
-        #RECORD_MSG
+        # RECORD_MSG
         form = RecordMessageSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.CONFERENCE:
-        #CONFERENCE
+        # CONFERENCE
         form = ConferenceSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.CALL_TRANSFER:
-        #CALL_TRANSFER
+        # CALL_TRANSFER
         form = CallTransferSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.SMS:
-        #SMS
+        # SMS
         form = SMSSectionForm(request.user, request.POST or None, instance=section)
 
     request.session['err_msg'] = ''
@@ -371,8 +371,8 @@ def section_change(request, id):
     if request.method == 'POST' and request.POST.get('type'):
         # Play message or Hangup Section or DNC
         if (int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE or
-           int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION or
-           int(request.POST.get('type')) == SECTION_TYPE.DNC):
+                int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION or
+                int(request.POST.get('type')) == SECTION_TYPE.DNC):
             form_data = section_update_form(
                 request, PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
 
@@ -514,22 +514,22 @@ def section_script_play(request, id):
         script_text = section.script
 
         if settings.TTS_ENGINE == 'ACAPELA':
-            #Acapela
+            # Acapela
             audio_file_path = settings.MEDIA_ROOT + '/' + getaudio_acapela(script_text, 'US')
         else:
-            #Flite
+            # Flite
             script_hexdigest = hashlib.md5(script_text).hexdigest()
             file_path = '%s/tts/flite_%s' % (settings.MEDIA_ROOT, script_hexdigest)
             audio_file_path = file_path + '.wav'
             text_file_path = file_path + '.txt'
 
             if not os.path.isfile(audio_file_path):
-                #Write text to file
+                # Write text to file
                 text_file = open(text_file_path, "w")
                 text_file.write(script_text)
                 text_file.close()
 
-                #Convert file
+                # Convert file
                 conv = 'flite --setf duration_stretch=1.5 -voice awb -f %s -o %s' % (text_file_path, audio_file_path)
                 try:
                     response = subprocess.Popen(conv.split(' '), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -870,7 +870,7 @@ def survey_report(request):
         tday = datetime.utcnow().replace(tzinfo=utc)
         from_date = tday.strftime('%Y-%m-01')
         last_day = ((datetime(tday.year, tday.month, 1, 23, 59, 59, 999999).replace(tzinfo=utc) +
-                    relativedelta(months=1)) -
+                     relativedelta(months=1)) -
                     relativedelta(days=1)).strftime('%d')
         to_date = tday.strftime('%Y-%m-' + last_day)
         start_date = ceil_strdate(from_date, 'start')
@@ -985,11 +985,11 @@ def export_surveycall_report(request):
         result_row = []
         for voipcall in qs:
             result_row_list = []
-            #For each voip call retrieve the results of the survey nodes
+            # For each voip call retrieve the results of the survey nodes
             results = Result.objects.filter(callrequest=voipcall.callrequest_id).order_by('section')
 
             result_list = {}
-            #We will prepare a dictionary result_list to help exporting the result
+            # We will prepare a dictionary result_list to help exporting the result
             for result in results:
                 column = unicode(result.section.question.replace(',', ' '))
                 if result.record_file and len(result.record_file) > 0:
@@ -997,10 +997,10 @@ def export_surveycall_report(request):
                 else:
                     result_list[column.encode('utf-8')] = result.response
 
-            #We will build result_row_list which will be a value for each element from column_list
+            # We will build result_row_list which will be a value for each element from column_list
             for ikey in column_list:
                 if ikey in column_list_base:
-                    #This is not a Section result
+                    # This is not a Section result
                     if ikey == 'starting_date' \
                        and format_type == Export_choice.JSON \
                        or format_type == Export_choice.XLS:
@@ -1009,11 +1009,11 @@ def export_surveycall_report(request):
                     else:
                         result_row_list.append(voipcall.__dict__[ikey])
                 else:
-                    #This is a Section result
+                    # This is a Section result
                     if ikey in result_list:
                         result_row_list.append(result_list[ikey].encode('utf-8'))
                     else:
-                        #Add empty result
+                        # Add empty result
                         result_row_list.append("")
 
             result_row.append(result_row_list)
@@ -1138,7 +1138,7 @@ def import_survey(request):
                 if not row or str(row[0]) == 0:
                     continue
 
-                #if length of row is 28, it's a section
+                # if length of row is 28, it's a section
                 if len(row) == 28:
                     try:
                         # for section
@@ -1177,7 +1177,7 @@ def import_survey(request):
                     except:
                         type_error_import_list.append(row)
 
-                #if length of row is 3, it's a branching
+                # if length of row is 3, it's a branching
                 if len(row) == 3:
                     new_section_id = ''
                     new_goto_section_id = ''

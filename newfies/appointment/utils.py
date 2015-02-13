@@ -5,6 +5,7 @@ from appointment.conf.settings import CHECK_PERMISSION_FUNC
 
 
 class OccurrenceReplacer(object):
+
     """
     When getting a list of occurrences, the last thing that needs to be done
     before passing it forward is to make sure all of the occurrences that
@@ -14,7 +15,7 @@ class OccurrenceReplacer(object):
 
     def __init__(self, persisted_occurrences):
         lookup = [((occ.event, occ.original_start, occ.original_end), occ) for
-            occ in persisted_occurrences]
+                  occ in persisted_occurrences]
         self.lookup = dict(lookup)
 
     def get_occurrence(self, occ):

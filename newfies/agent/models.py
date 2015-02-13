@@ -22,8 +22,9 @@ from .constants import AGENT_STATUS, AGENT_TYPE
 from rest_framework.authtoken.models import Token
 
 
-#Profile_abstract is OneToOneField(User) with additionals fields as city, states...
+# Profile_abstract is OneToOneField(User) with additionals fields as city, states...
 class AgentProfile(Profile_abstract):
+
     """This defines extra features for the user
 
     **Attributes**:
@@ -82,6 +83,7 @@ class AgentProfile(Profile_abstract):
 
 
 class Agent(User):
+
     """Agent Model
 
     Agents are user that have access to the Agent interface.
@@ -157,6 +159,6 @@ Agent.api_key = property(lambda u: Token.objects.get_or_create(user=u)[0].key)
 
 
 #@receiver(post_save, sender=User)
-#def create_auth_token(sender, instance=None, created=False, **kwargs):
+# def create_auth_token(sender, instance=None, created=False, **kwargs):
 #    if created:
 #        Token.objects.create(user=instance)

@@ -216,7 +216,7 @@ def customer_dashboard(request, on_index=None):
             elif i['disposition'] == CALL_DISPOSITION.CONGESTION or i['disposition'] == 'NORMAL_CIRCUIT_CONGESTION':
                 total_congestion += i['starting_date__count']
             else:
-                #VOIP CALL FAILED
+                # VOIP CALL FAILED
                 total_failed += i['starting_date__count']
 
         # following calls list is without disposition & group by call date
@@ -279,14 +279,14 @@ def customer_dashboard(request, on_index=None):
                         'call_count': call['starting_date__count'],
                         'duration_sum': call['duration__sum'],
                         'duration_avg': float(call['duration__avg']),
-                    }
+                }
 
                 calls_dict_with_min[int(ctime.strftime("%Y%m%d%H%M"))] =\
                     {
                         'call_count': call['starting_date__count'],
                         'duration_sum': call['duration__sum'],
                         'duration_avg': float(call['duration__avg']),
-                    }
+                }
             else:
                 # Last 30 days option
                 calls_dict[int(ctime.strftime("%Y%m%d"))] =\
@@ -294,7 +294,7 @@ def customer_dashboard(request, on_index=None):
                         'call_count': call['starting_date__count'],
                         'duration_sum': call['duration__sum'],
                         'duration_avg': float(call['duration__avg']),
-                    }
+                }
 
         logging.debug('After Call Loops')
 

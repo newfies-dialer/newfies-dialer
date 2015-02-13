@@ -17,6 +17,7 @@ from survey.models import Section_template
 
 
 class SectionTemplateSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

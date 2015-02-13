@@ -20,6 +20,7 @@ from survey.models import Survey
 
 
 class AlarmSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

@@ -13,14 +13,12 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True),
                       keep_default=False)
 
-
         # Changing field 'Section.type'
         db.alter_column(u'survey_section', 'type', self.gf('django.db.models.fields.IntegerField')(max_length=20))
         # Adding field 'Section_template.sms_text'
         db.add_column(u'survey_section_template', 'sms_text',
                       self.gf('django.db.models.fields.CharField')(max_length=200, null=True, blank=True),
                       keep_default=False)
-
 
         # Changing field 'Section_template.type'
         db.alter_column(u'survey_section_template', 'type', self.gf('django.db.models.fields.IntegerField')(max_length=20))
@@ -29,12 +27,10 @@ class Migration(SchemaMigration):
         # Deleting field 'Section.sms_text'
         db.delete_column(u'survey_section', 'sms_text')
 
-
         # Changing field 'Section.type'
         db.alter_column(u'survey_section', 'type', self.gf('django.db.models.fields.IntegerField')(max_length=20, null=True))
         # Deleting field 'Section_template.sms_text'
         db.delete_column(u'survey_section_template', 'sms_text')
-
 
         # Changing field 'Section_template.type'
         db.alter_column(u'survey_section_template', 'type', self.gf('django.db.models.fields.IntegerField')(max_length=20, null=True))

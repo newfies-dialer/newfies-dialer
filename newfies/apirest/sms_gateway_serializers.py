@@ -18,6 +18,7 @@ from sms.models import Gateway as SMSGateway
 
 
 class SMSGatewaySerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

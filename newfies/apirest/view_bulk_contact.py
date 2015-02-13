@@ -20,6 +20,7 @@ from dialer_campaign.function_def import dialer_setting_limit, check_dialer_sett
 
 
 class BulkContactViewSet(APIView):
+
     """
     **Create**:
 

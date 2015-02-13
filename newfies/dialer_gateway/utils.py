@@ -23,11 +23,11 @@ def prepare_phonenumber(phone_number, addprefix, removeprefix, gw_status):
         return False
 
     if gw_status != GATEWAY_STATUS.ACTIVE:
-        #Gateway not Active
+        # Gateway not Active
         return False
 
     if (len(removeprefix) > 0
-       and phone_number.startswith(removeprefix)):
+            and phone_number.startswith(removeprefix)):
         phone_number = phone_number[len(removeprefix):]
 
     phone_number = addprefix + phone_number

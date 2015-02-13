@@ -18,6 +18,7 @@ from mod_sms.models import SMSTemplate
 
 
 class SMSTemplateSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Read**:
 

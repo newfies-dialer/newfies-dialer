@@ -31,6 +31,7 @@ from datetime import datetime
 
 
 class CampaignAdmin(GenericAdminModelAdmin):
+
     """
     Allows the administrator to view and modify certain attributes
     of a Campaign.
@@ -64,7 +65,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
                     'completed', 'subscriber_detail', 'progress_bar')
 
     list_display_links = ('id', 'name', )
-    #list_filter doesn't display correctly too many elements in list_display
+    # list_filter doesn't display correctly too many elements in list_display
     #list_filter = ['user', 'status', 'created_date']
     ordering = ('-id', )
     filter_horizontal = ('phonebook', )
@@ -72,9 +73,9 @@ class CampaignAdmin(GenericAdminModelAdmin):
     def get_urls(self):
         urls = super(CampaignAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^$', self.admin_site.admin_view(self.changelist_view)),
-            (r'^add/$', self.admin_site.admin_view(self.add_view)),
-        )
+                           (r'^$', self.admin_site.admin_view(self.changelist_view)),
+                           (r'^add/$', self.admin_site.admin_view(self.add_view)),
+                           )
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
@@ -101,6 +102,7 @@ admin.site.register(Campaign, CampaignAdmin)
 
 
 class SubscriberAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify certain attributes
     of a Subscriber."""
     form = SubscriberAdminForm
@@ -114,8 +116,8 @@ class SubscriberAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(SubscriberAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^subscriber_report/$', self.admin_site.admin_view(self.subscriber_report)),
-        )
+                           (r'^subscriber_report/$', self.admin_site.admin_view(self.subscriber_report)),
+                           )
         return my_urls + urls
 
     def subscriber_report(self, request):
@@ -183,7 +185,7 @@ class SubscriberAdmin(admin.ModelAdmin):
                 elif i['status'] == SUBSCRIBER_STATUS.NOT_AUTHORIZED:
                     total_not_auth += i['updated_date__count']
                 else:
-                    #status COMPLETED
+                    # status COMPLETED
                     total_completed += i['updated_date__count']
 
         ctx = RequestContext(request, {

@@ -18,14 +18,12 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.CharField')(max_length=50, null=True, blank=True),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting field 'Section.conference'
         db.delete_column('survey_section', 'conference')
 
         # Deleting field 'Section_template.conference'
         db.delete_column('survey_section_template', 'conference')
-
 
     models = {
         'audiofield.audiofile': {

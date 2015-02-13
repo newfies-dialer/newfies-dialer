@@ -21,6 +21,7 @@ from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class AgentProfileAdminView(BaseAuthenticatedClient):
+
     """Test Function to check UserProfile Admin pages"""
 
     def test_admin_agent_view_list(self):
@@ -35,6 +36,7 @@ class AgentProfileAdminView(BaseAuthenticatedClient):
 
 
 class AgentProfileCustomerView(BaseAuthenticatedClient):
+
     """Test Function to check UserProfile Customer pages"""
 
     fixtures = ['auth_user.json', 'notification.json', 'agent.json', 'agent_profile.json']

@@ -22,6 +22,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class AgentProfileViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows agent profile user to be viewed or edited.
     """

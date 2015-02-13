@@ -21,6 +21,7 @@ from crispy_forms.layout import Layout, Div, Fieldset, HTML
 
 
 class QueueForm(ModelForm):
+
     """QueueForm is used to change manager list"""
 
     class Meta:
@@ -32,6 +33,7 @@ class QueueForm(ModelForm):
 
 
 class QueueFrontEndForm(ModelForm):
+
     """Queue ModelForm"""
 
     class Meta:
@@ -83,6 +85,7 @@ class QueueFrontEndForm(ModelForm):
 
 
 class TierForm(ModelForm):
+
     """TierForm is used to change"""
 
     class Meta:
@@ -94,6 +97,7 @@ class TierForm(ModelForm):
 
 
 class TierFrontEndForm(ModelForm):
+
     """Tier ModelForm"""
 
     class Meta:

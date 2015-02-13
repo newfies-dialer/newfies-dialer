@@ -22,6 +22,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class SurveyTemplateViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows content_type to be viewed or edited.
     """

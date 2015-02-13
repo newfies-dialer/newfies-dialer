@@ -20,6 +20,7 @@ from audiofield.models import AudioFile
 
 
 class CalendarSettingSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

@@ -503,8 +503,8 @@ def sms_dashboard(request, on_index=None):
             inttime = int(date.strftime("%Y%m%d"))
             # last 7 days | yesterday | last 24 hrs
             if (int(search_type) == SEARCH_TYPE.B_Last_7_days
-               or int(search_type) == SEARCH_TYPE.C_Yesterday
-               or int(search_type) == SEARCH_TYPE.D_Last_24_hours):
+                    or int(search_type) == SEARCH_TYPE.C_Yesterday
+                    or int(search_type) == SEARCH_TYPE.D_Last_24_hours):
 
                 for option in range(0, 24):
                     day_time = int(str(inttime) + str(option).zfill(2))
@@ -522,8 +522,8 @@ def sms_dashboard(request, on_index=None):
 
             # last 12 hrs | last 6 hrs | last 1 hrs
             elif (int(search_type) == SEARCH_TYPE.E_Last_12_hours
-                 or int(search_type) == SEARCH_TYPE.F_Last_6_hours
-                 or int(search_type) == SEARCH_TYPE.G_Last_hour):
+                  or int(search_type) == SEARCH_TYPE.F_Last_6_hours
+                  or int(search_type) == SEARCH_TYPE.G_Last_hour):
 
                 for hour in range(0, 24):
                     for minute in range(0, 60):

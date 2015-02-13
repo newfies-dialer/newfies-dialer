@@ -17,6 +17,7 @@ from dnc.models import DNC, DNCContact
 
 
 class DNCAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify certain attributes
     of a Gateway."""
     list_display = ('id', 'name', 'user', 'dnc_contacts_count')
@@ -28,6 +29,7 @@ admin.site.register(DNC, DNCAdmin)
 
 
 class DNCContactAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify certain attributes
     of a Gateway."""
     list_display = ('id', 'dnc', 'phone_number')

@@ -95,11 +95,11 @@ def create_contact_subscriber(campaign, phonebook_id, agent_id):
     try:
         print "created contact=>%s (%d)" % (str(new_contact), new_contact.id)
 
-        #When contact is created a subscriber is created automatically
+        # When contact is created a subscriber is created automatically
 
-        #Get Subscriber
+        # Get Subscriber
         subscriber = Subscriber.objects.get(contact=new_contact, campaign_id=campaign.id)
-        #Simulate the process of them being called and moved to the queue of the agent
+        # Simulate the process of them being called and moved to the queue of the agent
 
         subscriber.status = SUBSCRIBER_STATUS.SENT
         subscriber.save()
@@ -112,13 +112,13 @@ def create_contact_subscriber(campaign, phonebook_id, agent_id):
         # Create Callrequest
 
         new_callrequest = create_callrequest(phonenumber, campaign, subscriber)
-        #print "new_callrequest: " + str(new_callrequest)
+        # print "new_callrequest: " + str(new_callrequest)
 
         # when a subscriber is routed to an agent
         # an instance is created in the CallAgent table
 
-        #The agent name to test the simulator1 is 'agent'
-        #Other scenario will implement several agent
+        # The agent name to test the simulator1 is 'agent'
+        # Other scenario will implement several agent
 
         call_agent = CallAgent.objects.create(
             callrequest=new_callrequest,
@@ -169,11 +169,11 @@ class Command(BaseCommand):
             scenario = 1
 
         # delete previous contacts & subscriber
-        #Contact.objects.filter(phonebook_id=phonebook_id).delete()
-        #Subscriber.objects.filter(campaign=campaign).delete()
+        # Contact.objects.filter(phonebook_id=phonebook_id).delete()
+        # Subscriber.objects.filter(campaign=campaign).delete()
         #delay_list = [20, 10, 20]
         agent_id = Agent.objects.get(username='agent').id
-        #print "agent => %s" % str(agent)
+        # print "agent => %s" % str(agent)
 
         if scenario == 1:
             # Implement scenario 1
@@ -188,7 +188,7 @@ class Command(BaseCommand):
 def scenario_1(campaign, phonebook_id, agent_id):
     # Implementation scenario 1
     # Delete previous CallAgent data which are belong to agent_id
-    #CallAgent.objects.filter(agent__user_id=agent_id).delete()
+    # CallAgent.objects.filter(agent__user_id=agent_id).delete()
     CallAgent.objects.all().delete()
 
     time2wrapup = 3
@@ -228,7 +228,7 @@ def scenario_1(campaign, phonebook_id, agent_id):
 def scenario_2(campaign, phonebook_id, agent_id):
     # Implementation scenario 2
     # Delete previous CallAgent data which are belong to agent_id
-    #CallAgent.objects.filter(agent__user_id=agent_id).delete()
+    # CallAgent.objects.filter(agent__user_id=agent_id).delete()
     CallAgent.objects.all().delete()
 
     time2wrapup = 5
@@ -255,8 +255,8 @@ def scenario_2(campaign, phonebook_id, agent_id):
     time.sleep(time2wrapup)
 
     call_agent = CallAgent.objects.get(pk=data['call_agent_id'])
-    #print "delay : %s sec" % str(time2sleep)
-    #time.sleep(time2sleep)
+    # print "delay : %s sec" % str(time2sleep)
+    # time.sleep(time2sleep)
     call_agent.delete()
 
     # Step 3 (for the first 20 seconds : 0-20 secs)

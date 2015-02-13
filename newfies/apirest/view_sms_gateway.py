@@ -22,6 +22,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class SMSGatewayViewSet(viewsets.ReadOnlyModelViewSet):
+
     """
     API endpoint that allows gateway to be viewed or edited.
     """

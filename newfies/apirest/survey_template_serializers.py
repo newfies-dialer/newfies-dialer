@@ -18,6 +18,7 @@ from survey.models import Survey_template
 
 
 class SurveyTemplateSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

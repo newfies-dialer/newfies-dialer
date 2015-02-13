@@ -21,6 +21,7 @@ from rest_framework.authentication import BasicAuthentication, SessionAuthentica
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):
+
     """
     API endpoint that allows users to be viewed or edited.
     """

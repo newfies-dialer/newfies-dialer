@@ -23,15 +23,18 @@ from crispy_forms.bootstrap import FormActions
 
 
 class HorizRadioRenderer(forms.RadioSelect.renderer):
+
     """This overrides widget method to put radio buttons horizontally
     instead of vertically.
     """
+
     def render(self):
         """Outputs radios"""
         return mark_safe(u'\n'.join([u'%s\n' % w for w in self]))
 
 
 class Exportfile(forms.Form):
+
     """
     Abstract Form : export file in various format e.g. XLS, CSV, JSON
     """
@@ -41,6 +44,7 @@ class Exportfile(forms.Form):
 
 
 class SaveUserModelForm(ModelForm):
+
     """SaveUserModelForm ModelForm"""
 
     def save(self, *args, **kwargs):

@@ -50,6 +50,7 @@ class HistoryDashboardModule(modules.LinkList):
 
 
 class CustomIndexDashboard(Dashboard):
+
     """Custom index dashboard"""
 
     def init_with_context(self, context):
@@ -153,7 +154,7 @@ class CustomIndexDashboard(Dashboard):
         #"""
         # site_name = get_admin_site_name(context)
 
-        #Quick link seems to broke the admin design if too many element
+        # Quick link seems to broke the admin design if too many element
         self.children.append(modules.LinkList(
             _('Quick links'),
             layout='inline',
@@ -197,6 +198,7 @@ class CustomIndexDashboard(Dashboard):
 
 
 class CustomAppIndexDashboard(AppIndexDashboard):
+
     """Custom app index dashboard for admin."""
 
     # we disable title because its redundant with the model list module
@@ -205,7 +207,7 @@ class CustomAppIndexDashboard(AppIndexDashboard):
     def __init__(self, *args, **kwargs):
         AppIndexDashboard.__init__(self, *args, **kwargs)
 
-        #TODO: Find out better way
+        # TODO: Find out better way
         if str(self.app_title) == 'Dialer_Settings':
             app_title = _('Dialer Settings')
             models = ['dialer_settings.*']

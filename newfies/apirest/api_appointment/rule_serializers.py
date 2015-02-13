@@ -17,6 +17,7 @@ from appointment.models.rules import Rule
 
 
 class RuleSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

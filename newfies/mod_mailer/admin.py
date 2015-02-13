@@ -24,7 +24,7 @@ class MailTemplateAdmin(admin.ModelAdmin):
 admin.site.register(MailTemplate, MailTemplateAdmin)
 
 
-#MailSpooler
+# MailSpooler
 class MailSpoolerAdmin(admin.ModelAdmin):
     list_display = ('id', 'mailtemplate', 'contact_email', 'mailspooler_type', 'created_date')
     list_display_links = ['id', 'mailtemplate']

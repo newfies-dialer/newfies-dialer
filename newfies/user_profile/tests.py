@@ -24,6 +24,7 @@ from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class UserProfileAdminView(BaseAuthenticatedClient):
+
     """Test Function to check UserProfile Admin pages"""
 
     def test_admin_manager_view_list(self):
@@ -48,6 +49,7 @@ class UserProfileAdminView(BaseAuthenticatedClient):
 
 
 class UserProfileCustomerView(BaseAuthenticatedClient):
+
     """Test Function to check UserProfile Customer pages"""
 
     fixtures = ['auth_user.json', 'user_profile.json', 'gateway.json',
@@ -89,6 +91,7 @@ class UserProfileCustomerView(BaseAuthenticatedClient):
 
 
 class UserProfileModel(TestCase):
+
     """Test UserProfile Model"""
     fixtures = ['auth_user.json', 'user_profile.json', 'gateway.json',
                 'dialer_setting.json']

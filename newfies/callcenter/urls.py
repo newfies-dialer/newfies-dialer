@@ -15,12 +15,12 @@ from django.conf.urls import patterns
 
 
 urlpatterns = patterns('callcenter.views',
-    (r'^module/queue/$', 'queue_list'),
-    (r'^module/queue/add/$', 'queue_add'),
-    (r'^module/queue/del/(.+)/$', 'queue_del'),
-    (r'^module/queue/(.+)/$', 'queue_change'),
-    (r'^module/tier/$', 'tier_list'),
-    (r'^module/tier/add/$', 'tier_add'),
-    (r'^module/tier/del/(.+)/$', 'tier_del'),
-    (r'^module/tier/(.+)/$', 'tier_change'),
-)
+                       (r'^module/queue/$', 'queue_list'),
+                       (r'^module/queue/add/$', 'queue_add'),
+                       (r'^module/queue/del/(.+)/$', 'queue_del'),
+                       (r'^module/queue/(.+)/$', 'queue_change'),
+                       (r'^module/tier/$', 'tier_list'),
+                       (r'^module/tier/add/$', 'tier_add'),
+                       (r'^module/tier/del/(.+)/$', 'tier_del'),
+                       (r'^module/tier/(.+)/$', 'tier_change'),
+                       )

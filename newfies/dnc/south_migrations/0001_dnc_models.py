@@ -28,14 +28,12 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'dnc', ['DNCContact'])
 
-
     def backwards(self, orm):
         # Deleting model 'DNC'
         db.delete_table('dnc_list')
 
         # Deleting model 'DNCContact'
         db.delete_table('dnc_contact')
-
 
     models = {
         u'auth.group': {

@@ -19,8 +19,9 @@ from dialer_campaign.models import Subscriber
 HIDDEN_PASSWORD_STRING = '<hidden>'
 
 
-#From https://groups.google.com/forum/#!msg/django-rest-framework/abMsDCYbBRg/d2orqUUdTqsJ
+# From https://groups.google.com/forum/#!msg/django-rest-framework/abMsDCYbBRg/d2orqUUdTqsJ
 class PasswordField(serializers.CharField):
+
     """Special field to update a password field."""
     widget = forms.widgets.PasswordInput
 
@@ -81,6 +82,7 @@ class AgentPasswordSerializer(serializers.HyperlinkedModelSerializer):
 
 
 class AgentSubscriberSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Read**:
 

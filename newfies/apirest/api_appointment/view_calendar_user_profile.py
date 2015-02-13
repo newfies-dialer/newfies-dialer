@@ -27,6 +27,7 @@ import ast
 
 
 class CalendarUserProfileViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows calendar user profile to be viewed or edited.
     """

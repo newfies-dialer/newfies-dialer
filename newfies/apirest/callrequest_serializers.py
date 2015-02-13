@@ -18,6 +18,7 @@ from dialer_cdr.models import Callrequest
 
 
 class CallrequestSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

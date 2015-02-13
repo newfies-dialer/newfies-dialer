@@ -39,6 +39,7 @@ logger = get_task_logger(__name__)
 
 
 class event_dispatcher(PeriodicTask):
+
     """A periodic task that checks for scheduled Event and perform number of
     tasks for the Event and create the occurence of the next future Event.
 
@@ -82,6 +83,7 @@ class event_dispatcher(PeriodicTask):
 
 
 class alarm_dispatcher(PeriodicTask):
+
     """A periodic task that checks for scheduled Alarm and trigger the Alarm according
     to the alarm type, such as phone Call, SMS or Email.
 
@@ -125,7 +127,7 @@ class alarm_dispatcher(PeriodicTask):
                         args=[obj_alarm.event, obj_alarm], countdown=second_towait)
             else:
                 logger.error("There is no Event attached to this Alarm: %d" % obj_alarm.id)
-                ## Mark the Alarm as ERROR
+                # Mark the Alarm as ERROR
                 obj_alarm.status = ALARM_STATUS.FAILURE
                 obj_alarm.save()
 
@@ -165,6 +167,7 @@ def perform_alarm(obj_event, obj_alarm):
 
 
 class alarmrequest_dispatcher(PeriodicTask):
+
     """A periodic task that checks for scheduled AlarmRequest and create CallRequests.
 
     For each AlarmRequest found, the PeriodicTask alarmrequest_dispatcher will ::

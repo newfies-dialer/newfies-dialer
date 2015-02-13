@@ -23,6 +23,7 @@ from crispy_forms.layout import Layout, Div, Fieldset
 
 
 class UserPasswordChangeForm(PasswordChangeForm):
+
     def __init__(self, *args, **kwargs):
         super(UserPasswordChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -34,6 +35,7 @@ class UserPasswordChangeForm(PasswordChangeForm):
 
 
 class UserChangeDetailForm(ModelForm):
+
     """A form used to change the detail of a user in the Customer UI."""
     email = forms.CharField(label=_('Email address'), required=True)
 
@@ -61,11 +63,12 @@ class UserChangeDetailForm(ModelForm):
 
 
 class UserChangeDetailExtendForm(ModelForm):
+
     """A form used to change the detail of a user in the Customer UI."""
     class Meta:
         model = UserProfile
         fields = ["address", "city", "state", "country", "zip_code", "phone_no",
-                 "fax", "company_name", "company_website", "language", "note"]
+                  "fax", "company_name", "company_website", "language", "note"]
 
     def __init__(self, user, *args, **kwargs):
         super(UserChangeDetailExtendForm, self).__init__(*args, **kwargs)
@@ -91,9 +94,10 @@ class UserChangeDetailExtendForm(ModelForm):
 
 
 class CheckPhoneNumberForm(forms.Form):
+
     """A form used to check the phone number in the Customer UI."""
     phone_number = forms.CharField(label=_('Verify phone number'), required=True,
-        help_text=_("verify if a phone number is authorized to call"))
+                                   help_text=_("verify if a phone number is authorized to call"))
 
     def __init__(self, *args, **kwargs):
         super(CheckPhoneNumberForm, self).__init__(*args, **kwargs)

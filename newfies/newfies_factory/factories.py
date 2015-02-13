@@ -11,28 +11,27 @@ from survey.models import Survey_template, Survey
 from dialer_campaign.constants import AMD_BEHAVIOR
 from sms.models import Gateway as SMSGateway
 
-
-    # label = models.CharField(max_length=80, blank=False, verbose_name=_("label"))
-    # callerid = models.CharField(max_length=80, verbose_name=_("Caller ID Number"),
-    #                             help_text=_("outbound Caller ID"))
-    # caller_name = models.CharField(max_length=80, blank=True, verbose_name=_("caller name"),
-    #                                help_text=_("outbound caller-Name"))
-    # call_timeout = models.IntegerField(default='60', null=False, blank=False, verbose_name=_('call timeout'),
-    #                                    help_text=_("call timeout"))
-    # user = models.ForeignKey(User, blank=False, null=False, verbose_name=_("manager"),
-    #                          help_text=_("select manager"), related_name="manager_user")
-    # survey = models.ForeignKey(Survey, null=False, blank=False, verbose_name=_('sealed survey'),
-    #                            related_name="calendar_survey")
-    # aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False, verbose_name=_("a-leg gateway"),
-    #                                  help_text=_("select gateway to use"))
-    # sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"), null=False, blank=False,
-    #                                 related_name="sms_gateway", help_text=_("select SMS gateway"))
-    # #Voicemail Detection
-    # voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
-    # amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR), default=AMD_BEHAVIOR.ALWAYS,
-    #                                    verbose_name=_("detection behaviour"), blank=True, null=True)
-    # voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
-    #                                         verbose_name=_("voicemail audio file"))
+# label = models.CharField(max_length=80, blank=False, verbose_name=_("label"))
+# callerid = models.CharField(max_length=80, verbose_name=_("Caller ID Number"),
+#                             help_text=_("outbound Caller ID"))
+# caller_name = models.CharField(max_length=80, blank=True, verbose_name=_("caller name"),
+#                                help_text=_("outbound caller-Name"))
+# call_timeout = models.IntegerField(default='60', null=False, blank=False, verbose_name=_('call timeout'),
+#                                    help_text=_("call timeout"))
+# user = models.ForeignKey(User, blank=False, null=False, verbose_name=_("manager"),
+#                          help_text=_("select manager"), related_name="manager_user")
+# survey = models.ForeignKey(Survey, null=False, blank=False, verbose_name=_('sealed survey'),
+#                            related_name="calendar_survey")
+# aleg_gateway = models.ForeignKey(Gateway, null=False, blank=False, verbose_name=_("a-leg gateway"),
+#                                  help_text=_("select gateway to use"))
+# sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"), null=False, blank=False,
+#                                 related_name="sms_gateway", help_text=_("select SMS gateway"))
+# #Voicemail Detection
+# voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
+# amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR), default=AMD_BEHAVIOR.ALWAYS,
+#                                    verbose_name=_("detection behaviour"), blank=True, null=True)
+# voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
+#                                         verbose_name=_("voicemail audio file"))
 
 
 def _get_perm(perm_name):
@@ -52,6 +51,7 @@ def _get_perm(perm_name):
 
 
 class SMSGatewayFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = SMSGateway
     name = factory.Sequence(lambda n: 'name{0}'.format(n))
@@ -60,6 +60,7 @@ class SMSGatewayFactory(factory.django.DjangoModelFactory):
 
 
 class GatewayFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = Gateway
     name = factory.Sequence(lambda n: 'name{0}'.format(n))
@@ -67,12 +68,14 @@ class GatewayFactory(factory.django.DjangoModelFactory):
 
 
 class DialerSettingFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = DialerSetting
     name = factory.Sequence(lambda n: 'name{0}'.format(n))
 
 
 class UserProfileFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = UserProfile
 
@@ -83,6 +86,7 @@ class UserProfileFactory(factory.django.DjangoModelFactory):
 
 
 class UserFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = User
 
@@ -112,6 +116,7 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 
 class ManagerFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = Manager
 
@@ -131,6 +136,7 @@ class ManagerFactory(factory.django.DjangoModelFactory):
 
 
 class SurveyTemplateFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = Survey_template
 
@@ -139,6 +145,7 @@ class SurveyTemplateFactory(factory.django.DjangoModelFactory):
 
 
 class SurveyFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = Survey
 
@@ -147,6 +154,7 @@ class SurveyFactory(factory.django.DjangoModelFactory):
 
 
 class CalendarSettingFactory(factory.Factory):
+
     class Meta:
         model = CalendarSetting
 
@@ -164,6 +172,7 @@ class CalendarSettingFactory(factory.Factory):
 
 
 class CalendarUserProfileFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = CalendarUserProfile
 
@@ -172,6 +181,7 @@ class CalendarUserProfileFactory(factory.django.DjangoModelFactory):
 
 
 class CalendarUserFactory(factory.django.DjangoModelFactory):
+
     class Meta:
         model = CalendarUser
 
@@ -224,5 +234,3 @@ class CalendarUserFactory(factory.django.DjangoModelFactory):
 #         if create and extracted:
 #             # We have a saved object and a list of permission names
 #             self.user_permissions.add(*[_get_perm(pn) for pn in extracted])
-
-

@@ -17,7 +17,7 @@ from django_nose import NoseTestSuiteRunner
 #from django_selenium.selenium_runner import SeleniumTestRunner
 
 
-#class MyRunner(CeleryTestSuiteRunner, SeleniumTestRunner):
+# class MyRunner(CeleryTestSuiteRunner, SeleniumTestRunner):
 #    pass
 
 

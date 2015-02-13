@@ -18,6 +18,7 @@ from rest_framework import serializers
 
 
 class ContentTypeSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Read**:
 

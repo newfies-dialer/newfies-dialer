@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class DialerSetting(models.Model):
+
     """This defines the settings to apply to a user
 
     **Attributes**:
@@ -37,7 +38,7 @@ class DialerSetting(models.Model):
     name = models.CharField(max_length=50, blank=False,
                             null=True, verbose_name=_("name"),
                             help_text=_("settings name"))
-    #Campaign Settings
+    # Campaign Settings
     max_frequency = models.IntegerField(default='100', blank=True,
                                         null=True, verbose_name=_("max frequency"),
                                         help_text=_("maximum calls per minute"))

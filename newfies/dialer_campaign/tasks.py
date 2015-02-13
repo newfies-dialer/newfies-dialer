@@ -45,6 +45,7 @@ logger = get_task_logger(__name__)
 
 # OPTIMIZATION - FINE
 class campaign_spool_contact(PeriodicTask):
+
     """A periodic task that checks the the running campaign
     for each running campaign it will check if it's necessary to import
     the contact from the phonebook to the subscriber list
@@ -68,6 +69,7 @@ class campaign_spool_contact(PeriodicTask):
 
 # OPTIMIZATION - FINE
 class pending_call_processing(Task):
+
     @only_one(ikey="check_pendingcall", timeout=LOCK_EXPIRE)
     def run(self, campaign_id):
         """
@@ -110,7 +112,7 @@ class pending_call_processing(Task):
 
         debug_query(1)
 
-        #TODO: move this logic of setting call_type after CallRequest post_save
+        # TODO: move this logic of setting call_type after CallRequest post_save
         # Default call_type
         call_type = CALLREQUEST_TYPE.ALLOW_RETRY
         # Check campaign's maxretry
@@ -137,7 +139,7 @@ class pending_call_processing(Task):
             callfrequency = frequency  # task run only once per minute, so we can assign frequency
         else:
             callfrequency = int(frequency / settings.HEARTBEAT_MIN) + 1  # 1000 per minutes
-            #callfrequency = int(frequency) + 1  # 1000 per minutes
+            # callfrequency = int(frequency) + 1  # 1000 per minutes
 
         (list_subscriber, no_subscriber) = obj_campaign\
             .get_pending_subscriber_update(callfrequency, SUBSCRIBER_STATUS.IN_PROCESS)
@@ -171,13 +173,13 @@ class pending_call_processing(Task):
             phone_number = elem_camp_subscriber.duplicate_contact
             debug_query(4)
 
-            #Verify that the contact is authorized
+            # Verify that the contact is authorized
             if not obj_campaign.is_authorized_contact(obj_campaign.user.userprofile.dialersetting, phone_number):
                 logger.error("Error : Contact not authorized")
                 elem_camp_subscriber.status = SUBSCRIBER_STATUS.NOT_AUTHORIZED
                 elem_camp_subscriber.save()
                 continue
-            #Verify that the contact is not in the DNC list
+            # Verify that the contact is not in the DNC list
             if obj_campaign.dnc:
                 res_dnc = DNCContact.objects.filter(dnc_id=obj_campaign.dnc_id, phone_number=phone_number)
                 if res_dnc:
@@ -190,7 +192,7 @@ class pending_call_processing(Task):
 
             debug_query(5)
 
-            #TODO: idea to speed up, create bluck of 10(Y) and then send a list
+            # TODO: idea to speed up, create bluck of 10(Y) and then send a list
             # of callrequest_id to init_callrequest
 
             # Create Callrequest
@@ -237,6 +239,7 @@ class pending_call_processing(Task):
 
 # OPTIMIZATION - FINE
 class campaign_running(PeriodicTask):
+
     """A periodic task that checks the campaign, create and spool the calls
 
     **Usage**:
@@ -264,6 +267,7 @@ class campaign_running(PeriodicTask):
 
 # OPTIMIZATION - FINE
 class campaign_expire_check(PeriodicTask):
+
     """A periodic task that checks the campaign expiration
 
     **Usage**:

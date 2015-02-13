@@ -25,6 +25,7 @@ import ast
 
 
 class EventViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows event to be viewed or edited.
     """

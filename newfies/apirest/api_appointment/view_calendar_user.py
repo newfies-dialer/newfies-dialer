@@ -28,6 +28,7 @@ import ast
 
 
 class CalendarUserViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows calendar user to be viewed or edited.
     """

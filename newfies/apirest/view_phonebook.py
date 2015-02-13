@@ -22,6 +22,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class PhonebookViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows phonebook to be viewed or edited.
     """

@@ -16,6 +16,7 @@ from rest_framework.permissions import DjangoModelPermissions  # DjangoObjectPer
 
 
 class CustomObjectPermissions(DjangoModelPermissions):
+
     """
     Similar to `DjangoModelPermissions`, but adding 'view' permissions.
     """

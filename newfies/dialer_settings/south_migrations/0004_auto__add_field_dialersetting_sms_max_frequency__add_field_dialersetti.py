@@ -28,7 +28,6 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.IntegerField')(default=10000),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting field 'DialerSetting.sms_max_frequency'
         db.delete_column('dialer_setting', 'sms_max_frequency')
@@ -41,7 +40,6 @@ class Migration(SchemaMigration):
 
         # Deleting field 'DialerSetting.sms_max_number_subscriber_campaign'
         db.delete_column('dialer_setting', 'sms_max_number_subscriber_campaign')
-
 
     models = {
         u'dialer_settings.dialersetting': {

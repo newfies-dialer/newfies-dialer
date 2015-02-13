@@ -47,17 +47,17 @@ js_info_dict = {
 }
 
 urlpatterns = patterns('',
-    (r'^logout/$', 'frontend.views.logout_view'),
-    (r'^admin/', include(admin.site.urls)),
-    (r'^i18n/', include('django.conf.urls.i18n')),
-    (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
-    (r'^admin_tools/', include('admin_tools.urls')),
-    (r'^static/(?P<path>.*)$', 'django.views.static.serve',
-        {'document_root': settings.STATIC_ROOT}),
-    #(r'^sentry/', include('sentry.web.urls')),
-    #(r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
-    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
-)
+                       (r'^logout/$', 'frontend.views.logout_view'),
+                       (r'^admin/', include(admin.site.urls)),
+                       (r'^i18n/', include('django.conf.urls.i18n')),
+                       (r'^jsi18n/$', 'django.views.i18n.javascript_catalog', js_info_dict),
+                       (r'^admin_tools/', include('admin_tools.urls')),
+                       (r'^static/(?P<path>.*)$', 'django.views.static.serve',
+                        {'document_root': settings.STATIC_ROOT}),
+                       #(r'^sentry/', include('sentry.web.urls')),
+                       #(r'^%s/' % settings.DAJAXICE_MEDIA_PREFIX, include('dajaxice.urls')),
+                       url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
+                       )
 
 if settings.DEBUG:
     import debug_toolbar
@@ -81,9 +81,9 @@ urlpatterns += urlpatterns_appointment
 urlpatterns += urlpatterns_mod_sms
 
 urlpatterns += patterns('',
-    (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),
-        'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
-)
+                        (r'^%s/(?P<path>.*)$' % settings.MEDIA_URL.strip(os.sep),
+                         'django.views.static.serve', {'document_root': settings.MEDIA_ROOT}),
+                        )
 
 
 handler404 = 'urls.custom_404_view'

@@ -163,7 +163,7 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "context_processors.newfies_common_template_variable",
     # django-notification
     "notification.context_processors.notification",
-    #needed by Sentry
+    # needed by Sentry
     "django.core.context_processors.request",
 )
 
@@ -188,11 +188,11 @@ INTERNAL_IPS = ('127.0.0.1',)
 ALLOWED_HOSTS = ['127.0.0.1']
 
 DAJAXICE_MEDIA_PREFIX = "dajaxice"
-#DAJAXICE_MEDIA_PREFIX = "dajax"  # http://domain.com/dajax/
+# DAJAXICE_MEDIA_PREFIX = "dajax"  # http://domain.com/dajax/
 #DAJAXICE_CACHE_CONTROL = 10 * 24 * 60 * 60
 
 INSTALLED_APPS = (
-    #admin tool apps
+    # admin tool apps
     'admin_tools',
     'admin_tools.theming',
     'admin_tools.menu',
@@ -314,7 +314,7 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
 
-#Default Test Runner
+# Default Test Runner
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Nose
@@ -334,7 +334,7 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('dilla',)
 
-#No of records per page
+# No of records per page
 #=======================
 PAGE_SIZE = 10
 
@@ -344,7 +344,7 @@ AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/pleaselog/'
 
-#DILLA SETTINGS
+# DILLA SETTINGS
 #==============
 DICTIONARY = "/usr/share/dict/words"
 DILLA_USE_LOREM_IPSUM = False  # set to True ignores dictionary
@@ -364,9 +364,9 @@ DILLA_SPAMLIBS = [
 # > python manage.py run_dilla --cycles=100
 
 
-#MEMCACHE
+# MEMCACHE
 #========
-#CACHES = {
+# CACHES = {
 #  'default': {
 #    'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
 #    'LOCATION': '127.0.0.1:11211',
@@ -375,7 +375,7 @@ DILLA_SPAMLIBS = [
 #}
 
 
-#REST FRAMEWORK
+# REST FRAMEWORK
 #==============
 REST_FRAMEWORK = {
     #'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
@@ -398,7 +398,7 @@ REST_FRAMEWORK = {
     #}
 }
 
-#REDIS-CACHE
+# REDIS-CACHE
 #===========
 CACHES = {
     'default': {
@@ -412,7 +412,7 @@ CACHES = {
     },
 }
 
-#CELERY SETTINGS
+# CELERY SETTINGS
 #===============
 # # Broker settings Redis
 # BROKER_URL = "redis://localhost:6379/0"
@@ -425,7 +425,7 @@ CACHES = {
 BROKER_URL = 'amqp://newfiesdialer:mypassword@localhost:5672//newfiesdialer'
 CELERY_RESULT_BACKEND = "amqp://newfiesdialer:mypassword@localhost:5672//newfiesdialer"
 
-## Using the database to store task state and results.
+# Using the database to store task state and results.
 CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 
 #CELERY_REDIS_CONNECT_RETRY = True
@@ -449,7 +449,7 @@ CELERY_QUEUES = {
 from kombu import Queue
 
 CELERY_DEFAULT_QUEUE = 'default'
-#Define list of Queues and their routing keys
+# Define list of Queues and their routing keys
 CELERY_QUEUES = (
     Queue('default', routing_key='task.#'),
     Queue('sms_tasks', routing_key='mod_sms.#'),
@@ -481,7 +481,7 @@ CELERYBEAT_SCHEDULE = {
 }
 """
 
-#LANGUAGES
+# LANGUAGES
 #===========
 gettext = lambda s: s
 LANGUAGES = (
@@ -500,14 +500,14 @@ LOCALE_PATHS = (
 
 LANGUAGE_COOKIE_NAME = 'newfies_dialer_language'
 
-#DJANGO-ADMIN-TOOL
+# DJANGO-ADMIN-TOOL
 #=================
 ADMIN_TOOLS_MENU = 'custom_admin_tools.menu.CustomMenu'
 ADMIN_TOOLS_INDEX_DASHBOARD = 'custom_admin_tools.dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'custom_admin_tools.dashboard.CustomAppIndexDashboard'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
-#EMAIL BACKEND
+# EMAIL BACKEND
 #=============
 # Use only in Debug mode. Not in production
 #EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
@@ -520,11 +520,11 @@ EMAIL_ADMIN = 'newfies_admin@localhost.com'
 # ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'
 
-#SENTRY SETTINGS
+# SENTRY SETTINGS
 #===============
 #SENTRY_DSN = 'http://asdada:asdasd@localhost:9000/1'
 
-#DIALER
+# DIALER
 #======
 # NOTE: MAX_CALLS_PER_SECOND is no longer implemented
 # MAX_CALLS_PER_SECOND = 20  # By default configured to 20 calls per second
@@ -548,14 +548,14 @@ CONVERT_TYPE_VALUE = 2
 
 AUDIO_DEBUG = False
 
-#ESL
+# ESL
 #===
 ESL_HOSTNAME = '127.0.0.1'
 ESL_PORT = '8021'
 ESL_SECRET = 'ClueCon'
 ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 
-#TEXT-TO-SPEECH
+# TEXT-TO-SPEECH
 #==============
 TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
 
@@ -568,7 +568,7 @@ QUALITY = '22k'  # 22k, 8k, 8ka, 8kmu
 ACAPELA_GENDER = 'W'
 ACAPELA_INTONATION = 'NORMAL'
 
-#DEBUG DIALER
+# DEBUG DIALER
 #============
 DIALERDEBUG = False
 DIALERDEBUG_PHONENUMBER = 1000
@@ -579,12 +579,12 @@ DIALERDEBUG_PHONENUMBER = 1000
 SURVEYDEV = False
 AMD = False
 
-#Demo mode
+# Demo mode
 #=========
-#This will disable certain save, to avoid changing password
+# This will disable certain save, to avoid changing password
 DEMO_MODE = False
 
-#IPYTHON
+# IPYTHON
 #=======
 IPYTHON_ARGUMENTS = [
     '--ext', 'django_extensions.management.notebook_extension',
@@ -592,7 +592,7 @@ IPYTHON_ARGUMENTS = [
     '--debug'
 ]
 
-#GENERAL
+# GENERAL
 #=======
 # PREFIX_LIMIT_MIN & PREFIX_LIMIT_MAX are used to know
 # how many digits are used to match against the dialcode prefix database
@@ -602,19 +602,19 @@ PREFIX_LIMIT_MAX = 5
 # List of phonenumber prefix to ignore, this will be remove prior analysis
 PREFIX_TO_IGNORE = "+,0,00,000,0000,00000,011,55555,99999"
 
-#CORS (Cross-Origin Resource Sharing)
+# CORS (Cross-Origin Resource Sharing)
 #====================================
 
-#if True, the whitelist will not be used and all origins will be accepted
+# if True, the whitelist will not be used and all origins will be accepted
 CORS_ORIGIN_ALLOW_ALL = True
 
-#specify a list of origin hostnames that are authorized to make a cross-site HTTP request
+# specify a list of origin hostnames that are authorized to make a cross-site HTTP request
 #CORS_ORIGIN_WHITELIST = ()
 
-#specify a regex list of origin hostnames that are authorized to make a cross-site HTTP request
+# specify a regex list of origin hostnames that are authorized to make a cross-site HTTP request
 #CORS_ORIGIN_REGEX_WHITELIST = ('^http?://(\w+\.)?google\.com$', )
 
-#specify the allowed HTTP methods that can be used when making the actual request
+# specify the allowed HTTP methods that can be used when making the actual request
 CORS_ALLOW_METHODS = (
     'GET',
     'POST',
@@ -625,7 +625,7 @@ CORS_ALLOW_METHODS = (
 )
 
 
-#specify which non-standard HTTP headers can be used when making the actual request
+# specify which non-standard HTTP headers can be used when making the actual request
 CORS_ALLOW_HEADERS = (
     'x-requested-with',
     'content-type',
@@ -638,10 +638,10 @@ CORS_ALLOW_HEADERS = (
 CORS_ORIGIN_WHITELIST = (
     'hostname.example.com',
 )
-#specify which HTTP headers are to be exposed to the browser
+# specify which HTTP headers are to be exposed to the browser
 CORS_EXPOSE_HEADERS = ()
 
-#specify whether or not cookies are allowed to be included
+# specify whether or not cookies are allowed to be included
 CORS_ALLOW_CREDENTIALS = False
 
 # Django-bower
@@ -669,14 +669,14 @@ SOUTH_MIGRATION_MODULES = {
     'authtoken': 'rest_framework.authtoken.south_migrations',
 }
 
-#Need to build documentation with Django 1.6
+# Need to build documentation with Django 1.6
 LOGGING_CONFIG = None
 
 # DAJAXICE setting
 # Not Include XmlHttpRequest.js inside dajaxice.core.js
 DAJAXICE_XMLHTTPREQUEST_JS_IMPORT = False
 
-#IMPORT LOCAL SETTINGS
+# IMPORT LOCAL SETTINGS
 #=====================
 try:
     from settings_local import *

@@ -20,13 +20,14 @@ from mod_mailer.constants import MAILSPOOLER_TYPE
 
 
 class MailTemplate(models.Model):
+
     """
     This table store the Mail Template
     """
     label = models.CharField(max_length=75, verbose_name=_('label'),
                              help_text=_('mail template name'))
     template_key = models.CharField(max_length=30, unique=True, verbose_name=_('template key'),
-        help_text=_('unique name used to pick some template for recurring action, such as activation or warning'))
+                                    help_text=_('unique name used to pick some template for recurring action, such as activation or warning'))
     from_email = models.EmailField(max_length=75, verbose_name=_('from_email'),
                                    help_text=_('sender email'))
     from_name = models.CharField(max_length=75, verbose_name=_('from_name'),
@@ -48,6 +49,7 @@ class MailTemplate(models.Model):
 
 
 class MailSpooler(models.Model):
+
     """
     This table store the Mail Spooler
     """
@@ -74,7 +76,7 @@ def send_email_template(template_key, target_user, ctxt):
     try:
         mailtemplate = MailTemplate.objects.get(template_key=template_key)
     except:
-        #No Mail Template
+        # No Mail Template
         return False
 
     message_plaintext = mailtemplate.message_plaintext
@@ -96,4 +98,4 @@ def send_email_template(template_key, target_user, ctxt):
         headers={'From': '%s <%s>' % (mailtemplate.from_name, mailtemplate.from_email)},
     )
     #new_mailspooler = MailSpooler(mailtemplate=mailtemplate, user=target_user)
-    #new_mailspooler.save()
+    # new_mailspooler.save()

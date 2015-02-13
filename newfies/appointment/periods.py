@@ -25,6 +25,7 @@ else:
 
 
 class Period(object):
+
     '''
     This class represents a period of time. It can return a set of occurrences
     based on its events, and its time period (start and end).
@@ -129,6 +130,7 @@ class Period(object):
 
 
 class Year(Period):
+
     def __init__(self, events, date=None, parent_persisted_occurrences=None, tzinfo=pytz.utc):
         self.tzinfo = tzinfo
         if date is None:
@@ -150,9 +152,9 @@ class Year(Period):
 
     def _get_year_range(self, year):
         start = datetime.datetime(year.year, datetime.datetime.min.month,
-            datetime.datetime.min.day, tzinfo=self.tzinfo)
+                                  datetime.datetime.min.day, tzinfo=self.tzinfo)
         end = datetime.datetime(year.year + 1, datetime.datetime.min.month,
-            datetime.datetime.min.day, tzinfo=self.tzinfo)
+                                datetime.datetime.min.day, tzinfo=self.tzinfo)
         return start, end
 
     def __unicode__(self):
@@ -160,6 +162,7 @@ class Year(Period):
 
 
 class Month(Period):
+
     """
     The month period has functions for retrieving the week periods within this period
     and day periods within the date.
@@ -172,7 +175,7 @@ class Month(Period):
             date = timezone.now()
         start, end = self._get_month_range(date)
         super(Month, self).__init__(events, start, end,
-            parent_persisted_occurrences, occurrence_pool)
+                                    parent_persisted_occurrences, occurrence_pool)
 
     def get_weeks(self):
         return self.get_periods(Week)
@@ -227,6 +230,7 @@ class Month(Period):
 
 
 class Week(Period):
+
     """
     The Week period that has functions for retrieving Day periods within it
     """
@@ -238,7 +242,7 @@ class Week(Period):
             date = timezone.now()
         start, end = self._get_week_range(date)
         super(Week, self).__init__(events, start, end,
-            parent_persisted_occurrences, occurrence_pool)
+                                   parent_persisted_occurrences, occurrence_pool)
 
     def prev_week(self):
         return Week(self.events, self.start - datetime.timedelta(days=7))
@@ -286,6 +290,7 @@ class Week(Period):
 
 
 class Day(Period):
+
     def __init__(self, events, date=None, parent_persisted_occurrences=None,
                  occurrence_pool=None, tzinfo=pytz.utc):
         self.tzinfo = tzinfo
@@ -293,7 +298,7 @@ class Day(Period):
             date = timezone.now()
         start, end = self._get_day_range(date)
         super(Day, self).__init__(events, start, end,
-            parent_persisted_occurrences, occurrence_pool)
+                                  parent_persisted_occurrences, occurrence_pool)
 
     def _get_day_range(self, date):
         if isinstance(date, datetime.datetime):

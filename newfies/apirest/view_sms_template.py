@@ -22,6 +22,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class SMSTemplateViewSet(viewsets.ReadOnlyModelViewSet):
+
     """
     API endpoint that allows rule to be viewed or edited.
     """

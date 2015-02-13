@@ -20,6 +20,7 @@ from agent.models import AgentProfile
 
 
 class CalendarUserProfileSerializer(serializers.ModelSerializer):
+
     """
     **Read**:
 

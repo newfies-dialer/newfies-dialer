@@ -91,8 +91,9 @@ def init_smsrequest(obj_subscriber, obj_sms_campaign):
     return True
 
 
-#TODO: Put a priority on this task
+# TODO: Put a priority on this task
 class check_sms_campaign_pendingcall(Task):
+
     @only_one(ikey="check_sms_campaign_pendingcall", timeout=LOCK_EXPIRE)
     def run(self, sms_campaign_id):
         """This will execute the outbound calls in the sms_campaign
@@ -114,14 +115,14 @@ class check_sms_campaign_pendingcall(Task):
             logger.error("[SMS_TASK] Cannot find this SMS Campaign")
             return False
 
-        #TODO: Control the Speed
-        #if there is many task pending we should slow down
+        # TODO: Control the Speed
+        # if there is many task pending we should slow down
         frequency = obj_sms_campaign.frequency  # default 10 calls per minutes
 
-        #Speed
-        #check if the other tasks send for this sms_campaign finished to be ran
+        # Speed
+        # check if the other tasks send for this sms_campaign finished to be ran
 
-        #Get the subscriber of this sms_campaign
+        # Get the subscriber of this sms_campaign
         # get_pending_subscriber get Max 1000 records
         list_subscriber = obj_sms_campaign.get_pending_subscriber_update(
             frequency, SMS_SUBSCRIBER_STATUS.IN_PROCESS)
@@ -137,7 +138,7 @@ class check_sms_campaign_pendingcall(Task):
             logger.info("[SMS_TASK] No Subscriber to proceed on this sms_campaign")
             return False
 
-        #find how to dispatch them in the current minutes
+        # find how to dispatch them in the current minutes
         time_to_wait = 6.0 / no_subscriber
         count = 0
 
@@ -147,14 +148,14 @@ class check_sms_campaign_pendingcall(Task):
             logger.info("[SMS_TASK] Add SMS Message for Subscriber (%s) & wait (%s) " %
                         (str(elem_camp_subscriber.id), str(time_to_wait)))
 
-            #Check if the contact is authorized
+            # Check if the contact is authorized
             if not obj_sms_campaign.is_authorized_contact(elem_camp_subscriber.contact.contact):
                 logger.error("[SMS_TASK] Error : Contact not authorized")
                 elem_camp_subscriber.status = SMS_SUBSCRIBER_STATUS.NOT_AUTHORIZED  # Update to Not Authorized
                 elem_camp_subscriber.save()
                 return True
 
-            #Todo Check if it's a good practice / implement a PID algorithm
+            # Todo Check if it's a good practice / implement a PID algorithm
             second_towait = ceil(count * time_to_wait)
             launch_date = datetime.utcnow().replace(tzinfo=utc) + timedelta(seconds=second_towait)
 
@@ -170,6 +171,7 @@ class check_sms_campaign_pendingcall(Task):
 
 
 class spool_sms_nocampaign(PeriodicTask):
+
     """A periodic task that checks the sms not assigned to a campaign, create and tasks the calls
 
     **Usage**:
@@ -177,10 +179,10 @@ class spool_sms_nocampaign(PeriodicTask):
         spool_sms_nocampaign.delay()
     """
     run_every = timedelta(seconds=int(60 / DIV_MIN))
-    #NOTE : until we implement a PID Controller :
-    #http://en.wikipedia.org/wiki/PID_controller
+    # NOTE : until we implement a PID Controller :
+    # http://en.wikipedia.org/wiki/PID_controller
 
-    #The sms_campaign have to run every minutes in order to control the number
+    # The sms_campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
 
@@ -200,6 +202,7 @@ class spool_sms_nocampaign(PeriodicTask):
 
 
 class sms_campaign_running(PeriodicTask):
+
     """A periodic task that checks the sms_campaign, create and tasks the calls
 
     **Usage**:
@@ -207,10 +210,10 @@ class sms_campaign_running(PeriodicTask):
         sms_campaign_running.delay()
     """
     run_every = timedelta(seconds=int(60 / DIV_MIN))
-    #NOTE : until we implement a PID Controller :
-    #http://en.wikipedia.org/wiki/PID_controller
+    # NOTE : until we implement a PID Controller :
+    # http://en.wikipedia.org/wiki/PID_controller
 
-    #The sms_campaign have to run every minutes in order to control the number
+    # The sms_campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
     #run_every = timedelta(seconds=60)
 
@@ -220,13 +223,14 @@ class sms_campaign_running(PeriodicTask):
 
         for sms_campaign in SMSCampaign.objects.get_running_sms_campaign():
             logger.info("[SMS_TASK] => Found SMS Campaign name %s (id:%s)" % (sms_campaign.name,
-                                                              sms_campaign.id))
+                                                                              sms_campaign.id))
             keytask = 'check_sms_campaign_pendingcall-%d' % (sms_campaign.id)
             check_sms_campaign_pendingcall.delay(sms_campaign.id, keytask=keytask)
 
 
 #!!! USED
 class SMSImportPhonebook(Task):
+
     """
     ImportPhonebook class call the import for a specific campaign_id and phonebook_id
 
@@ -243,13 +247,13 @@ class SMSImportPhonebook(Task):
         logger.info("[SMS_TASK] TASK :: import_phonebook")
         obj_campaign = SMSCampaign.objects.get(id=campaign_id)
 
-        #Faster method, ask the Database to do the job
+        # Faster method, ask the Database to do the job
         importcontact_custom_sql(campaign_id, phonebook_id)
 
-        #Count contact imported
+        # Count contact imported
         count_contact = SMSCampaignSubscriber.objects.filter(sms_campaign=campaign_id).count()
 
-        #Add the phonebook id to the imported list
+        # Add the phonebook id to the imported list
         if obj_campaign.imported_phonebook == '':
             sep = ''
         else:
@@ -264,6 +268,7 @@ class SMSImportPhonebook(Task):
 #!!! USED
 # OPTIMIZATION - FINE
 class sms_campaign_spool_contact(PeriodicTask):
+
     """A periodic task that checks the the running campaign
     for each running campaign it will check if it's necessary to import
     the contact from the phonebook to the subscriber list
@@ -303,7 +308,7 @@ def sms_collect_subscriber(campaign_id):
     """
     logger.debug("[SMS_TASK] Collect subscribers for the campaign = %s" % str(campaign_id))
 
-    #Retrieve the list of active contact
+    # Retrieve the list of active contact
     obj_campaign = SMSCampaign.objects.get(id=campaign_id)
     list_phonebook = obj_campaign.phonebook.all()
 
@@ -312,7 +317,7 @@ def sms_collect_subscriber(campaign_id):
 
         # check if phonebook_id is missing in imported_phonebook list
         if not str(phonebook_id) in obj_campaign.imported_phonebook.split(','):
-            #Run import
+            # Run import
             logger.info("[SMS_TASK] SMS ImportPhonebook %d for campaign = %d" % (phonebook_id, campaign_id))
             keytask = 'sms_import_phonebook-%d-%d' % (campaign_id, phonebook_id)
             SMSImportPhonebook().delay(obj_campaign.id, phonebook_id, keytask=keytask)
@@ -359,15 +364,16 @@ def importcontact_custom_sql(sms_campaign_id, phonebook_id):
     return True
 
 
-#Expire check
+# Expire check
 class sms_campaign_expire_check(PeriodicTask):
+
     """A periodic task that checks the SMS campaign expiration
 
     **Usage**:
 
         sms_campaign_expire_check.delay()
     """
-    #The sms_campaign have to run every minutes in order to control the number
+    # The sms_campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
     run_every = timedelta(seconds=60)
 
@@ -377,11 +383,12 @@ class sms_campaign_expire_check(PeriodicTask):
         logger.info("[SMS_TASK] TASK :: sms_campaign_expire_check")
         for sms_campaign in SMSCampaign.objects.get_expired_sms_campaign():
             logger.debug("[SMS_TASK] => SMS Campaign name %s (id:%s)" % (sms_campaign.name,
-                                                              sms_campaign.id))
+                                                                         sms_campaign.id))
             sms_campaign.common_sms_campaign_status(SMS_CAMPAIGN_STATUS.END)
 
 
 class resend_sms_update_smscampaignsubscriber(PeriodicTask):
+
     """A periodic task that resend the failed sms,
 
     **Usage**:
@@ -404,7 +411,7 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
                 status=SMS_SUBSCRIBER_STATUS.IN_PROCESS)[:limit]
 
             if not list_subscriber:
-                #Go to the next campaign
+                # Go to the next campaign
                 logger.info("[SMS_TASK] No subscribers in this campaign (id:%s)" % (sms_campaign.id))
                 continue
 

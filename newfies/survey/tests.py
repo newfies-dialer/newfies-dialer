@@ -37,6 +37,7 @@ post_save.disconnect(post_save_add_script, sender=Section_template)
 
 
 class SurveyAdminView(BaseAuthenticatedClient):
+
     """Test Function to check Survey, SurveyQuestion,
        SurveyResponse Admin pages
     """
@@ -73,6 +74,7 @@ class SurveyAdminView(BaseAuthenticatedClient):
 
 
 class SurveyCustomerView(BaseAuthenticatedClient):
+
     """Test Function to check Survey, Section, Branching, Result,
        ResultAggregate Customer pages
     """
@@ -145,7 +147,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         #request.user = self.user
         #request.session = {}
         #response = section_sort(request, 1, 1)
-        #self.assertTrue(response)
+        # self.assertTrue(response)
 
     def test_survey_view_delete(self):
         """Test Function to check delete survey"""
@@ -172,92 +174,92 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 1, 'question': 'xyz', 'add': 'true'}, follow=True)
+                                    {'type': 1, 'question': 'xyz', 'add': 'true'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 1, 'question': 'xyz'}, follow=True)
+                                    {'type': 1, 'question': 'xyz'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 2, 'question': 'xyz', 'add': 'true',
-             'key_0': 'apple'}, follow=True)
+                                    {'type': 2, 'question': 'xyz', 'add': 'true',
+                                     'key_0': 'apple'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 2, 'question': 'xyz',
-             'key_0': 'apple'}, follow=True)
+                                    {'type': 2, 'question': 'xyz',
+                                     'key_0': 'apple'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 3, 'question': 'xyz', 'add': 'true',
-             'rating_laps': 5}, follow=True)
+                                    {'type': 3, 'question': 'xyz', 'add': 'true',
+                                     'rating_laps': 5}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 3, 'question': 'xyz',
-             'rating_laps': 5}, follow=True)
+                                    {'type': 3, 'question': 'xyz',
+                                     'rating_laps': 5}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 4, 'question': 'xyz', 'add': 'true',
-             'number_digits': 2,
-             'min_number': 1}, follow=True)
+                                    {'type': 4, 'question': 'xyz', 'add': 'true',
+                                     'number_digits': 2,
+                                     'min_number': 1}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 4, 'question': 'xyz',
-             'number_digits': 2,
-             'min_number': 1}, follow=True)
+                                    {'type': 4, 'question': 'xyz',
+                                     'number_digits': 2,
+                                     'min_number': 1}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 5, 'question': 'xyz', 'add': 'true'}, follow=True)
+                                    {'type': 5, 'question': 'xyz', 'add': 'true'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 5, 'question': 'xyz'}, follow=True)
+                                    {'type': 5, 'question': 'xyz'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 6, 'question': 'xyz', 'add': 'true'}, follow=True)
+                                    {'type': 6, 'question': 'xyz', 'add': 'true'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/add/?survey_id=1',
-            {'type': 6, 'question': 'xyz'}, follow=True)
+                                    {'type': 6, 'question': 'xyz'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_add(request)
@@ -273,108 +275,108 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 1, 'question': 'xyz', 'update': 'true'}, follow=True)
+                                    {'type': 1, 'question': 'xyz', 'update': 'true'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 1, 'question': 'xyz'}, follow=True)
+                                    {'type': 1, 'question': 'xyz'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 2, 'question': 'xyz', 'update': 'true',
-             'key_0': 'apple'}, follow=True)
+                                    {'type': 2, 'question': 'xyz', 'update': 'true',
+                                     'key_0': 'apple'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 2, 'question': 'xyz',
-             'key_0': 'apple'}, follow=True)
+                                    {'type': 2, 'question': 'xyz',
+                                     'key_0': 'apple'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 3, 'question': 'xyz', 'update': 'true',
-             'rating_laps': 5}, follow=True)
+                                    {'type': 3, 'question': 'xyz', 'update': 'true',
+                                     'rating_laps': 5}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 3, 'question': 'xyz',
-             'rating_laps': 5}, follow=True)
+                                    {'type': 3, 'question': 'xyz',
+                                     'rating_laps': 5}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 4, 'question': 'xyz', 'update': 'true',
-             'number_digits': 2,
-             'min_number': 1}, follow=True)
+                                    {'type': 4, 'question': 'xyz', 'update': 'true',
+                                     'number_digits': 2,
+                                     'min_number': 1}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 4, 'question': 'xyz',
-             'number_digits': 2,
-             'min_number': 1}, follow=True)
+                                    {'type': 4, 'question': 'xyz',
+                                     'number_digits': 2,
+                                     'min_number': 1}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 5, 'question': 'xyz', 'update': 'true'}, follow=True)
+                                    {'type': 5, 'question': 'xyz', 'update': 'true'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 5, 'question': 'xyz'}, follow=True)
+                                    {'type': 5, 'question': 'xyz'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 6, 'question': 'xyz', 'update': 'true'}, follow=True)
+                                    {'type': 6, 'question': 'xyz', 'update': 'true'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 6, 'question': 'xyz'}, follow=True)
+                                    {'type': 6, 'question': 'xyz'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 10, 'question': 'test question',
-             'update': 'true', 'sms_text': 'this is test sms'}, follow=True)
+                                    {'type': 10, 'question': 'test question',
+                                     'update': 'true', 'sms_text': 'this is test sms'}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/1/',
-            {'type': 10, 'question': 'xyz', 'sms_text': 'this is test sms'},
-            follow=True)
+                                    {'type': 10, 'question': 'xyz', 'sms_text': 'this is test sms'},
+                                    follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
@@ -394,7 +396,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
     def test_survey_section_view_delete(self):
         """Test Function survey section delete"""
         request = self.factory.post('/section/1/?delete=true',
-            {}, follow=True)
+                                    {}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_change(request, 1)
@@ -403,7 +405,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
     def test_survey_section_delete(self):
         """Test Function survey section delete"""
         request = self.factory.post('/section/1/?delete=true',
-            {}, follow=True)
+                                    {}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_delete(request, 1)
@@ -426,7 +428,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/section/script/1/',
-            {'script': 'xyz', 'section': 1}, follow=True)
+                                    {'script': 'xyz', 'section': 1}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_script_change(request, 1)
@@ -443,7 +445,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_branch_add(request)
         self.assertEqual(response.status_code, 200)
 
-        #request = self.factory.get('/section/branch/add/?section_id=1',
+        # request = self.factory.get('/section/branch/add/?section_id=1',
         #    {'keys': 1, 'section': 1,
         #     'goto': 1})
         #request.user = self.user
@@ -468,17 +470,17 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         response = section_branch_change(request, branching_obj.id)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/section/branch/'+str(branching_obj.id)+'/',
-            {'keys': 1, 'section': self.section,
-             'goto': self.goto}, follow=True)
+        request = self.factory.post('/section/branch/' + str(branching_obj.id) + '/',
+                                    {'keys': 1, 'section': self.section,
+                                     'goto': self.goto}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_branch_change(request, branching_obj.id)
         self.assertEqual(response.status_code, 200)
 
-        request = self.factory.post('/section/branch/'+str(branching_obj.id)+'/?delete=true',
-            {'keys': 1, 'section': self.section,
-             'goto': self.goto}, follow=True)
+        request = self.factory.post('/section/branch/' + str(branching_obj.id) + '/?delete=true',
+                                    {'keys': 1, 'section': self.section,
+                                     'goto': self.goto}, follow=True)
         request.user = self.user
         request.session = {}
         response = section_branch_change(request, branching_obj.id)
@@ -506,7 +508,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         response = self.client.post('/module/import_survey/',
-            data={'survey_file': '', 'name': 'new survey'})
+                                    data={'survey_file': '', 'name': 'new survey'})
         self.assertEqual(response.status_code, 200)
 
     def test_seal_survey(self):
@@ -518,6 +520,7 @@ class SurveyCustomerView(BaseAuthenticatedClient):
 
 
 class SurveyModel(TestCase):
+
     """Test Survey, Section, Branching, Result, ResultAggregate Model"""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',

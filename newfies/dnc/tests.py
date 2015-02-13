@@ -41,6 +41,7 @@ new_file = open(
 
 
 class DNCAdminView(BaseAuthenticatedClient):
+
     """
     Test cases for DNC list, DNC Contact Admin Interface.
     """
@@ -78,6 +79,7 @@ class DNCAdminView(BaseAuthenticatedClient):
 
 
 class DNCCustomerView(BaseAuthenticatedClient):
+
     """Test cases for DNC list & DNC contact
        Customer Interface.
     """
@@ -250,6 +252,7 @@ class DNCCustomerView(BaseAuthenticatedClient):
 
 
 class DNCModel(TestCase):
+
     """
     Test DNC model
     """

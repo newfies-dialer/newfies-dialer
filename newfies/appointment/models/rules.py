@@ -14,6 +14,7 @@ freqs = (
 
 
 class Rule(models.Model):
+
     """
     This defines a rule by which an event will recur.  This is defined by the
     rrule in the dateutil documentation.

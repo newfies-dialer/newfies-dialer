@@ -9,6 +9,7 @@ import pytz
 
 
 class Calendar(models.Model):
+
     """
     This is for grouping events so that batch relations can be made to all
     events.  An example would be a project calendar.

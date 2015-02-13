@@ -384,7 +384,7 @@ def dnc_contact_import(request):
         # col_no - field name
         #  0     - contact
         # To count total rows of CSV file
-        #Get DNC Obj
+        # Get DNC Obj
         dnc = get_object_or_404(DNC, pk=request.POST['dnc_list'], user=request.user)
 
         records = csv.reader(request.FILES['csv_file'])
@@ -392,13 +392,13 @@ def dnc_contact_import(request):
         BULK_SIZE = 1000
         csv_data = csv.reader(request.FILES['csv_file'])
 
-        #Read each Row
+        # Read each Row
         for row in csv_data:
             row = striplist(row)
             if not row or str(row[0]) == 0:
                 continue
 
-            #Check field type
+            # Check field type
             try:
                 int(row[0])
             except ValueError:
@@ -413,20 +413,20 @@ def dnc_contact_import(request):
             )
             contact_cnt = contact_cnt + 1
             if contact_cnt < 100:
-                #We want to display only 100 lines of the success import
+                # We want to display only 100 lines of the success import
                 success_import_list.append(row)
 
             if contact_cnt % BULK_SIZE == 0:
-                #Bulk insert
+                # Bulk insert
                 DNCContact.objects.bulk_create(bulk_record)
                 bulk_record = []
 
         if bulk_record:
-            #Remaining record
+            # Remaining record
             DNCContact.objects.bulk_create(bulk_record)
             bulk_record = []
 
-    #check if there is contact imported
+    # check if there is contact imported
     if contact_cnt > 0:
         msg = _('%(contact_cnt)s DNC contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
             % {'contact_cnt': contact_cnt,

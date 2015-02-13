@@ -22,6 +22,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class CallrequestViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows campaigns to be viewed or edited.
     """

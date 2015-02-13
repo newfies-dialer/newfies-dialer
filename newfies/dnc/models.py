@@ -17,6 +17,7 @@ from django.utils.translation import ugettext_lazy as _
 
 
 class DNC(models.Model):
+
     """This defines the Do Not Call List
 
     **Attributes**:
@@ -56,6 +57,7 @@ class DNC(models.Model):
 
 
 class DNCContact(models.Model):
+
     """This defines the Do Not Call Contact for each DNC List
 
     **Attributes**:

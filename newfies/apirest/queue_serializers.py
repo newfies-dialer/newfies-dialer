@@ -17,6 +17,7 @@ from callcenter.models import Queue
 
 
 class QueueSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

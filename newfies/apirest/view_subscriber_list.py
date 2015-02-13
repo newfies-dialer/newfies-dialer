@@ -22,6 +22,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class SubscriberListViewSet(viewsets.ReadOnlyModelViewSet):
+
     """SubscriberListViewSet"""
     queryset = Subscriber.objects.all()
     serializer_class = SubscriberListSerializer

@@ -23,6 +23,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class TierViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows tier to be viewed or edited.
     """

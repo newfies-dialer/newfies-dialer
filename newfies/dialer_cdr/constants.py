@@ -17,6 +17,7 @@ from django_lets_go.utils import Choice
 
 
 class CALLREQUEST_STATUS(Choice):
+
     """
     Store the Call Request Status
     """
@@ -30,6 +31,7 @@ class CALLREQUEST_STATUS(Choice):
 
 
 class CALLREQUEST_TYPE(Choice):
+
     """
     Store the Call Request Type
     """
@@ -39,6 +41,7 @@ class CALLREQUEST_TYPE(Choice):
 
 
 class LEG_TYPE(Choice):
+
     """
     Store the Leg Type
     """
@@ -47,6 +50,7 @@ class LEG_TYPE(Choice):
 
 
 class CALL_DISPOSITION(Choice):
+
     """
     Store the Call Disposition
     """
@@ -58,7 +62,7 @@ class CALL_DISPOSITION(Choice):
     FAILED = 'FAILED', _('FAILED')  # Added to catch all
 
 
-#Column Name for the CDR Report
+# Column Name for the CDR Report
 CDR_REPORT_COLUMN_NAME = {
     'date': _('start date'),
     'call_id': _('call ID'),
@@ -74,6 +78,7 @@ CDR_REPORT_COLUMN_NAME = {
 
 
 class VOIPCALL_AMD_STATUS(Choice):
+
     """
     Store the AMD Status
     """

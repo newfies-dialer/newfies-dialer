@@ -28,6 +28,7 @@ from django.utils.timezone import utc
 
 
 class DialerCdrView(BaseAuthenticatedClient):
+
     """Test cases for Callrequest, VoIPCall Admin Interface."""
 
     def test_admin_callrequest_view_list(self):
@@ -78,6 +79,7 @@ class DialerCdrView(BaseAuthenticatedClient):
 
 
 class DialerCdrCustomerView(BaseAuthenticatedClient):
+
     """Test cases for Callrequest, VoIPCall Customer Interface."""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
@@ -90,7 +92,7 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
                 ]
 
     def test_customer_voipcall(self):
-        #response = self.client.post('/voipcall_report/',
+        # response = self.client.post('/voipcall_report/',
         #                data={'from_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d"),
         #                      'to_date': datetime.utcnow().replace(tzinfo=utc).strftime("%Y-%m-%d")})
         #self.assertEqual(response.status_code, 200)
@@ -126,6 +128,7 @@ class DialerCdrCustomerView(BaseAuthenticatedClient):
 
 
 class DialerCdrCeleryTaskTestCase(TestCase):
+
     """Test cases for celery task"""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
@@ -138,7 +141,7 @@ class DialerCdrCeleryTaskTestCase(TestCase):
         self.callrequest = Callrequest.objects.get(pk=1)
         self.campaign = Campaign.objects.get(pk=1)
 
-    #def test_init_callrequest(self):
+    # def test_init_callrequest(self):
     #    """Test that the ``init_callrequest``
     #    task runs with no errors, and returns the correct result."""
     #    result = init_callrequest.delay(self.callrequest.id, self.campaign.id, 30)
@@ -146,6 +149,7 @@ class DialerCdrCeleryTaskTestCase(TestCase):
 
 
 class DialerCdrModel(TestCase):
+
     """Test Callrequest, VoIPCall models"""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',

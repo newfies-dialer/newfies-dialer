@@ -38,6 +38,7 @@ def get_leg_type_list():
 
 
 class VoipSearchForm(SearchForm):
+
     """
     VoIP call Report Search Parameters
     """
@@ -87,6 +88,7 @@ class VoipSearchForm(SearchForm):
 
 
 class AdminVoipSearchForm(AdminSearchForm):
+
     """
     VoIP call Report Search Parameters
     """

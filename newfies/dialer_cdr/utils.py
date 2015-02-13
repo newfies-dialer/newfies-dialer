@@ -21,6 +21,7 @@ logger = get_task_logger(__name__)
 
 
 class BufferVoIPCall:
+
     """
     BufferVoIPCall stores VoIPCall (CDR) into a buffer and allow
     to save CDRs per bulk.
@@ -39,14 +40,14 @@ class BufferVoIPCall:
         Save voip call into buffer
         """
         if leg == 'aleg':
-            #A-Leg
+            # A-Leg
             leg_type = LEG_TYPE.A_LEG
             used_gateway = obj_callrequest.aleg_gateway
         else:
-            #B-Leg
+            # B-Leg
             leg_type = LEG_TYPE.B_LEG
             used_gateway = obj_callrequest.aleg_gateway
-            #This code is useful if we want to let the survey editor select the gateway
+            # This code is useful if we want to let the survey editor select the gateway
             # if obj_callrequest.content_object.__class__.__name__ == 'Survey':
             #     #Get the gateway from the App
             #     used_gateway = obj_callrequest.content_object.gateway
@@ -61,7 +62,7 @@ class BufferVoIPCall:
         logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
                      (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
-        #Get the first word only
+        # Get the first word only
         hangup_cause = hangup_cause.split()[0]
 
         if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
@@ -80,11 +81,11 @@ class BufferVoIPCall:
         else:
             disposition = 'FAILED'
 
-        #Note: Removed for test performance
-        #Note: Look at prefix PG module : https://github.com/dimitri/prefix
+        # Note: Removed for test performance
+        # Note: Look at prefix PG module : https://github.com/dimitri/prefix
         #prefix_obj = get_prefix_obj(phonenumber)
 
-        #Save this for bulk saving
+        # Save this for bulk saving
         self.list_voipcall.append(
             VoIPCall(
                 user_id=obj_callrequest.user_id,
@@ -95,7 +96,7 @@ class BufferVoIPCall:
                 callid=call_uuid,
                 callerid=callerid,
                 phone_number=phonenumber,
-                #dialcode=prefix_obj,
+                # dialcode=prefix_obj,
                 starting_date=starting_date,
                 duration=duration,
                 billsec=billsec,
@@ -119,15 +120,15 @@ def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
     This task will save the voipcall(CDR) to the DB,
     it will also reformat the disposition
     """
-    #TODO: following code is duplicated, see above
+    # TODO: following code is duplicated, see above
 
     used_gateway = callrequest.aleg_gateway
-    #Set Leg Type
+    # Set Leg Type
     if leg == 'aleg':
         leg_type = LEG_TYPE.A_LEG
     else:
         leg_type = LEG_TYPE.B_LEG
-    #Set AMD status
+    # Set AMD status
     if amd_status == 'machine':
         amd_status_id = VOIPCALL_AMD_STATUS.MACHINE
     else:
@@ -136,7 +137,7 @@ def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
     logger.debug('Create CDR - request_uuid=%s;leg=%d;hangup_cause=%s;billsec=%s;amd_status=%s' %
                  (request_uuid, leg_type, hangup_cause, str(billsec), amd_status))
 
-    #Get the first word only
+    # Get the first word only
     hangup_cause = hangup_cause.split()[0]
 
     if hangup_cause == 'NORMAL_CLEARING' or hangup_cause == 'ALLOTTED_TIMEOUT':
@@ -152,11 +153,11 @@ def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
     else:
         disposition = 'FAILED'
 
-    #Note: Removed for test performance
-    #Note: Look at prefix PG module : https://github.com/dimitri/prefix
+    # Note: Removed for test performance
+    # Note: Look at prefix PG module : https://github.com/dimitri/prefix
     #prefix_obj = get_prefix_obj(phonenumber)
 
-    #Save the VoIPCall
+    # Save the VoIPCall
     new_voipcall = VoIPCall(
         user_id=callrequest.user_id,
         request_uuid=request_uuid,
@@ -166,7 +167,7 @@ def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
         callid=call_uuid,
         callerid=callerid,
         phone_number=phonenumber,
-        #dialcode=prefix_obj,
+        # dialcode=prefix_obj,
         starting_date=starting_date,
         duration=duration,
         billsec=billsec,

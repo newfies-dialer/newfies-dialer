@@ -36,7 +36,6 @@ from django_lets_go.only_one_task import only_one
 from common_functions import debug_query
 from uuid import uuid1
 from time import sleep
-import re
 try:
     import ESL as ESL
 except ImportError:
@@ -80,9 +79,9 @@ def check_retrycall_completion(callrequest):
     # Check if subscriber is not completed and check if
     # subscriber.completion_count_attempt < campaign.completion_maxretry
     if (callrequest.subscriber.status == SUBSCRIBER_STATUS.COMPLETED
-       or callrequest.subscriber.completion_count_attempt >= callrequest.campaign.completion_maxretry
-       or not callrequest.campaign.completion_maxretry
-       or callrequest.campaign.completion_maxretry == 0):
+            or callrequest.subscriber.completion_count_attempt >= callrequest.campaign.completion_maxretry
+            or not callrequest.campaign.completion_maxretry
+            or callrequest.campaign.completion_maxretry == 0):
         logger.debug("Subscriber completed or limit reached!")
     else:
         # Increment subscriber.completion_count_attempt
@@ -294,7 +293,7 @@ def process_callevent(record):
     if (app_type == 'campaign' and opt_hangup_cause != 'NORMAL_CLEARING'
         and callrequest.call_type == CALLREQUEST_TYPE.ALLOW_RETRY) or \
        (app_type == 'campaign' and amd_status == 'machine' and callrequest.campaign.voicemail and
-        callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
+            callrequest.campaign.amd_behavior == AMD_BEHAVIOR.HUMAN_ONLY):
         # Update to Retry Done
         callrequest.call_type = CALLREQUEST_TYPE.RETRY_DONE
         callrequest.save()
@@ -303,7 +302,7 @@ def process_callevent(record):
 
         # check if we are allowed to retry on failure
         if ((callrequest.subscriber.count_attempt - 1) >= callrequest.campaign.maxretry
-           or not callrequest.campaign.maxretry):
+                or not callrequest.campaign.maxretry):
             logger.error("Not allowed retry - Maxretry (%d)" %
                          callrequest.campaign.maxretry)
             # Check here if we should try for completion
@@ -332,7 +331,7 @@ def process_callevent(record):
                 subscriber_id=callrequest.subscriber_id
             )
             new_callrequest.save()
-            #NOTE : implement a PID algorithm
+            # NOTE : implement a PID algorithm
             second_towait = callrequest.campaign.intervalretry
             debug_query(29)
 
@@ -342,10 +341,10 @@ def process_callevent(record):
                 countdown=second_towait)
 
     elif app_type == 'campaign':
-        #The Call is Answered and it's a campaign call
+        # The Call is Answered and it's a campaign call
         logger.info("Check for completion call")
 
-        #Check if we should relaunch a new call to achieve completion
+        # Check if we should relaunch a new call to achieve completion
         check_retrycall_completion(callrequest)
 
     elif (opt_hangup_cause != 'NORMAL_CLEARING' and app_type == 'alarm') or \
@@ -428,6 +427,7 @@ def callevent_processing():
 
 
 class task_pending_callevent(PeriodicTask):
+
     """
     A periodic task that checks the call events
 
@@ -589,7 +589,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 
             # Add App Vars
             args_list.append("campaign_id=%s,subscriber_id=%s,alarm_request_id=%s,used_gateway_id=%s,callrequest_id=%s,contact_id=%s" %
-                (campaign_id, subscriber_id, alarm_request_id, gateway_id, obj_callrequest.id, contact_id))
+                             (campaign_id, subscriber_id, alarm_request_id, gateway_id, obj_callrequest.id, contact_id))
             args_list.append(originate_dial_string)
 
             # Call Vars
@@ -722,6 +722,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 #         text = text.replace('{' + ind + '}', str(taglist[ind]))
 
 #     # replace the tags not found
+#     import re
 #     text = re.sub('{(\w+)}', '', text)
 #     return text
 

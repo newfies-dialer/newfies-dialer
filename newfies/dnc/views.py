@@ -436,13 +436,13 @@ def dnc_contact_import(request):
         error_msg = _('Duplicate DNC contact(s) %(dup_contact_cnt)s are not inserted!!') \
             % {'dup_contact_cnt': dup_contact_cnt}
 
-    data = RequestContext(request, {
+    data = {
         'form': form,
         'msg': msg,
         'error_msg': error_msg,
         'success_import_list': success_import_list,
         'type_error_import_list': type_error_import_list,
-    })
+    }
     return render_to_response('dnc/dnc_contact/import_dnc_contact.html', data, context_instance=RequestContext(request))
 
 

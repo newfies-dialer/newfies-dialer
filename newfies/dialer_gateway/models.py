@@ -95,7 +95,7 @@ class Gateway(Model):
                                        verbose_name=_("count in use"))
     maximum_call = models.IntegerField(verbose_name=_('max concurrent calls'),
                                        null=True, blank=True)
-    #gatewaygroup = models.ManyToManyField(GatewayGroup)
+    # gatewaygroup = models.ManyToManyField(GatewayGroup)
 
     class Meta:
         db_table = u'dialer_gateway'

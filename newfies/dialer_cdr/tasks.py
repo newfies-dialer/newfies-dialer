@@ -588,8 +588,8 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                 args_list.append("origination_caller_id_name='%s'" % obj_callrequest.caller_name)
 
             # Add App Vars
-            args_list.append("campaign_id=%s,subscriber_id=%s,alarm_request_id=%s,used_gateway_id=%s,callrequest_id=%s,contact_id=%s" %
-                             (campaign_id, subscriber_id, alarm_request_id, gateway_id, obj_callrequest.id, contact_id))
+            args_list.append("campaign_id=%s,subscriber_id=%s,alarm_request_id=%s,used_gateway_id=%s,callrequest_id=%s,contact_id=%s,dialout_phone_number=%s" %
+                             (campaign_id, subscriber_id, alarm_request_id, gateway_id, obj_callrequest.id, contact_id, obj_callrequest.phone_number))
             args_list.append(originate_dial_string)
 
             # Call Vars
@@ -623,16 +623,10 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             # Set time_limit
             try:
                 time_limit = int(time_limit)
+                if time_limit > 0:
+                    args_list.append("execute_on_answer='sched_hangup +%d ALLOTTED_TIMEOUT'" % time_limit)
             except ValueError:
-                time_limit = -1
-            # TODO : Fix time_limit - maybe implement this into Lua
-            # if time_limit > 0:
-            #     # create sched_hangup_id
-            #     sched_hangup_id = str(uuid1())
-            #     # create a new request uuid
-            #     request_uuid = str(uuid1())
-            #     args_list.append("api_on_answer_1='sched_api +%d %s hupall ALLOTTED_TIMEOUT'"
-            #         % (time_limit, sched_hangup_id))
+                logger.error('ValueError time_limit :> %s' % time_limit)
 
             # build originate string
             args_str = ','.join(args_list)

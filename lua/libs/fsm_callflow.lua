@@ -73,6 +73,7 @@ function FSMCall:init()
     self.callrequest_id = self.session:getVariable("callrequest_id")
     self.used_gateway_id = self.session:getVariable("used_gateway_id")
     self.alarm_request_id = self.session:getVariable("alarm_request_id")
+    self.dialout_phone_number = self.session:getVariable("dialout_phone_number")
 
     --This is needed for Inbound test
     if not self.campaign_id or self.campaign_id == 0 or not self.contact_id then
@@ -474,8 +475,8 @@ function FSMCall:next_node()
             session:setAutoHangup(false)
             -- callerid = self.db.campaign_info.callerid
             -- CallerID display at transfer will be the contact's phonenumber
-            callerid = self.destination_number
-            caller_id_name = self.destination_number
+            callerid = self.dialout_phone_number
+            caller_id_name = self.dialout_phone_number
             originate_timeout = self.db.campaign_info.calltimeout
             leg_timeout = self.db.campaign_info.calltimeout
 

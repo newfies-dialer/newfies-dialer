@@ -73,7 +73,7 @@ def get_multi_question_choice_list(section_id):
 
     for i in range(0, 10):
         if (obj_section.__dict__['key_' + str(i)]
-           and i not in keys_list):
+                and i not in keys_list):
             list_sq.append((i, '%s' % (obj_section.__dict__['key_' + str(i)])))
 
     list_sq.append(('any', _('Any other key')))
@@ -106,6 +106,7 @@ def get_rating_choice_list(section_id):
 
 
 class SurveyForm(SaveUserModelForm):
+
     """Survey ModelForm"""
 
     class Meta:
@@ -138,11 +139,12 @@ append_html_code_to_audio_field = """<a href="#" id="helpover" rel="popover" dat
 
 
 class PlayMessageSectionForm(ModelForm):
+
     """PlayMessageForm ModelForm"""
 
     class Meta:
         model = Section_template
-        #fields = ['type', 'survey', 'question',  'audiofile', 'completed']  # 'retries',
+        # fields = ['type', 'survey', 'question',  'audiofile', 'completed']  # 'retries',
 
     def __init__(self, user, *args, **kwargs):
         super(PlayMessageSectionForm, self).__init__(*args, **kwargs)
@@ -173,11 +175,12 @@ class PlayMessageSectionForm(ModelForm):
 
 
 class MultipleChoiceSectionForm(ModelForm):
+
     """MultipleChoiceSectionForm ModelForm"""
 
     class Meta:
         model = Section_template
-        #fields = ['type', 'survey', 'question', 'retries', 'timeout', 'audiofile', 'invalid_audiofile',
+        # fields = ['type', 'survey', 'question', 'retries', 'timeout', 'audiofile', 'invalid_audiofile',
         #          'key_0', 'key_1', 'key_2', 'key_3', 'key_4', 'key_5', 'key_6', 'key_7', 'key_8', 'key_9',
         #          'completed']
 
@@ -236,11 +239,12 @@ class MultipleChoiceSectionForm(ModelForm):
 
 
 class RatingSectionForm(ModelForm):
+
     """RatingSectionForm ModelForm"""
 
     class Meta:
         model = Section_template
-        #fields = ['type', 'survey', 'question', 'rating_laps',
+        # fields = ['type', 'survey', 'question', 'rating_laps',
         #          'retries', 'timeout', 'audiofile', 'invalid_audiofile', 'completed']
 
     def __init__(self, user, *args, **kwargs):
@@ -280,11 +284,12 @@ class RatingSectionForm(ModelForm):
 
 
 class CaptureDigitsSectionForm(ModelForm):
+
     """CaptureDigitsSectionForm ModelForm"""
 
     class Meta:
         model = Section_template
-        #fields = ['type', 'survey', 'question', 'validate_number', 'number_digits', 'min_number', 'max_number',
+        # fields = ['type', 'survey', 'question', 'validate_number', 'number_digits', 'min_number', 'max_number',
         #          'retries', 'timeout', 'audiofile', 'invalid_audiofile', 'completed']
 
     def __init__(self, user, *args, **kwargs):
@@ -338,6 +343,7 @@ class CaptureDigitsSectionForm(ModelForm):
 
 
 class RecordMessageSectionForm(ModelForm):
+
     """RecordMessageSectionForm ModelForm"""
 
     class Meta:
@@ -373,6 +379,7 @@ class RecordMessageSectionForm(ModelForm):
 
 
 class ConferenceSectionForm(ModelForm):
+
     """ConferenceSectionForm ModelForm"""
 
     class Meta:
@@ -408,6 +415,7 @@ class ConferenceSectionForm(ModelForm):
 
 
 class CallTransferSectionForm(ModelForm):
+
     """CallTransferSectionForm ModelForm"""
 
     class Meta:
@@ -443,6 +451,7 @@ class CallTransferSectionForm(ModelForm):
 
 
 class SMSSectionForm(ModelForm):
+
     """SMSSectionForm ModelForm"""
 
     class Meta:
@@ -482,6 +491,7 @@ class SMSSectionForm(ModelForm):
 
 
 class ScriptForm(ModelForm):
+
     """ScriptForm ModelForm"""
 
     class Meta:
@@ -502,6 +512,7 @@ class ScriptForm(ModelForm):
 
 
 class BranchingForm(ModelForm):
+
     """BranchingForm ModelForm"""
 
     class Meta:
@@ -535,10 +546,10 @@ class BranchingForm(ModelForm):
                 required=False)
 
         if (obj_section.type == SECTION_TYPE.PLAY_MESSAGE
-           or obj_section.type == SECTION_TYPE.RECORD_MSG
-           or obj_section.type == SECTION_TYPE.CALL_TRANSFER
-           or obj_section.type == SECTION_TYPE.CONFERENCE
-           or obj_section.type == SECTION_TYPE.SMS):
+                or obj_section.type == SECTION_TYPE.RECORD_MSG
+                or obj_section.type == SECTION_TYPE.CALL_TRANSFER
+                or obj_section.type == SECTION_TYPE.CONFERENCE
+                or obj_section.type == SECTION_TYPE.SMS):
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 
@@ -564,7 +575,7 @@ class BranchingForm(ModelForm):
                                 </label>
                             </div>
                             """ % (_('Any Other Key'), _('Invalid'))
-                            ), css_class=css_class),
+                        ), css_class=css_class),
                         css_class='row'
                     )
                 )
@@ -586,6 +597,7 @@ class BranchingForm(ModelForm):
 
 
 class SurveyReportForm(forms.Form):
+
     """Survey Report Form"""
     campaign = forms.ChoiceField(label=_('campaign'), required=False)
 
@@ -610,6 +622,7 @@ class SurveyReportForm(forms.Form):
 
 
 class SurveyDetailReportForm(SearchForm):
+
     """Survey Report Form"""
     survey_id = forms.ChoiceField(label=_('Survey'), required=False)
 
@@ -647,6 +660,7 @@ class SurveyDetailReportForm(SearchForm):
 
 
 class SurveyFileImport(forms.Form):
+
     """General Form : file upload"""
     name = forms.CharField(label=_('Survey Name'), required=True)
     survey_file = forms.FileField(label=_("Upload file"), required=True, help_text=_("browse text file"),
@@ -676,7 +690,9 @@ class SurveyFileImport(forms.Form):
 
 
 class SealSurveyForm(SurveyFileImport):
+
     """General Form : SealSurveyForm"""
+
     def __init__(self, *args, **kwargs):
         super(SealSurveyForm, self).__init__(*args, **kwargs)
         self.fields.keyOrder = ['name']

@@ -25,11 +25,9 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'dialer_settings', ['DialerSetting'])
 
-
     def backwards(self, orm):
         # Deleting model 'DialerSetting'
         db.delete_table('dialer_setting')
-
 
     models = {
         u'dialer_settings.dialersetting': {

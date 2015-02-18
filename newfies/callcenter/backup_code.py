@@ -23,6 +23,7 @@ from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class CallcenterAdminView(BaseAuthenticatedClient):
+
     """Test Function to check UserProfile Admin pages"""
 
     def test_admin_queue_view_list(self):
@@ -47,6 +48,7 @@ class CallcenterAdminView(BaseAuthenticatedClient):
 
 
 class CallcenterCustomerView(BaseAuthenticatedClient):
+
     """Test Function to check UserProfile Customer pages"""
 
     fixtures = ['dialer_setting.json', 'gateway.json',
@@ -85,7 +87,7 @@ class CallcenterCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 302)
 
         response = self.client.post('/module/queue/add/',
-            data={'manager': '1', 'strategy': 'xyz'})
+                                    data={'manager': '1', 'strategy': 'xyz'})
         self.assertEqual(response.status_code, 302)
 
     def test_queue_view_update(self):

@@ -15,17 +15,17 @@ from django.conf.urls import patterns
 
 
 urlpatterns = patterns('dialer_contact.views',
-    # Phonebook urls
-    (r'^phonebook/$', 'phonebook_list'),
-    (r'^phonebook/add/$', 'phonebook_add'),
-    (r'^phonebook/contact_count/$', 'get_contact_count'),
-    (r'^phonebook/del/(.+)/$', 'phonebook_del'),
-    (r'^phonebook/(.+)/$', 'phonebook_change'),
+                       # Phonebook urls
+                       (r'^phonebook/$', 'phonebook_list'),
+                       (r'^phonebook/add/$', 'phonebook_add'),
+                       (r'^phonebook/contact_count/$', 'get_contact_count'),
+                       (r'^phonebook/del/(.+)/$', 'phonebook_del'),
+                       (r'^phonebook/(.+)/$', 'phonebook_change'),
 
-    # Contacts urls
-    (r'^contact/$', 'contact_list'),
-    (r'^contact/add/$', 'contact_add'),
-    (r'^contact_import/$', 'contact_import'),
-    (r'^contact/del/(.+)/$', 'contact_del'),
-    (r'^contact/(.+)/$', 'contact_change'),
-)
+                       # Contacts urls
+                       (r'^contact/$', 'contact_list'),
+                       (r'^contact/add/$', 'contact_add'),
+                       (r'^contact_import/$', 'contact_import'),
+                       (r'^contact/del/(.+)/$', 'contact_del'),
+                       (r'^contact/(.+)/$', 'contact_change'),
+                       )

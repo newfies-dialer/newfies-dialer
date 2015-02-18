@@ -3,7 +3,7 @@ import os
 from django.conf import settings, global_settings
 
 
-#TODO : https://github.com/pinax/pinax/blob/master/tests/runner.py
+# TODO : https://github.com/pinax/pinax/blob/master/tests/runner.py
 # build_app_list
 def configure(nose_args):
     if not settings.configured:
@@ -18,7 +18,7 @@ def configure(nose_args):
                 }
             },
             INSTALLED_APPS=[
-                #admin tool apps
+                # admin tool apps
                 'admin_tools',
                 'admin_tools.theming',
                 'admin_tools.menu',
@@ -69,7 +69,7 @@ def configure(nose_args):
                 "django.core.context_processors.csrf",
                 "django.contrib.messages.context_processors.messages",
                 "context_processors.newfies_version",
-                #needed by Sentry
+                # needed by Sentry
                 "django.core.context_processors.request",
             ),
             TEMPLATE_DIRS=(

@@ -38,6 +38,7 @@ import tablib
 
 
 class SMSCampaignAdmin(GenericAdminModelAdmin):
+
     """
     Allows the administrator to view and modify certain attributes
     of a SMSCampaign.
@@ -72,9 +73,9 @@ class SMSCampaignAdmin(GenericAdminModelAdmin):
     def get_urls(self):
         urls = super(SMSCampaignAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^$', self.admin_site.admin_view(self.changelist_view)),
-            (r'^add/$', self.admin_site.admin_view(self.add_view)),
-        )
+                           (r'^$', self.admin_site.admin_view(self.changelist_view)),
+                           (r'^add/$', self.admin_site.admin_view(self.add_view)),
+                           )
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
@@ -103,6 +104,7 @@ admin.site.register(SMSCampaign, SMSCampaignAdmin)
 
 
 class SMSCampaignSubscriberAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify certain attributes
     of a SMSCampaignSubscriber."""
     list_display = ('id', 'contact', 'sms_campaign',
@@ -115,6 +117,7 @@ admin.site.register(SMSCampaignSubscriber, SMSCampaignSubscriberAdmin)
 
 
 class SMSMessageAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify certain attributes
     of a SMSMessage."""
     can_add = True
@@ -138,10 +141,10 @@ class SMSMessageAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(SMSMessageAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^$', self.admin_site.admin_view(self.changelist_view)),
-            (r'^sms_daily_report/$', self.admin_site.admin_view(self.sms_daily_report)),
-            (r'^export_sms_report/$', self.admin_site.admin_view(self.export_sms_report)),
-        )
+                           (r'^$', self.admin_site.admin_view(self.changelist_view)),
+                           (r'^sms_daily_report/$', self.admin_site.admin_view(self.sms_daily_report)),
+                           (r'^export_sms_report/$', self.admin_site.admin_view(self.export_sms_report)),
+                           )
         return my_urls + urls
 
     def changelist_view(self, request, extra_context=None):
@@ -186,10 +189,10 @@ class SMSMessageAdmin(admin.ModelAdmin):
         ChangeList = self.get_changelist(request)
         try:
             cl = ChangeList(request, self.model, self.list_display,
-                self.list_display_links, self.list_filter, self.date_hierarchy,
-                self.search_fields, self.list_select_related,
-                self.list_per_page, self.list_max_show_all, self.list_editable,
-                self)
+                            self.list_display_links, self.list_filter, self.date_hierarchy,
+                            self.search_fields, self.list_select_related,
+                            self.list_per_page, self.list_max_show_all, self.list_editable,
+                            self)
         except IncorrectLookupParameters:
             if ERROR_FLAG in request.GET.keys():
                 return render_to_response('admin/invalid_setup.html',
@@ -200,7 +203,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
         if request.META['QUERY_STRING'] == '':
             tday = datetime.utcnow().replace(tzinfo=utc)
             kwargs['send_date__gte'] = datetime(tday.year, tday.month, tday.day,
-                0, 0, 0, 0).replace(tzinfo=utc)
+                                                0, 0, 0, 0).replace(tzinfo=utc)
             cl.root_query_set.filter(**kwargs)
 
         cl.formset = None
@@ -208,7 +211,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
         request.session['admin_sms_record_qs'] = cl.root_query_set
 
         selection_note_all = ungettext('%(total_count)s selected',
-            'All %(total_count)s selected', cl.result_count)
+                                       'All %(total_count)s selected', cl.result_count)
 
         ctx = {
             'selection_note': _('0 of %(cnt)s selected') % {'cnt': len(cl.result_list)},
@@ -238,7 +241,7 @@ class SMSMessageAdmin(admin.ModelAdmin):
             tday = datetime.utcnow().replace(tzinfo=utc)
             if len(kwargs) == 0:
                 kwargs['send_date__gte'] = datetime(tday.year, tday.month, tday.day,
-                    0, 0, 0, 0).replace(tzinfo=utc)
+                                                    0, 0, 0, 0).replace(tzinfo=utc)
 
         select_data = {"send_date": "SUBSTR(CAST(send_date as CHAR(30)),1,10)"}
 

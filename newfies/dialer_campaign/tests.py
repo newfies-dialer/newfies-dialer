@@ -31,6 +31,7 @@ from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class DialerCampaignView(BaseAuthenticatedClient):
+
     """Test cases for Campaign, Subscriber Admin Interface."""
 
     def test_admin_campaign_view_list(self):
@@ -85,6 +86,7 @@ class DialerCampaignView(BaseAuthenticatedClient):
 
 
 class DialerCampaignCustomerView(BaseAuthenticatedClient):
+
     """Test cases for Campaign, Subscriber Customer Interface."""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
@@ -268,6 +270,7 @@ class DialerCampaignCustomerView(BaseAuthenticatedClient):
 
 
 class DialerCampaignCeleryTaskTestCase(TestCase):
+
     """Test cases for celery task"""
 
     fixtures = ['auth_user.json', 'gateway.json',
@@ -303,6 +306,7 @@ class DialerCampaignCeleryTaskTestCase(TestCase):
 
 
 class DialerCampaignModel(TestCase):
+
     """Test Campaign, Subscriber models"""
 
     fixtures = ['auth_user.json', 'gateway.json',
@@ -354,7 +358,7 @@ class DialerCampaignModel(TestCase):
         Campaign.objects.get_running_campaign()
         Campaign.objects.get_expired_campaign()
         dialersetting = DialerSetting.objects.get(pk=1)
-        #self.user.get_profile().dialersetting
+        # self.user.get_profile().dialersetting
         common_contact_authorization(dialersetting, '1234567890')
 
         # status = 1

@@ -25,6 +25,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class AlarmRequestViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows alarm request to be viewed or edited.
     """

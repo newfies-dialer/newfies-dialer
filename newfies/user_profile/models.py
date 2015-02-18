@@ -33,6 +33,7 @@ def generate_key():
 
 
 class Profile_abstract(models.Model):
+
     """This defines the Survey template
 
     **Attributes**:
@@ -76,6 +77,7 @@ class Profile_abstract(models.Model):
 
 
 class UserProfile(Profile_abstract):
+
     """This defines extra features for the user
 
     **Relationships**:
@@ -89,7 +91,7 @@ class UserProfile(Profile_abstract):
     userprofile_gateway = models.ManyToManyField(Gateway, verbose_name=_('gateway'))
     dialersetting = models.ForeignKey(DialerSetting, verbose_name=_('dialer settings'),
                                       null=True, blank=True)
-    #Used for tastypie
+    # Used for tastypie
     #key = models.CharField(max_length=256, blank=True, default='')
 
     class Meta:
@@ -112,6 +114,7 @@ class UserProfile(Profile_abstract):
 
 
 class Manager(User):
+
     """
     Manager are user that have access to the Customer/Manager interface.
     They don't have access to the admin.
@@ -134,6 +137,7 @@ class Manager(User):
 
 
 class Staff(User):
+
     """Admin - Super User
     Staff are user that have access to the admin interface with restriction.
     They can apply few changes on the admin UI based on their permission.
@@ -156,6 +160,7 @@ class Staff(User):
 
 
 class CalendarUser(User):
+
     """Calendar User Model"""
 
     class Meta:
@@ -180,6 +185,7 @@ class CalendarUser(User):
 
 
 class CalendarUserProfile(Profile_abstract):
+
     """This defines extra features for the AR_user
 
     **Attributes**:

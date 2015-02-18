@@ -16,13 +16,13 @@ from django.contrib.auth import login
 
 from agent.models import Agent, AgentProfile
 from agent.serializers import (AgentSerializer, AgentProfileSerializer,
-    AgentPasswordSerializer, AgentSubscriberSerializer)
+                               AgentPasswordSerializer, AgentSubscriberSerializer)
 from agent.permission import IsOwnerOrReadOnly
 from rest_framework import viewsets
 # from django.contrib.auth.models import User
 from rest_framework import permissions
 from rest_framework.authentication import (TokenAuthentication,
-    SessionAuthentication)
+                                           SessionAuthentication)
 
 from rest_framework.views import APIView
 from rest_framework import status
@@ -38,12 +38,14 @@ from dialer_cdr.constants import CALLREQUEST_STATUS
 from callcenter.models import CallAgent
 import json
 
-#review security
-#make sure to display and allow change only on agent / not admin
+# review security
+# make sure to display and allow change only on agent / not admin
 
-#TODO Add TokenAuthentication / SessionAuthentication
+# TODO Add TokenAuthentication / SessionAuthentication
+
 
 class AgentViewSet(viewsets.ModelViewSet):
+
     """
     This viewset automatically provides `list` and `detail` actions.
     """
@@ -54,6 +56,7 @@ class AgentViewSet(viewsets.ModelViewSet):
 
 
 class AgentPasswordViewSet(viewsets.ModelViewSet):
+
     """
     This viewset automatically provides `list` and `detail` actions.
     """
@@ -65,6 +68,7 @@ class AgentPasswordViewSet(viewsets.ModelViewSet):
 
 
 class AgentProfileViewSet(viewsets.ModelViewSet):
+
     """
     This viewset automatically provides `list` and `detail` actions.
     """
@@ -77,6 +81,7 @@ class AgentProfileViewSet(viewsets.ModelViewSet):
 
 
 class AgentSubscriberViewSet(viewsets.ModelViewSet):
+
     """
     This viewset automatically provides `list` and `detail` actions.
     """
@@ -122,7 +127,7 @@ class AgentQueueStatusViewSet(APIView):
             # No calls are waiting
             return Response(data)
 
-        #print call_agent
+        # print call_agent
         last_callrequest = call_agent.callrequest
 
         request_uuid = last_callrequest.request_uuid
@@ -167,7 +172,7 @@ class AgentQueueStatusViewSet(APIView):
         return Response(data)
 
 
-### Login part
+# Login part
 class AgentAuthTokenSerializer(serializers.Serializer):
     username = serializers.CharField()
     password = serializers.CharField()
@@ -197,7 +202,7 @@ class AgentAuthTokenSerializer(serializers.Serializer):
             raise serializers.ValidationError('Must include "username" and "password"')
 
 
-#TODO: Review this and see if we can do an other approach without using that hack
+# TODO: Review this and see if we can do an other approach without using that hack
 class ObtainAuthTokenLogin(APIView):
     throttle_classes = ()
     permission_classes = ()

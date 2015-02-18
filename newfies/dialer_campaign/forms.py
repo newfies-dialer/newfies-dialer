@@ -52,6 +52,7 @@ def get_object_choices(available_objects):
 
 
 class CampaignForm(ModelForm):
+
     """
     Campaign ModelForm
     """
@@ -125,17 +126,17 @@ class CampaignForm(ModelForm):
                         Div('caller_name', css_class=css_class),
                         Div('content_object', css_class=css_class),
                         css_class='row'
-                    ),
+                ),
                     Div(
                         Div('extra_data', css_class=css_class),
                         Div('dnc', css_class=css_class),
                         Div('description', css_class=css_class),
                         Div('phonebook', css_class=css_class),
                         css_class='row'
-                    ),
+                ),
                     form_action,
                     css_class='well'
-                    ),
+                ),
                 Tab('Dialer',
                     Div(
                         Div(Fieldset(_('Dialer Settings')), css_class='col-md-12'),
@@ -189,10 +190,10 @@ class CampaignForm(ModelForm):
                                 Div('amd_behavior', css_class=css_class),
                                 Div('voicemail_audiofile', css_class=css_class),
                                 css_class='row'
-                            ),
-                            form_action,
-                            css_class='well'
-                            )
+            ),
+                form_action,
+                css_class='well'
+            )
             self.helper.layout[1].insert(2, amd_layot)
         # hidden var
         self.helper.layout.append(Field('selected_phonebook'))
@@ -307,6 +308,7 @@ class CampaignForm(ModelForm):
 
 
 class DuplicateCampaignForm(ModelForm):
+
     """
     DuplicateCampaignForm ModelForm
     """
@@ -338,6 +340,7 @@ class DuplicateCampaignForm(ModelForm):
 
 
 class CampaignAdminForm(ModelForm):
+
     """Admin Campaign ModelForm"""
 
     class Meta:
@@ -359,6 +362,7 @@ class CampaignAdminForm(ModelForm):
 
 
 class SubscriberReportForm(SearchForm):
+
     """SubscriberReportForm Admin Form"""
     campaign_id = forms.ChoiceField(label=_('campaign'), required=True)
 
@@ -374,6 +378,7 @@ class SubscriberReportForm(SearchForm):
 
 
 class SubscriberAdminForm(ModelForm):
+
     """SubscriberAdminForm"""
 
     class Meta:
@@ -391,6 +396,7 @@ for i in SUBSCRIBER_STATUS:
 
 
 class SubscriberSearchForm(SearchForm):
+
     """Search Form on Subscriber List"""
     campaign_id = forms.ChoiceField(label=_('Campaign'), required=True)
     #agent_id = forms.ChoiceField(label=_('agent'), required=True)

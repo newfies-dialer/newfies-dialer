@@ -20,11 +20,13 @@ from adminsortable.admin import SortableAdmin, SortableTabularInline
 
 
 class SectionTemplateInline(SortableTabularInline):
+
     """Inline Section Template"""
     model = Section_template
 
 
 class SurveyTemplateAdmin(admin.ModelAdmin):
+
     """
     Allows the administrator to view and modify survey.
     """
@@ -36,6 +38,7 @@ admin.site.register(Survey_template, SurveyTemplateAdmin)
 
 
 class BranchingTemplateAdmin(admin.ModelAdmin):
+
     """
     Allows the administrator to view and modify branching.
     """
@@ -46,13 +49,15 @@ class BranchingTemplateAdmin(admin.ModelAdmin):
 admin.site.register(Branching_template, BranchingTemplateAdmin)
 
 
-#Section, Survey and Branching for Admin
+# Section, Survey and Branching for Admin
 class SectionInline(SortableTabularInline):
+
     """Inline Section"""
     model = Section
 
 
 class SurveyAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify survey."""
 
     inlines = [SectionInline]
@@ -63,6 +68,7 @@ admin.site.register(Survey, SurveyAdmin)
 
 
 class SectionTemplateAdmin(SortableAdmin):
+
     """Allows the administrator to view and modify survey question."""
 
     list_display = ('id', 'survey', 'created_date')
@@ -73,6 +79,7 @@ admin.site.register(Section_template, SectionTemplateAdmin)
 
 
 class SectionAdmin(SortableAdmin):
+
     """Allows the administrator to view and modify survey question."""
 
     list_display = ('id', 'survey', 'created_date')
@@ -83,6 +90,7 @@ admin.site.register(Section, SectionAdmin)
 
 
 class BranchingAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify branching."""
 
     list_display = ('id', 'keys', 'section', 'goto', 'created_date')
@@ -93,6 +101,7 @@ admin.site.register(Branching, BranchingAdmin)
 
 
 class ResultAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify survey results."""
 
     list_display = ('id', 'callrequest', 'section', 'response',
@@ -106,6 +115,7 @@ admin.site.register(Result, ResultAdmin)
 
 
 class ResultAggregateAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify survey aggregated result."""
 
     list_display = ('id', 'survey', 'section', 'response',

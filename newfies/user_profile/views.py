@@ -43,7 +43,7 @@ def customer_detail_change(request):
     try:
         user_detail_extened = UserProfile.objects.get(user=user_detail)
     except UserProfile.DoesNotExist:
-        #create UserProfile
+        # create UserProfile
         user_detail_extened = UserProfile(user=user_detail)
         #DEMO / Disable
         if not settings.DEMO_MODE:

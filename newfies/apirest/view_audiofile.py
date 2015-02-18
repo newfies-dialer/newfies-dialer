@@ -25,6 +25,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class AudioFileViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows audio_files to be viewed or edited.
     """

@@ -461,15 +461,15 @@ def contact_import(request):
         total_rows = len(list(records))
         BULK_SIZE = 1000
         csv_data = csv.reader(request.FILES['csv_file'], delimiter='|', quotechar='"')
-        #Get Phonebook Obj
+        # Get Phonebook Obj
         phonebook = get_object_or_404(Phonebook, pk=request.POST['phonebook'], user=request.user)
-        #Read each Row
+        # Read each Row
         for row in csv_data:
             row = striplist(row)
             if not row or str(row[0]) == 0:
                 continue
 
-            #Check field type
+            # Check field type
             if not int(row[5]):
                 error_msg = _("invalid value for import! please check the import samples or phonebook is not valid")
                 type_error_import_list.append(row)
@@ -507,11 +507,11 @@ def contact_import(request):
             contact_cnt = contact_cnt + 1
 
             if contact_cnt < 100:
-                #We want to display only 100 lines of the success import
+                # We want to display only 100 lines of the success import
                 success_import_list.append(row)
 
             if contact_cnt % BULK_SIZE == 0:
-                #Bulk insert
+                # Bulk insert
                 Contact.objects.bulk_create(bulk_record)
                 bulk_record = []
 
@@ -519,7 +519,7 @@ def contact_import(request):
         Contact.objects.bulk_create(bulk_record)
         bulk_record = []
 
-    #check if there is contact imported
+    # check if there is contact imported
     if contact_cnt > 0:
         msg = _('%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s row(s)!') \
             % {'contact_cnt': contact_cnt, 'total_rows': total_rows}

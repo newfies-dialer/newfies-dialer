@@ -22,6 +22,7 @@ import re
 
 
 class Phonebook(Model):
+
     """This defines the Phonebook
 
     **Attributes**:
@@ -51,7 +52,7 @@ class Phonebook(Model):
         verbose_name_plural = _("phonebooks")
 
     def __unicode__(self):
-            return u"%s" % self.name
+        return u"%s" % self.name
 
     def phonebook_contacts(self):
         """This will return a count of the contacts in the phonebook"""
@@ -61,6 +62,7 @@ class Phonebook(Model):
 
 
 class Contact(Model):
+
     """This defines the Contact
 
     **Attributes**:
@@ -111,7 +113,7 @@ class Contact(Model):
         verbose_name_plural = _("contacts")
 
     def __unicode__(self):
-        #this will be used by duplicate_contact
+        # this will be used by duplicate_contact
         return u"%s" % (self.contact)
 
     def contact_name(self):

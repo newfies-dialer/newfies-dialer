@@ -72,3 +72,6 @@ doc_html:
 
 doc_pdf:
 	cd docs && rm -rf build/latex && rm -rf build/doctrees && make latexpdf
+
+autopep8:
+	autopep8 --ignore E501 -i -r *

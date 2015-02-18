@@ -19,6 +19,7 @@ from django_lets_go.utils import BaseAuthenticatedClient
 
 
 class ModMailerAdminView(BaseAuthenticatedClient):
+
     """
     Test cases for mail MailTemplate list Admin Interface.
     """

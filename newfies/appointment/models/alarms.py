@@ -14,6 +14,7 @@ from mod_sms.models import SMSTemplate
 
 
 class Alarm(models.Model):
+
     """
     This is for Alarms / Reminders on events models.
     """
@@ -33,7 +34,7 @@ class Alarm(models.Model):
                                       verbose_name=_('retry delay'),
                                       help_text=_("Seconds to wait between retries"))
     num_attempt = models.IntegerField(null=False, blank=False, default=0,
-                                     verbose_name=_('number of attempts'))
+                                      verbose_name=_('number of attempts'))
     method = models.IntegerField(choices=list(ALARM_METHOD),
                                  default=ALARM_METHOD.CALL,
                                  verbose_name=_("method"), blank=False, null=False)
@@ -60,7 +61,7 @@ class Alarm(models.Model):
     # When transfering for reschedule
     phonenumber_transfer = models.CharField(max_length=50, blank=True, null=True,
                                             verbose_name=_("phone number transfer"))
-    #send SMS if all attempts to contact that persons didn't work
+    # send SMS if all attempts to contact that persons didn't work
     phonenumber_sms_failure = models.CharField(max_length=50, blank=True, null=True,
                                                verbose_name=_("phone number SMS failure"))
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('created date'))
@@ -105,7 +106,7 @@ class Alarm(models.Model):
             mail_template=self.mail_template,
             sms_template=self.sms_template,
             date_start_notice=next_occurrence,
-            #result=self.result,
+            # result=self.result,
             url_cancel=self.url_cancel,
             phonenumber_sms_failure=self.phonenumber_sms_failure,
             url_confirm=self.url_confirm,
@@ -136,6 +137,7 @@ class Alarm(models.Model):
 
 
 class AlarmRequest(models.Model):
+
     """
     AlarmRequest : request for Alarms
     """

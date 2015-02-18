@@ -17,6 +17,7 @@ from audiofield.models import AudioFile
 
 
 class AudioFileSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Read**:
 

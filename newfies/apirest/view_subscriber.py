@@ -26,6 +26,7 @@ logger = logging.getLogger('newfies.filelog')
 
 
 class SubscriberViewSet(APIView):
+
     """SubscriberViewSet"""
     authentication = (BasicAuthentication, SessionAuthentication)
 
@@ -85,7 +86,7 @@ class SubscriberViewSet(APIView):
                 # for example:- c_campaign.imported_phonebook = 1,2,3
                 # So convert imported_phonebook string into int list
                 imported_phonebook = map(int,
-                    c_campaign.imported_phonebook.split(','))
+                                         c_campaign.imported_phonebook.split(','))
 
             phonebook_list = c_campaign.phonebook \
                 .values_list('id', flat=True) \

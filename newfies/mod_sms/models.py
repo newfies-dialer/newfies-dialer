@@ -44,7 +44,7 @@ def build_kwargs_runnning_smscampaign():
         tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
     # s_time = "%s:%s:%s" % (str(tday.hour), str(tday.minute), str(tday.second))
-    #Fix for timezone
+    # Fix for timezone
     today = datetime.now()
     kwargs['daily_start_time__lte'] = today.strftime('%H:%M:%S')
     kwargs['daily_stop_time__gte'] = today.strftime('%H:%M:%S')
@@ -56,6 +56,7 @@ def build_kwargs_runnning_smscampaign():
 
 
 class SMSCampaignManager(models.Manager):
+
     """SMSCampaign Manager"""
 
     def get_running_sms_campaign(self):
@@ -82,6 +83,7 @@ def set_expirationdate():
 
 
 class SMSCampaign(Model):
+
     """This defines the SMSCampaign
 
     **Attributes**:
@@ -134,12 +136,12 @@ class SMSCampaign(Model):
     callerid = models.CharField(max_length=80, blank=True,
                                 verbose_name=_("Caller ID Number"),
                                 help_text=_("outbound Caller ID"))
-    #General Starting & Stopping date
+    # General Starting & Stopping date
     startingdate = models.DateTimeField(default=now, verbose_name=_('start'))
     stoppeddate = models.DateTimeField(default=set_expirationdate, verbose_name=_('stopped'))
     expirationdate = models.DateTimeField(default=set_expirationdate, verbose_name=_('finish'))
 
-    #Per Day Starting & Stopping Time
+    # Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00')
     daily_stop_time = models.TimeField(default='23:59:59')
     monday = models.BooleanField(default=True, verbose_name=_('monday'))
@@ -149,7 +151,7 @@ class SMSCampaign(Model):
     friday = models.BooleanField(default=True, verbose_name=_('friday'))
     saturday = models.BooleanField(default=True, verbose_name=_('saturday'))
     sunday = models.BooleanField(default=True, verbose_name=_('sunday'))
-    #Campaign Settings
+    # Campaign Settings
     frequency = models.IntegerField(default='10', blank=True, null=True,
                                     verbose_name=_('frequency'),
                                     help_text=_("SMS per minute"))
@@ -283,7 +285,7 @@ class SMSCampaign(Model):
         # The list of active contacts that doesn't
         # exist in SMSCampaignSubscriber
 
-        #TODO : This might kill performance on huge phonebook...
+        # TODO : This might kill performance on huge phonebook...
         query = \
             'SELECT dc.id, dc.phonebook_id, dc.contact, dc.last_name, \
             dc.first_name, dc.email, dc.city, dc.description, \
@@ -411,6 +413,7 @@ class SMSCampaign(Model):
 
 
 class SMSCampaignSubscriber(Model):
+
     """This defines the Contact imported to a SMSCampaign
 
     **Attributes**:
@@ -437,7 +440,7 @@ class SMSCampaignSubscriber(Model):
                                         verbose_name=_("last attempt"))
     count_attempt = models.IntegerField(null=True, blank=True, default='0',
                                         verbose_name=_("count attempts"))
-    #We duplicate contact to create a unique constraint
+    # We duplicate contact to create a unique constraint
     duplicate_contact = models.CharField(max_length=90,
                                          verbose_name=_("contact"))
     status = models.IntegerField(choices=list(SMS_SUBSCRIBER_STATUS),
@@ -455,7 +458,7 @@ class SMSCampaignSubscriber(Model):
         unique_together = ['contact', 'sms_campaign']
 
     def __unicode__(self):
-            return u"%s" % str(self.id)
+        return u"%s" % str(self.id)
 
     def contact_name(self):
         if self.contact:
@@ -482,6 +485,7 @@ class SMSCampaignSubscriber(Model):
 
 
 class SMSMessage(Message):
+
     """extension on Message
 
     **Attributes**:
@@ -512,6 +516,7 @@ class SMSMessage(Message):
 
 
 class SMSTemplate(Model):
+
     """
     This table store the SMS Template
     """

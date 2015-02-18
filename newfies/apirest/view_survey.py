@@ -22,6 +22,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class SurveyViewSet(viewsets.ReadOnlyModelViewSet):
+
     """
     API endpoint that allows survey to be viewed.
     """

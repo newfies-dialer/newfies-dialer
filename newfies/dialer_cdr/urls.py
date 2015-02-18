@@ -15,7 +15,7 @@
 from django.conf.urls import patterns
 
 urlpatterns = patterns('dialer_cdr.views',
-    # VoIP Call Report urls
-    (r'^voipcall_report/$', 'voipcall_report'),
-    (r'^export_voipcall_report/$', 'export_voipcall_report'),
-)
+                       # VoIP Call Report urls
+                       (r'^voipcall_report/$', 'voipcall_report'),
+                       (r'^export_voipcall_report/$', 'export_voipcall_report'),
+                       )

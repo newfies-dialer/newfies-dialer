@@ -14,24 +14,24 @@
 from django.conf.urls import patterns
 
 urlpatterns = patterns('dialer_campaign.views',
-    #  Campaign urls
-    (r'^campaign/$', 'campaign_list'),
-    (r'^campaign/add/$', 'campaign_add'),
-    (r'^campaign/del/(.+)/$', 'campaign_del'),
-    (r'^campaign_duplicate/(.+)/$', 'campaign_duplicate'),
+                       #  Campaign urls
+                       (r'^campaign/$', 'campaign_list'),
+                       (r'^campaign/add/$', 'campaign_add'),
+                       (r'^campaign/del/(.+)/$', 'campaign_del'),
+                       (r'^campaign_duplicate/(.+)/$', 'campaign_duplicate'),
 
-    # Campaign Actions (start|stop|pause|abort)
-    (r'^campaign/update_campaign_status_cust/(\d*)/(\d*)/$',
-        'update_campaign_status_cust'),
-    (r'^campaign/(.+)/$', 'campaign_change'),
-    # Campaign Actions (start|stop|pause|abort) for Admin UI
-    (r'^update_campaign_status_admin/(\d*)/(\d*)/$',
-        'update_campaign_status_admin'),
+                       # Campaign Actions (start|stop|pause|abort)
+                       (r'^campaign/update_campaign_status_cust/(\d*)/(\d*)/$',
+                        'update_campaign_status_cust'),
+                       (r'^campaign/(.+)/$', 'campaign_change'),
+                       # Campaign Actions (start|stop|pause|abort) for Admin UI
+                       (r'^update_campaign_status_admin/(\d*)/(\d*)/$',
+                        'update_campaign_status_admin'),
 
-    #  Subscriber urls
-    (r'^subscribers/$', 'subscriber_list'),
-    (r'^subscribers/export_subscriber/$', 'subscriber_export'),
+                       #  Subscriber urls
+                       (r'^subscribers/$', 'subscriber_list'),
+                       (r'^subscribers/export_subscriber/$', 'subscriber_export'),
 
-    # Send notification to admin regarding dialer setting
-    (r'^notify/admin/$', 'notify_admin'),
-)
+                       # Send notification to admin regarding dialer setting
+                       (r'^notify/admin/$', 'notify_admin'),
+                       )

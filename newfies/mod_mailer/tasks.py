@@ -65,6 +65,7 @@ def sendmail_task(current_mail_id):
 
 
 class mailspooler_pending(PeriodicTask):
+
     """A periodic task that spool mail that needs to be sent
 
     **Usage**:
@@ -85,7 +86,7 @@ class mailspooler_pending(PeriodicTask):
             return False
 
         for current_mailspooler in list_pending_mail:
-            #To avoid duplicate sending
+            # To avoid duplicate sending
             current_mailspooler.mailspooler_type = MAILSPOOLER_TYPE.IN_PROCESS  # In Process
             current_mailspooler.save()
             logger.info("Calling Task to send MAIL!")

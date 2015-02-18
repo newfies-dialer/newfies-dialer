@@ -39,8 +39,11 @@ APP_LABEL = _('VoIP report')
 
 
 class CallrequestAdmin(GenericAdminModelAdmin):
-    """Allows the administrator to view and modify certain attributes
-    of a Callrequest."""
+
+    """
+    Allows the administrator to view and modify certain attributes
+    of a Callrequest.
+    """
     content_type_whitelist = ('survey/survey', )
     fieldsets = (
         (_('Standard options'), {
@@ -54,7 +57,7 @@ class CallrequestAdmin(GenericAdminModelAdmin):
             'fields': ('extra_data', 'extra_dial_string', 'subscriber', 'completed'),
         }),
     )
-    #If we try to display user / content_type low the performance
+    # If we try to display user / content_type low the performance
     list_display = ('id', 'request_uuid', 'aleg_uuid', 'call_time',
                     'status', 'callerid', 'phone_number', 'call_type',
                     'completed', 'num_attempt', 'last_attempt_time', )
@@ -68,8 +71,11 @@ admin.site.register(Callrequest, CallrequestAdmin)
 
 
 class VoIPCallAdmin(admin.ModelAdmin):
-    """Allows the administrator to view and modify certain attributes
-    of a VoIPCall."""
+
+    """
+    Allows the administrator to view and modify certain attributes
+    of a VoIPCall.
+    """
     can_add = False
     detail_title = _("Call Report")
     list_display = ('id', 'leg_type', 'callid', 'callerid', 'phone_number',
@@ -119,10 +125,10 @@ class VoIPCallAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(VoIPCallAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^$', self.admin_site.admin_view(self.changelist_view)),
-            (r'^voip_daily_report/$', self.admin_site.admin_view(self.voip_daily_report)),
-            (r'^export_voip_report/$', self.admin_site.admin_view(self.export_voip_report)),
-        )
+                           (r'^$', self.admin_site.admin_view(self.changelist_view)),
+                           (r'^voip_daily_report/$', self.admin_site.admin_view(self.voip_daily_report)),
+                           (r'^export_voip_report/$', self.admin_site.admin_view(self.export_voip_report)),
+                           )
         return my_urls + urls
 
     def changelist_view(self, request, extra_context=None):

@@ -39,7 +39,7 @@ def agent_login_form(request):
     template = 'agent/login_form.html'
     data = {}
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def agent_login(request):
@@ -49,7 +49,7 @@ def agent_login(request):
         'action': 'tabs-1',
     }
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def agent_logout(request):
@@ -59,7 +59,7 @@ def agent_logout(request):
         'action': 'tabs-2',
     }
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 def auth(request):
@@ -98,7 +98,7 @@ def agent_dashboard(request):
     }
 
     return render_to_response(template, data,
-        context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -166,7 +166,7 @@ def agent_detail(request):
         'user_password_form': user_password_form,
     }
     return render_to_response(template, data,
-           context_instance=RequestContext(request))
+                              context_instance=RequestContext(request))
 
 
 @login_required
@@ -211,7 +211,7 @@ def agent_detail_change(request):
                     request.user, request.POST, instance=user_detail_extened)
             action = 'tabs-1'
             if (user_detail_form.is_valid()
-               and user_detail_extened_form.is_valid()):
+                    and user_detail_extened_form.is_valid()):
                 #DEMO / Disable
                 if not settings.DEMO_MODE:
                     user_detail_form.save()
@@ -344,7 +344,7 @@ def agent_del(request, object_id):
             if agent_list:
                 user_list = agent_list.values_list('user_id', flat=True)
                 agents = Agent.objects.filter(pk__in=user_list)
-                request.session["msg"] = _('%(count)s agent(s) are deleted.')  % {'count': agent_list.count()}
+                request.session["msg"] = _('%(count)s agent(s) are deleted.') % {'count': agent_list.count()}
                 agents.delete()
         except:
             raise Http404

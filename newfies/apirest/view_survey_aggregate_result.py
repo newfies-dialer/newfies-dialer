@@ -22,6 +22,7 @@ logger = logging.getLogger('newfies.filelog')
 
 
 class SurveyAggregateResultViewSet(APIView):
+
     """
     List Result aggregate result per survey
 

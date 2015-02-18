@@ -21,6 +21,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class BranchingTemplateViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows content_type to be viewed or edited.
     """

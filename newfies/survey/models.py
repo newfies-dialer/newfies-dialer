@@ -25,6 +25,7 @@ from adminsortable.models import Sortable
 
 
 class Survey_abstract(models.Model):
+
     """This defines the Survey template
 
     **Attributes**:
@@ -56,6 +57,7 @@ class Survey_abstract(models.Model):
 
 
 class Survey_template(Survey_abstract):
+
     """
     This defines the Survey template
     """
@@ -95,15 +97,16 @@ class Survey_template(Survey_abstract):
 
         # Copy Sections Branching
         for section_temp in section_template:
-            #get the new created section
+            # get the new created section
             section = Section.objects.get(section_template=section_temp.id, survey=new_survey_obj)
-            #Now add the branching for this section
+            # Now add the branching for this section
             section_temp.copy_section_branching_template(section, new_survey_obj)
 
         return True
 
 
 class Survey(Survey_abstract):
+
     """
     This defines the Survey
     """
@@ -167,6 +170,7 @@ class Survey(Survey_abstract):
 
 
 class Section_abstract(Sortable):
+
     """This defines the question for survey
 
     **Attributes**:
@@ -215,7 +219,7 @@ class Section_abstract(Sortable):
                                 help_text=_('Example: hotel service rating'))
     # Script will be used by TTS
     script = models.CharField(max_length=1000, null=True, blank=True,
-        help_text=_('Example: Press a key between 1 to 5, press pound key when done or Hello {first_name} {last_name}, please press a key between 1 to 5'))
+                              help_text=_('Example: Press a key between 1 to 5, press pound key when done or Hello {first_name} {last_name}, please press a key between 1 to 5'))
     audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                   verbose_name=_("audio File"))
     retries = models.IntegerField(max_length=1, null=True, blank=True,
@@ -245,10 +249,10 @@ class Section_abstract(Sortable):
                              verbose_name=_("key 8"))
     key_9 = models.CharField(max_length=100, null=True, blank=True,
                              verbose_name=_("key 9"))
-    #Rating question
+    # Rating question
     rating_laps = models.IntegerField(max_length=1, default=9, null=True, blank=True,
                                       verbose_name=_("from 1 to X"))
-    #Capture Digits
+    # Capture Digits
     validate_number = models.BooleanField(default=True, verbose_name=_('check validity'))
     number_digits = models.IntegerField(max_length=2, null=True, blank=True,
                                         default="2", verbose_name=_("number of digits"))
@@ -256,10 +260,10 @@ class Section_abstract(Sortable):
                                         default=0, verbose_name=_("minimum"))
     max_number = models.BigIntegerField(max_length=50, null=True, blank=True,
                                         default=99, verbose_name=_("maximum"))
-    #Call Transfer
+    # Call Transfer
     phonenumber = models.CharField(max_length=50, null=True, blank=True,
                                    verbose_name=_("Phone Number / SIP URI"))
-    #Conference Room
+    # Conference Room
     conference = models.CharField(max_length=50, null=True, blank=True,
                                   verbose_name=_("conference number"))
 
@@ -313,6 +317,7 @@ class Section_abstract(Sortable):
 
 
 class Section_template(Section_abstract):
+
     """
     This defines the question for survey section template
     """
@@ -371,12 +376,13 @@ class Section_template(Section_abstract):
         branching_template = Branching_template.objects\
             .filter(section=self)
         for branching_temp in branching_template:
-            #copy the brancing
+            # copy the brancing
             branching_temp.copy_branching_template(section, new_survey_obj)
         return True
 
 
 class Section(Section_abstract):
+
     """
     This defines the question for survey section
     """
@@ -384,7 +390,7 @@ class Section(Section_abstract):
     invalid_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                           verbose_name=_("audio invalid input"),
                                           related_name='survey_invalid_audiofile')
-    #section_template_id is used to easy duplication
+    # section_template_id is used to easy duplication
     section_template = models.IntegerField(max_length=10, blank=True,
                                            default=0, null=True,
                                            verbose_name=_('section template ID'))
@@ -394,6 +400,7 @@ class Section(Section_abstract):
 
 
 class Branching_abstract(models.Model):
+
     """This defines the response of the survey section
 
     **Attributes**:
@@ -418,6 +425,7 @@ class Branching_abstract(models.Model):
 
 
 class Branching_template(Branching_abstract):
+
     """
     This defines the response of the survey section
     """
@@ -450,6 +458,7 @@ class Branching_template(Branching_abstract):
 
 
 class Branching(Branching_abstract):
+
     """
     This defines the response of the survey section
     """
@@ -464,6 +473,7 @@ class Branching(Branching_abstract):
 
 
 class Result(models.Model):
+
     """This gives survey result
 
     That will be difficult to scale for reporting
@@ -512,6 +522,7 @@ class Result(models.Model):
 
 
 class ResultAggregate(models.Model):
+
     """
     This gives survey result aggregate, used to display survey
     result in a more efficient way
@@ -550,10 +561,10 @@ def post_save_add_script(sender, **kwargs):
 
         # Add default branching
         if (obj.type == SECTION_TYPE.PLAY_MESSAGE
-           or obj.type == SECTION_TYPE.RECORD_MSG
-           or obj.type == SECTION_TYPE.CALL_TRANSFER
-           or obj.type == SECTION_TYPE.CONFERENCE
-           or obj.type == SECTION_TYPE.SMS):
+                or obj.type == SECTION_TYPE.RECORD_MSG
+                or obj.type == SECTION_TYPE.CALL_TRANSFER
+                or obj.type == SECTION_TYPE.CONFERENCE
+                or obj.type == SECTION_TYPE.SMS):
             Branching_template.objects.create(keys=0, section_id=obj.id, goto_id='')
 
         if obj.type == SECTION_TYPE.MULTI_CHOICE or \

@@ -21,6 +21,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class ContactViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows contact to be viewed or edited.
     """

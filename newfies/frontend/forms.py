@@ -21,6 +21,7 @@ from crispy_forms.bootstrap import FormActions
 
 
 class LoginForm(forms.Form):
+
     """Client Login Form"""
     user = forms.CharField(max_length=30, label=_('username'), required=True)
     user.widget.attrs['placeholder'] = _('Username')
@@ -46,6 +47,7 @@ class LoginForm(forms.Form):
 
 
 class DashboardForm(forms.Form):
+
     """Dashboard Form"""
     campaign = forms.ChoiceField(label=_('campaign'), required=False)
     search_type = forms.ChoiceField(label=_('type'), required=False, choices=list(SEARCH_TYPE),

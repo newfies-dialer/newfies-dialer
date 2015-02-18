@@ -21,6 +21,7 @@ from crispy_forms.layout import Layout, Fieldset, Div
 
 
 class AgentPasswordChangeForm(AdminPasswordChangeForm):
+
     def __init__(self, *args, **kwargs):
         self.helper = FormHelper()
         self.helper.form_tag = False
@@ -32,6 +33,7 @@ class AgentPasswordChangeForm(AdminPasswordChangeForm):
 
 
 class AgentCreationForm(UserCreationForm):
+
     def __init__(self, *args, **kwargs):
         super(AgentCreationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -44,6 +46,7 @@ class AgentCreationForm(UserCreationForm):
 
 
 class AgentNameChangeForm(UserChangeForm):
+
     """AgentNameChangeForm is used to change agent username"""
 
     class Meta:
@@ -56,6 +59,7 @@ class AgentNameChangeForm(UserChangeForm):
 
 
 class AgentProfileForm(ModelForm):
+
     """AgentProfileForm is used to change agent profile"""
 
     class Meta:
@@ -70,6 +74,7 @@ class AgentProfileForm(ModelForm):
 
 
 class AgentChangeDetailExtendForm(ModelForm):
+
     """A form used to change the detail of a agent in the manager UI."""
 
     class Meta:
@@ -102,11 +107,12 @@ class AgentChangeDetailExtendForm(ModelForm):
 
 
 class AgentDetailExtendForm(ModelForm):
+
     """A form used to change the detail of a agent in the Agent UI."""
 
     class Meta:
         model = AgentProfile
-        #fields = ["address", "city", "state", "country", "zip_code",
+        # fields = ["address", "city", "state", "country", "zip_code",
         #          "phone_no", "fax", "company_name", "company_website",
         #          "language", "note"]
 

@@ -18,6 +18,7 @@ from dnc.models import DNC, DNCContact
 
 
 class DNCContactSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

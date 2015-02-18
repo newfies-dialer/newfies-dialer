@@ -23,6 +23,7 @@ from audiofield.models import AudioFile
 
 
 class CalendarSetting(models.Model):
+
     """This defines the Calender settings to apply to a ar_user
 
     **Attributes**:
@@ -62,7 +63,7 @@ class CalendarSetting(models.Model):
                                      help_text=_("select gateway to use"))
     sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("SMS gateway"), null=True, blank=True,
                                     related_name="sms_gateway", help_text=_("select SMS gateway"))
-    #Voicemail Detection
+    # Voicemail Detection
     voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
     amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR), default=AMD_BEHAVIOR.ALWAYS,
                                        verbose_name=_("detection behaviour"), blank=True, null=True)

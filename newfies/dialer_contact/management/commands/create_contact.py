@@ -76,8 +76,8 @@ class Command(BaseCommand):
                 print "%d contacts created..." % k
             phone_no = ''.join([choice(chars) for i in range(length)])
 
-            #TODO: Use generate_series to speed up the contact creation
-            #INSERT INTO numbers (num) VALUES ( generate_series(1,1000));
+            # TODO: Use generate_series to speed up the contact creation
+            # INSERT INTO numbers (num) VALUES ( generate_series(1,1000));
 
             try:
                 Contact.objects.create(

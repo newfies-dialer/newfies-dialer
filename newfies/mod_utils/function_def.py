@@ -30,20 +30,20 @@ def get_common_campaign_status_url(id, status, status_link, STATUS_OF_CAMPAIGN):
 
               get_common_campaign_status_url(id, status, 'update_sms_campaign_status_cust/', SMS_CAMPAIGN_STATUS)
     """
-    #Store html for campaign control button
+    # Store html for campaign control button
     control_play_style = tpl_control_icon('fa-play')
     control_pause_style = tpl_control_icon('fa-pause')
     control_abort_style = tpl_control_icon('fa-eject')
     control_stop_style = tpl_control_icon('fa-stop')
 
-    #set different url for the campaign status
+    # set different url for the campaign status
     url_cpg_status = status_link + '%s' % str(id)
     url_cpg_start = '%s/%s/' % (url_cpg_status, STATUS_OF_CAMPAIGN.START)
     url_cpg_pause = '%s/%s/' % (url_cpg_status, STATUS_OF_CAMPAIGN.PAUSE)
     url_cpg_abort = '%s/%s/' % (url_cpg_status, STATUS_OF_CAMPAIGN.ABORT)
     url_cpg_stop = '%s/%s/' % (url_cpg_status, STATUS_OF_CAMPAIGN.END)
 
-    #according to the current status, disable link and change the button color
+    # according to the current status, disable link and change the button color
     if status == STATUS_OF_CAMPAIGN.START:
         url_cpg_start = '#'
         control_play_style = tpl_control_icon('fa-play')
@@ -57,7 +57,7 @@ def get_common_campaign_status_url(id, status, status_link, STATUS_OF_CAMPAIGN):
         url_cpg_stop = '#'
         control_stop_style = tpl_control_icon('fa-stop')
 
-    #return all the html button for campaign status management
+    # return all the html button for campaign status management
     return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> " \
         "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
         (url_cpg_start, _("Start"), control_play_style,

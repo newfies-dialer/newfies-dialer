@@ -18,6 +18,7 @@ from dialer_settings.models import DialerSetting
 
 
 class DialerSettingAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify certain attributes
     of a DialerSetting."""
     list_display = ('name', 'max_frequency', 'callmaxduration', 'maxretry',

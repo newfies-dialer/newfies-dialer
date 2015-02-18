@@ -35,6 +35,7 @@ from crispy_forms.layout import Layout, Div, Fieldset, HTML
 
 
 class CalendarUserPasswordChangeForm(AdminPasswordChangeForm):
+
     def __init__(self, *args, **kwargs):
         super(CalendarUserPasswordChangeForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper()
@@ -66,6 +67,7 @@ class CalendarUserCreationForm(UserCreationForm):
 
 
 class CalendarUserChangeDetailExtendForm(ModelForm):
+
     """A form used to change the detail of a CalendarUser in the manager UI."""
 
     class Meta:
@@ -104,6 +106,7 @@ class CalendarUserChangeDetailExtendForm(ModelForm):
 
 
 class CalendarUserProfileForm(ModelForm):
+
     """CalendarUserProfileForm"""
 
     class Meta:
@@ -116,6 +119,7 @@ class CalendarUserProfileForm(ModelForm):
 
 
 class CalendarSettingForm(SaveUserModelForm):
+
     """CalendarSetting ModelForm"""
 
     class Meta:
@@ -184,6 +188,7 @@ class CalendarSettingForm(SaveUserModelForm):
 
 
 class CalendarUserNameChangeForm(UserChangeForm):
+
     """CalendarUserNameChangeForm is used to change CalendarUser username"""
 
     class Meta:
@@ -195,6 +200,7 @@ class CalendarUserNameChangeForm(UserChangeForm):
 
 
 class CalendarForm(ModelForm):
+
     """CalendarForm"""
 
     class Meta:
@@ -218,6 +224,7 @@ class CalendarForm(ModelForm):
 
 
 class AdminCalendarForm(ModelForm):
+
     class Meta:
         model = Calendar
         fields = ['name', 'user', 'max_concurrent', ]
@@ -229,6 +236,7 @@ class AdminCalendarForm(ModelForm):
 
 
 class EventAdminForm(ModelForm):
+
     """Admin Event ModelForm"""
 
     class Meta:
@@ -243,6 +251,7 @@ class EventAdminForm(ModelForm):
 
 
 class EventForm(ModelForm):
+
     """Event ModelForm"""
 
     class Meta:
@@ -290,6 +299,7 @@ class EventForm(ModelForm):
 
 
 class EventSearchForm(forms.Form):
+
     """Event Search Form"""
     start_date = forms.CharField(
         label=_('Start Date'), required=False, max_length=20,
@@ -317,6 +327,7 @@ class EventSearchForm(forms.Form):
 
 
 class AlarmForm(ModelForm):
+
     """Alarm ModelForm"""
 
     class Meta:
@@ -349,10 +360,10 @@ class AlarmForm(ModelForm):
                         Div('mail_template', css_class=css_class),
                         Div('sms_template', css_class=css_class),
                         css_class='row'
-                    ),
+                ),
                     form_action,
                     css_class='well'
-                    ),
+                ),
                 Tab(_('Alarm Settings'),
                     Div(
                         Div('daily_start', css_class=css_class),
@@ -361,10 +372,10 @@ class AlarmForm(ModelForm):
                         Div('retry_delay', css_class=css_class),
                         Div('advance_notice', css_class=css_class),
                         css_class='row'
-                    ),
+                ),
                     form_action,
                     css_class='well'
-                    ),
+                ),
                 Tab(_('Result Settings'),
                     Div(
                         Div('result', css_class=css_class),
@@ -373,10 +384,10 @@ class AlarmForm(ModelForm):
                         Div('url_confirm', css_class=css_class),
                         Div('phonenumber_transfer', css_class=css_class),
                         css_class='row'
-                    ),
+                ),
                     form_action,
                     css_class='well'
-                    ),
+                ),
             ),
         )
 

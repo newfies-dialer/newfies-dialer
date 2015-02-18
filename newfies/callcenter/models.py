@@ -23,6 +23,7 @@ from callcenter.constants import STRATEGY, TIME_BASE_SCORE_TYPE, AGENT_CALLSTATE
 
 
 class CallAgent(Model):
+
     """This store the realtime callrequest the agent is receiving.
 
     An agent will at a given time have one callrequest only, this is the current
@@ -58,6 +59,7 @@ class CallAgent(Model):
 
 
 class Queue(Model):
+
     """This defines the callcenter queue
 
     **XML output**:
@@ -128,6 +130,7 @@ class Queue(Model):
 
 
 class Tier(Model):
+
     """This defines the callcenter tier
 
     **XML output**:
@@ -174,7 +177,7 @@ class Tier(Model):
         verbose_name_plural = _("tiers")
 
     def __unicode__(self):
-            return u"%s" % (self.id)
+        return u"%s" % (self.id)
 
 
 def post_save_tier(sender, **kwargs):

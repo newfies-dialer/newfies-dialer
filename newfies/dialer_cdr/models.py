@@ -29,6 +29,7 @@ from uuid import uuid1
 
 
 class CallRequestManager(models.Manager):
+
     """CallRequest Manager"""
 
     def get_pending_callrequest(self):
@@ -39,7 +40,7 @@ class CallRequestManager(models.Manager):
         kwargs['call_time__lte'] = datetime(
             tday.year, tday.month, tday.day, tday.hour, tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
-        #return Callrequest.objects.all()
+        # return Callrequest.objects.all()
         return Callrequest.objects.filter(**kwargs)
 
 
@@ -48,6 +49,7 @@ def str_uuid1():
 
 
 class Callrequest(Model):
+
     """This defines the call request, the dialer will read any new request
     and attempt to deliver the call.
 
@@ -117,11 +119,11 @@ class Callrequest(Model):
     campaign = models.ForeignKey(Campaign, null=True, blank=True, help_text=_("select Campaign"))
     aleg_gateway = models.ForeignKey(Gateway, null=True, blank=True, verbose_name=_("a-leg gateway"),
                                      help_text=_("select gateway"))
-    #used to define the Voice App or the Survey
+    # used to define the Voice App or the Survey
     content_type = models.ForeignKey(ContentType, verbose_name=_("type"))
     object_id = models.PositiveIntegerField(verbose_name=_("application"))
     content_object = generic.GenericForeignKey('content_type', 'object_id')
-    #used to flag if the call is completed
+    # used to flag if the call is completed
     completed = models.BooleanField(default=False, verbose_name=_('call completed'))
 
     extra_data = models.CharField(max_length=120, blank=True, verbose_name=_("extra data"),
@@ -135,7 +137,7 @@ class Callrequest(Model):
     # if the call fails, create a new pending instance and link them
     parent_callrequest = models.ForeignKey('self', null=True, blank=True)
 
-    #AlarmRequest call / if this value is set then this is not a campaign call
+    # AlarmRequest call / if this value is set then this is not a campaign call
     alarm_request_id = models.IntegerField(default=0, null=True, blank=True, verbose_name=_('alarm request id'))
 
     objects = CallRequestManager()
@@ -150,6 +152,7 @@ class Callrequest(Model):
 
 
 class VoIPCall(models.Model):
+
     """This gives information of all the calls made with
     the carrier charges and revenue of each call.
 

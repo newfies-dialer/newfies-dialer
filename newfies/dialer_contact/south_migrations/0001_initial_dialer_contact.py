@@ -37,14 +37,12 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'dialer_contact', ['Contact'])
 
-
     def backwards(self, orm):
         # Deleting model 'Phonebook'
         db.delete_table(u'dialer_phonebook')
 
         # Deleting model 'Contact'
         db.delete_table(u'dialer_contact')
-
 
     models = {
         u'auth.group': {

@@ -22,6 +22,7 @@ from dialer_contact.models import Contact
 
 
 class SubscriberPerCampaignList(APIView):
+
     """
     List all subscriber per campaign
     """

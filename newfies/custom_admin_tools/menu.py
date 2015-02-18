@@ -24,6 +24,7 @@ import newfies_dialer
 
 
 class CustomMenu(Menu):
+
     """Custom Menu for admin site."""
 
     def __init__(self, **kwargs):

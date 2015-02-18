@@ -19,7 +19,7 @@ from django_lets_go.utils import BaseAuthenticatedClient
 from dialer_audio.views import audio_list  # audio_add, audio_change, audio_del
 #import os
 
-#audio_file = open(
+# audio_file = open(
 #    os.path.abspath('../../newfies-dialer/newfies/') + '/dialer_audio/fixtures/testcase_audio.mp3', 'r'
 #)
 
@@ -29,6 +29,7 @@ audio_file = open(
 
 
 class AudioFileAdminView(BaseAuthenticatedClient):
+
     """Test cases for AudioFile Admin Interface."""
 
     def test_admin_audiofile_view_list(self):
@@ -43,6 +44,7 @@ class AudioFileAdminView(BaseAuthenticatedClient):
 
 
 class AudioFileCustomerView(BaseAuthenticatedClient):
+
     """Test cases for AudioFile Customer Interface."""
 
     fixtures = ['auth_user.json']

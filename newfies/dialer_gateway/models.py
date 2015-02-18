@@ -19,6 +19,7 @@ from dialer_gateway.constants import GATEWAY_STATUS
 
 
 class Gateway(Model):
+
     """This defines the trunk to deliver the Voip Calls.
     Each of the Gateways are routes that support different protocols and
     sets of rules to alter the dialed number.
@@ -50,51 +51,51 @@ class Gateway(Model):
     **Name of DB table**: dialer_gateway
     """
     name = models.CharField(unique=True, max_length=255,
-                verbose_name=_('name'), help_text=_("gateway name"))
+                            verbose_name=_('name'), help_text=_("gateway name"))
     status = models.IntegerField(choices=list(GATEWAY_STATUS),
-                default=GATEWAY_STATUS.ACTIVE,
-                verbose_name=_("gateway status"), blank=True, null=True)
+                                 default=GATEWAY_STATUS.ACTIVE,
+                                 verbose_name=_("gateway status"), blank=True, null=True)
     description = models.TextField(verbose_name=_('description'), blank=True,
-                               help_text=_("gateway provider notes"))
+                                   help_text=_("gateway provider notes"))
     addprefix = models.CharField(verbose_name=_('add prefix'),
-                max_length=60, blank=True)
+                                 max_length=60, blank=True)
     removeprefix = models.CharField(verbose_name=_('remove prefix'),
-                   max_length=60, blank=True)
+                                    max_length=60, blank=True)
     gateways = models.CharField(max_length=500, verbose_name=_("gateways"),
-                help_text=_('Gateway string to dial, ie "sofia/gateway/myprovider/"'))
+                                help_text=_('Gateway string to dial, ie "sofia/gateway/myprovider/"'))
 
     gateway_codecs = models.CharField(max_length=500, blank=True,
-        verbose_name=_("gateway codecs"),
-        help_text=_('codec string as needed by FS, ie "PCMA,PCMU"'))
+                                      verbose_name=_("gateway codecs"),
+                                      help_text=_('codec string as needed by FS, ie "PCMA,PCMU"'))
 
     gateway_timeouts = models.CharField(max_length=500, blank=True,
-        verbose_name=_("gateway timeouts"),
-        help_text=_('timeout in seconds, ie "10"'))
+                                        verbose_name=_("gateway timeouts"),
+                                        help_text=_('timeout in seconds, ie "10"'))
 
     gateway_retries = models.CharField(max_length=500, blank=True, verbose_name=_("gateway retries"),
-        help_text=_('"2,1", # retry String for Gateways separated by comma, on how many times each gateway should be retried'))
+                                       help_text=_('"2,1", # retry String for Gateways separated by comma, on how many times each gateway should be retried'))
 
     originate_dial_string = models.CharField(max_length=500, blank=True, verbose_name=_("originate dial string"),
-        help_text=_('add channels variables : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: bridge_early_media=true,hangup_after_bridge=true'))
+                                             help_text=_('add channels variables : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: bridge_early_media=true,hangup_after_bridge=true'))
 
     secondused = models.IntegerField(null=True, blank=True,
-                verbose_name=_("second used"))
+                                     verbose_name=_("second used"))
 
     created_date = models.DateTimeField(auto_now_add=True,
-                verbose_name=_('date'))
+                                        verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)
 
     failover = models.ForeignKey('self', null=True, blank=True,
-                related_name="Failover Gateway", help_text=_("select gateway"))
+                                 related_name="Failover Gateway", help_text=_("select gateway"))
     addparameter = models.CharField(verbose_name=_('add parameter'),
-                   max_length=360, blank=True)
+                                    max_length=360, blank=True)
     count_call = models.IntegerField(null=True, blank=True,
-                verbose_name=_("call count"))
+                                     verbose_name=_("call count"))
     count_in_use = models.IntegerField(null=True, blank=True,
-                verbose_name=_("count in use"))
+                                       verbose_name=_("count in use"))
     maximum_call = models.IntegerField(verbose_name=_('max concurrent calls'),
-                   null=True, blank=True)
-    #gatewaygroup = models.ManyToManyField(GatewayGroup)
+                                       null=True, blank=True)
+    # gatewaygroup = models.ManyToManyField(GatewayGroup)
 
     class Meta:
         db_table = u'dialer_gateway'
@@ -105,9 +106,9 @@ class Gateway(Model):
         self.name = name
 
     def __unicode__(self):
-            return u"%s" % self.name
+        return u"%s" % self.name
 
-    #def prepare_phonenumber(self):
+    # def prepare_phonenumber(self):
     #    return True
 
 

@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-#IMPORT SETTINGS
+# IMPORT SETTINGS
 #===============
 from settings import *
 
@@ -25,13 +25,13 @@ DATABASES = {
     }
 }
 
-#Celery test
+# Celery test
 BROKER_BACKEND = "memory"
 CELERY_ALWAYS_EAGER = True
 
 SOUTH_TESTS_MIGRATE = False
 
-#LOGGING
+# LOGGING
 #=======
 LOGGING = {
     'version': 1,

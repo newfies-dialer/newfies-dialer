@@ -32,6 +32,7 @@ import json
 
 
 class PhonebookAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify certain attributes
     of a Phonebook."""
     list_display = ('id', 'name', 'description', 'user', 'created_date',
@@ -42,6 +43,7 @@ admin.site.register(Phonebook, PhonebookAdmin)
 
 
 class ContactAdmin(admin.ModelAdmin):
+
     """Allows the administrator to view and modify certain attributes
     of a Contact."""
     list_display = ('id', 'phonebook', 'contact', 'contact_name', 'email',
@@ -52,9 +54,9 @@ class ContactAdmin(admin.ModelAdmin):
     def get_urls(self):
         urls = super(ContactAdmin, self).get_urls()
         my_urls = patterns('',
-            (r'^add/$', self.admin_site.admin_view(self.add_view)),
-            (r'^import_contact/$', self.admin_site.admin_view(self.import_contact)),
-        )
+                           (r'^add/$', self.admin_site.admin_view(self.add_view)),
+                           (r'^import_contact/$', self.admin_site.admin_view(self.import_contact)),
+                           )
         return my_urls + urls
 
     def add_view(self, request, extra_context=None):
@@ -146,7 +148,7 @@ class ContactAdmin(admin.ModelAdmin):
             BULK_SIZE = 1000
             rdr = csv.reader(request.FILES['csv_file'], delimiter='|', quotechar='"')
 
-            #Get Phonebook Obj
+            # Get Phonebook Obj
             phonebook = Phonebook.objects.get(pk=request.POST['phonebook'])
 
             contact_cnt = 0
@@ -201,7 +203,7 @@ class ContactAdmin(admin.ModelAdmin):
             Contact.objects.bulk_create(bulk_record)
             bulk_record = []
 
-            #check if there is contact imported
+            # check if there is contact imported
             if contact_cnt > 0:
                 msg = _('%(contact_cnt)s contact(s) have been uploaded successfully out of %(total_rows)s row(s)!')\
                     % {'contact_cnt': contact_cnt, 'total_rows': total_rows}

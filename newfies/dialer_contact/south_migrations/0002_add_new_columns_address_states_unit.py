@@ -23,7 +23,6 @@ class Migration(SchemaMigration):
                       self.gf('django.db.models.fields.IntegerField')(null=True, blank=True),
                       keep_default=False)
 
-
     def backwards(self, orm):
         # Deleting field 'Contact.address'
         db.delete_column(u'dialer_contact', 'address')
@@ -33,7 +32,6 @@ class Migration(SchemaMigration):
 
         # Deleting field 'Contact.unit_number'
         db.delete_column(u'dialer_contact', 'unit_number')
-
 
     models = {
         u'auth.group': {

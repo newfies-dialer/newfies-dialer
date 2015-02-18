@@ -28,16 +28,17 @@ from datetime import datetime
 from django.utils.timezone import utc
 #import os
 
-#csv_file = open(
+# csv_file = open(
 #    os.path.abspath('../../newfies-dialer/newfies/') + '/dialer_contact/fixtures/import_contacts.txt', 'r'
 #)
 
-#csv_file = open(
+# csv_file = open(
 #    settings.APPLICATION_DIR + '/dialer_contact/fixtures/import_contacts.txt', 'r'
 #)
 
 
 class DialerContactView(BaseAuthenticatedClient):
+
     """Test cases for Phonebook, Contact, Campaign, Subscriber
        Admin Interface.
     """
@@ -84,13 +85,14 @@ class DialerContactView(BaseAuthenticatedClient):
         response = self.client.get('/admin/dialer_contact/contact/import_contact/')
         self.failUnlessEqual(response.status_code, 200)
 
-        #response = self.client.post(
+        # response = self.client.post(
         #    '/admin/dialer_contact/contact/import_contact/',
         #    data={'phonebook_id': '1', 'csv_file': csv_file})
         #self.assertEqual(response.status_code, 200)
 
 
 class DialerContactCustomerView(BaseAuthenticatedClient):
+
     """Test cases for Phonebook, Contact, Campaign, Subscriber
        Customer Interface.
     """
@@ -283,6 +285,7 @@ class DialerContactCustomerView(BaseAuthenticatedClient):
 
 
 class DialerContactCeleryTaskTestCase(TestCase):
+
     """Test cases for celery task"""
 
     fixtures = ['auth_user.json', 'gateway.json', 'dialer_setting.json',
@@ -304,6 +307,7 @@ class DialerContactCeleryTaskTestCase(TestCase):
 
 
 class DialerContactModel(TestCase):
+
     """Test Phonebook, Contact models"""
 
     fixtures = ['auth_user.json', 'phonebook.json', 'contact.json']

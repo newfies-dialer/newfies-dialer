@@ -18,6 +18,7 @@ from mod_mailer.models import MailTemplate
 
 
 class MailTemplateSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Read**:
 

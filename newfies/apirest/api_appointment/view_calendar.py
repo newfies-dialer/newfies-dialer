@@ -22,6 +22,7 @@ from apirest.permissions import CustomObjectPermissions
 
 
 class CalendarViewSet(viewsets.ModelViewSet):
+
     """
     API endpoint that allows calendar to be viewed or edited.
     """

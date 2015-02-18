@@ -35,6 +35,7 @@ from uuid import uuid1
 
 
 class SMSAdminView(BaseAuthenticatedClient):
+
     """Test cases for SMSCampaign, SMSSubscriber Admin Interface."""
 
     def test_admin_sms_campaign_view_list(self):
@@ -79,6 +80,7 @@ class SMSAdminView(BaseAuthenticatedClient):
 
 
 class SMSModuleCustomerView(BaseAuthenticatedClient):
+
     """Test cases for SMSCampaign Customer Interface."""
 
     fixtures = ['example_gateways.json', 'auth_user.json', 'gateway.json',
@@ -134,7 +136,7 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/sms_campaign/1/',
-            {'delete': 'true'}, follow=True)
+                                    {'delete': 'true'}, follow=True)
         request.user = self.user
         request.session = {}
         response = sms_campaign_change(request, 1)
@@ -159,13 +161,13 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
 
     def test_update_sms_campaign_status_admin(self):
         request = self.factory.post('update_sms_campaign_status_admin/1/1/',
-            follow=True)
+                                    follow=True)
         request.user = self.user
         request.session = {}
         response = update_sms_campaign_status_admin(request, 1, 1)
         self.assertEqual(response.status_code, 302)
         self.assertEqual(response['Location'],
-            '/admin/mod_sms/smscampaign/')
+                         '/admin/mod_sms/smscampaign/')
 
     def test_update_sms_campaign_status_cust(self):
         request = self.factory.post(
@@ -205,8 +207,8 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         self.assertTemplateUsed(response, 'mod_sms/sms_dashboard.html')
 
         request = self.factory.post('/sms_dashboard/',
-            {'smscampaign': '1',
-             'search_type': SEARCH_TYPE.A_Last_30_days})
+                                    {'smscampaign': '1',
+                                     'search_type': SEARCH_TYPE.A_Last_30_days})
 
         request.user = self.user
         request.session = {}
@@ -214,8 +216,8 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/sms_dashboard/',
-            {'smscampaign': '1',
-             'search_type': SEARCH_TYPE.B_Last_7_days})
+                                    {'smscampaign': '1',
+                                     'search_type': SEARCH_TYPE.B_Last_7_days})
 
         request.user = self.user
         request.session = {}
@@ -223,8 +225,8 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/sms_dashboard/',
-            {'smscampaign': '1',
-             'search_type': SEARCH_TYPE.C_Yesterday})
+                                    {'smscampaign': '1',
+                                     'search_type': SEARCH_TYPE.C_Yesterday})
 
         request.user = self.user
         request.session = {}
@@ -232,8 +234,8 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/sms_dashboard/',
-            {'smscampaign': '1',
-             'search_type': SEARCH_TYPE.D_Last_24_hours})
+                                    {'smscampaign': '1',
+                                     'search_type': SEARCH_TYPE.D_Last_24_hours})
 
         request.user = self.user
         request.session = {}
@@ -241,8 +243,8 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/sms_dashboard/',
-            {'smscampaign': '1',
-             'search_type': SEARCH_TYPE.E_Last_12_hours})
+                                    {'smscampaign': '1',
+                                     'search_type': SEARCH_TYPE.E_Last_12_hours})
 
         request.user = self.user
         request.session = {}
@@ -250,8 +252,8 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/sms_dashboard/',
-            {'smscampaign': '1',
-             'search_type': SEARCH_TYPE.F_Last_6_hours})
+                                    {'smscampaign': '1',
+                                     'search_type': SEARCH_TYPE.F_Last_6_hours})
 
         request.user = self.user
         request.session = {}
@@ -259,8 +261,8 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
         self.assertEqual(response.status_code, 200)
 
         request = self.factory.post('/sms_dashboard/',
-            {'smscampaign': '1',
-             'search_type': SEARCH_TYPE.G_Last_hour})
+                                    {'smscampaign': '1',
+                                     'search_type': SEARCH_TYPE.G_Last_hour})
 
         request.user = self.user
         request.session = {}
@@ -311,6 +313,7 @@ class SMSModuleCustomerView(BaseAuthenticatedClient):
 
 
 class SMSCeleryTaskTestCase(TestCase):
+
     """Test cases for celery task"""
 
     fixtures = ['example_gateways.json', 'auth_user.json', 'gateway.json',
@@ -364,6 +367,7 @@ class SMSCeleryTaskTestCase(TestCase):
 
 
 class SMSCampaignModel(TestCase):
+
     """Test SMSCampaign, SMSSubscriber models"""
 
     fixtures = ['example_gateways.json', 'auth_user.json', 'gateway.json',

@@ -20,6 +20,7 @@ from appointment.function_def import get_calendar_user_id_list
 
 
 class EventSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

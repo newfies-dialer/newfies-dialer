@@ -19,6 +19,7 @@ from agent.models import AgentProfile
 
 
 class TierSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

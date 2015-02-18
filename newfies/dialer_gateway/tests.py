@@ -19,6 +19,7 @@ from dialer_gateway.utils import prepare_phonenumber
 
 
 class GatewayView(BaseAuthenticatedClient):
+
     """Test Function to check Gateway Admin pages"""
 
     def test_admin_gateway_view_list(self):
@@ -45,6 +46,7 @@ class GatewayView(BaseAuthenticatedClient):
 
 
 class GatewayModel(TestCase):
+
     """Test Gateway model"""
 
     def setUp(self):

@@ -17,6 +17,7 @@ from user_profile.models import CalendarUser
 
 
 class CalendarUserSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Create**:
 

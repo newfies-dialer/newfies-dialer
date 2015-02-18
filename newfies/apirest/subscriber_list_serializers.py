@@ -17,6 +17,7 @@ from dialer_campaign.models import Subscriber
 
 
 class SubscriberListSerializer(serializers.HyperlinkedModelSerializer):
+
     """
     **Read**:
 

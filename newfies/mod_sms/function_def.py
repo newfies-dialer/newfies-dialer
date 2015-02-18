@@ -95,11 +95,11 @@ def sms_record_common_fun(request):
     if request.POST.get('from_date'):
         from_date = request.POST.get('from_date')
         start_date = datetime(int(from_date[0:4]), int(from_date[5:7]),
-            int(from_date[8:10]), 0, 0, 0, 0).replace(tzinfo=utc)
+                              int(from_date[8:10]), 0, 0, 0, 0).replace(tzinfo=utc)
     if request.POST.get('to_date'):
         to_date = request.POST.get('to_date')
         end_date = datetime(int(to_date[0:4]), int(to_date[5:7]),
-            int(to_date[8:10]), 23, 59, 59, 999999).replace(tzinfo=utc)
+                            int(to_date[8:10]), 23, 59, 59, 999999).replace(tzinfo=utc)
 
     # Assign form field value to local variable
     status = variable_value(request, 'status')

@@ -41,7 +41,7 @@ from apirest.view_subscriber_per_campaign import SubscriberPerCampaignList
 from apirest.view_mail_template import MailTemplateViewSet
 from apirest.view_sms_template import SMSTemplateViewSet
 from apirest.view_sms_campaign import SMSCampaignViewSet
-#Appointement module
+# Appointement module
 from apirest.api_appointment.view_calendar import CalendarViewSet
 from apirest.api_appointment.view_calendar_setting import CalendarSettingViewSet
 from apirest.api_appointment.view_calendar_user import CalendarUserViewSet
@@ -93,21 +93,21 @@ router.register(r'alarm-request', AlarmRequestViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browseable API.
 urlpatterns = patterns('',
-    url(r'^rest-api/subcampaign/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
-    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/$',
-        SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
-    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/(?P<contact_id>[0-9]+)/$',
-        SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
+                       url(r'^rest-api/subcampaign/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
+                       url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/$',
+                           SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
+                       url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/(?P<contact_id>[0-9]+)/$',
+                           SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
 
-    url(r'^rest-api/surveyaggregate/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
-    url(r'^rest-api/surveyaggregate/(?P<survey_id>[0-9]+)/$',
-        SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
+                       url(r'^rest-api/surveyaggregate/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
+                       url(r'^rest-api/surveyaggregate/(?P<survey_id>[0-9]+)/$',
+                           SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
 
-    url(r'^rest-api/bulkcontact/$', BulkContactViewSet.as_view(), name="bulk_contact"),
+                       url(r'^rest-api/bulkcontact/$', BulkContactViewSet.as_view(), name="bulk_contact"),
 
-    # subscriber rest api
-    url(r'^rest-api/subscriber/$', SubscriberViewSet.as_view(), name="subscriber_contact"),
+                       # subscriber rest api
+                       url(r'^rest-api/subscriber/$', SubscriberViewSet.as_view(), name="subscriber_contact"),
 
-    url(r'^rest-api/', include(router.urls)),
-    url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-)
+                       url(r'^rest-api/', include(router.urls)),
+                       url(r'^api-auth/', include('rest_framework.urls', namespace='rest_framework')),
+                       )

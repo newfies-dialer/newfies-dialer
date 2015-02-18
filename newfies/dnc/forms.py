@@ -27,6 +27,7 @@ from crispy_forms.layout import Layout, Fieldset, Div, HTML
 
 
 class DNCListForm(SaveUserModelForm):
+
     """DNC List Form"""
 
     class Meta:
@@ -53,6 +54,7 @@ class DNCListForm(SaveUserModelForm):
 
 
 class DNCContactSearchForm(forms.Form):
+
     """Search Form on Contact List"""
     phone_number = forms.IntegerField(label=_('Phone Number'), required=False)
     dnc = forms.ChoiceField(label=_('Do Not Call list'), required=False)
@@ -80,6 +82,7 @@ class DNCContactSearchForm(forms.Form):
 
 
 class DNCContactForm(ModelForm):
+
     """DNCContact ModelForm"""
 
     class Meta:
@@ -128,6 +131,7 @@ def get_dnc_list(user):
 
 
 class DNCContact_fileImport(FileImport):
+
     """Admin Form : Import CSV file with DNC list"""
     dnc_list = forms.ChoiceField(label=_("DNC List"), required=True, help_text=_("select DNC list"))
 
@@ -150,6 +154,7 @@ class DNCContact_fileImport(FileImport):
 
 
 class DNCContact_fileExport(Exportfile):
+
     """
     DNC Contact Export
     """

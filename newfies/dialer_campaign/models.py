@@ -57,9 +57,9 @@ def build_kwargs_runnning_campaign():
         tday.minute, tday.second, tday.microsecond).replace(tzinfo=utc)
 
     # s_time = "%s:%s:%s" % (str(tday.hour), str(tday.minute), str(tday.second))
-    #Fix for timezone
+    # Fix for timezone
     today = datetime.now()
-    #or Fix for timezone
+    # or Fix for timezone
     # today = datetime.utcnow().replace(tzinfo=utc)
     kwargs['daily_start_time__lte'] = today.strftime('%H:%M:%S')
     kwargs['daily_stop_time__gte'] = today.strftime('%H:%M:%S')
@@ -71,6 +71,7 @@ def build_kwargs_runnning_campaign():
 
 
 class CampaignManager(models.Manager):
+
     """Campaign Manager"""
 
     def get_running_campaign(self):
@@ -129,6 +130,7 @@ def set_expirationdate():
 
 
 class Campaign(Model):
+
     """This defines the Campaign
 
     **Attributes**:
@@ -196,11 +198,11 @@ class Campaign(Model):
                                 help_text=_("outbound Caller ID"))
     caller_name = models.CharField(max_length=80, blank=True, verbose_name=_("Caller Name"),
                                    help_text=_("outbound Caller Name"))
-    #General Starting & Stopping date
+    # General Starting & Stopping date
     startingdate = models.DateTimeField(default=now, verbose_name=_('start'))
     stoppeddate = models.DateTimeField(default=set_expirationdate, verbose_name=_('stopped'))
     expirationdate = models.DateTimeField(default=set_expirationdate, verbose_name=_('finish'))
-    #Per Day Starting & Stopping Time
+    # Per Day Starting & Stopping Time
     daily_start_time = models.TimeField(default='00:00:00', verbose_name=_('daily start time'))
     daily_stop_time = models.TimeField(default='23:59:59', verbose_name=_('daily stop time'))
     monday = models.BooleanField(default=True, verbose_name=_('monday'))
@@ -210,12 +212,12 @@ class Campaign(Model):
     friday = models.BooleanField(default=True, verbose_name=_('friday'))
     saturday = models.BooleanField(default=True, verbose_name=_('saturday'))
     sunday = models.BooleanField(default=True, verbose_name=_('sunday'))
-    #Campaign Settings
+    # Campaign Settings
     frequency = models.IntegerField(default='10', blank=True, null=True, verbose_name=_('frequency'),
                                     help_text=_("calls per minute"))
     callmaxduration = models.IntegerField(default='1800', blank=True, null=True, verbose_name=_('max call duration'),
                                           help_text=_("maximum call duration in seconds"))
-    #max retry on failure - Note that the answered call not completed are counted
+    # max retry on failure - Note that the answered call not completed are counted
     maxretry = models.IntegerField(default='0', blank=True, null=True, verbose_name=_('max retries'),
                                    help_text=_("maximum retries per contact"))
     intervalretry = models.IntegerField(default='300', blank=True, null=True, verbose_name=_('time between retries'),
@@ -245,18 +247,18 @@ class Campaign(Model):
                                        help_text=_("total contact for this campaign"))
     completed = models.IntegerField(default=0, blank=True, null=True, verbose_name=_('completed'),
                                     help_text=_("total contact that completed call / survey"))
-    #Flags
+    # Flags
     has_been_started = models.BooleanField(default=False, verbose_name=_('has been started'))
     has_been_duplicated = models.BooleanField(default=False, verbose_name=_('has been duplicated'))
     dnc = models.ForeignKey(DNC, null=True, blank=True, verbose_name=_("DNC"),
                             help_text=_("do not call list"), related_name='DNC')
-    #Voicemail Detection
+    # Voicemail Detection
     voicemail = models.BooleanField(default=False, verbose_name=_('voicemail detection'))
     amd_behavior = models.IntegerField(choices=list(AMD_BEHAVIOR), blank=True, null=True,
                                        default=AMD_BEHAVIOR.ALWAYS, verbose_name=_("detection behaviour"))
     voicemail_audiofile = models.ForeignKey(AudioFile, null=True, blank=True,
                                             verbose_name=_("voicemail audio file"))
-    #Callcenter
+    # Callcenter
     agent_script = models.TextField(verbose_name=_('agent script'), blank=True, null=True)
     lead_disposition = models.TextField(verbose_name=_('lead disposition'), blank=True, null=True)
     external_link = jsonfield.JSONField(
@@ -424,9 +426,9 @@ class Campaign(Model):
     @transaction.atomic
     def get_pending_subscriber_update(self, limit, status):
         """Get all the pending subscribers from the campaign"""
-        #TODO: Improve this part with a PL/SQL
+        # TODO: Improve this part with a PL/SQL
 
-        #We cannot use select_related here as it's not compliant with locking the rows
+        # We cannot use select_related here as it's not compliant with locking the rows
         list_subscriber = Subscriber.objects.select_for_update()\
             .filter(campaign=self.id, status=SUBSCRIBER_STATUS.PENDING)\
             .all()[:limit]
@@ -443,6 +445,7 @@ class Campaign(Model):
 
 
 class Subscriber(Model):
+
     """This defines the Contact imported to a Campaign
 
     **Attributes**:
@@ -464,17 +467,17 @@ class Subscriber(Model):
     campaign = models.ForeignKey(Campaign, null=True, blank=True, help_text=_("select campaign"))
     last_attempt = models.DateTimeField(null=True, blank=True, verbose_name=_("last attempt"))
     count_attempt = models.IntegerField(default=0, null=True, blank=True, verbose_name=_("count attempts"))
-    #Count the amount of attempt to call in order to achieve completion
+    # Count the amount of attempt to call in order to achieve completion
     completion_count_attempt = models.IntegerField(default=0, null=True, blank=True,
                                                    verbose_name=_("completion count attempts"))
-    #We duplicate contact to create a unique constraint
+    # We duplicate contact to create a unique constraint
     duplicate_contact = models.CharField(max_length=90, verbose_name=_("contact"))
     status = models.IntegerField(choices=list(SUBSCRIBER_STATUS), default=SUBSCRIBER_STATUS.PENDING,
                                  verbose_name=_("status"), blank=True, null=True)
     disposition = models.IntegerField(verbose_name=_("disposition"), blank=True, null=True)
     collected_data = models.TextField(verbose_name=_('subscriber response'), blank=True, null=True,
                                       help_text=_("collect user call data"))
-    #agent = models.ForeignKey(Agent, verbose_name=_("agent"),
+    # agent = models.ForeignKey(Agent, verbose_name=_("agent"),
     #                          blank=True, null=True,
     #                          related_name="agent")
 
@@ -529,7 +532,7 @@ class Subscriber(Model):
     """
 
 
-#Note : This will cause the running campaign to add the new contacts to the subscribers list
+# Note : This will cause the running campaign to add the new contacts to the subscribers list
 def post_save_add_contact(sender, **kwargs):
     """A ``post_save`` signal is sent by the Contact model instance whenever
     it is going to save.

@@ -46,13 +46,14 @@ def get_smscampaign_list(user=None):
 
 
 class SMSCampaignForm(ModelForm):
+
     """SMSCampaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
     #content_object = forms.ChoiceField(label=_("Application"),)
 
     class Meta:
         model = SMSCampaign
-        #fields = ['campaign_code', 'name', 'callerid', 'sms_gateway',
+        # fields = ['campaign_code', 'name', 'callerid', 'sms_gateway',
         #          'phonebook', 'extra_data', 'text_message',
         #          'frequency', 'maxretry', 'intervalretry',
         #          'startingdate', 'expirationdate',
@@ -106,20 +107,20 @@ class SMSCampaignForm(ModelForm):
                         Div('extra_data', css_class=css_class),
                         Div('text_message', css_class=css_class),
                         css_class='row'
-                    ),
+                ),
                     form_action,
                     css_class='well'
-                    ),
+                ),
                 Tab(_('Completion Settings'),
                     Div(
                         Div('frequency', css_class=css_class),
                         Div('maxretry', css_class=css_class),
                         Div('intervalretry', css_class=css_class),
                         css_class='row'
-                    ),
+                ),
                     form_action,
                     css_class='well'
-                    ),
+                ),
                 Tab('schedule',
                     Div(
                         Div(HTML("""<label>%s<label>""" % (_('Week days'))), css_class="col-md-3"),
@@ -170,6 +171,7 @@ class SMSCampaignForm(ModelForm):
 
 
 class SMSCampaignAdminForm(ModelForm):
+
     """Admin SMSCampaign ModelForm"""
     class Meta:
         model = SMSCampaign
@@ -193,6 +195,7 @@ for i in MESSAGE_STATUSES:
 
 
 class SMSDashboardForm(forms.Form):
+
     """SMSDashboard Form"""
     smscampaign = forms.ChoiceField(label=_('SMS Campaign'), required=False)
     search_type = forms.ChoiceField(label=_('type'), required=False, choices=list(SEARCH_TYPE),
@@ -223,6 +226,7 @@ class SMSDashboardForm(forms.Form):
 
 
 class SMSSearchForm(SearchForm):
+
     """SMS Report Search Parameters"""
     status = forms.ChoiceField(label=_('status'), choices=message_list, required=False)
     smscampaign = forms.ChoiceField(label=_('SMS Campaign'), required=False)
@@ -247,6 +251,7 @@ class SMSSearchForm(SearchForm):
 
 
 class AdminSMSSearchForm(AdminSearchForm):
+
     """SMS Report Search Parameters"""
     status = forms.ChoiceField(label=_('status'), choices=message_list,
                                required=False)
@@ -284,6 +289,7 @@ class SMSCampaignSearchForm(forms.Form):
 
 
 class DuplicateSMSCampaignForm(ModelForm):
+
     """DuplicateSMSCampaignForm ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
 

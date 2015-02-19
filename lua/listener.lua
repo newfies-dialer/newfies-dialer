@@ -242,14 +242,20 @@ while true do
         alarm_request_id = e:getHeader("variable_alarm_request_id") or 0
         duration = e:getHeader("variable_duration") or 0
         billsec = e:getHeader("variable_billsec") or 0
-        callerid = e:getHeader("variable_outbound_caller_id_number") or ""
+        callerid = e:getHeader("variable_origination_caller_id_number") or ""
         accountcode = e:getHeader("variable_accountcode") or ""
-        phonenumber = e:getHeader("variable_dialed_user") or ""
+        -- phonenumber = e:getHeader("variable_dialed_user") or ""
+        phonenumber = e:getHeader("Caller-Destination-Number") or ""
         hangup_cause = e:getHeader("variable_hangup_cause") or ""
         amd_status = e:getHeader("variable_amd_status") or "person"
         leg = e:getHeader("variable_legtype") or "aleg"
         hangup_cause_q850 = e:getHeader("variable_hangup_cause_q850") or ""
         start_uepoch = e:getHeader("variable_start_uepoch") -- 1355809698350872
+
+        -- Enable for Event debugging
+        -- freeswitch.consoleLog("info","--------------------------------------")
+        -- freeswitch.consoleLog("info",e:serialize())
+
         if start_uepoch ~= nil then
             starting_date = 'to_timestamp('..start_uepoch..'/1000000)'
         else

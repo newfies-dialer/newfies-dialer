@@ -73,5 +73,8 @@ doc_html:
 doc_pdf:
 	cd docs && rm -rf build/latex && rm -rf build/doctrees && make latexpdf
 
+replace-date:
+	find . -maxdepth 10 -type f -name '*' | xargs perl -i -pe 's/2011-2014/2011-2015/'
+
 autopep8:
 	autopep8 --ignore E501 -i -r *

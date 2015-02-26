@@ -244,8 +244,8 @@ while true do
         billsec = e:getHeader("variable_billsec") or 0
         callerid = e:getHeader("variable_origination_caller_id_number") or ""
         accountcode = e:getHeader("variable_accountcode") or ""
-        -- phonenumber = e:getHeader("variable_dialed_user") or ""
-        phonenumber = e:getHeader("Caller-Destination-Number") or ""
+        -- phonenumber = e:getHeader("Caller-Destination-Number") or ""
+        phonenumber = e:getHeader("variable_dialout_phone_number") or ""
         hangup_cause = e:getHeader("variable_hangup_cause") or ""
         amd_status = e:getHeader("variable_amd_status") or "person"
         leg = e:getHeader("variable_legtype") or "aleg"

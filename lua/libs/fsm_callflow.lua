@@ -479,18 +479,27 @@ function FSMCall:next_node()
             caller_id_name = self.dialout_phone_number
             originate_timeout = self.db.campaign_info.calltimeout
             leg_timeout = self.db.campaign_info.calltimeout
-
-            local dialstr = ''
-            --dialstr = 'sofia/default/'..current_node.phonenumber..'@'..self.outbound_gateway;
-            if string.find(current_node.phonenumber, "/") then
-                --SIP URI call
-                dialstr = current_node.phonenumber
-            else
-                --Use Gateway call
-                dialstr = self.db.campaign_info.gateways..current_node.phonenumber
-            end
+            new_dialout_phone_number = current_node.phonenumber
 
             mcontact = mtable_jsoncontact(self.db.contact)
+
+            local dialstr = ''
+
+            -- check if we got a json phonenumber for transfer
+            if mcontact.transfer_phonenumber then
+                transfer_phonenumber = mcontact.transfer_phonenumber
+            else
+                transfer_phonenumber = current_node.phonenumber
+            end
+
+            --dialstr = 'sofia/default/'..current_node.phonenumber..'@'..self.outbound_gateway;
+            if string.find(transfer_phonenumber, "/") then
+                --SIP URI call
+                dialstr = transfer_phonenumber
+            else
+                --Use Gateway call
+                dialstr = self.db.campaign_info.gateways..transfer_phonenumber
+            end
 
             -- Set SIP HEADER P-CallRequest-ID & P-Contact-ID
             -- http://wiki.freeswitch.org/wiki/Sofia-SIP#Adding_Request_Headers
@@ -505,6 +514,7 @@ function FSMCall:next_node()
             dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..
                 ",origination_caller_id_name="..caller_id_name..",originate_timeout="..originate_timeout..
                 ",leg_timeout="..leg_timeout..",legtype=bleg,callrequest_id="..self.callrequest_id..
+                ",dialout_phone_number="..new_dialout_phone_number..
                 ",used_gateway_id="..self.used_gateway_id.."}"..dialstr
 
             -- originate the call

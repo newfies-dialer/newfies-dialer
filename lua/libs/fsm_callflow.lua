@@ -510,6 +510,9 @@ function FSMCall:next_node()
                 session:execute("set", "sip_h_P-Contact-Transfer-Ref="..mcontact.transfer_ref)
             end
 
+            -- Sending Ringback
+            session:execute("set", "ringback=${us-ring}")
+
             self.actionresult = 'phonenumber: '..current_node.phonenumber
             dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..
                 ",origination_caller_id_name="..caller_id_name..",originate_timeout="..originate_timeout..

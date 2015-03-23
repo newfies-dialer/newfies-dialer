@@ -660,8 +660,9 @@ class SurveyDetailReportForm(SearchForm):
 
 
 class SurveyFileImport(forms.Form):
-
-    """General Form : file upload"""
+    """
+    General Form : file upload
+    """
     name = forms.CharField(label=_('Survey Name'), required=True)
     survey_file = forms.FileField(label=_("Upload file"), required=True, help_text=_("browse text file"),
                                   error_messages={'required': 'please upload File'})
@@ -689,9 +690,11 @@ class SurveyFileImport(forms.Form):
             raise forms.ValidationError(_(u'document types accepted: %s' % ' '.join(file_exts)))
 
 
-class SealSurveyForm(SurveyFileImport):
-
-    """General Form : SealSurveyForm"""
+class SealSurveyForm(forms.Form):
+    """
+    General Form : SealSurveyForm
+    """
+    name = forms.CharField(label=_('Survey Name'), required=True)
 
     def __init__(self, *args, **kwargs):
         super(SealSurveyForm, self).__init__(*args, **kwargs)

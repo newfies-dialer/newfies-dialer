@@ -1248,7 +1248,7 @@ def sealed_survey_list(request):
 @login_required
 def seal_survey(request, object_id):
     """
-        seal survey without campaign
+    Seal survey without campaign
     """
     form = SealSurveyForm(request.POST or None)
     if request.method == 'POST':
@@ -1256,7 +1256,7 @@ def seal_survey(request, object_id):
             survey_template = get_object_or_404(Survey_template, pk=object_id, user=request.user)
             survey_template.name = request.POST.get('name', survey_template.name)
             survey_template.copy_survey_template()
-            request.session['msg'] = '(%s) survey is sealed successfully' % survey_template.name
+            request.session['msg'] = '"%s" survey is sealed successfully' % survey_template.name
             return HttpResponseRedirect(redirect_url_to_survey_list)
         else:
             request.session['err_msg'] = True

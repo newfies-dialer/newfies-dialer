@@ -479,7 +479,6 @@ function FSMCall:next_node()
             caller_id_name = self.dialout_phone_number
             originate_timeout = self.db.campaign_info.calltimeout
             leg_timeout = self.db.campaign_info.calltimeout
-            new_dialout_phone_number = current_node.phonenumber
 
             mcontact = mtable_jsoncontact(self.db.contact)
 
@@ -491,6 +490,8 @@ function FSMCall:next_node()
             else
                 transfer_phonenumber = current_node.phonenumber
             end
+
+            new_dialout_phone_number = transfer_phonenumber
 
             --dialstr = 'sofia/default/'..current_node.phonenumber..'@'..self.outbound_gateway;
             if string.find(transfer_phonenumber, "/") then
@@ -509,6 +510,9 @@ function FSMCall:next_node()
             if mcontact.transfer_ref then
                 session:execute("set", "sip_h_P-Contact-Transfer-Ref="..mcontact.transfer_ref)
             end
+
+            -- Sending Ringback
+            session:execute("set", "ringback=${us-ring}")
 
             self.actionresult = 'phonenumber: '..current_node.phonenumber
             dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..

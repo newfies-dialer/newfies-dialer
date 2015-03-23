@@ -284,6 +284,6 @@ class campaign_expire_check(PeriodicTask):
             logger.debug("=> Campaign name %s (id:%s)" % (obj_campaign.name, obj_campaign.id))
             campaign_id_list.append(obj_campaign.id)
 
-        #Update in bulk
+        # Update in bulk
         Campaign.objects.filter(id__in=campaign_id_list).update(status=CAMPAIGN_STATUS.END)
         return True

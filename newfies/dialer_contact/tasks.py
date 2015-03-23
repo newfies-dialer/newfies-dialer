@@ -13,63 +13,66 @@
 #
 
 from django.conf import settings
-from celery.decorators import task
-# from celery.task import Task
+from celery.task import Task
 from celery.utils.log import get_task_logger
 from dialer_campaign.models import Campaign, Subscriber
 from user_profile.models import UserProfile
-# from django_lets_go.only_one_task import only_one
+from django_lets_go.only_one_task import only_one
 
 logger = get_task_logger(__name__)
 
+LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
 
-@task()
-def collect_subscriber(campaign_id):
-    """
-    This task will collect all the contact and create the Subscriber
-    if the phonebook_id is no in the list of imported_phonebook IDs.
 
-    **Attributes**:
+class collect_subscriber(Task):
 
-        * ``campaign_id`` - Campaign ID
-    """
-    logger.debug("Collect subscribers for the campaign = %s" % str(campaign_id))
+    @only_one(ikey="check_collect_subscriber", timeout=LOCK_EXPIRE)
+    def run(self, campaign_id):
+        """
+        This task will collect all the contact and create the Subscriber
+        if the phonebook_id is no in the list of imported_phonebook IDs.
 
-    # Retrieve the list of active contact
-    obj_campaign = Campaign.objects.get(id=campaign_id)
-    list_phonebook = obj_campaign.phonebook.all()
+        **Attributes**:
 
-    for item_phonebook in list_phonebook:
-        phonebook_id = item_phonebook.id
+            * ``campaign_id`` - Campaign ID
+        """
+        logger.debug("Collect subscribers for the campaign = %s" % str(campaign_id))
 
-        # check if phonebook_id is missing in imported_phonebook list
-        if not str(phonebook_id) in obj_campaign.imported_phonebook.split(','):
-            # Run import
-            logger.info("ImportPhonebook %d for campaign = %d" % (phonebook_id, campaign_id))
+        # Retrieve the list of active contact
+        obj_campaign = Campaign.objects.get(id=campaign_id)
+        list_phonebook = obj_campaign.phonebook.all()
 
-            # Faster method, ask the Database to do the job
-            importcontact_custom_sql(campaign_id, phonebook_id)
+        for item_phonebook in list_phonebook:
+            phonebook_id = item_phonebook.id
 
-            # Add the phonebook id to the imported list
-            if obj_campaign.imported_phonebook == '':
-                sep = ''
-            else:
-                sep = ','
-            obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
-                '%s%d' % (sep, phonebook_id)
-            obj_campaign.save()
+            # check if phonebook_id is missing in imported_phonebook list
+            if not str(phonebook_id) in obj_campaign.imported_phonebook.split(','):
+                # Run import
+                logger.info("ImportPhonebook %d for campaign = %d" % (phonebook_id, campaign_id))
 
-    # Count contact imported
-    count_contact = Subscriber.objects.filter(campaign=campaign_id).count()
-    obj_campaign.totalcontact = count_contact
-    obj_campaign.save()
+                # Add the phonebook id to the imported list
+                if obj_campaign.imported_phonebook == '':
+                    sep = ''
+                else:
+                    sep = ','
+                obj_campaign.imported_phonebook = obj_campaign.imported_phonebook + \
+                    '%s%d' % (sep, phonebook_id)
+                obj_campaign.save()
 
-    return True
+                # Faster method, ask the Database to do the job
+                importcontact_custom_sql(campaign_id, phonebook_id)
+
+        # Count contact imported
+        count_contact = Subscriber.objects.filter(campaign=campaign_id).count()
+        obj_campaign.totalcontact = count_contact
+        obj_campaign.save()
+
+        return True
 
 
 def importcontact_custom_sql(campaign_id, phonebook_id):
     # Call PL-SQL stored procedure
-    #Subscriber.importcontact_pl_sql(campaign_id, phonebook_id)
+    # Subscriber.importcontact_pl_sql(campaign_id, phonebook_id)
 
     # max_subr_cpg = max number of subscriber per campaign,
     # That is going to be checked when a contact is going to be imported
@@ -95,7 +98,8 @@ def importcontact_custom_sql(campaign_id, phonebook_id):
     cursor = connection.cursor()
     if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.postgresql_psycopg2':
         # Data insert operation - http://stackoverflow.com/questions/12451053/django-bulk-create-with-ignore-rows-that-cause-integrityerror
-        sqlimport = "LOCK TABLE dialer_subscriber IN EXCLUSIVE MODE;" \
+        sqlimport = \
+            "LOCK TABLE dialer_subscriber IN EXCLUSIVE MODE;" \
             "INSERT INTO dialer_subscriber "\
             "(contact_id, campaign_id, duplicate_contact, status, created_date, updated_date) "\
             "SELECT id, %d, contact, 1, NOW(), NOW() FROM dialer_contact "\

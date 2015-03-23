@@ -479,7 +479,6 @@ function FSMCall:next_node()
             caller_id_name = self.dialout_phone_number
             originate_timeout = self.db.campaign_info.calltimeout
             leg_timeout = self.db.campaign_info.calltimeout
-            new_dialout_phone_number = current_node.phonenumber
 
             mcontact = mtable_jsoncontact(self.db.contact)
 
@@ -491,6 +490,8 @@ function FSMCall:next_node()
             else
                 transfer_phonenumber = current_node.phonenumber
             end
+
+            new_dialout_phone_number = transfer_phonenumber
 
             --dialstr = 'sofia/default/'..current_node.phonenumber..'@'..self.outbound_gateway;
             if string.find(transfer_phonenumber, "/") then

@@ -928,6 +928,10 @@ func_install_redis() {
     echo "Install Redis-server ..."
     case $DIST in
         'DEBIAN')
+            echo "deb http://packages.dotdeb.org wheezy all" > /etc/apt/sources.list.d/dotdeb.list
+            echo "deb-src http://packages.dotdeb.org wheezy all" >> /etc/apt/sources.list.d/dotdeb.list
+            wget --no-check-certificate --quiet -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -
+            apt-get update
             apt-get -y install redis-server
             /etc/init.d/redis-server restart
         ;;

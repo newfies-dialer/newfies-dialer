@@ -599,7 +599,7 @@ func_prepare_settings(){
     #Set Timezone in settings_local.py
     sed -i "s@Europe/Madrid@$ZONE@g" $CONFIG_DIR/settings_local.py
 
-    #Fix Iptables
+
     case $DIST in
         'CENTOS')
             #Add http port
@@ -807,7 +807,7 @@ func_install_frontend(){
     #Install Django Newfies-Dialer
     func_django_newfiesdialer_install
 
-    #NGINX / SUPERVISOR
+    #Install Nginx / Supervisor
     func_nginx_supervisor
 
     # * * LOGROTATE * *
@@ -835,7 +835,6 @@ func_install_frontend(){
 #Function to install backend
 func_install_backend() {
     echo ""
-    echo ""
     echo "This will install Newfies-Dialer Backend, Celery & Redis on your server"
     echo "Press Enter to continue or CTRL-C to exit"
     read TEMP
@@ -848,9 +847,6 @@ func_install_backend() {
 
     #Install RabbitMQ
     func_install_rabbitmq
-
-    #Memcache installation
-    #pip install python-memcached
 
     echo "Install Celery via supervisor..."
     func_celery_supervisor

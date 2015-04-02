@@ -422,6 +422,37 @@ func_setup_virtualenv() {
 }
 
 
+#Function to backup the data from the previous installation
+func_backup_prev_install(){
+
+    if [ -d "$INSTALL_DIR" ]; then
+        # Newfies-Dialer is already installed
+        clear
+        echo ""
+        echo "We detect an existing Newfies-Dialer Installation"
+        echo "if you continue the existing installation will be removed!"
+        echo ""
+        echo "Press Enter to continue or CTRL-C to exit"
+        read TEMP
+
+        mkdir /tmp/old-newfies-dialer_$DATETIME
+        mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
+        mkdir /tmp/old-lua-newfies-dialer_$DATETIME
+        mv $LUA_DIR /tmp/old-lua-newfies-dialer_$DATETIME
+        echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME and /tmp/old-lua-newfies-dialer_$DATETIME"
+
+        if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
+            echo ""
+            echo "Run backup with postgresql..."
+            sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
+            echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"
+            echo "Press Enter to continue"
+            read TEMP
+        fi
+    fi
+}
+
+
 #function to get the source of Newfies
 func_install_source(){
 
@@ -708,36 +739,8 @@ func_celery_supervisor(){
 func_install_frontend(){
 
     echo ""
+    echo "We will now install Newfies-Dialer..."
     echo ""
-    echo "This script will install Newfies-Dialer"
-    echo "======================================="
-    echo ""
-
-    if [ -d "$INSTALL_DIR" ]; then
-        # Newfies-Dialer is already installed
-        clear
-        echo ""
-        echo "We detect an existing Newfies-Dialer Installation"
-        echo "if you continue the existing installation will be removed!"
-        echo ""
-        echo "Press Enter to continue or CTRL-C to exit"
-        read TEMP
-
-        mkdir /tmp/old-newfies-dialer_$DATETIME
-        mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
-        mkdir /tmp/old-lua-newfies-dialer_$DATETIME
-        mv $LUA_DIR /tmp/old-lua-newfies-dialer_$DATETIME
-        echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME and /tmp/old-lua-newfies-dialer_$DATETIME"
-
-        if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
-            echo ""
-            echo "Run backup with postgresql..."
-            sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
-            echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"
-            echo "Press Enter to continue"
-            read TEMP
-        fi
-    fi
 
     #Install Depedencies
     func_install_dependencies
@@ -750,6 +753,9 @@ func_install_frontend(){
 
     #Create and enable virtualenv
     func_setup_virtualenv
+
+    #Backup
+    func_backup_prev_install
 
     #Install Code Source
     func_install_source

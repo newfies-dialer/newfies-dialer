@@ -56,6 +56,18 @@ func_identify_os
 #Request the user to accept the license
 func_accept_license
 
+echo "========================================================================="
+echo ""
+echo "Newfies-Dialer installation will start now!"
+echo ""
+echo "Press Enter to continue or CTRL-C to exit"
+echo ""
+read INPUT
+
+func_install_frontend
+func_install_landing_page
+func_install_backend
+
 # ExitFinish=0
 
 # while [ $ExitFinish -eq 0 ]; do
@@ -82,19 +94,6 @@ func_accept_license
 #         *)
 #     esac
 # done
-
-#Don't ask and just install it all
-echo "========================================================================="
-echo ""
-echo "Newfies-Dialer installation will start now!"
-echo ""
-echo "Press Enter to continue or CTRL-C to exit"
-echo ""
-read INPUT
-
-func_install_frontend
-func_install_landing_page
-func_install_backend
 
 
 # Clean the system

@@ -158,15 +158,6 @@ func_check_dependencies() {
     echo ""
 }
 
-#Configure Firewall
-func_iptables_configuration() {
-    #add http port
-    iptables -I INPUT 2 -p tcp -m state --state NEW -m tcp --dport $HTTP_PORT -j ACCEPT
-    iptables -I INPUT 3 -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
-
-    service iptables save
-}
-
 
 #Function to install Dependencies
 func_install_dependencies(){
@@ -591,20 +582,31 @@ func_prepare_settings(){
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $CONFIG_DIR/settings_local.py
     sed -i "s/SERVER_IP/$IPADDR/g" $CONFIG_DIR/settings_local.py
 
+    #Get TZ right
     case $DIST in
         'DEBIAN')
-            #Get TZ
             ZONE=$(head -1 /etc/timezone)
         ;;
         'CENTOS')
-            #Get TZ
             . /etc/sysconfig/clock
             echo ""
             echo "We will now add port $HTTP_PORT  and port 80 to your Firewall"
             echo "Press Enter to continue or CTRL-C to exit"
             read TEMP
+        ;;
+    esac
 
-            func_iptables_configuration
+    #Set Timezone in settings_local.py
+    sed -i "s@Europe/Madrid@$ZONE@g" $CONFIG_DIR/settings_local.py
+
+    #Fix Iptables
+    case $DIST in
+        'CENTOS')
+            #Add http port
+            iptables -I INPUT 2 -p tcp -m state --state NEW -m tcp --dport $HTTP_PORT -j ACCEPT
+            iptables -I INPUT 3 -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
+
+            service iptables save
 
             #Selinux to allow apache to access this directory
             chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
@@ -614,9 +616,6 @@ func_prepare_settings(){
             semanage port -a -t http_port_t -p tcp 6379
         ;;
     esac
-
-    #Set Timezone in settings_local.py
-    sed -i "s@Europe/Madrid@$ZONE@g" $CONFIG_DIR/settings_local.py
 }
 
 
@@ -735,39 +734,8 @@ func_celery_supervisor(){
     /etc/init.d/supervisor start
 }
 
-#Function to install Frontend
-func_install_frontend(){
-
-    echo ""
-    echo "We will now install Newfies-Dialer..."
-    echo ""
-
-    #Install Depedencies
-    func_install_dependencies
-
-    #Install Redis
-    func_install_redis
-
-    #Install RabbitMQ
-    func_install_rabbitmq
-
-    #Create and enable virtualenv
-    func_setup_virtualenv
-
-    #Backup
-    func_backup_prev_install
-
-    #Install Code Source
-    func_install_source
-
-    #Install PIP dependencies
-    func_install_pip_deps
-
-    #Prepare the settings
-    func_prepare_settings
-
-    func_create_pgsql_database
-
+#Install Django Newfies-Dialer
+func_django_newfiesdialer_install(){
     #Prepare Django DB / Migrate / Create User ...
     cd $INSTALL_DIR/
     python manage.py syncdb --noinput
@@ -799,6 +767,45 @@ func_install_frontend(){
 
     echo "Collects the static files"
     python manage.py collectstatic --noinput
+}
+
+
+#Function to install Frontend
+func_install_frontend(){
+
+    echo ""
+    echo "We will now install Newfies-Dialer..."
+    echo ""
+
+    #Install Depedencies
+    func_install_dependencies
+
+    #Install Redis
+    func_install_redis
+
+    #Install RabbitMQ
+    func_install_rabbitmq
+
+    #Create and enable virtualenv
+    func_setup_virtualenv
+
+    #Backup
+    func_backup_prev_install
+
+    #Install Code Source
+    func_install_source
+
+    #Install PIP dependencies
+    func_install_pip_deps
+
+    #Prepare the settings
+    func_prepare_settings
+
+    #Create PostgreSQL Database
+    func_create_pgsql_database
+
+    #Install Django Newfies-Dialer
+    func_django_newfiesdialer_install
 
     #NGINX / SUPERVISOR
     func_nginx_supervisor
@@ -929,7 +936,7 @@ func_install_rabbitmq() {
 }
 
 
-#Install recent version of redis-server
+#Install Redis
 func_install_redis() {
     echo "Install Redis-server ..."
     case $DIST in

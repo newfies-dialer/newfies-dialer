@@ -13,6 +13,8 @@
 #
 import os
 import djcelery
+from kombu import Queue
+
 djcelery.setup_loader()
 
 # Django settings for project.
@@ -38,9 +40,6 @@ DATABASES = {
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Not used with sqlite3.
         'PORT': '',                      # Not used with sqlite3.
-        # 'OPTIONS': {
-        #    'init_command': 'SET storage_engine=INNODB',
-        # }
     }
 }
 
@@ -276,7 +275,7 @@ except ImportError:
     pass
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', )
-    #INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', 'template_timings_panel',)
+    # INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', 'template_timings_panel',)
     MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + \
         ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     DEBUG_TOOLBAR_PANELS = [
@@ -323,14 +322,6 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 # except ImportError:
 #     pass
 
-# Dilla
-try:
-    import django_dilla
-except ImportError:
-    pass
-else:
-    INSTALLED_APPS = INSTALLED_APPS + ('dilla',)
-
 # No of records per page
 # =======================
 PAGE_SIZE = 10
@@ -341,26 +332,6 @@ AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/pleaselog/'
 
-# DILLA SETTINGS
-# ==============
-DICTIONARY = "/usr/share/dict/words"
-DILLA_USE_LOREM_IPSUM = False  # set to True ignores dictionary
-DILLA_APPS = [
-    'auth',
-    #'dialer_gateway',
-    'voip_app',
-    'dialer_campaign',
-    'dialer_cdr',
-]
-DILLA_SPAMLIBS = [
-    #'voip_app.voip_app_custom_spamlib',
-    #'dialer_campaign.dialer_campaign_custom_spamlib',
-    'dialer_cdr.dialer_cdr_custom_spamlib',
-]
-# To use Dilla
-# > python manage.py run_dilla --cycles=100
-
-
 # MEMCACHE
 # ========
 # CACHES = {
@@ -369,13 +340,13 @@ DILLA_SPAMLIBS = [
 #    'LOCATION': '127.0.0.1:11211',
 #    'KEY_PREFIX': 'newfies_',
 #  }
-#}
+# }
 
 
 # REST FRAMEWORK
 # ==============
 REST_FRAMEWORK = {
-    #'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    # 'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     'PAGINATE_BY': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
@@ -384,15 +355,14 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        #'rest_framework.permissions.DjangoModelPermissions',
     ),
-    #'DEFAULT_THROTTLE_CLASSES': (
+    # 'DEFAULT_THROTTLE_CLASSES': (
     #    'rest_framework.throttling.SimpleRateThrottle',
-    #),
-    #'DEFAULT_THROTTLE_RATES': {
+    # ),
+    # 'DEFAULT_THROTTLE_RATES': {
     #    'anon': '100/day',
     #    'user': '1000/day'
-    #}
+    # }
 }
 
 # REDIS-CACHE
@@ -401,11 +371,6 @@ CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
         'LOCATION': '127.0.0.1:6379',
-        #'OPTIONS': {
-        #    'DB': 1,
-        #    'PASSWORD': 'yadayada',
-        #    'PARSER_CLASS': 'redis.connection.HiredisParser'
-        #},
     },
 }
 
@@ -442,8 +407,6 @@ CELERY_QUEUES = {
         'binding_key': '#',
     },
 }
-
-from kombu import Queue
 
 CELERY_DEFAULT_QUEUE = 'default'
 # Define list of Queues and their routing keys

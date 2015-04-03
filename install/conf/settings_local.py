@@ -41,9 +41,7 @@ DATABASES = {
         'HOST': 'DB_HOSTNAME',
         'PORT': 'DB_PORT',
         'OPTIONS': {
-            #Needed on Mysql
-            # 'init_command': 'SET storage_engine=INNODB',
-            #Postgresql Autocommit
+            # Postgresql Autocommit
             'autocommit': True,
         }
     }
@@ -87,14 +85,10 @@ ALLOWED_HOSTS = ['SERVER_IP']
 CELERY_DISABLE_RATE_LIMITS = True
 
 # LOGGING
-#=======
+# =======
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,
-    #'root': {
-    #    'level': 'WARNING',
-    #    'handlers': ['sentry'],
-    #},
     'formatters': {
         'verbose': {
             'format': '%(levelname)s %(asctime)s %(module)s '
@@ -132,11 +126,6 @@ LOGGING = {
             'backupCount': 20,
             'formatter': 'verbose',
         },
-        #'sentry': {
-        #    'level': 'ERROR',
-        #    'class': 'raven.contrib.django.handlers.SentryHandler',
-        #    'formatter': 'verbose'
-        #},
         'console': {
             'level': 'DEBUG',
             'class': 'logging.StreamHandler',
@@ -165,16 +154,6 @@ LOGGING = {
             'level': 'ERROR',
             'propagate': False,
         },
-        #'raven': {
-        #    'level': 'DEBUG',
-        #    'handlers': ['console'],
-        #    'propagate': False,
-        #},
-        #'sentry.errors': {
-        #    'level': 'DEBUG',
-        #    'handlers': ['console'],
-        #    'propagate': False,
-        #},
         'audiofield_log': {
             'handlers': ['default'],
             'level': 'DEBUG',

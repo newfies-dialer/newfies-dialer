@@ -124,6 +124,22 @@ If there is an error, correct it and remove the line with "#, fuzzy"
 Once the PO is completed, please send it over to our team at newfies-dialer@star2billing.com, so that it can be included in the next release.
 
 
+.. _faq-how-often-to-upgrade:
+
+How often do I need to upgrade / How do I upgrade?
+--------------------------------------------------
+
+It is not necessary to upgrade to each and every release, and generally we would advise against it, unless we issue an advisory via mailing list to the contrary, e.g. major bug or security issue. Generally one can stay with a single version for a long time and decide to upgrade when there are new features or bug fixes that affect you.
+
+The database has to be migrated with Django migration which is very well documented here: https://docs.djangoproject.
+
+Newfies-Dialer has several components that will need to be reinstalled / upgraded: the code of the Django project, the dependencies in virtualenv, the lua code base for the IVR and the dependencies for Lua.
+
+In some versions, OS packages need to be upgraded too, so it might be wise to keep an eye on what is needed.
+
+The Newfies-Dialer team provide an upgrade service as described at http://www.newfies-dialer.org/ where we try to limit your downtime. Do note that it may not be possible to upgrade from very old instances of Newfies-Dialer due to major architecture changes.
+
+
 .. _faq-text2speech:
 
 Text2Speech

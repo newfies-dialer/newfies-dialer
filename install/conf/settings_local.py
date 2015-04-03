@@ -29,8 +29,8 @@ TIME_ZONE = 'Europe/Madrid'
 APPLICATION_DIR = os.path.dirname(globals()['__file__'])
 
 
-#DATABASE SETTINGS
-#=================
+# DATABASE SETTINGS
+# =================
 DATABASES = {
     'default': {
         # Add 'postgresql_psycopg2','postgresql','mysql','sqlite3','oracle'
@@ -49,26 +49,26 @@ DATABASES = {
     }
 }
 
-#EMAIL BACKEND
-#=============
+# EMAIL BACKEND
+# =============
 # Use only in Debug mode. Not in production
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-#ESL
-#===
+# ESL
+# ===
 ESL_HOSTNAME = '127.0.0.1'
 ESL_PORT = '8021'
 ESL_SECRET = 'ClueCon'
 ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 
-#AMD
-#===
+# AMD
+# ===
 AMD = False
 if AMD:
     ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies_amd.luac)'
 
-#CUSTOM
-#======
+# CUSTOM
+# ======
 FS_RECORDING_PATH = '/usr/share/newfies/usermedia/recording/'
 
 # ADD 'dummy','plivo','twilio','esl'
@@ -82,11 +82,11 @@ API_ALLOWED_IP = [
 
 ALLOWED_HOSTS = ['SERVER_IP']
 
-#CELERY
-#======
+# CELERY
+# ======
 CELERY_DISABLE_RATE_LIMITS = True
 
-#LOGGING
+# LOGGING
 #=======
 LOGGING = {
     'version': 1,
@@ -183,8 +183,8 @@ LOGGING = {
     },
 }
 
-#TEXT-TO-SPEECH
-#==============
+# TEXT-TO-SPEECH
+# ==============
 TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
 
 ACCOUNT_LOGIN = 'EVAL_XXXX'

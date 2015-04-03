@@ -14,7 +14,7 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.db.models.signals import post_save, post_delete
-#from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django_lets_go.intermediate_model_base_class import Model
 from user_profile.models import Manager
 from agent.models import AgentProfile, common_signal

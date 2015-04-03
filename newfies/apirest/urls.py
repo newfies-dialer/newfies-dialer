@@ -36,8 +36,8 @@ from apirest.view_section_template import SectionTemplateViewSet
 from apirest.view_branching_template import BranchingTemplateViewSet
 from apirest.view_survey_aggregate_result import SurveyAggregateResultViewSet
 from apirest.view_subscriber_per_campaign import SubscriberPerCampaignList
-#from apirest.view_queue import QueueViewSet
-#from apirest.view_tier import TierViewSet
+# from apirest.view_queue import QueueViewSet
+# from apirest.view_tier import TierViewSet
 from apirest.view_mail_template import MailTemplateViewSet
 from apirest.view_sms_template import SMSTemplateViewSet
 from apirest.view_sms_campaign import SMSCampaignViewSet
@@ -52,8 +52,8 @@ from apirest.api_appointment.view_alarm import AlarmViewSet
 from apirest.api_appointment.view_alarm_request import AlarmRequestViewSet
 
 
-#from agent.api_views import AgentViewSet
-#from apirest.view_agent_profile import AgentProfileViewSet
+# from agent.api_views import AgentViewSet
+# from apirest.view_agent_profile import AgentProfileViewSet
 
 router = routers.DefaultRouter()
 router.register(r'users', UserViewSet)
@@ -73,8 +73,8 @@ router.register(r'survey-template', SurveyTemplateViewSet)
 router.register(r'sealed-survey', SurveyViewSet)
 router.register(r'section-template', SectionTemplateViewSet)
 router.register(r'branching-template', BranchingTemplateViewSet)
-#router.register(r'queue', QueueViewSet)
-#router.register(r'tier', TierViewSet)
+# router.register(r'queue', QueueViewSet)
+# router.register(r'tier', TierViewSet)
 router.register(r'mail-template', MailTemplateViewSet)
 router.register(r'sms-template', SMSTemplateViewSet)
 
@@ -87,8 +87,8 @@ router.register(r'event', EventViewSet)
 router.register(r'alarm', AlarmViewSet)
 router.register(r'alarm-request', AlarmRequestViewSet)
 
-#router.register(r'agents', AgentViewSet)
-#router.register(r'agent-profile', AgentProfileViewSet)
+# router.register(r'agents', AgentViewSet)
+# router.register(r'agent-profile', AgentProfileViewSet)
 
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browseable API.

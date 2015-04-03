@@ -14,7 +14,7 @@
 
 from djcelery.contrib.test_runner import CeleryTestSuiteRunner
 from django_nose import NoseTestSuiteRunner
-#from django_selenium.selenium_runner import SeleniumTestRunner
+# from django_selenium.selenium_runner import SeleniumTestRunner
 
 
 # class MyRunner(CeleryTestSuiteRunner, SeleniumTestRunner):

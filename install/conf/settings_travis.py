@@ -13,8 +13,8 @@
 #
 
 
-#IMPORT SETTINGS
-#===============
+# IMPORT SETTINGS
+# ===============
 from settings import *
 
 DATABASES = {
@@ -24,14 +24,14 @@ DATABASES = {
     }
 }
 
-#Celery test
+# Celery test
 BROKER_BACKEND = "memory"
 CELERY_ALWAYS_EAGER = True
 
 SOUTH_TESTS_MIGRATE = False
 
-#LOGGING
-#=======
+# LOGGING
+# =======
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,

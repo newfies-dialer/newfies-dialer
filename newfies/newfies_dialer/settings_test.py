@@ -13,7 +13,7 @@
 #
 
 # IMPORT SETTINGS
-#===============
+# ===============
 from settings import *
 
 
@@ -32,7 +32,7 @@ CELERY_ALWAYS_EAGER = True
 SOUTH_TESTS_MIGRATE = False
 
 # LOGGING
-#=======
+# =======
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,

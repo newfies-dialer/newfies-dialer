@@ -12,9 +12,9 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 
-#from django.test import TestCase
-#from django.contrib.auth.models import User
-#from django.conf import settings
+# from django.test import TestCase
+# from django.contrib.auth.models import User
+# from django.conf import settings
 from django_lets_go.utils import BaseAuthenticatedClient
 
 

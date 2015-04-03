@@ -12,7 +12,7 @@
 # Arezqui Belaid <info@star2billing.com>
 #
 from django.conf import settings
-#from django.contrib.auth.models import User
+# from django.contrib.auth.models import User
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required, permission_required
 from django.http import HttpResponseRedirect, HttpResponse, Http404
@@ -21,7 +21,7 @@ from django.utils.translation import ugettext as _
 from django.template.context import RequestContext
 from django.contrib.auth.forms import PasswordChangeForm
 from django.contrib.auth.models import Permission
-#from django.views.decorators.csrf import csrf_exempt
+# from django.views.decorators.csrf import csrf_exempt
 from agent.models import AgentProfile, Agent
 from agent.constants import AGENT_COLUMN_NAME
 from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm, \
@@ -29,7 +29,7 @@ from agent.forms import AgentChangeDetailExtendForm, AgentDetailExtendForm, \
 from user_profile.models import Manager
 from user_profile.forms import UserChangeDetailForm
 from django_lets_go.common_functions import get_pagination_vars
-#import json
+# import json
 
 redirect_url_to_agent_list = '/module/agent/'
 

@@ -19,7 +19,7 @@ from dialer_cdr.models import Callrequest, VoIPCall
 # from dialer_contact.models import Phonebook, Contact
 from survey.models import Survey, Section, Branching, Result, ResultAggregate
 # from django.db import connection
-#from survey.models import Section
+# from survey.models import Section
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta

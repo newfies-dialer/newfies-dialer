@@ -18,7 +18,7 @@ from django.utils.translation import gettext_lazy as _
 from django.contrib.contenttypes.models import ContentType
 from dialer_campaign.models import Campaign
 from dialer_cdr.models import Callrequest, VoIPCall
-#from survey.models import Section
+# from survey.models import Section
 from random import choice
 from uuid import uuid1
 from datetime import datetime, timedelta

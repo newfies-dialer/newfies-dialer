@@ -39,7 +39,7 @@ from dialer_contact.models import Phonebook, Contact
 from dialer_gateway.models import Gateway
 from sms.models import Gateway as SMS_Gateway
 from dnc.models import DNC
-#from agent.models import Agent
+# from agent.models import Agent
 
 logger = logging.getLogger('newfies.filelog')
 

@@ -45,7 +45,7 @@ def customer_detail_change(request):
     except UserProfile.DoesNotExist:
         # create UserProfile
         user_detail_extened = UserProfile(user=user_detail)
-        #DEMO / Disable
+        # DEMO / Disable
         if not settings.DEMO_MODE:
             user_detail_extened.save()
 
@@ -73,7 +73,7 @@ def customer_detail_change(request):
             user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST,
                                                                   instance=user_detail_extened)
             if user_detail_form.is_valid() and user_detail_extened_form.is_valid():
-                #DEMO / Disable
+                # DEMO / Disable
                 if not settings.DEMO_MODE:
                     user_detail_form.save()
                     user_detail_extened_form.save()
@@ -95,7 +95,7 @@ def customer_detail_change(request):
             action = 'tabs-2'
             user_password_form = UserPasswordChangeForm(request.user, request.POST)
             if user_password_form.is_valid():
-                #DEMO / Disable
+                # DEMO / Disable
                 if not settings.DEMO_MODE:
                     user_password_form.save()
                 msg_pass = _('your password has been changed.')

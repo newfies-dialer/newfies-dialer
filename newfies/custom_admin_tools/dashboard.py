@@ -169,7 +169,7 @@ class CustomIndexDashboard(Dashboard):
                 # [_('Log out'), reverse('%s:logout' % site_name)],
             ],
         ))
-        #"""
+        # """
 
         if not settings.DEBUG:
             # append a feed module

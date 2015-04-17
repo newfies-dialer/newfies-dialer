@@ -452,6 +452,7 @@ LANGUAGES = (
     ('zh', gettext('Chinese')),
     ('tr', gettext('Turkish')),
     ('ja', gettext('Japanese')),
+    ('uk', gettext('Ukrainian')),
 )
 
 LOCALE_PATHS = (

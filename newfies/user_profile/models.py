@@ -92,7 +92,7 @@ class UserProfile(Profile_abstract):
     dialersetting = models.ForeignKey(DialerSetting, verbose_name=_('dialer settings'),
                                       null=True, blank=True)
     # Used for tastypie
-    #key = models.CharField(max_length=256, blank=True, default='')
+    # key = models.CharField(max_length=256, blank=True, default='')
 
     class Meta:
         permissions = (

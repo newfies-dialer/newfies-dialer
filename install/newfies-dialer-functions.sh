@@ -47,7 +47,7 @@ HTTP_PORT='8008'
 
 #Django bug https://code.djangoproject.com/ticket/16017
 export LANG="en_US.UTF-8"
-SCRIPT_NOTICE="This script is only intended to run on Debian 7.X"
+SCRIPT_NOTICE="This install script is only intended to run on Debian 7.X"
 
 # Identify Linux Distribution type
 func_identify_os() {
@@ -156,15 +156,6 @@ func_check_dependencies() {
     echo ""
     echo "Python dependencies successfully installed!"
     echo ""
-}
-
-#Configure Firewall
-func_iptables_configuration() {
-    #add http port
-    iptables -I INPUT 2 -p tcp -m state --state NEW -m tcp --dport $HTTP_PORT -j ACCEPT
-    iptables -I INPUT 3 -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
-
-    service iptables save
 }
 
 
@@ -422,6 +413,37 @@ func_setup_virtualenv() {
 }
 
 
+#Function to backup the data from the previous installation
+func_backup_prev_install(){
+
+    if [ -d "$INSTALL_DIR" ]; then
+        # Newfies-Dialer is already installed
+        clear
+        echo ""
+        echo "We detect an existing Newfies-Dialer Installation"
+        echo "if you continue the existing installation will be removed!"
+        echo ""
+        echo "Press Enter to continue or CTRL-C to exit"
+        read TEMP
+
+        mkdir /tmp/old-newfies-dialer_$DATETIME
+        mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
+        mkdir /tmp/old-lua-newfies-dialer_$DATETIME
+        mv $LUA_DIR /tmp/old-lua-newfies-dialer_$DATETIME
+        echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME and /tmp/old-lua-newfies-dialer_$DATETIME"
+
+        if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
+            echo ""
+            echo "Run backup with postgresql..."
+            sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
+            echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"
+            echo "Press Enter to continue"
+            read TEMP
+        fi
+    fi
+}
+
+
 #function to get the source of Newfies
 func_install_source(){
 
@@ -560,20 +582,31 @@ func_prepare_settings(){
     sed -i "s/#'SERVER_IP',/'$IPADDR',/g" $CONFIG_DIR/settings_local.py
     sed -i "s/SERVER_IP/$IPADDR/g" $CONFIG_DIR/settings_local.py
 
+    #Get TZ right
     case $DIST in
         'DEBIAN')
-            #Get TZ
             ZONE=$(head -1 /etc/timezone)
         ;;
         'CENTOS')
-            #Get TZ
             . /etc/sysconfig/clock
             echo ""
             echo "We will now add port $HTTP_PORT  and port 80 to your Firewall"
             echo "Press Enter to continue or CTRL-C to exit"
             read TEMP
+        ;;
+    esac
 
-            func_iptables_configuration
+    #Set Timezone in settings_local.py
+    sed -i "s@Europe/Madrid@$ZONE@g" $CONFIG_DIR/settings_local.py
+
+
+    case $DIST in
+        'CENTOS')
+            #Add http port
+            iptables -I INPUT 2 -p tcp -m state --state NEW -m tcp --dport $HTTP_PORT -j ACCEPT
+            iptables -I INPUT 3 -p tcp -m state --state NEW -m tcp --dport 80 -j ACCEPT
+
+            service iptables save
 
             #Selinux to allow apache to access this directory
             chcon -Rv --type=httpd_sys_content_t /usr/share/virtualenvs/newfies-dialer/
@@ -583,9 +616,6 @@ func_prepare_settings(){
             semanage port -a -t http_port_t -p tcp 6379
         ;;
     esac
-
-    #Set Timezone in settings_local.py
-    sed -i "s@Europe/Madrid@$ZONE@g" $CONFIG_DIR/settings_local.py
 }
 
 
@@ -704,64 +734,8 @@ func_celery_supervisor(){
     /etc/init.d/supervisor start
 }
 
-#Function to install Frontend
-func_install_frontend(){
-
-    echo ""
-    echo ""
-    echo "This script will install Newfies-Dialer"
-    echo "======================================="
-    echo ""
-
-    if [ -d "$INSTALL_DIR" ]; then
-        # Newfies-Dialer is already installed
-        clear
-        echo ""
-        echo "We detect an existing Newfies-Dialer Installation"
-        echo "if you continue the existing installation will be removed!"
-        echo ""
-        echo "Press Enter to continue or CTRL-C to exit"
-        read TEMP
-
-        mkdir /tmp/old-newfies-dialer_$DATETIME
-        mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
-        mkdir /tmp/old-lua-newfies-dialer_$DATETIME
-        mv $LUA_DIR /tmp/old-lua-newfies-dialer_$DATETIME
-        echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME and /tmp/old-lua-newfies-dialer_$DATETIME"
-
-        if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
-            echo ""
-            echo "Run backup with postgresql..."
-            sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
-            echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"
-            echo "Press Enter to continue"
-            read TEMP
-        fi
-    fi
-
-    #Install Depedencies
-    func_install_dependencies
-
-    #Install Redis
-    func_install_redis
-
-    #Install RabbitMQ
-    func_install_rabbitmq
-
-    #Create and enable virtualenv
-    func_setup_virtualenv
-
-    #Install Code Source
-    func_install_source
-
-    #Install PIP dependencies
-    func_install_pip_deps
-
-    #Prepare the settings
-    func_prepare_settings
-
-    func_create_pgsql_database
-
+#Install Django Newfies-Dialer
+func_django_newfiesdialer_install(){
     #Prepare Django DB / Migrate / Create User ...
     cd $INSTALL_DIR/
     python manage.py syncdb --noinput
@@ -793,8 +767,47 @@ func_install_frontend(){
 
     echo "Collects the static files"
     python manage.py collectstatic --noinput
+}
 
-    #NGINX / SUPERVISOR
+
+#Function to install Frontend
+func_install_frontend(){
+
+    echo ""
+    echo "We will now install Newfies-Dialer..."
+    echo ""
+
+    #Install Depedencies
+    func_install_dependencies
+
+    #Install Redis
+    func_install_redis
+
+    #Install RabbitMQ
+    func_install_rabbitmq
+
+    #Create and enable virtualenv
+    func_setup_virtualenv
+
+    #Backup
+    func_backup_prev_install
+
+    #Install Code Source
+    func_install_source
+
+    #Install PIP dependencies
+    func_install_pip_deps
+
+    #Prepare the settings
+    func_prepare_settings
+
+    #Create PostgreSQL Database
+    func_create_pgsql_database
+
+    #Install Django Newfies-Dialer
+    func_django_newfiesdialer_install
+
+    #Install Nginx / Supervisor
     func_nginx_supervisor
 
     # * * LOGROTATE * *
@@ -822,7 +835,6 @@ func_install_frontend(){
 #Function to install backend
 func_install_backend() {
     echo ""
-    echo ""
     echo "This will install Newfies-Dialer Backend, Celery & Redis on your server"
     echo "Press Enter to continue or CTRL-C to exit"
     read TEMP
@@ -835,9 +847,6 @@ func_install_backend() {
 
     #Install RabbitMQ
     func_install_rabbitmq
-
-    #Memcache installation
-    #pip install python-memcached
 
     echo "Install Celery via supervisor..."
     func_celery_supervisor
@@ -923,7 +932,7 @@ func_install_rabbitmq() {
 }
 
 
-#Install recent version of redis-server
+#Install Redis
 func_install_redis() {
     echo "Install Redis-server ..."
     case $DIST in

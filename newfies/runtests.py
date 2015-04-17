@@ -12,7 +12,7 @@ from optparse import OptionParser
 from coverage import coverage
 import settings
 
-#from tests.config import configure
+# from tests.config import configure
 
 logging.disable(logging.CRITICAL)
 

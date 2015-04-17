@@ -15,7 +15,7 @@ from django.db import models
 from django.utils.translation import ugettext_lazy as _
 from django.utils.encoding import force_unicode
 from mailer import send_html_mail
-#from user_profile.models import User
+# from user_profile.models import User
 from mod_mailer.constants import MAILSPOOLER_TYPE
 
 

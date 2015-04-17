@@ -21,7 +21,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from dialer_campaign.models import Campaign, Subscriber
-#from dialer_campaign.admin_filters import AgentFilter
+# from dialer_campaign.admin_filters import AgentFilter
 from dialer_campaign.function_def import check_dialer_setting, dialer_setting_limit
 from dialer_campaign.constants import SUBSCRIBER_STATUS, SUBSCRIBER_STATUS_NAME
 from dialer_campaign.forms import SubscriberReportForm, SubscriberAdminForm

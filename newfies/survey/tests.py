@@ -31,7 +31,7 @@ from survey.views import survey_list, survey_add, \
     section_branch_add, section_delete, section_script_play, \
     sealed_survey_view, survey_campaign_result, import_survey, export_survey,\
     sealed_survey_list, seal_survey
-#from survey.ajax import section_sort
+# from survey.ajax import section_sort
 
 post_save.disconnect(post_save_add_script, sender=Section_template)
 

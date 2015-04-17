@@ -13,6 +13,8 @@
 #
 import os
 import djcelery
+from kombu import Queue
+
 djcelery.setup_loader()
 
 # Django settings for project.
@@ -38,9 +40,6 @@ DATABASES = {
         'PASSWORD': '',                  # Not used with sqlite3.
         'HOST': '',                      # Not used with sqlite3.
         'PORT': '',                      # Not used with sqlite3.
-        # 'OPTIONS': {
-        #    'init_command': 'SET storage_engine=INNODB',
-        # }
     }
 }
 
@@ -114,7 +113,7 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    #'django.contrib.staticfiles.finders.DefaultStorageFinder',
+    # 'django.contrib.staticfiles.finders.DefaultStorageFinder',
     'dajaxice.finders.DajaxiceFinder',
     'djangobower.finders.BowerFinder',
 )
@@ -131,8 +130,6 @@ TEMPLATE_LOADERS = (
 
 
 MIDDLEWARE_CLASSES = (
-    #'raven.contrib.django.middleware.SentryResponseErrorIdMiddleware',
-    #'raven.contrib.django.middleware.Sentry404CatchMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.locale.LocaleMiddleware',
@@ -142,7 +139,6 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    #'pagination.middleware.PaginationMiddleware',
     'linaro_django_pagination.middleware.PaginationMiddleware',
     'django_lets_go.filter_persist_middleware.FilterPersistMiddleware',
     'audiofield.middleware.threadlocals.ThreadLocals',
@@ -189,7 +185,7 @@ ALLOWED_HOSTS = ['127.0.0.1']
 
 DAJAXICE_MEDIA_PREFIX = "dajaxice"
 # DAJAXICE_MEDIA_PREFIX = "dajax"  # http://domain.com/dajax/
-#DAJAXICE_CACHE_CONTROL = 10 * 24 * 60 * 60
+# DAJAXICE_CACHE_CONTROL = 10 * 24 * 60 * 60
 
 INSTALLED_APPS = (
     # admin tool apps
@@ -217,9 +213,9 @@ INSTALLED_APPS = (
     'dajaxice',
     'dajax',
     'dateutil',
-    #'pagination',
     'linaro_django_pagination',
-    #'memcache_status',
+    # 'pagination',
+    # 'memcache_status',
     'country_dialcode',
     'django_lets_go',
     'sms',
@@ -237,8 +233,8 @@ INSTALLED_APPS = (
     'dnc',
     'frontend',
     'maintenance',
-    #'agent',
-    #'callcenter',
+    # 'agent',
+    # 'callcenter',
     'calendar_settings',
     'appointment',
     'mod_mailer',
@@ -279,7 +275,7 @@ except ImportError:
     pass
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', )
-    #INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', 'template_timings_panel',)
+    # INSTALLED_APPS = INSTALLED_APPS + ('debug_toolbar', 'template_timings_panel',)
     MIDDLEWARE_CLASSES = MIDDLEWARE_CLASSES + \
         ('debug_toolbar.middleware.DebugToolbarMiddleware',)
     DEBUG_TOOLBAR_PANELS = [
@@ -296,7 +292,7 @@ else:
         'debug_toolbar.panels.signals.SignalsPanel',
         'debug_toolbar.panels.logging.LoggingPanel',
         'debug_toolbar.panels.redirects.RedirectsPanel',
-        #'template_timings_panel.panels.TemplateTimings.TemplateTimings',
+        # 'template_timings_panel.panels.TemplateTimings.TemplateTimings',
     ]
     DEBUG_TOOLBAR_CONFIG = {
         'INTERCEPT_REDIRECTS': False,
@@ -326,59 +322,31 @@ TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 # except ImportError:
 #     pass
 
-# Dilla
-try:
-    import django_dilla
-except ImportError:
-    pass
-else:
-    INSTALLED_APPS = INSTALLED_APPS + ('dilla',)
-
 # No of records per page
-#=======================
+# =======================
 PAGE_SIZE = 10
 
 # AUTH MODULE SETTINGS
 AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
-#AUTH_USER_MODEL = 'user_profile.UserProfile'
+# AUTH_USER_MODEL = 'user_profile.UserProfile'
 LOGIN_REDIRECT_URL = '/'
 LOGIN_URL = '/pleaselog/'
 
-# DILLA SETTINGS
-#==============
-DICTIONARY = "/usr/share/dict/words"
-DILLA_USE_LOREM_IPSUM = False  # set to True ignores dictionary
-DILLA_APPS = [
-    'auth',
-    #'dialer_gateway',
-    'voip_app',
-    'dialer_campaign',
-    'dialer_cdr',
-]
-DILLA_SPAMLIBS = [
-    #'voip_app.voip_app_custom_spamlib',
-    #'dialer_campaign.dialer_campaign_custom_spamlib',
-    'dialer_cdr.dialer_cdr_custom_spamlib',
-]
-# To use Dilla
-# > python manage.py run_dilla --cycles=100
-
-
 # MEMCACHE
-#========
+# ========
 # CACHES = {
 #  'default': {
 #    'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
 #    'LOCATION': '127.0.0.1:11211',
 #    'KEY_PREFIX': 'newfies_',
 #  }
-#}
+# }
 
 
 # REST FRAMEWORK
-#==============
+# ==============
 REST_FRAMEWORK = {
-    #'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
+    # 'DEFAULT_PERMISSION_CLASSES': ('rest_framework.permissions.IsAdminUser',),
     'PAGINATE_BY': 10,
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework.authentication.SessionAuthentication',
@@ -387,33 +355,27 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-        #'rest_framework.permissions.DjangoModelPermissions',
     ),
-    #'DEFAULT_THROTTLE_CLASSES': (
+    # 'DEFAULT_THROTTLE_CLASSES': (
     #    'rest_framework.throttling.SimpleRateThrottle',
-    #),
-    #'DEFAULT_THROTTLE_RATES': {
+    # ),
+    # 'DEFAULT_THROTTLE_RATES': {
     #    'anon': '100/day',
     #    'user': '1000/day'
-    #}
+    # }
 }
 
 # REDIS-CACHE
-#===========
+# ===========
 CACHES = {
     'default': {
         'BACKEND': 'redis_cache.RedisCache',
         'LOCATION': '127.0.0.1:6379',
-        #'OPTIONS': {
-        #    'DB': 1,
-        #    'PASSWORD': 'yadayada',
-        #    'PARSER_CLASS': 'redis.connection.HiredisParser'
-        #},
     },
 }
 
 # CELERY SETTINGS
-#===============
+# ===============
 # # Broker settings Redis
 # BROKER_URL = "redis://localhost:6379/0"
 # REDIS_HOST = 'localhost'
@@ -428,7 +390,7 @@ CELERY_RESULT_BACKEND = "amqp://newfiesdialer:mypassword@localhost:5672//newfies
 # Using the database to store task state and results.
 CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 
-#CELERY_REDIS_CONNECT_RETRY = True
+# CELERY_REDIS_CONNECT_RETRY = True
 CELERY_TIMEZONE = 'Europe/Madrid'
 CELERY_ENABLE_UTC = True
 CELERY_ACCEPT_CONTENT = ['json', 'pickle']
@@ -445,8 +407,6 @@ CELERY_QUEUES = {
         'binding_key': '#',
     },
 }
-
-from kombu import Queue
 
 CELERY_DEFAULT_QUEUE = 'default'
 # Define list of Queues and their routing keys
@@ -482,7 +442,7 @@ CELERYBEAT_SCHEDULE = {
 """
 
 # LANGUAGES
-#===========
+# ===========
 gettext = lambda s: s
 LANGUAGES = (
     ('en', gettext('English')),
@@ -492,6 +452,7 @@ LANGUAGES = (
     ('zh', gettext('Chinese')),
     ('tr', gettext('Turkish')),
     ('ja', gettext('Japanese')),
+    ('uk', gettext('Ukrainian')),
 )
 
 LOCALE_PATHS = (
@@ -501,16 +462,16 @@ LOCALE_PATHS = (
 LANGUAGE_COOKIE_NAME = 'newfies_dialer_language'
 
 # DJANGO-ADMIN-TOOL
-#=================
+# =================
 ADMIN_TOOLS_MENU = 'custom_admin_tools.menu.CustomMenu'
 ADMIN_TOOLS_INDEX_DASHBOARD = 'custom_admin_tools.dashboard.CustomIndexDashboard'
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'custom_admin_tools.dashboard.CustomAppIndexDashboard'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
 # EMAIL BACKEND
-#=============
+# =============
 # Use only in Debug mode. Not in production
-#EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+# EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
 MAILER_EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
@@ -520,12 +481,8 @@ EMAIL_ADMIN = 'newfies_admin@localhost.com'
 # ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'
 
-# SENTRY SETTINGS
-#===============
-#SENTRY_DSN = 'http://asdada:asdasd@localhost:9000/1'
-
 # DIALER
-#======
+# ======
 # NOTE: MAX_CALLS_PER_SECOND is no longer implemented
 # MAX_CALLS_PER_SECOND = 20  # By default configured to 20 calls per second
 
@@ -549,14 +506,14 @@ CONVERT_TYPE_VALUE = 2
 AUDIO_DEBUG = False
 
 # ESL
-#===
+# ===
 ESL_HOSTNAME = '127.0.0.1'
 ESL_PORT = '8021'
 ESL_SECRET = 'ClueCon'
 ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 
 # TEXT-TO-SPEECH
-#==============
+# ==============
 TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
 
 ACCOUNT_LOGIN = 'EVAL_XXXX'
@@ -569,23 +526,23 @@ ACAPELA_GENDER = 'W'
 ACAPELA_INTONATION = 'NORMAL'
 
 # DEBUG DIALER
-#============
+# ============
 DIALERDEBUG = False
 DIALERDEBUG_PHONENUMBER = 1000
 
 
-#Survey in dev
-#=============
+# Survey in dev
+# =============
 SURVEYDEV = False
 AMD = False
 
 # Demo mode
-#=========
+# =========
 # This will disable certain save, to avoid changing password
 DEMO_MODE = False
 
 # IPYTHON
-#=======
+# =======
 IPYTHON_ARGUMENTS = [
     '--ext', 'django_extensions.management.notebook_extension',
     '--profile=nbserver',
@@ -593,7 +550,7 @@ IPYTHON_ARGUMENTS = [
 ]
 
 # GENERAL
-#=======
+# =======
 # PREFIX_LIMIT_MIN & PREFIX_LIMIT_MAX are used to know
 # how many digits are used to match against the dialcode prefix database
 PREFIX_LIMIT_MIN = 2
@@ -603,16 +560,16 @@ PREFIX_LIMIT_MAX = 5
 PREFIX_TO_IGNORE = "+,0,00,000,0000,00000,011,55555,99999"
 
 # CORS (Cross-Origin Resource Sharing)
-#====================================
+# ====================================
 
 # if True, the whitelist will not be used and all origins will be accepted
 CORS_ORIGIN_ALLOW_ALL = True
 
 # specify a list of origin hostnames that are authorized to make a cross-site HTTP request
-#CORS_ORIGIN_WHITELIST = ()
+# CORS_ORIGIN_WHITELIST = ()
 
 # specify a regex list of origin hostnames that are authorized to make a cross-site HTTP request
-#CORS_ORIGIN_REGEX_WHITELIST = ('^http?://(\w+\.)?google\.com$', )
+# CORS_ORIGIN_REGEX_WHITELIST = ('^http?://(\w+\.)?google\.com$', )
 
 # specify the allowed HTTP methods that can be used when making the actual request
 CORS_ALLOW_METHODS = (
@@ -677,7 +634,7 @@ LOGGING_CONFIG = None
 DAJAXICE_XMLHTTPREQUEST_JS_IMPORT = False
 
 # IMPORT LOCAL SETTINGS
-#=====================
+# =====================
 try:
     from settings_local import *
 except ImportError:

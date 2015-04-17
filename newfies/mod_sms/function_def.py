@@ -16,7 +16,7 @@ from dialer_contact.models import Contact
 from django_lets_go.common_functions import variable_value
 from user_profile.models import UserProfile
 from mod_sms.models import SMSCampaign
-#from dialer_setting.models import DialerSetting
+# from dialer_setting.models import DialerSetting
 from mod_sms.constants import SMS_CAMPAIGN_STATUS, SMS_NOTIFICATION_NAME
 from datetime import datetime
 from django.utils.timezone import utc

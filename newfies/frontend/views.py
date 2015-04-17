@@ -377,7 +377,7 @@ def customer_dashboard(request, on_index=None):
     total_record = sorted(total_record, key=lambda k: k[0])
 
     # lineplusbarwithfocuschart
-    final_charttype = "linePlusBarWithFocusChart"
+    final_charttype = "linePlusBarChart"
     xdata = []
     ydata = []
     ydata2 = []
@@ -478,6 +478,7 @@ def customer_dashboard(request, on_index=None):
             'tag_script_js': True,
             'jquery_on_ready': True,
             'resize': True,
+            'focus_enable': True,
         }
     }
     if on_index == 'yes':

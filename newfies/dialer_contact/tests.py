@@ -15,7 +15,7 @@
 from django.contrib.auth.models import User
 from django.template import Template, Context
 from django.test import TestCase
-#from django.conf import settings
+# from django.conf import settings
 from django.core.management import call_command
 from dialer_contact.models import Phonebook, Contact
 from dialer_contact.forms import Contact_fileImport, PhonebookForm, ContactForm, ContactSearchForm
@@ -26,7 +26,7 @@ from dialer_contact.tasks import collect_subscriber
 from django_lets_go.utils import BaseAuthenticatedClient
 from datetime import datetime
 from django.utils.timezone import utc
-#import os
+# import os
 
 # csv_file = open(
 #    os.path.abspath('../../newfies-dialer/newfies/') + '/dialer_contact/fixtures/import_contacts.txt', 'r'

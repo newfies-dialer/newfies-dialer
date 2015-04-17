@@ -14,7 +14,7 @@
 
 from django.db import models
 from django.contrib.auth.models import User
-#from agent.compat import User
+# from agent.compat import User
 from django.db.models.signals import post_save, post_delete
 from django.utils.translation import ugettext_lazy as _
 from user_profile.models import Manager, Profile_abstract
@@ -155,7 +155,7 @@ Agent.profile = property(lambda u: AgentProfile.objects.get_or_create(user=u)[0]
 Agent.api_key = property(lambda u: Token.objects.get_or_create(user=u)[0].key)
 
 
-#from django.dispatch import receiver
+# from django.dispatch import receiver
 
 
 #@receiver(post_save, sender=User)

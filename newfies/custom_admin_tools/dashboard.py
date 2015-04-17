@@ -26,7 +26,7 @@ from django.utils.translation import ugettext_lazy as _
 from django.core.urlresolvers import reverse
 from admin_tools.dashboard import modules, Dashboard, AppIndexDashboard
 from admin_tools_stats.modules import DashboardCharts, get_active_graph
-#from admin_tools.utils import get_admin_site_name
+# from admin_tools.utils import get_admin_site_name
 from django.conf import settings
 
 
@@ -169,7 +169,7 @@ class CustomIndexDashboard(Dashboard):
                 # [_('Log out'), reverse('%s:logout' % site_name)],
             ],
         ))
-        #"""
+        # """
 
         if not settings.DEBUG:
             # append a feed module

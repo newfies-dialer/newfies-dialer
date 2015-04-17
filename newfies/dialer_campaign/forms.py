@@ -30,8 +30,8 @@ from .models import Campaign, Subscriber
 from .constants import CAMPAIGN_STATUS, SUBSCRIBER_STATUS
 from .function_def import user_dialer_setting, get_phonebook_list
 from dialer_contact.forms import SearchForm
-#from agent.function_def import agent_list
-#from agent.models import AgentProfile, Agent
+# from agent.function_def import agent_list
+# from agent.models import AgentProfile, Agent
 from user_profile.models import UserProfile
 from dnc.models import DNC
 

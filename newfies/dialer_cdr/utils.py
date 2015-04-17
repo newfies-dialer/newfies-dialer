@@ -15,7 +15,7 @@
 from dialer_cdr.models import VoIPCall
 from dialer_cdr.constants import VOIPCALL_AMD_STATUS, LEG_TYPE
 from celery.utils.log import get_task_logger
-#from dialer_cdr.function_def import get_prefix_obj
+# from dialer_cdr.function_def import get_prefix_obj
 
 logger = get_task_logger(__name__)
 

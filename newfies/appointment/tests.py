@@ -16,8 +16,8 @@
 # Usage: py.test appointment/tests.py --ipdb
 #
 
-#from django.contrib.auth.models import User
-#from django.conf import settings
+# from django.contrib.auth.models import User
+# from django.conf import settings
 # from django_lets_go.utils import BaseAuthenticatedClient
 from user_profile.models import CalendarUser, CalendarUserProfile
 from calendar_settings.models import CalendarSetting

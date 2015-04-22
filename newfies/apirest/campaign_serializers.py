@@ -159,7 +159,7 @@ class CampaignSerializer(serializers.HyperlinkedModelSerializer):
             'monday', 'tuesday', 'wednesday', 'thursday', 'friday',
             'saturday', 'sunday', 'completion_maxretry', 'sms_gateway',
             'completion_intervalretry',
-            #'agent_script', 'lead_disposition', 'external_link'
+            # 'agent_script', 'lead_disposition', 'external_link'
         )
 
     def get_fields(self, *args, **kwargs):

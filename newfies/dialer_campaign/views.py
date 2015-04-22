@@ -104,7 +104,7 @@ def notify_admin(request):
     all_admin_user = User.objects.filter(is_superuser=True)
     for user in all_admin_user:
         recipient = user
-        if not 'has_notified' in request.session:
+        if 'has_notified' not in request.session:
             frontend_send_notification(
                 request, NOTIFICATION_NAME.dialer_setting_configuration, recipient)
             # Send mail to ADMINS

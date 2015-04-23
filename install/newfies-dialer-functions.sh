@@ -172,10 +172,10 @@ func_install_dependencies(){
                 echo "Setup new sources.list entries"
                 #Used by Node.js
                 echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
-                #Used by PostgreSQL
-                echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
-                wget --no-check-certificate --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
             fi
+            #Used by PostgreSQL
+            echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' > /etc/apt/sources.list.d/pgdg.list
+            wget --no-check-certificate --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc|apt-key add -
             apt-get update
 
             export LANGUAGE=en_US.UTF-8

@@ -172,10 +172,10 @@ func_install_dependencies(){
                 echo "Setup new sources.list entries"
                 #Used by Node.js
                 echo "deb http://ftp.us.debian.org/debian wheezy-backports main" >> /etc/apt/sources.list
-                #Used by PostgreSQL
-                echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' >> /etc/apt/sources.list.d/pgdg.list
-                wget --no-check-certificate --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc | apt-key add -
             fi
+            #Used by PostgreSQL
+            echo 'deb http://apt.postgresql.org/pub/repos/apt/ wheezy-pgdg main' > /etc/apt/sources.list.d/pgdg.list
+            wget --no-check-certificate --quiet -O - https://www.postgresql.org/media/keys/ACCC4CF8.asc|apt-key add -
             apt-get update
 
             export LANGUAGE=en_US.UTF-8
@@ -562,9 +562,16 @@ func_prepare_settings(){
     IFCONFIG=`which ifconfig 2>/dev/null||echo /sbin/ifconfig`
     IPADDR=`$IFCONFIG eth0|gawk '/inet addr/{print $2}'|gawk -F: '{print $2}'`
     if [ -z "$IPADDR" ]; then
-        clear
-        echo "We have not detected your IP address automatically, please enter it manually"
-        read IPADDR
+        #the following work on Docker container
+        # ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1  -d'/'
+        IPADDR=`ip -4 -o addr show eth0 | cut -d ' ' -f 7 | cut -d '/' -f 1`
+        if [ -z "$IPADDR" ]; then
+            clear
+            echo "we have not detected your IP address automatically!"
+            echo "Please enter your IP address manually:"
+            read IPADDR
+            echo ""
+        fi
     fi
 
     ##Update Freeswitch XML CDR

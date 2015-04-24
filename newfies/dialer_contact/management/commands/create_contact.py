@@ -71,18 +71,31 @@ class Command(BaseCommand):
 
         length = 15
         chars = "1234567890"
+        BULK_SIZE = 100
+        bulk_record = []
         for k in range(1, int(amount) + 1):
             if k % 1000 == 0:
                 print "%d contacts created..." % k
             phone_no = ''.join([choice(chars) for i in range(length)])
 
-            # TODO: Use generate_series to speed up the contact creation
-            # INSERT INTO numbers (num) VALUES ( generate_series(1,1000));
-
-            try:
-                Contact.objects.create(
+            bulk_record.append(
+                Contact(
                     contact=phone_no + prefix,
                     phonebook=obj_phonebook)
+            )
+            if k % BULK_SIZE == 0:
+                # Bulk insert
+                try:
+                    Contact.objects.bulk_create(bulk_record)
+                except IntegrityError:
+                    print "Error : Duplicate contact - %s" % phone_no
+                bulk_record = []
+
+        # remaining record
+        if bulk_record:
+            # Bulk insert
+            try:
+                Contact.objects.bulk_create(bulk_record)
             except IntegrityError:
                 print "Error : Duplicate contact - %s" % phone_no
 

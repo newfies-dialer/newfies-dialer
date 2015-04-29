@@ -410,17 +410,19 @@ def callevent_processing():
     else:
         debug_query(21)
         # buff_voipcall = BufferVoIPCall()
+        call_event_list = []
         for record in row:
             call_event_id = record[0]
             event_name = record[1]
-            # Update Call Event
-            sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
-            cursor.execute(sql_statement)
-
+            call_event_list.append(str(call_event_id))
             logger.info("Processing Call_Event : %s" % event_name)
             process_callevent.delay(record)
 
-        debug_query(30)
+        if call_event_list:
+            # Update Call Event
+            sql_statement = "UPDATE call_event SET status=2 WHERE id IN (%s)" % ','.join(call_event_list)
+            cursor.execute(sql_statement)
+            debug_query(30)
         # buff_voipcall.commit()
         # debug_query(31)
         logger.debug('End Loop : callevent_processing')
@@ -444,7 +446,7 @@ class task_pending_callevent(PeriodicTask):
     # TODO: problem of the lock if it's a cloud, it won't be shared
     @only_one(ikey="task_pending_callevent", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger.debug("ASK :: task_pending_callevent")
+        logger.info("TASK :: task_pending_callevent")
         callevent_processing()
 
 """

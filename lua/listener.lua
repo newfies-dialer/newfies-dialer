@@ -175,8 +175,8 @@ end
 logger("Starting")
 
 connect()
+-- DROP TABLE if exists call_event;
 serr = exec_sql([[
-    DROP TABLE if exists call_event;
     CREATE TABLE if not exists call_event (
         id serial NOT NULL PRIMARY KEY,
         event_name varchar(200) NOT NULL,
@@ -230,7 +230,7 @@ while true do
     e = fscon:pop(1)
 
     if e then
-        --default status
+        --default status: Pending
         status = 1
         -- Get the Events info
         event_name = e:getHeader("Event-Name") or ""

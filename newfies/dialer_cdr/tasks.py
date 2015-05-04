@@ -36,15 +36,23 @@ from django_lets_go.only_one_task import only_one
 from common_functions import debug_query
 from uuid import uuid1
 from time import sleep
+from random import randint, seed
 try:
     import ESL as ESL
 except ImportError:
     ESL = None
 
 
+seed()
 logger = get_task_logger(__name__)
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
+
+
+def getfshostname(max):
+    # Load balance
+    randval = randint(1, max)
+    return "newfiesfs%d" % randval
 
 
 def dial_out(dial_command):
@@ -53,7 +61,9 @@ def dial_out(dial_command):
         return 'load esl error'
 
     reload(ESL)
-    c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
+    # hostname = getfshostname(3)
+    hostname = settings.ESL_HOSTNAME
+    c = ESL.ESLconnection(hostname, settings.ESL_PORT, settings.ESL_SECRET)
     c.connected()
     ev = c.api("bgapi", str(dial_command))
     c.disconnect()

@@ -204,6 +204,8 @@ func_install_dependencies(){
             apt-get -y install python-pip
             # for audiofile convertion
             apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
+            #repeat flite install in case FS is on a different server
+            apt-get -y install flite
 
             #Install Node.js & NPM
             apt-get -y install nodejs-legacy

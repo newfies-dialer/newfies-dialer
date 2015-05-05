@@ -255,6 +255,8 @@ func_add_init_script() {
             wget --no-check-certificate $FS_INIT_PATH/debian/freeswitch -O /etc/init.d/freeswitch
             chmod 0755 /etc/init.d/freeswitch
             cd /etc/init.d; update-rc.d freeswitch defaults 90
+            # Remove with:
+            # cd /etc/init.d; update-rc.d -f freeswitch remove
         ;;
         'CENTOS')
             wget --no-check-certificate $FS_INIT_PATH/centos/freeswitch -O /etc/init.d/freeswitch

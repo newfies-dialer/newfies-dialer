@@ -47,22 +47,26 @@ seed()
 logger = get_task_logger(__name__)
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
+NODES_NUMBER = 3
 
 
-def getfshostname(max):
+def find_dialer_node(callrequest_id):
     # Load balance
-    randval = randint(1, max)
-    return "newfiesfs%d" % randval
+    # randval = randint(1, max)
+    # return "newfiesfs%d" % randval
+    c_node = (callrequest_id % NODES_NUMBER) + 1
+    return "newfiesfs%d" % c_node
 
 
-def dial_out(dial_command):
+def dial_out(dial_command, callrequest_id):
     if not ESL:
         logger.debug('ESL not installed')
         return 'load esl error'
 
     reload(ESL)
-    # hostname = getfshostname(3)
     hostname = settings.ESL_HOSTNAME
+    # hostname = find_dialer_node(callrequest_id)
+    logger.info("Selected Node to dialout: %s" % hostname)
     c = ESL.ESLconnection(hostname, settings.ESL_PORT, settings.ESL_SECRET)
     c.connected()
     ev = c.api("bgapi", str(dial_command))
@@ -663,7 +667,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             # logger.warn('dial_command (%d): %s' % (randval, dial_command))
 
             logger.warn('dial_command : %s' % dial_command)
-            request_uuid = dial_out(dial_command)
+            request_uuid = dial_out(dial_command, obj_callrequest.id)
 
             debug_query(14)
 

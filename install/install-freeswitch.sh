@@ -35,6 +35,7 @@ SCRIPT_NOTICE="This script is only intended to run on Debian 7.X"
 # Identify Linux Distribution type
 if [ -f /etc/debian_version ] ; then
     DIST='DEBIAN'
+    DEBIANCODE=$(lsb_release -cs)
 elif [ -f /etc/redhat-release ] ; then
     DIST='CENTOS'
 else
@@ -169,7 +170,7 @@ func_install_fs_sources() {
 
 install_fs_deb_packages() {
     #for 1.2 Stable Branch
-    echo 'deb http://files.freeswitch.org/repo/deb/debian/ wheezy main' >> /etc/apt/sources.list.d/freeswitch.list
+    echo "deb http://files.freeswitch.org/repo/deb/debian/ $DEBIANCODE main" >> /etc/apt/sources.list.d/freeswitch.list
 
     curl http://files.freeswitch.org/repo/deb/debian/freeswitch_archive_g0.pub | apt-key add -
 
@@ -255,6 +256,8 @@ func_add_init_script() {
             wget --no-check-certificate $FS_INIT_PATH/debian/freeswitch -O /etc/init.d/freeswitch
             chmod 0755 /etc/init.d/freeswitch
             cd /etc/init.d; update-rc.d freeswitch defaults 90
+            # Remove with:
+            # cd /etc/init.d; update-rc.d -f freeswitch remove
         ;;
         'CENTOS')
             wget --no-check-certificate $FS_INIT_PATH/centos/freeswitch -O /etc/init.d/freeswitch

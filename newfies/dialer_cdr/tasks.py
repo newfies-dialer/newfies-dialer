@@ -36,24 +36,38 @@ from django_lets_go.only_one_task import only_one
 from common_functions import debug_query
 from uuid import uuid1
 from time import sleep
+from random import randint, seed
 try:
     import ESL as ESL
 except ImportError:
     ESL = None
 
 
+seed()
 logger = get_task_logger(__name__)
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
+NODES_NUMBER = 3
 
 
-def dial_out(dial_command):
+def find_dialer_node(callrequest_id):
+    # Load balance
+    # randval = randint(1, max)
+    # return "newfiesfs%d" % randval
+    c_node = (callrequest_id % NODES_NUMBER) + 1
+    return "newfiesfs%d" % c_node
+
+
+def dial_out(dial_command, callrequest_id):
     if not ESL:
         logger.debug('ESL not installed')
         return 'load esl error'
 
     reload(ESL)
-    c = ESL.ESLconnection(settings.ESL_HOSTNAME, settings.ESL_PORT, settings.ESL_SECRET)
+    hostname = settings.ESL_HOSTNAME
+    # hostname = find_dialer_node(callrequest_id)
+    logger.info("Selected Node to dialout: %s" % hostname)
+    c = ESL.ESLconnection(hostname, settings.ESL_PORT, settings.ESL_SECRET)
     c.connected()
     ev = c.api("bgapi", str(dial_command))
     c.disconnect()
@@ -410,17 +424,19 @@ def callevent_processing():
     else:
         debug_query(21)
         # buff_voipcall = BufferVoIPCall()
+        call_event_list = []
         for record in row:
             call_event_id = record[0]
             event_name = record[1]
-            # Update Call Event
-            sql_statement = "UPDATE call_event SET status=2 WHERE id=%d" % call_event_id
-            cursor.execute(sql_statement)
-
+            call_event_list.append(str(call_event_id))
             logger.info("Processing Call_Event : %s" % event_name)
             process_callevent.delay(record)
 
-        debug_query(30)
+        if call_event_list:
+            # Update Call Event
+            sql_statement = "UPDATE call_event SET status=2 WHERE id IN (%s)" % ','.join(call_event_list)
+            cursor.execute(sql_statement)
+            debug_query(30)
         # buff_voipcall.commit()
         # debug_query(31)
         logger.debug('End Loop : callevent_processing')
@@ -444,7 +460,7 @@ class task_pending_callevent(PeriodicTask):
     # TODO: problem of the lock if it's a cloud, it won't be shared
     @only_one(ikey="task_pending_callevent", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        logger.debug("ASK :: task_pending_callevent")
+        logger.info("TASK :: task_pending_callevent")
         callevent_processing()
 
 """
@@ -651,7 +667,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
             # logger.warn('dial_command (%d): %s' % (randval, dial_command))
 
             logger.warn('dial_command : %s' % dial_command)
-            request_uuid = dial_out(dial_command)
+            request_uuid = dial_out(dial_command, obj_callrequest.id)
 
             debug_query(14)
 

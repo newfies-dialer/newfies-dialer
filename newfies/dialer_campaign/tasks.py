@@ -30,6 +30,7 @@ from datetime import datetime, timedelta
 from django.utils.timezone import utc
 from math import floor
 from common_functions import debug_query
+from uuid import uuid1
 # from celery.task.http import HttpDispatchTask
 # from common_functions import isint
 
@@ -150,26 +151,11 @@ class pending_call_processing(Task):
         if no_subscriber == 0:
             return False
 
-        # Set time to wait for balanced dispatching of calls
-        time_to_wait = (60.0 / settings.HEARTBEAT_MIN) / no_subscriber
-        count = 0
-        loopnow = datetime.utcnow()
-        loopnow + timedelta(seconds=1.55)
-
+        list_cr = []
+        bulk_record = []
+        # this is used to tag and retrieve the id that are inserted
+        bulk_uuid = str(uuid1())
         for elem_camp_subscriber in list_subscriber:
-            # Loop on Subscriber and start the initcall's task
-            count = count + 1
-            second_towait = floor(count * time_to_wait)
-            # ms_addtowait now used anymore, replaced by async eta
-            ms_addtowait = (count * time_to_wait) - second_towait
-
-            eta_delta = loopnow + timedelta(seconds=(count * time_to_wait))
-            # as we use eta_delta ms_addtowait is set to 0
-            ms_addtowait = 0
-
-            logger.info("Init CallRequest in %d seconds (cmpg:%d,subscr:%d:eta_delta:%s)" %
-                        (second_towait, campaign_id, elem_camp_subscriber.id, eta_delta))
-
             phone_number = elem_camp_subscriber.duplicate_contact
             debug_query(4)
 
@@ -192,36 +178,60 @@ class pending_call_processing(Task):
 
             debug_query(5)
 
-            # TODO: idea to speed up, create bluck of 10(Y) and then send a list
-            # of callrequest_id to init_callrequest
-
-            # Create Callrequest
-            new_callrequest = Callrequest(
-                status=CALLREQUEST_STATUS.PENDING,
-                call_type=call_type,
-                call_time=datetime.utcnow().replace(tzinfo=utc),
-                timeout=obj_campaign.calltimeout,
-                callerid=obj_campaign.callerid,
-                caller_name=obj_campaign.caller_name,
-                phone_number=phone_number,
-                campaign=obj_campaign,
-                aleg_gateway=obj_campaign.aleg_gateway,
-                content_type=obj_campaign.content_type,
-                object_id=obj_campaign.object_id,
-                user=obj_campaign.user,
-                extra_data=obj_campaign.extra_data,
-                timelimit=obj_campaign.callmaxduration,
-                subscriber=elem_camp_subscriber)
-            new_callrequest.save()
-
+            bulk_record.append(
+                Callrequest(
+                    status=CALLREQUEST_STATUS.PENDING,
+                    call_type=call_type,
+                    call_time=datetime.utcnow().replace(tzinfo=utc),
+                    timeout=obj_campaign.calltimeout,
+                    callerid=obj_campaign.callerid,
+                    caller_name=obj_campaign.caller_name,
+                    phone_number=phone_number,
+                    campaign=obj_campaign,
+                    aleg_gateway=obj_campaign.aleg_gateway,
+                    content_type=obj_campaign.content_type,
+                    object_id=obj_campaign.object_id,
+                    user=obj_campaign.user,
+                    extra_data=obj_campaign.extra_data,
+                    timelimit=obj_campaign.callmaxduration,
+                    subscriber=elem_camp_subscriber,
+                    request_uuid=bulk_uuid
+                )
+            )
             debug_query(6)
 
-            second_towait = second_towait + settings.DELAY_OUTBOUND
+        # Create Callrequests in Bulk
+        logger.info("Bulk Create CallRequest => %d" % (len(bulk_record)))
+        Callrequest.objects.bulk_create(bulk_record)
+
+        # Set time to wait for balanced dispatching of calls
+        time_to_wait = (60.0 / settings.HEARTBEAT_MIN) / no_subscriber
+        count = 0
+        loopnow = datetime.utcnow()
+        loopnow + timedelta(seconds=1.55)
+
+        # Retrienve the one we just created
+        list_cr = Callrequest.objects.filter(request_uuid=bulk_uuid).all()
+        for cr in list_cr:
+            # Loop on Subscriber and start the initcall's task
+            count = count + 1
+            second_towait = floor(count * time_to_wait)
+            # ms_addtowait now used anymore, replaced by async eta
+            ms_addtowait = (count * time_to_wait) - second_towait
+
+            eta_delta = loopnow + timedelta(seconds=(count * time_to_wait))
+            # as we use eta_delta ms_addtowait is set to 0
+            ms_addtowait = 0
+
+            logger.info("Init CallRequest in %d seconds (cmpg:%d,subscr:%d:eta_delta:%s)" %
+                        (second_towait, campaign_id, elem_camp_subscriber.id, eta_delta))
 
             init_callrequest.apply_async(
-                args=[new_callrequest.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait],
+                args=[cr.id, obj_campaign.id, obj_campaign.callmaxduration, ms_addtowait],
                 # countdown=second_towait)
                 eta=eta_delta)
+
+            second_towait = second_towait + settings.DELAY_OUTBOUND
 
             # Shell_plus
             # from dialer_cdr.tasks import init_callrequest

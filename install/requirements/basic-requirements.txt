@@ -23,3 +23,4 @@ gunicorn==19.3.0
 tablib==0.10.0
 requests==2.6.0
 lockfile==0.10.2
+librabbitmq==1.6.1

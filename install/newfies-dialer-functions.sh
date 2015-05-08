@@ -690,17 +690,21 @@ func_nginx_supervisor(){
 
     #Leave virtualenv
     deactivate
-    #Install Supervisor
-    pip install supervisor
 
     #Configure and Start supervisor
     case $DIST in
         'DEBIAN')
+            #Install Supervisor
+            #pip install supervisor
+
             cp /usr/src/newfies-dialer/install/supervisor/gunicorn_newfies_dialer.conf /etc/supervisor/conf.d/
-            cp /usr/src/newfies-dialer/install/supervisor/debian/supervisord /etc/init.d/supervisor
-            chmod +x /etc/init.d/supervisor
+            # cp /usr/src/newfies-dialer/install/supervisor/debian/supervisord /etc/init.d/supervisor
+            # chmod +x /etc/init.d/supervisor
         ;;
         'CENTOS')
+            #Install Supervisor
+            pip install supervisor
+
             cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord /etc/init.d/supervisor
             chmod +x /etc/init.d/supervisor
             chkconfig --levels 235 supervisor on
@@ -720,17 +724,21 @@ func_celery_supervisor(){
 
     #Leave virtualenv
     deactivate
-    #Install Supervisor
-    pip install supervisor
 
     #Configure and Start supervisor
     case $DIST in
         'DEBIAN')
+            #Install Supervisor
+            #pip install supervisor
+
             cp /usr/src/newfies-dialer/install/supervisor/celery_newfies_dialer.conf /etc/supervisor/conf.d/
-            cp /usr/src/newfies-dialer/install/supervisor/debian/supervisord /etc/init.d/supervisor
-            chmod +x /etc/init.d/supervisor
+            # cp /usr/src/newfies-dialer/install/supervisor/debian/supervisord /etc/init.d/supervisor
+            # chmod +x /etc/init.d/supervisor
         ;;
         'CENTOS')
+            #Install Supervisor
+            pip install supervisor
+
             cp /usr/src/newfies-dialer/install/supervisor/centos/supervisord /etc/init.d/supervisor
             chmod +x /etc/init.d/supervisor
             chkconfig --levels 235 supervisor on

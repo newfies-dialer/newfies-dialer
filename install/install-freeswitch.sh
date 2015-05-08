@@ -26,7 +26,9 @@ FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/
 FS_CONFIG_PATH=/etc/freeswitch
 FS_BASE_PATH=/usr/src/
 CURRENT_PATH=$PWD
-KERNELARCH=$(uname -m)
+# KERNELARCH=$(uname -m)
+# This script is intended for x86_64 architecture
+KERNELARCH="x86_64"
 # Valid Freeswitch versions are : v1.2.stable
 #FS_VERSION=v1.2.stable
 FS_VERSION=v1.4
@@ -58,24 +60,6 @@ func_install_deps() {
     echo "Setting up Prerequisites and Dependencies for FreeSWITCH"
     case $DIST in
         'DEBIAN')
-            #Get Kernel Arch on Debian if reported as unknown.
-            if [ $KERNELARCH = "unknown" ]; then
-                DEBIANARCH=$(dpkg --print-architecture)
-                if [[ $DEBIANARCH = "amd64" ]]; then
-                    KERNELARCH=x86_64
-                fi
-            else
-                clear
-                echo "we cannot confirm your kernel architecture"
-                echo "enter 32 or 64"
-                read INPUTARCH
-                if [[ $INPUTARCH != "32" ]]; then
-                    KERNELARCH=x86_64
-                else
-                    KERNELARCH=i386
-                fi
-            fi
-
             apt-get -y update
             apt-get -y install locales-all
 
@@ -198,9 +182,9 @@ func_install_luasql() {
     cp config config.orig
     rm config
     wget --no-check-certificate https://gist.githubusercontent.com/areski/4b82058ddf84e9d6f1e5/raw/5fae61dd851960b7063b82581b1b4904ba9413df/luasql_config -O config
-    if [ $KERNELARCH != "x86_64" ]; then
-        sed -i "s/64//g" config
-    fi
+    # if [ $KERNELARCH != "x86_64" ]; then
+    #     sed -i "s/64//g" config
+    # fi
     #Compile and install
     make
     make install

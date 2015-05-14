@@ -235,6 +235,7 @@ func_install_dependencies(){
             yum -y install git sudo cmake
             yum -y install python-setuptools python-tools python-devel mercurial memcached
             yum -y install mlocate vim git wget
+            update-alternatives --set editor /usr/bin/vim.tiny
             yum -y install policycoreutils-python
 
             # install Node & npm

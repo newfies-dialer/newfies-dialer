@@ -190,7 +190,8 @@ func_install_dependencies(){
 
             apt-get -y remove apache2.2-common apache2
             apt-get -y install sudo curl
-            apt-get -y install hdparm htop
+            apt-get -y install hdparm htop vim
+            update-alternatives --set editor /usr/bin/vim.tiny
 
             #Install Postgresql
             apt-get -y install libpq-dev
@@ -235,7 +236,6 @@ func_install_dependencies(){
             yum -y install git sudo cmake
             yum -y install python-setuptools python-tools python-devel mercurial memcached
             yum -y install mlocate vim git wget
-            update-alternatives --set editor /usr/bin/vim.tiny
             yum -y install policycoreutils-python
 
             # install Node & npm
@@ -688,7 +688,6 @@ func_create_pgsql_database(){
 
 #NGINX / SUPERVISOR
 func_nginx_supervisor(){
-
     #Leave virtualenv
     deactivate
 
@@ -722,7 +721,6 @@ func_nginx_supervisor(){
 
 #CELERY SUPERVISOR
 func_celery_supervisor(){
-
     #Leave virtualenv
     deactivate
 

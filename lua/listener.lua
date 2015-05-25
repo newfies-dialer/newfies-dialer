@@ -35,6 +35,31 @@ local dbcon = nil
 local results = {}
 local incr = 0
 
+-- DROP TABLE if exists call_event;
+local create_table_sql = [[
+    CREATE TABLE if not exists call_event (
+        id serial NOT NULL PRIMARY KEY,
+        event_name varchar(200) NOT NULL,
+        body varchar(200) NOT NULL,
+        job_uuid varchar(200),
+        call_uuid varchar(200) NOT NULL,
+        used_gateway_id integer,
+        callrequest_id integer,
+        alarm_request_id integer,
+        callerid varchar(200),
+        phonenumber varchar(200),
+        duration integer DEFAULT 0,
+        billsec integer DEFAULT 0,
+        hangup_cause varchar(40),
+        hangup_cause_q850 varchar(10),
+        amd_status varchar(40),
+        leg varchar(10) DEFAULT 'aleg',
+        starting_date timestamp with time zone,
+        status smallint,
+        created_date timestamp with time zone NOT NULL
+        );
+    CREATE INDEX call_event_idx_status ON call_event (status);
+    ]]
 
 function logger(message)
     freeswitch.console_log(LOGLEVEL,"["..PROGNAME.."] "..message.."\n")
@@ -82,7 +107,6 @@ function disconnect()
     env:close()
 end
 
-
 function get_list(sqlquery)
     debug("Load SQL : "..sqlquery)
     cur, serr = dbcon:execute(sqlquery)
@@ -107,7 +131,6 @@ function exec_sql(sqlquery)
     end
     return serr
 end
-
 
 function trim(s)
     --trim text
@@ -171,39 +194,17 @@ if argv and argv[1] then
     return
 end
 
---Main function starts here
+--
+-- Main function starts here
+--
 logger("Starting")
 
 connect()
--- DROP TABLE if exists call_event;
-serr = exec_sql([[
-    CREATE TABLE if not exists call_event (
-        id serial NOT NULL PRIMARY KEY,
-        event_name varchar(200) NOT NULL,
-        body varchar(200) NOT NULL,
-        job_uuid varchar(200),
-        call_uuid varchar(200) NOT NULL,
-        used_gateway_id integer,
-        callrequest_id integer,
-        alarm_request_id integer,
-        callerid varchar(200),
-        phonenumber varchar(200),
-        duration integer DEFAULT 0,
-        billsec integer DEFAULT 0,
-        hangup_cause varchar(40),
-        hangup_cause_q850 varchar(10),
-        amd_status varchar(40),
-        leg varchar(10) DEFAULT 'aleg',
-        starting_date timestamp with time zone,
-        status smallint,
-        created_date timestamp with time zone NOT NULL
-        );
-    CREATE INDEX call_event_idx_status ON call_event (status);
-    ]])
+serr = exec_sql(create_table_sql)
 if serr then
     -- retry once to execute the sql
     sleep(SLEEP_RECONNECT)
-    serr = exec_sql(insertsql)
+    serr = exec_sql(create_table_sql)
 end
 disconnect()
 

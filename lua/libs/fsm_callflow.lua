@@ -509,6 +509,7 @@ function FSMCall:next_node()
 
             local dialstr = ''
             local confirm_string = ''
+            local smooth_transfer = ''
 
             -- check if we got a json phonenumber for transfer
             if mcontact.transfer_phonenumber then
@@ -549,10 +550,21 @@ function FSMCall:next_node()
                     confirm_string = ',group_confirm_file='..confirm_file..',group_confirm_key='..current_node.confirm_key..',call_timeout=60'
                 end
             end
+
             -- Smooth-Transfer - Play audio to user while bridging the call
             filetoplay = self:get_playnode_audiofile(current_node)
             if filetoplay then
-                session:execute("set", "hold_music="..filetoplay)
+                -- session:execute("set", "hold_music="..filetoplay)
+                -- smooth_transfer = ',bridge_pre_execute_aleg_app=playback,bridge_pre_execute_aleg_data='..filetoplay
+                -- session:execute("set", "campon=true")
+                -- session:execute("set", "campon_hold_music="..filetoplay)
+                -- session:execute("set", "campon_retries=1")
+                -- session:execute("set", "campon_sleep=30")
+                -- session:execute("set", "campon_timeout=20")
+
+                -- Use ringback
+                -- <action application="set" data="ringback=file_string://${xxsounds}hi-long.wav!${sayname}!tone_stream://${us-ring};loops=-1"/>
+                session:execute("set", "ringback=file_string://"..filetoplay.."!tone_stream://${us-ring};loops=-1")
             end
 
             self.actionresult = 'phonenumber: '..current_node.phonenumber
@@ -560,7 +572,7 @@ function FSMCall:next_node()
                 ",origination_caller_id_name="..caller_id_name..",originate_timeout="..originate_timeout..
                 ",leg_timeout="..leg_timeout..",legtype=bleg,callrequest_id="..self.callrequest_id..
                 ",dialout_phone_number="..new_dialout_phone_number..
-                ",used_gateway_id="..self.used_gateway_id..confirm_string.."}"..dialstr
+                ",used_gateway_id="..self.used_gateway_id..confirm_string..smooth_transfer.."}"..dialstr
 
             -- originate the call
             self.debugger:msg("INFO", "dialstr:"..dialstr)

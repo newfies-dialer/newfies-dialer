@@ -198,9 +198,12 @@ class Section_abstract(Sortable):
         * ``min_number`` - if validate_number the minimum number accepted
         * ``max_number`` - if validate_number the maximum number accepted
         * ``phonenumber`` - phonenumber to dialout / call transfer
+        * ``confirm_script`` - script that will be play to the called part on transfer
+        * ``confirm_key`` - key to confirm the call t
         * ``completed`` - reaching this section will mark the subscriber as completed
         * ``conference`` - Conference Room
         * ``sms_text`` - text to send via SMS
+
 
     **Relationships**:
 
@@ -212,7 +215,7 @@ class Section_abstract(Sortable):
     """
     # select section
     type = models.IntegerField(max_length=20, choices=list(SECTION_TYPE), default=SECTION_TYPE.PLAY_MESSAGE,
-                               #blank=True, null=True,
+                               # blank=True, null=True,
                                verbose_name=_('section type'))
     # Question is the section label, this is used in the reporting
     question = models.CharField(max_length=500, blank=False, verbose_name=_("question"),
@@ -263,6 +266,12 @@ class Section_abstract(Sortable):
     # Call Transfer
     phonenumber = models.CharField(max_length=50, null=True, blank=True,
                                    verbose_name=_("Phone Number / SIP URI"))
+    # Script will be used by TTS to the agent receiving the call
+    confirm_script = models.CharField(max_length=1000, null=True, blank=True,
+                              help_text=_('Example: Please pull up the file {filenumber} for this call'))
+    confirm_key = models.CharField(max_length=1, null=True, blank=True,
+                             verbose_name=_("confirm key"))
+
     # Conference Room
     conference = models.CharField(max_length=50, null=True, blank=True,
                                   verbose_name=_("conference number"))
@@ -360,6 +369,8 @@ class Section_template(Section_abstract):
             min_number=self.min_number,
             max_number=self.max_number,
             phonenumber=self.phonenumber,
+            confirm_script=self.confirm_script,
+            confirm_key=self.confirm_key,
             conference=self.conference,
             sms_text=self.sms_text,
             completed=self.completed,

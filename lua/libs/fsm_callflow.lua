@@ -180,24 +180,47 @@ end
 
 function FSMCall:playnode(current_node)
     --play the audiofile or play the audio TTS
+    filetoplay = self:get_playnode_audiofile(current_node)
+    if filetoplay and string.len(filetoplay) > 1 then
+        self.debugger:msg("INFO", "StreamFile : "..filetoplay)
+        self.session:streamFile(filetoplay)
+    end
+end
+
+function FSMCall:get_playnode_audiofile(current_node)
+    --get the audiofile or play the audio TTS
     if current_node.audiofile_id then
         --Get audio path
         local current_audio = self.db.list_audio[tonumber(current_node.audiofile_id)]
         local filetoplay = UPLOAD_DIR..current_audio.audio_file
-        self.debugger:msg("INFO", "StreamFile : "..filetoplay)
-        self.session:streamFile(filetoplay)
+        self.debugger:msg("DEBUG", "Prepare StreamFile : "..filetoplay)
+        return filetoplay
     else
         --Use TTS
         local mscript = tag_replace(current_node.script, self.db.contact)
-        self.debugger:msg("INFO", "Speak : "..mscript)
+        self.debugger:msg("INFO", "Speak TTS : "..mscript)
         if mscript and mscript ~= '' then
             local tts_file = tts(mscript, TTS_DIR)
-            self.debugger:msg("DEBUG", "Speak TTS : "..tostring(tts_file))
-            if tts_file then
-                self.session:streamFile(tts_file)
-            end
+            self.debugger:msg("DEBUG", "Prepare Speak TTS : "..tostring(tts_file))
+            return tts_file
         end
     end
+    return false
+end
+
+function FSMCall:get_confirm_ttsfile(current_node)
+    -- This function is going to be used by transfer
+    local mscript = tag_replace(current_node.confirm_script, self.db.contact)
+    self.debugger:msg("INFO", "Prepare Speak : "..mscript)
+    if mscript and mscript ~= '' then
+        local tts_file = tts(mscript, TTS_DIR)
+        self.debugger:msg("DEBUG", "Prepare File for TTS : "..tostring(tts_file))
+        -- if tts_file then
+        --     self.session:streamFile(tts_file)
+        -- end
+        return tts_file
+    end
+    return false
 end
 
 --local digits = session:playAndGetDigits(1, 1, 2,4000, "#", "phrase:voicemail_record_file_check:1:2:3", invalid,"\\d{1}")
@@ -460,7 +483,9 @@ function FSMCall:next_node()
         self:end_call()
 
     elseif current_node.type == CALL_TRANSFER then
-        self:playnode(current_node)
+        -- Removed and replaced by Smooth-Transfer
+        -- self:playnode(current_node)
+
         self.debugger:msg("INFO", "STARTING CALL_TRANSFER : "..current_node.phonenumber)
         if current_node.phonenumber == '' then
             self:end_call()
@@ -483,6 +508,7 @@ function FSMCall:next_node()
             mcontact = mtable_jsoncontact(self.db.contact)
 
             local dialstr = ''
+            local confirm_string = ''
 
             -- check if we got a json phonenumber for transfer
             if mcontact.transfer_phonenumber then
@@ -514,14 +540,30 @@ function FSMCall:next_node()
             -- Sending Ringback
             session:execute("set", "ringback=${us-ring}")
 
+            -- Confirm Key
+            if string.len(current_node.confirm_key) == 1 and string.len(current_node.confirm_script) > 1 then
+                -- Great TTS file
+                confirm_file = self:get_confirm_ttsfile(current_node)
+                if confirm_file and string.len(confirm_file) > 1 then
+                    -- <action application="bridge" data="{group_confirm_file=playback /path/to/prompt.wav,group_confirm_key=exec,call_timeout=60} iax/guest@somebox/1234,sofia/test-int/1000@somehost"/>
+                    confirm_string = ',group_confirm_file='..confirm_file..',group_confirm_key='..current_node.confirm_key..',call_timeout=60'
+                end
+            end
+            -- Smooth-Transfer - Play audio to user while bridging the call
+            filetoplay = self:get_playnode_audiofile(current_node)
+            if filetoplay then
+                session:execute("set", "hold_music="..filetoplay)
+            end
+
             self.actionresult = 'phonenumber: '..current_node.phonenumber
             dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..
                 ",origination_caller_id_name="..caller_id_name..",originate_timeout="..originate_timeout..
                 ",leg_timeout="..leg_timeout..",legtype=bleg,callrequest_id="..self.callrequest_id..
                 ",dialout_phone_number="..new_dialout_phone_number..
-                ",used_gateway_id="..self.used_gateway_id.."}"..dialstr
+                ",used_gateway_id="..self.used_gateway_id..confirm_string.."}"..dialstr
 
             -- originate the call
+            self.debugger:msg("INFO", "dialstr:"..dialstr)
             session:execute("bridge", dialstr)
             actionduration = os.time() - self.lastaction_start
 

@@ -15,6 +15,7 @@
 from django import forms
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext
 from dialer_campaign.models import Campaign
 from dialer_contact.forms import SearchForm
 from survey.models import Survey_template, Section_template, \
@@ -133,7 +134,7 @@ html_code_of_completed_field = """
                     <div class="make-switch switch-small">
                     {{ form.completed }}
                     </div>
-                    """ % (_('Completed'))
+                    """ % (ugettext('Completed'))
 
 append_html_code_to_audio_field = """<a href="#" id="helpover" rel="popover" data-placement="top" data-content="If an audio file is not selected, the script will be played using Text-To-Speech" data-original-title="information"><i class="fa-info"></i></a>"""
 
@@ -348,7 +349,7 @@ class RecordMessageSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        #fields = ['type', 'survey', 'question', 'audiofile', 'completed']
+        # fields = ['type', 'survey', 'question', 'audiofile', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(RecordMessageSectionForm, self).__init__(*args, **kwargs)
@@ -384,7 +385,7 @@ class ConferenceSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        #fields = ['type', 'survey', 'question', 'audiofile', 'conference', 'completed']
+        # fields = ['type', 'survey', 'question', 'audiofile', 'conference', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(ConferenceSectionForm, self).__init__(*args, **kwargs)
@@ -420,7 +421,7 @@ class CallTransferSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        #fields = ['type', 'survey', 'question', 'audiofile', 'phonenumber', 'completed']
+        # fields = ['type', 'survey', 'question', 'audiofile', 'phonenumber', 'completed']
 
     def __init__(self, user, *args, **kwargs):
         super(CallTransferSectionForm, self).__init__(*args, **kwargs)
@@ -433,6 +434,8 @@ class CallTransferSectionForm(ModelForm):
                 Div('question', css_class='col-md-8 col-xs-12'),
                 Div('audiofile', css_class='col-md-4 col-xs-12'),
                 Div('phonenumber', css_class='col-md-6 col-xs-10'),
+                Div('confirm_script', css_class='col-md-12 col-xs-10'),
+                Div('confirm_key', css_class='col-md-6 col-xs-10'),
                 css_class='row'
             ),
             Div(
@@ -456,7 +459,7 @@ class SMSSectionForm(ModelForm):
 
     class Meta:
         model = Section_template
-        #fields = ['type', 'survey', 'question', 'retries', 'audiofile', 'completed', 'sms_text']
+        # fields = ['type', 'survey', 'question', 'retries', 'audiofile', 'completed', 'sms_text']
         widgets = {
             'sms_text': Textarea(attrs={'cols': 23, 'rows': 2}),
         }
@@ -517,7 +520,7 @@ class BranchingForm(ModelForm):
 
     class Meta:
         model = Branching_template
-        #fields = ['keys', 'section', 'goto']
+        # fields = ['keys', 'section', 'goto']
 
     def __init__(self, survey_id, section_id, *args, **kwargs):
         super(BranchingForm, self).__init__(*args, **kwargs)
@@ -528,7 +531,7 @@ class BranchingForm(ModelForm):
             Field('section'),
         )
 
-        #instance = getattr(self, 'instance', None)
+        # instance = getattr(self, 'instance', None)
         self.fields['section'].widget = forms.HiddenInput()
 
         # multiple choice section

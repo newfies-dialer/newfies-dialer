@@ -1090,11 +1090,13 @@ def export_survey(request, id):
                 section.min_number,
                 section.max_number,
                 section.phonenumber,
+                section.confirm_script,
+                section.confirm_key,
                 section.conference,
                 section.sms_text,
                 section.completed,
                 section.invalid_audiofile_id,
-                section.id
+                section.id,
             ])
 
         for section in section_list:
@@ -1166,13 +1168,15 @@ def import_survey(request):
                             min_number=row[20] if row[20] else None,
                             max_number=row[21] if row[21] else None,
                             phonenumber=row[22] if row[22] else None,
-                            conference=row[23] if row[23] else None,
-                            sms_text=row[24] if row[24] else None,
-                            completed=True if row[25] == 'True' else False,
-                            invalid_audiofile_id=int(row[26]) if row[26] else None,
+                            confirm_script=row[23] if row[22] else None,
+                            confirm_key=row[24] if row[22] else None,
+                            conference=row[26] if row[23] else None,
+                            sms_text=row[27] if row[24] else None,
+                            completed=True if row[28] == 'True' else False,
+                            invalid_audiofile_id=int(row[29]) if row[29] else None,
                             survey=new_survey,
                         )
-                        new_old_section[int(row[27])] = section_template_obj.id
+                        new_old_section[int(row[30])] = section_template_obj.id
                         section_row.append(row)
                     except:
                         type_error_import_list.append(row)

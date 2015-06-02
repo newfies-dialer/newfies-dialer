@@ -24,7 +24,7 @@
 #
 
 #Set branch to install develop / master
-BRANCH="master"
+BRANCH="develop"
 
 DATETIME=$(date +"%Y%m%d%H%M%S")
 INSTALL_DIR='/usr/share/newfies'

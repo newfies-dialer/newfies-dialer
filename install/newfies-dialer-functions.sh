@@ -47,7 +47,7 @@ HTTP_PORT='8008'
 
 #Django bug https://code.djangoproject.com/ticket/16017
 export LANG="en_US.UTF-8"
-SCRIPT_NOTICE="This install script is only intended to run on Debian 7.X"
+SCRIPT_NOTICE="This install script is only intended to run on Debian 7.X or 8.X"
 
 # Identify Linux Distribution type
 func_identify_os() {
@@ -831,9 +831,14 @@ func_install_frontend(){
     # * * LOGROTATE * *
     func_prepare_logger
 
+    #Congrats
+    func_congrats_install
+}
+
+func_congrats_install() {
     echo ""
     echo "*****************************************************************"
-    echo "Congratulations, Newfies-Dialer Web Application is now installed!"
+    echo "Congratulations, Newfies-Dialer is now installed!"
     echo "*****************************************************************"
     echo ""
     echo "Please log on to Newfies-Dialer at "
@@ -895,18 +900,8 @@ func_install_backend() {
     #Restart FreeSWITCH to find the startup-script
     /etc/init.d/freeswitch restart
 
-    echo ""
-    echo "**************************************************************"
-    echo "Congratulations, Newfies-Dialer Backend is now installed!"
-    echo "**************************************************************"
-    echo ""
-    echo "Thank you for installing Newfies-Dialer"
-    echo "Yours"
-    echo "The Star2Billing Team"
-    echo "http://www.star2billing.com and http://www.newfies-dialer.org/"
-    echo ""
-    echo "**************************************************************"
-    echo ""
+    #Congrats
+    func_congrats_install
 }
 
 #Install & Configure RabbitMQ

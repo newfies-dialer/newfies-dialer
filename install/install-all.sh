@@ -24,7 +24,7 @@
 #Set branch to install develop / master
 BRANCH='develop'
 
-SCRIPT_NOTICE="This script is only intended to run on Debian 7.X"
+SCRIPT_NOTICE="This script is only intended to run on Debian 7.X or 8.X"
 
 # Identify Linux Distribution type
 func_identify_os() {

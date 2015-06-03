@@ -1140,8 +1140,8 @@ def import_survey(request):
                 if not row or str(row[0]) == 0:
                     continue
 
-                # if length of row is 28, it's a section
-                if len(row) == 28:
+                # if length of row is 30, it's a section
+                if len(row) == 30:
                     try:
                         # for section
                         section_template_obj = Section_template.objects.create(
@@ -1168,15 +1168,15 @@ def import_survey(request):
                             min_number=row[20] if row[20] else None,
                             max_number=row[21] if row[21] else None,
                             phonenumber=row[22] if row[22] else None,
-                            confirm_script=row[23] if row[22] else None,
-                            confirm_key=row[24] if row[22] else None,
-                            conference=row[26] if row[23] else None,
-                            sms_text=row[27] if row[24] else None,
-                            completed=True if row[28] == 'True' else False,
-                            invalid_audiofile_id=int(row[29]) if row[29] else None,
+                            confirm_script=row[23] if row[23] else None,
+                            confirm_key=row[24] if row[24] else None,
+                            conference=row[25] if row[25] else None,
+                            sms_text=row[26] if row[26] else None,
+                            completed=True if row[27] == 'True' else False,
+                            invalid_audiofile_id=int(row[28]) if row[28] else None,
                             survey=new_survey,
                         )
-                        new_old_section[int(row[30])] = section_template_obj.id
+                        new_old_section[int(row[29])] = section_template_obj.id
                         section_row.append(row)
                     except:
                         type_error_import_list.append(row)

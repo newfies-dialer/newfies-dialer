@@ -549,6 +549,15 @@ function FSMCall:next_node()
                     -- <action application="bridge" data="{group_confirm_file=playback /path/to/prompt.wav,group_confirm_key=exec,call_timeout=60} iax/guest@somebox/1234,sofia/test-int/1000@somehost"/>
                     confirm_string = ',group_confirm_file='..confirm_file..',group_confirm_key='..current_node.confirm_key..',call_timeout=60'
                 end
+            elseif string.len(current_node.confirm_script) > 1 then
+                -- No confirm key so we want to just playback an audio to the callee before bridging the call
+
+                -- Great TTS file
+                confirm_file = self:get_confirm_ttsfile(current_node)
+                if confirm_file and string.len(confirm_file) > 1 then
+                    -- <action application="bridge" data="{group_confirm_file=playback /path/to/prompt.wav,group_confirm_key=exec,call_timeout=60} iax/guest@somebox/1234,sofia/test-int/1000@somehost"/>
+                    confirm_string = ',group_confirm_file=playback '..confirm_file..',group_confirm_key=exec,call_timeout=60'
+                end
             end
 
             -- Smooth-Transfer - Play audio to user while bridging the call

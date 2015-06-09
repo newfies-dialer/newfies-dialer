@@ -147,13 +147,13 @@ class Campaign(Model):
         * ``week_day_setting`` (monday, tuesday, wednesday, thursday, friday, \
         saturday, sunday)
         * ``frequency`` - Frequency, speed of the campaign. number of calls/min
-        * ``callmaxduration`` - Max retry allowed per user
+        * ``callmaxduration`` - Max call duration allowed
         * ``maxretry`` - Max retry allowed per user
         * ``intervalretry`` - Time to wait between retries in seconds
         * ``completion_maxretry`` - Number of retries until a contact completes survey
         * ``completion_intervalretry`` - Time delay in seconds before retrying contact \
             to complete survey
-        * ``calltimeout`` - Number of seconds to timeout on calls
+        * ``calltimeout`` - Number of seconds to timeout on dialing
         * ``aleg_gateway`` - Gateway to use to reach the contact
         * ``extra_data`` - Additional data to pass to the application
         * ``totalcontact`` - Total Contact for this campaign
@@ -229,8 +229,8 @@ class Campaign(Model):
         default='900', blank=True, null=True,
         verbose_name=_('completion time between retries'),
         help_text=_("time delay in seconds before retrying contact to complete survey"))
-    calltimeout = models.IntegerField(default='45', blank=True, null=True, verbose_name=_('timeout on call'),
-                                      help_text=_("connection timeout in seconds"))
+    calltimeout = models.IntegerField(default='45', blank=True, null=True, verbose_name=_('timeout on dialing'),
+                                      help_text=_("dialing timeout in seconds"))
     aleg_gateway = models.ForeignKey(Gateway, verbose_name=_("A-Leg gateway"), related_name="A-Leg Gateway",
                                      help_text=_("select outbound gateway"))
     sms_gateway = models.ForeignKey(SMS_Gateway, verbose_name=_("sms gateway"), null=True, blank=True,

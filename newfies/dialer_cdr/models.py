@@ -110,7 +110,7 @@ class Callrequest(Model):
     caller_name = models.CharField(max_length=80, blank=True, verbose_name=_("caller name"),
                                    help_text=_("outbound caller-Name"))
     phone_number = models.CharField(max_length=80, verbose_name=_('phone number'))
-    timeout = models.IntegerField(blank=True, default=30, verbose_name=_('time out'))
+    timeout = models.IntegerField(blank=True, default=30, verbose_name=_('dialing time out'))
     timelimit = models.IntegerField(blank=True, default=3600, verbose_name=_('time limit'))
     extra_dial_string = models.CharField(max_length=500, blank=True, verbose_name=_('extra dial string'))
     subscriber = models.ForeignKey(Subscriber, null=True, blank=True,

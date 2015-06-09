@@ -36,14 +36,12 @@ from django_lets_go.only_one_task import only_one
 from common_functions import debug_query
 from uuid import uuid1
 from time import sleep
-from random import randint, seed
 try:
     import ESL as ESL
 except ImportError:
     ESL = None
 
 
-seed()
 logger = get_task_logger(__name__)
 
 LOCK_EXPIRE = 60 * 10 * 1  # Lock expires in 10 minutes
@@ -52,6 +50,8 @@ NODES_NUMBER = 3
 
 def find_dialer_node(callrequest_id):
     # Load balance
+    # from random import randint, seed
+    # seed()
     # randval = randint(1, max)
     # return "newfiesfs%d" % randval
     c_node = (callrequest_id % NODES_NUMBER) + 1
@@ -557,14 +557,15 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
     gateways = obj_callrequest.aleg_gateway.gateways
     gateway_id = obj_callrequest.aleg_gateway.id
     # Gateway_codecs / gateway_retries
-    gateway_timeouts = obj_callrequest.aleg_gateway.gateway_timeouts
+
+    dialing_timeout = obj_callrequest.timeout
     # fraud protection on short calls
     try:
-        gateway_timeouts = int(gateway_timeouts)
-        if gateway_timeouts < 10:
-            gateway_timeouts = 10
+        dialing_timeout = int(dialing_timeout)
+        if dialing_timeout < 10:
+            dialing_timeout = 10
     except ValueError:
-        gateway_timeouts = 45
+        dialing_timeout = 45
     originate_dial_string = obj_callrequest.aleg_gateway.originate_dial_string
 
     debug_query(11)
@@ -610,7 +611,7 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
 
             # Call Vars
             callvars = "bridge_early_media=true,originate_timeout=%d,newfiesdialer=true,leg_type=1" % \
-                (gateway_timeouts, )
+                (dialing_timeout, )
             args_list.append(callvars)
 
             # Default Test

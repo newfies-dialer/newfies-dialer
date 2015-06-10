@@ -180,7 +180,7 @@ end
 
 function FSMCall:playnode(current_node)
     --play the audiofile or play the audio TTS
-    filetoplay = self:get_playnode_audiofile(current_node)
+    local filetoplay = self:get_playnode_audiofile(current_node)
     if filetoplay and string.len(filetoplay) > 1 then
         self.debugger:msg("INFO", "StreamFile : "..filetoplay)
         self.session:streamFile(filetoplay)
@@ -538,16 +538,14 @@ function FSMCall:next_node()
                 session:execute("set", "sip_h_P-Contact-Transfer-Ref="..mcontact.transfer_ref)
             end
 
-            -- Sending Ringback
-            session:execute("set", "ringback=${us-ring}")
-
             -- Confirm Key
             if string.len(current_node.confirm_key) == 1 and string.len(current_node.confirm_script) > 1 then
                 -- Great TTS file
                 confirm_file = self:get_confirm_ttsfile(current_node)
                 if confirm_file and string.len(confirm_file) > 1 then
                     -- <action application="bridge" data="{group_confirm_file=playback /path/to/prompt.wav,group_confirm_key=exec,call_timeout=60} iax/guest@somebox/1234,sofia/test-int/1000@somehost"/>
-                    confirm_string = ',group_confirm_file='..confirm_file..',group_confirm_key='..current_node.confirm_key..',call_timeout=60'
+                    confirm_string = ',group_confirm_file='..confirm_file..',group_confirm_key='..current_node.confirm_key..',call_timeout=120,group_confirm_read_timeout=120000'
+                    -- group_confirm_read_timeout: Time in milliseconds to wait for the confirmation input (default: 5000 ms)
                 end
             elseif string.len(current_node.confirm_script) > 1 then
                 -- No confirm key so we want to just playback an audio to the callee before bridging the call
@@ -556,24 +554,27 @@ function FSMCall:next_node()
                 confirm_file = self:get_confirm_ttsfile(current_node)
                 if confirm_file and string.len(confirm_file) > 1 then
                     -- <action application="bridge" data="{group_confirm_file=playback /path/to/prompt.wav,group_confirm_key=exec,call_timeout=60} iax/guest@somebox/1234,sofia/test-int/1000@somehost"/>
-                    confirm_string = ',group_confirm_file=playback '..confirm_file..',group_confirm_key=exec,call_timeout=60'
+                    confirm_string = ',group_confirm_file=playback '..confirm_file..',group_confirm_key=exec,call_timeout=120,group_confirm_read_timeout=120000'
                 end
             end
 
             -- Smooth-Transfer - Play audio to user while bridging the call
-            filetoplay = self:get_playnode_audiofile(current_node)
-            if filetoplay then
-                -- session:execute("set", "hold_music="..filetoplay)
-                -- smooth_transfer = ',bridge_pre_execute_aleg_app=playback,bridge_pre_execute_aleg_data='..filetoplay
+            transfer_audio = self:get_playnode_audiofile(current_node)
+            if transfer_audio then
+                -- session:execute("set", "hold_music="..transfer_audio)
+                -- smooth_transfer = ',bridge_pre_execute_aleg_app=playback,bridge_pre_execute_aleg_data='..transfer_audio
                 -- session:execute("set", "campon=true")
-                -- session:execute("set", "campon_hold_music="..filetoplay)
+                -- session:execute("set", "campon_hold_music="..transfer_audio)
                 -- session:execute("set", "campon_retries=1")
                 -- session:execute("set", "campon_sleep=30")
                 -- session:execute("set", "campon_timeout=20")
 
                 -- Use ringback
                 -- <action application="set" data="ringback=file_string://${xxsounds}hi-long.wav!${sayname}!tone_stream://${us-ring};loops=-1"/>
-                session:execute("set", "ringback=file_string://"..filetoplay.."!tone_stream://${us-ring};loops=-1")
+                session:execute("set", "ringback=file_string://"..transfer_audio.."!tone_stream://${us-ring};loops=-1")
+            else
+                -- Sending Ringback
+                session:execute("set", "ringback=${us-ring}")
             end
 
             self.actionresult = 'phonenumber: '..current_node.phonenumber

@@ -24,7 +24,7 @@ BRANCH='master'
 FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-conf
 FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-init
 FS_CONFIG_PATH=/etc/freeswitch
-FS_BASE_PATH=/usr/src/
+FS_BASE_PATH=/usr/src
 CURRENT_PATH=$PWD
 # KERNELARCH=$(uname -m)
 # This script is intended for x86_64 architecture
@@ -120,6 +120,9 @@ func_install_fs_sources() {
     cd $FS_BASE_PATH/freeswitch
     # git checkout $FS_VERSION
 
+    echo ""
+    echo "Running ./bootstrap.sh -j"
+    echo ""
     ./bootstrap.sh -j
 
     # !!! virtual memory exhausted: Cannot allocate memory !!!

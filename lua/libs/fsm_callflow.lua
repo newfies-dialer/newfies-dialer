@@ -502,8 +502,10 @@ function FSMCall:next_node()
             -- CallerID display at transfer will be the contact's phonenumber
             callerid = self.dialout_phone_number
             caller_id_name = self.dialout_phone_number
-            originate_timeout = self.db.campaign_info.calltimeout
-            leg_timeout = self.db.campaign_info.calltimeout
+            -- originate_timeout = self.db.campaign_info.calltimeout
+            -- leg_timeout = self.db.campaign_info.calltimeout
+            originate_timeout = 300
+            leg_timeout = 300
 
             mcontact = mtable_jsoncontact(self.db.contact)
 
@@ -544,7 +546,8 @@ function FSMCall:next_node()
                 confirm_file = self:get_confirm_ttsfile(current_node)
                 if confirm_file and string.len(confirm_file) > 1 then
                     -- <action application="bridge" data="{group_confirm_file=playback /path/to/prompt.wav,group_confirm_key=exec,call_timeout=60} iax/guest@somebox/1234,sofia/test-int/1000@somehost"/>
-                    confirm_string = ',group_confirm_file='..confirm_file..',group_confirm_key='..current_node.confirm_key..',call_timeout=120,group_confirm_read_timeout=120000'
+                    -- confirm_file = "/usr/local/freeswitch/sounds/en/us/callie/ivr/8000/ivr-congratulations_you_pressed_star.wav"
+                    confirm_string = ',group_confirm_file='..confirm_file..',group_confirm_key='..current_node.confirm_key..',group_confirm_cancel_timeout=1'
                     -- group_confirm_read_timeout: Time in milliseconds to wait for the confirmation input (default: 5000 ms)
                 end
             elseif string.len(current_node.confirm_script) > 1 then
@@ -553,14 +556,23 @@ function FSMCall:next_node()
                 -- Great TTS file
                 confirm_file = self:get_confirm_ttsfile(current_node)
                 if confirm_file and string.len(confirm_file) > 1 then
+                    -- confirm_file = "/usr/local/freeswitch/sounds/en/us/callie/ivr/8000/ivr-congratulations_you_pressed_star.wav"
                     -- <action application="bridge" data="{group_confirm_file=playback /path/to/prompt.wav,group_confirm_key=exec,call_timeout=60} iax/guest@somebox/1234,sofia/test-int/1000@somehost"/>
-                    confirm_string = ',group_confirm_file=playback '..confirm_file..',group_confirm_key=exec,call_timeout=120,group_confirm_read_timeout=120000'
+                    confirm_string = ',group_confirm_file=playback '..confirm_file..',group_confirm_key=exec,group_confirm_cancel_timeout=1'
                 end
             end
+
+            -- Sending Ringback
+            session:execute("set", "ringback=${us-ring}")
+            session:execute("set", "transfer_ringback=${us-ring}")
 
             -- Smooth-Transfer - Play audio to user while bridging the call
             transfer_audio = self:get_playnode_audiofile(current_node)
             if transfer_audio then
+                api = freeswitch.API()
+                cmd = "bgapi uuid_broadcast "..self.uuid.." "..transfer_audio.." aleg"
+                result = api:executeString(cmd)
+
                 -- session:execute("set", "hold_music="..transfer_audio)
                 -- smooth_transfer = ',bridge_pre_execute_aleg_app=playback,bridge_pre_execute_aleg_data='..transfer_audio
                 -- session:execute("set", "campon=true")
@@ -571,10 +583,7 @@ function FSMCall:next_node()
 
                 -- Use ringback
                 -- <action application="set" data="ringback=file_string://${xxsounds}hi-long.wav!${sayname}!tone_stream://${us-ring};loops=-1"/>
-                session:execute("set", "ringback=file_string://"..transfer_audio.."!tone_stream://${us-ring};loops=-1")
-            else
-                -- Sending Ringback
-                session:execute("set", "ringback=${us-ring}")
+                -- session:execute("set", "ringback=file_string://"..transfer_audio.."!tone_stream://${us-ring};loops=-1")
             end
 
             self.actionresult = 'phonenumber: '..current_node.phonenumber

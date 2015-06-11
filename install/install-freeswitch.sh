@@ -71,7 +71,10 @@ func_install_deps() {
             locale-gen fr_FR.UTF-8
             locale-gen pt_BR.UTF-8
 
-            apt-get -y install autoconf2.64 automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libexpat1-dev libgdbm-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpcre3-dev libpopt-dev libsctp-dev libsqlite3-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unzip zip zlib1g-dev zlib1g-dev libjpeg-dev
+            apt-get -y install unzip zip sox sqlite3
+            apt-get -y install autoconf2.64 automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libexpat1-dev libgdbm-dev libmcrypt-dev libncurses5-dev libnewt-dev libpopt-dev libsctp-dev libsqlite3-dev libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl ssl-cert ssl-cert zlib1g-dev
+
+            apt-get -y install autoconf automake devscripts gawk g++ git-core 'libjpeg-dev|libjpeg62-turbo-dev' libncurses5-dev 'libtool-bin|libtool' make python-dev gawk pkg-config libtiff5-dev libperl-dev libgdbm-dev libdb-dev gettext libssl-dev libcurl4-openssl-dev libpcre3-dev libspeex-dev libspeexdsp-dev libsqlite3-dev libedit-dev libldns-dev libpq-dev
 
             if [ $DEBIANCODE != "jessie" ]; then
                 #DEBIAN7

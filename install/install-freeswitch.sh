@@ -15,7 +15,7 @@
 
 #
 # To download and run the script on your server :
-# cd /usr/src/ ; rm install-freeswitch.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-freeswitch.sh ; chmod +x install-freeswitch.sh ; ./install-freeswitch.sh
+# cd /usr/src/ ; rm install-freeswitch.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-freeswitch.sh ; chmod +x install-freeswitch.sh ; ./install-freeswitch.sh
 #
 
 #Set branch to install develop / master
@@ -24,7 +24,7 @@ BRANCH='master'
 FS_CONF_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-conf
 FS_INIT_PATH=https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/freeswitch-init
 FS_CONFIG_PATH=/etc/freeswitch
-FS_BASE_PATH=/usr/src/
+FS_BASE_PATH=/usr/src
 CURRENT_PATH=$PWD
 # KERNELARCH=$(uname -m)
 # This script is intended for x86_64 architecture
@@ -71,7 +71,10 @@ func_install_deps() {
             locale-gen fr_FR.UTF-8
             locale-gen pt_BR.UTF-8
 
-            apt-get -y install autoconf2.64 automake autotools-dev binutils bison build-essential cpp curl flex g++ gcc git-core libaudiofile-dev libc6-dev libdb-dev libexpat1 libexpat1-dev libgdbm-dev libmcrypt-dev libncurses5-dev libnewt-dev libpcre3 libpcre3-dev libpopt-dev libsctp-dev libsqlite3-dev libtool libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 make mcrypt ncftp nmap openssl sox sqlite3 ssl-cert ssl-cert unzip zip zlib1g-dev zlib1g-dev
+            apt-get -y install unzip zip sox sqlite3 ncftp nmap
+            apt-get -y install autoconf2.64 automake autotools-dev binutils bison build-essential cpp curl flex gcc libaudiofile-dev libc6-dev libexpat1 libexpat1-dev mcrypt libmcrypt-dev libnewt-dev libpopt-dev libsctp-dev libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 openssl ssl-cert zlib1g-dev
+
+            apt-get -y install autoconf automake devscripts gawk g++ git-core 'libjpeg-dev|libjpeg62-turbo-dev' libncurses5-dev 'libtool-bin|libtool' make python-dev gawk pkg-config libtiff5-dev libperl-dev libgdbm-dev libdb-dev gettext libssl-dev libcurl4-openssl-dev libpcre3-dev libspeex-dev libspeexdsp-dev libsqlite3-dev libedit-dev libldns-dev libpq-dev
 
             if [ $DEBIANCODE != "jessie" ]; then
                 #DEBIAN7
@@ -80,11 +83,9 @@ func_install_deps() {
                 #DEBIAN8
                 apt-get -y install libgnutls28-dev libtiff5-dev libtiff5
             fi
-            apt-get -y install libssl-dev pkg-config
             apt-get -y install libvorbis0a libogg0 libogg-dev libvorbis-dev
             apt-get -y install flite flite1-dev
             apt-get -y install unixodbc-dev odbc-postgresql
-            apt-get -y install libldns-dev libspeexdsp-dev libpcre3-dev libedit-dev libcurl4-openssl-dev libpcre3-dev
             ;;
         'CENTOS')
             yum -y update
@@ -120,6 +121,9 @@ func_install_fs_sources() {
     cd $FS_BASE_PATH/freeswitch
     # git checkout $FS_VERSION
 
+    echo ""
+    echo "Running ./bootstrap.sh -j"
+    echo ""
     ./bootstrap.sh -j
 
     # !!! virtual memory exhausted: Cannot allocate memory !!!

@@ -120,6 +120,7 @@ func_install_fs_sources() {
     cd $FS_BASE_PATH/freeswitch
     # git checkout $FS_VERSION
 
+    apt-get -y install libtool-bin
     echo ""
     echo "Running ./bootstrap.sh -j"
     echo ""

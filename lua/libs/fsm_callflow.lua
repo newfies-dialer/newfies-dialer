@@ -564,7 +564,6 @@ function FSMCall:next_node()
 
             -- Sending Ringback
             session:execute("set", "ringback=${us-ring}")
-            session:execute("set", "transfer_ringback=${us-ring}")
 
             -- Smooth-Transfer - Play audio to user while bridging the call
             transfer_audio = self:get_playnode_audiofile(current_node)

@@ -540,6 +540,46 @@ function FSMCall:next_node()
                 session:execute("set", "sip_h_P-Contact-Transfer-Ref="..mcontact.transfer_ref)
             end
 
+            -- Smooth-Transfer - Play audio to user while bridging the call
+            transfer_audio = self:get_playnode_audiofile(current_node)
+            if transfer_audio then
+                -- Test audio
+                -- transfer_audio = "/usr/local/freeswitch/sounds/en/us/callie/ivr/8000/ivr-congratulations_you_pressed_star.wav"
+
+                -- idea: try api_on_originate or api_on_pre_originate? https://wiki.freeswitch.org/wiki/Channel_Variables
+
+                -- uuid_broadcast don't work cause the audio keep playing when the agent accept the call
+                -- api = freeswitch.API()
+                -- cmd = "bgapi uuid_broadcast "..self.uuid.." "..transfer_audio.." aleg"
+                -- result = api:executeString(cmd)
+
+                -- api_on_answer don't work as expect
+                -- smooth_transfer = ",api_on_answer=uuid_break"..self.uuid..","
+
+                -- Custom music on hold - Doesn't seem to work
+                -- session:execute("set", "hold_music=/usr/local/freeswitch/sounds/music/8000/suite-espanola-op-47-leyenda.wav")
+
+                -- smooth_transfer = ',api_on_pre_originate=playback'
+
+                -- session:execute("set", "hold_music="..transfer_audio)
+                -- bridge_pre_execute_aleg_app Seems broken
+                -- smooth_transfer = ',bridge_pre_execute_bleg_app=playback,bridge_pre_execute_bleg_data='..transfer_audio
+                -- session:execute("set", "campon=true")
+                -- session:execute("set", "campon_hold_music="..transfer_audio)
+                -- session:execute("set", "campon_retries=1")
+                -- session:execute("set", "campon_sleep=30")
+                -- session:execute("set", "campon_timeout=20")
+
+                -- Use ringback
+                -- <action application="set" data="ringback=file_string://${xxsounds}hi-long.wav!${sayname}!tone_stream://${us-ring};loops=-1"/>
+                session:execute("set", "ringback=file_string://"..transfer_audio.."!tone_stream://${us-ring};loops=-1")
+                session:execute("set", "transfer_ringback=file_string://"..transfer_audio.."!tone_stream://${us-ring};loops=-1")
+            end
+
+            -- Sending Ringback
+            -- session:execute("set", "ringback=${us-ring}")
+            -- session:execute("set", "transfer_ringback=${us-ring}")
+
             -- Confirm Key
             if string.len(current_node.confirm_key) == 1 and string.len(current_node.confirm_script) > 1 then
                 -- Great TTS file
@@ -562,31 +602,8 @@ function FSMCall:next_node()
                 end
             end
 
-            -- Sending Ringback
-            session:execute("set", "ringback=${us-ring}")
-
-            -- Smooth-Transfer - Play audio to user while bridging the call
-            transfer_audio = self:get_playnode_audiofile(current_node)
-            if transfer_audio then
-                api = freeswitch.API()
-                cmd = "bgapi uuid_broadcast "..self.uuid.." "..transfer_audio.." aleg"
-                result = api:executeString(cmd)
-
-                -- session:execute("set", "hold_music="..transfer_audio)
-                -- smooth_transfer = ',bridge_pre_execute_aleg_app=playback,bridge_pre_execute_aleg_data='..transfer_audio
-                -- session:execute("set", "campon=true")
-                -- session:execute("set", "campon_hold_music="..transfer_audio)
-                -- session:execute("set", "campon_retries=1")
-                -- session:execute("set", "campon_sleep=30")
-                -- session:execute("set", "campon_timeout=20")
-
-                -- Use ringback
-                -- <action application="set" data="ringback=file_string://${xxsounds}hi-long.wav!${sayname}!tone_stream://${us-ring};loops=-1"/>
-                -- session:execute("set", "ringback=file_string://"..transfer_audio.."!tone_stream://${us-ring};loops=-1")
-            end
-
             self.actionresult = 'phonenumber: '..current_node.phonenumber
-            dialstr = "{hangup_after_bridge=false,origination_caller_id_number="..callerid..
+            dialstr = "{ignore_early_media=true,instant_ringback=true,hangup_after_bridge=false,origination_caller_id_number="..callerid..
                 ",origination_caller_id_name="..caller_id_name..",originate_timeout="..originate_timeout..
                 ",leg_timeout="..leg_timeout..",legtype=bleg,callrequest_id="..self.callrequest_id..
                 ",dialout_phone_number="..new_dialout_phone_number..

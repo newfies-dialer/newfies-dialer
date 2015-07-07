@@ -128,6 +128,12 @@ Screenshot
 .. image:: https://github.com/Star2Billing/newfies-dialer/raw/develop/docs/source/_static/images/admin_screenshot.png
 
 
+Translation
+-----------
+
+Help us translate Newfies-Dialer, we use Transifex: https://www.transifex.com/projects/p/newfies-dialer/
+
+
 Additional information
 -----------------------
 

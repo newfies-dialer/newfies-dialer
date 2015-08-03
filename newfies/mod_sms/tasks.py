@@ -106,8 +106,6 @@ class check_sms_campaign_pendingcall(Task):
 
             check_sms_campaign_pendingcall.delay(sms_campaign_id)
         """
-        #logger = self.get_logger()
-
         logger.info("[SMS_TASK] TASK :: check_sms_campaign_pendingcall = %s" % str(sms_campaign_id))
         try:
             obj_sms_campaign = SMSCampaign.objects.get(id=sms_campaign_id)
@@ -184,14 +182,12 @@ class spool_sms_nocampaign(PeriodicTask):
 
     # The sms_campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
-    #run_every = timedelta(seconds=60)
+    # run_every = timedelta(seconds=60)
 
     @only_one(ikey="spool_sms_nocampaign", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        #logger = self.get_logger(**kwargs)
-
-        #start_from = datetime.utcnow().replace(tzinfo=utc)
-        #list_sms = SMSMessage.objects.filter(delivery_date__lte=start_from, status='Unsent', sms_campaign__isnull=True)
+        # start_from = datetime.utcnow().replace(tzinfo=utc)
+        # list_sms = SMSMessage.objects.filter(delivery_date__lte=start_from, status='Unsent', sms_campaign__isnull=True)
         list_sms = SMSMessage.objects.filter(status='Unsent', sms_campaign__isnull=True)
         logger.warning("[SMS_TASK] TASK :: Check spool_sms_nocampaign -> COUNT SMS (%d)" % list_sms.count())
 
@@ -215,10 +211,10 @@ class sms_campaign_running(PeriodicTask):
 
     # The sms_campaign have to run every minutes in order to control the number
     # of calls per minute. Cons : new calls might delay 60seconds
-    #run_every = timedelta(seconds=60)
+    # run_every = timedelta(seconds=60)
 
     def run(self, **kwargs):
-        #logger = self.get_logger(**kwargs)
+        # logger = self.get_logger(**kwargs)
         logger.warning("[SMS_TASK] TASK :: Check if there is sms_campaign_running")
 
         for sms_campaign in SMSCampaign.objects.get_running_sms_campaign():
@@ -228,7 +224,7 @@ class sms_campaign_running(PeriodicTask):
             check_sms_campaign_pendingcall.delay(sms_campaign.id, keytask=keytask)
 
 
-#!!! USED
+# !!! USED
 class SMSImportPhonebook(Task):
 
     """
@@ -243,7 +239,6 @@ class SMSImportPhonebook(Task):
         """
         Read all the contact from phonebook_id and insert into subscriber
         """
-        #logger = self.get_logger()
         logger.info("[SMS_TASK] TASK :: import_phonebook")
         obj_campaign = SMSCampaign.objects.get(id=campaign_id)
 
@@ -265,7 +260,7 @@ class SMSImportPhonebook(Task):
         return True
 
 
-#!!! USED
+# !!! USED
 # OPTIMIZATION - FINE
 class sms_campaign_spool_contact(PeriodicTask):
 
@@ -291,7 +286,7 @@ class sms_campaign_spool_contact(PeriodicTask):
             sms_collect_subscriber.delay(campaign.id)
 
 
-#!!! USED
+# !!! USED
 @task()
 def sms_collect_subscriber(campaign_id):
     """
@@ -326,11 +321,11 @@ def sms_collect_subscriber(campaign_id):
 
 
 def importcontact_custom_sql(sms_campaign_id, phonebook_id):
-    from django.db import connection, transaction
+    from django.db import connection
     cursor = connection.cursor()
 
     # Call PL-SQL stored procedure
-    #CampaignSubscriber.importcontact_pl_sql(sms_campaign_id, phonebook_id)
+    # CampaignSubscriber.importcontact_pl_sql(sms_campaign_id, phonebook_id)
 
     # Data insert operation - commit required
     if settings.DATABASES['default']['ENGINE'] == 'django.db.backends.mysql':
@@ -379,7 +374,6 @@ class sms_campaign_expire_check(PeriodicTask):
 
     @only_one(ikey="sms_campaign_expire_check", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        #logger = self.get_logger(**kwargs)
         logger.info("[SMS_TASK] TASK :: sms_campaign_expire_check")
         for sms_campaign in SMSCampaign.objects.get_expired_sms_campaign():
             logger.debug("[SMS_TASK] => SMS Campaign name %s (id:%s)" % (sms_campaign.name,
@@ -399,7 +393,6 @@ class resend_sms_update_smscampaignsubscriber(PeriodicTask):
 
     @only_one(ikey="resend_sms_update_smscampaignsubscriber", timeout=LOCK_EXPIRE)
     def run(self, **kwargs):
-        #logger = self.get_logger(**kwargs)
         logger.warning("[SMS_TASK] TASK :: RESEND sms")
 
         for sms_campaign in SMSCampaign.objects.get_running_sms_campaign():

@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2014-11-28 00:29+0100\n"
+"POT-Creation-Date: 2015-07-07 18:19+0200\n"
 "PO-Revision-Date: 2012-02-28 23:20+0800\n"
 "Last-Translator: samlin <sam@theta.com.tw>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -16,108 +16,107 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: agent/admin_filters.py:21 agent/models.py:43 agent/models.py:120
-#: appointment/admin_filters.py:21 calendar_settings/models.py:57
-#: callcenter/admin_filters.py:46 callcenter/models.py:91
-#: callcenter/models.py:156 user_profile/models.py:126
-#: user_profile/models.py:192
+#: agent/admin_filters.py:21 agent/models.py:44 agent/models.py:122
+#: appointment/admin_filters.py:21 calendar_settings/models.py:58
+#: callcenter/admin_filters.py:46 callcenter/models.py:93
+#: callcenter/models.py:159 user_profile/models.py:129
+#: user_profile/models.py:198
 msgid "manager"
 msgstr "管理员"
 
-#: agent/models.py:41
+#: agent/models.py:42
 msgid "Designates whether the user is an agent."
 msgstr "指定使用者是否是一个用户"
 
-#: agent/models.py:44 calendar_settings/models.py:58 callcenter/models.py:92
-#: callcenter/models.py:157 user_profile/models.py:192
+#: agent/models.py:45 calendar_settings/models.py:59 callcenter/models.py:94
+#: callcenter/models.py:160 user_profile/models.py:198
 msgid "select manager"
 msgstr "语系"
 
-#: agent/models.py:48 dialer_campaign/constants.py:25
-#: dialer_campaign/models.py:228 dialer_cdr/models.py:121 frontend/forms.py:51
-#: mod_mailer/models.py:60 mod_sms/forms.py:198
+#: agent/models.py:49 dialer_campaign/constants.py:25
+#: dialer_campaign/models.py:238 dialer_cdr/models.py:123 frontend/forms.py:53
+#: mod_mailer/models.py:62 mod_sms/forms.py:201
 msgid "type"
 msgstr "类型"
 
-#: agent/models.py:50 dialer_campaign/models.py:222
-#: dialer_settings/models.py:52
+#: agent/models.py:51 dialer_settings/models.py:53
 msgid "timeout on call"
 msgstr "暂停拨打"
 
-#: agent/models.py:51 dialer_campaign/models.py:223
+#: agent/models.py:52
 msgid "connection timeout in seconds"
 msgstr "暂停连接秒数"
 
-#: agent/models.py:53 dialer_campaign/constants.py:34
-#: dialer_campaign/models.py:463 dialer_contact/constants.py:48
-#: dialer_contact/models.py:110
+#: agent/models.py:54 dialer_campaign/constants.py:34
+#: dialer_campaign/models.py:474 dialer_contact/constants.py:48
+#: dialer_contact/models.py:112
 #: dialer_contact/templates/dialer_contact/contact/change.html:5
 #: dnc/templates/dnc/dnc_contact/change.html:5
-#: frontend/templates/frontend/bootstrap_menu.html:43 mod_sms/models.py:238
-#: mod_sms/models.py:433
+#: frontend/templates/frontend/bootstrap_menu.html:43 mod_sms/models.py:247
+#: mod_sms/models.py:445
 #: templates/admin/dialer_contact/contact/import_contact.html:20
 msgid "contact"
 msgstr "联系人"
 
-#: agent/models.py:56 appointment/constants.py:84 appointment/constants.py:97
-#: appointment/models/alarms.py:53 appointment/models/alarms.py:146
-#: appointment/models/events.py:51 callcenter/models.py:95
+#: agent/models.py:57 appointment/constants.py:84 appointment/constants.py:97
+#: appointment/models/alarms.py:54 appointment/models/alarms.py:148
+#: appointment/models/events.py:51 callcenter/models.py:97
 #: dialer_campaign/constants.py:28 dialer_campaign/constants.py:38
-#: dialer_campaign/models.py:186 dialer_campaign/models.py:465
-#: dialer_cdr/models.py:105 dialer_contact/constants.py:52
-#: dialer_contact/models.py:89
+#: dialer_campaign/models.py:196 dialer_campaign/models.py:476
+#: dialer_cdr/models.py:107 dialer_contact/constants.py:52
+#: dialer_contact/models.py:91
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:29
-#: mod_sms/constants.py:44 mod_sms/constants.py:63 mod_sms/forms.py:227
-#: mod_sms/forms.py:251 mod_sms/models.py:127 mod_sms/models.py:436
+#: mod_sms/constants.py:44 mod_sms/constants.py:63 mod_sms/forms.py:231
+#: mod_sms/forms.py:256 mod_sms/models.py:135 mod_sms/models.py:448
 #: templates/admin/dialer_contact/contact/import_contact.html:25
 msgid "status"
 msgstr "状态"
 
-#: agent/models.py:59
+#: agent/models.py:60
 msgid "no answer delay time"
 msgstr "无应答时延迟时间"
 
-#: agent/models.py:61
+#: agent/models.py:62
 msgid "max. no of answer"
 msgstr "无回答最大值"
 
-#: agent/models.py:63
+#: agent/models.py:64
 msgid "wrap up time"
 msgstr "结束时间"
 
-#: agent/models.py:66
+#: agent/models.py:67
 msgid "reject delay time"
 msgstr "拒绝时延迟时间"
 
-#: agent/models.py:68
+#: agent/models.py:69
 msgid "busy delay time"
 msgstr "繁忙时延迟时间"
 
-#: agent/models.py:73
+#: agent/models.py:74
 msgid "can see Agent dashboard"
 msgstr "可以看到坐席的仪表盘"
 
-#: agent/models.py:74
+#: agent/models.py:75
 msgid "can see Agent list"
 msgstr "可以看到坐席列表"
 
-#: agent/models.py:77
+#: agent/models.py:78
 msgid "agent profile"
 msgstr "坐席资料"
 
-#: agent/models.py:78
+#: agent/models.py:79
 msgid "agent profiles"
 msgstr "坐席资料"
 
-#: agent/models.py:94 agent/templates/agent/change.html:11
+#: agent/models.py:96 agent/templates/agent/change.html:11
 #: agent/templates/agent/list.html:5 callcenter/admin_filters.py:20
-#: callcenter/constants.py:38 callcenter/models.py:47 callcenter/models.py:158
+#: callcenter/constants.py:38 callcenter/models.py:48 callcenter/models.py:161
 #: dialer_campaign/admin_filters.py:21 dialer_campaign/constants.py:41
 #: frontend/templates/frontend/bootstrap_side_menu.html:29
 msgid "agent"
 msgstr "坐席"
 
-#: agent/models.py:95
+#: agent/models.py:97
 msgid "agents"
 msgstr "坐席"
 
@@ -183,12 +182,12 @@ msgstr "更新"
 #: callcenter/templates/callcenter/queue/list.html:25
 #: callcenter/templates/callcenter/tier/list.html:25
 #: dialer_audio/templates/dialer_audio/audio_list.html:29
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:35
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:40
 #: dialer_contact/templates/dialer_contact/contact/list.html:28
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:23
 #: dnc/templates/dnc/dnc_contact/list.html:31
 #: dnc/templates/dnc/dnc_list/list.html:24
-#: mod_sms/templates/mod_sms/list.html:32
+#: mod_sms/templates/mod_sms/list.html:37
 #: survey/templates/survey/survey_list.html:27
 #: templates/admin_tools/dashboard/modules/app_list.html:26
 #: templates/admin_tools/dashboard/modules/model_list.html:13
@@ -225,9 +224,9 @@ msgstr "列出,新增以及编辑竞选活动"
 #: callcenter/templates/callcenter/tier/list.html:46
 #: dialer_audio/templates/dialer_audio/audio_list.html:18
 #: dialer_audio/templates/dialer_audio/audio_list.html:49
-#: dialer_campaign/models.py:317
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:20
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:60
+#: dialer_campaign/models.py:327
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:25
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:65
 #: dialer_campaign/templates/dialer_campaign/subscriber/list.html:26
 #: dialer_cdr/templates/dialer_cdr/voipcall_report.html:45
 #: dialer_contact/templates/dialer_contact/contact/list.html:18
@@ -238,7 +237,7 @@ msgstr "列出,新增以及编辑竞选活动"
 #: dnc/templates/dnc/dnc_contact/list.html:51
 #: dnc/templates/dnc/dnc_list/list.html:14
 #: dnc/templates/dnc/dnc_list/list.html:44 mod_sms/constants.py:45
-#: mod_sms/models.py:223 mod_sms/templates/mod_sms/list.html:19
+#: mod_sms/models.py:232 mod_sms/templates/mod_sms/list.html:24
 #: mod_sms/templates/mod_sms/sms_report.html:48
 #: survey/templates/survey/sealed_survey_list.html:21
 #: survey/templates/survey/survey_list.html:13
@@ -256,12 +255,12 @@ msgstr "动作"
 #: callcenter/templates/callcenter/queue/list.html:18
 #: callcenter/templates/callcenter/tier/list.html:18
 #: dialer_audio/templates/dialer_audio/audio_list.html:22
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:25
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:30
 #: dialer_contact/templates/dialer_contact/contact/list.html:22
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:17
 #: dnc/templates/dnc/dnc_contact/list.html:22
 #: dnc/templates/dnc/dnc_list/list.html:18
-#: mod_sms/templates/mod_sms/list.html:23
+#: mod_sms/templates/mod_sms/list.html:28
 msgid "delete selected"
 msgstr "刪除所选"
 
@@ -286,14 +285,14 @@ msgstr "变更密码"
 #: callcenter/templates/callcenter/queue/list.html:70
 #: callcenter/templates/callcenter/tier/list.html:72
 #: dialer_audio/templates/dialer_audio/audio_list.html:80
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:105
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:110
 #: dialer_campaign/templates/dialer_campaign/subscriber/list.html:74
 #: dialer_cdr/templates/dialer_cdr/voipcall_report.html:97
 #: dialer_contact/templates/dialer_contact/contact/list.html:86
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:68
 #: dnc/templates/dnc/dnc_contact/list.html:76
 #: dnc/templates/dnc/dnc_list/list.html:69
-#: mod_sms/templates/mod_sms/list.html:85
+#: mod_sms/templates/mod_sms/list.html:90
 #: mod_sms/templates/mod_sms/sms_report.html:87
 #: survey/templates/survey/sealed_survey_list.html:51
 #: survey/templates/survey/survey_list.html:88
@@ -309,7 +308,7 @@ msgstr "找不到记录!."
 #: callcenter/templates/callcenter/queue/list.html:77
 #: callcenter/templates/callcenter/tier/list.html:79
 #: dialer_audio/templates/dialer_audio/audio_list.html:87
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:112
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:117
 #: dialer_campaign/templates/dialer_campaign/subscriber/list.html:81
 #: dialer_cdr/templates/dialer_cdr/voipcall_report.html:104
 #: dialer_cdr/templates/dialer_cdr/voipcall_report.html:140
@@ -317,7 +316,7 @@ msgstr "找不到记录!."
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:75
 #: dnc/templates/dnc/dnc_contact/list.html:83
 #: dnc/templates/dnc/dnc_list/list.html:76
-#: mod_sms/templates/mod_sms/list.html:92
+#: mod_sms/templates/mod_sms/list.html:97
 #: mod_sms/templates/mod_sms/sms_report.html:94
 #: mod_sms/templates/mod_sms/sms_report.html:131
 #: survey/templates/survey/sealed_survey_list.html:61
@@ -355,7 +354,7 @@ msgstr "\"%(name)s\" 已经新增."
 #: agent/views.py:334 appointment/views.py:129 callcenter/views.py:121
 #: callcenter/views.py:265 dialer_audio/views.py:110
 #: dialer_contact/views.py:131 dnc/views.py:121 dnc/views.py:300
-#: mod_sms/views.py:221 survey/views.py:140
+#: mod_sms/views.py:222 survey/views.py:140
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" 已经刪除."
@@ -367,7 +366,7 @@ msgstr "%(count)s 坐席已删除."
 
 #: agent/views.py:395 appointment/views.py:189 callcenter/views.py:177
 #: dialer_contact/views.py:178 dnc/views.py:169 dnc/views.py:343
-#: mod_sms/views.py:269 survey/views.py:688
+#: mod_sms/views.py:270 survey/views.py:688
 #, python-format
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" 已经更新."
@@ -434,12 +433,12 @@ msgstr ""
 msgid "CALL"
 msgstr ""
 
-#: appointment/constants.py:42 appointment/models/alarms.py:46
+#: appointment/constants.py:42 appointment/models/alarms.py:47
 #: frontend/templates/frontend/bootstrap_menu.html:26
 #: frontend/templates/frontend/bootstrap_menu.html:37
 #: frontend/templates/frontend/bootstrap_side_menu.html:70
 #: mod_sms/templates/mod_sms/change.html:9
-#: mod_sms/templates/mod_sms/list.html:5
+#: mod_sms/templates/mod_sms/list.html:10
 #: mod_sms/templates/mod_sms/sms_dashboard.html:5
 #: mod_sms/templates/mod_sms/sms_dashboard.html:17
 #: mod_sms/templates/mod_sms/sms_report.html:9
@@ -462,8 +461,8 @@ msgstr ""
 msgid "IN PROCESS"
 msgstr "进行中"
 
-#: appointment/constants.py:55 appointment/models/events.py:33
-#: calendar_settings/models.py:50 mod_mailer/models.py:26
+#: appointment/constants.py:55 appointment/models/events.py:34
+#: calendar_settings/models.py:51 mod_mailer/models.py:27
 msgid "label"
 msgstr "标签"
 
@@ -480,9 +479,9 @@ msgid "call Timeout"
 msgstr "时间到"
 
 #: appointment/constants.py:59 appointment/constants.py:94
-#: appointment/models/alarms.py:40 dialer_campaign/models.py:326
-#: frontend/templates/frontend/bootstrap_menu.html:57 survey/models.py:123
-#: survey/models.py:319 survey/models.py:383
+#: appointment/models/alarms.py:41 dialer_campaign/models.py:336
+#: frontend/templates/frontend/bootstrap_menu.html:57 survey/models.py:126
+#: survey/models.py:333 survey/models.py:400
 #: survey/templates/survey/survey_change.html:15
 #: survey/templates/survey/survey_list.html:5
 msgid "survey"
@@ -492,25 +491,25 @@ msgstr "调查"
 msgid "A-leg Gateway"
 msgstr "A-Leg 语音网关"
 
-#: appointment/constants.py:61 custom_admin_tools/dashboard.py:105
+#: appointment/constants.py:61 custom_admin_tools/dashboard.py:106
 #: mod_sms/constants.py:42
 msgid "SMS Gateway"
 msgstr "短信网关"
 
 #: appointment/constants.py:65 appointment/constants.py:72
-#: appointment/models/calendars.py:21 appointment/models/rules.py:45
-#: callcenter/constants.py:31 callcenter/models.py:93
-#: dialer_campaign/constants.py:23 dialer_campaign/models.py:181
-#: dialer_contact/constants.py:39 dialer_contact/models.py:39
-#: dialer_contact/models.py:156 dialer_gateway/models.py:53
-#: dialer_settings/models.py:38 dnc/constants.py:21 dnc/models.py:32
-#: mod_sms/constants.py:40 mod_sms/models.py:122 survey/constants.py:33
-#: survey/constants.py:47 survey/models.py:42
+#: appointment/models/calendars.py:22 appointment/models/rules.py:46
+#: callcenter/constants.py:31 callcenter/models.py:95
+#: dialer_campaign/constants.py:23 dialer_campaign/models.py:191
+#: dialer_contact/constants.py:39 dialer_contact/models.py:40
+#: dialer_contact/models.py:158 dialer_gateway/models.py:54
+#: dialer_settings/models.py:39 dnc/constants.py:21 dnc/models.py:33
+#: mod_sms/constants.py:40 mod_sms/models.py:130 survey/constants.py:33
+#: survey/constants.py:47 survey/models.py:43
 msgid "name"
 msgstr "名字"
 
 #: appointment/constants.py:66 appointment/constants.py:90
-#: dialer_contact/constants.py:51 dialer_contact/models.py:92
+#: dialer_contact/constants.py:51 dialer_contact/models.py:94
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:27
 msgid "email"
 msgstr "电子邮箱"
@@ -520,29 +519,29 @@ msgid "Calendar Setting"
 msgstr "日程任务设定"
 
 #: appointment/constants.py:68 appointment/constants.py:75
-#: appointment/constants.py:85 appointment/models/alarms.py:144
-#: appointment/models/alarms.py:152 appointment/models/calendars.py:26
+#: appointment/constants.py:85 appointment/models/alarms.py:146
+#: appointment/models/alarms.py:154 appointment/models/calendars.py:27
 #: callcenter/constants.py:34 callcenter/constants.py:42
-#: callcenter/models.py:51 callcenter/models.py:115 callcenter/models.py:165
-#: dialer_campaign/constants.py:35 dialer_campaign/models.py:258
-#: dialer_campaign/models.py:473 dialer_cdr/models.py:99
+#: callcenter/models.py:52 callcenter/models.py:117 callcenter/models.py:168
+#: dialer_campaign/constants.py:35 dialer_campaign/models.py:268
+#: dialer_campaign/models.py:484 dialer_cdr/models.py:101
 #: dialer_cdr/templates/dialer_cdr/voipcall_report.html:116
 #: dialer_contact/constants.py:41 dialer_contact/constants.py:53
-#: dialer_contact/models.py:42 dialer_contact/models.py:102
-#: dialer_gateway/models.py:84 dnc/constants.py:22 dnc/constants.py:30
+#: dialer_contact/models.py:43 dialer_contact/models.py:104
+#: dialer_gateway/models.py:85 dnc/constants.py:22 dnc/constants.py:30
 #: mod_sms/templates/mod_sms/sms_report.html:121 survey/constants.py:35
-#: survey/constants.py:50 survey/models.py:48
+#: survey/constants.py:50 survey/models.py:49
 #: survey/templates/survey/survey_report.html:194
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:54
 #: templates/admin/mod_sms/smsmessage/sms_report.html:54
 msgid "date"
 msgstr "更新"
 
-#: appointment/constants.py:73 appointment/models/calendars.py:22
+#: appointment/constants.py:73 appointment/models/calendars.py:23
 #: appointment/models/events.py:40
 #: appointment/templates/appointment/calendar_user/change.html:5
 #: appointment/templates/appointment/calendar_user/list.html:5
-#: user_profile/models.py:164
+#: user_profile/models.py:169
 msgid "calendar user"
 msgstr "日历用户"
 
@@ -551,17 +550,17 @@ msgid "max concurrent"
 msgstr "最大同时拨号数"
 
 #: appointment/constants.py:79 appointment/models/events.py:36
-#: appointment/models/events.py:267 dialer_campaign/models.py:193
-#: mod_sms/models.py:132
+#: appointment/models/events.py:280 dialer_campaign/models.py:202
+#: mod_sms/models.py:140
 msgid "start"
 msgstr "开始"
 
 #: appointment/constants.py:80 appointment/models/events.py:38
-#: appointment/models/events.py:268
+#: appointment/models/events.py:281
 msgid "end"
 msgstr "找不到记录!"
 
-#: appointment/constants.py:81 appointment/models/events.py:265
+#: appointment/constants.py:81 appointment/models/events.py:278
 msgid "title"
 msgstr "标题"
 
@@ -569,31 +568,31 @@ msgstr "标题"
 msgid "end period"
 msgstr "结束时间"
 
-#: appointment/constants.py:83 appointment/models/calendars.py:32
+#: appointment/constants.py:83 appointment/models/calendars.py:33
 #: appointment/templates/appointment/calendar/change.html:5
 msgid "calendar"
 msgstr "日历"
 
-#: appointment/constants.py:89 dialer_cdr/models.py:110
-#: dialer_cdr/models.py:187 dnc/constants.py:29 dnc/models.py:73
-#: user_profile/models.py:64
+#: appointment/constants.py:89 dialer_cdr/models.py:112
+#: dialer_cdr/models.py:190 dnc/constants.py:29 dnc/models.py:75
+#: user_profile/models.py:65
 msgid "phone number"
 msgstr "电话号码"
 
-#: appointment/constants.py:91 appointment/models/alarms.py:24
+#: appointment/constants.py:91 appointment/models/alarms.py:25
 msgid "daily start"
 msgstr "每天开始时间"
 
-#: appointment/constants.py:92 appointment/models/alarms.py:25
+#: appointment/constants.py:92 appointment/models/alarms.py:26
 msgid "daily stop"
 msgstr "每天结束时间"
 
-#: appointment/constants.py:93 appointment/models/alarms.py:39
+#: appointment/constants.py:93 appointment/models/alarms.py:40
 msgid "method"
 msgstr "方法"
 
 #: appointment/constants.py:95 appointment/models/events.py:65
-#: appointment/models/events.py:264
+#: appointment/models/events.py:277
 #: appointment/templates/appointment/event/change.html:9
 msgid "event"
 msgstr "事件"
@@ -602,199 +601,199 @@ msgstr "事件"
 msgid "start notice"
 msgstr "启动通知"
 
-#: appointment/forms.py:49
+#: appointment/forms.py:50
 msgid "calendar setting"
 msgstr "拨号任务设定"
 
-#: appointment/forms.py:62 appointment/forms.py:100
+#: appointment/forms.py:63 appointment/forms.py:102
 #, fuzzy
 #| msgid "select calendar setting"
 msgid "Select Calendar Setting"
 msgstr "选择日历设置"
 
-#: appointment/forms.py:264
+#: appointment/forms.py:273
 #, fuzzy
 #| msgid "event settings"
 msgid "Event Settings"
 msgstr "事件设定"
 
-#: appointment/forms.py:295
+#: appointment/forms.py:305
 #, fuzzy
 #| msgid "start date"
 msgid "Start Date"
 msgstr "开始日期"
 
-#: appointment/forms.py:297
+#: appointment/forms.py:307
 #, fuzzy
 #| msgid "calendar"
 msgid "Calendar"
 msgstr "日历"
 
-#: appointment/forms.py:298
+#: appointment/forms.py:308
 #, fuzzy
 #| msgid "calendar user"
 msgid "Calendar User"
 msgstr "日历用户"
 
-#: appointment/forms.py:341 dialer_campaign/forms.py:122 mod_sms/forms.py:100
+#: appointment/forms.py:352 dialer_campaign/forms.py:123 mod_sms/forms.py:101
 #, fuzzy
 #| msgid "general settings"
 msgid "General Settings"
 msgstr "一般设定"
 
-#: appointment/forms.py:356
+#: appointment/forms.py:367
 #, fuzzy
 #| msgid "alarm settings"
 msgid "Alarm Settings"
 msgstr "铃声设定"
 
-#: appointment/forms.py:368
+#: appointment/forms.py:379
 #, fuzzy
 #| msgid "result settings"
 msgid "Result Settings"
 msgstr "结果设定"
 
-#: appointment/models/alarms.py:21
+#: appointment/models/alarms.py:22
 msgid "notify to phone number"
 msgstr "要通知的电话号码"
 
-#: appointment/models/alarms.py:23
+#: appointment/models/alarms.py:24
 msgid "notify to email"
 msgstr "要通知的邮件"
 
-#: appointment/models/alarms.py:27
+#: appointment/models/alarms.py:28
 msgid "advance notice"
 msgstr "预先通知"
 
-#: appointment/models/alarms.py:28
+#: appointment/models/alarms.py:29
 msgid "Seconds to start processing an alarm before the alarm date/time"
 msgstr "秒报警的日期/时间开始前处理报警"
 
-#: appointment/models/alarms.py:30
+#: appointment/models/alarms.py:31
 msgid "max retry"
 msgstr "重试最大值"
 
-#: appointment/models/alarms.py:31
+#: appointment/models/alarms.py:32
 msgid "number of retries"
 msgstr "重试次数"
 
-#: appointment/models/alarms.py:33
+#: appointment/models/alarms.py:34
 msgid "retry delay"
 msgstr "重试最大值"
 
-#: appointment/models/alarms.py:34
+#: appointment/models/alarms.py:35
 msgid "Seconds to wait between retries"
 msgstr "上次重试失败后下一次开始的时间间隔"
 
-#: appointment/models/alarms.py:36
+#: appointment/models/alarms.py:37
 msgid "number of attempts"
 msgstr "尝试次数"
 
-#: appointment/models/alarms.py:43
+#: appointment/models/alarms.py:44
 msgid "mail"
 msgstr "邮件"
 
-#: appointment/models/alarms.py:49
+#: appointment/models/alarms.py:50
 msgid "related to event"
 msgstr "相关事件"
 
-#: appointment/models/alarms.py:51
+#: appointment/models/alarms.py:52
 msgid "alarm date"
 msgstr "报警日期"
 
-#: appointment/models/alarms.py:55
+#: appointment/models/alarms.py:56
 #: survey/templates/survey/survey_campaign_result.html:9
 #: survey/templates/survey/survey_report.html:150
 msgid "result"
 msgstr "调查结果"
 
-#: appointment/models/alarms.py:57
+#: appointment/models/alarms.py:58
 msgid "URL cancel"
 msgstr "URL取消"
 
-#: appointment/models/alarms.py:59
+#: appointment/models/alarms.py:60
 msgid "URL confirm"
 msgstr "URL确定"
 
-#: appointment/models/alarms.py:62
+#: appointment/models/alarms.py:63
 msgid "phone number transfer"
 msgstr "电话传输"
 
-#: appointment/models/alarms.py:65
+#: appointment/models/alarms.py:66
 msgid "phone number SMS failure"
 msgstr "失败短信的电话号码"
 
-#: appointment/models/alarms.py:66
+#: appointment/models/alarms.py:67
 msgid "created date"
 msgstr "创建日期"
 
-#: appointment/models/alarms.py:70
+#: appointment/models/alarms.py:71
 msgid "can see Alarm list"
 msgstr "可以看到报警列表"
 
-#: appointment/models/alarms.py:72 appointment/models/alarms.py:142
+#: appointment/models/alarms.py:73 appointment/models/alarms.py:144
 #: appointment/templates/appointment/alarm/change.html:10
 msgid "alarm"
 msgstr "铃声"
 
-#: appointment/models/alarms.py:73
+#: appointment/models/alarms.py:74
 #: appointment/templates/appointment/alarm/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:54
 msgid "alarms"
 msgstr "铃声文件夹"
 
-#: appointment/models/alarms.py:143
+#: appointment/models/alarms.py:145
 msgid "select alarm"
 msgstr "选择铃声"
 
-#: appointment/models/alarms.py:144
+#: appointment/models/alarms.py:146
 msgid "date when the alarm will be scheduled"
 msgstr "当警报将按计划日期"
 
-#: appointment/models/alarms.py:150
+#: appointment/models/alarms.py:152
 msgid "Call Request"
 msgstr "呼叫请求"
 
-#: appointment/models/alarms.py:151
+#: appointment/models/alarms.py:153
 msgid "select call request"
 msgstr "选择呼叫请求"
 
-#: appointment/models/alarms.py:156
+#: appointment/models/alarms.py:158
 msgid "can see Alarm request list"
 msgstr "可以看到报警请求列表"
 
-#: appointment/models/alarms.py:158
+#: appointment/models/alarms.py:160
 msgid "alarm request"
 msgstr "警报请求"
 
-#: appointment/models/alarms.py:159
+#: appointment/models/alarms.py:161
 msgid "alarm requests"
 msgstr "警报请求"
 
-#: appointment/models/calendars.py:23
+#: appointment/models/calendars.py:24
 msgid "select user"
 msgstr "选择用户"
 
-#: appointment/models/calendars.py:25
+#: appointment/models/calendars.py:26
 msgid "Max concurrent is not implemented"
 msgstr "最大并行数"
 
-#: appointment/models/calendars.py:30
+#: appointment/models/calendars.py:31
 msgid "Can see Calendar list"
 msgstr "可以看到日历表"
 
-#: appointment/models/calendars.py:33
+#: appointment/models/calendars.py:34
 #: appointment/templates/appointment/calendar/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:48
 msgid "calendars"
 msgstr "日程"
 
-#: appointment/models/events.py:34 appointment/models/events.py:266
-#: appointment/models/rules.py:46 dialer_campaign/models.py:182
+#: appointment/models/events.py:35 appointment/models/events.py:279
+#: appointment/models/rules.py:47 dialer_campaign/models.py:192
 #: dialer_contact/constants.py:40
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:28
-#: dialer_gateway/models.py:57 mod_sms/models.py:123 survey/constants.py:34
-#: survey/constants.py:48 survey/models.py:46
+#: dialer_gateway/models.py:58 mod_sms/models.py:131 survey/constants.py:34
+#: survey/constants.py:48 survey/models.py:47
 #: survey/templates/survey/sealed_survey_view.html:32
 #: templates/admin/dialer_contact/contact/import_contact.html:24
 msgid "description"
@@ -816,7 +815,7 @@ msgstr "重新发起结束日期"
 msgid "Used if the event recurs"
 msgstr "如果事件重新发起"
 
-#: appointment/models/events.py:46 appointment/models/rules.py:52
+#: appointment/models/events.py:46 appointment/models/rules.py:53
 msgid "rule"
 msgstr "规则"
 
@@ -850,32 +849,32 @@ msgstr "可以看到时间列表"
 msgid "events"
 msgstr "事件"
 
-#: appointment/models/events.py:70 appointment/periods.py:281
-#: appointment/periods.py:306
+#: appointment/models/events.py:70 appointment/periods.py:285
+#: appointment/periods.py:311
 msgid "DATE_FORMAT"
 msgstr "日期格式"
 
-#: appointment/models/events.py:269
+#: appointment/models/events.py:282
 msgid "cancelled"
 msgstr "已取消"
 
-#: appointment/models/events.py:270
+#: appointment/models/events.py:283
 msgid "original start"
 msgstr "原型开始"
 
-#: appointment/models/events.py:271
+#: appointment/models/events.py:284
 msgid "original end"
 msgstr "原型结束"
 
-#: appointment/models/events.py:274
+#: appointment/models/events.py:287
 msgid "occurrence"
 msgstr "事件"
 
-#: appointment/models/events.py:275
+#: appointment/models/events.py:288
 msgid "occurrences"
 msgstr "事件"
 
-#: appointment/models/events.py:345
+#: appointment/models/events.py:358
 #, python-format
 msgid "%(start)s to %(end)s"
 msgstr "%(start)s 至 %(end)s"
@@ -908,29 +907,29 @@ msgstr "分"
 msgid "Secondly"
 msgstr "秒"
 
-#: appointment/models/rules.py:47 dialer_campaign/constants.py:29
-#: dialer_campaign/models.py:206 mod_sms/models.py:147
+#: appointment/models/rules.py:48 dialer_campaign/constants.py:29
+#: dialer_campaign/models.py:216 mod_sms/models.py:156
 msgid "frequency"
 msgstr "频率"
 
-#: appointment/models/rules.py:48
+#: appointment/models/rules.py:49
 msgid "params"
 msgstr "新增参数"
 
-#: appointment/models/rules.py:49
+#: appointment/models/rules.py:50
 msgid "example : count:1;bysecond:3;"
 msgstr "例如: 数量:1;每秒3次;"
 
-#: appointment/models/rules.py:53
+#: appointment/models/rules.py:54
 msgid "rules"
 msgstr "规则"
 
-#: appointment/periods.py:282
+#: appointment/periods.py:286
 #, python-format
 msgid "Week: %(start)s-%(end)s"
 msgstr "周: %(start)s-%(end)s"
 
-#: appointment/periods.py:307
+#: appointment/periods.py:312
 #, python-format
 msgid "Day: %(start)s-%(end)s"
 msgstr "日: %(start)s-%(end)s"
@@ -961,9 +960,9 @@ msgstr "删除日历"
 
 #: appointment/templates/appointment/calendar_setting/change.html:5
 #: appointment/templates/appointment/calendar_setting/list.html:5
-#: calendar_settings/models.py:86
+#: calendar_settings/models.py:87
 #: frontend/templates/frontend/bootstrap_side_menu.html:42
-#: user_profile/models.py:194
+#: user_profile/models.py:200
 msgid "calendar settings"
 msgstr "日历拨号设置"
 
@@ -1059,67 +1058,67 @@ msgstr "%(count)s 事件已经刪除."
 msgid "%s alarm(s) are deleted."
 msgstr "%(count)s 闹铃已经刪除."
 
-#: calendar_settings/models.py:51 dialer_campaign/models.py:187
-#: dialer_cdr/models.py:106 mod_sms/models.py:129
+#: calendar_settings/models.py:52 dialer_campaign/models.py:197
+#: dialer_cdr/models.py:108 mod_sms/models.py:137
 msgid "Caller ID Number"
 msgstr "主叫ID号码"
 
-#: calendar_settings/models.py:52 dialer_campaign/models.py:188
-#: dialer_cdr/models.py:107 mod_sms/models.py:130
+#: calendar_settings/models.py:53 dialer_campaign/models.py:198
+#: dialer_cdr/models.py:109 mod_sms/models.py:138
 msgid "outbound Caller ID"
 msgstr "出境外呼号码ID"
 
-#: calendar_settings/models.py:53 dialer_cdr/models.py:108
+#: calendar_settings/models.py:54 dialer_cdr/models.py:110
 msgid "caller name"
 msgstr "主叫姓名"
 
-#: calendar_settings/models.py:54 dialer_cdr/models.py:109
+#: calendar_settings/models.py:55 dialer_cdr/models.py:111
 msgid "outbound caller-Name"
 msgstr "出境外呼名称"
 
-#: calendar_settings/models.py:55 calendar_settings/models.py:56
+#: calendar_settings/models.py:56 calendar_settings/models.py:57
 msgid "call timeout"
 msgstr "呼叫超时"
 
-#: calendar_settings/models.py:59
+#: calendar_settings/models.py:60
 #: survey/templates/survey/sealed_survey_list.html:5
 msgid "sealed survey"
 msgstr "密封的调查"
 
-#: calendar_settings/models.py:61 dialer_cdr/models.py:118
+#: calendar_settings/models.py:62 dialer_cdr/models.py:120
 msgid "a-leg gateway"
 msgstr "A-Leg 语音网关"
 
-#: calendar_settings/models.py:62
+#: calendar_settings/models.py:63
 msgid "select gateway to use"
 msgstr "选择语音网关"
 
-#: calendar_settings/models.py:63
+#: calendar_settings/models.py:64
 msgid "SMS gateway"
 msgstr "短信网关"
 
-#: calendar_settings/models.py:64 dialer_campaign/models.py:227
-#: mod_sms/models.py:159 mod_sms/models.py:494
+#: calendar_settings/models.py:65 dialer_campaign/models.py:237
+#: mod_sms/models.py:168 mod_sms/models.py:507
 msgid "select SMS gateway"
 msgstr "选择短信网关"
 
-#: calendar_settings/models.py:66 dialer_campaign/models.py:246
+#: calendar_settings/models.py:67 dialer_campaign/models.py:256
 msgid "voicemail detection"
 msgstr "语音检测"
 
-#: calendar_settings/models.py:68 dialer_campaign/models.py:248
+#: calendar_settings/models.py:69 dialer_campaign/models.py:258
 msgid "detection behaviour"
 msgstr "检测性能"
 
-#: calendar_settings/models.py:70 dialer_campaign/models.py:250
+#: calendar_settings/models.py:71 dialer_campaign/models.py:260
 msgid "voicemail audio file"
 msgstr "语音音频文件"
 
-#: calendar_settings/models.py:83
+#: calendar_settings/models.py:84
 msgid "can see Calendar Setting list"
 msgstr "可以看到日历设置列表"
 
-#: calendar_settings/models.py:85
+#: calendar_settings/models.py:86
 msgid "Calender setting"
 msgstr "日历拨号设置"
 
@@ -1131,105 +1130,105 @@ msgstr "策略"
 msgid "time base score"
 msgstr "时间基础分数"
 
-#: callcenter/constants.py:39 callcenter/models.py:123
-#: callcenter/models.py:160
+#: callcenter/constants.py:39 callcenter/models.py:125
+#: callcenter/models.py:163
 #: callcenter/templates/callcenter/queue/change.html:5
 #: callcenter/templates/callcenter/queue/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:32
 msgid "queue"
 msgstr "队列"
 
-#: callcenter/constants.py:40 callcenter/models.py:162
+#: callcenter/constants.py:40 callcenter/models.py:165
 msgid "level"
 msgstr "水平"
 
-#: callcenter/constants.py:41 callcenter/models.py:163
+#: callcenter/constants.py:41 callcenter/models.py:166
 msgid "position"
 msgstr "位置"
 
-#: callcenter/models.py:45
+#: callcenter/models.py:46
 msgid "select callrequest"
 msgstr "选择呼叫请求"
 
-#: callcenter/models.py:48 callcenter/models.py:159
+#: callcenter/models.py:49 callcenter/models.py:162
 msgid "select agent"
 msgstr "选择坐席"
 
-#: callcenter/models.py:49
+#: callcenter/models.py:50
 msgid "call state"
 msgstr "呼叫状态"
 
-#: callcenter/models.py:96
+#: callcenter/models.py:98
 msgid "moh-sound"
 msgstr ""
 
-#: callcenter/models.py:97
+#: callcenter/models.py:99
 msgid "record-template"
 msgstr "记录模板"
 
-#: callcenter/models.py:98
+#: callcenter/models.py:100
 msgid "time-base-score"
 msgstr "时间基础分数"
 
-#: callcenter/models.py:100
+#: callcenter/models.py:102
 msgid "tier-rules-apply"
 msgstr "层-规则-应用"
 
-#: callcenter/models.py:101
+#: callcenter/models.py:103
 msgid "tier-rule-wait-second"
 msgstr "层-规则-等待-二级"
 
-#: callcenter/models.py:103
+#: callcenter/models.py:105
 msgid "tier-rule-wait-multiply-level"
 msgstr ""
 
-#: callcenter/models.py:104
+#: callcenter/models.py:106
 msgid "tier-rule-no-agent-no-wait"
 msgstr ""
 
-#: callcenter/models.py:105
+#: callcenter/models.py:107
 msgid "discard-abandoned-after"
 msgstr ""
 
-#: callcenter/models.py:107
+#: callcenter/models.py:109
 msgid "abandoned-resume-allowed"
 msgstr ""
 
-#: callcenter/models.py:108
+#: callcenter/models.py:110
 msgid "max-wait-time"
 msgstr "最大等待时长"
 
-#: callcenter/models.py:110
+#: callcenter/models.py:112
 msgid "max-wait-time-with-no-agent"
 msgstr "无坐席最大等待时长"
 
-#: callcenter/models.py:112
+#: callcenter/models.py:114
 msgid "max-wait-time-with-no-agent-time-reached"
 msgstr "没有坐席时间的最大等待时长"
 
-#: callcenter/models.py:120
+#: callcenter/models.py:122
 msgid "can see Queue list"
 msgstr "可以看到队列列表"
 
-#: callcenter/models.py:124
+#: callcenter/models.py:126
 msgid "queues"
 msgstr "队列"
 
-#: callcenter/models.py:161
+#: callcenter/models.py:164
 msgid "select queue"
 msgstr "选择队列"
 
-#: callcenter/models.py:170
+#: callcenter/models.py:173
 msgid "can see Tier list"
 msgstr "可以看到层列表"
 
-#: callcenter/models.py:173 callcenter/templates/callcenter/tier/change.html:5
+#: callcenter/models.py:176 callcenter/templates/callcenter/tier/change.html:5
 #: callcenter/templates/callcenter/tier/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:35
 msgid "tier"
 msgstr "层"
 
-#: callcenter/models.py:174
+#: callcenter/models.py:177
 msgid "tiers"
 msgstr "层"
 
@@ -1301,178 +1300,178 @@ msgstr "%(count)s 已经删除."
 msgid "\"%(id)s\" tier is updated."
 msgstr "\"%(name)s\" 已经更新."
 
-#: custom_admin_tools/dashboard.py:63 dialer_campaign/forms.py:120
-#: dialer_contact/forms.py:141
+#: custom_admin_tools/dashboard.py:64 dialer_campaign/forms.py:121
+#: dialer_contact/forms.py:147
 #, fuzzy
 #| msgid "general"
 msgid "General"
 msgstr "一般设定"
 
-#: custom_admin_tools/dashboard.py:67 dialer_cdr/admin.py:97
+#: custom_admin_tools/dashboard.py:68 dialer_cdr/admin.py:103
 #, fuzzy
 #| msgid "Username"
 msgid "User"
 msgstr "用户名:"
 
-#: custom_admin_tools/dashboard.py:71
+#: custom_admin_tools/dashboard.py:72
 #, fuzzy
 #| msgid "task manager"
 msgid "Task Manager"
 msgstr "任务管理员"
 
-#: custom_admin_tools/dashboard.py:75
+#: custom_admin_tools/dashboard.py:76
 #, fuzzy
 #| msgid "dashboard stats"
 msgid "Dashboard stats"
 msgstr "仪表板状态"
 
-#: custom_admin_tools/dashboard.py:78 custom_admin_tools/dashboard.py:239
+#: custom_admin_tools/dashboard.py:79 custom_admin_tools/dashboard.py:241
 #, fuzzy
 #| msgid "recent actions"
 msgid "Recent Actions"
 msgstr "最近动作"
 
-#: custom_admin_tools/dashboard.py:83
+#: custom_admin_tools/dashboard.py:84
 #, fuzzy
 #| msgid "callcenter"
 msgid "Callcenter"
 msgstr "呼叫中心"
 
-#: custom_admin_tools/dashboard.py:88
+#: custom_admin_tools/dashboard.py:89
 #, fuzzy
 #| msgid "settings"
 msgid "Settings"
 msgstr "设定"
 
-#: custom_admin_tools/dashboard.py:94
+#: custom_admin_tools/dashboard.py:95
 msgid "VoIP dialer"
 msgstr "Voip 拨号程序"
 
-#: custom_admin_tools/dashboard.py:100
+#: custom_admin_tools/dashboard.py:101
 #, fuzzy
 #| msgid "surveys"
 msgid "Surveys"
 msgstr "调查"
 
-#: custom_admin_tools/dashboard.py:111 mod_sms/admin.py:220
-#: mod_sms/admin.py:262
+#: custom_admin_tools/dashboard.py:112 mod_sms/admin.py:223
+#: mod_sms/admin.py:265
 msgid "SMS module"
 msgstr "短信模块"
 
-#: custom_admin_tools/dashboard.py:117
+#: custom_admin_tools/dashboard.py:118
 #, fuzzy
 #| msgid "audio File"
 msgid "Audio Files"
 msgstr "语音文件"
 
-#: custom_admin_tools/dashboard.py:122 custom_admin_tools/dashboard.py:228
+#: custom_admin_tools/dashboard.py:123 custom_admin_tools/dashboard.py:230
 #, fuzzy
 #| msgid "Do Not Call list"
 msgid "Do Not Call"
 msgstr "黑名单"
 
-#: custom_admin_tools/dashboard.py:127
+#: custom_admin_tools/dashboard.py:128
 #, fuzzy
 #| msgid "appointment"
 msgid "Appointment"
 msgstr "职位"
 
-#: custom_admin_tools/dashboard.py:132
+#: custom_admin_tools/dashboard.py:133
 #, fuzzy
 #| msgid "mod_mailer"
 msgid "Mod Mailer"
 msgstr "mod_信封"
 
-#: custom_admin_tools/dashboard.py:137
+#: custom_admin_tools/dashboard.py:138
 #, fuzzy
 #| msgid "Calendar Setting"
 msgid "Calendar Settings"
 msgstr "日程任务设定"
 
-#: custom_admin_tools/dashboard.py:142
+#: custom_admin_tools/dashboard.py:143
 msgid "Reporting"
 msgstr "报表"
 
-#: custom_admin_tools/dashboard.py:147
+#: custom_admin_tools/dashboard.py:148
 msgid "Call Daily Report"
 msgstr "每日呼叫报告"
 
-#: custom_admin_tools/dashboard.py:158
+#: custom_admin_tools/dashboard.py:159
 msgid "Quick links"
 msgstr "快速链接"
 
-#: custom_admin_tools/dashboard.py:164
+#: custom_admin_tools/dashboard.py:165
 msgid "Newfies-Dialer Website"
 msgstr "Newfies-Dialer"
 
-#: custom_admin_tools/dashboard.py:165
+#: custom_admin_tools/dashboard.py:166
 msgid "Support"
 msgstr "支持"
 
-#: custom_admin_tools/dashboard.py:166
+#: custom_admin_tools/dashboard.py:167
 msgid "Add-ons"
 msgstr "附加组件"
 
-#: custom_admin_tools/dashboard.py:176
+#: custom_admin_tools/dashboard.py:177
 msgid "Latest Newfies-Dialer News"
 msgstr "Newfies-Dialer最近新闻"
 
-#: custom_admin_tools/dashboard.py:183
+#: custom_admin_tools/dashboard.py:184
 #, fuzzy
 #| msgid "dashboard stats settings"
 msgid "Dashboard Stats Settings"
 msgstr "仪表板状态设定"
 
-#: custom_admin_tools/dashboard.py:210 dialer_campaign/forms.py:141
+#: custom_admin_tools/dashboard.py:212 dialer_campaign/forms.py:142
 msgid "Dialer Settings"
 msgstr "拨号者设定"
 
-#: custom_admin_tools/dashboard.py:213 dialer_campaign/admin.py:203
+#: custom_admin_tools/dashboard.py:215 dialer_campaign/admin.py:205
 msgid "Dialer Campaign"
 msgstr "拨号活动"
 
-#: custom_admin_tools/dashboard.py:216
+#: custom_admin_tools/dashboard.py:218
 msgid "Dialer Contact"
 msgstr "呼叫者 联系人"
 
-#: custom_admin_tools/dashboard.py:219
+#: custom_admin_tools/dashboard.py:221
 msgid "Dialer CDR"
 msgstr "详细拨号记录"
 
-#: custom_admin_tools/dashboard.py:222
+#: custom_admin_tools/dashboard.py:224
 msgid "Dialer Gateway"
 msgstr "拨号程序语音网关"
 
-#: custom_admin_tools/dashboard.py:225
+#: custom_admin_tools/dashboard.py:227
 #, fuzzy
 #| msgid "country dialcode"
 msgid "Country Dialcode"
 msgstr "国家拨号代码"
 
-#: custom_admin_tools/menu.py:32
+#: custom_admin_tools/menu.py:33
 #, fuzzy
 #| msgid "Newfies-Dialer"
 msgid "Newfies-Dialer V"
 msgstr "Newfies-Dialer"
 
-#: custom_admin_tools/menu.py:35
+#: custom_admin_tools/menu.py:36
 #, fuzzy
 #| msgid "applications"
 msgid "Applications"
 msgstr "应用程序"
 
-#: custom_admin_tools/menu.py:39
+#: custom_admin_tools/menu.py:40
 #, fuzzy
 #| msgid "administration"
 msgid "Administration"
 msgstr "管理区"
 
-#: custom_admin_tools/menu.py:42
+#: custom_admin_tools/menu.py:43
 #: frontend/templates/frontend/bootstrap_menu.html:106
 msgid "API Explorer"
 msgstr "API 管理器"
 
-#: custom_admin_tools/menu.py:43
+#: custom_admin_tools/menu.py:44
 #, fuzzy
 #| msgid "customer panel"
 msgid "Customer Panel"
@@ -1513,7 +1512,7 @@ msgstr "更新语音文件"
 msgid "delete audio"
 msgstr "删除语音文件"
 
-#: dialer_audio/views.py:77 dialer_campaign/views.py:252
+#: dialer_audio/views.py:77 dialer_campaign/views.py:255
 #: dialer_contact/views.py:85 dnc/views.py:79 dnc/views.py:272
 #: survey/views.py:100
 #, python-format
@@ -1525,21 +1524,21 @@ msgstr "\"%(name)s\" 已经新增."
 msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s 语音文件已经刪除."
 
-#: dialer_campaign/admin.py:40 dialer_cdr/admin.py:46
-#: dialer_gateway/admin.py:47 mod_sms/admin.py:46
+#: dialer_campaign/admin.py:41 dialer_cdr/admin.py:49
+#: dialer_gateway/admin.py:48 mod_sms/admin.py:47
 msgid "Standard options"
 msgstr "标准选项"
 
-#: dialer_campaign/admin.py:48 dialer_cdr/admin.py:52 mod_sms/admin.py:53
+#: dialer_campaign/admin.py:49 dialer_cdr/admin.py:55 mod_sms/admin.py:54
 msgid "Advanced options"
 msgstr "高级选项"
 
-#: dialer_campaign/admin.py:93
+#: dialer_campaign/admin.py:94
 #, fuzzy, python-format
 msgid "you have too many campaigns. max allowed %(limit)s"
 msgstr "您的活动太多.最大允许值为 %(limit)s"
 
-#: dialer_campaign/admin.py:204
+#: dialer_campaign/admin.py:206
 #: frontend/templates/frontend/bootstrap_side_menu.html:67
 #: templates/admin/dialer_campaign/subscriber/change_list.html:36
 msgid "subscriber report"
@@ -1569,7 +1568,7 @@ msgstr "用户报告"
 msgid "key"
 msgstr "值"
 
-#: dialer_campaign/constants.py:24 dialer_cdr/constants.py:63
+#: dialer_campaign/constants.py:24 dialer_cdr/constants.py:67
 #: mod_sms/constants.py:41
 msgid "start date"
 msgstr "开始日期"
@@ -1579,7 +1578,7 @@ msgid "app"
 msgstr "应用"
 
 #: dialer_campaign/constants.py:27 dialer_contact/constants.py:42
-#: dialer_contact/models.py:60 dialer_contact/models.py:111
+#: dialer_contact/models.py:61 dialer_contact/models.py:113
 #: dialer_contact/templates/dialer_contact/contact/list.html:5
 #: dnc/constants.py:23 dnc/templates/dnc/dnc_contact/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:11
@@ -1589,27 +1588,27 @@ msgid "contacts"
 msgstr "联系人"
 
 #: dialer_campaign/constants.py:30 dialer_contact/constants.py:47
-#: dialer_contact/models.py:50 dialer_contact/models.py:86
+#: dialer_contact/models.py:51 dialer_contact/models.py:88
 #: dialer_contact/templates/dialer_contact/phonebook/change.html:5
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:5
 msgid "phonebook"
 msgstr "通讯录"
 
-#: dialer_campaign/constants.py:36 dialer_campaign/models.py:504
+#: dialer_campaign/constants.py:36 dialer_campaign/models.py:515
 msgid "attempts"
 msgstr "尝试次数"
 
-#: dialer_campaign/constants.py:37 dialer_campaign/models.py:499
+#: dialer_campaign/constants.py:37 dialer_campaign/models.py:510
 msgid "completion attempts"
 msgstr "尝试次数"
 
-#: dialer_campaign/constants.py:39 dialer_campaign/models.py:466
-#: dialer_cdr/constants.py:71 dialer_cdr/forms.py:93 dialer_cdr/models.py:200
+#: dialer_campaign/constants.py:39 dialer_campaign/models.py:477
+#: dialer_cdr/constants.py:75 dialer_cdr/forms.py:95 dialer_cdr/models.py:203
 #: survey/constants.py:42
 msgid "disposition"
 msgstr "配置"
 
-#: dialer_campaign/constants.py:40 survey/models.py:499 survey/models.py:524
+#: dialer_campaign/constants.py:40 survey/models.py:520 survey/models.py:546
 #: survey/templates/survey/survey_campaign_result.html:18
 msgid "response"
 msgstr "回应"
@@ -1664,101 +1663,101 @@ msgstr "仅对人播放消息"
 msgid "LEAVE MESSAGE TO VOICEMAIL ONLY"
 msgstr "仅对语音信息留言"
 
-#: dialer_campaign/forms.py:59
+#: dialer_campaign/forms.py:60
 #, fuzzy
 #| msgid "application"
 msgid "Application"
 msgstr "应用程序"
 
-#: dialer_campaign/forms.py:148
+#: dialer_campaign/forms.py:149
 #, fuzzy
 #| msgid "dialer completion settings"
 msgid "Dialer Completion Settings"
 msgstr "拨号结束设置"
 
-#: dialer_campaign/forms.py:159
+#: dialer_campaign/forms.py:160
 #, fuzzy
 #| msgid "schedule settings"
 msgid "Schedule Settings"
 msgstr "日程设置"
 
-#: dialer_campaign/forms.py:160
+#: dialer_campaign/forms.py:161
 #, fuzzy
 #| msgid "week days"
 msgid "Week Days"
 msgstr "星期天"
 
-#: dialer_campaign/forms.py:176
+#: dialer_campaign/forms.py:177
 #, fuzzy
 #| msgid "voicemail"
 msgid "Voicemail"
 msgstr "语音邮箱"
 
-#: dialer_campaign/forms.py:178
+#: dialer_campaign/forms.py:179
 #, fuzzy
 #| msgid "voicemail settings"
 msgid "Voicemail Settings"
 msgstr "语音邮箱设置"
 
-#: dialer_campaign/forms.py:280 mod_sms/forms.py:153
+#: dialer_campaign/forms.py:281 mod_sms/forms.py:154
 msgid "you must select at least one phonebook"
 msgstr "您必须至少勾选一个通讯录!"
 
-#: dialer_campaign/forms.py:287
+#: dialer_campaign/forms.py:288
 #, fuzzy, python-format
 msgid "maximum frequency limit of %d exceeded."
 msgstr "最大频率限制 %d 超过."
 
-#: dialer_campaign/forms.py:292
+#: dialer_campaign/forms.py:293
 #, fuzzy, python-format
 msgid "maximum duration limit of %d exceeded."
 msgstr "最大间隔时间 %d 超过."
 
-#: dialer_campaign/forms.py:297
+#: dialer_campaign/forms.py:298
 #, fuzzy, python-format
 msgid "maximum retries limit of %d exceeded."
 msgstr "最大重试次数 %d 超过."
 
-#: dialer_campaign/forms.py:302
+#: dialer_campaign/forms.py:303
 #, fuzzy, python-format
 msgid "maximum timeout limit of %d exceeded."
 msgstr "最大时间限制 %d 超过."
 
-#: dialer_campaign/forms.py:363 dialer_campaign/models.py:272
+#: dialer_campaign/forms.py:367 dialer_campaign/models.py:282
 #: dialer_campaign/templates/dialer_campaign/campaign/campaign_duplicate.html:41
-#: dialer_cdr/forms.py:94 frontend/forms.py:50
+#: dialer_cdr/forms.py:96 frontend/forms.py:52
 #: frontend/templates/frontend/bootstrap_menu.html:31
 #: frontend/templates/frontend/bootstrap_menu.html:37
 #: mod_sms/templates/mod_sms/change.html:9
-#: mod_sms/templates/mod_sms/list.html:5
+#: mod_sms/templates/mod_sms/list.html:10
 #: mod_sms/templates/mod_sms/sms_campaign_duplicate.html:41
-#: survey/constants.py:49 survey/forms.py:590 survey/models.py:112
+#: survey/constants.py:49 survey/forms.py:605 survey/models.py:115
 msgid "campaign"
 msgstr "活动"
 
-#: dialer_campaign/forms.py:368 dialer_campaign/forms.py:388
-#: dialer_campaign/forms.py:416 dialer_campaign/forms.py:443
-#: dialer_campaign/forms.py:468 dialer_cdr/forms.py:26 dialer_cdr/forms.py:33
-#: dialer_cdr/forms.py:69 dialer_cdr/forms.py:102 mod_sms/forms.py:38
-#: mod_sms/forms.py:190
+#: dialer_campaign/forms.py:372 dialer_campaign/forms.py:393
+#: dialer_campaign/forms.py:422 dialer_campaign/forms.py:449
+#: dialer_campaign/forms.py:474 dialer_cdr/forms.py:26 dialer_cdr/forms.py:33
+#: dialer_cdr/forms.py:70 dialer_cdr/forms.py:104 mod_sms/forms.py:38
+#: mod_sms/forms.py:192
 msgid "ALL"
 msgstr ""
 
-#: dialer_campaign/forms.py:395 dialer_cdr/forms.py:46
+#: dialer_campaign/forms.py:401 dialer_cdr/forms.py:47
 #, fuzzy
 #| msgid "campaign"
 msgid "Campaign"
 msgstr "活动"
 
-#: dialer_campaign/forms.py:397 dialer_campaign/forms.py:450
-#: dialer_contact/forms.py:183 mod_sms/forms.py:267
+#: dialer_campaign/forms.py:403 dialer_campaign/forms.py:456
+#: dialer_contact/forms.py:191 mod_sms/forms.py:272
 #, fuzzy
 #| msgid "status"
 msgid "Status"
 msgstr "状态"
 
-#: dialer_campaign/forms.py:449 dialer_contact/forms.py:67
-#: dialer_contact/forms.py:182 mod_sms/forms.py:266
+#: dialer_campaign/forms.py:455 dialer_contact/forms.py:70
+#: dialer_contact/forms.py:190 mod_sms/forms.py:271
 #, fuzzy
 #| msgid "phonebook"
 msgid "Phonebook"
@@ -1769,167 +1768,185 @@ msgid ""
 "your settings are not configured properly, please contact the administrator."
 msgstr "您的设定可能不正确, 请联络管理员"
 
-#: dialer_campaign/models.py:178
+#: dialer_campaign/models.py:188
 msgid "campaign code"
 msgstr "活动代码"
 
-#: dialer_campaign/models.py:179
+#: dialer_campaign/models.py:189
 msgid ""
 "this code is auto-generated by the platform, this is used to identify the "
 "campaign"
 msgstr "此代码为此平台自动产生, 用来识別活动."
 
-#: dialer_campaign/models.py:183 mod_sms/models.py:124
+#: dialer_campaign/models.py:193 mod_sms/models.py:132
 msgid "campaign description"
 msgstr "活动描述"
 
-#: dialer_campaign/models.py:189
+#: dialer_campaign/models.py:199
 msgid "Caller Name"
 msgstr "外呼者姓名"
 
-#: dialer_campaign/models.py:190
+#: dialer_campaign/models.py:200
 msgid "outbound Caller Name"
 msgstr "出境外呼名称"
 
-#: dialer_campaign/models.py:194 mod_sms/models.py:133
+#: dialer_campaign/models.py:203 mod_sms/models.py:141
+#, fuzzy
+#| msgid "stopped"
+msgid "stopped"
+msgstr "停止"
+
+#: dialer_campaign/models.py:204 mod_sms/models.py:142
 msgid "finish"
 msgstr "完成"
 
-#: dialer_campaign/models.py:196
+#: dialer_campaign/models.py:206
 msgid "daily start time"
 msgstr "每日开始时间"
 
-#: dialer_campaign/models.py:197
+#: dialer_campaign/models.py:207
 msgid "daily stop time"
 msgstr "每日结束时间"
 
-#: dialer_campaign/models.py:198 mod_sms/models.py:138
+#: dialer_campaign/models.py:208 mod_sms/models.py:147
 msgid "monday"
 msgstr "星期一"
 
-#: dialer_campaign/models.py:199 mod_sms/models.py:139
+#: dialer_campaign/models.py:209 mod_sms/models.py:148
 msgid "tuesday"
 msgstr "星期二"
 
-#: dialer_campaign/models.py:200 mod_sms/models.py:140
+#: dialer_campaign/models.py:210 mod_sms/models.py:149
 msgid "wednesday"
 msgstr "星期三"
 
-#: dialer_campaign/models.py:201 mod_sms/models.py:141
+#: dialer_campaign/models.py:211 mod_sms/models.py:150
 msgid "thursday"
 msgstr "星期四"
 
-#: dialer_campaign/models.py:202 mod_sms/models.py:142
+#: dialer_campaign/models.py:212 mod_sms/models.py:151
 msgid "friday"
 msgstr "星期五"
 
-#: dialer_campaign/models.py:203 mod_sms/models.py:143
+#: dialer_campaign/models.py:213 mod_sms/models.py:152
 msgid "saturday"
 msgstr "星期六"
 
-#: dialer_campaign/models.py:204 mod_sms/models.py:144
+#: dialer_campaign/models.py:214 mod_sms/models.py:153
 msgid "sunday"
 msgstr "星期日"
 
-#: dialer_campaign/models.py:207
+#: dialer_campaign/models.py:217
 msgid "calls per minute"
 msgstr "每分钟通数"
 
-#: dialer_campaign/models.py:208
+#: dialer_campaign/models.py:218
 msgid "max call duration"
 msgstr "最大拨号间隔"
 
-#: dialer_campaign/models.py:209
+#: dialer_campaign/models.py:219
 msgid "maximum call duration in seconds"
 msgstr "在几秒钟内最大的通话时间"
 
-#: dialer_campaign/models.py:211 dialer_settings/models.py:49
-#: mod_sms/models.py:151
+#: dialer_campaign/models.py:221 dialer_settings/models.py:50
+#: mod_sms/models.py:160
 msgid "max retries"
 msgstr "重试最大值"
 
-#: dialer_campaign/models.py:212 mod_sms/models.py:152
+#: dialer_campaign/models.py:222 mod_sms/models.py:161
 msgid "maximum retries per contact"
 msgstr "每位联系人最大重试次數"
 
-#: dialer_campaign/models.py:213
+#: dialer_campaign/models.py:223
 msgid "time between retries"
 msgstr "重试时间间隔"
 
-#: dialer_campaign/models.py:214 mod_sms/models.py:155
+#: dialer_campaign/models.py:224 mod_sms/models.py:164
 msgid "time delay in seconds before retrying contact"
 msgstr "重新尝试接触前间隔秒數"
 
-#: dialer_campaign/models.py:216
+#: dialer_campaign/models.py:226
 msgid "completion max retries"
 msgstr "重试最大值"
 
-#: dialer_campaign/models.py:217
+#: dialer_campaign/models.py:227
 msgid "number of retries until a contact completes survey"
 msgstr "重试次数直到完成一个联系人的调查"
 
-#: dialer_campaign/models.py:220
+#: dialer_campaign/models.py:230
 msgid "completion time between retries"
 msgstr "重试完成时间"
 
-#: dialer_campaign/models.py:221
+#: dialer_campaign/models.py:231
 msgid "time delay in seconds before retrying contact to complete survey"
 msgstr "重新尝试接触前间隔秒數"
 
-#: dialer_campaign/models.py:224
+#: dialer_campaign/models.py:232
+#, fuzzy
+#| msgid "timeout on call"
+msgid "timeout on dialing"
+msgstr "暂停拨打"
+
+#: dialer_campaign/models.py:233
+#, fuzzy
+#| msgid "timeout in seconds"
+msgid "dialing timeout in seconds"
+msgstr "暂停连接秒数"
+
+#: dialer_campaign/models.py:234
 msgid "A-Leg gateway"
 msgstr "A-Leg 语音网关"
 
-#: dialer_campaign/models.py:225
+#: dialer_campaign/models.py:235
 msgid "select outbound gateway"
 msgstr "选择拨出网关"
 
-#: dialer_campaign/models.py:226 mod_sms/models.py:157 mod_sms/models.py:492
+#: dialer_campaign/models.py:236 mod_sms/models.py:166 mod_sms/models.py:505
 msgid "sms gateway"
 msgstr "已使用过的语音网关"
 
-#: dialer_campaign/models.py:230 dialer_cdr/models.py:122
+#: dialer_campaign/models.py:240 dialer_cdr/models.py:124
 msgid "application"
 msgstr "应用程序"
 
-#: dialer_campaign/models.py:232 mod_sms/models.py:163
+#: dialer_campaign/models.py:242 mod_sms/models.py:172
 msgid "extra parameters"
 msgstr "额外参数"
 
-#: dialer_campaign/models.py:233 mod_sms/models.py:164
+#: dialer_campaign/models.py:243 mod_sms/models.py:173
 msgid "additional application parameters."
 msgstr "额外的应用程序参数."
 
-#: dialer_campaign/models.py:235
+#: dialer_campaign/models.py:245
 msgid "imported phonebook"
 msgstr "显示,新增以及编辑通讯录"
 
-#: dialer_campaign/models.py:236 mod_sms/constants.py:43 mod_sms/models.py:174
+#: dialer_campaign/models.py:246 mod_sms/constants.py:43 mod_sms/models.py:183
 #: survey/templates/survey/survey_report.html:33
 msgid "total contact"
 msgstr "所有联系人"
 
-#: dialer_campaign/models.py:237 mod_sms/models.py:175
+#: dialer_campaign/models.py:247 mod_sms/models.py:184
 msgid "total contact for this campaign"
 msgstr "这项活动的所有联系人"
 
-#: dialer_campaign/models.py:238
+#: dialer_campaign/models.py:248
 msgid "completed"
 msgstr "已完成"
 
-#: dialer_campaign/models.py:239
+#: dialer_campaign/models.py:249
 msgid "total contact that completed call / survey"
 msgstr "总计接触 呼叫/调查"
 
-#: dialer_campaign/models.py:241
+#: dialer_campaign/models.py:251
 msgid "has been started"
 msgstr "活动已经开始"
 
-#: dialer_campaign/models.py:242
+#: dialer_campaign/models.py:252
 msgid "has been duplicated"
 msgstr "活动已经开始"
 
-#: dialer_campaign/models.py:243 dnc/constants.py:28
+#: dialer_campaign/models.py:253 dnc/constants.py:28
 #: dnc/templates/dnc/dnc_contact/list.html:5
 #: dnc/templates/dnc/dnc_contact/list.html:25
 #: dnc/templates/dnc/dnc_list/list.html:5
@@ -1938,96 +1955,96 @@ msgstr "活动已经开始"
 msgid "DNC"
 msgstr "黑名单"
 
-#: dialer_campaign/models.py:244
+#: dialer_campaign/models.py:254
 msgid "do not call list"
 msgstr "未拨列表"
 
-#: dialer_campaign/models.py:252
+#: dialer_campaign/models.py:262
 msgid "agent script"
 msgstr "坐席脚本"
 
-#: dialer_campaign/models.py:253
+#: dialer_campaign/models.py:263
 msgid "lead disposition"
 msgstr "领导配置"
 
-#: dialer_campaign/models.py:255 dialer_contact/models.py:99
+#: dialer_campaign/models.py:265 dialer_contact/models.py:101
 msgid "additional parameters (JSON)"
 msgstr "额外参数"
 
-#: dialer_campaign/models.py:256
+#: dialer_campaign/models.py:266
 msgid ""
 "enter the list of parameters in Json format, e.g. {\"title\": [\"tab-1\", "
 "\"tab-2\"], \"url\": [\"https://duckduckgo.com/\", \"http://www.newfies-"
 "dialer.org/\"]}"
 msgstr ""
 
-#: dialer_campaign/models.py:268
+#: dialer_campaign/models.py:278
 msgid "can see campaign"
 msgstr "可以看到活动"
 
-#: dialer_campaign/models.py:269
+#: dialer_campaign/models.py:279
 msgid "can see campaign dashboard"
 msgstr "可以看到活动仪表板"
 
-#: dialer_campaign/models.py:273
+#: dialer_campaign/models.py:283
 msgid "campaigns"
 msgstr "活动"
 
-#: dialer_campaign/models.py:327
+#: dialer_campaign/models.py:337
 msgid "voice app"
 msgstr "语音应用程序"
 
-#: dialer_campaign/models.py:401 mod_sms/models.py:339
+#: dialer_campaign/models.py:411 mod_sms/models.py:348
 msgid "progress"
 msgstr "进度"
 
-#: dialer_campaign/models.py:410 mod_sms/models.py:348
+#: dialer_campaign/models.py:420 mod_sms/models.py:357
 #, python-format
 msgid "<a href='%(link)s'>%(name)s</a>"
 msgstr "<a href='%(link)s'>%(name)s</a>"
 
-#: dialer_campaign/models.py:410 mod_sms/models.py:349
+#: dialer_campaign/models.py:420 mod_sms/models.py:358
 msgid "details"
 msgstr "详细內容"
 
-#: dialer_campaign/models.py:413 dialer_campaign/models.py:481
+#: dialer_campaign/models.py:423 dialer_campaign/models.py:492
 #: templates/admin/dialer_campaign/subscriber/subscriber_report.html:14
 msgid "subscriber"
 msgstr "活动预约用戶"
 
-#: dialer_campaign/models.py:455 mod_sms/models.py:424
+#: dialer_campaign/models.py:466 mod_sms/models.py:436
 msgid "select contact"
 msgstr "选择联系人"
 
-#: dialer_campaign/models.py:456
+#: dialer_campaign/models.py:467
 msgid "select campaign"
 msgstr "选择活动"
 
-#: dialer_campaign/models.py:457 mod_sms/models.py:428
+#: dialer_campaign/models.py:468 mod_sms/models.py:440
 msgid "last attempt"
 msgstr "最后尝试"
 
-#: dialer_campaign/models.py:458 mod_sms/models.py:430
+#: dialer_campaign/models.py:469 mod_sms/models.py:442
 msgid "count attempts"
 msgstr "尝试次数"
 
-#: dialer_campaign/models.py:461
+#: dialer_campaign/models.py:472
 msgid "completion count attempts"
 msgstr "尝试次数"
 
-#: dialer_campaign/models.py:467
+#: dialer_campaign/models.py:478
 msgid "subscriber response"
 msgstr "预约用户响应"
 
-#: dialer_campaign/models.py:468
+#: dialer_campaign/models.py:479
 msgid "collect user call data"
 msgstr "收集用户的呼叫数据"
 
-#: dialer_campaign/models.py:478
+#: dialer_campaign/models.py:489
 msgid "can see subscriber"
 msgstr "可以看到预约用户"
 
-#: dialer_campaign/models.py:482
+#: dialer_campaign/models.py:493
 #: dialer_campaign/templates/dialer_campaign/subscriber/list.html:9
 msgid "subscribers"
 msgstr "预约用户"
@@ -2064,7 +2081,7 @@ msgid "close"
 msgstr "关闭"
 
 #: dialer_campaign/templates/dialer_campaign/campaign/change.html:9
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:5
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:10
 #: frontend/templates/frontend/bootstrap_menu.html:34
 msgid "voice campaign"
 msgstr "语音活动"
@@ -2073,20 +2090,20 @@ msgstr "语音活动"
 msgid "set voice campaign parameters"
 msgstr "设定语音活动参数"
 
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:5
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:10
 msgid "list, add and edit voice campaigns"
 msgstr "列出,新增以及编辑语音活动"
 
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:29
-#: mod_sms/templates/mod_sms/list.html:26
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:34
+#: mod_sms/templates/mod_sms/list.html:31
 msgid "stop selected"
 msgstr "删除所选"
 
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:81
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:86
 msgid "update campaign"
 msgstr "更新活动"
 
-#: dialer_campaign/templates/dialer_campaign/campaign/list.html:84
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:89
 msgid "delete campaign"
 msgstr "删除竞选活动"
 
@@ -2139,23 +2156,23 @@ msgstr "查看秘密调查"
 msgid "Edit Survey"
 msgstr "编辑调查"
 
-#: dialer_campaign/views.py:74
+#: dialer_campaign/views.py:76
 #, fuzzy
 msgid "you must assign a phonebook to your campaign before starting it"
 msgstr "您必须指定一个电话簿到您的活动开始之前"
 
-#: dialer_campaign/views.py:77
+#: dialer_campaign/views.py:79
 #, fuzzy
 msgid "campaign global settings cannot be edited when the campaign is started"
 msgstr "当活动开始后全局设置无法编辑"
 
-#: dialer_campaign/views.py:109
+#: dialer_campaign/views.py:111
 #, fuzzy
 #| msgid "dialer setting configuration"
 msgid "Dialer Setting Configuration"
 msgstr "拨号外呼配置设置"
 
-#: dialer_campaign/views.py:110
+#: dialer_campaign/views.py:112
 #, fuzzy, python-format
 msgid ""
 "Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
@@ -2165,42 +2182,42 @@ msgstr ""
 "通知 - 用户拨号程序设定\"%(user)s\" - \"%(user_id)s\" 可能沒有设定, 请先设定"
 "他的拨号程序."
 
-#: dialer_campaign/views.py:227
+#: dialer_campaign/views.py:229
 #, fuzzy
 msgid "your settings aren't configured properly, please contact the admin."
 msgstr "您的设定可能不正确, 请联络管理员"
 
-#: dialer_campaign/views.py:234
+#: dialer_campaign/views.py:236
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
 msgstr "您的活动太多.最大允许值为 %(limit)s"
 
-#: dialer_campaign/views.py:283
+#: dialer_campaign/views.py:286
 #, fuzzy, python-format
 msgid "the campaign \"%(name)s\" has been stopped."
 msgstr "\"%(name)s\" 已经停止."
 
-#: dialer_campaign/views.py:285
+#: dialer_campaign/views.py:288
 #, fuzzy, python-format
 msgid "the campaign \"%(name)s\" has been deleted."
 msgstr "\"%(name)s\" 已经刪除."
 
-#: dialer_campaign/views.py:296
+#: dialer_campaign/views.py:299
 #, fuzzy, python-format
 msgid "%(count)s campaign(s) have been stopped."
 msgstr "%(count)s 活动已经停止."
 
-#: dialer_campaign/views.py:299
+#: dialer_campaign/views.py:302
 #, fuzzy, python-format
 msgid "%(count)s campaign(s) have been deleted."
 msgstr "%(count)s 活动已经删除."
 
-#: dialer_campaign/views.py:335
+#: dialer_campaign/views.py:338
 #, fuzzy
 msgid "Started campaign can only edit the dialer settings and the scheduler"
 msgstr "活动开始后，您只能编辑拨号设置和活动日历设置"
 
-#: dialer_campaign/views.py:369
+#: dialer_campaign/views.py:372
 #, fuzzy, python-format
 msgid "the campaign \"%(name)s\" is updated."
 msgstr "\"%(name)s\" 已经更新."
@@ -2209,41 +2226,41 @@ msgstr "\"%(name)s\" 已经更新."
 msgid "VoIP report"
 msgstr "VoIP 报表"
 
-#: dialer_cdr/admin.py:74
+#: dialer_cdr/admin.py:80
 #, fuzzy
 #| msgid "call report"
 msgid "Call Report"
 msgstr "呼叫报表"
 
-#: dialer_cdr/admin.py:105
+#: dialer_cdr/admin.py:111
 #, fuzzy
 #| msgid "gateway used"
 msgid "Gateway used"
 msgstr "已使用过的语音网关"
 
-#: dialer_cdr/admin.py:179 mod_sms/admin.py:196
+#: dialer_cdr/admin.py:185 mod_sms/admin.py:199
 msgid "Database error"
 msgstr "数据库错误"
 
-#: dialer_cdr/admin.py:192 mod_sms/admin.py:210
+#: dialer_cdr/admin.py:198 mod_sms/admin.py:213
 #, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] "%(total_count)s selected"
 msgstr[1] "All %(total_count)s selected"
 
-#: dialer_cdr/admin.py:195 mod_sms/admin.py:214
+#: dialer_cdr/admin.py:201 mod_sms/admin.py:217
 #, python-format
 msgid "0 of %(cnt)s selected"
 msgstr "0 of %(cnt)s 选择"
 
-#: dialer_cdr/admin.py:202
+#: dialer_cdr/admin.py:208
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:14
 #: templates/admin_tools/dashboard/modules/app_list.html:13
 msgid "call report"
 msgstr "呼叫报表"
 
-#: dialer_cdr/admin.py:251
+#: dialer_cdr/admin.py:257
 #: templates/admin_tools/dashboard/modules/app_list.html:45
 #: templates/admin_tools/dashboard/modules/model_list.html:26
 msgid "call aggregate report"
@@ -2255,100 +2272,100 @@ msgstr "拨号详细报表"
 msgid "VoIP Report"
 msgstr "VoIP 报表"
 
-#: dialer_cdr/constants.py:23
+#: dialer_cdr/constants.py:24
 msgid "pending"
 msgstr "找不到记录!"
 
-#: dialer_cdr/constants.py:24
+#: dialer_cdr/constants.py:25
 msgid "failure"
 msgstr "失败"
 
-#: dialer_cdr/constants.py:25
+#: dialer_cdr/constants.py:26
 msgid "retry"
 msgstr "重试最大值"
 
-#: dialer_cdr/constants.py:26
+#: dialer_cdr/constants.py:27
 msgid "success"
 msgstr "成功"
 
-#: dialer_cdr/constants.py:27
+#: dialer_cdr/constants.py:28
 msgid "abort"
 msgstr "中断"
 
-#: dialer_cdr/constants.py:28
+#: dialer_cdr/constants.py:29
 msgid "pause"
 msgstr "暂停"
 
-#: dialer_cdr/constants.py:29
+#: dialer_cdr/constants.py:30
 msgid "calling"
 msgstr "呼叫中"
 
-#: dialer_cdr/constants.py:36
+#: dialer_cdr/constants.py:38
 msgid "ALLOW RETRY"
 msgstr "允许重试"
 
-#: dialer_cdr/constants.py:37
+#: dialer_cdr/constants.py:39
 msgid "CANNOT RETRY"
 msgstr "无法重试"
 
-#: dialer_cdr/constants.py:38
+#: dialer_cdr/constants.py:40
 msgid "RETRY DONE"
 msgstr "已经重试"
 
-#: dialer_cdr/constants.py:45
+#: dialer_cdr/constants.py:48
 msgid "A-Leg"
 msgstr "A-Leg"
 
-#: dialer_cdr/constants.py:46
+#: dialer_cdr/constants.py:49
 msgid "B-Leg"
 msgstr "B-Leg"
 
-#: dialer_cdr/constants.py:53
+#: dialer_cdr/constants.py:57
 msgid "ANSWER"
 msgstr "回答"
 
-#: dialer_cdr/constants.py:54
+#: dialer_cdr/constants.py:58
 msgid "BUSY"
 msgstr "忙碌中"
 
-#: dialer_cdr/constants.py:55
+#: dialer_cdr/constants.py:59
 msgid "NOANSWER"
 msgstr "无回应"
 
-#: dialer_cdr/constants.py:56
+#: dialer_cdr/constants.py:60
 msgid "CANCEL"
 msgstr "取消"
 
-#: dialer_cdr/constants.py:57
+#: dialer_cdr/constants.py:61
 msgid "CONGESTION"
 msgstr "拥塞"
 
-#: dialer_cdr/constants.py:58
+#: dialer_cdr/constants.py:62
 msgid "FAILED"
 msgstr "失败"
 
-#: dialer_cdr/constants.py:64
+#: dialer_cdr/constants.py:68
 msgid "call ID"
 msgstr "呼叫ID"
 
-#: dialer_cdr/constants.py:65 dialer_cdr/models.py:205
+#: dialer_cdr/constants.py:69 dialer_cdr/models.py:208
 msgid "leg"
 msgstr "Leg"
 
-#: dialer_cdr/constants.py:66
+#: dialer_cdr/constants.py:70
 msgid "caller ID"
 msgstr "呼叫者ID"
 
-#: dialer_cdr/constants.py:67
+#: dialer_cdr/constants.py:71
 msgid "phone no"
 msgstr "电话号码."
 
-#: dialer_cdr/constants.py:68 mod_sms/constants.py:65
-#: user_profile/models.py:89
+#: dialer_cdr/constants.py:72 mod_sms/constants.py:65
+#: user_profile/models.py:91
 msgid "gateway"
 msgstr "语音网关"
 
-#: dialer_cdr/constants.py:69 dialer_cdr/models.py:194
+#: dialer_cdr/constants.py:73 dialer_cdr/models.py:197
 #: dialer_cdr/templates/dialer_cdr/voipcall_report.html:117
 #: survey/constants.py:41
 #: survey/templates/survey/survey_campaign_result.html:20
@@ -2357,39 +2374,39 @@ msgstr "语音网关"
 msgid "duration"
 msgstr "间隔"
 
-#: dialer_cdr/constants.py:70 dialer_cdr/models.py:195
+#: dialer_cdr/constants.py:74 dialer_cdr/models.py:198
 msgid "bill sec"
 msgstr "账单秒数"
 
-#: dialer_cdr/constants.py:72
+#: dialer_cdr/constants.py:76
 msgid "amd status"
 msgstr "状态"
 
-#: dialer_cdr/constants.py:80
+#: dialer_cdr/constants.py:85
 msgid "PERSON"
 msgstr ""
 
-#: dialer_cdr/constants.py:81
+#: dialer_cdr/constants.py:86
 msgid "MACHINE"
 msgstr ""
 
-#: dialer_cdr/constants.py:82
+#: dialer_cdr/constants.py:87
 msgid "UNSURE"
 msgstr ""
 
-#: dialer_cdr/forms.py:44
+#: dialer_cdr/forms.py:45
 #, fuzzy
 #| msgid "disposition"
 msgid "Disposition"
 msgstr "配置"
 
-#: dialer_cdr/forms.py:47
+#: dialer_cdr/forms.py:48
 #, fuzzy
 #| msgid "leg type"
 msgid "Leg type"
 msgstr "leg类型"
 
-#: dialer_cdr/forms.py:95
+#: dialer_cdr/forms.py:97
 msgid "leg type"
 msgstr "leg类型"
 
@@ -2403,127 +2420,129 @@ msgstr "找不到这个活动 : %(id)s"
 msgid "Callrequests and CDRs created : %(count)s"
 msgstr "无呼叫请求&CDR新增 :%(count)s"
 
-#: dialer_cdr/models.py:95 dialer_cdr/models.py:181
+#: dialer_cdr/models.py:97 dialer_cdr/models.py:184
 msgid "RequestUUID"
 msgstr "要求UUID"
 
-#: dialer_cdr/models.py:97
+#: dialer_cdr/models.py:99
 msgid "a-leg call-ID"
 msgstr "A-Leg Call-ID"
 
-#: dialer_cdr/models.py:102
+#: dialer_cdr/models.py:104
 msgid "call request type"
 msgstr "呼叫请求类型"
 
-#: dialer_cdr/models.py:111
-msgid "time out"
-msgstr "时间到"
+#: dialer_cdr/models.py:113
+#, fuzzy
+#| msgid "call timeout"
+msgid "dialing time out"
+msgstr "呼叫超时"
 
-#: dialer_cdr/models.py:112
+#: dialer_cdr/models.py:114
 msgid "time limit"
 msgstr "时间限制"
 
-#: dialer_cdr/models.py:113
+#: dialer_cdr/models.py:115
 msgid "extra dial string"
 msgstr "额外拨号字串"
 
-#: dialer_cdr/models.py:115
+#: dialer_cdr/models.py:117
 msgid "subscriber related to this call request"
 msgstr "活动预约用户关联至此呼叫请求"
 
-#: dialer_cdr/models.py:117
+#: dialer_cdr/models.py:119
 msgid "select Campaign"
 msgstr "选择活动"
 
-#: dialer_cdr/models.py:119 dialer_gateway/models.py:88
+#: dialer_cdr/models.py:121 dialer_gateway/models.py:89
 msgid "select gateway"
 msgstr "选择语音网关"
 
-#: dialer_cdr/models.py:125
+#: dialer_cdr/models.py:127
 msgid "call completed"
 msgstr "已完成呼叫"
 
-#: dialer_cdr/models.py:127
+#: dialer_cdr/models.py:129
 msgid "extra data"
 msgstr "额外数据"
 
-#: dialer_cdr/models.py:128
+#: dialer_cdr/models.py:130
 msgid "define the additional data to pass to the application"
 msgstr "定义额外的数据以通过申请"
 
-#: dialer_cdr/models.py:139
+#: dialer_cdr/models.py:141
 msgid "alarm request id"
 msgstr "铃声请求id"
 
-#: dialer_cdr/models.py:145
+#: dialer_cdr/models.py:147
 msgid "call request"
 msgstr "呼叫请求"
 
-#: dialer_cdr/models.py:146
+#: dialer_cdr/models.py:148
 msgid "call requests"
 msgstr "呼叫请求"
 
-#: dialer_cdr/models.py:183
+#: dialer_cdr/models.py:186
 msgid "used gateway"
 msgstr "已使用过的语音网关"
 
-#: dialer_cdr/models.py:184
+#: dialer_cdr/models.py:187
 msgid "callrequest"
 msgstr "呼叫请求"
 
-#: dialer_cdr/models.py:185
+#: dialer_cdr/models.py:188
 msgid "VoIP call-ID"
 msgstr "VoIP Call-ID"
 
-#: dialer_cdr/models.py:186
+#: dialer_cdr/models.py:189
 msgid "CallerID"
 msgstr "来电着ID"
 
-#: dialer_cdr/models.py:188
+#: dialer_cdr/models.py:191
 msgid "the international number of the recipient, without the leading +"
 msgstr "国际电话号码不需要加上+号"
 
-#: dialer_cdr/models.py:190 survey/constants.py:40
+#: dialer_cdr/models.py:193 survey/constants.py:40
 msgid "destination"
 msgstr "对方号码"
 
-#: dialer_cdr/models.py:191
+#: dialer_cdr/models.py:194
 msgid "select prefix"
 msgstr "选择前置号"
 
-#: dialer_cdr/models.py:192
+#: dialer_cdr/models.py:195
 msgid "starting date"
 msgstr "开始日期"
 
-#: dialer_cdr/models.py:196
+#: dialer_cdr/models.py:199
 msgid "progress sec"
 msgstr "处理秒数"
 
-#: dialer_cdr/models.py:197
+#: dialer_cdr/models.py:200
 msgid "answer sec"
 msgstr "回应秒数"
 
-#: dialer_cdr/models.py:198
+#: dialer_cdr/models.py:201
 msgid "wait sec"
 msgstr "等待秒数"
 
-#: dialer_cdr/models.py:202
+#: dialer_cdr/models.py:205
 msgid "hangup cause"
 msgstr "挂断原因"
 
-#: dialer_cdr/models.py:207
+#: dialer_cdr/models.py:210
 msgid "AMD Status"
 msgstr "状态"
 
-#: dialer_cdr/models.py:227
+#: dialer_cdr/models.py:230
 msgid "can see call detail report"
 msgstr "可以看大呼叫详细报表"
 
-#: dialer_cdr/models.py:230
+#: dialer_cdr/models.py:233
 msgid "VoIP call"
 msgstr "VoIP 拨号"
 
-#: dialer_cdr/models.py:231
+#: dialer_cdr/models.py:234
 msgid "VoIP calls"
 msgstr "VoIP 拨号"
 
@@ -2583,36 +2602,36 @@ msgstr "平均连线时间"
 msgid "ACT"
 msgstr "ACT"
 
-#: dialer_contact/admin.py:74 dialer_contact/admin.py:112
+#: dialer_contact/admin.py:76 dialer_contact/admin.py:114
 #: dialer_contact/views.py:311 dialer_contact/views.py:429
 #, fuzzy, python-format
 msgid "you have too many contacts. you are allowed a maximum of %(limit)s"
 msgstr "您的活动的联系人数量超限.您的最大数值为%(limit)s"
 
-#: dialer_contact/admin.py:161 dialer_contact/views.py:474
+#: dialer_contact/admin.py:163 dialer_contact/views.py:474
 msgid ""
 "invalid value for import! please check the import samples or phonebook is "
 "not valid"
 msgstr "导入错误的数值!请检查输入的文本."
 
-#: dialer_contact/admin.py:166
+#: dialer_contact/admin.py:168
 msgid ""
 "invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 "
 "codes (http://en.wikipedia.org/wiki/ISO_3166-1)"
 msgstr "国家代码无效，它必须是一个有效的ISO 3166-1 alpha-2"
 
-#: dialer_contact/admin.py:206 dialer_contact/views.py:524
+#: dialer_contact/admin.py:208 dialer_contact/views.py:524
 #, fuzzy, python-format
 msgid ""
 "%(contact_cnt)s contact(s) have been uploaded successfully out of "
 "%(total_rows)s row(s)!"
 msgstr "%(contact_cnt)s 联系人上传成功, 超过 %(total_rows)s 列!"
 
-#: dialer_contact/admin.py:213
+#: dialer_contact/admin.py:215
 msgid "dialer contact"
 msgstr "拨号器触点"
 
-#: dialer_contact/admin.py:214
+#: dialer_contact/admin.py:216
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:13
 msgid "import contact"
 msgstr "导入联系人"
@@ -2652,13 +2671,13 @@ msgstr "全部"
 msgid "ID"
 msgstr "编号"
 
-#: dialer_contact/constants.py:49 dialer_contact/models.py:90
+#: dialer_contact/constants.py:49 dialer_contact/models.py:92
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:25
 #: templates/admin/dialer_contact/contact/import_contact.html:21
 msgid "last name"
 msgstr "名字"
 
-#: dialer_contact/constants.py:50 dialer_contact/models.py:91
+#: dialer_contact/constants.py:50 dialer_contact/models.py:93
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:26
 #: templates/admin/dialer_contact/contact/import_contact.html:22
 msgid "first name"
@@ -2668,110 +2687,110 @@ msgstr "姓氏"
 msgid "from"
 msgstr "从"
 
-#: dialer_contact/forms.py:39
+#: dialer_contact/forms.py:40
 msgid "From"
 msgstr ""
 
-#: dialer_contact/forms.py:42
+#: dialer_contact/forms.py:43
 msgid "To"
 msgstr ""
 
-#: dialer_contact/forms.py:49
+#: dialer_contact/forms.py:51
 msgid ""
 "Upload CSV file using the pipe \"|\" as the field delimiter, e.g. 1234567890|"
 "surname|forename|email@somewhere.com|test-contact|1|address|city|state|US|"
 "unit|{\"age\":\"32\",\"title\":\"doctor\"}|"
 msgstr ""
 
-#: dialer_contact/forms.py:62 survey/forms.py:675
+#: dialer_contact/forms.py:64 survey/forms.py:693
 #, fuzzy, python-format
 msgid "document types accepted: %s"
 msgstr "文件类型已接受: %s"
 
-#: dialer_contact/forms.py:67
+#: dialer_contact/forms.py:70
 msgid "select phonebook"
 msgstr "选择通讯录"
 
-#: dialer_contact/forms.py:154
+#: dialer_contact/forms.py:161
 #, fuzzy
 #| msgid "advanced data"
 msgid "Advanced Data"
 msgstr "高级数据"
 
-#: dialer_contact/forms.py:178
+#: dialer_contact/forms.py:186
 #, fuzzy
 #| msgid "contact number"
 msgid "Contact number"
 msgstr "联系电话"
 
-#: dialer_contact/forms.py:180
+#: dialer_contact/forms.py:188
 #, fuzzy
 #| msgid "contact name"
 msgid "Contact Name"
 msgstr "联系人姓名"
 
-#: dialer_contact/models.py:40
+#: dialer_contact/models.py:41
 msgid "phonebook notes"
 msgstr "通讯录备注"
 
-#: dialer_contact/models.py:47
+#: dialer_contact/models.py:48
 msgid "can see phonebook"
 msgstr "可以看到通讯录"
 
-#: dialer_contact/models.py:51
+#: dialer_contact/models.py:52
 #: frontend/templates/frontend/bootstrap_side_menu.html:8
 msgid "phonebooks"
 msgstr "通讯录"
 
-#: dialer_contact/models.py:87
+#: dialer_contact/models.py:89
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:24
 #: dnc/templates/dnc/dnc_contact/import_dnc_contact.html:14
 msgid "contact number"
 msgstr "联系电话"
 
-#: dialer_contact/models.py:93
+#: dialer_contact/models.py:95
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:30
 #: templates/admin/dialer_contact/contact/import_contact.html:26
-#: user_profile/models.py:59
+#: user_profile/models.py:60
 msgid "address"
 msgstr "地址"
 
-#: dialer_contact/models.py:94
+#: dialer_contact/models.py:96
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:31
 #: templates/admin/dialer_contact/contact/import_contact.html:27
-#: user_profile/models.py:60
+#: user_profile/models.py:61
 msgid "city"
 msgstr "城市"
 
-#: dialer_contact/models.py:95
+#: dialer_contact/models.py:97
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:32
 #: templates/admin/dialer_contact/contact/import_contact.html:28
-#: user_profile/models.py:61
+#: user_profile/models.py:62
 msgid "state"
 msgstr "省"
 
-#: dialer_contact/models.py:96
+#: dialer_contact/models.py:98
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:33
 #: templates/admin/dialer_contact/contact/import_contact.html:29
-#: user_profile/models.py:62
+#: user_profile/models.py:63
 msgid "country"
 msgstr "国家"
 
-#: dialer_contact/models.py:97
+#: dialer_contact/models.py:99
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:34
 #: templates/admin/dialer_contact/contact/import_contact.html:30
 msgid "unit number"
 msgstr "联系电话"
 
-#: dialer_contact/models.py:100
+#: dialer_contact/models.py:102
 msgid "enter the list of parameters in JSON format, e.g. {\"age\": \"32\"}"
 msgstr "输入JSON格式的参数列表, 例如：{\"age\": \"32\"}"
 
-#: dialer_contact/models.py:101
+#: dialer_contact/models.py:103
 msgid "notes"
 msgstr "备注"
 
-#: dialer_contact/models.py:107
+#: dialer_contact/models.py:109
 msgid "can see contact"
 msgstr "可以看到联系人"
 
@@ -2885,66 +2904,66 @@ msgstr "內部消息"
 msgid "JINGLE"
 msgstr "铃铛声"
 
-#: dialer_gateway/models.py:53
+#: dialer_gateway/models.py:54
 msgid "gateway name"
 msgstr "语音网关名称"
 
-#: dialer_gateway/models.py:56
+#: dialer_gateway/models.py:57
 msgid "gateway status"
 msgstr "语音网关状态"
 
-#: dialer_gateway/models.py:58
+#: dialer_gateway/models.py:59
 msgid "gateway provider notes"
 msgstr "语音网关供应商备注"
 
-#: dialer_gateway/models.py:59
+#: dialer_gateway/models.py:60
 msgid "add prefix"
 msgstr "新增前置号"
 
-#: dialer_gateway/models.py:61
+#: dialer_gateway/models.py:62
 msgid "remove prefix"
 msgstr "移除前置号"
 
-#: dialer_gateway/models.py:63
+#: dialer_gateway/models.py:64
 msgid "gateways"
 msgstr "语音网关"
 
-#: dialer_gateway/models.py:64
+#: dialer_gateway/models.py:65
 msgid "Gateway string to dial, ie \"sofia/gateway/myprovider/\""
 msgstr "用于拨号的网关字符串，ie \"sofia/gateway/myprovider/\""
 
-#: dialer_gateway/models.py:67
+#: dialer_gateway/models.py:68
 msgid "gateway codecs"
 msgstr "语音网关解码"
 
-#: dialer_gateway/models.py:68
+#: dialer_gateway/models.py:69
 msgid "codec string as needed by FS, ie \"PCMA,PCMU\""
 msgstr "编解码字符串所需要的FS，ie \"PCMA,PCMU\""
 
-#: dialer_gateway/models.py:71
+#: dialer_gateway/models.py:72
 msgid "gateway timeouts"
 msgstr "语音网关时间到"
 
-#: dialer_gateway/models.py:72
+#: dialer_gateway/models.py:73
 msgid "timeout in seconds, ie \"10\""
 msgstr "暂停连接秒数"
 
-#: dialer_gateway/models.py:74
+#: dialer_gateway/models.py:75
 msgid "gateway retries"
 msgstr "语音网关重试"
 
-#: dialer_gateway/models.py:75
+#: dialer_gateway/models.py:76
 msgid ""
 "\"2,1\", # retry String for Gateways separated by comma, on how many times "
 "each gateway should be retried"
 msgstr ""
 "\"2,1\", # 每个语音通道重试字串必须用逗号分隔, 每个语音网关应该重试多少次 "
 
-#: dialer_gateway/models.py:77
+#: dialer_gateway/models.py:78
 msgid "originate dial string"
 msgstr "来至拨号串"
 
-#: dialer_gateway/models.py:78
+#: dialer_gateway/models.py:79
 msgid ""
 "add channels variables : http://wiki.freeswitch.org/wiki/Channel_Variables, "
 "ie: bridge_early_media=true,hangup_after_bridge=true"
@@ -2952,215 +2971,215 @@ msgstr ""
 "新增通道变数 : http://wiki.freeswitch.org/wiki/Channel_Variables, ie: "
 "bridge_early_media=true,hangup_after_bridge=true"
 
-#: dialer_gateway/models.py:81
+#: dialer_gateway/models.py:82
 msgid "second used"
 msgstr "第二次使用"
 
-#: dialer_gateway/models.py:89
+#: dialer_gateway/models.py:90
 msgid "add parameter"
 msgstr "新增参数"
 
-#: dialer_gateway/models.py:92
+#: dialer_gateway/models.py:93
 msgid "call count"
 msgstr "拨号计数"
 
-#: dialer_gateway/models.py:94
+#: dialer_gateway/models.py:95
 msgid "count in use"
 msgstr "使用次数"
 
-#: dialer_gateway/models.py:95
+#: dialer_gateway/models.py:96
 msgid "max concurrent calls"
 msgstr "最大同时拨号数"
 
-#: dialer_gateway/models.py:101
+#: dialer_gateway/models.py:102
 msgid "dialer gateway"
 msgstr "拨号程序语音网关"
 
-#: dialer_gateway/models.py:102
+#: dialer_gateway/models.py:103
 msgid "dialer gateways"
 msgstr "拨号程序语音网关"
 
-#: dialer_settings/models.py:39
+#: dialer_settings/models.py:40
 msgid "settings name"
 msgstr "设定名称"
 
-#: dialer_settings/models.py:42
+#: dialer_settings/models.py:43
 msgid "max frequency"
 msgstr "最大频率"
 
-#: dialer_settings/models.py:43
+#: dialer_settings/models.py:44
 #: user_profile/templates/user_profile/user_dialer_settings.html:6
 msgid "maximum calls per minute"
 msgstr "每分钟最大呼叫"
 
-#: dialer_settings/models.py:45
+#: dialer_settings/models.py:46
 msgid "max Call Duration"
 msgstr "最大拨号间隔"
 
-#: dialer_settings/models.py:46
+#: dialer_settings/models.py:47
 msgid "maximum call duration in seconds (1800 = 30 Minutes)"
 msgstr "最长拨通秒数(1800=30分钟)"
 
-#: dialer_settings/models.py:50
+#: dialer_settings/models.py:51
 msgid "maximum retries per user."
 msgstr "每个用户最大重播次数"
 
-#: dialer_settings/models.py:53
+#: dialer_settings/models.py:54
 msgid "maximum call timeout in seconds"
 msgstr "最长暂停拨打次数"
 
-#: dialer_settings/models.py:55 dialer_settings/models.py:56
+#: dialer_settings/models.py:56 dialer_settings/models.py:57
 msgid "maximum number of campaigns"
 msgstr "活动最大数量"
 
-#: dialer_settings/models.py:57
+#: dialer_settings/models.py:58
 #: user_profile/templates/user_profile/user_dialer_settings.html:26
 msgid "maximum subscribers per campaign"
 msgstr "每个活动最大电话预约用户"
 
-#: dialer_settings/models.py:58
+#: dialer_settings/models.py:59
 msgid "maximum subscribers per campaign. Unlimited if the value equal 0"
 msgstr "每个活动最大预约用户，0表示无限制"
 
-#: dialer_settings/models.py:61
+#: dialer_settings/models.py:62
 msgid "maximum number of contacts"
 msgstr "联系人最大数量"
 
-#: dialer_settings/models.py:62
+#: dialer_settings/models.py:63
 msgid "maximum number of contacts per user. Unlimited if the value equal 0"
 msgstr "每个用户的最大联系次数，0表示无限制"
 
-#: dialer_settings/models.py:65
+#: dialer_settings/models.py:66
 #: user_profile/templates/user_profile/user_dialer_settings.html:38
 msgid "blacklist"
 msgstr "黑名单"
 
-#: dialer_settings/models.py:66
+#: dialer_settings/models.py:67
 msgid ""
 "use regular expressions to blacklist phone numbers. For example, '^[2-4]"
 "[1]+' will prevent all phone numbers starting with 2,3 or 4 and followed by "
 "1 being called."
 msgstr "使用正规式到黑名单电话号码"
 
-#: dialer_settings/models.py:68
+#: dialer_settings/models.py:69
 #: user_profile/templates/user_profile/user_dialer_settings.html:34
 msgid "whitelist"
 msgstr "白名单"
 
-#: dialer_settings/models.py:69
+#: dialer_settings/models.py:70
 msgid "use regular expressions to whitelist phone numbers"
 msgstr "使用正规式到黑名单电话号码"
 
-#: dialer_settings/models.py:73
+#: dialer_settings/models.py:74
 msgid "Max frequency"
 msgstr "最大频率"
 
-#: dialer_settings/models.py:74
+#: dialer_settings/models.py:75
 msgid "Maximum SMS per minute"
 msgstr "每分钟最大呼叫"
 
-#: dialer_settings/models.py:76
+#: dialer_settings/models.py:77
 msgid "Max Retries"
 msgstr "重试最大值"
 
-#: dialer_settings/models.py:77
+#: dialer_settings/models.py:78
 msgid "Maximum SMS retries per user."
 msgstr "每个使用者最大重试次数"
 
-#: dialer_settings/models.py:79
+#: dialer_settings/models.py:80
 msgid "Max SMS campaigns"
 msgstr "最大短信活动"
 
-#: dialer_settings/models.py:80
+#: dialer_settings/models.py:81
 msgid "Maximum number of SMS campaigns"
 msgstr "短信活动最大数量"
 
-#: dialer_settings/models.py:82
+#: dialer_settings/models.py:83
 msgid "Max subscribers of SMS campaigns"
 msgstr "每个短信活动最大电话用户"
 
-#: dialer_settings/models.py:83
+#: dialer_settings/models.py:84
 msgid "Maximum subscribers per SMS campaign"
 msgstr "每个短信活动最大预约用户"
 
-#: dialer_settings/models.py:92
+#: dialer_settings/models.py:93
 msgid "dialer setting"
 msgstr "拨号设置"
 
-#: dialer_settings/models.py:93 user_profile/models.py:90
+#: dialer_settings/models.py:94 user_profile/models.py:92
 msgid "dialer settings"
 msgstr "拨号设定"
 
-#: dnc/forms.py:57
+#: dnc/forms.py:59
 #, fuzzy
 #| msgid "phone number"
 msgid "Phone Number"
 msgstr "电话号码"
 
-#: dnc/forms.py:58 dnc/models.py:48
+#: dnc/forms.py:60 dnc/models.py:49
 msgid "Do Not Call list"
 msgstr "黑名单"
 
-#: dnc/forms.py:112
+#: dnc/forms.py:114
 msgid "Please enter a valid phone number"
 msgstr "电话号码"
 
-#: dnc/forms.py:133
+#: dnc/forms.py:136
 msgid "DNC List"
 msgstr "黑名单"
 
-#: dnc/forms.py:133 dnc/forms.py:157
+#: dnc/forms.py:136 dnc/forms.py:161
 msgid "select DNC list"
 msgstr "选择联系人"
 
-#: dnc/forms.py:150
+#: dnc/forms.py:153
 #, fuzzy
 msgid "Upload CSV file"
 msgstr "上传 CSV 文件"
 
-#: dnc/forms.py:157
+#: dnc/forms.py:161
 msgid "DNC list"
 msgstr "黑名单"
 
-#: dnc/forms.py:178 mod_utils/forms.py:38
+#: dnc/forms.py:182 mod_utils/forms.py:41
 #, fuzzy
 #| msgid "export to"
 msgid "Export to"
 msgstr "导出CSV文件"
 
-#: dnc/models.py:33
+#: dnc/models.py:34
 msgid "Enter a DNC list name"
 msgstr "输入一个黑名单列表"
 
-#: dnc/models.py:34
+#: dnc/models.py:35
 msgid "DNC notes"
 msgstr "备注"
 
-#: dnc/models.py:45
+#: dnc/models.py:46
 msgid "can see Do Not Call list"
 msgstr "更新民意调查"
 
-#: dnc/models.py:49
+#: dnc/models.py:50
 msgid "Do Not Call lists"
 msgstr "黑名单"
 
-#: dnc/models.py:55
+#: dnc/models.py:56
 msgid "DNC contacts"
 msgstr "联系人"
 
-#: dnc/models.py:72
+#: dnc/models.py:74
 msgid "Do Not Call List"
 msgstr "黑名单"
 
-#: dnc/models.py:83
+#: dnc/models.py:85
 msgid "can see Do Not Call contact"
 msgstr "选择联系人"
 
-#: dnc/models.py:86
+#: dnc/models.py:88
 msgid "Do Not Call contact"
 msgstr "汇入联系人"
 
-#: dnc/models.py:87
+#: dnc/models.py:89
 msgid "Do Not Call contacts"
 msgstr "联系人"
 
@@ -3295,34 +3314,34 @@ msgstr "最近 6 小时"
 msgid "Last hour"
 msgstr "最近一个小时"
 
-#: frontend/forms.py:25
+#: frontend/forms.py:26
 msgid "username"
 msgstr "用户名:"
 
-#: frontend/forms.py:26
+#: frontend/forms.py:27
 msgid "Username"
 msgstr "用户名:"
 
-#: frontend/forms.py:27
+#: frontend/forms.py:28
 #: user_profile/templates/user_profile/user_detail_change.html:12
 msgid "password"
 msgstr "密码"
 
-#: frontend/forms.py:28
+#: frontend/forms.py:29
 msgid "Password"
 msgstr "密码:"
 
-#: frontend/forms.py:43
+#: frontend/forms.py:44
 #, fuzzy
 msgid "Forgot password"
 msgstr "忘记密码?"
 
-#: frontend/forms.py:63 mod_sms/forms.py:210 mod_utils/forms.py:93
+#: frontend/forms.py:65 mod_sms/forms.py:213 mod_utils/forms.py:97
 #, fuzzy
 msgid "Search"
 msgstr "搜索"
 
-#: frontend/forms.py:69 mod_sms/forms.py:218
+#: frontend/forms.py:71 mod_sms/forms.py:221
 msgid "Select campaign"
 msgstr "选择活动"
 
@@ -3379,7 +3398,7 @@ msgid "account limits"
 msgstr "账户限制"
 
 #: frontend/templates/frontend/bootstrap_menu.html:97
-#: user_profile/models.py:68
+#: user_profile/models.py:69
 #: user_profile/templates/user_profile/user_detail_change.html:15
 msgid "language"
 msgstr "语系"
@@ -3411,7 +3430,7 @@ msgid "import"
 msgstr "导入"
 
 #: frontend/templates/frontend/bootstrap_side_menu.html:45
-#: user_profile/models.py:165
+#: user_profile/models.py:170
 msgid "calendar users"
 msgstr "日历用户"
 
@@ -3429,7 +3448,7 @@ msgid "reports"
 msgstr "报表"
 
 #: frontend/templates/frontend/bootstrap_side_menu.html:76
-#: survey/models.py:124
+#: survey/models.py:127
 msgid "surveys"
 msgstr "调查"
 
@@ -3588,97 +3607,97 @@ msgstr "登录错误."
 msgid "enter valid user credentials."
 msgstr "输入合法用户信息."
 
-#: mod_mailer/models.py:27
+#: mod_mailer/models.py:28
 msgid "mail template name"
 msgstr "拨号者ID"
 
-#: mod_mailer/models.py:28
+#: mod_mailer/models.py:29
 msgid "template key"
 msgstr "模版值"
 
-#: mod_mailer/models.py:29
+#: mod_mailer/models.py:30
 msgid ""
 "unique name used to pick some template for recurring action, such as "
 "activation or warning"
 msgstr ""
 
-#: mod_mailer/models.py:30
+#: mod_mailer/models.py:31
 msgid "from_email"
 msgstr "来至邮箱"
 
-#: mod_mailer/models.py:31
+#: mod_mailer/models.py:32
 msgid "sender email"
 msgstr "发送者邮箱"
 
-#: mod_mailer/models.py:32
+#: mod_mailer/models.py:33
 msgid "from_name"
 msgstr "来至姓氏"
 
-#: mod_mailer/models.py:33
+#: mod_mailer/models.py:34
 msgid "sender name"
 msgstr "发送者名字:"
 
-#: mod_mailer/models.py:34
+#: mod_mailer/models.py:35
 msgid "subject"
 msgstr "主题"
 
-#: mod_mailer/models.py:35
+#: mod_mailer/models.py:36
 msgid "email subject"
 msgstr "邮件主题"
 
-#: mod_mailer/models.py:36
+#: mod_mailer/models.py:37
 msgid "message plaintext"
 msgstr "消息明文"
 
-#: mod_mailer/models.py:37
+#: mod_mailer/models.py:38
 msgid "plain text version of the email"
 msgstr "纯文本版本的电子邮件"
 
-#: mod_mailer/models.py:38
+#: mod_mailer/models.py:39
 msgid "message_html"
 msgstr "html文本"
 
-#: mod_mailer/models.py:39
+#: mod_mailer/models.py:40
 msgid "HTML version of the Email"
 msgstr "邮件HTML版本"
 
-#: mod_mailer/models.py:43
+#: mod_mailer/models.py:44
 msgid "Mail template"
 msgstr "邮件模版"
 
-#: mod_mailer/models.py:44
+#: mod_mailer/models.py:45
 msgid "Mail templates"
 msgstr "邮件模版"
 
-#: mod_mailer/models.py:54
+#: mod_mailer/models.py:56
 msgid "mail template"
 msgstr "邮件模版"
 
-#: mod_mailer/models.py:55
+#: mod_mailer/models.py:57
 msgid "contact email"
 msgstr "新增联系人详细资料"
 
-#: mod_mailer/models.py:58
+#: mod_mailer/models.py:60
 msgid "parameter"
 msgstr "新增参数"
 
-#: mod_mailer/models.py:64
+#: mod_mailer/models.py:66
 msgid "mail spooler"
 msgstr "邮件假脱机程序"
 
-#: mod_registration/forms.py:24
+#: mod_registration/forms.py:25
 #, fuzzy
 #| msgid "mail"
 msgid "Email"
 msgstr "邮件"
 
-#: mod_registration/forms.py:36
+#: mod_registration/forms.py:37
 #, fuzzy
 #| msgid "reset my password"
 msgid "Reset my password"
 msgstr "重新设置密码"
 
-#: mod_registration/forms.py:50
+#: mod_registration/forms.py:53
 #, fuzzy
 #| msgid "change my password"
 msgid "Change my password"
@@ -3772,16 +3791,16 @@ msgid ""
 "new one."
 msgstr "请在下面输入您的电子邮箱, 我们将通过电子邮件发送操作说明给您."
 
-#: mod_sms/admin.py:93 mod_sms/views.py:171
+#: mod_sms/admin.py:94 mod_sms/views.py:171
 #, fuzzy, python-format
 msgid "you have too many sms campaigns. Max allowed %(limit)s"
 msgstr "您的短信活动数量超限.最大允许值为 %(limit)s"
 
-#: mod_sms/admin.py:121 mod_sms/admin.py:221
+#: mod_sms/admin.py:124 mod_sms/admin.py:224
 msgid "SMS report"
 msgstr "短信报表"
 
-#: mod_sms/admin.py:263
+#: mod_sms/admin.py:266
 msgid "SMS aggregate report"
 msgstr "短信详细报表"
 
@@ -3847,29 +3866,29 @@ msgstr ""
 msgid "status msg"
 msgstr "信息状态"
 
-#: mod_sms/forms.py:113
+#: mod_sms/forms.py:114
 #, fuzzy
 #| msgid "completion settings"
 msgid "Completion Settings"
 msgstr "结束设置"
 
-#: mod_sms/forms.py:125
+#: mod_sms/forms.py:126
 #, fuzzy
 #| msgid "week days"
 msgid "Week days"
 msgstr "星期天"
 
-#: mod_sms/forms.py:160
+#: mod_sms/forms.py:161
 #, fuzzy, python-format
 msgid "Maximum Frequency limit of %d exceeded."
 msgstr "最大频率限制 %d 超过."
 
-#: mod_sms/forms.py:165
+#: mod_sms/forms.py:166
 #, fuzzy, python-format
 msgid "Maximum Retries limit of %d exceeded."
 msgstr "最大重试次数 %d 超过."
 
-#: mod_sms/forms.py:197 mod_sms/forms.py:228 mod_sms/forms.py:253
+#: mod_sms/forms.py:200 mod_sms/forms.py:232 mod_sms/forms.py:258
 msgid "SMS Campaign"
 msgstr "短信活动"
 
@@ -3891,100 +3910,100 @@ msgstr ""
 msgid "Create new SMSs for a given sms_campaign_id"
 msgstr ""
 
-#: mod_sms/models.py:117
+#: mod_sms/models.py:125
 msgid "SMS campaign code"
 msgstr "短信活动代码"
 
-#: mod_sms/models.py:118
+#: mod_sms/models.py:126
 msgid ""
 "this code is auto-generated by the "
 "platform,                                      this is used to identify the "
 "campaign"
 msgstr "此代码为此平台自动产生, 用来识别活动."
 
-#: mod_sms/models.py:148
+#: mod_sms/models.py:157
 msgid "SMS per minute"
 msgstr "每分钟短信数"
 
-#: mod_sms/models.py:154
+#: mod_sms/models.py:163
 msgid "time between Retries"
 msgstr "上次重试失败后下一次开始的时间间隔"
 
-#: mod_sms/models.py:160
+#: mod_sms/models.py:169
 msgid "text Message"
 msgstr "文本信息"
 
-#: mod_sms/models.py:172
+#: mod_sms/models.py:181
 msgid "list of imported phonebook"
 msgstr "显示,新增以及编辑通讯录"
 
-#: mod_sms/models.py:184
+#: mod_sms/models.py:193
 msgid "can see SMS campaign"
 msgstr "可以看到短信活动"
 
-#: mod_sms/models.py:185
+#: mod_sms/models.py:194
 msgid "can see SMS campaign dashboard"
 msgstr "可以看到短信活动仪表板"
 
-#: mod_sms/models.py:188
+#: mod_sms/models.py:197
 msgid "SMS campaign"
 msgstr "短信活动"
 
-#: mod_sms/models.py:189
+#: mod_sms/models.py:198
 msgid "SMS campaigns"
 msgstr "短信活动"
 
-#: mod_sms/models.py:235
+#: mod_sms/models.py:244
 msgid "Phonebook Empty"
 msgstr "清空通讯录"
 
-#: mod_sms/models.py:352
+#: mod_sms/models.py:361
 msgid "SMSCampaign Subscriber"
 msgstr "短息预约活动"
 
-#: mod_sms/models.py:422
+#: mod_sms/models.py:434
 msgid "select message"
 msgstr "选择信息"
 
-#: mod_sms/models.py:426 mod_sms/models.py:490
+#: mod_sms/models.py:438 mod_sms/models.py:503
 msgid "select SMS campaign"
 msgstr "选择短信活动"
 
-#: mod_sms/models.py:444
+#: mod_sms/models.py:456
 msgid "SMS campaign subscriber"
 msgstr "预约短信活动"
 
-#: mod_sms/models.py:445
+#: mod_sms/models.py:457
 msgid "SMS campaign subscribers"
 msgstr "预约短信活动"
 
-#: mod_sms/models.py:498
+#: mod_sms/models.py:511
 msgid "can see SMS report"
 msgstr "可以看到短信报表"
 
-#: mod_sms/models.py:501
+#: mod_sms/models.py:514
 msgid "SMS message"
 msgstr "短信信息"
 
-#: mod_sms/models.py:502
+#: mod_sms/models.py:515
 msgid "SMS messages"
 msgstr "短信信息"
 
-#: mod_sms/models.py:509
+#: mod_sms/models.py:523
 msgid "SMS template name"
 msgstr "短信模块名称"
 
-#: mod_sms/models.py:512
+#: mod_sms/models.py:526
 msgid ""
 "Unique name used to pick some template for recurring action, such as "
 "activation or warning"
 msgstr ""
 
-#: mod_sms/models.py:519
+#: mod_sms/models.py:533
 msgid "SMS template"
 msgstr "短信模版"
 
-#: mod_sms/models.py:520
+#: mod_sms/models.py:534
 msgid "SMS templates"
 msgstr "短信模版"
 
@@ -3992,15 +4011,15 @@ msgstr "短信模版"
 msgid "set SMS campaign parameters"
 msgstr "设置短信活动参数"
 
-#: mod_sms/templates/mod_sms/list.html:5
+#: mod_sms/templates/mod_sms/list.html:10
 msgid "list, add and edit SMS campaigns"
 msgstr "列出,新增以及编辑短信活动"
 
-#: mod_sms/templates/mod_sms/list.html:71
+#: mod_sms/templates/mod_sms/list.html:76
 msgid "update sms campaign"
 msgstr "更新短信活动"
 
-#: mod_sms/templates/mod_sms/list.html:74
+#: mod_sms/templates/mod_sms/list.html:79
 msgid "delete sms campaign"
 msgstr "删除短信活动"
 
@@ -4080,89 +4099,89 @@ msgid ""
 "settings configured properly, please contact the admin."
 msgstr "为了新增短信活动, 您需要正确的设定, 请联系系统管理员."
 
-#: mod_sms/views.py:186
+#: mod_sms/views.py:187
 #, fuzzy, python-format
 msgid "\"%(name)s\" is added."
 msgstr "\"%(name)s\" 已经新增."
 
-#: mod_sms/views.py:219
+#: mod_sms/views.py:220
 #, fuzzy, python-format
 msgid "\"%(name)s\" is stopped."
 msgstr "\"%(name)s\" 已经停止."
 
-#: mod_sms/views.py:231
+#: mod_sms/views.py:232
 #, fuzzy, python-format
 msgid "%(count)s sms campaign(s) are stopped."
 msgstr "%(count)s 短信活动已经停止."
 
-#: mod_sms/views.py:233
+#: mod_sms/views.py:234
 #, fuzzy, python-format
 msgid "%(count)s sms campaign(s) are deleted."
 msgstr "%(count)s 短信活动已经删除."
 
-#: mod_utils/forms.py:68
+#: mod_utils/forms.py:72
 #, fuzzy
 #| msgid "update"
 msgid "Update"
 msgstr "更新"
 
-#: mod_utils/forms.py:68
+#: mod_utils/forms.py:72
 #, fuzzy
 #| msgid "delete"
 msgid "Delete"
 msgstr "刪除"
 
-#: mod_utils/forms.py:76
+#: mod_utils/forms.py:80
 msgid "Save"
 msgstr ""
 
-#: mod_utils/forms.py:85
+#: mod_utils/forms.py:89
 #, fuzzy
 #| msgid "import"
 msgid "Import"
 msgstr "导入"
 
-#: mod_utils/function_def.py:62
+#: mod_utils/function_def.py:63
 #, fuzzy
 #| msgid "start"
 msgid "Start"
 msgstr "开始"
 
-#: mod_utils/function_def.py:63
+#: mod_utils/function_def.py:64
 #, fuzzy
 #| msgid "pause"
 msgid "Pause"
 msgstr "暂停"
 
-#: mod_utils/function_def.py:64
+#: mod_utils/function_def.py:65
 #, fuzzy
 #| msgid "abort"
 msgid "Abort"
 msgstr "中断"
 
-#: mod_utils/function_def.py:65
+#: mod_utils/function_def.py:66
 msgid "Stop"
 msgstr ""
 
-#: mod_utils/function_def.py:75
+#: mod_utils/function_def.py:76
 #, fuzzy
 #| msgid "started"
 msgid "Started"
 msgstr "开始"
 
-#: mod_utils/function_def.py:77
+#: mod_utils/function_def.py:78
 #, fuzzy
 #| msgid "paused"
 msgid "Paused"
 msgstr "暂停"
 
-#: mod_utils/function_def.py:79
+#: mod_utils/function_def.py:80
 #, fuzzy
 #| msgid "aborted"
 msgid "Aborted"
 msgstr "中断"
 
-#: mod_utils/function_def.py:81
+#: mod_utils/function_def.py:82
 #, fuzzy
 #| msgid "stopped"
 msgid "Stopped"
@@ -4250,33 +4269,37 @@ msgid ""
 "administrator"
 msgstr "通过管理员短信拨号设置需要对应到拨号程序设置"
 
-#: newfies_dialer/settings.py:488
+#: newfies_dialer/settings.py:448
 msgid "English"
 msgstr "英语 "
 
-#: newfies_dialer/settings.py:489
+#: newfies_dialer/settings.py:449
 msgid "French"
 msgstr "法语"
 
-#: newfies_dialer/settings.py:490
+#: newfies_dialer/settings.py:450
 msgid "Spanish"
 msgstr "西班牙語"
 
-#: newfies_dialer/settings.py:491
+#: newfies_dialer/settings.py:451
 msgid "Portuguese"
 msgstr "葡萄牙語"
 
-#: newfies_dialer/settings.py:492
+#: newfies_dialer/settings.py:452
 msgid "Chinese"
 msgstr "中文"
 
-#: newfies_dialer/settings.py:493
+#: newfies_dialer/settings.py:453
 msgid "Turkish"
 msgstr "土耳其语"
 
-#: newfies_dialer/settings.py:494
+#: newfies_dialer/settings.py:454
 msgid "Japanese"
 msgstr "日本语"
+
+#: newfies_dialer/settings.py:455
+msgid "Ukrainian"
+msgstr ""
 
 #: survey/constants.py:20
 #, fuzzy
@@ -4322,288 +4345,299 @@ msgstr "呼叫-日期"
 msgid "survey result"
 msgstr "调查结果"
 
-#: survey/forms.py:48
+#: survey/forms.py:49
 msgid "hangup"
 msgstr "挂断"
 
-#: survey/forms.py:79 survey/forms.py:103
+#: survey/forms.py:80 survey/forms.py:104
 #, fuzzy
 #| msgid "any other key"
 msgid "Any other key"
 msgstr "任何其他值"
 
-#: survey/forms.py:80 survey/forms.py:104 survey/forms.py:566
+#: survey/forms.py:81 survey/forms.py:105 survey/forms.py:580
 #, fuzzy
 #| msgid "invalid"
 msgid "Invalid"
 msgstr "无效的"
 
-#: survey/forms.py:135
+#: survey/forms.py:137
 #, fuzzy
 #| msgid "completed"
 msgid "Completed"
 msgstr "已完成"
 
-#: survey/forms.py:169 survey/forms.py:371 survey/forms.py:407
-#: survey/forms.py:442 survey/forms.py:479
+#: survey/forms.py:172 survey/forms.py:378 survey/forms.py:415
+#: survey/forms.py:453 survey/forms.py:491
 #, fuzzy
 #| msgid "section title"
 msgid "Section title"
 msgstr "章节标题"
 
-#: survey/forms.py:203
+#: survey/forms.py:207
 msgid ""
 "configure valid multi-choice options. The value of each field will be shown "
 "in the survey report"
 msgstr "配置有效的多选.每个域的值将会在调查报表中显示"
 
-#: survey/forms.py:566
+#: survey/forms.py:580
 #, fuzzy
 #| msgid "any other key"
 msgid "Any Other Key"
 msgstr "任何其他值"
 
-#: survey/forms.py:580
+#: survey/forms.py:594
 msgid "no branching, this will terminate the call"
 msgstr "无分支，经终结此呼叫"
 
-#: survey/forms.py:598
+#: survey/forms.py:613
 #, fuzzy
 #| msgid "select Campaign"
 msgid "Select Campaign"
 msgstr "选择活动"
 
-#: survey/forms.py:614
+#: survey/forms.py:630
 #, fuzzy
 #| msgid "survey"
 msgid "Survey"
 msgstr "调查"
 
-#: survey/forms.py:633
+#: survey/forms.py:649
 #, fuzzy
 #| msgid "select survey"
 msgid "Select Survey"
 msgstr "选择调查"
 
-#: survey/forms.py:651
+#: survey/forms.py:669 survey/forms.py:700
 #, fuzzy
 #| msgid "survey name"
 msgid "Survey Name"
 msgstr "调查名称"
 
-#: survey/forms.py:652
+#: survey/forms.py:670
 #, fuzzy
 msgid "Upload file"
 msgstr "上传 CSV 文件"
 
-#: survey/forms.py:652
+#: survey/forms.py:670
 msgid "browse text file"
 msgstr "浏览文本文件"
 
-#: survey/models.py:44
+#: survey/models.py:45
 msgid "Text-to-Speech language"
 msgstr "TTS语音合成语系"
 
-#: survey/models.py:66
+#: survey/models.py:68
 msgid "can see survey template"
 msgstr "可以看到调查模版"
 
-#: survey/models.py:68
+#: survey/models.py:70
 msgid "survey template"
 msgstr "调查模版"
 
-#: survey/models.py:69
+#: survey/models.py:71
 msgid "survey templates"
 msgstr "调查模版"
 
-#: survey/models.py:116
+#: survey/models.py:119
 msgid "can see survey"
 msgstr "可以看到调查"
 
-#: survey/models.py:117
+#: survey/models.py:120
 msgid "can see sealed survey"
 msgstr "可以看到密封调查"
 
-#: survey/models.py:118
+#: survey/models.py:121
 msgid "can seal survey"
 msgstr "可以密封调查"
 
-#: survey/models.py:119
+#: survey/models.py:122
 msgid "can export survey"
 msgstr "可以导出调查"
 
-#: survey/models.py:120
+#: survey/models.py:123
 msgid "can import survey"
 msgstr "可以导入调查"
 
-#: survey/models.py:121
+#: survey/models.py:124
 msgid "can see survey report"
 msgstr "可以看到调查报告"
 
-#: survey/models.py:212
+#: survey/models.py:219
 msgid "section type"
 msgstr "部门类型"
 
-#: survey/models.py:214 survey/templates/survey/sealed_survey_view.html:58
+#: survey/models.py:221 survey/templates/survey/sealed_survey_view.html:58
 #: survey/templates/survey/survey_campaign_result.html:17
 #: survey/templates/survey/survey_change.html:113
 #: survey/templates/survey/survey_report.html:57
 msgid "question"
 msgstr "问题"
 
-#: survey/models.py:215
+#: survey/models.py:222
 msgid "Example: hotel service rating"
 msgstr "例子：酒店服务评估"
 
-#: survey/models.py:218
+#: survey/models.py:225
 #, python-brace-format
 msgid ""
 "Example: Press a key between 1 to 5, press pound key when done or Hello "
 "{first_name} {last_name}, please press a key between 1 to 5"
 msgstr ""
 
-#: survey/models.py:220
+#: survey/models.py:227
 msgid "audio File"
 msgstr "语音文件"
 
-#: survey/models.py:222
+#: survey/models.py:229
 msgid "retries"
 msgstr "重试最大值"
 
-#: survey/models.py:223
+#: survey/models.py:230
 msgid "retries until valid input"
 msgstr "尝试至无效输入"
 
-#: survey/models.py:225 survey/templates/survey/sealed_survey_view.html:226
+#: survey/models.py:232 survey/templates/survey/sealed_survey_view.html:226
 #: survey/templates/survey/survey_change.html:295
 #: user_profile/templates/user_profile/user_dialer_settings.html:18
 msgid "timeout"
 msgstr "时间到"
 
-#: survey/models.py:226
+#: survey/models.py:233
 msgid "timeout in seconds"
 msgstr "暂停连接秒数"
 
-#: survey/models.py:229
+#: survey/models.py:236
 msgid "key 0"
 msgstr ""
 
-#: survey/models.py:231
+#: survey/models.py:238
 msgid "key 1"
 msgstr ""
 
-#: survey/models.py:233
+#: survey/models.py:240
 msgid "key 2"
 msgstr ""
 
-#: survey/models.py:235
+#: survey/models.py:242
 msgid "key 3"
 msgstr ""
 
-#: survey/models.py:237
+#: survey/models.py:244
 msgid "key 4"
 msgstr ""
 
-#: survey/models.py:239
+#: survey/models.py:246
 msgid "key 5"
 msgstr ""
 
-#: survey/models.py:241
+#: survey/models.py:248
 msgid "key 6"
 msgstr ""
 
-#: survey/models.py:243
+#: survey/models.py:250
 msgid "key 7"
 msgstr ""
 
-#: survey/models.py:245
+#: survey/models.py:252
 msgid "key 8"
 msgstr ""
 
-#: survey/models.py:247
+#: survey/models.py:254
 msgid "key 9"
 msgstr ""
 
-#: survey/models.py:250
+#: survey/models.py:257
 msgid "from 1 to X"
 msgstr "从1至X"
 
-#: survey/models.py:252
+#: survey/models.py:259
 msgid "check validity"
 msgstr "有效性检查"
 
-#: survey/models.py:254
+#: survey/models.py:261
 msgid "number of digits"
 msgstr "最大数值"
 
-#: survey/models.py:256
+#: survey/models.py:263
 msgid "minimum"
 msgstr "最小值"
 
-#: survey/models.py:258
+#: survey/models.py:265
 msgid "maximum"
 msgstr "重试最大值"
 
-#: survey/models.py:261 survey/templates/survey/sealed_survey_view.html:181
+#: survey/models.py:268 survey/templates/survey/sealed_survey_view.html:181
 #: survey/templates/survey/survey_change.html:246
 msgid "Phone Number / SIP URI"
 msgstr "电话号码 / SIP URI"
 
-#: survey/models.py:264
+#: survey/models.py:271
+#, python-brace-format
+msgid "Example: Please pull up the file {filenumber} for this call"
+msgstr ""
+
+#: survey/models.py:273
+#, fuzzy
+#| msgid "URL confirm"
+msgid "confirm key"
+msgstr "URL确定"
+
+#: survey/models.py:277
 msgid "conference number"
 msgstr "会议号码"
 
-#: survey/models.py:267
+#: survey/models.py:280
 msgid "text that will be send via SMS to the contact"
 msgstr "文本将通过短信发送到联系人"
 
-#: survey/models.py:270
+#: survey/models.py:283
 msgid "survey complete"
 msgstr "已完成的调查"
 
-#: survey/models.py:321 survey/models.py:385
+#: survey/models.py:335 survey/models.py:402
 msgid "audio invalid input"
 msgstr "无效的音频输入"
 
-#: survey/models.py:326
+#: survey/models.py:340
 msgid "section template"
 msgstr "部门模版"
 
-#: survey/models.py:327
+#: survey/models.py:341
 msgid "section templates"
 msgstr "部门模版"
 
-#: survey/models.py:390
+#: survey/models.py:407
 msgid "section template ID"
 msgstr "通知模版ID"
 
-#: survey/models.py:409
+#: survey/models.py:427
 msgid "entered value"
 msgstr "登记值"
 
-#: survey/models.py:432
+#: survey/models.py:451
 msgid "branching template"
 msgstr "分支模版"
 
-#: survey/models.py:433
+#: survey/models.py:452
 msgid "branching templates"
 msgstr "分支模版"
 
-#: survey/models.py:462 survey/models.py:463
+#: survey/models.py:482 survey/models.py:483
 #: survey/templates/survey/sealed_survey_view.html:207
 #: survey/templates/survey/survey_change.html:276
 msgid "branching"
 msgstr "分支"
 
-#: survey/models.py:501
+#: survey/models.py:522
 msgid "record File"
 msgstr "录音文件"
 
-#: survey/models.py:504
+#: survey/models.py:525
 msgid "recording duration"
 msgstr "录音时长"
 
-#: survey/models.py:526
+#: survey/models.py:548
 msgid "result count"
 msgstr "结果数量"
 
@@ -5022,73 +5056,73 @@ msgstr "重新登入一次"
 msgid "callrequest not found"
 msgstr "找不到拨号请求"
 
-#: user_profile/forms.py:38
+#: user_profile/forms.py:40
 msgid "Email address"
 msgstr "邮箱"
 
-#: user_profile/forms.py:95
+#: user_profile/forms.py:99
 #, fuzzy
 #| msgid "verify phone number"
 msgid "Verify phone number"
 msgstr "检查电话号码"
 
-#: user_profile/forms.py:96
+#: user_profile/forms.py:100
 msgid "verify if a phone number is authorized to call"
 msgstr "检查此号码被授权外呼"
 
-#: user_profile/models.py:63
+#: user_profile/models.py:64
 msgid "zip code"
 msgstr "邮政编码"
 
-#: user_profile/models.py:65
+#: user_profile/models.py:66
 msgid "fax Number"
 msgstr "传真号码"
 
-#: user_profile/models.py:66
+#: user_profile/models.py:67
 msgid "company name"
 msgstr "公司名称"
 
-#: user_profile/models.py:67
+#: user_profile/models.py:68
 msgid "company website"
 msgstr "公司网站"
 
-#: user_profile/models.py:69
+#: user_profile/models.py:70
 msgid "note"
 msgstr "备注"
 
-#: user_profile/models.py:97
+#: user_profile/models.py:99
 msgid "can see API-Explorer"
 msgstr "可以看到API—Explorer"
 
-#: user_profile/models.py:101
+#: user_profile/models.py:103
 msgid "user profile"
 msgstr "用户资料"
 
-#: user_profile/models.py:102
+#: user_profile/models.py:104
 msgid "user profiles"
 msgstr "用户资料"
 
-#: user_profile/models.py:127
+#: user_profile/models.py:130
 msgid "managers"
 msgstr "管理员"
 
-#: user_profile/models.py:148
+#: user_profile/models.py:152
 msgid "admin"
 msgstr "管理员"
 
-#: user_profile/models.py:149
+#: user_profile/models.py:153
 msgid "admins"
 msgstr "管理员"
 
-#: user_profile/models.py:198
+#: user_profile/models.py:204
 msgid "can see Calendar User list"
 msgstr "可以看到日历用户列表"
 
-#: user_profile/models.py:202
+#: user_profile/models.py:208
 msgid "calendar user profile"
 msgstr "日历用户配置文件"
 
-#: user_profile/models.py:203
+#: user_profile/models.py:209
 msgid "calendar user profiles"
 msgstr "日历用户配置文件"
 
@@ -5155,3 +5189,6 @@ msgstr "该电话号码未被授权"
 #: user_profile/views.py:91
 msgid "this phone number is authorized."
 msgstr "该电话号码已经授权"
+
+#~ msgid "time out"
+#~ msgstr "时间到"

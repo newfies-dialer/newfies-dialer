@@ -493,6 +493,9 @@ HEARTBEAT_MIN = 1  # accepted value from 1 to 10
 # Delay outbound call of X seconds
 DELAY_OUTBOUND = 0
 
+# Audio Convertion
+# ================
+
 # Frontend widget values
 CHANNEL_TYPE_VALUE = 1  # 0-Keep original, 1-Mono, 2-Stereo
 

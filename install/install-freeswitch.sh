@@ -74,7 +74,7 @@ func_install_deps() {
             apt-get -y install unzip zip sox sqlite3 ncftp nmap
             apt-get -y install autoconf2.64 automake autotools-dev binutils bison build-essential cpp curl flex gcc libaudiofile-dev libc6-dev libexpat1 libexpat1-dev mcrypt libmcrypt-dev libnewt-dev libpopt-dev libsctp-dev libx11-dev libxml2 libxml2-dev lksctp-tools lynx m4 openssl ssl-cert zlib1g-dev
 
-            apt-get -y install autoconf automake devscripts gawk g++ git-core 'libjpeg-dev|libjpeg62-turbo-dev' libncurses5-dev 'libtool-bin|libtool' make python-dev gawk pkg-config libtiff5-dev libperl-dev libgdbm-dev libdb-dev gettext libssl-dev libcurl4-openssl-dev libpcre3-dev libspeex-dev libspeexdsp-dev libsqlite3-dev libedit-dev libldns-dev libpq-dev
+            apt-get -y install autoconf automake devscripts gawk g++ git-core 'libjpeg-dev|libjpeg62-turbo-dev' libncurses5-dev 'libtool-bin|libtool' make python-dev gawk pkg-config libtiff5-dev libperl-dev libgdbm-dev libdb-dev gettext libssl-dev libcurl4-openssl-dev libpcre3-dev libspeex-dev libspeexdsp-dev libsqlite3-dev libedit-dev libldns-dev libpq-dev libmp3lame-dev
 
             if [ $DEBIANCODE != "jessie" ]; then
                 #DEBIAN7
@@ -89,7 +89,7 @@ func_install_deps() {
             ;;
         'CENTOS')
             yum -y update
-            yum -y install autoconf automake bzip2 cpio curl curl-devel curl-devel expat-devel fileutils gcc-c++ gettext-devel gnutls-devel libjpeg-devel libogg-devel libtiff-devel libtool libvorbis-devel make ncurses-devel nmap openssl openssl-devel openssl-devel perl patch unixODBC unixODBC-devel unzip wget zip zlib zlib-devel
+            yum -y install autoconf automake bzip2 cpio curl curl-devel curl-devel expat-devel fileutils gcc-c++ gettext-devel gnutls-devel libjpeg-devel libogg-devel libtiff-devel libtool libvorbis-devel make ncurses-devel nmap openssl openssl-devel openssl-devel perl patch unixODBC unixODBC-devel unzip wget zip zlib zlib-devel lame-devel
             yum -y install git
             yum -y install --enablerepo=epel flite flite-devel
         ;;

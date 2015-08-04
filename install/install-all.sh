@@ -26,7 +26,13 @@
 #Set branch to install develop / master
 BRANCH='master'
 
-SCRIPT_NOTICE="This script is only intended to run on Debian 64 bit 7.X or 8.X"
+SCRIPT_NOTICE="This script is only intended to run on Debian 64bits 7.X or 8.X"
+
+ARCH=$(uname -m)
+if [ $ARCH != "x86_64" ]; then
+    echo $SCRIPT_NOTICE
+    exit 1
+fi
 
 # Identify Linux Distribution type
 func_identify_os() {

@@ -577,7 +577,7 @@ class BranchingForm(ModelForm):
                                     <input type="radio" name="keys_button" id="button-invalid"> %s
                                 </label>
                             </div>
-                            """ % (_('Any Other Key'), _('Invalid'))
+                            """ % (ugettext('Any Other Key'), ugettext('Invalid'))
                         ), css_class=css_class),
                         css_class='row'
                     )

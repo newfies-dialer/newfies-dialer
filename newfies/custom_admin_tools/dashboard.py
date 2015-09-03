@@ -151,7 +151,6 @@ class CustomIndexDashboard(Dashboard):
         ))
 
         # append a link list module for "quick links"
-        #"""
         # site_name = get_admin_site_name(context)
 
         # Quick link seems to broke the admin design if too many element
@@ -169,7 +168,6 @@ class CustomIndexDashboard(Dashboard):
                 # [_('Log out'), reverse('%s:logout' % site_name)],
             ],
         ))
-        # """
 
         if not settings.DEBUG:
             # append a feed module
@@ -235,7 +233,7 @@ class CustomAppIndexDashboard(AppIndexDashboard):
 
         # append a model list module and a recent actions module
         self.children += [
-            #modules.ModelList(self.app_title, self.models),
+            # modules.ModelList(self.app_title, self.models),
             modules.ModelList(app_title, models),
             modules.RecentActions(
                 _('Recent Actions'),

@@ -2710,7 +2710,7 @@ msgstr "Importación de contacto"
 #: dialer_contact/constants.py:20 dialer_contact/constants.py:33
 #: dialer_gateway/constants.py:20
 msgid "active"
-msgstr "Inactivo"
+msgstr "Activo"
 
 #: dialer_contact/constants.py:21 dialer_contact/constants.py:32
 #: dialer_gateway/constants.py:21

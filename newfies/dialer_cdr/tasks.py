@@ -609,9 +609,14 @@ def init_callrequest(callrequest_id, campaign_id, callmaxduration, ms_addtowait=
                              (campaign_id, subscriber_id, alarm_request_id, gateway_id, obj_callrequest.id, contact_id, obj_callrequest.phone_number))
             args_list.append(originate_dial_string)
 
+            # early_media = "bridge_early_media=true"
+            early_media = "ignore_early_media=true"
+            if early_media and len(early_media) > 0:
+                early_media = early_media + ","
+
             # Call Vars
-            callvars = "bridge_early_media=true,originate_timeout=%d,newfiesdialer=true,leg_type=1" % \
-                (dialing_timeout, )
+            callvars = "%soriginate_timeout=%d,newfiesdialer=true,leg_type=1" % \
+                (early_media, dialing_timeout, )
             args_list.append(callvars)
 
             # Default Test

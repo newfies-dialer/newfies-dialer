@@ -515,6 +515,11 @@ ESL_PORT = '8021'
 ESL_SECRET = 'ClueCon'
 ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 
+# DIAL SETTINGS
+# =============
+# EARLY_MEDIA = "bridge_early_media=true"
+EARLY_MEDIA = "ignore_early_media=true"
+
 # TEXT-TO-SPEECH
 # ==============
 TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA

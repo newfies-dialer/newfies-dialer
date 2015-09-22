@@ -205,7 +205,7 @@ func_install_dependencies(){
             apt-get -y install git-core mercurial gawk cmake
             apt-get -y install python-pip
             # for audiofile convertion
-            apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
+            apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321
             #repeat flite install in case FS is on a different server
             apt-get -y install flite
 

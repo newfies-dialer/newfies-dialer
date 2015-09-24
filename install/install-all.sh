@@ -15,10 +15,10 @@
 
 #
 # To download and run the script on your server :
-# cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
+# cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/newfies-dialer/newfies-dialer/master/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
 #
 # BRANCH = develop
-# cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
+# cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/newfies-dialer/newfies-dialer/develop/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
 #
 
 #TODO: Move BRANCH to Environement variable
@@ -119,11 +119,11 @@ esac
 
 #Install Freeswitch
 cd /usr/src/
-wget --no-check-certificate  https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/install-freeswitch.sh -O install-freeswitch.sh
+wget --no-check-certificate  https://raw.github.com/newfies-dialer/newfies-dialer/$BRANCH/install/install-freeswitch.sh -O install-freeswitch.sh
 bash install-freeswitch.sh
 /etc/init.d/freeswitch start
 
 #Install Newfies
 cd /usr/src/
-wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/$BRANCH/install/install-newfies.sh -O install-newfies.sh
+wget --no-check-certificate https://raw.github.com/newfies-dialer/newfies-dialer/$BRANCH/install/install-newfies.sh -O install-newfies.sh
 bash install-newfies.sh

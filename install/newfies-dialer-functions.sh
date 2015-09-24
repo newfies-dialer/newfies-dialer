@@ -17,10 +17,10 @@
 # To download and run the script on your server :
 #
 # >> Install with Master script :
-# cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/master/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
+# cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/newfies-dialer/newfies-dialer/master/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
 #
 # >> Install with develop script :
-# cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/Star2Billing/newfies-dialer/develop/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
+# cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/newfies-dialer/newfies-dialer/develop/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
 #
 
 #Set branch to install develop / master
@@ -458,7 +458,7 @@ func_install_source(){
     rm -rf newfies-dialer
     mkdir /var/log/newfies
 
-    git clone -b $BRANCH git://github.com/Star2Billing/newfies-dialer.git
+    git clone -b $BRANCH git://github.com/newfies-dialer/newfies-dialer.git
     cd newfies-dialer
 
     #Install branch develop / callcenter

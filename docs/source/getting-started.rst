@@ -6,7 +6,7 @@ Getting Started
 
 :Web: http://www.newfies-dialer.org/
 :Download: http://www.newfies-dialer.org/download/
-:Source: https://github.com/Star2Billing/newfies-dialer/
+:Source: https://github.com/newfies-dialer/newfies-dialer/
 :Keywords: dialer, voip, freeswitch, django, asynchronous, rabbitmq, redis, python, distributed
 
 
@@ -24,7 +24,7 @@ with message brokers such as `RabbitMQ`_, `Redis`_ but support for Beanstalk,
 MongoDB, CouchDB and DBMS is also available.
 
 Newfies-Dialer provides an extensive set of APIs to easily integrate with
-third-party applications. Virtually every feature on the UI can be managed 
+third-party applications. Virtually every feature on the UI can be managed
 via the API's. There is also an API explorer to test different features.
 
 Using very simple steps, Newfies-Dialer will help you create campaigns, add
@@ -49,7 +49,7 @@ will be dispatched and delivered.
 Overview
 --------
 
-Newfies-Dialer can be installed and used by anyone who has a need for SMS broadcasting, 
+Newfies-Dialer can be installed and used by anyone who has a need for SMS broadcasting,
 mass outbound calling, voice broadcasting or providing outbound IVR Some of the
 potential uses for Newfies-Dialer are listed below.
 
@@ -57,7 +57,7 @@ The system may be installed and used by either companies who wish to make calls
 on their own behalf, or by SaaS (Software as a Service) companies that want to
 provide bulk dialling and SMS broadcasting facilities to their own customers.
 
-Newfies-Dialer can be configured on a single server, or for really high capacity 
+Newfies-Dialer can be configured on a single server, or for really high capacity
 or high speed systems, Newfies-Dialer can be configured across multiple servers.
 
 
@@ -91,7 +91,7 @@ Some examples of where Newfies-Dialer may be used follow:
 
     * **Dissemination of information via phone**: Newfies-Dialer was originally
       designed to call large numbers of people and disseminate medical and health advice
-      via cellphone in 3rd world countries where often, literacy levels are low. On a 
+      via cellphone in 3rd world countries where often, literacy levels are low. On a
       local scale, it can be used to disseminate information about forthcoming community events.
 
     * **Mass Emergency broadcast**: Where there is a necessity to warn large numbers

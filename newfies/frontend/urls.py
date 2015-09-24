@@ -11,14 +11,28 @@
 # The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
-from django.conf.urls import patterns
+# from django.conf.urls import patterns
+from django.conf.urls import url
+from frontend import views
 
+# django 1.8 - https://docs.djangoproject.com/en/1.8/ref/urls/#django.conf.urls.url
+urlpatterns = [
+    url(r'^$', views.index, name='index'),
+    url(r'^login/$', views.login_view),
+    url(r'^logout/$', views.logout_view),
+    url(r'^index/$', views.index),
+    url(r'^pleaselog/$', views.pleaselog),
+    url(r'^dashboard/$', views.customer_dashboard),
+]
 
-urlpatterns = patterns('frontend.views',
-                       (r'^$', 'index'),
-                       (r'^login/$', 'login_view'),
-                       (r'^logout/$', 'logout_view'),
-                       (r'^index/$', 'index'),
-                       (r'^pleaselog/$', 'pleaselog'),
-                       (r'^dashboard/$', 'customer_dashboard'),
-                       )
+#
+# TODO: patterns is depreciated from 1.8, apply the above changes over the whole application
+#
+# urlpatterns = patterns('frontend.views',
+#                        (r'^$', 'index', name='index'),
+#                        (r'^login/$', 'login_view'),
+#                        (r'^logout/$', 'logout_view'),
+#                        (r'^index/$', 'index'),
+#                        (r'^pleaselog/$', 'pleaselog'),
+#                        (r'^dashboard/$', 'customer_dashboard'),
+#                        )

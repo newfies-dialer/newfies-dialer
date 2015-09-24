@@ -1,208 +1,124 @@
+{% extends "frontend/base.html" %}
 {% load i18n utils_tags crispy_forms_tags %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8"><![endif]-->
-<!--[if IE 8]><html class="no-js lt-ie9"><![endif]-->
-<!--[if gt IE 8]><!--> <html class=no-js lang=en itemscope itemtype="http://schema.org/Product"> <!--<![endif]-->
-<head xmlns="http://www.w3.org/1999/xhtml" lang="{{ LANGUAGE_CODE }}" xml:lang="{{ LANGUAGE_CODE }}">
 
-<!--
-- Newfies-Dialer License
-- http://www.newfies-dialer.org
--
-- This Source Code Form is subject to the terms of the Mozilla Public
-- License, v. 2.0. If a copy of the MPL was not distributed with this file,
-- You can obtain one at http://mozilla.org/MPL/2.0/.
--
-- Copyright (C) 2011-2015 Star2Billing S.L.
--
-- The primary maintainer of this project is
-- Arezqui Belaid <info@star2billing.com>
--->
-
-<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
-<title>{% block title %}Newfies-Dialer{% endblock %} | {% trans "customer interface"|title noop %}</title>
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<link rel="icon" type="image/png" href="{{ STATIC_URL }}newfies/images/favicon.png">
-
-<!-- Le fav and touch icons -->
-<link rel="shortcut icon" href="{{ STATIC_URL }}newfies/images/favicon.png">
-<link rel="apple-touch-icon" href="{{ STATIC_URL }}newfies/images/apple-touch-icon.png">
-<link rel="apple-touch-icon" sizes="72x72" href="{{ STATIC_URL }}newfies/images/apple-touch-icon-72x72.png">
-<link rel="apple-touch-icon" sizes="114x114" href="{{ STATIC_URL }}newfies/images/apple-touch-icon-114x114.png">
-
-<!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
-<!--[if lt IE 9]>
-  <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]-->
-
-{% block jquery_ui_js %}
-{% endblock %}
-
-{% block header_files %}
-<script src="{{ STATIC_URL }}jquery/jquery.min.js" type="text/javascript"></script>
-
-<!-- CSS -->
-<link href="{{ STATIC_URL }}bootstrap/dist/css/bootstrap.css" rel="stylesheet">
-<link href="{{ STATIC_URL }}newfies/css/sidebar-offcanvas.css" rel="stylesheet">
-<link href="{{ STATIC_URL }}jquery-ui/themes/flick/jquery-ui.min.css" type="text/css" rel="stylesheet" media="all"/>
-<link href="{{ STATIC_URL }}components-font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" media="all"/>
-<link href="{{ STATIC_URL }}newfies/css/newfies_custom.css" rel="stylesheet" type="text/css" media="screen" />
-
-<!-- javascript -->
-<script type="text/javascript" src="/jsi18n/"></script>
-<script src="{{ STATIC_URL }}jquery-ui/ui/minified/jquery-ui.min.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}bootstrap/dist/js/bootstrap.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}bootbox/bootbox.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}newfies/js/sidebar-offcanvas.js" type="text/javascript"></script>
-<script src="{{ STATIC_URL }}newfies/js/newfies_custom.js" type="text/javascript"></script>
-
-{% block bootstrap_switch_js %}
-<link href="{{ STATIC_URL }}bootstrap-switch/build/css/bootstrap3/bootstrap-switch.min.css" rel="stylesheet" />
-<script src="{{ STATIC_URL }}bootstrap-switch/build/js/bootstrap-switch.min.js" type="text/javascript"></script>
-{% endblock %}
-
-{% endblock %}
-
-{% block extra_header %}
-    {{ extra_header }}
-{% endblock %}
-</head>
-
-<body>
-
-{% block menu %}
-    {% include "frontend/bootstrap_menu.html" %}
-{% endblock %}
 
 {% block container %}
-<div class="container">
-<div class="row row-offcanvas row-offcanvas-right">
 
-    <!--start left side-->
-    {% if user.is_authenticated %}
-        {% if not request.path|check_url_for_template_width %}
-            {% block sidebar_menu %}
-                {% include "frontend/bootstrap_side_menu.html" %}
-            {% endblock %}
-        {% endif %}
+    <!--start left panel-->
+    {% if not request.path|check_url_for_template_width %}
+        {% block sidebar_menu %}
+            {% include "frontend/bootstrap_side_menu.html" %}
+        {% endblock %}
     {% endif %}
-    <!--end left side-->
 
-    <!--start right side-->
-    {% if user.is_authenticated %}
-        {% if request.path|check_url_for_template_width %}
-            <div class="col-xs-12 col-sm-12">
-        {% else %}
-            <div class="col-xs-12 col-sm-9">
-                <!--offcanvas side menu toggle button-->
-                <p class="pull-right visible-xs">
-                    <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">{% trans "side menu"|title %}</button>
-                </p>
-        {% endif %}
-    {% else %}
+    <!--start right-middle panel-->
+    {% if request.path|check_url_for_template_width %}
         <div class="col-xs-12 col-sm-12">
+    {% else %}
+        <div class="col-xs-12 col-sm-9">
+            <!--offcanvas side menu toggle button-->
+            <p class="pull-right visible-xs">
+                <button type="button" class="btn btn-primary btn-xs" data-toggle="offcanvas">{% trans "side menu"|title %}</button>
+            </p>
     {% endif %}
 
+    <!--start row-->
     {% block row_fluid %}
+        {% if not user.is_authenticated %}
         <div class="row">
-            {% if not user.is_authenticated %}
-            <br/>
-            <div class="col-6 col-sm-6 col-lg-6">
-                {% crispy loginform loginform.helper %}
+            <div class="col-6 col-sm-6 col-lg-6 quicklogin">
+                {# {% crispy loginform loginform.helper %} #}
             </div>
-            <div class="col-6 col-sm-6 col-lg-6">
-                <form class="form-inline well" role="form" action="/i18n/setlang/" method="post">
-                    {% csrf_token %}
-                    {% trans "display language"|capfirst %} :
-                    <div class="checkbox">
-                        <label>
-                            <select name="language" id="language-container" class="form-control" onchange="this.form.submit()">
-                                {% for lang in LANGUAGES %}
-                                <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
-                                {% endfor %}
-                            </select>
-                        </label>
-                    </div>
-                </form>
-            </div>
-            {% endif %}
         </div>
+        {% endif %}
     {% endblock %}
 
-    {% if errorlogin %}
-        <div class="alert alert-danger">
-            <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin|capfirst }}
-        </div>
-        </br>
-    {% else %}
-        {% if notlogged %}
+    <!--start login_notification-->
+    {% block login_notification %}
+        {% if errorlogin %}
             <div class="alert alert-danger">
-                <strong>{% trans "alert"|title %} : </strong>  {% trans "please login by clicking on login button"|capfirst %}
+                <strong>{% trans "alert"|title %} : </strong>  {{ errorlogin|capfirst }}
             </div>
             </br>
+        {% else %}
+            {% if notlogged %}
+                <div class="alert alert-danger">
+                    <strong>{% trans "alert"|title %} : </strong>  {% trans "please login by clicking on login button"|capfirst %}
+                </div>
+                </br>
+            {% endif %}
         {% endif %}
-    {% endif %}
+    {% endblock login_notification %}
 
+    <!--start header-->
     {% block header %}
         <div class="page-header">
             {% block content_header %}
+                <a href="{% url 'index' %}">{% trans "Home" %}</a> |
+                {% if user.is_authenticated %}
+                    {% trans "Logged in" %}: {{ user.username }}
+                    (<a href="{% url 'auth_logout' %}">{% trans "Log out" %}</a> |
+                    <a href="{% url 'auth_password_change' %}">{% trans "Change password" %}</a>)
+                {% else %}
+                    <a href="{% url 'auth_login' %}">{% trans "Log In" %}</a> |
+                    {% trans "Not a member?" %} <a href="{% url 'registration_register' %}">{% trans "Register" %}</a>.
+                {% endif %}
+
                 <h1>Newfies-Dialer <small>{% trans "voice broadcasting solution"|title %}</small></h1>
             {% endblock %}
         </div>
     {% endblock %}
 
+    <!--start extra_files-->
     {% block extra_files %}
     {% endblock %}
 
-    {% if user.is_authenticated %}
-
-        {% if dialer_setting_msg %}
-        <div class="alert alert-danger">
-            <strong>{% trans "alert"|title %} : </strong>  {{ dialer_setting_msg }}
-            {% if not request.session.has_notified %}
-                {% trans "to send notification to administrator"|capfirst %} <a href="/notify/admin/">{% trans "click here"|capfirst %}</a>
-            {% else %}
-                {% trans "(notification sent)" %}
+    <!--start notification-->
+    {% block notification %}
+        {% if user.is_authenticated %}
+            {% if dialer_setting_msg %}
+            <div class="alert alert-danger">
+                <strong>{% trans "alert"|title %} : </strong>  {{ dialer_setting_msg }}
+                {% if not request.session.has_notified %}
+                    {% trans "to send notification to administrator"|capfirst %} <a href="/notify/admin/">{% trans "click here"|capfirst %}</a>
+                {% else %}
+                    {% trans "(notification sent)" %}
+                {% endif %}
+            </div>
             {% endif %}
-        </div>
         {% endif %}
-    {% endif %}
 
-    <!--Success Message of view-->
-    {% if msg %}
-        <div class="alert alert-success">
-            <strong>{% trans "Notification"|title %} : </strong>  {{ msg|capfirst }}
-        </div>
-    {% endif %}
+        <!--Success Message of view-->
+        {% if msg %}
+            <div class="alert alert-success">
+                <strong>{% trans "Notification"|title %} : </strong>  {{ msg|capfirst }}
+            </div>
+        {% endif %}
 
-    <!--Error Message of view-->
-    {% if error_msg %}
-        <div class="alert alert-danger">
-            <strong>{% trans "error"|title %} : </strong>  {{ error_msg|capfirst }}
-        </div>
-    {% endif %}
+        <!--Error Message of view-->
+        {% if error_msg %}
+            <div class="alert alert-danger">
+                <strong>{% trans "error"|title %} : </strong>  {{ error_msg|capfirst }}
+            </div>
+        {% endif %}
 
-    <!--Alert Message of view-->
-    {% if info_msg %}
-        <div class="alert alert-info">
-            <strong>{% trans "info"|title %} : </strong>  {{ info_msg|capfirst }}
-        </div>
-    {% endif %}
+        <!--Alert Message of view-->
+        {% if info_msg %}
+            <div class="alert alert-info">
+                <strong>{% trans "info"|title %} : </strong>  {{ info_msg|capfirst }}
+            </div>
+        {% endif %}
+    {% endblock notification %}
 
+    <!--start content-->
     {% block content %}
         <!-- CONTENT BLOCK -->
     {% endblock %}
 
-    </div><!--end right side-->
+    </div><!--end right-middle panel-->
 
-    </div><!--div row row-offcanvas row-offcanvas-right-->
-
-    {% block footer %}
-        {% include "frontend/footer.html" %}
-    {% endblock %}
-
-</div><!-- div container -->
 {% endblock %}
 
-</body>
-</html>
+{% block footer %}
+    {% include "frontend/footer.html" %}
+{% endblock %}

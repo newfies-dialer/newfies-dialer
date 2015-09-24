@@ -83,12 +83,24 @@ td.camp_type {
     line-height: 38px;
 }
 
+.page-header {
+  margin: 20px 0 20px;
+}
+
 body .modal-section {
     width: 610px;
 }
 
 footer {
     margin-top: 50px;
+}
+
+.div_language{
+    margin-top: 10px;
+}
+
+.quicklogin{
+    margin-top: 25px;
 }
 
 .cornerlogo img {

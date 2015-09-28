@@ -74,7 +74,7 @@ Newfies is a django based application, so the major requirements are :
 All the requirements can easily be installed with PIP
 (http://pypi.python.org/pypi/pip) :
 
-    - https://github.com/newfies-dialer/newfies-dialer/blob/master/install/requirements/all-requirements.txt
+    - https://github.com/newfies-dialer/newfies-dialer/blob/master/requirements/all.txt
 
 
 Installation Script

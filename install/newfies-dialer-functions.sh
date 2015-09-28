@@ -24,7 +24,7 @@
 #
 
 #Set branch to install develop / master
-BRANCH="master"
+BRANCH="develop"
 
 DATETIME=$(date +"%Y%m%d%H%M%S")
 INSTALL_DIR='/usr/share/newfies'
@@ -493,19 +493,19 @@ func_install_pip_deps(){
     pip install importlib
 
     echo "Install Basic requirements..."
-    for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
+    for line in $(cat /usr/src/newfies-dialer/requirements/basic.txt | grep -v \#)
     do
         echo "pip install $line"
         pip install $line
     done
     echo "Install Django requirements..."
-    for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt | grep -v \#)
+    for line in $(cat /usr/src/newfies-dialer/requirements/django.txt | grep -v \#)
     do
         echo "pip install $line"
         pip install $line --allow-all-external --allow-unverified django-admin-tools
     done
     echo "Install Test requirements..."
-    for line in $(cat /usr/src/newfies-dialer/install/requirements/test-requirements.txt | grep -v \#)
+    for line in $(cat /usr/src/newfies-dialer/requirements/test.txt | grep -v \#)
     do
         echo "pip install $line"
         pip install $line

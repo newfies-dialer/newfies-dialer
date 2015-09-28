@@ -19,7 +19,7 @@
 #
 
 #Set branch to install develop / master
-BRANCH='master'
+BRANCH="develop"
 
 FS_CONF_PATH=https://raw.github.com/newfies-dialer/newfies-dialer/$BRANCH/install/freeswitch-conf
 FS_INIT_PATH=https://raw.github.com/newfies-dialer/newfies-dialer/$BRANCH/install/freeswitch-init

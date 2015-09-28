@@ -24,7 +24,7 @@
 #TODO: Move BRANCH to Environement variable
 
 #Set branch to install develop / master
-BRANCH='master'
+BRANCH="develop"
 
 SCRIPT_NOTICE="This script is only intended to run on Debian 64bits 7.X or 8.X"
 

@@ -16,11 +16,11 @@ This is a configuration example for Redis.
 
     # Redis Settings
     CARROT_BACKEND = "ghettoq.taproot.Redis"
-    
+
     BROKER_HOST = "localhost"  # Maps to redis host.
     BROKER_PORT = 6379         # Maps to redis port.
     BROKER_VHOST = "0"         # Maps to database number.
-    
+
     CELERY_RESULT_BACKEND = "redis"
     REDIS_HOST = "localhost"
     REDIS_PORT = 6379
@@ -40,7 +40,7 @@ This is a configuration example for Rabbitmq.
     BROKER_USER = "root"
     BROKER_PASSWORD = "root"
     BROKER_VHOST = "localhost"
-    
+
     CELERY_RESULT_BACKEND = "amqp"
 
 
@@ -78,7 +78,7 @@ $ cd install/celery-init/etc/default/
 
    Init script: `celeryd`_.
 
-   .. _celeryd: https://github.com/Star2Billing/newfies-dialer/raw/master/install/celery-init/etc/init.d/celeryd
+   .. _celeryd: https://github.com/newfies-dialer/newfies-dialer/raw/master/install/celery-init/etc/init.d/celeryd
 
    Usage : /etc/init.d/celeryd {start|stop|force-reload|restart|try-restart|status}::
 
@@ -114,7 +114,7 @@ $ cd install/celery-init/etc/default/
 
    Init script: `celerybeat`_
 
-   .. _celerybeat: https://github.com/Star2Billing/newfies-dialer/raw/master/install/celery-init/etc/init.d/celerybeat
+   .. _celerybeat: https://github.com/newfies-dialer/newfies-dialer/raw/master/install/celery-init/etc/init.d/celerybeat
 
    Usage:	/etc/init.d/celerybeat {start|stop|force-reload|restart|try-restart|status}::
 

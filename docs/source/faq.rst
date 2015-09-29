@@ -101,7 +101,7 @@ How to translate the frontend application
 -----------------------------------------
 
 First check if there is an existing translation directory in:
-https://github.com/Star2Billing/newfies-dialer/tree/develop/newfies/locale
+https://github.com/newfies-dialer/newfies-dialer/tree/develop/newfies/locale
 Each language is represented by a 2 character ISO code (http://en.wikipedia.org/wiki/List_of_ISO_639-1_codes)
 
 If there is no existing directory for your language code, then you can download the English PO file and use it as a base: https://raw.githubusercontent.com/Star2Billing/newfies-dialer/develop/newfies/locale/en/LC_MESSAGES/django.po

@@ -1,4 +1,4 @@
-.. image:: https://github.com/Star2Billing/newfies-dialer/raw/master/newfies/resources/images/newfies.png
+.. image:: https://github.com/newfies-dialer/newfies-dialer/raw/master/newfies/resources/images/newfies.png
 
 .. image:: https://secure.travis-ci.org/Star2Billing/newfies-dialer.png?branch=develop
 
@@ -74,7 +74,7 @@ Newfies is a django based application, so the major requirements are :
 All the requirements can easily be installed with PIP
 (http://pypi.python.org/pypi/pip) :
 
-    - https://github.com/Star2Billing/newfies-dialer/blob/master/install/requirements/all-requirements.txt
+    - https://github.com/newfies-dialer/newfies-dialer/blob/master/install/requirements/all-requirements.txt
 
 
 Installation Script
@@ -82,7 +82,7 @@ Installation Script
 
 Installation scripts are provided to install Newfies-Dialer
 
-    - https://github.com/Star2Billing/newfies-dialer/tree/master/install
+    - https://github.com/newfies-dialer/newfies-dialer/tree/master/install
 
 Beginner's Guide :
 
@@ -107,7 +107,7 @@ Screenshot
     the User's Campaign, Phonebook, Subscriber. It also provides detailed
     Reporting of calls and message delivery.
 
-.. image:: https://github.com/Star2Billing/newfies-dialer/raw/develop/docs/source/_static/images/customer_screenshot.png
+.. image:: https://github.com/newfies-dialer/newfies-dialer/raw/develop/docs/source/_static/images/customer_screenshot.png
 
 
 * Dashboard Frontend :
@@ -115,7 +115,7 @@ Screenshot
     http://localhost:8000/dashboard/
     Newfies-Dialer Dashboard provides a contact and call reporting for the running campaign.
 
-.. image:: https://github.com/Star2Billing/newfies-dialer/raw/develop/docs/source/_static/images/newfies-dialer-dashboard.png
+.. image:: https://github.com/newfies-dialer/newfies-dialer/raw/develop/docs/source/_static/images/newfies-dialer-dashboard.png
 
 
 * Admin Dashboard :
@@ -125,7 +125,7 @@ Screenshot
     Campaigns, Phonebooks, Subscribers, Gateway, configuration of the
     Audio Application.
 
-.. image:: https://github.com/Star2Billing/newfies-dialer/raw/develop/docs/source/_static/images/admin_screenshot.png
+.. image:: https://github.com/newfies-dialer/newfies-dialer/raw/develop/docs/source/_static/images/admin_screenshot.png
 
 
 Translation
@@ -137,9 +137,9 @@ Help us translate Newfies-Dialer, we use Transifex: https://www.transifex.com/pr
 Additional information
 -----------------------
 
-* Fork the project on GitHub : https://github.com/Star2Billing/newfies-dialer
+* Fork the project on GitHub : https://github.com/newfies-dialer/newfies-dialer
 
-* License : MPL 2.0 (https://raw.github.com/Star2Billing/newfies-dialer/master/COPYING)
+* License : MPL 2.0 (https://raw.github.com/newfies-dialer/newfies-dialer/master/COPYING)
 
 * Official website : http://www.newfies-dialer.org
 

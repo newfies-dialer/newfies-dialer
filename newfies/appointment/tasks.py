@@ -168,6 +168,7 @@ def perform_alarm(obj_event, obj_alarm):
             status='Unsent',
             content_type=ContentType.objects.get(model='alarm', app_label='appointment'),
             object_id=obj_alarm.id,
+            sms_gateway=sms_gateway,
         )
 
         # Send sms
@@ -243,7 +244,7 @@ class alarmrequest_dispatcher(PeriodicTask):
                 logger.error("Error retrieving CalendarUserProfile")
                 return False
 
-            #manager_profile = UserProfile.objects.get(user=caluser_profile.manager)
+            # manager_profile = UserProfile.objects.get(user=caluser_profile.manager)
             # manager_profile = caluser_profile.manager.get_profile()
             # manager_profile.dialersetting
             # Use manager_profile.dialersetting to retrieve some settings

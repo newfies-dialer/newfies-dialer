@@ -181,7 +181,7 @@ Issue Trackers
 Bugs for a package in the Newfies-Dialer ecosystem should be reported to the relevant
 issue tracker.
 
-* Newfies-Dialer Core: https://github.com/newfies-dialer//issues/
+* Newfies-Dialer Core: https://github.com/newfies-dialer/newfies-dialer/issues/
 * Python-Acapela: https://github.com/newfies-dialer/python-acapela/issues
 * Lua-Acapela: https://github.com/newfies-dialer/lua-acapela/issues
 * Python-NVD3: https://github.com/areski/python-nvd3/issues

@@ -2,7 +2,7 @@ pytest==2.6.4
 pytest-django==2.8.0
 pytest-pythonpath==0.6
 pytest-xdist
-git+git://github.com/mverteuil/pytest-ipdb.git
+git+http://github.com/mverteuil/pytest-ipdb.git
 factory-boy==2.4.1
 fake-factory==0.4.2
 

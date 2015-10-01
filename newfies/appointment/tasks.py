@@ -161,7 +161,7 @@ def perform_alarm(obj_event, obj_alarm):
 
         # Create Message object
         msg_obj = SMSMessage.objects.create(
-            content=obj_alarm.sms_template,
+            content=obj_alarm.sms_template.sms_text,
             recipient_number=obj_alarm.alarm_phonenumber,
             sender=obj_alarm.event.creator,
             sender_number=callerid,

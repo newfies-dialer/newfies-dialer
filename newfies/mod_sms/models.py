@@ -315,7 +315,7 @@ class SMSCampaign(Model):
         # sms_campaignsubscriber_count_key_campaign_id_1
         sms_campaignsubscriber_count = cache.get(
             'sms_campaignsubscriber_count_key_campaign_id_' + str(self.id))
-        #sms_campaignsubscriber_count = None
+        # sms_campaignsubscriber_count = None
         if sms_campaignsubscriber_count is None:
             list_contact = Contact.objects.values_list('id', flat=True)\
                 .filter(phonebook__smscampaign=self.id)

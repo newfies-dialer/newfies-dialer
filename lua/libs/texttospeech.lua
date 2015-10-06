@@ -195,5 +195,17 @@ function tts(text, tts_dir)
         output_file = tts_acapela:run()
     end
 
+    elseif TTS_ENGINE == 'msspeak' then
+        -- Microsoft Speak
+        MSSpeak = require "msspeak"
+		tts_msspeak = MSSpeak:new{
+            APPLICATION_LOGIN=APPLICATION_LOGIN,
+            APPLICATION_PASSWORD=APPLICATION_PASSWORD,
+            SERVICE_URL=SERVICE_URL,
+            DIRECTORY=tts_dir}
+        tts_msspeak:set_cache(true)
+        tts_msspeak:prepare(text, MSSPEAK_LANG)
+        output_file = tts_msspeak:run()
+    end
     return output_file
 end

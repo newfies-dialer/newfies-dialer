@@ -36,7 +36,7 @@ from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESUL
     SEALED_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
 from survey.function_def import getaudio_acapela
-from survey.function_def import getaudio_msspeak
+from survey.function_def import getaudio_mstranslator
 from django_lets_go.common_functions import striplist, ceil_strdate, getvar, unset_session_var,\
     get_pagination_vars
 from mod_utils.helper import Export_choice
@@ -517,9 +517,9 @@ def section_script_play(request, id):
         if settings.TTS_ENGINE == 'ACAPELA':
             # Acapela
             audio_file_path = settings.MEDIA_ROOT + '/' + getaudio_acapela(script_text, 'US')
-        elif settings.TTS_ENGINE == 'MSSPEAK':
-            # Microsoft Speak
-            audio_file_path = settings.MEDIA_ROOT + '/' + getaudio_msspeak(script_text, 'en')
+        elif settings.TTS_ENGINE == 'MSTRANSLATOR':
+            # Microsoft Translator
+            audio_file_path = settings.MEDIA_ROOT + '/' + getaudio_mstranslator(script_text, 'en')
         else:
             # Flite
             script_hexdigest = hashlib.md5(script_text).hexdigest()

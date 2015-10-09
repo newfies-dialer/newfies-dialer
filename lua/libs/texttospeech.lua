@@ -195,17 +195,16 @@ function tts(text, tts_dir)
         output_file = tts_acapela:run()
     end
 
-    elseif TTS_ENGINE == 'msspeak' then
-        -- Microsoft Speak
-        MSSpeak = require "msspeak"
-		tts_msspeak = MSSpeak:new{
-            APPLICATION_LOGIN=APPLICATION_LOGIN,
-            APPLICATION_PASSWORD=APPLICATION_PASSWORD,
-            SERVICE_URL=SERVICE_URL,
+    elseif TTS_ENGINE == 'mstranslator' then
+        -- Microsoft Translator
+        MSTranslator = require "mstranslator"
+		tts_mstranslator = MSTranslator:new{
+            client_id=CLIENT_ID,
+            client_secret=CLIENT_SECRET,
             DIRECTORY=tts_dir}
-        tts_msspeak:set_cache(true)
-        tts_msspeak:prepare(text, MSSPEAK_LANG)
-        output_file = tts_msspeak:run()
+        tts_mstranslator:set_cache(true)
+        tts_mstranslator:prepare(text, MSTRANSLATOR_LANG)
+        output_file = tts_mstranslator:run()
     end
     return output_file
 end

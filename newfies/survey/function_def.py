@@ -13,6 +13,22 @@
 #
 from django.conf import settings
 
+def getaudio_mstranslator(text, tts_language='en'):
+    """
+    Run Microsoft Speak Text2Speech and return audio url
+    """
+    import msspeak
+    DIRECTORY = settings.MEDIA_ROOT + '/tts/'
+    if not tts_language:
+        tts_language = 'en'
+    tts_msspeak = msspeak.MSSpeak(
+        settings.CLIENT_ID,
+        settings.CLIENT_SECRET,
+        DIRECTORY)
+    output_filename = tts_msspeak.speak(
+        text, tts_language)
+    audiofile = 'tts/' + output_filename
+    return audiofile
 
 def getaudio_acapela(text, tts_language='en'):
     """

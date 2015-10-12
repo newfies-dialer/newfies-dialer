@@ -169,6 +169,7 @@
                                 {% if section.type == SECTION_TYPE.CAPTURE_DIGITS %}
                                     <div class="col-md-12">
                                         {% if section.validate_number %}
+                                            <b>{% trans "Check" %} :</b>
                                             {% trans "number is between"|capfirst %}&nbsp;{{ section.min_number }}&nbsp;{% trans "and" %}&nbsp;{{ section.max_number }}
                                         {% endif %}
                                     </div>
@@ -187,7 +188,7 @@
                                 {% if section.type == SECTION_TYPE.CONFERENCE %}
                                     <div class="col-md-12">
                                         {% if section.conference %}
-                                            {% trans "conference"|title %} : {{ section.conference }} <br/>
+                                            <b>{% trans "conference number"|title %} :</b> {{ section.conference }} <br/>
                                         {% endif %}
                                     </div>
                                 {% endif %}
@@ -196,7 +197,16 @@
                                 {% if section.type == SECTION_TYPE.SMS %}
                                     <div class="col-md-12">
                                         {% if section.sms_text %}
-                                            {% trans "sms"|title %} {% trans "text"|title %} : {{ section.sms_text }} <br/>
+                                            <b>{% trans "SMS text" %} :</b> {{ section.sms_text }} <br/>
+                                        {% endif %}
+                                    </div>
+                                {% endif %}
+
+                                <!--API Section form-->
+                                {% if section.type == SECTION_TYPE.API %}
+                                    <div class="col-md-12">
+                                        {% if section.api_url %}
+                                            <b>{% trans "URL" %} :</b> {{ section.api_url }} <br/>
                                         {% endif %}
                                     </div>
                                 {% endif %}
@@ -214,43 +224,50 @@
                                                     <th>{% trans "goto"|title %}</th>
                                                 </tr>
                                                 {% for branch in branching_list %}
-                                                    <tr>
-                                                        {% if branch.section_id == section.id %}
-                                                            {% if section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER and section.type != SECTION_TYPE.CONFERENCE %}
-                                                                <td>
-                                                                    {% if branch.keys == 'any' %}
-                                                                        {% trans "any other key"|title %}
-                                                                    {% elif branch.keys == 'invalid' %}
-                                                                        {% trans "invalid"|title %}
-                                                                    {% elif branch.keys == 'timeout' %}
-                                                                        {% trans "timeout"|title %} (no input within {{ section.timeout }}s)
-                                                                    {% elif branch.keys %}
-                                                                        {% trans "Key" %}&nbsp;
-                                                                        {{ branch.keys }}
-                                                                    {% else %}
-                                                                        {% trans "none"|title %}
-                                                                    {% endif %}
-                                                                </td>
+                                                <tr>
+                                                {% if branch.section_id == section.id %}
+                                                    {% if section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER and section.type != SECTION_TYPE.CONFERENCE %}
+                                                        <td>
+                                                        {% if branch.keys == 'any' %}
+                                                            {% trans "any other key"|title %}
+                                                        {% elif branch.keys == 'invalid' %}
+                                                            {% trans "invalid"|title %}
+                                                        {% elif branch.keys == 'timeout' %}
+                                                            {% trans "timeout"|title %}
+                                                            {% if section.type == SECTION_TYPE.API %}
+                                                                ({% trans "no API result within" %}
+                                                                {{ section.timeout }}s)
                                                             {% else %}
-                                                                <td>
-                                                                    {% if branch.keys == '0' %}
-                                                                        {% trans "default"|title %}
-                                                                    {% endif %}
-                                                                </td>
+                                                                ({% trans "no input within" %}
+                                                                {{ section.timeout }}s)
                                                             {% endif %}
-                                                            <td>
-                                                                {% if branch.goto.id %}
-                                                                    {% if branch.goto.question %}
-                                                                        {{ branch.goto.question }}
-                                                                    {% else %}
-                                                                        {{ branch.goto.script }}
-                                                                    {% endif %}
-                                                                {% else %}
-                                                                    &nbsp;{% trans "hang up"|capfirst %}
-                                                                {% endif %}
-                                                            </td>
+                                                        {% elif branch.keys %}
+                                                            {% trans "Key" %}&nbsp;
+                                                            {{ branch.keys }}
+                                                        {% else %}
+                                                            {% trans "none"|title %}
                                                         {% endif %}
-                                                    </tr>
+                                                        </td>
+                                                    {% else %}
+                                                        <td>
+                                                        {% if branch.keys == '0' %}
+                                                            {% trans "default"|title %}
+                                                        {% endif %}
+                                                        </td>
+                                                    {% endif %}
+                                                    <td>
+                                                    {% if branch.goto.id %}
+                                                        {% if branch.goto.question %}
+                                                            {{ branch.goto.question }}
+                                                        {% else %}
+                                                            {{ branch.goto.script }}
+                                                        {% endif %}
+                                                    {% else %}
+                                                        &nbsp;{% trans "hang up"|capfirst %}
+                                                    {% endif %}
+                                                    </td>
+                                                {% endif %}
+                                                </tr>
                                                 {% endfor %}
                                             </table>
                                         </div>

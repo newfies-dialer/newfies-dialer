@@ -354,16 +354,21 @@ func_install_dependencies(){
     cd lua-cmsgpack-master
     luarocks-5.2 make rockspec/lua-cmsgpack-scm-1.rockspec
 
-    #Lua curl
-    cd /usr/src/
-    rm -rf Lua-cURLv2-master lua-curl.zip
-    wget --no-check-certificate https://github.com/Lua-cURL/Lua-cURLv2/archive/master.zip -O lua-curl.zip
-    unzip lua-curl.zip
-    cd Lua-cURLv2-master
-    cmake -DUSE_LUA52=ON .
-    make install
-    #add cURL.so to lua libs
-    cp cURL.so /usr/local/lib/lua/5.2/
+    #Lua-cURL v3
+    luarocks-5.2 install Lua-cURL
+    echo ""
+    echo "make sure we got Lua-cURL v3 installed (https://github.com/Lua-cURL/Lua-cURLv3/)"
+    read TEMP
+
+    # cd /usr/src/
+    # rm -rf Lua-cURLv2-master lua-curl.zip
+    # wget --no-check-certificate https://github.com/Lua-cURL/Lua-cURLv2/archive/master.zip -O lua-curl.zip
+    # unzip lua-curl.zip
+    # cd Lua-cURLv2-master
+    # cmake -DUSE_LUA52=ON .
+    # make install
+    # #add cURL.so to lua libs
+    # cp cURL.so /usr/local/lib/lua/5.2/
 
     echo ""
     echo "easy_install -U setuptools pip distribute"

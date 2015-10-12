@@ -415,6 +415,44 @@ class ConferenceSectionForm(ModelForm):
         self.fields['question'].label = _('Section title')
 
 
+class APISectionForm(ModelForm):
+
+    """APISectionForm ModelForm"""
+
+    api_url = forms.URLField(required=True)
+
+    class Meta:
+        model = Section_template
+
+    def __init__(self, user, *args, **kwargs):
+        super(APISectionForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper()
+        self.helper.form_tag = False
+        self.helper.layout = Layout(
+            Field('survey', 'script'),
+            Div(Div('type', css_class='col-md-10 col-xs-12'), css_class='row'),
+            Div(
+                Div('question', css_class='col-md-8 col-xs-12'),
+                Div('audiofile', css_class='col-md-4 col-xs-12'),
+                Div('api_url', css_class='col-md-6 col-xs-10'),
+                Div('timeout', css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+            Div(
+                Div(HTML(html_code_of_completed_field), css_class='col-md-6 col-xs-10'),
+                css_class='row'
+            ),
+        )
+        if self.instance.audiofile:
+            self.helper.layout[2][1] = AppendedText('audiofile', append_html_code_to_audio_field)
+        if user:
+            self.fields['audiofile'].choices = get_audiofile_list(user)
+        self.fields['survey'].widget = forms.HiddenInput()
+        self.fields['script'].widget = forms.HiddenInput()
+        self.fields['type'].widget.attrs['onchange'] = 'this.form.submit();'
+        self.fields['question'].label = _('Section title')
+
+
 class CallTransferSectionForm(ModelForm):
 
     """CallTransferSectionForm ModelForm"""
@@ -548,11 +586,12 @@ class BranchingForm(ModelForm):
                 choices=get_rating_choice_list(section_id),
                 required=False)
 
-        if (obj_section.type == SECTION_TYPE.PLAY_MESSAGE
-                or obj_section.type == SECTION_TYPE.RECORD_MSG
-                or obj_section.type == SECTION_TYPE.CALL_TRANSFER
-                or obj_section.type == SECTION_TYPE.CONFERENCE
-                or obj_section.type == SECTION_TYPE.SMS):
+        if obj_section.type == SECTION_TYPE.PLAY_MESSAGE or \
+           obj_section.type == SECTION_TYPE.RECORD_MSG or \
+           obj_section.type == SECTION_TYPE.CALL_TRANSFER or \
+           obj_section.type == SECTION_TYPE.CONFERENCE or \
+           obj_section.type == SECTION_TYPE.SMS:
+            # Simple one Goto
             self.fields['keys'].initial = 0
             self.fields['keys'].widget = forms.HiddenInput()
 
@@ -563,38 +602,50 @@ class BranchingForm(ModelForm):
                     css_class='row'
                 )
             )
+        elif obj_section.type == SECTION_TYPE.HANGUP_SECTION or obj_section.type == SECTION_TYPE.DNC:
+            self.helper.layout.append(
+                Div(
+                    Div(HTML('no branching, this will terminate the call'), css_class=css_class),
+                    css_class='row'
+                )
+            )
+        elif obj_section.type == SECTION_TYPE.API:
+            # Used by API only
+            self.fields['keys'].label = _("Pattern")
+            self.helper.layout.append(
+                Div(
+                    Div(
+                        Fieldset('<p>The API result will be matched against the Pattern field.</p>', 'keys', 'goto'),
+                        css_class='col-md-12 col-xs-12'
+                    ),
+                    css_class='row'
+                )
+            )
         else:
-            if obj_section.type != SECTION_TYPE.HANGUP_SECTION and obj_section.type != SECTION_TYPE.DNC:
-                self.helper.layout.append(
-                    Div(
-                        Div(HTML(
-                            """
-                            <div class="btn-group" data-toggle="buttons">
-                                <label class="btn btn-default">
-                                    <input type="radio" name="keys_button" id="button-anything"> %s
-                                </label>
-                                <label class="btn btn-default">
-                                    <input type="radio" name="keys_button" id="button-invalid"> %s
-                                </label>
-                            </div>
-                            """ % (ugettext('Any Other Key'), ugettext('Invalid'))
-                        ), css_class=css_class),
-                        css_class='row'
-                    )
+            # Used by MULTI_CHOICE, RATING_SECTION, CAPTURE_DIGITS
+            self.helper.layout.append(
+                Div(
+                    Div(HTML(
+                        """
+                        <div class="btn-group" data-toggle="buttons">
+                            <label class="btn btn-default">
+                                <input type="radio" name="keys_button" id="button-anything"> %s
+                            </label>
+                            <label class="btn btn-default">
+                                <input type="radio" name="keys_button" id="button-invalid"> %s
+                            </label>
+                        </div>
+                        """ % (ugettext('Any Other Key'), ugettext('Invalid'))
+                    ), css_class=css_class),
+                    css_class='row'
                 )
-                self.helper.layout.append(
-                    Div(
-                        Div(Fieldset('', 'keys', 'goto'), css_class=css_class),
-                        css_class='row'
-                    )
+            )
+            self.helper.layout.append(
+                Div(
+                    Div(Fieldset('', 'keys', 'goto'), css_class=css_class),
+                    css_class='row'
                 )
-            else:
-                self.helper.layout.append(
-                    Div(
-                        Div(HTML('%s' % _('no branching, this will terminate the call')), css_class=css_class),
-                        css_class='row'
-                    )
-                )
+            )
 
         self.fields['goto'].choices = get_section_question_list(survey_id, section_id)
 

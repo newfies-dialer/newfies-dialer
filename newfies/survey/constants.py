@@ -27,6 +27,7 @@ class SECTION_TYPE(Choice):
     CONFERENCE = 8, _('CONFERENCE')
     DNC = 9, _('DNC')
     SMS = 10, _('SMS')
+    API = 11, _('API')
 
 
 SURVEY_COLUMN_NAME = {

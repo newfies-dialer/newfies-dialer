@@ -198,7 +198,7 @@ function tts(text, tts_dir)
     elseif TTS_ENGINE == 'mstranslator' then
         -- Microsoft Translator
         MSTranslator = require "mstranslator"
-		tts_mstranslator = MSTranslator:new{
+        tts_mstranslator = MSTranslator:new{
             client_id=CLIENT_ID,
             client_secret=CLIENT_SECRET,
             DIRECTORY=tts_dir}

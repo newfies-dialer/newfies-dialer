@@ -476,7 +476,10 @@ func_install_source(){
     cp -r /usr/src/newfies-dialer/lua $LUA_DIR
     cd $LUA_DIR/libs/
     rm acapela.lua
-    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/$BRANCH/acapela.lua
+    wget --no-check-certificate https://raw.github.com/newfies-dialer/lua-acapela/master/acapela.lua
+    rm mstranslator.lua
+    wget --no-check-certificate https://raw.github.com/newfies-dialer/lua-mstranslator/master/src/mstranslator.lua
+    #TODO: use Luarocks to install lua packages
 
     #Upload audio files
     mkdir -p /usr/share/newfies/usermedia/upload/audiofiles

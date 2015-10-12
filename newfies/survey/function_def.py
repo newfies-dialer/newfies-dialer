@@ -13,6 +13,7 @@
 #
 from django.conf import settings
 
+
 def getaudio_mstranslator(text, tts_language='en'):
     """
     Run Microsoft Speak Text2Speech and return audio url
@@ -29,6 +30,7 @@ def getaudio_mstranslator(text, tts_language='en'):
         text, tts_language)
     audiofile = 'tts/' + output_filename
     return audiofile
+
 
 def getaudio_acapela(text, tts_language='en'):
     """

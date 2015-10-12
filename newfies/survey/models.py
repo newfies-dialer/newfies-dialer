@@ -203,6 +203,7 @@ class Section_abstract(Sortable):
         * ``completed`` - reaching this section will mark the subscriber as completed
         * ``conference`` - Conference Room
         * ``sms_text`` - text to send via SMS
+        * ``api_url`` - HTTP API URL
 
 
     **Relationships**:
@@ -272,12 +273,12 @@ class Section_abstract(Sortable):
     confirm_key = models.CharField(max_length=1, null=True, blank=True,
                              verbose_name=_("confirm key"))
 
-    # Conference Room
     conference = models.CharField(max_length=50, null=True, blank=True,
                                   verbose_name=_("conference number"))
-
     sms_text = models.CharField(max_length=200, null=True, blank=True,
                                 help_text=_('text that will be send via SMS to the contact'))
+    api_url = models.URLField(max_length=300, null=True, blank=True,
+                              help_text=_('URL that will be used to perform an API request'))
 
     # if the current section means that the survey is completed
     completed = models.BooleanField(default=False, verbose_name=_('survey complete'))
@@ -373,6 +374,7 @@ class Section_template(Section_abstract):
             confirm_key=self.confirm_key,
             conference=self.conference,
             sms_text=self.sms_text,
+            api_url=self.api_url,
             completed=self.completed,
             order=self.order,
             invalid_audiofile_id=self.invalid_audiofile_id,
@@ -579,8 +581,9 @@ def post_save_add_script(sender, **kwargs):
             Branching_template.objects.create(keys=0, section_id=obj.id, goto_id='')
 
         if obj.type == SECTION_TYPE.MULTI_CHOICE or \
-            obj.type == SECTION_TYPE.CAPTURE_DIGITS or \
-                obj.type == SECTION_TYPE.RATING_SECTION:
+           obj.type == SECTION_TYPE.CAPTURE_DIGITS or \
+           obj.type == SECTION_TYPE.RATING_SECTION or \
+           obj.type == SECTION_TYPE.API:
             Branching_template.objects.create(keys='timeout', section_id=obj.id, goto_id='')
 
 post_save.connect(post_save_add_script, sender=Section_template)

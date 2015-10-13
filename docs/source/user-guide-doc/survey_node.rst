@@ -42,9 +42,9 @@ It is envisaged that these ID numbers can be used to do database look-ups on the
 
 Furthermore, there is a optional SIP header that can be added.
 
-    P-Contact-Transfer-Ref: 
+    P-Contact-Transfer-Ref:
 
-This can be added against the Contact in the "Additional Parmeters (JSON)" field. 
+This can be added against the Contact in the "Additional Parmeters (JSON)" field.
 Simply add the "transfer_ref" keyword and string to send in the SIP message as follows:
 
     {"transfer_ref": "My-Unique-Ref-Number"}
@@ -54,6 +54,54 @@ In the SIP headers, you will see:
     P-CallRequest-ID: 3
     P-Contact-ID: 1
     P-Contact-Transfer-Ref: My-Unique-Ref-Number
+
+
+.. _httpapi-request:
+
+HTTP API Request
+----------------
+
+This node will make a HTTP API Request, in order to do this the UI will provide some
+new features in the survey node:
+
+    * API URL: to enter the url for the HTTP query
+
+    * Branching based on matching results: this will allow to define match on the query results (HTTP content) and decide a branching
+
+A list of HTTP variables will be passed out to identify the call request, e.g. contact, current variable, etc.
+
+This is the current list of current variables passed:
+
+    - campaign_id
+    - subscriber_id
+    - contact_id
+    - callrequest_id
+    - used_gateway_id
+    - alarm_request_id
+    - contact_last_name
+    - contact_first_name
+    - contact_email
+    - contact_country
+    - contact_city
+    - caller_id_name
+    - caller_id_number
+    - destination_number
+    - uuid
+    - survey_id
+    - current_node_id
+    - record_filename
+
+
+The API needs to return a valid Json with a field "api_result", eg::
+
+    {
+        "api_result": "5000"
+    }
+
+Use case, HTTP API could be used in scenarios, such validating that a call is authorized, or asking to your customer's PBX, how many agents are available.
+
+.. image:: ../_static/images/customer/node_http_api.png
+
 
 .. _capture-digits:
 

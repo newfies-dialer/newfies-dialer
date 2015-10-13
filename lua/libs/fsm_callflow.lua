@@ -454,6 +454,8 @@ function FSMCall:next_node()
     local digits = false
     local recording_filename = false
     local actionduration = 0
+    local api_result = false
+    local api_err = false
 
     self.debugger:msg("DEBUG", "FSMCall:next_node (current_node="..tonumber(self.current_node_id)..")")
     local current_node = self.db.list_section[tonumber(self.current_node_id)]
@@ -642,7 +644,7 @@ function FSMCall:next_node()
 
     elseif current_node.type == CONFERENCE then
         self:playnode(current_node)
-        conference = current_node.conference
+        local conference = current_node.conference
         self.debugger:msg("INFO", "STARTING CONFERENCE : "..conference)
         if conference == '' then
             conference = self.campaign_id
@@ -685,6 +687,26 @@ function FSMCall:next_node()
         end
         --Play Node
         self:playnode(current_node)
+
+    elseif current_node.type == API then
+        --Play Node
+        self:playnode(current_node)
+
+        --Make an API Calls to selec the branching
+        local api_url = current_node.api_url
+        local timeout = tonumber(current_node.timeout)
+        local api_params = self:get_api_params()
+
+
+        self.debugger:msg("INFO", "STARTING API HTTP : "..api_url)
+        if string.len(api_url) >= 8 then
+            api_result, api_err = api_request(api_url, api_params, timeout)
+            self.debugger:msg("INFO", "END API HTTP: "..'api_result: '..api_result..' - '..'api_err: '..api_err)
+            -- Save result
+            self.actionresult = 'api_result: '..api_result..' - '..'api_err: '..api_err
+            self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
+            self.actionresult = false
+        end
 
     elseif current_node.type == MULTI_CHOICE then
         digits = self:getdigitnode(current_node)
@@ -761,6 +783,45 @@ function FSMCall:next_node()
             elseif current_branching["timeout"] and current_branching["timeout"].goto_id then
                 self.current_node_id = tonumber(current_branching["timeout"].goto_id)
             end
+        end
+
+    elseif current_node.type == API then
+
+        -- Implement API branching
+        if api_err == "OPERATION_TIMEDOUT" then
+            -- in case of API Timeout
+            if current_branching["timeout"] and current_branching["timeout"].goto_id then
+                --We got an "timeout branching"
+                self.debugger:msg("DEBUG", "Got 'timeout' Branching : "..current_branching["timeout"].goto_id)
+                self.current_node_id = tonumber(current_branching["timeout"].goto_id)
+                return true
+            elseif current_branching["timeout"] then
+                --There is no goto_id -> then we got to hangup
+                self.debugger:msg("DEBUG", "Got 'timeout' Branching but no goto_id -> then we got to hangup")
+                self:end_call()
+                return true
+            end
+        end
+
+        if api_result then
+            -- Try to match the API result
+            self.debugger:msg("DEBUG", "Check api_result="..api_result)
+            for k, v in pairs(current_branching) do
+                self.debugger:msg("DEBUG", "Check if we match against: "..k)
+                if string.find(api_result, k) and current_branching[k].goto_id then
+                    --We got a match for the api_result for this DTMF and a goto_id
+                    self.current_node_id = tonumber(urrent_branching[k].goto_id)
+                    return true
+                end
+            end
+
+            self.debugger:msg("DEBUG", "Not matching found with api_result="..api_result)
+            self:end_call()
+            return true
+        else
+            self.debugger:msg("DEBUG", "No api_result and no timeout error!")
+            self:end_call()
+            return true
         end
 
     elseif current_node.type == MULTI_CHOICE
@@ -885,6 +946,52 @@ function FSMCall:next_node()
     end
 
     return true
+end
+
+function FSMCall:get_api_params()
+    -- Prepare a list with the current calls session parameters
+    --
+    -- campaign_id
+    -- subscriber_id
+    -- contact_id
+    -- callrequest_id
+    -- used_gateway_id
+    -- alarm_request_id
+    -- caller_id_name
+    -- caller_id_number
+    -- destination_number
+    -- uuid
+    -- survey_id
+    -- current_node_id
+    -- record_filename
+    -- contact_last_name
+    -- contact_first_name
+    -- contact_email
+    -- contact_country
+    -- contact_city
+
+    local mcontact = mtable_jsoncontact(self.db.contact)
+    local params = {
+        campaign_id = self.campaign_id,
+        subscriber_id = self.subscriber_id,
+        contact_id = self.contact_id,
+        callrequest_id = self.callrequest_id,
+        used_gateway_id = self.used_gateway_id,
+        alarm_request_id = self.alarm_request_id,
+        caller_id_name = self.caller_id_name,
+        caller_id_number = self.caller_id_number,
+        destination_number = self.destination_number,
+        uuid = self.uuid,
+        survey_id = self.survey_id,
+        current_node_id = self.caller_id_name,
+        record_filename = self.record_filename,
+        contact_last_name = mcontact.last_name,
+        contact_first_name = mcontact.first_name,
+        contact_email = mcontact.email,
+        contact_country = mcontact.country,
+        contact_city = mcontact.city
+    }
+    return params
 end
 
 return FSMCall

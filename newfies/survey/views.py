@@ -31,11 +31,12 @@ from survey.forms import SurveyForm, PlayMessageSectionForm,\
     CaptureDigitsSectionForm, RecordMessageSectionForm,\
     CallTransferSectionForm, BranchingForm, ScriptForm,\
     SMSSectionForm, SurveyDetailReportForm, SurveyFileImport,\
-    ConferenceSectionForm, SealSurveyForm
+    ConferenceSectionForm, SealSurveyForm, APISectionForm
 from survey.constants import SECTION_TYPE, SURVEY_COLUMN_NAME, SURVEY_CALL_RESULT_NAME,\
     SEALED_SURVEY_COLUMN_NAME
 from survey.models import post_save_add_script
 from survey.function_def import getaudio_acapela
+from survey.function_def import getaudio_mstranslator
 from django_lets_go.common_functions import striplist, ceil_strdate, getvar, unset_session_var,\
     get_pagination_vars
 from mod_utils.helper import Export_choice
@@ -224,50 +225,46 @@ def section_add(request):
         if int(request.POST.get('type')) == SECTION_TYPE.PLAY_MESSAGE:
             form_data = section_add_form(request, PlayMessageSectionForm,
                                          survey, SECTION_TYPE.PLAY_MESSAGE)
-
-        # hangup
+        # Hangup
         if int(request.POST.get('type')) == SECTION_TYPE.HANGUP_SECTION:
             form_data = section_add_form(request, PlayMessageSectionForm,
                                          survey, SECTION_TYPE.HANGUP_SECTION)
-
         # DNC
         if int(request.POST.get('type')) == SECTION_TYPE.DNC:
             form_data = section_add_form(request, PlayMessageSectionForm,
                                          survey, SECTION_TYPE.DNC)
-
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
             form_data = section_add_form(request, MultipleChoiceSectionForm,
                                          survey, SECTION_TYPE.MULTI_CHOICE)
-
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
             form_data = section_add_form(request, RatingSectionForm,
                                          survey, SECTION_TYPE.RATING_SECTION)
-
         # Capture Digits Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
             form_data = section_add_form(request, CaptureDigitsSectionForm,
                                          survey, SECTION_TYPE.CAPTURE_DIGITS)
-
         # Record Message Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
             form_data = section_add_form(request, RecordMessageSectionForm,
                                          survey, SECTION_TYPE.RECORD_MSG)
-
-        # Call transfer Section
+        # Conference Section
         if int(request.POST.get('type')) == SECTION_TYPE.CONFERENCE:
             form_data = section_add_form(request, ConferenceSectionForm,
                                          survey, SECTION_TYPE.CONFERENCE)
-
         # Call transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
             form_data = section_add_form(request, CallTransferSectionForm,
                                          survey, SECTION_TYPE.CALL_TRANSFER)
-
         # SMS Section
         if int(request.POST.get('type')) == SECTION_TYPE.SMS:
-            form_data = section_add_form(request, SMSSectionForm, survey, SECTION_TYPE.SMS)
+            form_data = section_add_form(request, SMSSectionForm,
+                                         survey, SECTION_TYPE.SMS)
+        # API Section
+        if int(request.POST.get('type')) == SECTION_TYPE.API:
+            form_data = section_add_form(request, APISectionForm,
+                                         survey, SECTION_TYPE.API)
 
         if form_data.get('save_tag'):
             return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
@@ -342,7 +339,7 @@ def section_change(request, id):
     if (section.type == SECTION_TYPE.PLAY_MESSAGE
             or section.type == SECTION_TYPE.HANGUP_SECTION
             or section.type == SECTION_TYPE.DNC):
-        #PLAY_MESSAGE, HANGUP_SECTION & DNC
+        # PLAY_MESSAGE, HANGUP_SECTION & DNC
         form = PlayMessageSectionForm(request.user, request.POST or None, instance=section)
     elif section.type == SECTION_TYPE.MULTI_CHOICE:
         # MULTI_CHOICE
@@ -365,6 +362,9 @@ def section_change(request, id):
     elif section.type == SECTION_TYPE.SMS:
         # SMS
         form = SMSSectionForm(request.user, request.POST or None, instance=section)
+    elif section.type == SECTION_TYPE.API:
+        # API
+        form = APISectionForm(request.user, request.POST or None, instance=section)
 
     request.session['err_msg'] = ''
 
@@ -375,41 +375,38 @@ def section_change(request, id):
                 int(request.POST.get('type')) == SECTION_TYPE.DNC):
             form_data = section_update_form(
                 request, PlayMessageSectionForm, SECTION_TYPE.PLAY_MESSAGE, section)
-
         # Multiple Choice Section
         if int(request.POST.get('type')) == SECTION_TYPE.MULTI_CHOICE:
             form_data = section_update_form(
                 request, MultipleChoiceSectionForm, SECTION_TYPE.MULTI_CHOICE, section)
-
         # Rating Section
         if int(request.POST.get('type')) == SECTION_TYPE.RATING_SECTION:
             form_data = section_update_form(
                 request, RatingSectionForm, SECTION_TYPE.RATING_SECTION, section)
-
         # Capture Digits Section
         if int(request.POST.get('type')) == SECTION_TYPE.CAPTURE_DIGITS:
             form_data = section_update_form(
                 request, CaptureDigitsSectionForm, SECTION_TYPE.CAPTURE_DIGITS, section)
-
         # Record Message Section Section
         if int(request.POST.get('type')) == SECTION_TYPE.RECORD_MSG:
             form_data = section_update_form(
                 request, RecordMessageSectionForm, SECTION_TYPE.RECORD_MSG, section)
-
         # Call Transfer Section
         if int(request.POST.get('type')) == SECTION_TYPE.CALL_TRANSFER:
             form_data = section_update_form(
                 request, CallTransferSectionForm, SECTION_TYPE.CALL_TRANSFER, section)
-
         # Conference Section
         if int(request.POST.get('type')) == SECTION_TYPE.CONFERENCE:
             form_data = section_update_form(
                 request, ConferenceSectionForm, SECTION_TYPE.CONFERENCE, section)
-
         # SMS
         if int(request.POST.get('type')) == SECTION_TYPE.SMS:
             form_data = section_update_form(
                 request, SMSSectionForm, SECTION_TYPE.SMS, section)
+        # API
+        if int(request.POST.get('type')) == SECTION_TYPE.API:
+            form_data = section_update_form(
+                request, APISectionForm, SECTION_TYPE.API, section)
 
         if form_data.get('save_tag'):
             return HttpResponseRedirect(redirect_url_to_survey_list + '%s/#row%s'
@@ -516,6 +513,9 @@ def section_script_play(request, id):
         if settings.TTS_ENGINE == 'ACAPELA':
             # Acapela
             audio_file_path = settings.MEDIA_ROOT + '/' + getaudio_acapela(script_text, 'US')
+        elif settings.TTS_ENGINE == 'MSTRANSLATOR':
+            # Microsoft Translator
+            audio_file_path = settings.MEDIA_ROOT + '/' + getaudio_mstranslator(script_text, 'en')
         else:
             # Flite
             script_hexdigest = hashlib.md5(script_text).hexdigest()

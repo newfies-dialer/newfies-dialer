@@ -14,7 +14,7 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='campaign',
             name='record_bleg',
-            field=models.BooleanField(default=False, help_text='enable recording for the b-leg of each calls', verbose_name='record b-leg'),
+            field=models.BooleanField(default=False, help_text='enable recording of the transferred leg of the call', verbose_name='record b-leg'),
             preserve_default=True,
         ),
     ]

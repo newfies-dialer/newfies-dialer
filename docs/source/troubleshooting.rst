@@ -16,23 +16,27 @@ Where to find help
 
 Documentation:
 ~~~~~~~~~~~~~~
+
 http://www.newfies-dialer.org/documentation/
 
 
 Mailing list:
 ~~~~~~~~~~~~~
+
 We have set up a mailing list at http://groups.google.com/group/newfies-dialer
 
 
 Forum:
 ~~~~~~
+
 We have a forum at http://forum.newfies-dialer.org/
 
 
 Support:
 ~~~~~~~~
-Star2Billing S.L. offers consultancy including installation, training and customisation
 
+Star2Billing S.L. offers consultancy including installation, training and customisation.
+Please email us at newfies-dialer@star2billing.com for more information.
 
 
 .. _find-log-files:
@@ -153,21 +157,25 @@ Start celery with the --events option on, so celery sends events for celerymon t
     $ python manage.py celeryd -E
 
 
-Run the monitor server::
+Run the monitor server:
+::
 
     $ workon newfies-dialer
     $ cd /usr/share/newfies/
     $ python manage.py celerymon
 
 
-However, in production you probably want to run the monitor in the background, as a daemon::
+However, in production you probably want to run the monitor in the background, as a daemon:
+::
 
     $ workon newfies-dialer
     $ cd /usr/share/newfies/
     $ python manage.py celerymon --detach
 
 
-For a complete listing of the command line arguments available, with a short description, you can use the help command::
+For a complete listing of the command line arguments available, with a short
+description, you can use the help command:
+::
 
     $ workon newfies-dialer
     $ cd /usr/share/newfies/
@@ -193,16 +201,20 @@ http://docs.celeryproject.org/en/latest/faq.html?highlight=purge#how-do-i-purge-
 Checking Freeswitch
 ===================
 
-Entering the Freeswitch CLI shold indicate whether it is running by typing fs_cli at the console. Once logged in, you can check the trunk registration by typing sofia status at the Freeswitch CLI. CTRL-D exits the Freeswitch CLI.
+Entering the Freeswitch CLI shold indicate whether it is running by typing
+fs_cli at the console. Once logged in, you can check the trunk registration
+by typing sofia status at the Freeswitch CLI. CTRL-D exits the Freeswitch CLI.
 
-If the Freeswitch CLI cannot be launched, then the status of freeswitch can be checked with::
+If the Freeswitch CLI cannot be launched, then the status of freeswitch can be
+checked with::
 
     $ ps aux | grep freeswitch
     or
     $ /etc/init.d/freeswitch status
 
 
-If Freeswitch is not running, then it can be started with ::
+If Freeswitch is not running, then it can be started with:
+::
 
     $ /etc/init.d/freeswitch start
 

@@ -18,6 +18,7 @@ package.path = package.path .. ";/usr/share/newfies-lua/libs/?.lua";
 local Database = require "database"
 require "tag_replace"
 require "texttospeech"
+require "api_request"
 require "constant"
 
 
@@ -714,9 +715,9 @@ function FSMCall:next_node()
         self.debugger:msg("INFO", "STARTING API HTTP : "..api_url)
         if string.len(api_url) >= 8 then
             api_result, api_err = api_request(api_url, api_params, timeout)
-            self.debugger:msg("INFO", "END API HTTP: "..'api_result: '..api_result..' - '..'api_err: '..api_err)
+            self.actionresult = 'api_result: '..tostring(api_result)..' - '..'api_err: '..tostring(api_err)
+            self.debugger:msg("INFO", "END API HTTP: "..self.actionresult)
             -- Save result
-            self.actionresult = 'api_result: '..api_result..' - '..'api_err: '..api_err
             self.db:save_section_result(self.callrequest_id, current_node, self.actionresult, '', 0)
             self.actionresult = false
         end
@@ -823,9 +824,16 @@ function FSMCall:next_node()
                 self.debugger:msg("DEBUG", "Check if we match against: "..k)
                 if string.find(api_result, k) and current_branching[k].goto_id then
                     --We got a match for the api_result for this DTMF and a goto_id
-                    self.current_node_id = tonumber(urrent_branching[k].goto_id)
+                    self.current_node_id = tonumber(current_branching[k].goto_id)
                     return true
                 end
+            end
+
+            if current_branching["any"] and current_branching["any"].goto_id then
+                --We got an "any branching"
+                self.debugger:msg("DEBUG", "Got 'any' Branching on API : "..current_branching["any"].goto_id)
+                self.current_node_id = tonumber(current_branching["any"].goto_id)
+                return true
             end
 
             self.debugger:msg("DEBUG", "Not matching found with api_result="..api_result)

@@ -98,7 +98,7 @@
                                     $("#id_call_report_{{ row.id }}").on('click', function(e) {
                                         var url = $(this).attr('url');
                                         var modal_id = $(this).attr('data-controls-modal');
-                                        $("#" + modal_id).load('http://127.0.0.1:8000' + url);
+                                        $("#" + modal_id).load(url);
                                     });
                                     </script>
                                 </td>

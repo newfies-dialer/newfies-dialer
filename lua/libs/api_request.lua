@@ -44,7 +44,10 @@ function api_request(api_url, params, timeout)
         if get_params ~= '' then
             get_params = get_params..'&'
         end
-        get_params = get_params..tostring(k)..'='..url_encode(v)
+        local v_encoded = url_encode(v)
+        if v_encoded then
+            get_params = get_params..tostring(k)..'='..url_encode(v)
+        end
     end
     if string.find(api_url, "?") then
         api_url = api_url.."&"..get_params
@@ -75,7 +78,7 @@ function api_request(api_url, params, timeout)
     jdata = decodejson(buffer)
     if jdata then
         -- Return the api_result field
-        return jdata["api_result"]
+        return jdata["api_result"], nil
     else
         return false, "ERROR_DECODEJSON"
     end

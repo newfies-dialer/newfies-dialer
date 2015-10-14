@@ -229,7 +229,11 @@
                                                     {% if section.type != SECTION_TYPE.PLAY_MESSAGE and section.type != SECTION_TYPE.RECORD_MSG and section.type != SECTION_TYPE.CALL_TRANSFER and section.type != SECTION_TYPE.CONFERENCE %}
                                                         <td>
                                                         {% if branch.keys == 'any' %}
-                                                            {% trans "any other key"|title %}
+                                                            {% if section.type == SECTION_TYPE.API %}
+                                                                {% trans "No matching" %}
+                                                            {% else %}
+                                                                {% trans "any other key"|title %}
+                                                            {% endif %}
                                                         {% elif branch.keys == 'invalid' %}
                                                             {% trans "invalid"|title %}
                                                         {% elif branch.keys == 'timeout' %}

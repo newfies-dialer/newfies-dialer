@@ -61,16 +61,36 @@ In the SIP headers, you will see:
 HTTP API Request
 ----------------
 
-This node will make a HTTP API Request, in order to do this the UI will provide some
-new features in the survey node:
+This node provide the ability to perform HTTP API Request and select branching based on the result.
+
+In order to do this, the UI provide some new features in the survey editor:
 
     * API URL: to enter the url for the HTTP query
 
-    * Branching based on matching results: this will allow to define match on the query results (HTTP content) and decide a branching
+    * Branching based on matching results: this allow to select the next branch based on the API result
 
-A list of HTTP variables will be passed out to identify the call request, e.g. contact, current variable, etc.
 
-This is the current list of current variables passed:
+The API *MUST* return a valid Json with the field "api_result", eg::
+
+    {
+        "api_result": "5000"
+    }
+
+
+The value of "api_result" eg "5000" is used to decide the next branching on the IVR.
+
+The branching on API Node supports:
+
+    * timeout: maximum time to wait on an API request and where to branch
+
+    * pattern: check api_result against a pattern and where to the branch to
+
+    * any: if no pattern can be matched, this will branch to the selected node (enter "any" in pattern)
+
+
+A list of HTTP variables will be passed out to identify the call session and the contact.
+
+This is the current list of variables passed:
 
     - campaign_id
     - subscriber_id
@@ -92,15 +112,12 @@ This is the current list of current variables passed:
     - record_filename
 
 
-The API needs to return a valid Json with a field "api_result", eg::
-
-    {
-        "api_result": "5000"
-    }
-
-Use case, HTTP API could be used in scenarios, such validating that a call is authorized, or asking to your customer's PBX, how many agents are available.
+Use case: HTTP API could be used in many scenario, such as validating that a
+call is authorized, or asking to your customer's PBX, how many agents are available.
 
 .. image:: ../_static/images/customer/node_http_api.png
+
+Note: You can use http://mockbin.org/ to create a test API.
 
 
 .. _capture-digits:

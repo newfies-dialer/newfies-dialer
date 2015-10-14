@@ -610,20 +610,22 @@ function FSMCall:next_node()
                 end
             end
 
+            -- set the call session recording
+            local record_vars = self:record_call_session_bleg(flag_group_confirm, new_dialout_phone_number)
+
             self.actionresult = 'phonenumber: '..current_node.phonenumber
             dialstr = "{ignore_early_media=true,instant_ringback=true,hangup_after_bridge=false,origination_caller_id_number="..callerid..
                 ",origination_caller_id_name="..caller_id_name..",originate_timeout="..originate_timeout..
                 ",leg_timeout="..leg_timeout..",legtype=bleg,callrequest_id="..self.callrequest_id..
                 ",dialout_phone_number="..new_dialout_phone_number..
-                ",used_gateway_id="..self.used_gateway_id..confirm_string..smooth_transfer.."}"..dialstr
+                ",used_gateway_id="..self.used_gateway_id..
+                confirm_string..smooth_transfer..record_vars.."}"..dialstr
 
             -- Record BLeg
             if confirm_string ~= '' then
                 flag_group_confirm = true
             end
 
-            -- set the call session recording
-            self:record_call_session_bleg(flag_group_confirm, new_dialout_phone_number)
 
             -- originate the call
             self.debugger:msg("INFO", "dialstr:"..dialstr)
@@ -990,11 +992,10 @@ function FSMCall:record_call_session_bleg(flag_group_confirm, destination)
 
     if not self.db.campaign_info.record_bleg then
         -- b-Leg recording not enabled at the campaign level
-        return false
+        return ""
     end
 
-    record_title = "BLeg Recording callrequest:"..self.callrequest_id.." Transfer num:"..self.count_transfer.."- destination"..destination
-    session:execute("set", "RECORD_TITLE="..record_session)
+    session:execute("set", "RECORD_TITLE=BLeg Recording callrequest:"..self.callrequest_id.." Transfer num:"..self.count_transfer.."- destination"..destination)
     session:execute("set", "RECORD_SOFTWARE=Newfies-Dialer (FreeSWITCH)")
 
     self.record_bleg_filename = "bleg-recording-cr"..self.callrequest_id.."-ct"..self.count_transfer.."-uuid"..self.uuid..".wav"
@@ -1002,13 +1003,16 @@ function FSMCall:record_call_session_bleg(flag_group_confirm, destination)
     self.debugger:msg("INFO", "STARTING B-LEG RECORDING : "..record_filepath)
 
     session:execute("set", "media_bug_answer_req=true")
+    record_vars = ",media_bug_answer_req=true"
     if flag_group_confirm then
         session:execute("set", "bridge_pre_execute_bleg_app=record_session")
         session:execute("set", "bridge_pre_execute_bleg_data="..record_filepath)
+        -- record_vars = "bridge_pre_execute_bleg_app=record_session,bridge_pre_execute_bleg_data="..record_filepath
     else
-        session:execute("record_session", record_filepath)
+        -- session:execute("record_session", record_filepath)
+        session:execute("export", "execute_on_answer=record_session "..record_filepath)
     end
-    return true
+    return record_vars
 end
 
 function FSMCall:get_api_params()

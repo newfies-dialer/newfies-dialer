@@ -13,7 +13,7 @@
 #
 
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import HttpResponse
+from django.http import HttpResponse, Http404
 from django.shortcuts import render_to_response
 from django.template.context import RequestContext
 from django.db.models import Sum, Avg, Count
@@ -27,6 +27,7 @@ from mod_utils.helper import Export_choice
 from datetime import datetime
 from django.utils.timezone import utc
 import tablib
+import os
 
 
 def get_voipcall_daily_data(voipcall_list):
@@ -265,3 +266,58 @@ def export_voipcall_report(request):
             response.write(data.json)
 
     return response
+
+
+def find_recording_bleg(callid, callrequest_id):
+    """
+    find existing recording for a given callrequest_id
+    """
+    bleg_recordings = []
+    for i in range(1, 4):
+        filename = "bleg-recording-cr%d-ct%d-uuid%s.wav" % (callrequest_id, i, str(callid))
+        recording_filename = 'recording/' + filename
+        audio_file_path = '%s%s' % (settings.FS_RECORDING_PATH, filename)
+        if os.path.isfile(audio_file_path):
+            bleg_recordings.append({'audio_file_path': audio_file_path,
+                                   'recording_filename': recording_filename,
+                                   'filename': filename})
+    return bleg_recordings
+
+
+@permission_required('dialer_cdr.view_call_detail_report', login_url='/')
+@login_required
+def voipcall_detail(request, id):
+    """
+    Update survey question for the logged in user
+    """
+    try:
+        voipcall = VoIPCall.objects.get(pk=id, user=request.user)
+    except:
+        raise Http404
+    print(voipcall)
+
+    bleg_recordings = find_recording_bleg(voipcall.callid, voipcall.callrequest.id)
+
+    voipcall_list = {
+        'call_date': voipcall.starting_date,
+        'request_uuid': voipcall.request_uuid,
+        'callid': voipcall.callid,
+        'callerid': voipcall.callerid,
+        'phone_number': voipcall.phone_number,
+        'duration': voipcall.duration,
+        'billsec': voipcall.billsec,
+        'disposition': voipcall.disposition,
+        'billsec': voipcall.billsec,
+        'hangup_cause': voipcall.hangup_cause,
+        'hangup_cause_q850': voipcall.hangup_cause_q850,
+        'used_gateway': voipcall.used_gateway,
+        'leg_type': voipcall.leg_type,
+        'amd_status': voipcall.amd_status,
+    }
+    data = {
+        'voipcall': voipcall_list,
+        'bleg_recordings': bleg_recordings,
+    }
+    request.session['msg'] = ''
+    request.session['error_msg'] = ''
+    return render_to_response('dialer_cdr/voipcall_detail.html', data, context_instance=RequestContext(request))

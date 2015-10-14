@@ -163,6 +163,7 @@ class Campaign(Model):
         * ``voicemail`` - Enable Voicemail Detection
         * ``amd_behavior`` - Detection Behaviour
         * ``sms_gateway`` - Gateway to transport the SMS
+        * ``record_bleg`` - Enable recording of the transferred leg of the call
 
     **Relationships**:
 
@@ -264,6 +265,9 @@ class Campaign(Model):
     external_link = jsonfield.JSONField(
         null=True, blank=True, verbose_name=_('additional parameters (JSON)'),
         help_text=_("enter the list of parameters in Json format, e.g. {\"title\": [\"tab-1\", \"tab-2\"], \"url\": [\"https://duckduckgo.com/\", \"http://www.newfies-dialer.org/\"]}"))
+
+    record_bleg = models.BooleanField(default=False, verbose_name=_('record b-leg'),
+                                      help_text=_("enable recording of the transferred leg of the call"))
 
     created_date = models.DateTimeField(auto_now_add=True, verbose_name=_('date'))
     updated_date = models.DateTimeField(auto_now=True)

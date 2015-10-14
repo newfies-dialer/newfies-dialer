@@ -55,7 +55,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
                        'thursday', 'friday', 'saturday', 'sunday',
                        'completion_maxretry', 'completion_intervalretry',
                        'dnc', 'agent_script', 'lead_disposition',
-                       'external_link')
+                       'external_link', 'record_bleg')
         }),
     )
     list_display = ('id', 'name', 'content_type', 'campaign_code', 'user',
@@ -66,7 +66,7 @@ class CampaignAdmin(GenericAdminModelAdmin):
 
     list_display_links = ('id', 'name', )
     # list_filter doesn't display correctly too many elements in list_display
-    #list_filter = ['user', 'status', 'created_date']
+    # list_filter = ['user', 'status', 'created_date']
     ordering = ('-id', )
     filter_horizontal = ('phonebook', )
 

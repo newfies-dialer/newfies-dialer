@@ -40,8 +40,10 @@ def get_audiofile_list(user):
 
 
 def get_section_question_list(survey_id, section_id):
-    """Get survey question list for logged in user
-    with default none option"""
+    """
+    Get survey question list for logged in user
+    with default none option
+    """
     section_branch_list = Branching_template\
         .objects.values_list('section_id', flat=True)\
         .filter(section_id=section_id)
@@ -89,13 +91,12 @@ def get_rating_choice_list(section_id):
     """
     keys_list = Branching_template.objects.values_list('keys', flat=True)\
         .filter(section_id=int(section_id)).exclude(keys='')
-
+    list_sq = []
     obj_section = Section_template.objects.get(id=int(section_id))
 
     if keys_list:
         keys_list = [integral for integral in keys_list]
 
-    list_sq = []
     if obj_section.rating_laps:
         for i in range(1, int(obj_section.rating_laps) + 1):
             if i not in keys_list:
@@ -107,8 +108,9 @@ def get_rating_choice_list(section_id):
 
 
 class SurveyForm(SaveUserModelForm):
-
-    """Survey ModelForm"""
+    """
+    Survey ModelForm
+    """
 
     class Meta:
         model = Survey_template
@@ -130,11 +132,11 @@ class SurveyForm(SaveUserModelForm):
         self.fields['description'].widget = forms.TextInput()
 
 html_code_of_completed_field = """
-                    <label for="{{ form.completed.auto_id }}">%s</label><br/>
-                    <div class="make-switch switch-small">
-                    {{ form.completed }}
-                    </div>
-                    """ % (ugettext('Completed'))
+    <label for="{{ form.completed.auto_id }}">%s</label><br/>
+    <div class="make-switch switch-small">
+    {{ form.completed }}
+    </div>
+    """ % (ugettext('Completed'))
 
 append_html_code_to_audio_field = """<a href="#" id="helpover" rel="popover" data-placement="top" data-content="If an audio file is not selected, the script will be played using Text-To-Speech" data-original-title="information"><i class="fa-info"></i></a>"""
 
@@ -650,34 +652,10 @@ class BranchingForm(ModelForm):
         self.fields['goto'].choices = get_section_question_list(survey_id, section_id)
 
 
-class SurveyReportForm(forms.Form):
-
-    """Survey Report Form"""
-    campaign = forms.ChoiceField(label=_('campaign'), required=False)
-
-    def __init__(self, user, *args, **kwargs):
-        super(SurveyReportForm, self).__init__(*args, **kwargs)
-        self.fields.keyOrder = ['campaign']
-        # To get user's campaign list which are attached with survey
-        if user:
-            camp_list = []
-            camp_list.append((0, _('Select Campaign')))
-
-            if user.is_superuser:
-                campaign_list = Campaign.objects.values_list('id', 'name')\
-                    .filter(content_type__model='survey', has_been_started=True).order_by('-id')
-            else:
-                campaign_list = Campaign.objects.values_list('id', 'name')\
-                    .filter(user=user, content_type__model='survey', has_been_started=True).order_by('-id')
-            for i in campaign_list:
-                camp_list.append((i[0], i[1]))
-
-            self.fields['campaign'].choices = camp_list
-
-
 class SurveyDetailReportForm(SearchForm):
-
-    """Survey Report Form"""
+    """
+    Survey Report Form
+    """
     survey_id = forms.ChoiceField(label=_('Survey'), required=False)
 
     def __init__(self, user, *args, **kwargs):
@@ -695,22 +673,17 @@ class SurveyDetailReportForm(SearchForm):
         )
         common_submit_buttons(self.helper.layout, 'search')
 
-        if user:
-            survey_list = []
-            survey_list.append((0, _('Select Survey')))
-            if user.is_superuser:
-                survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name').all().order_by('-id')
-            else:
-                survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name')\
-                    .filter(user=user).order_by('-id')
+        survey_list = []
+        survey_list.append((0, _('Select Survey')))
+        survey_objs = Survey.objects.values_list('id', 'name', 'campaign__name')\
+            .filter(user=user).order_by('-id')
 
-            for i in survey_objs:
-                if i[2]:
-                    survey_name = i[1] + " : " + i[2]
-                else:
-                    survey_name = i[1]
-                survey_list.append((i[0], survey_name))
-            self.fields['survey_id'].choices = survey_list
+        for survey in survey_objs:
+            survey_name = ''
+            if survey[2]:
+                survey_name = " : " + survey[2]
+            survey_list.append((survey[0], survey[1] + survey_name))
+        self.fields['survey_id'].choices = survey_list
 
 
 class SurveyFileImport(forms.Form):

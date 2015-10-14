@@ -41,8 +41,7 @@ PHONENUMBER_LENGHT = 5
 
 class Command(BaseCommand):
     args = 'campaign_id, amount, delta_day'
-    help = "Generate fake Call-requests and CDRs for a given campaign_id\n" \
-           "------------------------------------------------------------\n" \
+    help = "Generate fake Call-requests and CDRs. \nUsage: " \
            "python manage.py create_callrequest_cdr --campaign_id=1 --amount=100 --delta-day=0"
 
     option_list = BaseCommand.option_list + (
@@ -106,7 +105,7 @@ def create_callrequest(campaign_id, amount, day_delta):
         print _('Can\'t find this Campaign : %(id)s' % {'id': campaign_id})
         return False
 
-    #content_type_id is survey
+    # content_type_id is survey
     try:
         content_type_id = ContentType.objects.get(model='survey').id
     except:

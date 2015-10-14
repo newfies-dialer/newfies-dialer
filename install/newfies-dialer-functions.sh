@@ -356,9 +356,6 @@ func_install_dependencies(){
 
     #Lua-cURL v3
     luarocks-5.2 install Lua-cURL
-    echo ""
-    echo "make sure we got Lua-cURL v3 installed (https://github.com/Lua-cURL/Lua-cURLv3/)"
-    read TEMP
 
     # cd /usr/src/
     # rm -rf Lua-cURLv2-master lua-curl.zip

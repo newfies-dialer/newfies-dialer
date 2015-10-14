@@ -155,7 +155,7 @@ def voipcall_save(callrequest, request_uuid, leg='aleg', hangup_cause='',
 
     # Note: Removed for test performance
     # Note: Look at prefix PG module : https://github.com/dimitri/prefix
-    #prefix_obj = get_prefix_obj(phonenumber)
+    # prefix_obj = get_prefix_obj(phonenumber)
 
     # Save the VoIPCall
     new_voipcall = VoIPCall(

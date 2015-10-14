@@ -1,6 +1,7 @@
 {% extends "frontend/master.html" %}
 {% load i18n pagination_tags common_tags icons dialer_cdr_tags crispy_forms_tags %}
 
+
 {% block extra_files %}
     {{ form.media }}
 {% endblock %}
@@ -71,6 +72,7 @@
                         {% if AMD %}
                             <th>{% sort_link CDR_REPORT_COLUMN_NAME.amd_status|capfirst col_name_with_order.amd_status %}</th>
                         {% endif %}
+                        <th></th>
                     </tr>
                     </thead>
                     {% if voipcall_list %}
@@ -89,6 +91,17 @@
                                 {% if AMD %}
                                     <td>{{ row.amd_status|amd_status_name }}</td>
                                 {% endif %}
+                                <td>
+                                    <a id="id_call_report_{{ row.id }}" href="#call-report" url="/voipcall_detail/{{ row.id }}/" title="{% trans 'view call detail'|title %}" data-toggle="modal" data-controls-modal="call-report"><i class="fa fa-search"></i></a>
+                                    <!--activate modal-->
+                                    <script type="text/javascript" charset="utf-8">
+                                    $("#id_call_report_{{ row.id }}").on('click', function(e) {
+                                        var url = $(this).attr('url');
+                                        var modal_id = $(this).attr('data-controls-modal');
+                                        $("#" + modal_id).load('http://127.0.0.1:8000' + url);
+                                    });
+                                    </script>
+                                </td>
                             </tr>
                         {% endfor %}
                     {% else %}
@@ -147,5 +160,8 @@
             </div>
         </div>
     </div>
+
+<!-- survey-seal modal content-->
+<div id="call-report" class="modal fade" role="dialog" aria-labelledby="call_report"></div>
 
 {% endblock %}

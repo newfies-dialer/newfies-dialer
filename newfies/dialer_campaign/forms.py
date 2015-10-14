@@ -17,6 +17,7 @@ from django.conf import settings
 from django.forms.util import ErrorList
 from django.forms import ModelForm, Textarea
 from django.utils.translation import ugettext_lazy as _
+from django.utils.translation import ugettext as ugettext
 from django.contrib.contenttypes.models import ContentType
 
 from crispy_forms.helper import FormHelper
@@ -49,6 +50,27 @@ def get_object_choices(available_objects):
         object_choices.append([form_value, display_text])
 
     return object_choices
+
+
+def prepare_make_switch(field_list, div_class="col-md-3"):
+    """
+    helper to render HTML for make-switch
+    """
+    makeswitch_html = """<div class="row"><div class="col-md-12 col-xs-6">"""
+    for field in field_list:
+        makeswitch_html += """
+            <div class="%(div_class)s">
+                <div class="btn-group" data-toggle="buttons">
+                    <label for="{{ form.%(field)s.auto_id }}">{{ form.%(field)s.label }}</label><br/>
+                    <div class="make-switch switch-small">
+                    {{ form.%(field)s }}
+                    <p id="hint_id_%(field)s" class="help-block">{{ form.%(field)s.help_text }}</p>
+                    </div>
+                </div>
+            </div>
+            """ % {'div_class': div_class, 'field': field}
+    makeswitch_html += """</div></div>"""
+    return makeswitch_html
 
 
 class CampaignForm(ModelForm):
@@ -98,21 +120,10 @@ class CampaignForm(ModelForm):
         else:
             form_action = common_submit_buttons(default_action='add')
 
-        week_days = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday', 'saturday', 'sunday']
-        week_days_html = """<div class="row"><div class="col-md-12 col-xs-6">"""
+        week_days_html = prepare_make_switch(['monday', 'tuesday', 'wednesday',
+                                             'thursday', 'friday', 'saturday', 'sunday'])
+        record_bleg_html = prepare_make_switch(['record_bleg'], div_class="col-md-6")
 
-        for i in week_days:
-            week_days_html += """
-                <div class="col-md-3">
-                    <div class="btn-group" data-toggle="buttons">
-                        <label for="{{ form.%s.auto_id }}">{{ form.%s.label }}</label><br/>
-                        <div class="make-switch switch-small">
-                        {{ form.%s }}
-                        </div>
-                    </div>
-                </div>
-                """ % (i, i, i)
-        week_days_html += """</div></div>"""
         css_class = 'col-md-6'
 
         self.helper.layout = Layout(
@@ -158,7 +169,7 @@ class CampaignForm(ModelForm):
                 Tab('schedule',
                     Div(
                         Div(Fieldset(_('Schedule Settings')), css_class='col-md-12'),
-                        Div(HTML("""<label>%s<label>""" % (_('Week Days'))), css_class="col-md-3"),
+                        Div(HTML("""<h4>%s</h4>""" % ugettext('Week Days')), css_class="col-md-3"),
                         HTML(week_days_html),
                         HTML("""<div>&nbsp;</div>"""),
                         Div('startingdate', css_class=css_class),
@@ -170,26 +181,36 @@ class CampaignForm(ModelForm):
                     form_action,
                     css_class='well'
                     ),
+                Tab('Extra',
+                    Div(
+                        Div(Fieldset(_('Extra Settings')), css_class='col-md-12'),
+                        HTML(record_bleg_html),
+                        # Div('record_bleg', css_class=css_class),
+                        css_class='row'
+                    ),
+                    form_action,
+                    css_class='well'
+                    ),
             ),
         )
 
         if settings.AMD:
             amd_layot = Tab(_('Voicemail'),
-                            Div(
-                                Div(Fieldset(_('Voicemail Settings')), css_class='col-md-12'),
-                                Div(HTML("""
-                                    <div class="btn-group" data-toggle="buttons">
-                                        <label for="{{ form.voicemail.auto_id }}">{{ form.voicemail.label }}</label>
-                                        <br/>
-                                        <div class="make-switch switch-small">
-                                        {{ form.voicemail }}
-                                        </div>
-                                    </div>
-                                    """), css_class='col-md-12 col-xs-10'),
-                                HTML("""<div>&nbsp;</div>"""),
-                                Div('amd_behavior', css_class=css_class),
-                                Div('voicemail_audiofile', css_class=css_class),
-                                css_class='row'
+                Div(
+                    Div(Fieldset(_('Voicemail Settings')), css_class='col-md-12'),
+                    Div(HTML("""
+                        <div class="btn-group" data-toggle="buttons">
+                            <label for="{{ form.voicemail.auto_id }}">{{ form.voicemail.label }}</label>
+                            <br/>
+                            <div class="make-switch switch-small">
+                            {{ form.voicemail }}
+                            </div>
+                        </div>
+                        """), css_class='col-md-12 col-xs-10'),
+                    HTML("""<div>&nbsp;</div>"""),
+                    Div('amd_behavior', css_class=css_class),
+                    Div('voicemail_audiofile', css_class=css_class),
+                    css_class='row'
             ),
                 form_action,
                 css_class='well'

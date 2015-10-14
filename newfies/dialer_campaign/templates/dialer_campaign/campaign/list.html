@@ -90,6 +90,8 @@
                   {% endif %}
 
                   {{ row.id|create_duplicate_campaign|safe }}
+
+                  <!--Glass button survey modal-->
                   {% get_campaign_app_view row %}
                   {% if row.content_type.model == 'survey' and row.has_been_started  %}
                     <!--Sealed survey modal-->

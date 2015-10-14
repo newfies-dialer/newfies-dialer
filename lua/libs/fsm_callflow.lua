@@ -40,10 +40,12 @@ local FSMCall = {
     hangup_trigger = false,
     current_node_id = false,
     record_filename = false,
+    record_bleg_filename = false,
     actionresult = false,
     lastaction_start = false,
     last_node = nil,
     ended = false,
+    count_transfer = 0,
 }
 
 function FSMCall:new (o)
@@ -495,9 +497,11 @@ function FSMCall:next_node()
             -- Flush the insert for the survey results when node is a Transfer
             self.db:commit_result_mem()
 
+            self.count_transfer = self.count_transfer + 1
+
             self.lastaction_start = os.time()
             -- Allow to hang up transfer call detecting DMTF ( *0 ) in LEG A
-            session:execute("bind_meta_app","0 a o hangup::normal_clearing")
+            session:execute("bind_meta_app", "0 a o hangup::normal_clearing")
 
             session:setAutoHangup(false)
             -- callerid = self.db.campaign_info.callerid
@@ -514,6 +518,7 @@ function FSMCall:next_node()
             local dialstr = ''
             local confirm_string = ''
             local smooth_transfer = ''
+            local flag_group_confirm = false
 
             -- check if we got a json phonenumber for transfer
             if mcontact.transfer_phonenumber then
@@ -610,6 +615,14 @@ function FSMCall:next_node()
                 ",leg_timeout="..leg_timeout..",legtype=bleg,callrequest_id="..self.callrequest_id..
                 ",dialout_phone_number="..new_dialout_phone_number..
                 ",used_gateway_id="..self.used_gateway_id..confirm_string..smooth_transfer.."}"..dialstr
+
+            -- Record BLeg
+            if confirm_string ~= '' then
+                flag_group_confirm = true
+            end
+
+            -- set the call session recording
+            self:record_call_session_bleg(flag_group_confirm, new_dialout_phone_number)
 
             -- originate the call
             self.debugger:msg("INFO", "dialstr:"..dialstr)
@@ -948,28 +961,52 @@ function FSMCall:next_node()
     return true
 end
 
+
+function FSMCall:record_call_session_bleg(flag_group_confirm, destination)
+    --
+    -- Recording call session before bridge
+    --
+    -- See documentation on call session recording at
+    -- https://freeswitch.org/confluence/display/FREESWITCH/record_session
+    --
+    -- Recording normally starts as soon as the bridge application is called -- oftentimes this isn't desired. You can force the recording to start after the call is actually answered by setting the channel variable media_bug_answer_req.
+    -- <action application="set" data="media_bug_answer_req=true"/>
+    --
+    -- Another way to record calls when the call is answered
+    -- <action application="export" data="execute_on_answer=record_session $${base_dir}/recordings/${strftime(%Y%m%d%H%M%S)}_${caller_id_number}.wav"/>
+    --
+    -- If you happen to be using group_confirm_key/group_confirm_file as part of your bridge, you may want to delay the start of the recording until the confirm action is completed. This can be accomplished through use ofbridge_pre_execute_bleg_app/bridge_pre_execute_bleg_data:
+    -- <action application="set" data="bridge_pre_execute_bleg_app=record_session"/>
+    -- <action application="set" data="bridge_pre_execute_bleg_data=$${base_dir}/recordings/${strftime(%Y-%m-%d-%H-%M-%S)}_${destination_number}_${caller_id_number}.wav"/>
+    --
+
+    if not self.db.campaign_info.record_bleg then
+        -- b-Leg recording not enabled at the campaign level
+        return false
+    end
+
+    record_title = "BLeg Recording callrequest:"..self.callrequest_id.." Transfer num:"..self.count_transfer.."- destination"..destination
+    session:execute("set", "RECORD_TITLE="..record_session)
+    session:execute("set", "RECORD_SOFTWARE=Newfies-Dialer (FreeSWITCH)")
+
+    self.record_bleg_filename = "bleg-recording-cr"..self.callrequest_id.."-ct"..self.count_transfer.."-uuid"..self.uuid..".wav"
+    record_filepath = FS_RECORDING_PATH..self.record_bleg_filename
+    self.debugger:msg("INFO", "STARTING B-LEG RECORDING : "..record_filepath)
+
+    session:execute("set", "media_bug_answer_req=true")
+    if flag_group_confirm then
+        session:execute("set", "bridge_pre_execute_bleg_app=record_session")
+        session:execute("set", "bridge_pre_execute_bleg_data="..record_filepath)
+    else
+        session:execute("record_session", record_filepath)
+    end
+    return true
+end
+
 function FSMCall:get_api_params()
+    --
     -- Prepare a list with the current calls session parameters
     --
-    -- campaign_id
-    -- subscriber_id
-    -- contact_id
-    -- callrequest_id
-    -- used_gateway_id
-    -- alarm_request_id
-    -- caller_id_name
-    -- caller_id_number
-    -- destination_number
-    -- uuid
-    -- survey_id
-    -- current_node_id
-    -- record_filename
-    -- contact_last_name
-    -- contact_first_name
-    -- contact_email
-    -- contact_country
-    -- contact_city
-
     local mcontact = mtable_jsoncontact(self.db.contact)
     local params = {
         campaign_id = self.campaign_id,

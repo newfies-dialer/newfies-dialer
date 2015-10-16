@@ -20,6 +20,7 @@ require "tag_replace"
 require "texttospeech"
 require "api_request"
 require "constant"
+require "settings"
 
 
 local FSMCall = {
@@ -178,15 +179,35 @@ end
 
 function FSMCall:start_call()
     self.debugger:msg("INFO", "FSMCall:start_call...")
+    if TTS_ENGINE == "unimrcp" then
+        session:execute("set", "tts_engine="..UNIMRCP_TTS_ENGINE)
+        session:execute("set", "tts_voice="..UNIMRCP_TTS_VOICE)
+    end
     self:next_node()
 end
 
 function FSMCall:playnode(current_node)
-    --play the audiofile or play the audio TTS
-    local filetoplay = self:get_playnode_audiofile(current_node)
-    if filetoplay and string.len(filetoplay) > 1 then
-        self.debugger:msg("INFO", "StreamFile : "..filetoplay)
-        self.session:streamFile(filetoplay)
+    --
+    -- Play current node audio or tts accordingly to the type
+    -- could use refactoring with get_playnode_audiofile
+    --
+    if TTS_ENGINE == "unimrcp" and not current_node.audiofile_id then
+        -- Use MRCP for TTS audio
+        -- <action application="set" data="tts_engine=unimrcp:unimrcpserver-mrcp1”/>
+        -- <action application="set" data="tts_voice=Callie-8kHz”/>
+        -- <action application="speak" data="This is our English text-to-speech system"/>
+        local mscript = tag_replace(current_node.script, self.db.contact)
+        self.debugger:msg("INFO", "Speak TTS with UNIMRCP: "..mscript)
+        if mscript and mscript ~= '' then
+            session:execute("speak", mscript)
+        end
+    else
+        -- get audiofile or get audio TTS
+        local filetoplay = self:get_playnode_audiofile(current_node)
+        if filetoplay and string.len(filetoplay) > 1 then
+            self.debugger:msg("INFO", "StreamFile : "..filetoplay)
+            self.session:streamFile(filetoplay)
+        end
     end
 end
 
@@ -199,7 +220,7 @@ function FSMCall:get_playnode_audiofile(current_node)
         self.debugger:msg("DEBUG", "Prepare StreamFile : "..filetoplay)
         return filetoplay
     else
-        --Use TTS
+        -- Use TTS application engine
         local mscript = tag_replace(current_node.script, self.db.contact)
         self.debugger:msg("INFO", "Speak TTS : "..mscript)
         if mscript and mscript ~= '' then

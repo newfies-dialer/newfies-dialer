@@ -9,7 +9,7 @@ DBPASS = 'password'
 DBPORT = 5432
 
 --
--- Select the TTS engine, value : flite, acapela, mstranslator
+-- Select the TTS engine, value : flite, acapela, mstranslator, unimrcp
 --
 TTS_ENGINE = 'flite'
 
@@ -31,3 +31,9 @@ ACAPELA_LANG = 'EN'
 CLIENT_ID = 'XXXXXXXXXXXX'
 CLIENT_SECRET = 'YYYYYYYYYYYYYY'
 MSTRANSLATOR_LANG = 'EN'
+
+--
+-- uniMRCP
+--
+UNIMRCP_TTS_ENGINE = "unimrcp:unimrcpserver-mrcp1"
+UNIMRCP_TTS_VOICE= "Callie-8kHz"

@@ -48,6 +48,7 @@ local FSMCall = {
     last_node = nil,
     ended = false,
     count_transfer = 0,
+    last_digits = nil,
 }
 
 function FSMCall:new (o)
@@ -411,6 +412,9 @@ function FSMCall:getdigitnode(current_node)
             self.session:streamFile(invalid_audiofile)
         end
     end
+
+    -- Save last input
+    self.last_digits = digits
 
     return digits
 end
@@ -1048,6 +1052,7 @@ function FSMCall:get_api_params()
         callrequest_id = self.callrequest_id,
         used_gateway_id = self.used_gateway_id,
         alarm_request_id = self.alarm_request_id,
+        last_digits = self.last_digits,
         caller_id_name = self.caller_id_name,
         caller_id_number = self.caller_id_number,
         destination_number = self.destination_number,

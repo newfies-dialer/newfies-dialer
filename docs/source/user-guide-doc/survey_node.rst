@@ -98,6 +98,7 @@ This is the current list of variables passed:
     - callrequest_id
     - used_gateway_id
     - alarm_request_id
+    - last_digits
     - contact_last_name
     - contact_first_name
     - contact_email

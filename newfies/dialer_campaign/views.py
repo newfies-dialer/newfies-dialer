@@ -341,37 +341,38 @@ def campaign_change(request, object_id):
         # Delete campaign
         if request.POST.get('delete'):
             return HttpResponseRedirect('%sdel/%s/' % (redirect_url_to_campaign_list, object_id))
-        else:
-            # Update campaign
-            if form.is_valid():
-                newcpg = form.save(commit=False)
+        # Update campaign
+        elif form.is_valid():
+            newcpg = form.save(commit=False)
 
-                selected_content_object = form.cleaned_data['content_object']
-                if not selected_content_object:
-                    selected_content_object = form.cleaned_data['selected_content_object']
-                # while campaign status is running
-                if campaign.status == CAMPAIGN_STATUS.START:
-                    if request.POST.get('selected_phonebook'):
-                        selected_phonebook = str(request.POST.get('selected_phonebook')).split(',')
-                        newcpg.phonebook = Phonebook.objects.filter(id__in=selected_phonebook)
+            selected_content_object = form.cleaned_data['content_object']
+            if not selected_content_object:
+                selected_content_object = form.cleaned_data['selected_content_object']
+            # while campaign status is running
+            if campaign.status == CAMPAIGN_STATUS.START and request.POST.get('selected_phonebook'):
+                selected_phonebook = str(request.POST.get('selected_phonebook')).split(',')
+                # TODO: Add user in filter
+                newcpg.phonebook = Phonebook.objects.filter(id__in=selected_phonebook)
+            else:
+                newcpg.phonebook = form.cleaned_data['phonebook']
 
-                contenttype = get_content_type(selected_content_object)
-                newcpg.content_type = contenttype['object_type']
-                newcpg.object_id = contenttype['object_id']
+            contenttype = get_content_type(selected_content_object)
+            newcpg.content_type = contenttype['object_type']
+            newcpg.object_id = contenttype['object_id']
 
-                # Ugly hack: Solve problem when editing campaign
-                newcpg.has_been_started = campaign.has_been_started
-                newcpg.has_been_duplicated = campaign.has_been_duplicated
-                newcpg.created_date = campaign.created_date
-                newcpg.totalcontact = campaign.totalcontact
-                newcpg.imported_phonebook = campaign.imported_phonebook
-                newcpg.completed = campaign.completed
-                # Save the updated Campaign
-                newcpg.save()
+            # Ugly hack: Solve problem when editing campaign
+            newcpg.has_been_started = campaign.has_been_started
+            newcpg.has_been_duplicated = campaign.has_been_duplicated
+            newcpg.created_date = campaign.created_date
+            newcpg.totalcontact = campaign.totalcontact
+            newcpg.imported_phonebook = campaign.imported_phonebook
+            newcpg.completed = campaign.completed
+            # Save the updated Campaign
+            newcpg.save()
 
-                request.session["msg"] = _('the campaign "%(name)s" is updated.') % {'name': request.POST['name']}
-                request.session['error_msg'] = ''
-                return HttpResponseRedirect(redirect_url_to_campaign_list)
+            request.session["msg"] = _('the campaign "%(name)s" is updated.') % {'name': request.POST['name']}
+            request.session['error_msg'] = ''
+            return HttpResponseRedirect(redirect_url_to_campaign_list)
 
     data = {
         'form': form,

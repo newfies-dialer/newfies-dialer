@@ -70,7 +70,8 @@ In order to do this, the UI has some features in the survey editor:
     * Branching based on matching results: this allows selection the next branch based on the API result
 
 
-The API *MUST* return a valid Json with the field "api_result", eg::
+The API *MUST* implement the GET method on the given URL and return a valid
+JSON document with the field "api_result", eg::
 
     {
         "api_result": "5000"

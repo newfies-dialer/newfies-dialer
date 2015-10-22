@@ -717,6 +717,8 @@ function FSMCall:next_node()
         -- <action application="set" data="playback_terminators=#"/>
         --session:setVariable("playback_terminators", "#")
         session:execute("set", "playback_terminators=#")
+        session:setVariable("playback_terminators", "#");
+        session:setInputCallback("on_dtmf", "");
         result_rec = self.session:recordFile(record_filepath, max_len_secs, silence_threshold, silence_secs)
         record_dur = audio_lenght(record_filepath)
         self.debugger:msg("DEBUG", "RECORDING DONE DURATION: "..record_dur)
@@ -886,5 +888,17 @@ function FSMCall:next_node()
 
     return true
 end
+
+--define on_dtmf call back function
+function on_dtmf(s, type, obj, arg)
+    if (type == "dtmf") then
+        freeswitch.console_log("info", "[recording] dtmf digit: " .. obj['digit'] .. ", duration: " .. obj['duration'] .. "\n");
+        if (obj['digit'] == "#") then
+            return 0;
+        end
+    end
+    return 0;
+end
+
 
 return FSMCall

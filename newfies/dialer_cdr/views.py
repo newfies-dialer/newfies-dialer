@@ -13,8 +13,8 @@
 #
 
 from django.contrib.auth.decorators import login_required, permission_required
-from django.http import HttpResponse, Http404
-from django.shortcuts import render_to_response
+from django.http import HttpResponse
+from django.shortcuts import render_to_response, get_object_or_404
 from django.template.context import RequestContext
 from django.db.models import Sum, Avg, Count
 from django.conf import settings
@@ -290,11 +290,7 @@ def voipcall_detail(request, id):
     """
     Update survey question for the logged in user
     """
-    try:
-        voipcall = VoIPCall.objects.get(pk=id, user=request.user)
-    except:
-        raise Http404
-    print(voipcall)
+    voipcall = get_object_or_404(VoIPCall, pk=id, user=request.user)
 
     bleg_recordings = find_recording_bleg(voipcall.callid, voipcall.callrequest.id)
 

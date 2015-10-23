@@ -75,7 +75,7 @@ NEWFIES_DIALER_ENGINE = 'esl'
 API_ALLOWED_IP = [
     '127.0.0.1',
     'localhost',
-    #'SERVER_IP',
+    # 'SERVER_IP',
 ]
 
 ALLOWED_HOSTS = ['SERVER_IP']

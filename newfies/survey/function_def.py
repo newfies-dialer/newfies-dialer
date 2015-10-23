@@ -18,7 +18,7 @@ def getaudio_mstranslator(text, tts_language='en'):
     """
     Run Microsoft Speak Text2Speech and return audio url
     """
-    import msspeak
+    from msspeak import msspeak
     DIRECTORY = settings.MEDIA_ROOT + '/tts/'
     if not tts_language:
         tts_language = 'en'

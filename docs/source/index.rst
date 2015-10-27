@@ -17,6 +17,7 @@ Contents:
     :maxdepth: 2
 
     getting-started
+    beginner-guide
 
 
 .. toctree::

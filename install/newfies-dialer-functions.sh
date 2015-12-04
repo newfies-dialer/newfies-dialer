@@ -23,8 +23,10 @@
 # cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/newfies-dialer/newfies-dialer/develop/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
 #
 
-#Set branch to install develop / master
-BRANCH="develop"
+# Set branch to install develop / default: master
+if [ -z "${BRANCH}" ]; then
+    BRANCH='master'
+fi
 
 DATETIME=$(date +"%Y%m%d%H%M%S")
 INSTALL_DIR='/usr/share/newfies'

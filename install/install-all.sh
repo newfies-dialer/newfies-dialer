@@ -17,14 +17,22 @@
 # To download and run the script on your server :
 # cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/newfies-dialer/newfies-dialer/master/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
 #
-# BRANCH = develop
+#
+# To install develop branch:
+#
+# export BRANCH=develop; export INSTALL_FS=yes
 # cd /usr/src/ ; rm install-all.sh ; wget --no-check-certificate https://raw.github.com/newfies-dialer/newfies-dialer/develop/install/install-all.sh ; chmod +x install-all.sh ; ./install-all.sh
 #
 
-#TODO: Move BRANCH to Environement variable
+# Set branch to install develop / default: master
+if [ -z "${BRANCH}" ]; then
+    BRANCH='master'
+fi
 
-#Set branch to install develop / master
-BRANCH="develop"
+if [ -z "${INSTALL_FS}" ]; then
+    INSTALL_FS='yes'
+fi
+
 
 SCRIPT_NOTICE="This script is only intended to run on Debian 64bits 7.X or 8.X"
 
@@ -96,11 +104,7 @@ gpgcheck = 0
 func_identify_os
 
 echo ""
-echo "> > > This is only to be installed on a fresh new installation of Debian 7.X or CentOS 6.X! < < <"
-echo ""
-echo "It will install Newfies-Dialer and Freeswitch on your server"
-echo ""
-echo ""
+echo "It will install Newfies-Dialer and Freeswitch on your server..."
 echo ""
 
 case $DIST in
@@ -117,11 +121,14 @@ case $DIST in
     ;;
 esac
 
-#Install Freeswitch
-cd /usr/src/
-wget --no-check-certificate  https://raw.github.com/newfies-dialer/newfies-dialer/$BRANCH/install/install-freeswitch.sh -O install-freeswitch.sh
-bash install-freeswitch.sh
-/etc/init.d/freeswitch start
+
+if [ $INSTALL_FS = "yes" ]; then
+    #Install Freeswitch
+    cd /usr/src/
+    wget --no-check-certificate  https://raw.github.com/newfies-dialer/newfies-dialer/$BRANCH/install/install-freeswitch.sh -O install-freeswitch.sh
+    bash install-freeswitch.sh
+    /etc/init.d/freeswitch start
+fi
 
 #Install Newfies
 cd /usr/src/

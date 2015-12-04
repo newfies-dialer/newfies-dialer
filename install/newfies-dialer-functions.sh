@@ -23,8 +23,10 @@
 # cd /usr/src/ ; rm install-newfies.sh ; wget --no-check-certificate https://raw.github.com/newfies-dialer/newfies-dialer/develop/install/install-newfies.sh ; chmod +x install-newfies.sh ; ./install-newfies.sh
 #
 
-#Set branch to install develop / master
-BRANCH="master"
+# Set branch to install develop / default: master
+if [ -z "${BRANCH}" ]; then
+    BRANCH='master'
+fi
 
 DATETIME=$(date +"%Y%m%d%H%M%S")
 INSTALL_DIR='/usr/share/newfies'
@@ -205,7 +207,7 @@ func_install_dependencies(){
             apt-get -y install git-core mercurial gawk cmake
             apt-get -y install python-pip
             # for audiofile convertion
-            apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321 ffmpeg
+            apt-get -y install libsox-fmt-mp3 libsox-fmt-all mpg321
             #repeat flite install in case FS is on a different server
             apt-get -y install flite
 
@@ -471,7 +473,10 @@ func_install_source(){
     cp -r /usr/src/newfies-dialer/lua $LUA_DIR
     cd $LUA_DIR/libs/
     rm acapela.lua
-    wget --no-check-certificate https://raw.github.com/areski/lua-acapela/$BRANCH/acapela.lua
+    wget --no-check-certificate https://raw.github.com/newfies-dialer/lua-acapela/master/acapela.lua
+    rm mstranslator.lua
+    wget --no-check-certificate https://raw.github.com/newfies-dialer/lua-mstranslator/master/src/mstranslator.lua
+    #TODO: use Luarocks to install lua packages
 
     #Upload audio files
     mkdir -p /usr/share/newfies/usermedia/upload/audiofiles
@@ -493,19 +498,19 @@ func_install_pip_deps(){
     pip install importlib
 
     echo "Install Basic requirements..."
-    for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
+    for line in $(cat /usr/src/newfies-dialer/requirements/basic.txt | grep -v \#)
     do
         echo "pip install $line"
         pip install $line
     done
     echo "Install Django requirements..."
-    for line in $(cat /usr/src/newfies-dialer/install/requirements/django-requirements.txt | grep -v \#)
+    for line in $(cat /usr/src/newfies-dialer/requirements/django.txt | grep -v \#)
     do
         echo "pip install $line"
         pip install $line --allow-all-external --allow-unverified django-admin-tools
     done
     echo "Install Test requirements..."
-    for line in $(cat /usr/src/newfies-dialer/install/requirements/test-requirements.txt | grep -v \#)
+    for line in $(cat /usr/src/newfies-dialer/requirements/test.txt | grep -v \#)
     do
         echo "pip install $line"
         pip install $line
@@ -659,11 +664,8 @@ func_prepare_logger() {
 
 #Create PGSQL
 func_create_pgsql_database(){
-
     # Create the Database
-    echo "We will remove existing Database"
-    echo "Press Enter to continue"
-    read TEMP
+    echo "We will remove the Database if one already exists..."
     echo "sudo -u postgres dropdb $DATABASENAME"
     sudo -u postgres dropdb $DATABASENAME
     # echo "Remove Existing Database if exists..."

@@ -9,10 +9,10 @@ Configuration
 
 SMS braodcasting is supported as standard by Newfies-Dialer, allowing Newfies-Dialer to send out thousands or millions of SMS messages to  contacts.
 
-The SMS gateway supports the following gateways, Clickatell (http://www.clickatell.com/) and SMS Global (http://www.smsglobal.com). Additionally, Khomp hardware is supported to allow the use of SIM cards in house. See http://www.khomp.com.br/ for more details.
+The SMS gateway supports the following gateways, Clickatell (http://www.clickatell.com/) and SMSGlobal (http://www.smsglobal.com). Additionally, Khomp hardware is supported to allow the use of SIM cards in house. See http://www.khomp.com.br/ for more details.
 
 
-Go to the Admin interface and identify the SMS Gateway section, and click on Gateways. Listed by default are three gateways, Clickatell, SMS Global and Khomp. Those that you don't want to be configured can be deleted.
+Go to the Admin interface and identify the SMS Gateway section, and click on Gateways. Listed by default are three gateways, Clickatell, SMSGlobal and Khomp. Those that you don't want to be configured can be deleted.
 
 Click the gateway to be configured and edit the pre-filled settings and populate the fields with the credentials supplied by your SMS provider:
 
@@ -42,8 +42,8 @@ Clickatell settings::
 
 Edit _API_ID_, _Sender_ID_, _USERNAME_ and _PASSWORD_  to the credentials provided by Clickatell and leave everything else as it is, and click save.
 
-SMS Global
-----------
+SMSGlobal
+---------
 
 The default settings are as follows::
 
@@ -56,7 +56,56 @@ The default settings are as follows::
       "password": "_PASSWORD_"
     }
 
-Edit _Sender_ID_, _USERNAME_ and _PASSWORD_ to match the credetials issued by SMS Global, leave everything else unchanged and save.
+Edit _Sender_ID_, _USERNAME_ and _PASSWORD_ to match the credetials issued by SMSGlobal, leave everything else unchanged and save.
+
+Vitelity
+--------
+
+Vitelity: http://www.vitelity.com/services_sms/
+
+You will need to turn on API access for whatever IP your Newfies-Dialer
+installation is hosted on, create a shortcode keyword, and set a default
+response to that keyword.
+
+Here it's how you should configure the new SMS Gateway to support Vitelity:
+
+Name:
+::
+    SMSvitelity
+
+Base URL:
+::
+    http://smsout-api.vitelity.net/api.php
+
+Set the `Settings` as follow:
+::
+    {
+      "xml": "yes",
+      "src": "99629",
+      "login": "YOUR_VITELITY_API_LOGIN",
+      "cmd": "sendshort",
+      "pass": "YOUR_VITELITY_API_PASSWORD"
+    }
+
+Recipient keyword:
+::
+    dst
+
+Content keyword:
+::
+    msg
+
+Status mapping:
+::
+    {
+      "fail": "Error",
+      "ok": "Sent"
+    }
+
+Success format:
+::
+    .*\n*.*\n*.*<status>(?P<status_message>.+)</status>\n*<response>(?P<status_code>.+)</response>(?P<gateway_message_id>.+)
+
 
 Khomp
 -----

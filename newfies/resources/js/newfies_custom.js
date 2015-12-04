@@ -49,9 +49,7 @@ $(function () {
             msg = gettext("You must check at least one box!");
             bootbox.alert(msg);
             return false; // The form will *not* submit
-        }
-        else
-        {
+        } else {
             var confirm_string;
             var contact_count;
 
@@ -73,14 +71,11 @@ $(function () {
                 confirm_string = $fields.length + gettext(" phonebook(s) are going to be deleted with ") + contact_count + gettext(" contact(s)?");
             }
             if(document.location.href.search("/campaign/") != -1) {
-
-                if(campaign_stop_flag){
-
+                if (campaign_stop_flag) {
                     $("#ListForm").attr("action", "del/0/?stop_campaign=True");
                     confirm_string = $fields.length + gettext(" campaign(s) are going to be stopped?");
                     campaign_stop_flag = false;
-                }
-                else{
+                } else {
                     confirm_string = $fields.length + gettext(" campaign(s) are going to be deleted?");
                 }
             }
@@ -145,7 +140,7 @@ $(function () {
         }
     });
 
-    $('#id_delete_confirm').click(function(e) {
+    $('a[id="id_delete_confirm"]').click(function(e) {
         e.preventDefault();
         var href = this.href;
         confirm_string = gettext("confirm deletion?");

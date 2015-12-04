@@ -35,6 +35,9 @@ release:
 	git push origin master
 	python setup.py sdist upload
 
+flakecheck:
+	flake8 newfies
+
 lint-js:
 	# Check JS for any problems
 	# Requires jshint

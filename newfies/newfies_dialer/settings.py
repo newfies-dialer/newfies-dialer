@@ -188,17 +188,18 @@ DAJAXICE_MEDIA_PREFIX = "dajaxice"
 # DAJAXICE_CACHE_CONTROL = 10 * 24 * 60 * 60
 
 INSTALLED_APPS = (
+    'django.contrib.auth',
+    'django.contrib.sites',
+    'registration',
     # admin tool apps
     'admin_tools',
     'admin_tools.theming',
     'admin_tools.menu',
     'admin_tools.dashboard',
     'django.contrib.admin',
-    'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.sites',
     'django.contrib.staticfiles',
     'django_countries',
     'admin_tools_stats',
@@ -226,7 +227,6 @@ INSTALLED_APPS = (
     'dialer_cdr',
     'dialer_gateway',
     'dialer_settings',
-    'mod_registration',
     'user_profile',
     'notification',
     'survey',
@@ -248,6 +248,7 @@ INSTALLED_APPS = (
     'activelink',
     'bootstrap3_datetime',
     'crispy_forms',
+    'bootstrapform',
 )
 
 CRISPY_TEMPLATE_PACK = 'bootstrap3'
@@ -330,7 +331,7 @@ PAGE_SIZE = 10
 AUTH_PROFILE_MODULE = 'user_profile.UserProfile'
 # AUTH_USER_MODEL = 'user_profile.UserProfile'
 LOGIN_REDIRECT_URL = '/'
-LOGIN_URL = '/pleaselog/'
+LOGIN_URL = '/accounts/login/'
 
 # MEMCACHE
 # ========
@@ -468,6 +469,17 @@ ADMIN_TOOLS_INDEX_DASHBOARD = 'custom_admin_tools.dashboard.CustomIndexDashboard
 ADMIN_TOOLS_APP_INDEX_DASHBOARD = 'custom_admin_tools.dashboard.CustomAppIndexDashboard'
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 
+
+# DJANGO REGISTRATION
+# ===================
+ACCOUNT_ACTIVATION_DAYS = 7
+REGISTRATION_EMAIL_SUBJECT_PREFIX = '[Newfies-Dialer] '
+SEND_ACTIVATION_EMAIL = True
+REGISTRATION_AUTO_LOGIN = False
+# indicating whether registration of new accounts is currently permitted
+REGISTRATION_OPEN = True
+
+
 # EMAIL BACKEND
 # =============
 # Use only in Debug mode. Not in production
@@ -515,18 +527,27 @@ ESL_PORT = '8021'
 ESL_SECRET = 'ClueCon'
 ESL_SCRIPT = '&lua(/usr/share/newfies-lua/newfies.lua)'
 
+# DIAL SETTINGS
+# =============
+# EARLY_MEDIA = "bridge_early_media=true"
+EARLY_MEDIA = "ignore_early_media=true"
+
 # TEXT-TO-SPEECH
 # ==============
-TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA
+TTS_ENGINE = 'FLITE'  # FLITE, CEPSTRAL, ACAPELA, MSTRANSLATOR
 
+# ACAPELA SPECIFIC SETTINGS
 ACCOUNT_LOGIN = 'EVAL_XXXX'
 APPLICATION_LOGIN = 'EVAL_XXXXXXX'
 APPLICATION_PASSWORD = 'XXXXXXXX'
-
 SERVICE_URL = 'http://vaas.acapela-group.com/Services/Synthesizer'
 QUALITY = '22k'  # 22k, 8k, 8ka, 8kmu
 ACAPELA_GENDER = 'W'
 ACAPELA_INTONATION = 'NORMAL'
+
+# MSTRANSLATOR SPECIFIC SETTINGS
+CLIENT_ID = 'XXXXXXXXXXXX'
+CLIENT_SECRET = 'YYYYYYYYYYYYYY'
 
 # DEBUG DIALER
 # ============

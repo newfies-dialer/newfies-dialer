@@ -13,6 +13,16 @@ please join the `Newfies-Dialer`_ mailing list.
 
 .. _`Newfies-Dialer`: http://groups.google.com/group/newfies-dialer
 
+.. _irc-channel:
+
+IRC
+---
+
+Come chat with us on IRC. The **#newfies-dialer** channel is located at the `Freenode`_
+network.
+
+.. _`Freenode`: http://freenode.net
+
 .. _bug-tracker:
 
 Bug tracker

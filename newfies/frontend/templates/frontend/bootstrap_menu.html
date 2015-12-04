@@ -10,7 +10,7 @@
         <span class="icon-bar"></span>
         <span class="icon-bar"></span>
       </button>
-      <a class="navbar-brand cornerlogo" href="/"><img src="{{STATIC_URL}}newfies/images/newfies-icon.png"/></a>
+      <a class="navbar-brand cornerlogo" href="{% url 'index' %}"><img src="{{STATIC_URL}}newfies/images/newfies-icon.png"/></a>
     </div>
 
     <div class="navbar-collapse collapse">
@@ -73,10 +73,10 @@
                     {% endif %}
 
                     <li class="divider"></li>
-                    <li><a href="http://www.newfies-dialer.org/add-ons" target="_blank">{% trans "add-ons list"|title %}</a></li>
-                    <li><a href="http://www.newfies-dialer.org/add-ons/voicemail-detection/" target="_blank">{% trans "Voicemail Detection (AMD)" %}</a></li>
-                    <li><a href="http://www.newfies-dialer.org/add-ons/rebranding-permission/" target="_blank">{% trans "rebranding permission"|title %}</a></li>
                     <li><a href="http://www.newfies-dialer.org/add-ons/clickatell/" target="_blank">{% trans "Clickatell SMS Sign-up"|wordcap %}</a></li>
+                    <li><a href="http://www.newfies-dialer.org/add-ons/voicemail-detection/" target="_blank">{% trans "Voicemail Detection (AMD)" %}</a></li>
+                    <li><a href="http://www.newfies-dialer.org/pricing" target="_blank">Newfies-Dialer Pricing</a></li>
+
                 </ul>
             </li>
         </ul>
@@ -114,7 +114,28 @@
                 </ul>
             </li>
         </ul>
+        {% else %}
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <div>
+                <form class="form-inline" role="form" action="/i18n/setlang/" method="post">
+                    {% csrf_token %}
+                    <div class="div_language">
+                        <label>
+                        <select name="language" id="language-container" class="form-control" onchange="this.form.submit()">
+                            {% for lang in LANGUAGES %}
+                            <option value="{{ lang.0 }}" {% ifequal lang.0 LANGUAGE_CODE %}selected{% endifequal %}>{{ lang.1 }}</option>
+                            {% endfor %}
+                        </select>
+                        </label>
+                    </div>
+                </form>
+                </div>
+            </li>
+        </ul>
         {% endif %}
+
     </div><!--/.nav-collapse -->
   </div>
 </nav>

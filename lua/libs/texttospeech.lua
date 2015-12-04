@@ -193,6 +193,17 @@ function tts(text, tts_dir)
         tts_acapela:set_cache(true)
         tts_acapela:prepare(text, ACAPELA_LANG, ACAPELA_GENDER, ACAPELA_INTONATION)
         output_file = tts_acapela:run()
+
+    elseif TTS_ENGINE == 'mstranslator' then
+        -- Microsoft Translator
+        MSTranslator = require "mstranslator"
+        tts_mstranslator = MSTranslator:new{
+            client_id=CLIENT_ID,
+            client_secret=CLIENT_SECRET,
+            DIRECTORY=tts_dir}
+        tts_mstranslator:set_cache(true)
+        tts_mstranslator:prepare(text, MSTRANSLATOR_LANG)
+        output_file = tts_mstranslator:run()
     end
 
     return output_file

@@ -26,6 +26,8 @@ from mod_mailer.models import MailSpooler
 from dialer_cdr.models import Callrequest
 from dialer_cdr.tasks import init_callrequest
 from dialer_cdr.constants import CALLREQUEST_STATUS, CALLREQUEST_TYPE
+from sms.tasks import SendMessage
+from mod_sms.models import SMSMessage
 from math import floor
 from datetime import datetime, timedelta
 from django.utils.timezone import utc
@@ -149,6 +151,31 @@ def perform_alarm(obj_event, obj_alarm):
 
     elif obj_alarm.method == ALARM_METHOD.SMS:
         # send alarm via SMS
+        try:
+            caluser_profile = CalendarUserProfile.objects.get(user=obj_alarm.event.creator)
+        except CalendarUserProfile.DoesNotExist:
+            logger.error("Error retrieving CalendarUserProfile (ALARM_METHOD.SMS)")
+            return False
+        callerid = caluser_profile.calendar_setting.callerid
+        sms_gateway = caluser_profile.calendar_setting.sms_gateway
+
+        # Create Message object
+        msg_obj = SMSMessage.objects.create(
+            content=obj_alarm.sms_template.sms_text,
+            recipient_number=obj_alarm.alarm_phonenumber,
+            sender=obj_alarm.event.creator,
+            sender_number=callerid,
+            status='Unsent',
+            content_type=ContentType.objects.get(model='alarm', app_label='appointment'),
+            object_id=obj_alarm.id,
+            sms_gateway=sms_gateway,
+        )
+
+        # Send sms
+        logger.warning("[perform_alarm - SendMessage] Call msg_obj id:%d - gateway_id:%d" %
+                       (msg_obj.id, sms_gateway.id))
+        SendMessage.delay(msg_obj.id, sms_gateway.id)
+
         # Mark the Alarm as SUCCESS
         obj_alarm.status = ALARM_STATUS.SUCCESS
         obj_alarm.save()
@@ -217,7 +244,7 @@ class alarmrequest_dispatcher(PeriodicTask):
                 logger.error("Error retrieving CalendarUserProfile")
                 return False
 
-            #manager_profile = UserProfile.objects.get(user=caluser_profile.manager)
+            # manager_profile = UserProfile.objects.get(user=caluser_profile.manager)
             # manager_profile = caluser_profile.manager.get_profile()
             # manager_profile.dialersetting
             # Use manager_profile.dialersetting to retrieve some settings

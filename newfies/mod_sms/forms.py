@@ -49,7 +49,7 @@ class SMSCampaignForm(ModelForm):
 
     """SMSCampaign ModelForm"""
     campaign_code = forms.CharField(widget=forms.HiddenInput)
-    #content_object = forms.ChoiceField(label=_("Application"),)
+    # content_object = forms.ChoiceField(label=_("Application"),)
 
     class Meta:
         model = SMSCampaign
@@ -141,6 +141,10 @@ class SMSCampaignForm(ModelForm):
         self.fields['campaign_code'].initial = get_unique_code(length=5)
         if user:
             phonebook_list = get_phonebook_list(user)
+            if not phonebook_list:
+                phonebook_list = []
+                phonebook_list.append(('', '---'))
+
             self.fields['phonebook'].choices = phonebook_list
             self.fields['phonebook'].initial = str(phonebook_list[0][0])
 

@@ -439,7 +439,7 @@ class Campaign(Model):
         for elem_subscriber in list_subscriber:
             count = count + 1
             id_list_sb.append(elem_subscriber.id)
-        #Update in bulk
+        # Update in bulk
         Subscriber.objects.filter(id__in=id_list_sb).update(status=status)
         return (list_subscriber, count)
 

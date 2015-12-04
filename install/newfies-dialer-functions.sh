@@ -664,11 +664,8 @@ func_prepare_logger() {
 
 #Create PGSQL
 func_create_pgsql_database(){
-
     # Create the Database
-    echo "We will remove existing Database"
-    echo "Press Enter to continue"
-    read TEMP
+    echo "We will remove the Database if one already exists..."
     echo "sudo -u postgres dropdb $DATABASENAME"
     sudo -u postgres dropdb $DATABASENAME
     # echo "Remove Existing Database if exists..."

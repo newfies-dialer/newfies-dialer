@@ -4,7 +4,7 @@
 
 
 Newfies-Dialer is a free and open source voice broadcast application, which
-can fulfil a variety of roles for a range of industries and organisations who
+can fulfill a variety of roles for a range of industries and organisations who
 wish to contact large numbers of people by phone in a short space of time.
 
 The Newfies-Dialer aplication has been built using a messaging system so that

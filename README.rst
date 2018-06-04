@@ -1,11 +1,20 @@
 .. image:: https://github.com/newfies-dialer/newfies-dialer/raw/master/newfies/resources/images/newfies.png
 
-.. image:: https://secure.travis-ci.org/Star2Billing/newfies-dialer.png?branch=develop
+Newfies-Dialer open source development was discontinued in 2015, but Newfies-Dialer continues to be developed as a commercial closed source product. See https://www.newfies-dialer.org
+
+Newfies-Dialer is an auto-dialer supporting multi-tenancy and billing. You use your own VoIP carrier so there are potentially huge savings to be made when using Newfies-Dialer compared to competing products who insist on using their VoIP termination.
+
+In recent years, there are countless improvements in terms of features, benefits and capacity of Newfies-Dialer. There is a list of changes at https://www.newfies-dialer.org/newfies-dialer-sms-voice-broadcasting-software-changelog/
+
+Please contact us for pricing and a live demo at newfies-dialer@star2billing or via our website at https://www.newfies-dialer.org
 
 
-Newfies-Dialer is a free and open source voice broadcast application, which
-can fulfil a variety of roles for a range of industries and organisations who
-wish to contact large numbers of people by phone in a short space of time.
+Overview
+--------
+
+Newfies-Dialer is a voice broadcast application, which can fulfil a variety 
+of roles for a range of industries and organisations who wish to contact 
+large numbers of people by phone in a short space of time.
 
 The Newfies-Dialer aplication has been built using a messaging system so that
 it can support distributed processing on cloud servers. The platform is
@@ -17,8 +26,8 @@ It currently utilises the Freeswitch Telephony engine
 (http://www.freeswitch.org) to process the the outbound calls. However support
 for other telephony engines, such as Asterisk may be added in the future.
 
-Newfies-Dialer is written in Lua & Python using the Django Framework, and operates with
-message brokers such as RabbitMQ.
+Newfies-Dialer is written in Lua & Python using the Django Framework, and 
+operates with message brokers such as RabbitMQ.
 
 In order to communicate with external systems, Newfies-Dialer has been
 released with a substantial set of API's to easily integrate the platform
@@ -59,34 +68,6 @@ Health & Welfare:
 
     Deliver appointment reminders to patients of dentists, doctors and
     other organisations.
-
-
-Installation
-------------
-
-Newfies is a django based application, so the major requirements are :
-
-    - python >= 2.6
-    - Apache / http server with WSGI modules
-    - Django Framework >= 1.5
-    - Celery >= 3.1
-
-All the requirements can easily be installed with PIP
-(http://pypi.python.org/pypi/pip) :
-
-    - https://github.com/newfies-dialer/newfies-dialer/blob/master/requirements/all.txt
-
-
-Installation Script
-~~~~~~~~~~~~~~~~~~~
-
-Installation scripts are provided to install Newfies-Dialer
-
-    - https://github.com/newfies-dialer/newfies-dialer/tree/master/install
-
-Beginner's Guide :
-
-    - http://www.newfies-dialer.org/documentation/beginners-guide/
 
 
 Documentation
@@ -137,29 +118,15 @@ Help us translate Newfies-Dialer, we use Transifex: https://www.transifex.com/pr
 Additional information
 -----------------------
 
-* Fork the project on GitHub : https://github.com/newfies-dialer/newfies-dialer
-
-* License : MPL 2.0 (https://raw.github.com/newfies-dialer/newfies-dialer/master/COPYING)
-
 * Official website : http://www.newfies-dialer.org
-
-* `Google Group`_ - the mailing list is newfies-dialer@googlegroups.com
-
-* `Forum`_
-
-* `Continuous integration homepage`_ on `travis-ci.org`_
 
 * `Twitter account for news and updates`_
 
-.. _`Google Group`: https://groups.google.com/forum/?fromgroups#!forum/newfies-dialer
-.. _`Forum`: http://forum.newfies-dialer.org/
-.. _`Continuous integration homepage`: http://travis-ci.org/#!/Star2Billing/newfies-dialer
-.. _`travis-ci.org`: http://travis-ci.org/
 .. _`Twitter account for news and updates`: https://twitter.com/newfies_dialer
 
 
-Support
--------
+Support & Installation
+----------------------
 
 The Newfies-Dialer project is supported by Star2billing S.L.
 For more information, see http://www.newfies-dialer.org/

@@ -1,6 +1,6 @@
 .. image:: https://github.com/newfies-dialer/newfies-dialer/raw/master/newfies/resources/images/newfies.png
 
-Newfies-Dialer open source development was discontinued in 2015, but Newfies-Dialer continues to be developed as a commercial closed source product. See https://www.newfies-dialer.org
+.. DANGER:: Newfies-Dialer open source development was discontinued in 2015, but Newfies-Dialer continues to be developed as a commercial closed source product. See https://www.newfies-dialer.org
 
 Newfies-Dialer is an auto-dialer supporting multi-tenancy and billing. You use your own VoIP carrier so there are potentially huge savings to be made when using Newfies-Dialer compared to competing products who insist on using their VoIP termination.
 

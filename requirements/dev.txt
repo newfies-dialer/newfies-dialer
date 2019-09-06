@@ -1,8 +1,0 @@
-Sphinx
-Werkzeug
-django-debug-toolbar
-ipython
-pip-tools
-pygraphviz
-django-debug-toolbar-template-timings
-fake-factory

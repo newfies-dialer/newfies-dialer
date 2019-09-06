@@ -1,7 +1,0 @@
-static/*
-.idea
-celerybeat-schedule
-usermedia/upload/audiofiles/*.wav
-usermedia/upload/audiofiles/*.mp3
-*coverage
-cover

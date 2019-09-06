@@ -1,4 +1,0 @@
--r basic.txt
--r django.txt
--r dev.txt
--r test.txt

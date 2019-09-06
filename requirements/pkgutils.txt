@@ -1,5 +1,0 @@
-setuptools>=1.3.2
-wheel
-flake8
-tox>=2.1.1
-Sphinx-PyPI-upload

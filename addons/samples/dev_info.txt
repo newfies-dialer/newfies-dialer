@@ -1,6 +1,0 @@
-
-Generate CDR based on CallRequest
-=================================
-
-INSERT IGNORE INTO dialer_cdr (user_id, request_uuid, used_gateway_id, callrequest_id, callid, callerid, phone_number, starting_date, duration)
-SELECT 1, CONCAT(FLOOR(1000 + (RAND() * 5000)), '-', FLOOR(1000 + (RAND() * 5000)), '-', FLOOR(1000 + (RAND() * 5000)), '-', FLOOR(1000 + (RAND() * 5000))) as new_request_uuid, 2, id, CONCAT(FLOOR(1000 + (RAND() * 5000)), '-', FLOOR(1000 + (RAND() * 5000)), '-', FLOOR(1000 + (RAND() * 5000)), '-', FLOOR(1000 + (RAND() * 5000))) as new_callid, '555555555555', duplicate_contact, NOW(), FLOOR(1 + (RAND() * 100)) as new_duration FROM dialer_campaign_subscriber WHERE status=6;

@@ -7,7 +7,6 @@ factory-boy==2.4.1
 fake-factory==0.4.2
 
 xtraceback==0.4.0-rc1
-rudolf2==0.3
 pylint==1.2.1
 clonedigger==1.1.0
 autopep8==1.0.4

@@ -17,7 +17,11 @@
 # :copyright: (c) 2011-2015 by Arezqui Belaid.
 # :license: MPL 2.0, see COPYING for more details.
 
+<<<<<<< HEAD
 __version__ = '2.20.2'
+=======
+__version__ = "2.15.0"
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 __author__ = "Arezqui Belaid"
 __contact__ = "info@star2billing.com"
 __homepage__ = "http://www.newfies-dialer.org"

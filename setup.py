@@ -61,8 +61,13 @@ setup(
     package_dir={'newfies': 'newfies'},
     packages=find_packages(),
     package_data={},
+<<<<<<< HEAD
     # install_requires=parse_requirements('requirements/rtd.txt'),
     # dependency_links=parse_dependency_links('requirements/rtd.txt'),
+=======
+    # install_requires=parse_requirements('install/requirements/rtd-requirements.txt'),
+    # dependency_links=parse_dependency_links('install/requirements/rtd-requirements.txt'),
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     license='MPL 2.0 License',
     classifiers=[
         'Development Status :: 5 - Production/Stable',

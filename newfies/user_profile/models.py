@@ -160,7 +160,10 @@ class Staff(User):
 
 
 class CalendarUser(User):
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     """Calendar User Model"""
 
     class Meta:
@@ -185,7 +188,10 @@ class CalendarUser(User):
 
 
 class CalendarUserProfile(Profile_abstract):
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     """This defines extra features for the AR_user
 
     **Attributes**:

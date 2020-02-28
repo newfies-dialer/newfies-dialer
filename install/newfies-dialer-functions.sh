@@ -498,7 +498,11 @@ func_install_pip_deps(){
     pip install importlib
 
     echo "Install Basic requirements..."
+<<<<<<< HEAD
     for line in $(cat /usr/src/newfies-dialer/requirements/basic.txt | grep -v \#)
+=======
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/basic-requirements.txt | grep -v \#)
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     do
         echo "pip install $line"
         pip install $line
@@ -510,7 +514,11 @@ func_install_pip_deps(){
         pip install $line --allow-all-external --allow-unverified django-admin-tools
     done
     echo "Install Test requirements..."
+<<<<<<< HEAD
     for line in $(cat /usr/src/newfies-dialer/requirements/test.txt | grep -v \#)
+=======
+    for line in $(cat /usr/src/newfies-dialer/install/requirements/test-requirements.txt | grep -v \#)
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     do
         echo "pip install $line"
         pip install $line
@@ -754,8 +762,69 @@ func_celery_supervisor(){
     /etc/init.d/supervisor start
 }
 
+<<<<<<< HEAD
 #Install Django Newfies-Dialer
 func_django_newfiesdialer_install(){
+=======
+#Function to install Frontend
+func_install_frontend(){
+
+    echo ""
+    echo ""
+    echo "This script will install Newfies-Dialer"
+    echo "======================================="
+    echo ""
+
+    if [ -d "$INSTALL_DIR" ]; then
+        # Newfies-Dialer is already installed
+        clear
+        echo ""
+        echo "We detect an existing Newfies-Dialer Installation"
+        echo "if you continue the existing installation will be removed!"
+        echo ""
+        echo "Press Enter to continue or CTRL-C to exit"
+        read TEMP
+
+        mkdir /tmp/old-newfies-dialer_$DATETIME
+        mv $INSTALL_DIR /tmp/old-newfies-dialer_$DATETIME
+        mkdir /tmp/old-lua-newfies-dialer_$DATETIME
+        mv $LUA_DIR /tmp/old-lua-newfies-dialer_$DATETIME
+        echo "Files from $INSTALL_DIR has been moved to /tmp/old-newfies-dialer_$DATETIME and /tmp/old-lua-newfies-dialer_$DATETIME"
+
+        if [ `sudo -u postgres psql -qAt --list | egrep '^$DATABASENAME\|' | wc -l` -eq 1 ]; then
+            echo ""
+            echo "Run backup with postgresql..."
+            sudo -u postgres pg_dump $DATABASENAME > /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql
+            echo "PostgreSQL Dump of database $DATABASENAME added in /tmp/old-newfies-dialer_$DATETIME.pgsqldump.sql"
+            echo "Press Enter to continue"
+            read TEMP
+        fi
+    fi
+
+    #Install Depedencies
+    func_install_dependencies
+
+    #Install Redis
+    func_install_redis
+
+    #Install RabbitMQ
+    func_install_rabbitmq
+
+    #Create and enable virtualenv
+    func_setup_virtualenv
+
+    #Install Code Source
+    func_install_source
+
+    #Install PIP dependencies
+    func_install_pip_deps
+
+    #Prepare the settings
+    func_prepare_settings
+
+    func_create_pgsql_database
+
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     #Prepare Django DB / Migrate / Create User ...
     cd $INSTALL_DIR/
     python manage.py syncdb --noinput
@@ -869,6 +938,12 @@ func_install_backend() {
 
     #Install Celery & redis-server
     func_install_redis
+<<<<<<< HEAD
+=======
+
+    #Install RabbitMQ
+    func_install_rabbitmq
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 
     #Install RabbitMQ
     func_install_rabbitmq
@@ -946,8 +1021,52 @@ func_install_rabbitmq() {
     rabbitmqctl list_queues -p /newfiesdialer
 }
 
+#Install & Configure RabbitMQ
+func_install_rabbitmq() {
+    echo "Install RabbitMQ ..."
+    case $DIST in
+        'DEBIAN')
+            chk=`grep "rabbitmq" /etc/apt/sources.list.d/rabbitmq.list|wc -l`
+            if [ $chk -lt 1 ] ; then
+                echo "Setup new sources.list entries for RabbitMQ"
+                echo "deb http://www.rabbitmq.com/debian/ testing main" > /etc/apt/sources.list.d/rabbitmq.list
+                wget --quiet -O - http://www.rabbitmq.com/rabbitmq-signing-key-public.asc | apt-key add -
+            fi
+            apt-get update
+            apt-get -y install rabbitmq-server
+            /usr/sbin/rabbitmq-plugins enable rabbitmq_management
+            # echo "[{rabbit, [{loopback_users, []}]}]." > /etc/rabbitmq/rabbitmq.config
 
+            #Set RabbitMQ to start on boot and start it up immediately:
+            update-rc.d rabbitmq-server defaults
+            /etc/init.d/rabbitmq-server start
+        ;;
+        'CENTOS')
+            #TODO: Not supported
+            echo ""
+            echo "RabbitMQ is not supported on CentOS, fork and patch away please"
+            echo ""
+            exit 1
+        ;;
+    esac
+
+    #Create RabbitMQ vhost and user for Newfies-Dialer
+    rabbitmqctl add_vhost /newfiesdialer
+    rabbitmqctl add_user newfiesdialer mypassword
+    rabbitmqctl set_permissions -p /newfiesdialer newfiesdialer ".*" ".*" ".*"
+
+    #Check Cluster Status
+    rabbitmqctl cluster_status
+    #List the running queues
+    rabbitmqctl list_queues -p /newfiesdialer
+}
+
+
+<<<<<<< HEAD
 #Install Redis
+=======
+#Install recent version of redis-server
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 func_install_redis() {
     echo "Install Redis-server ..."
     case $DIST in

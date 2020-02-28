@@ -110,7 +110,11 @@ class SMSCampaignForm(ModelForm):
                 ),
                     form_action,
                     css_class='well'
+<<<<<<< HEAD
                 ),
+=======
+                    ),
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
                 Tab(_('Completion Settings'),
                     Div(
                         Div('frequency', css_class=css_class),

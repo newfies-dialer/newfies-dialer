@@ -139,6 +139,10 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+<<<<<<< HEAD
+=======
+    #'pagination.middleware.PaginationMiddleware',
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     'linaro_django_pagination.middleware.PaginationMiddleware',
     'django_lets_go.filter_persist_middleware.FilterPersistMiddleware',
     'audiofield.middleware.threadlocals.ThreadLocals',
@@ -233,8 +237,13 @@ INSTALLED_APPS = (
     'dnc',
     'frontend',
     'maintenance',
+<<<<<<< HEAD
     # 'agent',
     # 'callcenter',
+=======
+    #'agent',
+    #'callcenter',
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     'calendar_settings',
     'appointment',
     'mod_mailer',
@@ -311,7 +320,11 @@ except ImportError:
 else:
     INSTALLED_APPS = INSTALLED_APPS + ('django_extensions',)
 
+<<<<<<< HEAD
 # Default Test Runner
+=======
+#Default Test Runner
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 TEST_RUNNER = 'django.test.runner.DiscoverRunner'
 
 # Nose
@@ -375,6 +388,7 @@ CACHES = {
     },
 }
 
+<<<<<<< HEAD
 # CELERY SETTINGS
 # ===============
 # Broker settings Redis
@@ -389,6 +403,22 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
 # CELERY_RESULT_BACKEND = "amqp://newfiesdialer:mypassword@localhost:5672//newfiesdialer"
 
 # Using the database to store task state and results.
+=======
+#CELERY SETTINGS
+#===============
+# # Broker settings Redis
+# BROKER_URL = "redis://localhost:6379/0"
+# REDIS_HOST = 'localhost'
+# REDIS_PORT = 6379
+# REDIS_DB = 0
+# #REDIS_CONNECT_RETRY = True
+# CELERY_RESULT_BACKEND = "redis://localhost:6379/0"
+
+BROKER_URL = 'amqp://newfiesdialer:mypassword@localhost:5672//newfiesdialer'
+CELERY_RESULT_BACKEND = "amqp://newfiesdialer:mypassword@localhost:5672//newfiesdialer"
+
+## Using the database to store task state and results.
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 CELERY_TASK_RESULT_EXPIRES = 18000  # 5 hours.
 
 # CELERY_REDIS_CONNECT_RETRY = True
@@ -493,8 +523,17 @@ EMAIL_ADMIN = 'newfies_admin@localhost.com'
 # ADD 'dummy','plivo','twilio','esl'
 NEWFIES_DIALER_ENGINE = 'esl'
 
+<<<<<<< HEAD
 # DIALER
 # ======
+=======
+#SENTRY SETTINGS
+#===============
+#SENTRY_DSN = 'http://asdada:asdasd@localhost:9000/1'
+
+#DIALER
+#======
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 # NOTE: MAX_CALLS_PER_SECOND is no longer implemented
 # MAX_CALLS_PER_SECOND = 20  # By default configured to 20 calls per second
 

@@ -99,6 +99,14 @@ Screenshot
 .. image:: https://github.com/newfies-dialer/newfies-dialer/raw/develop/docs/source/_static/images/newfies-dialer-dashboard.png
 
 
+* Dashboard Frontend :
+
+    http://localhost:8000/dashboard/
+    Newfies-Dialer Dashboard provides a contact and call reporting for the running campaign.
+
+.. image:: https://github.com/Star2Billing/newfies-dialer/raw/develop/docs/source/_static/images/newfies-dialer-dashboard.png
+
+
 * Admin Dashboard :
 
     http://localhost:8000/admin/

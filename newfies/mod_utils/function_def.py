@@ -57,7 +57,11 @@ def get_common_campaign_status_url(id, status, status_link, STATUS_OF_CAMPAIGN):
         url_cpg_stop = '#'
         control_stop_style = tpl_control_icon('fa-stop')
 
+<<<<<<< HEAD
     # return all the html button for campaign status management
+=======
+    #return all the html button for campaign status management
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     return "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a> " \
         "<a href='%s' title='%s'>%s</a> <a href='%s' title='%s'>%s</a>" % \
         (url_cpg_start, _("Start"), control_play_style,

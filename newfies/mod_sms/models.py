@@ -136,12 +136,20 @@ class SMSCampaign(Model):
     callerid = models.CharField(max_length=80, blank=True,
                                 verbose_name=_("Caller ID Number"),
                                 help_text=_("outbound Caller ID"))
+<<<<<<< HEAD
     # General Starting & Stopping date
+=======
+    #General Starting & Stopping date
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     startingdate = models.DateTimeField(default=now, verbose_name=_('start'))
     stoppeddate = models.DateTimeField(default=set_expirationdate, verbose_name=_('stopped'))
     expirationdate = models.DateTimeField(default=set_expirationdate, verbose_name=_('finish'))
 
+<<<<<<< HEAD
     # Per Day Starting & Stopping Time
+=======
+    #Per Day Starting & Stopping Time
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     daily_start_time = models.TimeField(default='00:00:00')
     daily_stop_time = models.TimeField(default='23:59:59')
     monday = models.BooleanField(default=True, verbose_name=_('monday'))

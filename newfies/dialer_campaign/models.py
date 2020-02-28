@@ -198,11 +198,19 @@ class Campaign(Model):
                                 help_text=_("outbound Caller ID"))
     caller_name = models.CharField(max_length=80, blank=True, verbose_name=_("Caller Name"),
                                    help_text=_("outbound Caller Name"))
+<<<<<<< HEAD
     # General Starting & Stopping date
     startingdate = models.DateTimeField(default=now, verbose_name=_('start'))
     stoppeddate = models.DateTimeField(default=set_expirationdate, verbose_name=_('stopped'))
     expirationdate = models.DateTimeField(default=set_expirationdate, verbose_name=_('finish'))
     # Per Day Starting & Stopping Time
+=======
+    #General Starting & Stopping date
+    startingdate = models.DateTimeField(default=now, verbose_name=_('start'))
+    stoppeddate = models.DateTimeField(default=set_expirationdate, verbose_name=_('stopped'))
+    expirationdate = models.DateTimeField(default=set_expirationdate, verbose_name=_('finish'))
+    #Per Day Starting & Stopping Time
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     daily_start_time = models.TimeField(default='00:00:00', verbose_name=_('daily start time'))
     daily_stop_time = models.TimeField(default='23:59:59', verbose_name=_('daily stop time'))
     monday = models.BooleanField(default=True, verbose_name=_('monday'))

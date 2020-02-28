@@ -179,7 +179,11 @@ class DNCContact_fileExport(Exportfile):
                         </label>
                         {% endfor %}
                     </div>
+<<<<<<< HEAD
                    """), css_class='col-md-6'),
+=======
+                   """ % _('Export to')), css_class='col-md-6'),
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
                 css_class='row'
             ),
         )

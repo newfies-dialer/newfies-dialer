@@ -68,7 +68,11 @@ class UserChangeDetailExtendForm(ModelForm):
     class Meta:
         model = UserProfile
         fields = ["address", "city", "state", "country", "zip_code", "phone_no",
+<<<<<<< HEAD
                   "fax", "company_name", "company_website", "language", "note"]
+=======
+                 "fax", "company_name", "company_website", "language", "note"]
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 
     def __init__(self, user, *args, **kwargs):
         super(UserChangeDetailExtendForm, self).__init__(*args, **kwargs)
@@ -97,7 +101,11 @@ class CheckPhoneNumberForm(forms.Form):
 
     """A form used to check the phone number in the Customer UI."""
     phone_number = forms.CharField(label=_('Verify phone number'), required=True,
+<<<<<<< HEAD
                                    help_text=_("verify if a phone number is authorized to call"))
+=======
+        help_text=_("verify if a phone number is authorized to call"))
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 
     def __init__(self, *args, **kwargs):
         super(CheckPhoneNumberForm, self).__init__(*args, **kwargs)

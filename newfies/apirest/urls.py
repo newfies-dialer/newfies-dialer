@@ -36,12 +36,21 @@ from apirest.view_section_template import SectionTemplateViewSet
 from apirest.view_branching_template import BranchingTemplateViewSet
 from apirest.view_survey_aggregate_result import SurveyAggregateResultViewSet
 from apirest.view_subscriber_per_campaign import SubscriberPerCampaignList
+<<<<<<< HEAD
 # from apirest.view_queue import QueueViewSet
 # from apirest.view_tier import TierViewSet
 from apirest.view_mail_template import MailTemplateViewSet
 from apirest.view_sms_template import SMSTemplateViewSet
 from apirest.view_sms_campaign import SMSCampaignViewSet
 # Appointement module
+=======
+#from apirest.view_queue import QueueViewSet
+#from apirest.view_tier import TierViewSet
+from apirest.view_mail_template import MailTemplateViewSet
+from apirest.view_sms_template import SMSTemplateViewSet
+from apirest.view_sms_campaign import SMSCampaignViewSet
+#Appointement module
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 from apirest.api_appointment.view_calendar import CalendarViewSet
 from apirest.api_appointment.view_calendar_setting import CalendarSettingViewSet
 from apirest.api_appointment.view_calendar_user import CalendarUserViewSet
@@ -50,6 +59,10 @@ from apirest.api_appointment.view_rule import RuleViewSet
 from apirest.api_appointment.view_event import EventViewSet
 from apirest.api_appointment.view_alarm import AlarmViewSet
 from apirest.api_appointment.view_alarm_request import AlarmRequestViewSet
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 
 
 # from agent.api_views import AgentViewSet
@@ -73,8 +86,13 @@ router.register(r'survey-template', SurveyTemplateViewSet)
 router.register(r'sealed-survey', SurveyViewSet)
 router.register(r'section-template', SectionTemplateViewSet)
 router.register(r'branching-template', BranchingTemplateViewSet)
+<<<<<<< HEAD
 # router.register(r'queue', QueueViewSet)
 # router.register(r'tier', TierViewSet)
+=======
+#router.register(r'queue', QueueViewSet)
+#router.register(r'tier', TierViewSet)
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 router.register(r'mail-template', MailTemplateViewSet)
 router.register(r'sms-template', SMSTemplateViewSet)
 
@@ -93,6 +111,7 @@ router.register(r'alarm-request', AlarmRequestViewSet)
 # Wire up our API using automatic URL routing.
 # Additionally, we include login URLs for the browseable API.
 urlpatterns = patterns('',
+<<<<<<< HEAD
                        url(r'^rest-api/subcampaign/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
                        url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/$',
                            SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
@@ -102,6 +121,17 @@ urlpatterns = patterns('',
                        url(r'^rest-api/surveyaggregate/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
                        url(r'^rest-api/surveyaggregate/(?P<survey_id>[0-9]+)/$',
                            SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
+=======
+    url(r'^rest-api/subcampaign/$', SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
+    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/$',
+        SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
+    url(r'^rest-api/subcampaign/(?P<campaign_id>[0-9]+)/(?P<contact_id>[0-9]+)/$',
+        SubscriberPerCampaignList.as_view(), name="subscriber_campaign"),
+
+    url(r'^rest-api/surveyaggregate/$', SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
+    url(r'^rest-api/surveyaggregate/(?P<survey_id>[0-9]+)/$',
+        SurveyAggregateResultViewSet.as_view(), name="survey_aggregate_result"),
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 
                        url(r'^rest-api/bulkcontact/$', BulkContactViewSet.as_view(), name="bulk_contact"),
 

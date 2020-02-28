@@ -27,7 +27,7 @@ class MailTemplate(models.Model):
     label = models.CharField(max_length=75, verbose_name=_('label'),
                              help_text=_('mail template name'))
     template_key = models.CharField(max_length=30, unique=True, verbose_name=_('template key'),
-                                    help_text=_('unique name used to pick some template for recurring action, such as activation or warning'))
+        help_text=_('unique name used to pick some template for recurring action, such as activation or warning'))
     from_email = models.EmailField(max_length=75, verbose_name=_('from_email'),
                                    help_text=_('sender email'))
     from_name = models.CharField(max_length=75, verbose_name=_('from_name'),

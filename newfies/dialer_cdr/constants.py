@@ -62,7 +62,11 @@ class CALL_DISPOSITION(Choice):
     FAILED = 'FAILED', _('FAILED')  # Added to catch all
 
 
+<<<<<<< HEAD
 # Column Name for the CDR Report
+=======
+#Column Name for the CDR Report
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 CDR_REPORT_COLUMN_NAME = {
     'date': _('start date'),
     'call_id': _('call ID'),

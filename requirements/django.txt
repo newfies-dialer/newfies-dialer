@@ -7,10 +7,17 @@ django-uuidfield==0.5.0
 django-cache-utils==0.7.2
 django-picklefield==0.3.1
 django-jsonfield==0.9.13
+<<<<<<< HEAD:requirements/django.txt
 django-countries==3.2.0
 django-redis-cache==0.13.0
 django-redisboard==1.2.0
 django-admin-sortable==1.8.0
+=======
+django-countries==3.0.1
+django-redis-cache==0.13.0
+django-redisboard==0.2.7
+django-admin-sortable==1.7.8
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0':install/requirements/django-requirements.txt
 # django-tagging==0.3.4
 django-dajaxice-ng==0.6.0.0
 django-dajax-ng==0.9.4
@@ -20,6 +27,7 @@ django-dajax-ng==0.9.4
 git+http://github.com/cdr-stats/django-pagination.git
 django-admin-tools==0.5.2
 django-country-dialcode==0.5.1
+<<<<<<< HEAD:requirements/django.txt
 django-audiofield==0.6.6
 django-admin-tools-stats==0.5.5
 django-lets-go==2.9.3
@@ -27,12 +35,22 @@ django-extensions==1.5.2
 django-nvd3==0.7.6
 git+http://github.com/Star2Billing/django-notification
 django-frontend-notification==0.3.2
+=======
+django-audiofield==0.6.3
+django-admin-tools-stats==0.5.5
+django-lets-go==2.9.3
+django-extensions==1.4.6
+django-nvd3==0.7.6
+git+git://github.com/Star2Billing/django-notification
+django-frontend-notification==0.3.0
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0':install/requirements/django-requirements.txt
 django-genericadmin==0.6.1
 django-bower==5.0.2
 django-cors-headers==1.0.0
 #git+http://github.com/hmarr/django-ses.git
 git+http://github.com/pinax/django-mailer
 django-activelink==0.4
+<<<<<<< HEAD:requirements/django.txt
 git+http://github.com/areski/django-sms-gateway.git
 django-bootstrap-form==3.2
 django-registration-redux==1.2
@@ -40,3 +58,10 @@ django-bootstrap3-datetimepicker==2.2.3
 djangorestframework==2.4.4
 django-crispy-forms==1.4.0
 South==1.0.2
+=======
+git+git://github.com/areski/django-sms-gateway.git
+django-bootstrap3-datetimepicker==2.2.3
+djangorestframework==2.4.4
+django-crispy-forms==1.4.0
+South==1.0.1
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0':install/requirements/django-requirements.txt

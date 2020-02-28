@@ -363,7 +363,11 @@ class AlarmForm(ModelForm):
                 ),
                     form_action,
                     css_class='well'
+<<<<<<< HEAD
                 ),
+=======
+                    ),
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
                 Tab(_('Alarm Settings'),
                     Div(
                         Div('daily_start', css_class=css_class),
@@ -375,7 +379,11 @@ class AlarmForm(ModelForm):
                 ),
                     form_action,
                     css_class='well'
+<<<<<<< HEAD
                 ),
+=======
+                    ),
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
                 Tab(_('Result Settings'),
                     Div(
                         Div('result', css_class=css_class),

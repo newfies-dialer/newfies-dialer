@@ -6,7 +6,11 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
+<<<<<<< HEAD
 # Copyright (C) 2011-2015 Star2Billing S.L.
+=======
+# Copyright (C) 2011-2014 Star2Billing S.L.
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #
 # The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
@@ -19,7 +23,11 @@ from dialer_cdr.models import Callrequest, VoIPCall
 # from dialer_contact.models import Phonebook, Contact
 from survey.models import Survey, Section, Branching, Result, ResultAggregate
 # from django.db import connection
+<<<<<<< HEAD
 # from survey.models import Section
+=======
+#from survey.models import Section
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 from datetime import datetime
 from django.utils.timezone import utc
 from dateutil.relativedelta import relativedelta
@@ -67,7 +75,11 @@ def clean_records(older_than_day):
     # print "  - Contact"
     print ""
 
+<<<<<<< HEAD
     # Delete old Campaigns
+=======
+    #Delete old Campaigns
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     print "Deleting old Campaigns => number to delete: %(count)s" % \
         {'count': Campaign.objects.filter(created_date__lt=old_date).count()}
 
@@ -76,7 +88,11 @@ def clean_records(older_than_day):
         print "Deleting Campaign => : %s" % obj
         obj.delete()
 
+<<<<<<< HEAD
     # Delete old Subscribers
+=======
+    #Delete old Subscribers
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     print "Deleting old Subscribers => number to delete: %(count)s" % \
         {'count': Subscriber.objects.filter(created_date__lt=old_date).count()}
 
@@ -85,7 +101,11 @@ def clean_records(older_than_day):
         print "Deleting Subscriber => : %s" % obj
         obj.delete()
 
+<<<<<<< HEAD
     # Delete old Callrequests
+=======
+    #Delete old Callrequests
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     print "Deleting old Callrequests => number to delete: %(count)s" % \
         {'count': Callrequest.objects.filter(created_date__lt=old_date).count()}
 
@@ -94,7 +114,11 @@ def clean_records(older_than_day):
         print "Deleting Callrequest => : %s" % obj
         obj.delete()
 
+<<<<<<< HEAD
     # Delete old VoIPCalls
+=======
+    #Delete old VoIPCalls
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     print "Deleting old VoIPCalls => number to delete: %(count)s" % \
         {'count': VoIPCall.objects.filter(starting_date__lt=old_date).count()}
 
@@ -103,7 +127,11 @@ def clean_records(older_than_day):
         print "Deleting VoIPCall => : %s" % obj
         obj.delete()
 
+<<<<<<< HEAD
     # Delete old Phonebooks
+=======
+    #Delete old Phonebooks
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     # print "Deleting old Phonebooks => number to delete: %(count)s" % \
     #     {'count': Phonebook.objects.filter(created_date__lt=old_date).count()}
 
@@ -121,7 +149,11 @@ def clean_records(older_than_day):
     #     print "Deleting Contact => : %s" % obj
     #     obj.delete()
 
+<<<<<<< HEAD
     # Delete old ResultAggregates
+=======
+    #Delete old ResultAggregates
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     print "Deleting old ResultAggregates => number to delete: %(count)s" % \
         {'count': ResultAggregate.objects.filter(created_date__lt=old_date).count()}
 
@@ -130,7 +162,11 @@ def clean_records(older_than_day):
         print "Deleting ResultAggregate => : %s" % obj
         obj.delete()
 
+<<<<<<< HEAD
     # Delete old Result
+=======
+    #Delete old Result
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     print "Deleting old Result => number to delete: %(count)s" % \
         {'count': Result.objects.filter(created_date__lt=old_date).count()}
 
@@ -139,7 +175,11 @@ def clean_records(older_than_day):
         print "Deleting Result => : %s" % obj
         obj.delete()
 
+<<<<<<< HEAD
     # Delete old Branchings
+=======
+    #Delete old Branchings
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     print "Deleting old Branchings => number to delete: %(count)s" % \
         {'count': Branching.objects.filter(created_date__lt=old_date).count()}
 
@@ -148,7 +188,11 @@ def clean_records(older_than_day):
         print "Deleting Branching => : %s" % obj
         obj.delete()
 
+<<<<<<< HEAD
     # Delete old Sections
+=======
+    #Delete old Sections
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     print "Deleting old Sections => number to delete: %(count)s" % \
         {'count': Section.objects.filter(created_date__lt=old_date).count()}
 
@@ -157,7 +201,11 @@ def clean_records(older_than_day):
         print "Deleting Section => : %s" % obj
         obj.delete()
 
+<<<<<<< HEAD
     # Delete old Surveys
+=======
+    #Delete old Surveys
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     print "Deleting old Surveys => number to delete: %(count)s" % \
         {'count': Survey.objects.filter(created_date__lt=old_date).count()}
 

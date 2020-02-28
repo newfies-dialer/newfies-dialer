@@ -17,7 +17,11 @@ from rest_framework import viewsets
 from apirest.user_serializers import UserSerializer
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.authentication import BasicAuthentication, SessionAuthentication
+<<<<<<< HEAD
 # from apirest.permissions import CustomObjectPermissions
+=======
+#from apirest.permissions import CustomObjectPermissions
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 
 
 class UserViewSet(viewsets.ReadOnlyModelViewSet):

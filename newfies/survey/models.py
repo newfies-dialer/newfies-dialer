@@ -252,7 +252,11 @@ class Section_abstract(Sortable):
                              verbose_name=_("key 8"))
     key_9 = models.CharField(max_length=100, null=True, blank=True,
                              verbose_name=_("key 9"))
+<<<<<<< HEAD
     # Rating question
+=======
+    #Rating question
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     rating_laps = models.IntegerField(max_length=1, default=9, null=True, blank=True,
                                       verbose_name=_("from 1 to X"))
     # Capture Digits

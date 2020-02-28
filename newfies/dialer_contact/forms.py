@@ -143,8 +143,12 @@ class ContactForm(ModelForm):
         css_class = 'col-md-6'
         self.helper.layout = Layout(
             TabHolder(
+<<<<<<< HEAD
                 Tab(
                     _('General'),
+=======
+                Tab(_('General'),
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
                     Div(
                         Div('phonebook', css_class=css_class),
                         Div('contact', css_class=css_class),
@@ -156,9 +160,14 @@ class ContactForm(ModelForm):
                     ),
                     form_action,
                     css_class='well'
+<<<<<<< HEAD
                 ),
                 Tab(
                     _('Advanced Data'),
+=======
+                    ),
+                Tab(_('Advanced Data'),
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
                     Div(
                         Div('unit_number', css_class=css_class),
                         Div('address', css_class=css_class),

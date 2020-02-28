@@ -73,7 +73,11 @@ def customer_detail_change(request):
             user_detail_extened_form = UserChangeDetailExtendForm(request.user, request.POST,
                                                                   instance=user_detail_extened)
             if user_detail_form.is_valid() and user_detail_extened_form.is_valid():
+<<<<<<< HEAD
                 # DEMO / Disable
+=======
+                #DEMO / Disable
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
                 if not settings.DEMO_MODE:
                     user_detail_form.save()
                     user_detail_extened_form.save()

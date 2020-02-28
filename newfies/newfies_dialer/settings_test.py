@@ -25,14 +25,23 @@ DATABASES = {
     }
 }
 
+<<<<<<< HEAD
 # Celery test
+=======
+#Celery test
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 BROKER_BACKEND = "memory"
 CELERY_ALWAYS_EAGER = True
 
 SOUTH_TESTS_MIGRATE = False
 
+<<<<<<< HEAD
 # LOGGING
 # =======
+=======
+#LOGGING
+#=======
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': True,

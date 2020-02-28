@@ -1,6 +1,10 @@
 #
 # Usage:
+<<<<<<< HEAD
 #   ./update_version.sh 2.20.0
+=======
+#   ./update_version.sh 2.15.0
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #
 
 git flow release start v$1

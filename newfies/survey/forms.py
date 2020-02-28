@@ -134,7 +134,11 @@ html_code_of_completed_field = """
                     <div class="make-switch switch-small">
                     {{ form.completed }}
                     </div>
+<<<<<<< HEAD
                     """ % (ugettext('Completed'))
+=======
+                    """ % (_('Completed'))
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 
 append_html_code_to_audio_field = """<a href="#" id="helpover" rel="popover" data-placement="top" data-content="If an audio file is not selected, the script will be played using Text-To-Speech" data-original-title="information"><i class="fa-info"></i></a>"""
 
@@ -577,8 +581,13 @@ class BranchingForm(ModelForm):
                                     <input type="radio" name="keys_button" id="button-invalid"> %s
                                 </label>
                             </div>
+<<<<<<< HEAD
                             """ % (ugettext('Any Other Key'), ugettext('Invalid'))
                         ), css_class=css_class),
+=======
+                            """ % (_('Any Other Key'), _('Invalid'))
+                            ), css_class=css_class),
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
                         css_class='row'
                     )
                 )
@@ -663,9 +672,13 @@ class SurveyDetailReportForm(SearchForm):
 
 
 class SurveyFileImport(forms.Form):
+<<<<<<< HEAD
     """
     General Form : file upload
     """
+=======
+    """General Form : file upload"""
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     name = forms.CharField(label=_('Survey Name'), required=True)
     survey_file = forms.FileField(label=_("Upload file"), required=True, help_text=_("browse text file"),
                                   error_messages={'required': 'please upload File'})

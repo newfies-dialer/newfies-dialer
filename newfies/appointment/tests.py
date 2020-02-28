@@ -16,8 +16,13 @@
 # Usage: py.test appointment/tests.py --ipdb
 #
 
+<<<<<<< HEAD
 # from django.contrib.auth.models import User
 # from django.conf import settings
+=======
+#from django.contrib.auth.models import User
+#from django.conf import settings
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 # from django_lets_go.utils import BaseAuthenticatedClient
 from user_profile.models import CalendarUser, CalendarUserProfile
 from calendar_settings.models import CalendarSetting
@@ -87,7 +92,11 @@ def nf_manager(transactional_db, client, admin_client, admin_user):
 
 @pytest.fixture
 def admin_user_profile(transactional_db, admin_client, admin_user):
+<<<<<<< HEAD
     # Create user profile for Admin user
+=======
+    #Create user profile for Admin user
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     prof = UserProfileFactory.create(user=admin_user)
     prof.save()
     return admin_user
@@ -169,7 +178,11 @@ def test_calendar_setting_view_add(admin_client, client, nf_user, appointment_fi
         "aleg_gateway": gateway.id,
         "amd_behavior": ""}, follow=True)
     assert resp.status_code == 200
+<<<<<<< HEAD
     # check that we have an extra CalendarSetting
+=======
+    #check that we have an extra CalendarSetting
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     assert CalendarSetting.objects.count() == 2
 
 
@@ -222,6 +235,7 @@ def test_calendar_user_view_add(transactional_db, admin_client, client, admin_us
     resp = calendar_user_add(request)
     assert resp.status_code == 200
 
+<<<<<<< HEAD
     resp = admin_client.post(reverse('calendar_user_add'), data={
         "username": "caluser1",
         "password1": "password",
@@ -237,6 +251,24 @@ def test_calendar_user_view_add(transactional_db, admin_client, client, admin_us
         "password2": "password",
         "calendar_setting_id": calendarsetting.id,
     }, follow=True)
+=======
+    resp = admin_client.post(reverse('calendar_user_add'), data=
+        {
+            "username": "caluser1",
+            "password1": "password",
+            "password2": "password",
+            "calendar_setting_id": calendarsetting.id,
+        }, follow=True)
+    assert resp.status_code == 200
+
+    request = rf.post(reverse('calendar_user_add'),
+        {
+            "username": "caluser1",
+            "password1": "password",
+            "password2": "password",
+            "calendar_setting_id": calendarsetting.id,
+        }, follow=True)
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     request.user = admin_user
     request.session = {}
     resp = calendar_user_add(request)

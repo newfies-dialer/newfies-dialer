@@ -7,7 +7,11 @@ msgid ""
 msgstr ""
 "Project-Id-Version: NEWFIES-LPOPOV_v1\n"
 "Report-Msgid-Bugs-To: \n"
+<<<<<<< HEAD
 "POT-Creation-Date: 2015-07-07 18:19+0200\n"
+=======
+"POT-Creation-Date: 2014-11-28 00:29+0100\n"
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 "PO-Revision-Date: 2014-03-15 20:21-0300\n"
 "Last-Translator: Arezqui Belaid <areski@gmail.com>\n"
 "Language-Team: \n"
@@ -18,6 +22,7 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 "X-Generator: Poedit 1.6.4\n"
 
+<<<<<<< HEAD
 #: agent/admin_filters.py:21 agent/models.py:44 agent/models.py:122
 #: appointment/admin_filters.py:21 calendar_settings/models.py:58
 #: callcenter/admin_filters.py:46 callcenter/models.py:93
@@ -56,10 +61,52 @@ msgstr "tempo limite de conexão em segundos"
 #: dnc/templates/dnc/dnc_contact/change.html:5
 #: frontend/templates/frontend/bootstrap_menu.html:43 mod_sms/models.py:247
 #: mod_sms/models.py:445
+=======
+#: agent/admin_filters.py:21 agent/models.py:43 agent/models.py:120
+#: appointment/admin_filters.py:21 calendar_settings/models.py:57
+#: callcenter/admin_filters.py:46 callcenter/models.py:91
+#: callcenter/models.py:156 user_profile/models.py:126
+#: user_profile/models.py:192
+msgid "manager"
+msgstr "gerente"
+
+#: agent/models.py:41
+msgid "Designates whether the user is an agent."
+msgstr "Indica se o usuário é um agente."
+
+#: agent/models.py:44 calendar_settings/models.py:58 callcenter/models.py:92
+#: callcenter/models.py:157 user_profile/models.py:192
+msgid "select manager"
+msgstr "selecionar gerente"
+
+#: agent/models.py:48 dialer_campaign/constants.py:25
+#: dialer_campaign/models.py:228 dialer_cdr/models.py:121 frontend/forms.py:51
+#: mod_mailer/models.py:60 mod_sms/forms.py:198
+msgid "type"
+msgstr "tipo"
+
+#: agent/models.py:50 dialer_campaign/models.py:222
+#: dialer_settings/models.py:52
+msgid "timeout on call"
+msgstr "tempo máximo na chamada"
+
+#: agent/models.py:51 dialer_campaign/models.py:223
+msgid "connection timeout in seconds"
+msgstr "tempo limite de conexão em segundos"
+
+#: agent/models.py:53 dialer_campaign/constants.py:34
+#: dialer_campaign/models.py:463 dialer_contact/constants.py:48
+#: dialer_contact/models.py:110
+#: dialer_contact/templates/dialer_contact/contact/change.html:5
+#: dnc/templates/dnc/dnc_contact/change.html:5
+#: frontend/templates/frontend/bootstrap_menu.html:43 mod_sms/models.py:238
+#: mod_sms/models.py:433
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: templates/admin/dialer_contact/contact/import_contact.html:20
 msgid "contact"
 msgstr "Contato"
 
+<<<<<<< HEAD
 #: agent/models.py:57 appointment/constants.py:84 appointment/constants.py:97
 #: appointment/models/alarms.py:54 appointment/models/alarms.py:148
 #: appointment/models/events.py:51 callcenter/models.py:97
@@ -70,11 +117,27 @@ msgstr "Contato"
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:29
 #: mod_sms/constants.py:44 mod_sms/constants.py:63 mod_sms/forms.py:231
 #: mod_sms/forms.py:256 mod_sms/models.py:135 mod_sms/models.py:448
+=======
+#: agent/models.py:56 appointment/constants.py:84 appointment/constants.py:97
+#: appointment/models/alarms.py:53 appointment/models/alarms.py:146
+#: appointment/models/events.py:51 callcenter/models.py:95
+#: dialer_campaign/constants.py:28 dialer_campaign/constants.py:38
+#: dialer_campaign/models.py:186 dialer_campaign/models.py:465
+#: dialer_cdr/models.py:105 dialer_contact/constants.py:52
+#: dialer_contact/models.py:89
+#: dialer_contact/templates/dialer_contact/contact/import_contact.html:29
+#: mod_sms/constants.py:44 mod_sms/constants.py:63 mod_sms/forms.py:227
+#: mod_sms/forms.py:251 mod_sms/models.py:127 mod_sms/models.py:436
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: templates/admin/dialer_contact/contact/import_contact.html:25
 msgid "status"
 msgstr "status"
 
+<<<<<<< HEAD
 #: agent/models.py:60
+=======
+#: agent/models.py:59
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "no answer delay time"
 msgstr "tempo de atraso em não atendidas"
 
@@ -112,7 +175,11 @@ msgstr "perfiis dos agentes"
 
 #: agent/models.py:96 agent/templates/agent/change.html:11
 #: agent/templates/agent/list.html:5 callcenter/admin_filters.py:20
+<<<<<<< HEAD
 #: callcenter/constants.py:38 callcenter/models.py:48 callcenter/models.py:161
+=======
+#: callcenter/constants.py:38 callcenter/models.py:47 callcenter/models.py:158
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_campaign/admin_filters.py:21 dialer_campaign/constants.py:41
 #: frontend/templates/frontend/bootstrap_side_menu.html:29
 msgid "agent"
@@ -230,9 +297,15 @@ msgstr "Listar, adicionar e editar campanhas"
 #: callcenter/templates/callcenter/tier/list.html:46
 #: dialer_audio/templates/dialer_audio/audio_list.html:18
 #: dialer_audio/templates/dialer_audio/audio_list.html:49
+<<<<<<< HEAD
 #: dialer_campaign/models.py:327
 #: dialer_campaign/templates/dialer_campaign/campaign/list.html:25
 #: dialer_campaign/templates/dialer_campaign/campaign/list.html:65
+=======
+#: dialer_campaign/models.py:317
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:20
+#: dialer_campaign/templates/dialer_campaign/campaign/list.html:60
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_campaign/templates/dialer_campaign/subscriber/list.html:26
 #: dialer_cdr/templates/dialer_cdr/voipcall_report.html:45
 #: dialer_contact/templates/dialer_contact/contact/list.html:18
@@ -243,7 +316,11 @@ msgstr "Listar, adicionar e editar campanhas"
 #: dnc/templates/dnc/dnc_contact/list.html:51
 #: dnc/templates/dnc/dnc_list/list.html:14
 #: dnc/templates/dnc/dnc_list/list.html:44 mod_sms/constants.py:45
+<<<<<<< HEAD
 #: mod_sms/models.py:232 mod_sms/templates/mod_sms/list.html:24
+=======
+#: mod_sms/models.py:223 mod_sms/templates/mod_sms/list.html:19
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: mod_sms/templates/mod_sms/sms_report.html:48
 #: survey/templates/survey/sealed_survey_list.html:21
 #: survey/templates/survey/survey_list.html:13
@@ -364,7 +441,11 @@ msgstr "\"%(name)s\" foi adicionado como agente"
 #: agent/views.py:334 appointment/views.py:129 callcenter/views.py:121
 #: callcenter/views.py:265 dialer_audio/views.py:110
 #: dialer_contact/views.py:131 dnc/views.py:121 dnc/views.py:300
+<<<<<<< HEAD
 #: mod_sms/views.py:222 survey/views.py:140
+=======
+#: mod_sms/views.py:221 survey/views.py:140
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, python-format
 msgid "\"%(name)s\" is deleted."
 msgstr "\"%(name)s\" foi excluído."
@@ -376,7 +457,11 @@ msgstr "%(count)s agente(s) foi/foram apagado(s)."
 
 #: agent/views.py:395 appointment/views.py:189 callcenter/views.py:177
 #: dialer_contact/views.py:178 dnc/views.py:169 dnc/views.py:343
+<<<<<<< HEAD
 #: mod_sms/views.py:270 survey/views.py:688
+=======
+#: mod_sms/views.py:269 survey/views.py:688
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, python-format
 msgid "\"%(name)s\" is updated."
 msgstr "\"%(name)s\" foi atualizado."
@@ -443,12 +528,20 @@ msgstr ""
 msgid "CALL"
 msgstr ""
 
+<<<<<<< HEAD
 #: appointment/constants.py:42 appointment/models/alarms.py:47
+=======
+#: appointment/constants.py:42 appointment/models/alarms.py:46
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: frontend/templates/frontend/bootstrap_menu.html:26
 #: frontend/templates/frontend/bootstrap_menu.html:37
 #: frontend/templates/frontend/bootstrap_side_menu.html:70
 #: mod_sms/templates/mod_sms/change.html:9
+<<<<<<< HEAD
 #: mod_sms/templates/mod_sms/list.html:10
+=======
+#: mod_sms/templates/mod_sms/list.html:5
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: mod_sms/templates/mod_sms/sms_dashboard.html:5
 #: mod_sms/templates/mod_sms/sms_dashboard.html:17
 #: mod_sms/templates/mod_sms/sms_report.html:9
@@ -471,8 +564,13 @@ msgstr ""
 msgid "IN PROCESS"
 msgstr "EM PROCESSO"
 
+<<<<<<< HEAD
 #: appointment/constants.py:55 appointment/models/events.py:34
 #: calendar_settings/models.py:51 mod_mailer/models.py:27
+=======
+#: appointment/constants.py:55 appointment/models/events.py:33
+#: calendar_settings/models.py:50 mod_mailer/models.py:26
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "label"
 msgstr "etiqueta"
 
@@ -489,9 +587,15 @@ msgid "call Timeout"
 msgstr "chamada timeout"
 
 #: appointment/constants.py:59 appointment/constants.py:94
+<<<<<<< HEAD
 #: appointment/models/alarms.py:41 dialer_campaign/models.py:336
 #: frontend/templates/frontend/bootstrap_menu.html:57 survey/models.py:126
 #: survey/models.py:333 survey/models.py:400
+=======
+#: appointment/models/alarms.py:40 dialer_campaign/models.py:326
+#: frontend/templates/frontend/bootstrap_menu.html:57 survey/models.py:123
+#: survey/models.py:319 survey/models.py:383
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/templates/survey/survey_change.html:15
 #: survey/templates/survey/survey_list.html:5
 msgid "survey"
@@ -501,12 +605,13 @@ msgstr "enquete"
 msgid "A-leg Gateway"
 msgstr "Tronco perna-A"
 
-#: appointment/constants.py:61 custom_admin_tools/dashboard.py:106
+#: appointment/constants.py:61 custom_admin_tools/dashboard.py:105
 #: mod_sms/constants.py:42
 msgid "SMS Gateway"
 msgstr "Tronco SMS"
 
 #: appointment/constants.py:65 appointment/constants.py:72
+<<<<<<< HEAD
 #: appointment/models/calendars.py:22 appointment/models/rules.py:46
 #: callcenter/constants.py:31 callcenter/models.py:95
 #: dialer_campaign/constants.py:23 dialer_campaign/models.py:191
@@ -515,11 +620,25 @@ msgstr "Tronco SMS"
 #: dialer_settings/models.py:39 dnc/constants.py:21 dnc/models.py:33
 #: mod_sms/constants.py:40 mod_sms/models.py:130 survey/constants.py:33
 #: survey/constants.py:47 survey/models.py:43
+=======
+#: appointment/models/calendars.py:21 appointment/models/rules.py:45
+#: callcenter/constants.py:31 callcenter/models.py:93
+#: dialer_campaign/constants.py:23 dialer_campaign/models.py:181
+#: dialer_contact/constants.py:39 dialer_contact/models.py:39
+#: dialer_contact/models.py:156 dialer_gateway/models.py:53
+#: dialer_settings/models.py:38 dnc/constants.py:21 dnc/models.py:32
+#: mod_sms/constants.py:40 mod_sms/models.py:122 survey/constants.py:33
+#: survey/constants.py:47 survey/models.py:42
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "name"
 msgstr "nome"
 
 #: appointment/constants.py:66 appointment/constants.py:90
+<<<<<<< HEAD
 #: dialer_contact/constants.py:51 dialer_contact/models.py:94
+=======
+#: dialer_contact/constants.py:51 dialer_contact/models.py:92
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:27
 msgid "email"
 msgstr "e-mail"
@@ -529,6 +648,7 @@ msgid "Calendar Setting"
 msgstr "Configuração do Calendário"
 
 #: appointment/constants.py:68 appointment/constants.py:75
+<<<<<<< HEAD
 #: appointment/constants.py:85 appointment/models/alarms.py:146
 #: appointment/models/alarms.py:154 appointment/models/calendars.py:27
 #: callcenter/constants.py:34 callcenter/constants.py:42
@@ -541,17 +661,39 @@ msgstr "Configuração do Calendário"
 #: dialer_gateway/models.py:85 dnc/constants.py:22 dnc/constants.py:30
 #: mod_sms/templates/mod_sms/sms_report.html:121 survey/constants.py:35
 #: survey/constants.py:50 survey/models.py:49
+=======
+#: appointment/constants.py:85 appointment/models/alarms.py:144
+#: appointment/models/alarms.py:152 appointment/models/calendars.py:26
+#: callcenter/constants.py:34 callcenter/constants.py:42
+#: callcenter/models.py:51 callcenter/models.py:115 callcenter/models.py:165
+#: dialer_campaign/constants.py:35 dialer_campaign/models.py:258
+#: dialer_campaign/models.py:473 dialer_cdr/models.py:99
+#: dialer_cdr/templates/dialer_cdr/voipcall_report.html:116
+#: dialer_contact/constants.py:41 dialer_contact/constants.py:53
+#: dialer_contact/models.py:42 dialer_contact/models.py:102
+#: dialer_gateway/models.py:84 dnc/constants.py:22 dnc/constants.py:30
+#: mod_sms/templates/mod_sms/sms_report.html:121 survey/constants.py:35
+#: survey/constants.py:50 survey/models.py:48
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/templates/survey/survey_report.html:194
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:54
 #: templates/admin/mod_sms/smsmessage/sms_report.html:54
 msgid "date"
 msgstr "data"
 
+<<<<<<< HEAD
 #: appointment/constants.py:73 appointment/models/calendars.py:23
 #: appointment/models/events.py:40
 #: appointment/templates/appointment/calendar_user/change.html:5
 #: appointment/templates/appointment/calendar_user/list.html:5
 #: user_profile/models.py:169
+=======
+#: appointment/constants.py:73 appointment/models/calendars.py:22
+#: appointment/models/events.py:40
+#: appointment/templates/appointment/calendar_user/change.html:5
+#: appointment/templates/appointment/calendar_user/list.html:5
+#: user_profile/models.py:164
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "calendar user"
 msgstr "usuário de calendário"
 
@@ -560,17 +702,30 @@ msgid "max concurrent"
 msgstr "máximo de chamadas simultâneas"
 
 #: appointment/constants.py:79 appointment/models/events.py:36
+<<<<<<< HEAD
 #: appointment/models/events.py:280 dialer_campaign/models.py:202
 #: mod_sms/models.py:140
+=======
+#: appointment/models/events.py:267 dialer_campaign/models.py:193
+#: mod_sms/models.py:132
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "start"
 msgstr "iniciar"
 
 #: appointment/constants.py:80 appointment/models/events.py:38
+<<<<<<< HEAD
 #: appointment/models/events.py:281
 msgid "end"
 msgstr "final"
 
 #: appointment/constants.py:81 appointment/models/events.py:278
+=======
+#: appointment/models/events.py:268
+msgid "end"
+msgstr "final"
+
+#: appointment/constants.py:81 appointment/models/events.py:265
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "title"
 msgstr "título"
 
@@ -578,11 +733,16 @@ msgstr "título"
 msgid "end period"
 msgstr "período final"
 
+<<<<<<< HEAD
 #: appointment/constants.py:83 appointment/models/calendars.py:33
+=======
+#: appointment/constants.py:83 appointment/models/calendars.py:32
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: appointment/templates/appointment/calendar/change.html:5
 msgid "calendar"
 msgstr "calendário"
 
+<<<<<<< HEAD
 #: appointment/constants.py:89 dialer_cdr/models.py:112
 #: dialer_cdr/models.py:190 dnc/constants.py:29 dnc/models.py:75
 #: user_profile/models.py:65
@@ -598,11 +758,32 @@ msgid "daily stop"
 msgstr "enceramento diário"
 
 #: appointment/constants.py:93 appointment/models/alarms.py:40
+=======
+#: appointment/constants.py:89 dialer_cdr/models.py:110
+#: dialer_cdr/models.py:187 dnc/constants.py:29 dnc/models.py:73
+#: user_profile/models.py:64
+msgid "phone number"
+msgstr "número de telefone"
+
+#: appointment/constants.py:91 appointment/models/alarms.py:24
+msgid "daily start"
+msgstr "inicio diário"
+
+#: appointment/constants.py:92 appointment/models/alarms.py:25
+msgid "daily stop"
+msgstr "enceramento diário"
+
+#: appointment/constants.py:93 appointment/models/alarms.py:39
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "method"
 msgstr "método"
 
 #: appointment/constants.py:95 appointment/models/events.py:65
+<<<<<<< HEAD
 #: appointment/models/events.py:277
+=======
+#: appointment/models/events.py:264
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: appointment/templates/appointment/event/change.html:9
 msgid "event"
 msgstr "evento"
@@ -611,57 +792,94 @@ msgstr "evento"
 msgid "start notice"
 msgstr "inicio aviso"
 
+<<<<<<< HEAD
 #: appointment/forms.py:50
 msgid "calendar setting"
 msgstr "configuração do calendário"
 
 #: appointment/forms.py:63 appointment/forms.py:102
+=======
+#: appointment/forms.py:49
+msgid "calendar setting"
+msgstr "configuração do calendário"
+
+#: appointment/forms.py:62 appointment/forms.py:100
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "select calendar setting"
 msgid "Select Calendar Setting"
 msgstr "selecionar configurações de calendário"
 
+<<<<<<< HEAD
 #: appointment/forms.py:273
+=======
+#: appointment/forms.py:264
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Event Settings"
 msgstr "Configurações da conta"
 
+<<<<<<< HEAD
 #: appointment/forms.py:305
+=======
+#: appointment/forms.py:295
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "start date"
 msgid "Start Date"
 msgstr "data de início"
 
+<<<<<<< HEAD
 #: appointment/forms.py:307
+=======
+#: appointment/forms.py:297
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "calendar"
 msgid "Calendar"
 msgstr "calendário"
 
+<<<<<<< HEAD
 #: appointment/forms.py:308
+=======
+#: appointment/forms.py:298
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "calendar user"
 msgid "Calendar User"
 msgstr "usuário de calendário"
 
+<<<<<<< HEAD
 #: appointment/forms.py:352 dialer_campaign/forms.py:123 mod_sms/forms.py:101
+=======
+#: appointment/forms.py:341 dialer_campaign/forms.py:122 mod_sms/forms.py:100
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "general settings"
 msgid "General Settings"
 msgstr "configurações gerais"
 
+<<<<<<< HEAD
 #: appointment/forms.py:367
+=======
+#: appointment/forms.py:356
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "alarm settings"
 msgid "Alarm Settings"
 msgstr "configurações do alarme"
 
+<<<<<<< HEAD
 #: appointment/forms.py:379
+=======
+#: appointment/forms.py:368
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "result settings"
 msgid "Result Settings"
 msgstr "configurações de resultado"
 
+<<<<<<< HEAD
 #: appointment/models/alarms.py:22
 msgid "notify to phone number"
 msgstr "ligar para número"
@@ -675,11 +893,27 @@ msgid "advance notice"
 msgstr "aviso prévio"
 
 #: appointment/models/alarms.py:29
+=======
+#: appointment/models/alarms.py:21
+msgid "notify to phone number"
+msgstr "ligar para número"
+
+#: appointment/models/alarms.py:23
+msgid "notify to email"
+msgstr "enviar para e-mail"
+
+#: appointment/models/alarms.py:27
+msgid "advance notice"
+msgstr "aviso prévio"
+
+#: appointment/models/alarms.py:28
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "Seconds to start processing an alarm before the alarm date/time"
 msgstr ""
 "Tempo em segundos para iniciar o processamento de um alarme antes do tempo "
 "configurado"
 
+<<<<<<< HEAD
 #: appointment/models/alarms.py:31
 msgid "max retry"
 msgstr "tentativa(s) máxima(s)"
@@ -709,6 +943,37 @@ msgid "related to event"
 msgstr "evento a ser usado"
 
 #: appointment/models/alarms.py:52
+=======
+#: appointment/models/alarms.py:30
+msgid "max retry"
+msgstr "tentativa(s) máxima(s)"
+
+#: appointment/models/alarms.py:31
+msgid "number of retries"
+msgstr "número máximo de tentativas para enviar o alarme"
+
+#: appointment/models/alarms.py:33
+msgid "retry delay"
+msgstr "repetir depois de (X segundos)"
+
+#: appointment/models/alarms.py:34
+msgid "Seconds to wait between retries"
+msgstr "Tempo em segundos para esperar antes de repetir o alarme"
+
+#: appointment/models/alarms.py:36
+msgid "number of attempts"
+msgstr "número de tentativas"
+
+#: appointment/models/alarms.py:43
+msgid "mail"
+msgstr "e-mail modelo"
+
+#: appointment/models/alarms.py:49
+msgid "related to event"
+msgstr "evento a ser usado"
+
+#: appointment/models/alarms.py:51
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "alarm date"
 msgstr "data do alarme"
 
@@ -799,12 +1064,21 @@ msgstr "Pode ver lista de Calendários"
 msgid "calendars"
 msgstr "calendários"
 
+<<<<<<< HEAD
 #: appointment/models/events.py:35 appointment/models/events.py:279
 #: appointment/models/rules.py:47 dialer_campaign/models.py:192
 #: dialer_contact/constants.py:40
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:28
 #: dialer_gateway/models.py:58 mod_sms/models.py:131 survey/constants.py:34
 #: survey/constants.py:48 survey/models.py:47
+=======
+#: appointment/models/events.py:34 appointment/models/events.py:266
+#: appointment/models/rules.py:46 dialer_campaign/models.py:182
+#: dialer_contact/constants.py:40
+#: dialer_contact/templates/dialer_contact/contact/import_contact.html:28
+#: dialer_gateway/models.py:57 mod_sms/models.py:123 survey/constants.py:34
+#: survey/constants.py:48 survey/models.py:46
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/templates/survey/sealed_survey_view.html:32
 #: templates/admin/dialer_contact/contact/import_contact.html:24
 msgid "description"
@@ -826,7 +1100,11 @@ msgstr "período final de recorrência"
 msgid "Used if the event recurs"
 msgstr "Usado se o evento se repete"
 
+<<<<<<< HEAD
 #: appointment/models/events.py:46 appointment/models/rules.py:53
+=======
+#: appointment/models/events.py:46 appointment/models/rules.py:52
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "rule"
 msgstr "regra"
 
@@ -862,6 +1140,7 @@ msgstr "pode ver lista de Eventos"
 msgid "events"
 msgstr "eventos"
 
+<<<<<<< HEAD
 #: appointment/models/events.py:70 appointment/periods.py:285
 #: appointment/periods.py:311
 msgid "DATE_FORMAT"
@@ -872,15 +1151,32 @@ msgid "cancelled"
 msgstr "cancelado"
 
 #: appointment/models/events.py:283
+=======
+#: appointment/models/events.py:70 appointment/periods.py:281
+#: appointment/periods.py:306
+msgid "DATE_FORMAT"
+msgstr "FORMATO_DA_DATA"
+
+#: appointment/models/events.py:269
+msgid "cancelled"
+msgstr "cancelado"
+
+#: appointment/models/events.py:270
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "original start"
 msgstr "Originar string de discagem"
 
+<<<<<<< HEAD
 #: appointment/models/events.py:284
+=======
+#: appointment/models/events.py:271
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "original end"
 msgstr "Originar string de discagem"
 
+<<<<<<< HEAD
 #: appointment/models/events.py:287
 msgid "occurrence"
 msgstr "ocorrência"
@@ -890,6 +1186,17 @@ msgid "occurrences"
 msgstr "ocorrências"
 
 #: appointment/models/events.py:358
+=======
+#: appointment/models/events.py:274
+msgid "occurrence"
+msgstr "ocorrência"
+
+#: appointment/models/events.py:275
+msgid "occurrences"
+msgstr "ocorrências"
+
+#: appointment/models/events.py:345
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, python-format
 msgid "%(start)s to %(end)s"
 msgstr "%(start)s ao %(end)s"
@@ -922,8 +1229,13 @@ msgstr "Minuciosamente"
 msgid "Secondly"
 msgstr "em segundo e segundo"
 
+<<<<<<< HEAD
 #: appointment/models/rules.py:48 dialer_campaign/constants.py:29
 #: dialer_campaign/models.py:216 mod_sms/models.py:156
+=======
+#: appointment/models/rules.py:47 dialer_campaign/constants.py:29
+#: dialer_campaign/models.py:206 mod_sms/models.py:147
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "frequency"
 msgstr "freqüência"
 
@@ -939,12 +1251,20 @@ msgstr "exemplo : count:1;bysecond:3;"
 msgid "rules"
 msgstr "regras"
 
+<<<<<<< HEAD
 #: appointment/periods.py:286
+=======
+#: appointment/periods.py:282
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, python-format
 msgid "Week: %(start)s-%(end)s"
 msgstr "Semana: %(start)s-%(end)s"
 
+<<<<<<< HEAD
 #: appointment/periods.py:312
+=======
+#: appointment/periods.py:307
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, python-format
 msgid "Day: %(start)s-%(end)s"
 msgstr "Dia: %(start)s-%(end)s"
@@ -976,9 +1296,15 @@ msgstr "excluir contato"
 
 #: appointment/templates/appointment/calendar_setting/change.html:5
 #: appointment/templates/appointment/calendar_setting/list.html:5
+<<<<<<< HEAD
 #: calendar_settings/models.py:87
 #: frontend/templates/frontend/bootstrap_side_menu.html:42
 #: user_profile/models.py:200
+=======
+#: calendar_settings/models.py:86
+#: frontend/templates/frontend/bootstrap_side_menu.html:42
+#: user_profile/models.py:194
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "calendar settings"
 msgstr "configurações do clendário"
 
@@ -1080,6 +1406,7 @@ msgstr "%(count)s contact(s) apagado com sucesso."
 msgid "%s alarm(s) are deleted."
 msgstr "%(count)s contact(s) apagado com sucesso."
 
+<<<<<<< HEAD
 #: calendar_settings/models.py:52 dialer_campaign/models.py:197
 #: dialer_cdr/models.py:108 mod_sms/models.py:137
 msgid "Caller ID Number"
@@ -1103,10 +1430,36 @@ msgid "call timeout"
 msgstr "limite da chamada"
 
 #: calendar_settings/models.py:60
+=======
+#: calendar_settings/models.py:51 dialer_campaign/models.py:187
+#: dialer_cdr/models.py:106 mod_sms/models.py:129
+msgid "Caller ID Number"
+msgstr "bina"
+
+#: calendar_settings/models.py:52 dialer_campaign/models.py:188
+#: dialer_cdr/models.py:107 mod_sms/models.py:130
+msgid "outbound Caller ID"
+msgstr "número do chamador"
+
+#: calendar_settings/models.py:53 dialer_cdr/models.py:108
+msgid "caller name"
+msgstr "nome do chamador"
+
+#: calendar_settings/models.py:54 dialer_cdr/models.py:109
+msgid "outbound caller-Name"
+msgstr "nome da bina"
+
+#: calendar_settings/models.py:55 calendar_settings/models.py:56
+msgid "call timeout"
+msgstr "limite da chamada"
+
+#: calendar_settings/models.py:59
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/templates/survey/sealed_survey_list.html:5
 msgid "sealed survey"
 msgstr "enquetes seladas"
 
+<<<<<<< HEAD
 #: calendar_settings/models.py:62 dialer_cdr/models.py:120
 msgid "a-leg gateway"
 msgstr "tronco perna-a"
@@ -1137,11 +1490,47 @@ msgid "voicemail audio file"
 msgstr "arquivo de áudio"
 
 #: calendar_settings/models.py:84
+=======
+#: calendar_settings/models.py:61 dialer_cdr/models.py:118
+msgid "a-leg gateway"
+msgstr "tronco perna-a"
+
+#: calendar_settings/models.py:62
+msgid "select gateway to use"
+msgstr "selecionar tronco para usar"
+
+#: calendar_settings/models.py:63
+msgid "SMS gateway"
+msgstr "Tronco SMS"
+
+#: calendar_settings/models.py:64 dialer_campaign/models.py:227
+#: mod_sms/models.py:159 mod_sms/models.py:494
+msgid "select SMS gateway"
+msgstr "slecionar tronco SMS"
+
+#: calendar_settings/models.py:66 dialer_campaign/models.py:246
+msgid "voicemail detection"
+msgstr "detecção de correio de voz"
+
+#: calendar_settings/models.py:68 dialer_campaign/models.py:248
+msgid "detection behaviour"
+msgstr "detecção de comportamento"
+
+#: calendar_settings/models.py:70 dialer_campaign/models.py:250
+msgid "voicemail audio file"
+msgstr "arquivo de áudio"
+
+#: calendar_settings/models.py:83
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "can see Calendar Setting list"
 msgstr "Atualizar enquete"
 
+<<<<<<< HEAD
 #: calendar_settings/models.py:86
+=======
+#: calendar_settings/models.py:85
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "Calender setting"
 msgstr "Configurações do calendário"
 
@@ -1261,6 +1650,7 @@ msgstr "fileiras"
 #: callcenter/templates/callcenter/queue/change.html:5
 msgid "it is belong to manager"
 msgstr "propriedade do gerente"
+<<<<<<< HEAD
 
 #: callcenter/templates/callcenter/queue/list.html:5
 msgid "list, add and edit queues"
@@ -1336,6 +1726,12 @@ msgstr "\"%(name)s\" foi atualizado."
 #| msgid "general"
 msgid "General"
 msgstr "geral"
+=======
+
+#: callcenter/templates/callcenter/queue/list.html:5
+msgid "list, add and edit queues"
+msgstr "<br>Listar, adicionar e editar filas"
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 
 #: custom_admin_tools/dashboard.py:68 dialer_cdr/admin.py:103
 #, fuzzy
@@ -1345,79 +1741,199 @@ msgstr "Usuário:"
 
 #: custom_admin_tools/dashboard.py:72
 #, fuzzy
+<<<<<<< HEAD
+=======
+msgid "tier belongs to manager"
+msgstr "Excluir campanha"
+
+#: callcenter/templates/callcenter/tier/list.html:5
+msgid "list, add and edit tiers"
+msgstr "<br>Listar, adicionar e editar layers"
+
+#: callcenter/templates/callcenter/tier/list.html:61
+msgid "update tier"
+msgstr "atualizar tier"
+
+#: callcenter/templates/callcenter/tier/list.html:64
+msgid "delete tier"
+msgstr "excluir camadas"
+
+#: callcenter/views.py:79
+#, fuzzy, python-format
+msgid "\"%(name)s\" queue is added."
+msgstr "\"%(name)s\" foi adicionado."
+
+#: callcenter/views.py:124
+#, python-format
+msgid ""
+"\"%(name)s\" is not allowed to delete because it is being used with survey."
+msgstr ""
+"\"%(name)s\" não é  permitido excluir porque ele está sendo usado no enquete."
+
+#: callcenter/views.py:142
+#, fuzzy, python-format
+msgid "%s queue(s) are deleted."
+msgstr "%(count)s contact(s) apagado com sucesso."
+
+#: callcenter/views.py:144
+#, python-format
+msgid "%s queue(s) are not deleted because they are being used with surveys."
+msgstr "%s fila(s) não foi deletada porque está sendo usada na enquete."
+
+#: callcenter/views.py:236
+#, fuzzy, python-format
+msgid "\"%(name)s\" tier is added."
+msgstr "\"%(name)s\" foi adicionado."
+
+#: callcenter/views.py:275
+#, fuzzy, python-format
+msgid "%(count)s tier(s) are deleted."
+msgstr "%(count)s áudi(os) apagado(s) com sucesso."
+
+#: callcenter/views.py:308
+#, fuzzy, python-format
+msgid "\"%(id)s\" tier is updated."
+msgstr "\"%(name)s\" foi atualizado."
+
+#: custom_admin_tools/dashboard.py:63 dialer_campaign/forms.py:120
+#: dialer_contact/forms.py:141
+#, fuzzy
+#| msgid "general"
+msgid "General"
+msgstr "geral"
+
+#: custom_admin_tools/dashboard.py:67 dialer_cdr/admin.py:97
+#, fuzzy
+#| msgid "Username"
+msgid "User"
+msgstr "Usuário:"
+
+#: custom_admin_tools/dashboard.py:71
+#, fuzzy
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #| msgid "task manager"
 msgid "Task Manager"
 msgstr "gerenciador de tarefas"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:76
+=======
+#: custom_admin_tools/dashboard.py:75
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "dashboard stats"
 msgid "Dashboard stats"
 msgstr "relatório da Dashboard"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:79 custom_admin_tools/dashboard.py:241
+=======
+#: custom_admin_tools/dashboard.py:78 custom_admin_tools/dashboard.py:239
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "recent actions"
 msgid "Recent Actions"
 msgstr "ações recentes"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:84
+=======
+#: custom_admin_tools/dashboard.py:83
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "callcenter"
 msgid "Callcenter"
 msgstr "callcenter"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:89
+=======
+#: custom_admin_tools/dashboard.py:88
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "settings"
 msgid "Settings"
 msgstr "configurações"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:95
 msgid "VoIP dialer"
 msgstr "Discador voip"
 
 #: custom_admin_tools/dashboard.py:101
+=======
+#: custom_admin_tools/dashboard.py:94
+msgid "VoIP dialer"
+msgstr "Discador voip"
+
+#: custom_admin_tools/dashboard.py:100
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "surveys"
 msgid "Surveys"
 msgstr "enquetes"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:112 mod_sms/admin.py:223
 #: mod_sms/admin.py:265
 msgid "SMS module"
 msgstr "Modulo SMS"
 
 #: custom_admin_tools/dashboard.py:118
+=======
+#: custom_admin_tools/dashboard.py:111 mod_sms/admin.py:220
+#: mod_sms/admin.py:262
+msgid "SMS module"
+msgstr "Modulo SMS"
+
+#: custom_admin_tools/dashboard.py:117
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "audio File"
 msgid "Audio Files"
 msgstr "arquivo de Áudio"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:123 custom_admin_tools/dashboard.py:230
+=======
+#: custom_admin_tools/dashboard.py:122 custom_admin_tools/dashboard.py:228
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "Do Not Call list"
 msgid "Do Not Call"
 msgstr "Lista Negra"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:128
+=======
+#: custom_admin_tools/dashboard.py:127
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "appointment"
 msgid "Appointment"
 msgstr "compromisso"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:133
+=======
+#: custom_admin_tools/dashboard.py:132
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "mod_mailer"
 msgid "Mod Mailer"
 msgstr "mod_mailer"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:138
+=======
+#: custom_admin_tools/dashboard.py:137
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "Calendar Setting"
 msgid "Calendar Settings"
 msgstr "Configuração do Calendário"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:143
 msgid "Reporting"
 msgstr "Relatório"
@@ -1447,11 +1963,43 @@ msgid "Latest Newfies-Dialer News"
 msgstr "Últimas Notícias Newfies-Dialer"
 
 #: custom_admin_tools/dashboard.py:184
+=======
+#: custom_admin_tools/dashboard.py:142
+msgid "Reporting"
+msgstr "Relatório"
+
+#: custom_admin_tools/dashboard.py:147
+msgid "Call Daily Report"
+msgstr "Relatório de Chamadas Diárias"
+
+#: custom_admin_tools/dashboard.py:158
+msgid "Quick links"
+msgstr "Links rápidos"
+
+#: custom_admin_tools/dashboard.py:164
+msgid "Newfies-Dialer Website"
+msgstr "Newfies-Dialer Site"
+
+#: custom_admin_tools/dashboard.py:165
+msgid "Support"
+msgstr "Suporte"
+
+#: custom_admin_tools/dashboard.py:166
+msgid "Add-ons"
+msgstr "Extenções"
+
+#: custom_admin_tools/dashboard.py:176
+msgid "Latest Newfies-Dialer News"
+msgstr "Últimas Notícias Newfies-Dialer"
+
+#: custom_admin_tools/dashboard.py:183
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "dashboard stats settings"
 msgid "Dashboard Stats Settings"
 msgstr "estatísticas de configuraçao da Dashboard"
 
+<<<<<<< HEAD
 #: custom_admin_tools/dashboard.py:212 dialer_campaign/forms.py:142
 msgid "Dialer Settings"
 msgstr "Configuração do discador"
@@ -1473,24 +2021,59 @@ msgid "Dialer Gateway"
 msgstr "Tronco de discagem"
 
 #: custom_admin_tools/dashboard.py:227
+=======
+#: custom_admin_tools/dashboard.py:210 dialer_campaign/forms.py:141
+msgid "Dialer Settings"
+msgstr "Configuração do discador"
+
+#: custom_admin_tools/dashboard.py:213 dialer_campaign/admin.py:203
+msgid "Dialer Campaign"
+msgstr "Discador da camapnha"
+
+#: custom_admin_tools/dashboard.py:216
+msgid "Dialer Contact"
+msgstr "Contato de Voz"
+
+#: custom_admin_tools/dashboard.py:219
+msgid "Dialer CDR"
+msgstr "Discador CDR"
+
+#: custom_admin_tools/dashboard.py:222
+msgid "Dialer Gateway"
+msgstr "Tronco de discagem"
+
+#: custom_admin_tools/dashboard.py:225
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "country dialcode"
 msgid "Country Dialcode"
 msgstr "código do país"
 
+<<<<<<< HEAD
 #: custom_admin_tools/menu.py:33
+=======
+#: custom_admin_tools/menu.py:32
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "Newfies-Dialer"
 msgid "Newfies-Dialer V"
 msgstr "Newfies-Dialer"
 
+<<<<<<< HEAD
 #: custom_admin_tools/menu.py:36
+=======
+#: custom_admin_tools/menu.py:35
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "applications"
 msgid "Applications"
 msgstr "aplicações"
 
+<<<<<<< HEAD
 #: custom_admin_tools/menu.py:40
+=======
+#: custom_admin_tools/menu.py:39
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "administration"
 msgid "Administration"
@@ -1501,7 +2084,11 @@ msgstr "administração"
 msgid "API Explorer"
 msgstr "API Explorer"
 
+<<<<<<< HEAD
 #: custom_admin_tools/menu.py:44
+=======
+#: custom_admin_tools/menu.py:43
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "customer panel"
 msgid "Customer Panel"
@@ -1542,7 +2129,11 @@ msgstr "atualizar arquivo de áudio"
 msgid "delete audio"
 msgstr "excluir áudio"
 
+<<<<<<< HEAD
 #: dialer_audio/views.py:77 dialer_campaign/views.py:255
+=======
+#: dialer_audio/views.py:77 dialer_campaign/views.py:252
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_contact/views.py:85 dnc/views.py:79 dnc/views.py:272
 #: survey/views.py:100
 #, python-format
@@ -1554,23 +2145,40 @@ msgstr "\"%(name)s\" foi adicionado."
 msgid "%(count)s audio(s) are deleted."
 msgstr "%(count)s áudi(os) apagado(s) com sucesso."
 
+<<<<<<< HEAD
 #: dialer_campaign/admin.py:41 dialer_cdr/admin.py:49
 #: dialer_gateway/admin.py:48 mod_sms/admin.py:47
+=======
+#: dialer_campaign/admin.py:40 dialer_cdr/admin.py:46
+#: dialer_gateway/admin.py:47 mod_sms/admin.py:46
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Standard options"
 msgstr "Opções padrão"
 
+<<<<<<< HEAD
 #: dialer_campaign/admin.py:49 dialer_cdr/admin.py:55 mod_sms/admin.py:54
+=======
+#: dialer_campaign/admin.py:48 dialer_cdr/admin.py:52 mod_sms/admin.py:53
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Advanced options"
 msgstr "Opções avançadas"
 
+<<<<<<< HEAD
 #: dialer_campaign/admin.py:94
+=======
+#: dialer_campaign/admin.py:93
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "you have too many campaigns. max allowed %(limit)s"
 msgstr "você tem muitas campanhas. Max permitido %(limit)s"
 
+<<<<<<< HEAD
 #: dialer_campaign/admin.py:206
+=======
+#: dialer_campaign/admin.py:204
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: frontend/templates/frontend/bootstrap_side_menu.html:67
 #: templates/admin/dialer_campaign/subscriber/change_list.html:36
 msgid "subscriber report"
@@ -1600,7 +2208,11 @@ msgstr "relatório do assinante"
 msgid "key"
 msgstr "chave"
 
+<<<<<<< HEAD
 #: dialer_campaign/constants.py:24 dialer_cdr/constants.py:67
+=======
+#: dialer_campaign/constants.py:24 dialer_cdr/constants.py:63
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: mod_sms/constants.py:41
 msgid "start date"
 msgstr "data de início"
@@ -1610,7 +2222,11 @@ msgid "app"
 msgstr "app"
 
 #: dialer_campaign/constants.py:27 dialer_contact/constants.py:42
+<<<<<<< HEAD
 #: dialer_contact/models.py:61 dialer_contact/models.py:113
+=======
+#: dialer_contact/models.py:60 dialer_contact/models.py:111
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_contact/templates/dialer_contact/contact/list.html:5
 #: dnc/constants.py:23 dnc/templates/dnc/dnc_contact/list.html:5
 #: frontend/templates/frontend/bootstrap_side_menu.html:11
@@ -1620,12 +2236,17 @@ msgid "contacts"
 msgstr "contatos"
 
 #: dialer_campaign/constants.py:30 dialer_contact/constants.py:47
+<<<<<<< HEAD
 #: dialer_contact/models.py:51 dialer_contact/models.py:88
+=======
+#: dialer_contact/models.py:50 dialer_contact/models.py:86
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_contact/templates/dialer_contact/phonebook/change.html:5
 #: dialer_contact/templates/dialer_contact/phonebook/list.html:5
 msgid "phonebook"
 msgstr "agenda telefônica"
 
+<<<<<<< HEAD
 #: dialer_campaign/constants.py:36 dialer_campaign/models.py:515
 msgid "attempts"
 msgstr "tentativas"
@@ -1636,11 +2257,27 @@ msgstr "tentativas completadas"
 
 #: dialer_campaign/constants.py:39 dialer_campaign/models.py:477
 #: dialer_cdr/constants.py:75 dialer_cdr/forms.py:95 dialer_cdr/models.py:203
+=======
+#: dialer_campaign/constants.py:36 dialer_campaign/models.py:504
+msgid "attempts"
+msgstr "tentativas"
+
+#: dialer_campaign/constants.py:37 dialer_campaign/models.py:499
+msgid "completion attempts"
+msgstr "tentativas completadas"
+
+#: dialer_campaign/constants.py:39 dialer_campaign/models.py:466
+#: dialer_cdr/constants.py:71 dialer_cdr/forms.py:93 dialer_cdr/models.py:200
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/constants.py:42
 msgid "disposition"
 msgstr "disposição"
 
+<<<<<<< HEAD
 #: dialer_campaign/constants.py:40 survey/models.py:520 survey/models.py:546
+=======
+#: dialer_campaign/constants.py:40 survey/models.py:499 survey/models.py:524
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/templates/survey/survey_campaign_result.html:18
 msgid "response"
 msgstr "resposta"
@@ -1695,37 +2332,61 @@ msgstr "TOCAR MENSAGEM SOMENTE PARA PESSOAS"
 msgid "LEAVE MESSAGE TO VOICEMAIL ONLY"
 msgstr "SOMENTE DEIXAR MENSAGEM NO CORREIO DE VOZ"
 
+<<<<<<< HEAD
 #: dialer_campaign/forms.py:60
+=======
+#: dialer_campaign/forms.py:59
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "application"
 msgid "Application"
 msgstr "aplicação"
 
+<<<<<<< HEAD
 #: dialer_campaign/forms.py:149
+=======
+#: dialer_campaign/forms.py:148
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "dialer completion settings"
 msgid "Dialer Completion Settings"
 msgstr "configuração do discador"
 
+<<<<<<< HEAD
 #: dialer_campaign/forms.py:160
+=======
+#: dialer_campaign/forms.py:159
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "schedule settings"
 msgid "Schedule Settings"
 msgstr "configurações de agendamento"
 
+<<<<<<< HEAD
 #: dialer_campaign/forms.py:161
+=======
+#: dialer_campaign/forms.py:160
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "week days"
 msgid "Week Days"
 msgstr "dias da semana"
 
+<<<<<<< HEAD
 #: dialer_campaign/forms.py:177
+=======
+#: dialer_campaign/forms.py:176
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "voicemail"
 msgid "Voicemail"
 msgstr "correio de voz"
 
+<<<<<<< HEAD
 #: dialer_campaign/forms.py:179
+=======
+#: dialer_campaign/forms.py:178
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "voicemail settings"
 msgid "Voicemail Settings"
@@ -1755,14 +2416,21 @@ msgstr "limite máximo de tentativas %d excedido."
 msgid "maximum timeout limit of %d exceeded."
 msgstr "tempo de limite máximo de %d excedido."
 
+<<<<<<< HEAD
 #: dialer_campaign/forms.py:367 dialer_campaign/models.py:282
 #: dialer_campaign/templates/dialer_campaign/campaign/campaign_duplicate.html:41
 #: dialer_cdr/forms.py:96 frontend/forms.py:52
+=======
+#: dialer_campaign/forms.py:363 dialer_campaign/models.py:272
+#: dialer_campaign/templates/dialer_campaign/campaign/campaign_duplicate.html:41
+#: dialer_cdr/forms.py:94 frontend/forms.py:50
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: frontend/templates/frontend/bootstrap_menu.html:31
 #: frontend/templates/frontend/bootstrap_menu.html:37
 #: mod_sms/templates/mod_sms/change.html:9
 #: mod_sms/templates/mod_sms/list.html:10
 #: mod_sms/templates/mod_sms/sms_campaign_duplicate.html:41
+<<<<<<< HEAD
 #: survey/constants.py:49 survey/forms.py:605 survey/models.py:115
 msgid "campaign"
 msgstr "campanha"
@@ -1776,20 +2444,45 @@ msgid "ALL"
 msgstr ""
 
 #: dialer_campaign/forms.py:401 dialer_cdr/forms.py:47
+=======
+#: survey/constants.py:49 survey/forms.py:590 survey/models.py:112
+msgid "campaign"
+msgstr "campanha"
+
+#: dialer_campaign/forms.py:368 dialer_campaign/forms.py:388
+#: dialer_campaign/forms.py:416 dialer_campaign/forms.py:443
+#: dialer_campaign/forms.py:468 dialer_cdr/forms.py:26 dialer_cdr/forms.py:33
+#: dialer_cdr/forms.py:69 dialer_cdr/forms.py:102 mod_sms/forms.py:38
+#: mod_sms/forms.py:190
+msgid "ALL"
+msgstr ""
+
+#: dialer_campaign/forms.py:395 dialer_cdr/forms.py:46
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "campaign"
 msgid "Campaign"
 msgstr "campanha"
 
+<<<<<<< HEAD
 #: dialer_campaign/forms.py:403 dialer_campaign/forms.py:456
 #: dialer_contact/forms.py:191 mod_sms/forms.py:272
+=======
+#: dialer_campaign/forms.py:397 dialer_campaign/forms.py:450
+#: dialer_contact/forms.py:183 mod_sms/forms.py:267
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "status"
 msgid "Status"
 msgstr "status"
 
+<<<<<<< HEAD
 #: dialer_campaign/forms.py:455 dialer_contact/forms.py:70
 #: dialer_contact/forms.py:190 mod_sms/forms.py:271
+=======
+#: dialer_campaign/forms.py:449 dialer_contact/forms.py:67
+#: dialer_contact/forms.py:182 mod_sms/forms.py:266
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "phonebook"
 msgid "Phonebook"
@@ -1803,11 +2496,19 @@ msgstr ""
 "Suas configurações não estão configuradas corretamente, por favor, entre em "
 "contato com o administrador."
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:188
 msgid "campaign code"
 msgstr "código da campanha"
 
 #: dialer_campaign/models.py:189
+=======
+#: dialer_campaign/models.py:178
+msgid "campaign code"
+msgstr "código da campanha"
+
+#: dialer_campaign/models.py:179
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid ""
 "this code is auto-generated by the platform, this is used to identify the "
 "campaign"
@@ -1815,6 +2516,7 @@ msgstr ""
 "este código é gerado automaticamente pela plataforma, este é usado para "
 "identificar a campanha"
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:193 mod_sms/models.py:132
 msgid "campaign description"
 msgstr "descrição da campanha"
@@ -1902,24 +2604,121 @@ msgid "time delay in seconds before retrying contact"
 msgstr "intervalo de tempo em segundos antes de tentar novamente o contato"
 
 #: dialer_campaign/models.py:226
+=======
+#: dialer_campaign/models.py:183 mod_sms/models.py:124
+msgid "campaign description"
+msgstr "descrição da campanha"
+
+#: dialer_campaign/models.py:189
+msgid "Caller Name"
+msgstr "Nome do Chamador"
+
+#: dialer_campaign/models.py:190
+msgid "outbound Caller Name"
+msgstr "nome do chamador"
+
+#: dialer_campaign/models.py:194 mod_sms/models.py:133
+msgid "finish"
+msgstr "terminar"
+
+#: dialer_campaign/models.py:196
+msgid "daily start time"
+msgstr "tempo inicial diário"
+
+#: dialer_campaign/models.py:197
+msgid "daily stop time"
+msgstr "tempo final diário"
+
+#: dialer_campaign/models.py:198 mod_sms/models.py:138
+msgid "monday"
+msgstr "segunda"
+
+#: dialer_campaign/models.py:199 mod_sms/models.py:139
+msgid "tuesday"
+msgstr "terça"
+
+#: dialer_campaign/models.py:200 mod_sms/models.py:140
+msgid "wednesday"
+msgstr "quarta"
+
+#: dialer_campaign/models.py:201 mod_sms/models.py:141
+msgid "thursday"
+msgstr "quinta"
+
+#: dialer_campaign/models.py:202 mod_sms/models.py:142
+msgid "friday"
+msgstr "sexta"
+
+#: dialer_campaign/models.py:203 mod_sms/models.py:143
+msgid "saturday"
+msgstr "sábado"
+
+#: dialer_campaign/models.py:204 mod_sms/models.py:144
+msgid "sunday"
+msgstr "domingo"
+
+#: dialer_campaign/models.py:207
+msgid "calls per minute"
+msgstr "chamadas por minuto"
+
+#: dialer_campaign/models.py:208
+msgid "max call duration"
+msgstr "duração máxima da chamada"
+
+#: dialer_campaign/models.py:209
+msgid "maximum call duration in seconds"
+msgstr "duração máxima da chamada em segundos"
+
+#: dialer_campaign/models.py:211 dialer_settings/models.py:49
+#: mod_sms/models.py:151
+msgid "max retries"
+msgstr "tentativa(s) máxima(s)"
+
+#: dialer_campaign/models.py:212 mod_sms/models.py:152
+msgid "maximum retries per contact"
+msgstr "máximo de tentativas por contato"
+
+#: dialer_campaign/models.py:213
+msgid "time between retries"
+msgstr "tempo entre tentativas"
+
+#: dialer_campaign/models.py:214 mod_sms/models.py:155
+msgid "time delay in seconds before retrying contact"
+msgstr "intervalo de tempo em segundos antes de tentar novamente o contato"
+
+#: dialer_campaign/models.py:216
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "completion max retries"
 msgstr "Tentativas Max"
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:227
 msgid "number of retries until a contact completes survey"
 msgstr "número de tentativas até que um contato conclui enquete"
 
 #: dialer_campaign/models.py:230
+=======
+#: dialer_campaign/models.py:217
+msgid "number of retries until a contact completes survey"
+msgstr "número de tentativas até que um contato conclui enquete"
+
+#: dialer_campaign/models.py:220
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "completion time between retries"
 msgstr "Tempo entre tentativas"
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:231
+=======
+#: dialer_campaign/models.py:221
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "time delay in seconds before retrying contact to complete survey"
 msgstr "Atraso de tempo em segundos antes de tentar novamente contato"
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:232
 #, fuzzy
 #| msgid "timeout on call"
@@ -1952,19 +2751,51 @@ msgid "extra parameters"
 msgstr "parâmetros extras"
 
 #: dialer_campaign/models.py:243 mod_sms/models.py:173
+=======
+#: dialer_campaign/models.py:224
+msgid "A-Leg gateway"
+msgstr "Tronco para perna-A"
+
+#: dialer_campaign/models.py:225
+msgid "select outbound gateway"
+msgstr "selecionar tronco sainte"
+
+#: dialer_campaign/models.py:226 mod_sms/models.py:157 mod_sms/models.py:492
+msgid "sms gateway"
+msgstr "tronco de sms"
+
+#: dialer_campaign/models.py:230 dialer_cdr/models.py:122
+msgid "application"
+msgstr "aplicação"
+
+#: dialer_campaign/models.py:232 mod_sms/models.py:163
+msgid "extra parameters"
+msgstr "parâmetros extras"
+
+#: dialer_campaign/models.py:233 mod_sms/models.py:164
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "additional application parameters."
 msgstr "Parâmetros adicionais da aplicação."
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:245
 msgid "imported phonebook"
 msgstr "lista de agenda importada"
 
 #: dialer_campaign/models.py:246 mod_sms/constants.py:43 mod_sms/models.py:183
+=======
+#: dialer_campaign/models.py:235
+msgid "imported phonebook"
+msgstr "lista de agenda importada"
+
+#: dialer_campaign/models.py:236 mod_sms/constants.py:43 mod_sms/models.py:174
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/templates/survey/survey_report.html:33
 msgid "total contact"
 msgstr "contatos total"
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:247 mod_sms/models.py:184
 msgid "total contact for this campaign"
 msgstr "campanha de atualização"
@@ -1986,6 +2817,29 @@ msgid "has been duplicated"
 msgstr "foi duplicada"
 
 #: dialer_campaign/models.py:253 dnc/constants.py:28
+=======
+#: dialer_campaign/models.py:237 mod_sms/models.py:175
+msgid "total contact for this campaign"
+msgstr "campanha de atualização"
+
+#: dialer_campaign/models.py:238
+msgid "completed"
+msgstr "concluído"
+
+#: dialer_campaign/models.py:239
+msgid "total contact that completed call / survey"
+msgstr "contato total que completou chamada / pesquisa"
+
+#: dialer_campaign/models.py:241
+msgid "has been started"
+msgstr "foi iniciada"
+
+#: dialer_campaign/models.py:242
+msgid "has been duplicated"
+msgstr "foi duplicada"
+
+#: dialer_campaign/models.py:243 dnc/constants.py:28
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dnc/templates/dnc/dnc_contact/list.html:5
 #: dnc/templates/dnc/dnc_contact/list.html:25
 #: dnc/templates/dnc/dnc_list/list.html:5
@@ -1994,6 +2848,7 @@ msgstr "foi duplicada"
 msgid "DNC"
 msgstr "Lista Negra"
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:254
 msgid "do not call list"
 msgstr "lista negra"
@@ -2011,6 +2866,25 @@ msgid "additional parameters (JSON)"
 msgstr "parametros adicionais (JSON)"
 
 #: dialer_campaign/models.py:266
+=======
+#: dialer_campaign/models.py:244
+msgid "do not call list"
+msgstr "lista negra"
+
+#: dialer_campaign/models.py:252
+msgid "agent script"
+msgstr "script do agente"
+
+#: dialer_campaign/models.py:253
+msgid "lead disposition"
+msgstr ""
+
+#: dialer_campaign/models.py:255 dialer_contact/models.py:99
+msgid "additional parameters (JSON)"
+msgstr "parametros adicionais (JSON)"
+
+#: dialer_campaign/models.py:256
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid ""
 "enter the list of parameters in Json format, e.g. {\"title\": [\"tab-1\", "
 "\"tab-2\"], \"url\": [\"https://duckduckgo.com/\", \"http://www.newfies-"
@@ -2020,6 +2894,7 @@ msgstr ""
 "\"tab-2\"], \"url\": [\"https://duckduckgo.com/\", \"http://www.newfies-"
 "dialer.org/\"]}"
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:278
 msgid "can see campaign"
 msgstr "pode ver campanha"
@@ -2041,19 +2916,51 @@ msgid "progress"
 msgstr "progresso"
 
 #: dialer_campaign/models.py:420 mod_sms/models.py:357
+=======
+#: dialer_campaign/models.py:268
+msgid "can see campaign"
+msgstr "pode ver campanha"
+
+#: dialer_campaign/models.py:269
+msgid "can see campaign dashboard"
+msgstr "campanha abortada"
+
+#: dialer_campaign/models.py:273
+msgid "campaigns"
+msgstr "campanha"
+
+#: dialer_campaign/models.py:327
+msgid "voice app"
+msgstr "apps de voz"
+
+#: dialer_campaign/models.py:401 mod_sms/models.py:339
+msgid "progress"
+msgstr "progresso"
+
+#: dialer_campaign/models.py:410 mod_sms/models.py:348
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, python-format
 msgid "<a href='%(link)s'>%(name)s</a>"
 msgstr "<a href='%(link)s'>%(name)s</a>"
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:420 mod_sms/models.py:358
 msgid "details"
 msgstr "detalhes"
 
 #: dialer_campaign/models.py:423 dialer_campaign/models.py:492
+=======
+#: dialer_campaign/models.py:410 mod_sms/models.py:349
+msgid "details"
+msgstr "detalhes"
+
+#: dialer_campaign/models.py:413 dialer_campaign/models.py:481
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: templates/admin/dialer_campaign/subscriber/subscriber_report.html:14
 msgid "subscriber"
 msgstr "assinante"
 
+<<<<<<< HEAD
 #: dialer_campaign/models.py:466 mod_sms/models.py:436
 msgid "select contact"
 msgstr "selecionar contato"
@@ -2087,6 +2994,41 @@ msgid "can see subscriber"
 msgstr "pode ver assinante"
 
 #: dialer_campaign/models.py:493
+=======
+#: dialer_campaign/models.py:455 mod_sms/models.py:424
+msgid "select contact"
+msgstr "selecionar contato"
+
+#: dialer_campaign/models.py:456
+msgid "select campaign"
+msgstr "selecionar campanha"
+
+#: dialer_campaign/models.py:457 mod_sms/models.py:428
+msgid "last attempt"
+msgstr "última tentativa"
+
+#: dialer_campaign/models.py:458 mod_sms/models.py:430
+msgid "count attempts"
+msgstr "contar tentativas"
+
+#: dialer_campaign/models.py:461
+msgid "completion count attempts"
+msgstr "contagem de tentativas completadas"
+
+#: dialer_campaign/models.py:467
+msgid "subscriber response"
+msgstr "resposta do assinante"
+
+#: dialer_campaign/models.py:468
+msgid "collect user call data"
+msgstr "coletar dados das chamada do usuário"
+
+#: dialer_campaign/models.py:478
+msgid "can see subscriber"
+msgstr "pode ver assinante"
+
+#: dialer_campaign/models.py:482
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_campaign/templates/dialer_campaign/subscriber/list.html:9
 msgid "subscribers"
 msgstr "clientes"
@@ -2200,26 +3142,42 @@ msgstr "visualizar enquetes seladas"
 msgid "Edit Survey"
 msgstr "editar equete"
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:76
+=======
+#: dialer_campaign/views.py:74
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "you must assign a phonebook to your campaign before starting it"
 msgstr ""
 "você precisa atribuir uma agenda para a sua campanha antes de iniciá-la"
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:79
+=======
+#: dialer_campaign/views.py:77
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "campaign global settings cannot be edited when the campaign is started"
 msgstr ""
 "as configurações globais da campanha não podem ser editadas quando a "
 "campanha já está iniciada"
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:111
+=======
+#: dialer_campaign/views.py:109
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "dialer setting configuration"
 msgid "Dialer Setting Configuration"
 msgstr "configurações do discador"
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:112
+=======
+#: dialer_campaign/views.py:110
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid ""
 "Notification - User Dialer Setting. The user \"%(user)s\" - \"%(user_id)s\" "
@@ -2230,46 +3188,78 @@ msgstr ""
 "\"%(user_id)s\" não está configurado corretamente para usar o seu sistema, "
 "defina as configurações de seu discador."
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:229
+=======
+#: dialer_campaign/views.py:227
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "your settings aren't configured properly, please contact the admin."
 msgstr ""
 "Suas configurações não estão configuradas corretamente, por favor, entre em "
 "contato com o administrador."
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:236
+=======
+#: dialer_campaign/views.py:234
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, python-format
 msgid "you have too many campaigns. Max allowed %(limit)s"
 msgstr "você tem muitas campanhas. Max permitido %(limit)s"
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:286
+=======
+#: dialer_campaign/views.py:283
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "the campaign \"%(name)s\" has been stopped."
 msgstr "\"%(name)s\" foi excluído."
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:288
+=======
+#: dialer_campaign/views.py:285
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "the campaign \"%(name)s\" has been deleted."
 msgstr "\"%(name)s\" foi excluído."
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:299
+=======
+#: dialer_campaign/views.py:296
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "%(count)s campaign(s) have been stopped."
 msgstr "%(count)s campanha(s) apagada."
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:302
+=======
+#: dialer_campaign/views.py:299
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "%(count)s campaign(s) have been deleted."
 msgstr "%(count)s campanha(s) apagada."
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:338
+=======
+#: dialer_campaign/views.py:335
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Started campaign can only edit the dialer settings and the scheduler"
 msgstr ""
 "a campanha foi inciada e você pode alterar somente as configurações do "
 "discador e a cronograma da Campanha"
 
+<<<<<<< HEAD
 #: dialer_campaign/views.py:372
+=======
+#: dialer_campaign/views.py:369
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "the campaign \"%(name)s\" is updated."
 msgstr "\"%(name)s\" foi atualizado."
@@ -2278,41 +3268,69 @@ msgstr "\"%(name)s\" foi atualizado."
 msgid "VoIP report"
 msgstr "Relatório VoIP"
 
+<<<<<<< HEAD
 #: dialer_cdr/admin.py:80
+=======
+#: dialer_cdr/admin.py:74
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "call report"
 msgid "Call Report"
 msgstr "relatório de chamadas"
 
+<<<<<<< HEAD
 #: dialer_cdr/admin.py:111
+=======
+#: dialer_cdr/admin.py:105
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "gateway used"
 msgid "Gateway used"
 msgstr "tronco usado"
 
+<<<<<<< HEAD
 #: dialer_cdr/admin.py:185 mod_sms/admin.py:199
 msgid "Database error"
 msgstr "De erro de banco de dados"
 
 #: dialer_cdr/admin.py:198 mod_sms/admin.py:213
+=======
+#: dialer_cdr/admin.py:179 mod_sms/admin.py:196
+msgid "Database error"
+msgstr "De erro de banco de dados"
+
+#: dialer_cdr/admin.py:192 mod_sms/admin.py:210
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, python-format
 msgid "%(total_count)s selected"
 msgid_plural "All %(total_count)s selected"
 msgstr[0] "%(total_count)s selecionado"
 msgstr[1] "Todas %(total_count)s selecionadas"
 
+<<<<<<< HEAD
 #: dialer_cdr/admin.py:201 mod_sms/admin.py:217
+=======
+#: dialer_cdr/admin.py:195 mod_sms/admin.py:214
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, python-format
 msgid "0 of %(cnt)s selected"
 msgstr "0 de %(cnt)s selecionado"
 
+<<<<<<< HEAD
 #: dialer_cdr/admin.py:208
+=======
+#: dialer_cdr/admin.py:202
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: templates/admin/dialer_cdr/voipcall/voip_report.html:14
 #: templates/admin_tools/dashboard/modules/app_list.html:13
 msgid "call report"
 msgstr "relatório de chamadas"
 
+<<<<<<< HEAD
 #: dialer_cdr/admin.py:257
+=======
+#: dialer_cdr/admin.py:251
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: templates/admin_tools/dashboard/modules/app_list.html:45
 #: templates/admin_tools/dashboard/modules/model_list.html:26
 msgid "call aggregate report"
@@ -2324,6 +3342,7 @@ msgstr "relatório de ligações agregado"
 msgid "VoIP Report"
 msgstr "Relatório VoIP"
 
+<<<<<<< HEAD
 #: dialer_cdr/constants.py:24
 msgid "pending"
 msgstr "pendente"
@@ -2345,6 +3364,29 @@ msgid "abort"
 msgstr "abortar"
 
 #: dialer_cdr/constants.py:29
+=======
+#: dialer_cdr/constants.py:23
+msgid "pending"
+msgstr "pendente"
+
+#: dialer_cdr/constants.py:24
+msgid "failure"
+msgstr "falha"
+
+#: dialer_cdr/constants.py:25
+msgid "retry"
+msgstr "tentaativas"
+
+#: dialer_cdr/constants.py:26
+msgid "success"
+msgstr "sucesso"
+
+#: dialer_cdr/constants.py:27
+msgid "abort"
+msgstr "abortar"
+
+#: dialer_cdr/constants.py:28
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "pause"
 msgstr "pausa"
 
@@ -2396,6 +3438,7 @@ msgstr "CONGESTIONADO"
 msgid "FAILED"
 msgstr "FALHADAS"
 
+<<<<<<< HEAD
 #: dialer_cdr/constants.py:68
 msgid "call ID"
 msgstr "ID da ligação"
@@ -2418,6 +3461,30 @@ msgid "gateway"
 msgstr "tronco"
 
 #: dialer_cdr/constants.py:73 dialer_cdr/models.py:197
+=======
+#: dialer_cdr/constants.py:64
+msgid "call ID"
+msgstr "ID da ligação"
+
+#: dialer_cdr/constants.py:65 dialer_cdr/models.py:205
+msgid "leg"
+msgstr "perna"
+
+#: dialer_cdr/constants.py:66
+msgid "caller ID"
+msgstr "bina"
+
+#: dialer_cdr/constants.py:67
+msgid "phone no"
+msgstr "num. telefone"
+
+#: dialer_cdr/constants.py:68 mod_sms/constants.py:65
+#: user_profile/models.py:89
+msgid "gateway"
+msgstr "tronco"
+
+#: dialer_cdr/constants.py:69 dialer_cdr/models.py:194
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_cdr/templates/dialer_cdr/voipcall_report.html:117
 #: survey/constants.py:41
 #: survey/templates/survey/survey_campaign_result.html:20
@@ -2426,6 +3493,7 @@ msgstr "tronco"
 msgid "duration"
 msgstr "duração"
 
+<<<<<<< HEAD
 #: dialer_cdr/constants.py:74 dialer_cdr/models.py:198
 msgid "bill sec"
 msgstr "segundos cobrados"
@@ -2447,18 +3515,49 @@ msgid "UNSURE"
 msgstr ""
 
 #: dialer_cdr/forms.py:45
+=======
+#: dialer_cdr/constants.py:70 dialer_cdr/models.py:195
+msgid "bill sec"
+msgstr "segundos cobrados"
+
+#: dialer_cdr/constants.py:72
+msgid "amd status"
+msgstr "amd status"
+
+#: dialer_cdr/constants.py:80
+msgid "PERSON"
+msgstr ""
+
+#: dialer_cdr/constants.py:81
+msgid "MACHINE"
+msgstr ""
+
+#: dialer_cdr/constants.py:82
+msgid "UNSURE"
+msgstr ""
+
+#: dialer_cdr/forms.py:44
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "disposition"
 msgid "Disposition"
 msgstr "disposição"
 
+<<<<<<< HEAD
 #: dialer_cdr/forms.py:48
+=======
+#: dialer_cdr/forms.py:47
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "leg type"
 msgid "Leg type"
 msgstr "tipo chamada"
 
+<<<<<<< HEAD
 #: dialer_cdr/forms.py:97
+=======
+#: dialer_cdr/forms.py:95
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "leg type"
 msgstr "tipo chamada"
 
@@ -2472,6 +3571,7 @@ msgstr "Não é possível encontrar a Campanha: %(id)s"
 msgid "Callrequests and CDRs created : %(count)s"
 msgstr "Nº de Pedido de chamada e CDR criado :%(count)s"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:97 dialer_cdr/models.py:184
 msgid "RequestUUID"
 msgstr "PedidoUUID"
@@ -2499,10 +3599,38 @@ msgid "extra dial string"
 msgstr "string de discagem extra"
 
 #: dialer_cdr/models.py:117
+=======
+#: dialer_cdr/models.py:95 dialer_cdr/models.py:181
+msgid "RequestUUID"
+msgstr "PedidoUUID"
+
+#: dialer_cdr/models.py:97
+msgid "a-leg call-ID"
+msgstr "a-Leg Call-ID"
+
+#: dialer_cdr/models.py:102
+msgid "call request type"
+msgstr "Tipo de pedido de chamada"
+
+#: dialer_cdr/models.py:111
+msgid "time out"
+msgstr "limite de tempo"
+
+#: dialer_cdr/models.py:112
+msgid "time limit"
+msgstr "limite de tempo"
+
+#: dialer_cdr/models.py:113
+msgid "extra dial string"
+msgstr "string de discagem extra"
+
+#: dialer_cdr/models.py:115
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "subscriber related to this call request"
 msgstr "Assinante da campanha relacionada neste pedido de chamada"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:119
 msgid "select Campaign"
 msgstr "selecionar Campanha"
@@ -2512,57 +3640,109 @@ msgid "select gateway"
 msgstr "selecionar tronco"
 
 #: dialer_cdr/models.py:127
+=======
+#: dialer_cdr/models.py:117
+msgid "select Campaign"
+msgstr "selecionar Campanha"
+
+#: dialer_cdr/models.py:119 dialer_gateway/models.py:88
+msgid "select gateway"
+msgstr "selecionar tronco"
+
+#: dialer_cdr/models.py:125
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "call completed"
 msgstr "Contagem de chamada"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:129
 msgid "extra data"
 msgstr "dado extra"
 
 #: dialer_cdr/models.py:130
+=======
+#: dialer_cdr/models.py:127
+msgid "extra data"
+msgstr "dado extra"
+
+#: dialer_cdr/models.py:128
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "define the additional data to pass to the application"
 msgstr "Definir os dados adicionais para passar para a aplicação"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:141
+=======
+#: dialer_cdr/models.py:139
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "alarm request id"
 msgstr "Solicitar chamada"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:147
+=======
+#: dialer_cdr/models.py:145
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "call request"
 msgstr "Solicitar chamada"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:148
+=======
+#: dialer_cdr/models.py:146
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "call requests"
 msgstr "Chamadas solicitadas"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:186
 msgid "used gateway"
 msgstr "tronco utilizado"
 
 #: dialer_cdr/models.py:187
+=======
+#: dialer_cdr/models.py:183
+msgid "used gateway"
+msgstr "tronco utilizado"
+
+#: dialer_cdr/models.py:184
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "callrequest"
 msgstr "Solicitar chamada"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:188
+=======
+#: dialer_cdr/models.py:185
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "VoIP call-ID"
 msgstr "VoIP Call-ID"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:189
 msgid "CallerID"
 msgstr "CallerID"
 
 #: dialer_cdr/models.py:191
+=======
+#: dialer_cdr/models.py:186
+msgid "CallerID"
+msgstr "CallerID"
+
+#: dialer_cdr/models.py:188
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "the international number of the recipient, without the leading +"
 msgstr "O número internacional do destinatário, sem a o +"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:193 survey/constants.py:40
 msgid "destination"
 msgstr "destino"
@@ -2576,19 +3756,43 @@ msgid "starting date"
 msgstr "data inicial"
 
 #: dialer_cdr/models.py:199
+=======
+#: dialer_cdr/models.py:190 survey/constants.py:40
+msgid "destination"
+msgstr "destino"
+
+#: dialer_cdr/models.py:191
+msgid "select prefix"
+msgstr "selecionar prefixo"
+
+#: dialer_cdr/models.py:192
+msgid "starting date"
+msgstr "data inicial"
+
+#: dialer_cdr/models.py:196
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "progress sec"
 msgstr "Progresso sec"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:200
 msgid "answer sec"
 msgstr "resposta sec"
 
 #: dialer_cdr/models.py:201
+=======
+#: dialer_cdr/models.py:197
+msgid "answer sec"
+msgstr "resposta sec"
+
+#: dialer_cdr/models.py:198
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "wait sec"
 msgstr "Esperar sec"
 
+<<<<<<< HEAD
 #: dialer_cdr/models.py:205
 msgid "hangup cause"
 msgstr "Causa de desligar"
@@ -2606,6 +3810,25 @@ msgid "VoIP call"
 msgstr "Chamada VoIP"
 
 #: dialer_cdr/models.py:234
+=======
+#: dialer_cdr/models.py:202
+msgid "hangup cause"
+msgstr "Causa de desligar"
+
+#: dialer_cdr/models.py:207
+msgid "AMD Status"
+msgstr "AMD Status"
+
+#: dialer_cdr/models.py:227
+msgid "can see call detail report"
+msgstr "pode ver relatório detalhado da chamada"
+
+#: dialer_cdr/models.py:230
+msgid "VoIP call"
+msgstr "Chamada VoIP"
+
+#: dialer_cdr/models.py:231
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "VoIP calls"
 msgstr "chamadas VoIP"
 
@@ -2665,14 +3888,18 @@ msgstr "tempo de conexão média"
 msgid "ACT"
 msgstr "ACT"
 
+<<<<<<< HEAD
 #: dialer_contact/admin.py:76 dialer_contact/admin.py:114
+=======
+#: dialer_contact/admin.py:74 dialer_contact/admin.py:112
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_contact/views.py:311 dialer_contact/views.py:429
 #, fuzzy, python-format
 msgid "you have too many contacts. you are allowed a maximum of %(limit)s"
 msgstr ""
 "Você tem muitos contatos por campanha. Está permitido um máximo de %(limit)s"
 
-#: dialer_contact/admin.py:163 dialer_contact/views.py:474
+#: dialer_contact/admin.py:161 dialer_contact/views.py:474
 #, fuzzy
 msgid ""
 "invalid value for import! please check the import samples or phonebook is "
@@ -2680,7 +3907,7 @@ msgid ""
 msgstr ""
 "Valor inválido para importação! Por favor, olhe os exemplos de importação."
 
-#: dialer_contact/admin.py:168
+#: dialer_contact/admin.py:166
 msgid ""
 "invalid value for country code, it needs to be a valid ISO 3166-1 alpha-2 "
 "codes (http://en.wikipedia.org/wiki/ISO_3166-1)"
@@ -2688,7 +3915,7 @@ msgstr ""
 "valor inválido para o código do país, ele precisa ser em formato válido de "
 "ISO 3166-1 alfa-2 códigos (http://en.wikipedia.org/wiki/ISO_3166-1)"
 
-#: dialer_contact/admin.py:208 dialer_contact/views.py:524
+#: dialer_contact/admin.py:206 dialer_contact/views.py:524
 #, fuzzy, python-format
 msgid ""
 "%(contact_cnt)s contact(s) have been uploaded successfully out of "
@@ -2697,11 +3924,15 @@ msgstr ""
 "%(contact_cnt)s Contato(s) foram carregados com sucesso %(total_rows)s "
 "coluna(s)!"
 
+<<<<<<< HEAD
 #: dialer_contact/admin.py:215
+=======
+#: dialer_contact/admin.py:213
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "dialer contact"
 msgstr "contatos de voz"
 
-#: dialer_contact/admin.py:216
+#: dialer_contact/admin.py:214
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:13
 msgid "import contact"
 msgstr "importar contato"
@@ -2757,6 +3988,7 @@ msgstr "primeiro nome"
 msgid "from"
 msgstr "de"
 
+<<<<<<< HEAD
 #: dialer_contact/forms.py:40
 msgid "From"
 msgstr ""
@@ -2766,6 +3998,17 @@ msgid "To"
 msgstr ""
 
 #: dialer_contact/forms.py:51
+=======
+#: dialer_contact/forms.py:39
+msgid "From"
+msgstr ""
+
+#: dialer_contact/forms.py:42
+msgid "To"
+msgstr ""
+
+#: dialer_contact/forms.py:49
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid ""
 #| "upload CSV file using the pipe \"|\" as the field delimiter, e.g. "
@@ -2780,7 +4023,11 @@ msgstr ""
 "exemplo: 1234567890|sobrenome|nome|email@somewhere.com|contato-teste|1|"
 "endereço|cidade|estado|BR|unidade|{\"idade\":\"32\",\"título\":\"doctor\"}|"
 
+<<<<<<< HEAD
 #: dialer_contact/forms.py:64 survey/forms.py:693
+=======
+#: dialer_contact/forms.py:62 survey/forms.py:675
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "document types accepted: %s"
 msgstr "Tipo de documentos acitos: %s"
@@ -2789,19 +4036,31 @@ msgstr "Tipo de documentos acitos: %s"
 msgid "select phonebook"
 msgstr "selecione a agenda telefônica"
 
+<<<<<<< HEAD
 #: dialer_contact/forms.py:161
+=======
+#: dialer_contact/forms.py:154
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "advanced data"
 msgid "Advanced Data"
 msgstr "Dados avançados"
 
+<<<<<<< HEAD
 #: dialer_contact/forms.py:186
+=======
+#: dialer_contact/forms.py:178
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "contact number"
 msgid "Contact number"
 msgstr "número do contato"
 
+<<<<<<< HEAD
 #: dialer_contact/forms.py:188
+=======
+#: dialer_contact/forms.py:180
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "contact name"
 msgid "Contact Name"
@@ -2820,37 +4079,60 @@ msgstr "pode ver agenda telefônica"
 msgid "phonebooks"
 msgstr "agendas telefônicas"
 
+<<<<<<< HEAD
 #: dialer_contact/models.py:89
+=======
+#: dialer_contact/models.py:87
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:24
 #: dnc/templates/dnc/dnc_contact/import_dnc_contact.html:14
 msgid "contact number"
 msgstr "número do contato"
 
+<<<<<<< HEAD
 #: dialer_contact/models.py:95
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:30
 #: templates/admin/dialer_contact/contact/import_contact.html:26
 #: user_profile/models.py:60
+=======
+#: dialer_contact/models.py:93
+#: dialer_contact/templates/dialer_contact/contact/import_contact.html:30
+#: templates/admin/dialer_contact/contact/import_contact.html:26
+#: user_profile/models.py:59
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "address"
 msgstr "endereço"
 
 #: dialer_contact/models.py:96
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:31
 #: templates/admin/dialer_contact/contact/import_contact.html:27
+<<<<<<< HEAD
 #: user_profile/models.py:61
+=======
+#: user_profile/models.py:60
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "city"
 msgstr "cidade"
 
 #: dialer_contact/models.py:97
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:32
 #: templates/admin/dialer_contact/contact/import_contact.html:28
+<<<<<<< HEAD
 #: user_profile/models.py:62
+=======
+#: user_profile/models.py:61
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "state"
 msgstr "estado"
 
 #: dialer_contact/models.py:98
 #: dialer_contact/templates/dialer_contact/contact/import_contact.html:33
 #: templates/admin/dialer_contact/contact/import_contact.html:29
+<<<<<<< HEAD
 #: user_profile/models.py:63
+=======
+#: user_profile/models.py:62
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "country"
 msgstr "país"
 
@@ -2955,6 +4237,19 @@ msgstr "%(count)s phonebook(s) apagada com sucesso."
 msgid "\"%s\" is added."
 msgstr "\"%(name)s\" foi adicionado."
 
+<<<<<<< HEAD
+=======
+#: dialer_contact/views.py:148
+#, python-format
+msgid "%(count)s phonebook(s) are deleted."
+msgstr "%(count)s phonebook(s) apagada com sucesso."
+
+#: dialer_contact/views.py:322
+#, fuzzy, python-format
+msgid "\"%s\" is added."
+msgstr "\"%(name)s\" foi adicionado."
+
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: dialer_contact/views.py:361
 #, fuzzy, python-format
 msgid "%s contact(s) are deleted."
@@ -3036,11 +4331,11 @@ msgstr "limites de tempo do tronco"
 msgid "timeout in seconds, ie \"10\""
 msgstr "Tempo limite de conexão em segundos"
 
-#: dialer_gateway/models.py:75
+#: dialer_gateway/models.py:74
 msgid "gateway retries"
 msgstr "tentativas do tronco"
 
-#: dialer_gateway/models.py:76
+#: dialer_gateway/models.py:75
 #, fuzzy
 msgid ""
 "\"2,1\", # retry String for Gateways separated by comma, on how many times "
@@ -3049,12 +4344,20 @@ msgstr ""
 "\"2,1\", # Repetir String para Gateways separados por vírgula, de quantas "
 "vezes cada gateway deve ser repetida"
 
+<<<<<<< HEAD
 #: dialer_gateway/models.py:78
+=======
+#: dialer_gateway/models.py:77
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "originate dial string"
 msgstr "Originar string de discagem"
 
+<<<<<<< HEAD
 #: dialer_gateway/models.py:79
+=======
+#: dialer_gateway/models.py:78
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid ""
 "add channels variables : http://wiki.freeswitch.org/wiki/Channel_Variables, "
@@ -3063,6 +4366,7 @@ msgstr ""
 "Adicionar Variáveis ​​de Canais : http://wiki.freeswitch.org/wiki/"
 "Channel_Variables, EX: bridge_early_media=true,hangup_after_bridge=true"
 
+<<<<<<< HEAD
 #: dialer_gateway/models.py:82
 msgid "second used"
 msgstr "segunda usado"
@@ -3092,6 +4396,37 @@ msgid "dialer gateways"
 msgstr "troncos de discagem"
 
 #: dialer_settings/models.py:40
+=======
+#: dialer_gateway/models.py:81
+msgid "second used"
+msgstr "segunda usado"
+
+#: dialer_gateway/models.py:89
+msgid "add parameter"
+msgstr "adicionar parâmetro"
+
+#: dialer_gateway/models.py:92
+msgid "call count"
+msgstr "contagem de chamada"
+
+#: dialer_gateway/models.py:94
+msgid "count in use"
+msgstr "contagem em uso"
+
+#: dialer_gateway/models.py:95
+msgid "max concurrent calls"
+msgstr "máximo de chamadas simultâneas"
+
+#: dialer_gateway/models.py:101
+msgid "dialer gateway"
+msgstr "tronco de voip"
+
+#: dialer_gateway/models.py:102
+msgid "dialer gateways"
+msgstr "troncos de discagem"
+
+#: dialer_settings/models.py:39
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "settings name"
 msgstr "nome das configurações"
 
@@ -3209,11 +4544,19 @@ msgstr "Assinantes máximo por campanha"
 msgid "dialer setting"
 msgstr "configuração do discador"
 
+<<<<<<< HEAD
 #: dialer_settings/models.py:94 user_profile/models.py:92
 msgid "dialer settings"
 msgstr "configurações do discador"
 
 #: dnc/forms.py:59
+=======
+#: dialer_settings/models.py:93 user_profile/models.py:90
+msgid "dialer settings"
+msgstr "configurações do discador"
+
+#: dnc/forms.py:57
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "phone number"
 msgid "Phone Number"
@@ -3446,7 +4789,11 @@ msgstr "Senha"
 msgid "Forgot password"
 msgstr "Alterar senha?"
 
+<<<<<<< HEAD
 #: frontend/forms.py:65 mod_sms/forms.py:213 mod_utils/forms.py:97
+=======
+#: frontend/forms.py:63 mod_sms/forms.py:210 mod_utils/forms.py:93
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Search"
 msgstr "pesquisa"
@@ -3508,7 +4855,11 @@ msgid "account limits"
 msgstr "limites de conta"
 
 #: frontend/templates/frontend/bootstrap_menu.html:97
+<<<<<<< HEAD
 #: user_profile/models.py:69
+=======
+#: user_profile/models.py:68
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: user_profile/templates/user_profile/user_detail_change.html:15
 msgid "language"
 msgstr "idioma"
@@ -3540,7 +4891,11 @@ msgid "import"
 msgstr "importar"
 
 #: frontend/templates/frontend/bootstrap_side_menu.html:45
+<<<<<<< HEAD
 #: user_profile/models.py:170
+=======
+#: user_profile/models.py:165
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "calendar users"
 msgstr "usuários de calendário"
 
@@ -3558,7 +4913,11 @@ msgid "reports"
 msgstr "relatórios"
 
 #: frontend/templates/frontend/bootstrap_side_menu.html:76
+<<<<<<< HEAD
 #: survey/models.py:127
+=======
+#: survey/models.py:124
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "surveys"
 msgstr "enquetes"
 
@@ -3726,6 +5085,18 @@ msgstr "info"
 #: frontend/views.py:82
 msgid "disabled account"
 msgstr "conta desativada"
+<<<<<<< HEAD
+
+#: frontend/views.py:85
+msgid "invalid login."
+msgstr "login inválido."
+
+#: frontend/views.py:88
+#, fuzzy
+msgid "enter valid user credentials."
+msgstr "Digite credenciais de usuário válidas."
+=======
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 
 #: frontend/views.py:85
 msgid "invalid login."
@@ -3736,15 +5107,15 @@ msgstr "login inválido."
 msgid "enter valid user credentials."
 msgstr "Digite credenciais de usuário válidas."
 
-#: mod_mailer/models.py:28
+#: mod_mailer/models.py:27
 msgid "mail template name"
 msgstr "nome do modelo de email"
 
-#: mod_mailer/models.py:29
+#: mod_mailer/models.py:28
 msgid "template key"
 msgstr "chave do modelo"
 
-#: mod_mailer/models.py:30
+#: mod_mailer/models.py:29
 msgid ""
 "unique name used to pick some template for recurring action, such as "
 "activation or warning"
@@ -3752,66 +5123,75 @@ msgstr ""
 "nome exclusivo usado para escolher algum modelo para ação recorrentes, como "
 "a ativação ou aviso"
 
-#: mod_mailer/models.py:31
+#: mod_mailer/models.py:30
 #, fuzzy
 msgid "from_email"
 msgstr "Email"
 
-#: mod_mailer/models.py:32
+#: mod_mailer/models.py:31
 msgid "sender email"
 msgstr "remetente de e-mail"
 
-#: mod_mailer/models.py:33
+#: mod_mailer/models.py:32
 msgid "from_name"
 msgstr "from_name"
 
-#: mod_mailer/models.py:34
+#: mod_mailer/models.py:33
 msgid "sender name"
 msgstr "nome do remetente"
 
-#: mod_mailer/models.py:35
+#: mod_mailer/models.py:34
 msgid "subject"
 msgstr "assunto"
 
-#: mod_mailer/models.py:36
+#: mod_mailer/models.py:35
 msgid "email subject"
 msgstr "assunto do e-mail"
 
-#: mod_mailer/models.py:37
+#: mod_mailer/models.py:36
 msgid "message plaintext"
 msgstr "mensagem de texto plano"
 
-#: mod_mailer/models.py:38
+#: mod_mailer/models.py:37
 msgid "plain text version of the email"
 msgstr "versão do e-mail de texto simples"
 
-#: mod_mailer/models.py:39
+#: mod_mailer/models.py:38
 msgid "message_html"
 msgstr "mensagem_html"
 
-#: mod_mailer/models.py:40
+#: mod_mailer/models.py:39
 msgid "HTML version of the Email"
 msgstr "verão do e-mail em formato HTML"
 
-#: mod_mailer/models.py:44
+#: mod_mailer/models.py:43
 #, fuzzy
 msgid "Mail template"
 msgstr "Tipo de ação"
 
-#: mod_mailer/models.py:45
+#: mod_mailer/models.py:44
 msgid "Mail templates"
 msgstr "Modelos de e-mail"
 
+<<<<<<< HEAD
 #: mod_mailer/models.py:56
+=======
+#: mod_mailer/models.py:54
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "mail template"
 msgstr "Tipo de ação"
 
+<<<<<<< HEAD
 #: mod_mailer/models.py:57
+=======
+#: mod_mailer/models.py:55
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "contact email"
 msgstr "Adicionar detalhes dos contactos"
 
+<<<<<<< HEAD
 #: mod_mailer/models.py:60
 msgid "parameter"
 msgstr "parâmetro"
@@ -3821,12 +5201,27 @@ msgid "mail spooler"
 msgstr "mail spooler"
 
 #: mod_registration/forms.py:25
+=======
+#: mod_mailer/models.py:58
+msgid "parameter"
+msgstr "parâmetro"
+
+#: mod_mailer/models.py:64
+msgid "mail spooler"
+msgstr "mail spooler"
+
+#: mod_registration/forms.py:24
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "mail"
 msgid "Email"
 msgstr "e-mail modelo"
 
+<<<<<<< HEAD
 #: mod_registration/forms.py:37
+=======
+#: mod_registration/forms.py:36
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Reset my password"
 msgstr "Redefinir minha senha"
@@ -3942,7 +5337,11 @@ msgstr ""
 "Esqueceu sua senha? Digite seu endereço de email abaixo, e enviaremos as "
 "instruções para configurar uma nova senha."
 
+<<<<<<< HEAD
 #: mod_sms/admin.py:94 mod_sms/views.py:171
+=======
+#: mod_sms/admin.py:93 mod_sms/views.py:171
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "you have too many sms campaigns. Max allowed %(limit)s"
 msgstr "você tem muitas campanhas. Max permitido %(limit)s"
@@ -4020,19 +5419,31 @@ msgstr "UUID"
 msgid "status msg"
 msgstr "status do sms"
 
+<<<<<<< HEAD
 #: mod_sms/forms.py:114
+=======
+#: mod_sms/forms.py:113
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "completion settings"
 msgid "Completion Settings"
 msgstr "configurações de completamento"
 
+<<<<<<< HEAD
 #: mod_sms/forms.py:126
+=======
+#: mod_sms/forms.py:125
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "week days"
 msgid "Week days"
 msgstr "dias da semana"
 
+<<<<<<< HEAD
 #: mod_sms/forms.py:161
+=======
+#: mod_sms/forms.py:160
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "Maximum Frequency limit of %d exceeded."
 msgstr "Limite de frequência máxima de %d excedido."
@@ -4064,12 +5475,20 @@ msgstr ""
 msgid "Create new SMSs for a given sms_campaign_id"
 msgstr "Criar um novo SMS para um determinado sms_campaign_id"
 
+<<<<<<< HEAD
 #: mod_sms/models.py:125
+=======
+#: mod_sms/models.py:117
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "SMS campaign code"
 msgstr "Código da campanha"
 
+<<<<<<< HEAD
 #: mod_sms/models.py:126
+=======
+#: mod_sms/models.py:118
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid ""
 "this code is auto-generated by the "
 "platform,                                      this is used to identify the "
@@ -4078,11 +5497,16 @@ msgstr ""
 "este código é gerado automaticamente pela plataforma, este é usado para "
 "identificar a campanha"
 
+<<<<<<< HEAD
 #: mod_sms/models.py:157
+=======
+#: mod_sms/models.py:148
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "SMS per minute"
 msgstr "Chamadas por minuto"
 
+<<<<<<< HEAD
 #: mod_sms/models.py:163
 msgid "time between Retries"
 msgstr "tempo entre tentativas"
@@ -4108,20 +5532,56 @@ msgid "SMS campaign"
 msgstr "Campanha SMS"
 
 #: mod_sms/models.py:198
+=======
+#: mod_sms/models.py:154
+msgid "time between Retries"
+msgstr "tempo entre tentativas"
+
+#: mod_sms/models.py:160
+msgid "text Message"
+msgstr "mensagem de Texto"
+
+#: mod_sms/models.py:172
+msgid "list of imported phonebook"
+msgstr "lista de agenda importada"
+
+#: mod_sms/models.py:184
+msgid "can see SMS campaign"
+msgstr "pode ver campanha de SMS"
+
+#: mod_sms/models.py:185
+msgid "can see SMS campaign dashboard"
+msgstr "pode ver dashboard da campanha SMS"
+
+#: mod_sms/models.py:188
+msgid "SMS campaign"
+msgstr "Campanha SMS"
+
+#: mod_sms/models.py:189
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "SMS campaigns"
 msgstr "Campanha"
 
+<<<<<<< HEAD
 #: mod_sms/models.py:244
+=======
+#: mod_sms/models.py:235
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Phonebook Empty"
 msgstr "Notas da agenda telefônica"
 
+<<<<<<< HEAD
 #: mod_sms/models.py:361
+=======
+#: mod_sms/models.py:352
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "SMSCampaign Subscriber"
 msgstr "Campanha de atualização"
 
+<<<<<<< HEAD
 #: mod_sms/models.py:434
 msgid "select message"
 msgstr "selecionar mensagem"
@@ -4131,15 +5591,31 @@ msgid "select SMS campaign"
 msgstr "selecionar campanha SMS"
 
 #: mod_sms/models.py:456
+=======
+#: mod_sms/models.py:422
+msgid "select message"
+msgstr "selecionar mensagem"
+
+#: mod_sms/models.py:426 mod_sms/models.py:490
+msgid "select SMS campaign"
+msgstr "selecionar campanha SMS"
+
+#: mod_sms/models.py:444
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "SMS campaign subscriber"
 msgstr "Campanha de atualização"
 
+<<<<<<< HEAD
 #: mod_sms/models.py:457
+=======
+#: mod_sms/models.py:445
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "SMS campaign subscribers"
 msgstr "Campanha de atualização"
 
+<<<<<<< HEAD
 #: mod_sms/models.py:511
 msgid "can see SMS report"
 msgstr "pode ver relatórios SMS"
@@ -4157,6 +5633,25 @@ msgid "SMS template name"
 msgstr "Nome do modelo SMS"
 
 #: mod_sms/models.py:526
+=======
+#: mod_sms/models.py:498
+msgid "can see SMS report"
+msgstr "pode ver relatórios SMS"
+
+#: mod_sms/models.py:501
+msgid "SMS message"
+msgstr "mensagem de SMS"
+
+#: mod_sms/models.py:502
+msgid "SMS messages"
+msgstr "Mensagens de SMS"
+
+#: mod_sms/models.py:509
+msgid "SMS template name"
+msgstr "Nome do modelo SMS"
+
+#: mod_sms/models.py:512
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid ""
 "Unique name used to pick some template for recurring action, such as "
 "activation or warning"
@@ -4164,11 +5659,19 @@ msgstr ""
 "Nome exclusivo usado para escolher algum modelo para ação recorrente, como a "
 "ativação ou aviso"
 
+<<<<<<< HEAD
 #: mod_sms/models.py:533
 msgid "SMS template"
 msgstr "Modelo SMS"
 
 #: mod_sms/models.py:534
+=======
+#: mod_sms/models.py:519
+msgid "SMS template"
+msgstr "Modelo SMS"
+
+#: mod_sms/models.py:520
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "SMS templates"
 msgstr "Modelos SMS"
 
@@ -4268,60 +5771,101 @@ msgstr ""
 "ao acrescentar uma campanha, você precisa ter suas configurações "
 "configuradas corretamente, entre em contato com o administrador."
 
+<<<<<<< HEAD
 #: mod_sms/views.py:187
+=======
+#: mod_sms/views.py:186
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "\"%(name)s\" is added."
 msgstr "\"%(name)s\" foi adicionado."
 
+<<<<<<< HEAD
 #: mod_sms/views.py:220
+=======
+#: mod_sms/views.py:219
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "\"%(name)s\" is stopped."
 msgstr "\"%(name)s\" foi excluído."
 
+<<<<<<< HEAD
 #: mod_sms/views.py:232
+=======
+#: mod_sms/views.py:231
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "%(count)s sms campaign(s) are stopped."
 msgstr "%(count)s campanha(s) apagada."
 
+<<<<<<< HEAD
 #: mod_sms/views.py:234
+=======
+#: mod_sms/views.py:233
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy, python-format
 msgid "%(count)s sms campaign(s) are deleted."
 msgstr "%(count)s campanha(s) apagada."
 
+<<<<<<< HEAD
 #: mod_utils/forms.py:72
+=======
+#: mod_utils/forms.py:68
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "update"
 msgid "Update"
 msgstr "atualizar"
 
+<<<<<<< HEAD
 #: mod_utils/forms.py:72
+=======
+#: mod_utils/forms.py:68
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "delete"
 msgid "Delete"
 msgstr "apagar"
 
+<<<<<<< HEAD
 #: mod_utils/forms.py:80
 msgid "Save"
 msgstr ""
 
 #: mod_utils/forms.py:89
+=======
+#: mod_utils/forms.py:76
+msgid "Save"
+msgstr ""
+
+#: mod_utils/forms.py:85
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "import"
 msgid "Import"
 msgstr "importar"
 
+<<<<<<< HEAD
 #: mod_utils/function_def.py:63
+=======
+#: mod_utils/function_def.py:62
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "start"
 msgid "Start"
 msgstr "iniciar"
 
+<<<<<<< HEAD
 #: mod_utils/function_def.py:64
+=======
+#: mod_utils/function_def.py:63
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "pause"
 msgid "Pause"
 msgstr "pausa"
 
+<<<<<<< HEAD
 #: mod_utils/function_def.py:65
 #, fuzzy
 #| msgid "abort"
@@ -4329,6 +5873,15 @@ msgid "Abort"
 msgstr "abortar"
 
 #: mod_utils/function_def.py:66
+=======
+#: mod_utils/function_def.py:64
+#, fuzzy
+#| msgid "abort"
+msgid "Abort"
+msgstr "abortar"
+
+#: mod_utils/function_def.py:65
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "Stop"
 msgstr ""
 
@@ -4337,13 +5890,21 @@ msgstr ""
 msgid "Started"
 msgstr "iniciar"
 
+<<<<<<< HEAD
 #: mod_utils/function_def.py:78
+=======
+#: mod_utils/function_def.py:77
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "paused"
 msgid "Paused"
 msgstr "pausa"
 
+<<<<<<< HEAD
 #: mod_utils/function_def.py:80
+=======
+#: mod_utils/function_def.py:79
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Aborted"
 msgstr "abortar"
@@ -4443,6 +6004,7 @@ msgid ""
 msgstr ""
 "Usuário precisa ser mapeado com configuração do discador pelo administrador"
 
+<<<<<<< HEAD
 #: newfies_dialer/settings.py:448
 msgid "English"
 msgstr "Ingles"
@@ -4468,6 +6030,33 @@ msgid "Turkish"
 msgstr "Turco"
 
 #: newfies_dialer/settings.py:454
+=======
+#: newfies_dialer/settings.py:488
+msgid "English"
+msgstr "Ingles"
+
+#: newfies_dialer/settings.py:489
+msgid "French"
+msgstr "Francês"
+
+#: newfies_dialer/settings.py:490
+msgid "Spanish"
+msgstr "Espanhol"
+
+#: newfies_dialer/settings.py:491
+msgid "Portuguese"
+msgstr "Português"
+
+#: newfies_dialer/settings.py:492
+msgid "Chinese"
+msgstr "Chines"
+
+#: newfies_dialer/settings.py:493
+msgid "Turkish"
+msgstr "Turco"
+
+#: newfies_dialer/settings.py:494
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "Japanese"
 msgstr "Japonês"
 
@@ -4519,22 +6108,35 @@ msgstr "data da ligação"
 msgid "survey result"
 msgstr "resultado da enquete"
 
+<<<<<<< HEAD
 #: survey/forms.py:49
+=======
+#: survey/forms.py:48
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "hangup"
 msgstr "Causa hangup"
 
+<<<<<<< HEAD
 #: survey/forms.py:80 survey/forms.py:104
+=======
+#: survey/forms.py:79 survey/forms.py:103
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "any other key"
 msgid "Any other key"
 msgstr "qualquer outra tecla"
 
+<<<<<<< HEAD
 #: survey/forms.py:81 survey/forms.py:105 survey/forms.py:580
+=======
+#: survey/forms.py:80 survey/forms.py:104 survey/forms.py:566
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Invalid"
 msgstr "Arquivos de áudio"
 
+<<<<<<< HEAD
 #: survey/forms.py:137
 #, fuzzy
 #| msgid "completed"
@@ -4544,6 +6146,17 @@ msgstr "concluído"
 #: survey/forms.py:172 survey/forms.py:378 survey/forms.py:415
 #: survey/forms.py:453 survey/forms.py:491
 #, fuzzy
+=======
+#: survey/forms.py:135
+#, fuzzy
+#| msgid "completed"
+msgid "Completed"
+msgstr "concluído"
+
+#: survey/forms.py:169 survey/forms.py:371 survey/forms.py:407
+#: survey/forms.py:442 survey/forms.py:479
+#, fuzzy
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 msgid "Section title"
 msgstr "Tipo de ação"
 
@@ -4555,6 +6168,12 @@ msgstr ""
 "configurar as opções de escolha múltipla válidos. O valor de cada campo será "
 "mostrado no relatório da enquete"
 
+#: survey/forms.py:566
+#, fuzzy
+#| msgid "any other key"
+msgid "Any Other Key"
+msgstr "qualquer outra tecla"
+
 #: survey/forms.py:580
 #, fuzzy
 #| msgid "any other key"
@@ -4565,45 +6184,74 @@ msgstr "qualquer outra tecla"
 msgid "no branching, this will terminate the call"
 msgstr "nenhuma ramificação, isto irá terminar a chamada"
 
+<<<<<<< HEAD
 #: survey/forms.py:613
+=======
+#: survey/forms.py:598
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "select Campaign"
 msgid "Select Campaign"
 msgstr "selecionar Campanha"
 
+<<<<<<< HEAD
 #: survey/forms.py:630
+=======
+#: survey/forms.py:614
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "survey"
 msgid "Survey"
 msgstr "enquete"
 
+<<<<<<< HEAD
 #: survey/forms.py:649
+=======
+#: survey/forms.py:633
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "select survey"
 msgid "Select Survey"
 msgstr "selecionar enquete"
 
+<<<<<<< HEAD
 #: survey/forms.py:669 survey/forms.py:700
+=======
+#: survey/forms.py:651
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "survey name"
 msgid "Survey Name"
 msgstr "nome da enquete"
 
+<<<<<<< HEAD
 #: survey/forms.py:670
+=======
+#: survey/forms.py:652
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Upload file"
 msgstr "Enviar arquivo CSV"
 
+<<<<<<< HEAD
 #: survey/forms.py:670
+=======
+#: survey/forms.py:652
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "browse text file"
 msgstr "Vizualizar arquivo CVS"
 
+<<<<<<< HEAD
 #: survey/models.py:45
+=======
+#: survey/models.py:44
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "Text-to-Speech language"
 msgstr "Idioma Text-to-Speech"
 
+<<<<<<< HEAD
 #: survey/models.py:68
 msgid "can see survey template"
 msgstr "pode ver modelo da enquete"
@@ -4641,11 +6289,54 @@ msgid "can see survey report"
 msgstr "pode ver relatórios de enquetes"
 
 #: survey/models.py:219
+=======
+#: survey/models.py:66
+msgid "can see survey template"
+msgstr "pode ver modelo da enquete"
+
+#: survey/models.py:68
+msgid "survey template"
+msgstr "modelo da enquete"
+
+#: survey/models.py:69
+msgid "survey templates"
+msgstr "modelos das enquetes"
+
+#: survey/models.py:116
+msgid "can see survey"
+msgstr "pode ver enquete"
+
+#: survey/models.py:117
+msgid "can see sealed survey"
+msgstr "pode ver enquetes seladas"
+
+#: survey/models.py:118
+msgid "can seal survey"
+msgstr "pode selar enquete"
+
+#: survey/models.py:119
+msgid "can export survey"
+msgstr "pode exportar enquete"
+
+#: survey/models.py:120
+msgid "can import survey"
+msgstr "pode importar enquete"
+
+#: survey/models.py:121
+msgid "can see survey report"
+msgstr "pode ver relatórios de enquetes"
+
+#: survey/models.py:212
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "section type"
 msgstr "Tipo de ação"
 
+<<<<<<< HEAD
 #: survey/models.py:221 survey/templates/survey/sealed_survey_view.html:58
+=======
+#: survey/models.py:214 survey/templates/survey/sealed_survey_view.html:58
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/templates/survey/survey_campaign_result.html:17
 #: survey/templates/survey/survey_change.html:113
 #: survey/templates/survey/survey_report.html:57
@@ -4653,11 +6344,19 @@ msgstr "Tipo de ação"
 msgid "question"
 msgstr "Pergunta"
 
+<<<<<<< HEAD
 #: survey/models.py:222
 msgid "Example: hotel service rating"
 msgstr "Exemplo: serviço de classificação de hoteis"
 
 #: survey/models.py:225
+=======
+#: survey/models.py:215
+msgid "Example: hotel service rating"
+msgstr "Exemplo: serviço de classificação de hoteis"
+
+#: survey/models.py:218
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, python-brace-format
 msgid ""
 "Example: Press a key between 1 to 5, press pound key when done or Hello "
@@ -4667,31 +6366,52 @@ msgstr ""
 "feito ou Olá {first_name} {last_name}, por favor, pressione uma tecla entre "
 "1 a 5"
 
+<<<<<<< HEAD
 #: survey/models.py:227
 msgid "audio File"
 msgstr "arquivo de Áudio"
 
 #: survey/models.py:229
+=======
+#: survey/models.py:220
+msgid "audio File"
+msgstr "arquivo de Áudio"
+
+#: survey/models.py:222
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "retries"
 msgstr "Tentativas Max"
 
+<<<<<<< HEAD
 #: survey/models.py:230
+=======
+#: survey/models.py:223
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "retries until valid input"
 msgstr "Arquivos de áudio"
 
+<<<<<<< HEAD
 #: survey/models.py:232 survey/templates/survey/sealed_survey_view.html:226
+=======
+#: survey/models.py:225 survey/templates/survey/sealed_survey_view.html:226
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/templates/survey/survey_change.html:295
 #: user_profile/templates/user_profile/user_dialer_settings.html:18
 msgid "timeout"
 msgstr "limite de tempo"
 
+<<<<<<< HEAD
 #: survey/models.py:233
+=======
+#: survey/models.py:226
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "timeout in seconds"
 msgstr "Tempo limite de conexão em segundos"
 
+<<<<<<< HEAD
 #: survey/models.py:236
 msgid "key 0"
 msgstr ""
@@ -4733,34 +6453,98 @@ msgid "key 9"
 msgstr ""
 
 #: survey/models.py:257
+=======
+#: survey/models.py:229
+msgid "key 0"
+msgstr ""
+
+#: survey/models.py:231
+msgid "key 1"
+msgstr ""
+
+#: survey/models.py:233
+msgid "key 2"
+msgstr ""
+
+#: survey/models.py:235
+msgid "key 3"
+msgstr ""
+
+#: survey/models.py:237
+msgid "key 4"
+msgstr ""
+
+#: survey/models.py:239
+msgid "key 5"
+msgstr ""
+
+#: survey/models.py:241
+msgid "key 6"
+msgstr ""
+
+#: survey/models.py:243
+msgid "key 7"
+msgstr ""
+
+#: survey/models.py:245
+msgid "key 8"
+msgstr ""
+
+#: survey/models.py:247
+msgid "key 9"
+msgstr ""
+
+#: survey/models.py:250
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "from 1 to X"
 msgstr "de"
 
+<<<<<<< HEAD
 #: survey/models.py:259
 msgid "check validity"
 msgstr "verificar a validade"
 
 #: survey/models.py:261
+=======
+#: survey/models.py:252
+msgid "check validity"
+msgstr "verificar a validade"
+
+#: survey/models.py:254
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "number of digits"
 msgstr "Número máximo de campanhas"
 
+<<<<<<< HEAD
 #: survey/models.py:263
 msgid "minimum"
 msgstr "mínimum"
 
 #: survey/models.py:265
+=======
+#: survey/models.py:256
+msgid "minimum"
+msgstr "mínimum"
+
+#: survey/models.py:258
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "maximum"
 msgstr "Tentativa(s) máxima(s)"
 
+<<<<<<< HEAD
 #: survey/models.py:268 survey/templates/survey/sealed_survey_view.html:181
+=======
+#: survey/models.py:261 survey/templates/survey/sealed_survey_view.html:181
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/templates/survey/survey_change.html:246
 #, fuzzy
 msgid "Phone Number / SIP URI"
 msgstr "Número de telefone"
 
+<<<<<<< HEAD
 #: survey/models.py:271
 #, python-brace-format
 msgid "Example: Please pull up the file {filenumber} for this call"
@@ -4773,67 +6557,114 @@ msgid "confirm key"
 msgstr "URL confirmar"
 
 #: survey/models.py:277
+=======
+#: survey/models.py:264
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "conference number"
 msgstr "Número do contato"
 
-#: survey/models.py:280
+#: survey/models.py:267
 msgid "text that will be send via SMS to the contact"
 msgstr "texto que será enviado via SMS para o contato"
 
-#: survey/models.py:283
+#: survey/models.py:270
 msgid "survey complete"
 msgstr "enquete finalizada"
 
+<<<<<<< HEAD
 #: survey/models.py:335 survey/models.py:402
 msgid "audio invalid input"
 msgstr "entrada de áudio invalida"
 
 #: survey/models.py:340
+=======
+#: survey/models.py:321 survey/models.py:385
+msgid "audio invalid input"
+msgstr "entrada de áudio invalida"
+
+#: survey/models.py:326
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "section template"
 msgstr "Tipo de ação"
 
+<<<<<<< HEAD
 #: survey/models.py:341
+=======
+#: survey/models.py:327
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "section templates"
 msgstr "Tipo de ação"
 
+<<<<<<< HEAD
 #: survey/models.py:407
+=======
+#: survey/models.py:390
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "section template ID"
 msgstr "Tipo de ação"
 
+<<<<<<< HEAD
 #: survey/models.py:427
 msgid "entered value"
 msgstr "valor introduzido"
 
 #: survey/models.py:451
+=======
+#: survey/models.py:409
+msgid "entered value"
+msgstr "valor introduzido"
+
+#: survey/models.py:432
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "branching template"
 msgstr "Tipo de ação"
 
+<<<<<<< HEAD
 #: survey/models.py:452
+=======
+#: survey/models.py:433
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "branching templates"
 msgstr "Tipo de ação"
 
+<<<<<<< HEAD
 #: survey/models.py:482 survey/models.py:483
+=======
+#: survey/models.py:462 survey/models.py:463
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #: survey/templates/survey/sealed_survey_view.html:207
 #: survey/templates/survey/survey_change.html:276
 msgid "branching"
 msgstr "ramificação"
 
+<<<<<<< HEAD
 #: survey/models.py:522
+=======
+#: survey/models.py:501
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "record File"
 msgstr "Gravar arquivo"
 
+<<<<<<< HEAD
 #: survey/models.py:525
 msgid "recording duration"
 msgstr "duração da gravação"
 
 #: survey/models.py:548
+=======
+#: survey/models.py:504
+msgid "recording duration"
+msgstr "duração da gravação"
+
+#: survey/models.py:526
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "result count"
 msgstr "Contagem de chamada"
@@ -5274,7 +7105,11 @@ msgstr "Solicitação de chamada não encontrada"
 msgid "Email address"
 msgstr "Endereço de email"
 
+<<<<<<< HEAD
 #: user_profile/forms.py:99
+=======
+#: user_profile/forms.py:95
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 #| msgid "verify phone number"
 msgid "Verify phone number"
@@ -5284,6 +7119,7 @@ msgstr "verificar número de telefone"
 msgid "verify if a phone number is authorized to call"
 msgstr "verificar se um número de telefone está autorizado a chamar"
 
+<<<<<<< HEAD
 #: user_profile/models.py:64
 msgid "zip code"
 msgstr "CEP"
@@ -5329,16 +7165,71 @@ msgid "admins"
 msgstr "administradores"
 
 #: user_profile/models.py:204
+=======
+#: user_profile/models.py:63
+msgid "zip code"
+msgstr "CEP"
+
+#: user_profile/models.py:65
+msgid "fax Number"
+msgstr "Número do Fax"
+
+#: user_profile/models.py:66
+msgid "company name"
+msgstr "nome da empresa"
+
+#: user_profile/models.py:67
+msgid "company website"
+msgstr "site da empresa"
+
+#: user_profile/models.py:69
+msgid "note"
+msgstr "nota"
+
+#: user_profile/models.py:97
+msgid "can see API-Explorer"
+msgstr "pode ver API-Explorador"
+
+#: user_profile/models.py:101
+msgid "user profile"
+msgstr "perfil de usuário"
+
+#: user_profile/models.py:102
+msgid "user profiles"
+msgstr "perfiis de usuário"
+
+#: user_profile/models.py:127
+msgid "managers"
+msgstr "gerentes"
+
+#: user_profile/models.py:148
+msgid "admin"
+msgstr "admininstrador"
+
+#: user_profile/models.py:149
+msgid "admins"
+msgstr "administradores"
+
+#: user_profile/models.py:198
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "can see Calendar User list"
 msgstr "Atualizar enquete"
 
+<<<<<<< HEAD
 #: user_profile/models.py:208
+=======
+#: user_profile/models.py:202
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "calendar user profile"
 msgstr "Perfil de Usuário"
 
+<<<<<<< HEAD
 #: user_profile/models.py:209
+=======
+#: user_profile/models.py:203
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #, fuzzy
 msgid "calendar user profiles"
 msgstr "Perfil de Usuário"
@@ -5404,6 +7295,7 @@ msgstr "assinantes máximo por campanha"
 #: user_profile/views.py:89
 msgid "this phone number is not authorized."
 msgstr "este número de telefone não está autorizado."
+<<<<<<< HEAD
 
 #: user_profile/views.py:91
 msgid "this phone number is authorized."
@@ -5411,3 +7303,9 @@ msgstr "Este número de telefone esta autorizado."
 
 #~ msgid "time out"
 #~ msgstr "limite de tempo"
+=======
+
+#: user_profile/views.py:91
+msgid "this phone number is authorized."
+msgstr "Este número de telefone esta autorizado."
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'

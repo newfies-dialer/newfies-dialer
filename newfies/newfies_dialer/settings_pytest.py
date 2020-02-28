@@ -6,14 +6,23 @@
 # License, v. 2.0. If a copy of the MPL was not distributed with this file,
 # You can obtain one at http://mozilla.org/MPL/2.0/.
 #
+<<<<<<< HEAD
 # Copyright (C) 2011-2015 Star2Billing S.L.
+=======
+# Copyright (C) 2011-2014 Star2Billing S.L.
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 #
 # The primary maintainer of this project is
 # Arezqui Belaid <info@star2billing.com>
 #
 
+<<<<<<< HEAD
 # IMPORT SETTINGS
 # ===============
+=======
+#IMPORT SETTINGS
+#===============
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
 from settings import *
 import os
 

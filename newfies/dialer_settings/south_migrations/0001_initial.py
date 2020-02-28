@@ -25,10 +25,18 @@ class Migration(SchemaMigration):
         ))
         db.send_create_signal(u'dialer_settings', ['DialerSetting'])
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     def backwards(self, orm):
         # Deleting model 'DialerSetting'
         db.delete_table('dialer_setting')
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     models = {
         u'dialer_settings.dialersetting': {
             'Meta': {'object_name': 'DialerSetting', 'db_table': "'dialer_setting'"},
@@ -47,4 +55,8 @@ class Migration(SchemaMigration):
         }
     }
 
+<<<<<<< HEAD
     complete_apps = ['dialer_settings']
+=======
+    complete_apps = ['dialer_settings']
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'

@@ -268,7 +268,10 @@ class Event(models.Model):
 
 
 class Occurrence(models.Model):
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3da8460... Merge branch 'release/v2.15.0'
     """
     Occurence models
 

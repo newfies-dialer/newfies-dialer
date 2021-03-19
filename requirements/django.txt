@@ -37,6 +37,6 @@ git+http://github.com/areski/django-sms-gateway.git
 django-bootstrap-form==3.2
 django-registration-redux==1.2
 django-bootstrap3-datetimepicker==2.2.3
-djangorestframework==2.4.4
+djangorestframework==3.11.2
 django-crispy-forms==1.4.0
 South==1.0.2
